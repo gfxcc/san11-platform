@@ -2,6 +2,9 @@ FROM ubuntu:18.04
 
 WORKDIR /app
 
+ENV TZ=America/New_York
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 ENV DB_NAME="san11-platform-db"
 ENV DB_USER="postgres"
 ENV DB_PASSWORD="example"
