@@ -1,10 +1,14 @@
 FROM ubuntu:18.04
 
-
 WORKDIR /app
+
+ENV DB_NAME="san11-platform-db"
+ENV DB_USER="postgres"
+ENV DB_PASSWORD="example"
 
 RUN apt-get update -y && \
     apt-get install build-essential software-properties-common -y && \
+    apt-get install postgresql -y && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install python3 python3-pip python3.8-dev libpq-dev -y
 

@@ -7,24 +7,25 @@ services:
     working_dir: /app
     volumes:
       - ./back-end/src:/app
+      - ./back-end/utils:/utils
       - ./back-end/resources:/resources
-    command: python3.8 san11_platform_server.py
+    command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py"]
     depends_on:
       - db
 
   envoy:
     image: envoyproxy/envoy-alpine:v1.13.0
     volumes:
-      - ./back-end/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./back-end/envoy/envoy.yaml:/etc/envoy/envoy.yaml
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace --log-path /tmp/envoy_info.log
     ports:
       - "8090:8090"
 
   db:
-    build: ./back-end/database
+    build: ./database
     restart: always
     volumes: 
-      - ./back-end/database/postgres-data:/var/lib/postgresql/data
+      - ./database/postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
