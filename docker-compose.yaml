@@ -12,11 +12,12 @@ services:
     command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py"]
     depends_on:
       - db
+      - envoy
 
   envoy:
     image: envoyproxy/envoy-alpine:v1.13.0
     volumes:
-      - ./back-end/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./back-end/envoy:/etc/envoy
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace --log-path /tmp/envoy_info.log
     ports:
       - "8090:8090"
