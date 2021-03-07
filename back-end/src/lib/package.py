@@ -43,7 +43,7 @@ class Package:
             self._primary_category = primary_category
         else:
             raise ValueError('Invalid primary_category')
-
+    
     @property
     def secondary_category(self):
         return self._secondary_category
@@ -57,6 +57,22 @@ class Package:
             self._secondary_category = secondary_category
         else:
             raise ValueError('Invalid secondary_category')
+
+    @property
+    def binary_ids(self):
+        return self._binary_ids
+    
+    @binary_ids.setter
+    def binary_ids(self, binary_ids):
+        self._binary_ids = binary_ids or []
+
+    @property
+    def image_ids(self):
+        return self._image_ids
+
+    @image_ids.setter
+    def image_ids(self, image_ids):
+        self._image_ids = image_ids or []
 
     def __str__(self):
         d = {
