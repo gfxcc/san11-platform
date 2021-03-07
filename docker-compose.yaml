@@ -2,12 +2,13 @@ version: "3"
 
 services:
   backend:
-    build: .
+    build: ./back-end
     restart: always
+    working_dir: /app
     volumes:
-      - ./src:/app
-      - ./resources:/resources
-    command: python3.8 /app/san11_platform_server.py
+      - ./back-end/src:/app
+      - ./back-end/resources:/resources
+    command: python3.8 san11_platform_server.py
     depends_on:
       db:
         condition: service_healthy
@@ -15,16 +16,16 @@ services:
   envoy:
     image: envoyproxy/envoy-alpine:v1.13.0
     volumes:
-      - ./envoy.yaml:/etc/envoy/envoy.yaml
+      - ./back-end/envoy.yaml:/etc/envoy/envoy.yaml
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace --log-path /tmp/envoy_info.log
     ports:
       - "8090:8090"
 
   db:
-    build: ./database
+    build: ./back-end/database
     restart: always
     volumes: 
-      - ./database/postgres-data:/var/lib/postgresql/data
+      - ./back-end/database/postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
@@ -33,3 +34,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  frontend:
+    build: ./front-end
+    working_dir: /app
+    volumes:
+      - ./front-end:/app
+    command: bash -c "npm install && ng serve --host 0.0.0.0"
+    depends_on: 
+      - backend
+    ports:
+      - "80:4200"
+    
