@@ -138,8 +138,8 @@ export class PackageCardComponent implements OnInit {
     return localStorage.getItem('userType') === 'admin';
   }
 
-  isAuthor(san11Package: Package) {
-    return san11Package.authorId === localStorage.getItem('userId');
+  isAuthor() {
+    return this.package.authorId === localStorage.getItem('userId');
   }
 
   hasBinary() {
