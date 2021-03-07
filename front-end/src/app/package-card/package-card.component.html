@@ -1,0 +1,42 @@
+<mat-card class="package-card">
+    <mat-card-header>
+        <div mat-card-avatar class="author-image"></div>
+        <mat-card-title>
+            {{package.name}}
+        </mat-card-title>
+
+        <span class="example-spacer"></span>
+
+        <div [hidden]="! (package.status==='under_review' && !isAdmin())">
+            <button mat-button mat-raised-button color="accent">审核中</button>
+        </div>
+
+        <div [hidden]="! (package.status==='under_review' && isAdmin())">
+            <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
+        </div>
+
+        <mat-card-subtitle>{{authorName}}</mat-card-subtitle>
+
+    </mat-card-header>
+    <img mat-card-image [src]="screenshot" alt="screenshot" class="screenshot">
+    <mat-card-content>
+        <p>
+            {{package.description}}
+        </p>
+    </mat-card-content>
+    <mat-card-actions class="flex-container">
+        <button mat-button mat-stroked-button color="primary" [disabled]="package.status==='under_review' || !hasBinary()" (click)="onDownload()">下载</button>
+
+        <span class="example-spacer"></span>
+
+        <span [hidden]="! (isAuthor(package) || isAdmin())">
+            <input type="file" accept=".scp, .scp-en" hidden="true" #binaryInput (change)="onUpdateBinary(binaryInput)">
+            <button mat-button mat-stroked-button color="accent" (click)="binaryInput.click()">更新</button>
+
+
+
+            <button mat-button mat-stroked-button color="warn" (click)="openDeleteDialog()">删除</button>
+        </span>
+    </mat-card-actions>
+
+</mat-card>

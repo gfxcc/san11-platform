@@ -1,0 +1,5 @@
+<h1 mat-dialog-title>确定要删除 {{package.name}} 吗？</h1>
+<div mat-dialog-actions class="delete-dialog-actions">
+    <button mat-button mat-dialog-close>取消</button>
+    <button mat-raised-button color="warn" mat-dialog-close (click)="onDeleteConfirm()">删除</button>
+</div>

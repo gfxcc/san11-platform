@@ -1,0 +1,58 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>创建工具</mat-card-title>
+        </mat-card-header>
+
+        <form class="example-form">
+
+            <form class="example-form" #createPackageForm='ngForm' (ngSubmit)="createPackage(createPackageForm)">
+                <mat-card-content>
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="名称" required ngModel name="name">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="example-full-width">
+                        <mat-label>主要类别</mat-label>
+                        <mat-select [(ngModel)]="selectedPrimaryCategory" required name="primaryCategory">
+                            <mat-option *ngFor="let primaryCategory of primaryCategories" [value]="primaryCategory.value" [disabled]="primaryCategory.disabled">
+                                {{primaryCategory.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-hint></mat-hint>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="example-full-width">
+                        <mat-label>描述</mat-label>
+                        <textarea matInput placeholder="功能，用法，提示..." required ngModel name="description"></textarea>
+                    </mat-form-field>
+
+                    <p></p>
+
+                    <label class="example-full-width">
+                        <span>上传截图</span>
+                        <input #imageInput
+                               type="file"
+                               accept="image/*"
+                               (change)="uploadImageHandler(imageInput)">
+                      </label>
+
+                    <p></p>
+
+                    <label>
+                        <span>上传文件</span>
+                        <input #binaryInput
+                               type="file"
+                               accept=".sire"
+                               (change)="uploadFileHandler(binaryInput)">
+                      </label>
+
+                </mat-card-content>
+                <button [disabled]="!createPackageForm.valid" type="submit" mat-stroked-button color="accent" class="btn-block">创建</button>
+            </form>
+
+
+        </form>
+    </mat-card>
+</div>

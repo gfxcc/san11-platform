@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  backend:
+    build: .
+    restart: always
+    volumes:
+      - ./src:/app
+      - ./resources:/resources
+    command: python3.8 /app/san11_platform_server.py
+    depends_on:
+      db:
+        condition: service_healthy
+
+  envoy:
+    image: envoyproxy/envoy-alpine:v1.13.0
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace --log-path /tmp/envoy_info.log
+    ports:
+      - "8090:8090"
+
+  db:
+    build: ./database
+    restart: always
+    volumes: 
+      - ./database/postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

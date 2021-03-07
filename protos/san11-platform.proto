@@ -1,0 +1,181 @@
+syntax = "proto3";
+
+package routeguide;
+
+
+// Interface exported by the server.
+service RouteGuide {
+  // package related
+  rpc CreatePackage(CreatePackageRequest) returns (Package) {}
+  rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
+  rpc DeletePackage(DeletePackageRequest) returns (Empty) {}
+  rpc GetPackage(GetPackageRequest) returns (Package) {}
+  rpc ListPackages(ListPackagesRequest) returns (ListPackagesResponse) {}
+
+
+  // Binary related 
+  rpc UploadBinary(UploadBinaryRequest) returns (Status) {}
+  rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
+  rpc GetBinary(GetBinaryRequest) returns (Binary) {}
+
+
+  // Image related
+  rpc UploadImage(UploadImageRequest) returns (Status) {}
+  rpc GetImage(GetimageRequest) returns (Image) {}
+  rpc ListImages(ListImagesRequest) returns (ListImagesResponse) {}
+
+
+  // User related
+  rpc SignIn(SignInRequest) returns (SignInResponse) {}
+  rpc SignOut(SignOutRequest) returns (Status) {}
+  rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
+  rpc GetUser(GetUserRequest) returns (User) {}
+}
+
+// package related
+
+message CreatePackageRequest {
+    Package package = 1;
+}
+
+message UpdatePackageRequest {
+    Package package = 1;
+}
+
+message DeletePackageRequest {
+    Package package = 1;
+}
+
+message GetPackageRequest {
+    int64 package_id = 1;
+}
+
+message ListPackagesRequest {
+    string primary_category = 1;
+    string secondary_category = 2;
+
+    int64 page_size = 3;
+    string page_token = 4;
+}
+
+message ListPackagesResponse {
+    repeated Package packages = 1;
+}
+
+// binary
+
+message UploadBinaryRequest {
+    string parent = 1; // packages/package_id
+    Binary binary = 2;
+}
+
+message GetBinaryRequest {
+    int64 binary_id = 1;
+}
+
+message DeleteBinaryRequest {
+    int64 binary_id = 1;
+}
+
+// image
+
+message GetimageRequest {
+    int64 image_id = 1;
+}
+
+message UploadImageRequest {
+    string parent = 1; // packages/package_id or users/user_id
+    bytes image = 2;
+}
+
+message ListImagesRequest {
+    repeated int64 image_ids = 1;
+}
+
+message ListImagesResponse {
+    repeated Image images = 1;
+}
+
+// user
+
+message GetUserRequest {
+    int64 user_id = 1;
+}
+
+message GetUserResponse {
+    User user = 1;
+}
+
+message SignInRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message SignInResponse {
+    User user = 2;
+    string sid = 3;
+}
+
+message SignOutRequest {
+    int64 user_id = 1;
+}
+
+message SignUpRequest {
+    User user = 1;
+    string password = 3;
+}
+
+message SignUpResponse {
+    User user = 2;
+    string sid = 3;
+}
+
+
+// Types
+
+message Empty {
+}
+
+message Status {
+    int64 code = 1;
+    string message = 2;
+}
+
+message Package {
+    int64 package_id = 1;
+    string name = 2;
+    string description = 3;
+    string primary_category = 4;
+    string secondary_category = 5;
+    string status = 6; // under_review, normal, hidden, deleted
+    int64 author_id = 7;
+    repeated int64 binary_ids = 8;
+    repeated int64 image_ids = 9;
+}
+
+message Binary {
+    int64 binary_id = 1;
+    int64 download_count = 3;
+    Version version = 4;
+    string description = 5;
+    bytes data = 6;
+}
+
+message Image {
+    int64 image_id = 1;
+    bytes data = 2;
+}
+
+message User {
+    int64 user_id = 1;
+    string username = 2;
+    string email = 3;
+    string user_type = 4;
+    int64 image_id = 5;
+}
+
+message Version {
+    int64 major = 1;
+    int64 minor = 2;
+    int64 patch = 3;
+}

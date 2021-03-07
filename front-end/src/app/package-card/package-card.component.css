@@ -1,0 +1,31 @@
+.package-card {
+    max-width: 400px;
+    min-height: 380px;
+    max-height: 450px;
+}
+
+.author-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+
+.screenshot {
+    max-height: 200px;
+}
+
+mat-card-content {
+    height: 80px;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.flex-container {
+    resize: horizontal;
+    display: flex;
+}
+
+.delete-dialog-actions {
+    float: right;
+}

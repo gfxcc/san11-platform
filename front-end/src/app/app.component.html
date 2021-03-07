@@ -1,0 +1,41 @@
+<mat-toolbar color="primary">
+    <span class="title">San11 分享平台</span>
+
+    <nav>
+        <a routerLink="/sire-packages">
+            <button mat-button class="category-button" aria-label="Example icon-button with menu icon">
+          <span class="mat-button-wrapper">SIRE 插件</span>
+          </button>
+        </a>
+        <a routerLink="/player-packages">
+            <button mat-button class="category-button" aria-label="Example icon-button with menu icon">
+        <span class="mat-button-wrapper">修改工具</span>
+        </button>
+        </a>
+        <a routerLink="/mod-maker-packages">
+            <button mat-button class="category-button" aria-label="Example icon-button with menu icon">
+        <span class="mat-button-wrapper">MOD</span>
+        </button>
+        </a>
+    </nav>
+
+    <span class="example-spacer"></span>
+
+
+    <div [hidden]="signedIn()">
+        <a mat-button routerLink="signin" routerLinkActive="active">登陆</a>
+        <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">注册</a>
+    </div>
+    <div [hidden]="!signedIn()">
+
+        <a mat-button mat-raised-button [matMenuTriggerFor]="menu">账号: {{username()}}</a>
+        <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item (click)="uploadTool()">上传工具</button>
+            <button mat-menu-item (click)="myTools()">我的工具</button>
+            <button mat-menu-item (click)="onSignOut()">登出</button>
+        </mat-menu>
+    </div>
+</mat-toolbar>
+
+
+<router-outlet></router-outlet>
