@@ -140,9 +140,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         parent_type, parent_id = request.parent.split('/')
         image = Image.create(request.image)
 
-        if parent_type == 'screenshots':
+        if parent_type == 'packages':
             Package.from_package_id(parent_id).append_image(image)
-        elif parent_type == 'userImages':
+        elif parent_type == 'users':
             User.from_user_id(parent_id).set_image(image)
         else:
             raise Exception(f'Invalid parent_type: {parent_type}')

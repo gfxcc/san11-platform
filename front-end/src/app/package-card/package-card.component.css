@@ -9,8 +9,12 @@
     background-size: cover;
 }
 
+.met-card-title {
+    max-height: 20px;
+}
+
 .screenshot {
-    max-height: 200px;
+    height: 200px;
 }
 
 mat-card-content {
@@ -28,4 +32,19 @@ mat-card-content {
 
 .delete-dialog-actions {
     float: right;
+}
+
+mat-card-title p {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 28px;
+    margin: 0%;
+}
+
+mat-card-content p {
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 80px;
 }

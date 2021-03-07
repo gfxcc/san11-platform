@@ -31,10 +31,10 @@ export class RegisterComponent implements OnInit {
         this._snackBar.open("注册成功", 'Done', {
           duration: 10000,
         });
-
-          localStorage.setItem('sid', registerForm.value.sid)
-          localStorage.setItem('username', value.user.username)
-          localStorage.setItem('userId', value.user.userId)
+          localStorage.setItem('username', value.user.username);
+          localStorage.setItem('sid', value.sid);
+          localStorage.setItem('userId', value.user.userId);
+          localStorage.setItem('userType', value.user.userType);
 
           this.router.navigate(['/']);
       },

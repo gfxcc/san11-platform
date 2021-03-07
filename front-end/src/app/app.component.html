@@ -31,7 +31,6 @@
         <a mat-button mat-raised-button [matMenuTriggerFor]="menu">账号: {{username()}}</a>
         <mat-menu #menu="matMenu" xPosition="before">
             <button mat-menu-item (click)="uploadTool()">上传工具</button>
-            <button mat-menu-item (click)="myTools()">我的工具</button>
             <button mat-menu-item (click)="onSignOut()">登出</button>
         </mat-menu>
     </div>

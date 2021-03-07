@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Package } from '../../proto/san11-platform.pb'
 import { San11PlatformServiceService } from '../san11-platform-service.service'
+import { Binary } from '../../proto/san11-platform.pb';
 
 
 class FileSnippet {
@@ -22,6 +23,7 @@ export class CreatePackageComponent implements OnInit {
   selectedFile: File;
   selectedImage: File;
   selectedPrimaryCategory: string;
+  createdPackage: Package;
 
   primaryCategories = [
     { value: 'SIRE2 Plugin', viewValue: 'SIRE(2) 插件', disabled: false },
@@ -50,38 +52,8 @@ export class CreatePackageComponent implements OnInit {
       san11Package => {
 
         // packageId = san11Package.packageId;
-
-        let fileReader = new FileReader();
-        console.log('at 1');
-        fileReader.onload = () => {
-
-          var parent = "screenshots" + '/' + san11Package.packageId.toString();
-
-          console.log('at 2');
-          var arrayBuffer = fileReader.result;
-          var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
-
-          this.san11PlatformServiceService.uploadImage(parent, bytes).subscribe(
-
-            status => {
-              if (status.code != '0') {
-                this._snackBar.open("上传截图失败: " + status.message, 'Done', {
-                  duration: 10000,
-                });
-                return;
-              }
-
-              this._snackBar.open("创建成功，请耐心等待审核。预期 1-2 天", 'Done', {
-                duration: 10000,
-              });
-              this.router.navigate(['/']);
-
-            }
-          );
-
-        }
-
-        fileReader.readAsArrayBuffer(this.selectedImage);
+        this.createdPackage = san11Package;
+        this.uploadImage();
 
       },
       error => this._snackBar.open(error.statusMessage, 'Done', {
@@ -93,7 +65,66 @@ export class CreatePackageComponent implements OnInit {
   }
 
   uploadImage() {
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
 
+      var parent = "packages" + '/' + this.createdPackage.packageId.toString();
+
+      console.log('at 2');
+      var arrayBuffer = fileReader.result;
+      var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
+
+      this.san11PlatformServiceService.uploadImage(parent, bytes).subscribe(
+
+        status => {
+          if (status.code != '0') {
+            this._snackBar.open("上传截图失败: " + status.message, 'Done', {
+              duration: 10000,
+            });
+            return;
+          }
+
+          this.uploadBinary();
+        }
+      );
+
+    }
+
+    fileReader.readAsArrayBuffer(this.selectedImage);
+  }
+
+  uploadBinary() {
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+
+      var parent = "packages" + '/' + this.createdPackage.packageId.toString();
+
+      var arrayBuffer = fileReader.result;
+      var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
+
+      const binary = new Binary({description: "n/a", data: bytes});
+
+      this.san11PlatformServiceService.uploadBinary(parent, binary).subscribe(
+
+        status => {
+          if (status.code != '0') {
+            this._snackBar.open("上传文件失败: " + status.message, 'Done', {
+              duration: 10000,
+            });
+            return;
+          }
+
+          this._snackBar.open("创建成功，请耐心等待审核。预期 1-2 天", 'Done', {
+            duration: 10000,
+          });
+          this.router.navigate(['/']);
+
+        }
+      );
+
+    }
+
+    fileReader.readAsArrayBuffer(this.selectedFile);
   }
 
   uploadFileHandler(fielInput) {
@@ -103,6 +134,7 @@ export class CreatePackageComponent implements OnInit {
   uploadImageHandler(imageInput) {
     this.selectedImage = imageInput.files[0];
   }
+
 
 
 }
