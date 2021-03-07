@@ -39,7 +39,7 @@ services:
     working_dir: /app
     volumes:
       - ./front-end:/app
-    command: bash -c "npm install && ng serve --host 0.0.0.0 --disableHostCheck"
+    command: bash -c "npm install && ng serve --host 0.0.0.0 --disable-host-check"
     depends_on: 
       - backend
     ports:
