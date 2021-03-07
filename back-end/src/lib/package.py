@@ -138,9 +138,12 @@ class Package:
                 Image.from_image_id(image_id).delete()
             except Exception:
                 logger.error(f'Failed to delete image: image_id={image_id}')
-
-        # for binary_id in self.binary_ids:
-        #     Bin
+        
+        for binary_id in self.binary_ids:
+            try:
+                Binary.from_binary_id(binary_id).delete()
+            except Exception:
+                logger.error(f'Failed to delete binary: binary_id={binary_id}')
 
         sql = 'DELETE FROM packages WHERE package_id=%(package_id)s'
         run_sql_with_param(sql, {'package_id': self.package_id})
