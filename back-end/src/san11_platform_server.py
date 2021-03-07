@@ -215,6 +215,10 @@ def serve():
     server.wait_for_termination()
 
 
+def init_log():
+    FORMAT = '%(asctime)-15s %(levelno)s %(message)s'
+    logging.basicConfig(level=logging.NOTSET, format=FORMAT)
+
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.NOTSET)
+    init_log()
     serve()
