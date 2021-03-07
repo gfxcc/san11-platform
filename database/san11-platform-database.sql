@@ -38,6 +38,7 @@ CREATE TABLE users (
     image_id INT REFERENCES images(image_id)
 );
 INSERT INTO users VALUES (DEFAULT, 'admin', 'admin', 'a@a.com', 'admin', NULL);
+INSERT INTO users VALUES (DEFAULT, 'yong', 'yong', 'a@a.com', 'regular', NULL);
 
 CREATE TABLE sessions (
     sid TEXT NOT NULL,
@@ -58,9 +59,9 @@ CREATE TABLE packages (
 );
 INSERT INTO packages VALUES (DEFAULT, '战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', 1, 1, 'normal', 1, NULL, NULL);
 INSERT INTO packages VALUES (DEFAULT, '战法连携', '战法可以互相触发。顺序 枪 戟 弩', 1, 1, 'normal', 1, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', 1, 1, 'normal', 1, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', 1, 1, 'normal', 1, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', 1, 1, 'normal', 1, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', 1, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '功绩解锁特解', '随着功绩提升可以解锁新的特级 功绩等级 10000， 20000， 30000', 1, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, 'AI不攻击关港', 'n/a', 1, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '小兵系统', '自动拔擢小兵成为武将', 1, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, 'UI现实粮草', '', 1, 1, 'normal', 1, NULL, NULL);
 
 \dt;
