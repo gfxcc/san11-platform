@@ -16,7 +16,6 @@ import { GetimageRequest } from '../proto/san11-platform.pb'
 import { GetBinaryRequest } from '../proto/san11-platform.pb'
 
 import { RouteGuideClient } from '../proto/san11-platform.pbsc';
-import { Cacheable } from 'ts-cacheable';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +75,6 @@ export class San11PlatformServiceService {
     return this.severClient.uploadImage(requst, this.getMetadata());
   }
 
-  @Cacheable()
   getImage(imageId): Observable<Image> {
     const request = new GetimageRequest({imageId: imageId});
     return this.severClient.getImage(request, this.getMetadata());
