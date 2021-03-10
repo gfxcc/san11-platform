@@ -15,6 +15,7 @@
 
 .screenshot {
     height: 200px;
+    display: block;
 }
 
 mat-card-content {
@@ -47,4 +48,8 @@ mat-card-content p {
     white-space: pre-wrap;
     word-break: break-all;
     max-height: 80px;
+}
+
+mat-card-header {
+    height: 60px;
 }
