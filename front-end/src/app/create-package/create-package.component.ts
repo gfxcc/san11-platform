@@ -39,6 +39,22 @@ export class CreatePackageComponent implements OnInit {
   }
 
   createPackage(createPackageForm) {
+
+    console.log(this.selectedFile);
+    if (this.selectedImage === undefined) {
+      this._snackBar.open("请选择截图", 'Done', {
+        duration: 10000,
+      });
+      return;
+    }
+
+    if (this.selectedFile === undefined) {
+      this._snackBar.open("请选择文件", 'Done', {
+        duration: 10000,
+      });
+      return;
+    }
+
     this.san11PlatformServiceService.createPackage(new Package({
       packageId: "0",
       name: createPackageForm.value.name,
