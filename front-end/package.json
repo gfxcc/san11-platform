@@ -33,6 +33,7 @@
     "grpc-web": "^1.2.1",
     "rxjs": "^6.6.3",
     "rxjs-compat": "^6.6.6",
+    "ts-cacheable": "^1.0.4",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },
