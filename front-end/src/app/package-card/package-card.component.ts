@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { San11PlatformServiceService } from '../san11-platform-service.service';
 import { Binary, Version } from '../../proto/san11-platform.pb'
+import { Url } from 'url';
 
 
 @Component({
@@ -22,10 +23,13 @@ export class PackageCardComponent implements OnInit {
   @Input() package: Package;
 
   authorName: string;
-  screenshot: any = '../../assets/images/san11-screenshots/san11-screenshot1.jpg';
+
+  screenshot: Url = undefined;
   retrieveURL;
   screenshotImage;
   selectedBinary;
+
+  public screenshotElement = false;
 
   constructor(
     private router: Router,
@@ -39,14 +43,8 @@ export class PackageCardComponent implements OnInit {
     this.san11PlatformServiceService.getUser(this.package.authorId).subscribe(
       user => this.authorName = user.username
     );
-    this.san11PlatformServiceService.getImage(this.package.imageIds[0]).subscribe(
-      image => {
-        console.log(image);
-        this.screenshotImage = image;
-        this.loadImage();
-      }
-    );
-  }
+    this.loadImage();
+ }
 
   openDeleteDialog() {
     this.dialog.open(DeleteDialog, {
@@ -129,9 +127,15 @@ export class PackageCardComponent implements OnInit {
   }
 
   loadImage() {
-    const blob = new Blob([this.screenshotImage.data]);
-    const unsafeImageUrl = URL.createObjectURL(blob);
-    this.screenshot = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
+    this.san11PlatformServiceService.getImage(this.package.imageIds[0]).subscribe(
+      image => {
+        this.screenshotImage = image;
+        const blob = new Blob([this.screenshotImage.data]);
+        const unsafeImageUrl = URL.createObjectURL(blob);
+        this.screenshot = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
+        this.screenshotElement = true;
+      }
+    );
   }
 
   isAdmin() {

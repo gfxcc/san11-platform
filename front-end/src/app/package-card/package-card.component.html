@@ -18,7 +18,14 @@
         <mat-card-subtitle>{{authorName}}</mat-card-subtitle>
 
     </mat-card-header>
-    <img mat-card-image [src]="screenshot" alt="screenshot" class="screenshot">
+
+    <div class="timeline-item" [hidden]="screenshot != undefined">
+        <div class="animated-background screenshot">
+        </div>
+    </div>
+
+    <img *ngIf="screenshotElement" mat-card-image [src]="screenshot" alt="screenshot" class="screenshot">
+
     <mat-card-content>
         <p class="mat-card-content-p">
             {{package.description}}
@@ -33,8 +40,6 @@
         <span [hidden]="! (isAuthor() || isAdmin())">
             <input type="file" accept=".scp, .scp-en" hidden="true" #binaryInput (change)="onUpdateBinary(binaryInput)">
             <button mat-button mat-stroked-button color="accent" (click)="binaryInput.click()">更新</button>
-
-
 
             <button mat-button mat-stroked-button color="warn" (click)="openDeleteDialog()">删除</button>
         </span>
