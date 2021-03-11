@@ -39,7 +39,7 @@ import { CreatePackageComponent } from './create-package/create-package.componen
   imports: [
     GrpcCoreModule.forRoot(),
     GrpcWebClientModule.forRoot({
-      settings: { host: 'http://34.96.232.207:8090' },
+      settings: { host: 'http://0.0.0.0:8090' },
     }),
     BrowserModule,
     BrowserAnimationsModule,

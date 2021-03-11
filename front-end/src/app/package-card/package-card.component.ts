@@ -41,6 +41,9 @@ export class PackageCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.screenshotPlaceholderElement = true;
+    this.screenshotElement = false;
+
     this.san11PlatformServiceService.getUser(this.package.authorId).subscribe(
       user => this.authorName = user.username
     );
@@ -134,6 +137,7 @@ export class PackageCardComponent implements OnInit {
         const blob = new Blob([this.screenshotImage.data]);
         const unsafeImageUrl = URL.createObjectURL(blob);
         this.screenshot = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
+
         this.screenshotPlaceholderElement = false;
         this.screenshotElement = true;
       }
