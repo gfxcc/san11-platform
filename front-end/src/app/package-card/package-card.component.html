@@ -19,9 +19,7 @@
 
     </mat-card-header>
 
-    <div class="timeline-item" [hidden]="screenshot != undefined">
-        <div class="animated-background screenshot">
-        </div>
+    <div *ngIf="screenshotPlaceholderElement" class="animated-background screenshot mat-card-image">
     </div>
 
     <img *ngIf="screenshotElement" mat-card-image [src]="screenshot" alt="screenshot" class="screenshot">

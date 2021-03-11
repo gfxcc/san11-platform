@@ -29,6 +29,7 @@ export class PackageCardComponent implements OnInit {
   screenshotImage;
   selectedBinary;
 
+  public screenshotPlaceholderElement = true;
   public screenshotElement = false;
 
   constructor(
@@ -133,6 +134,7 @@ export class PackageCardComponent implements OnInit {
         const blob = new Blob([this.screenshotImage.data]);
         const unsafeImageUrl = URL.createObjectURL(blob);
         this.screenshot = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
+        this.screenshotPlaceholderElement = false;
         this.screenshotElement = true;
       }
     );
