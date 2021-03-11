@@ -14,7 +14,7 @@ $ su -s ${USER}
 ```
 
 ### Network
-Need to open ports: 80, 5051, 8089
+Need to open ports: 80, 50051, 8090
 
 ## Start services
 ```
