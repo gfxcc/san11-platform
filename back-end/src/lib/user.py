@@ -19,15 +19,16 @@ class InvalidPassword(Exception):
 
 class User:
     def __init__(self, user_id: int, username: str, email: str, user_type: str,
-                 image_id: int):
+                 image_url: str):
         self.user_id = user_id
         self.username = username
         self.email = email
         self.user_type = user_type
-        self.image_id = image_id
+        self.image_url = image_url
 
     def __str___(self):
-        return f'{{user_id: {self.user_id}, username: {self.username}, email: {self.email}}}'
+        return f'{{ user_id: {self.user_id}, username: {self.username}, '\
+               f'email: {self.email}, image_url: {self.image_url} }}'
 
     def validate(self, password: str) -> None:
         '''
@@ -47,12 +48,12 @@ class User:
                                        username=self.username,
                                        email=self.email,
                                        user_type=self.user_type,
-                                       image_id=self.image_id)
+                                       image_url=self.image_url)
     
     def set_image(self, image: Image):
-        self.image_id = image.image_id
-        sql = 'UPDATE users SET image_id=%(image_id)s WHERE user_id=%(user_id)s'
-        run_sql_with_param(sql, {'image_id': self.image_id, 'user_id': self.user_id})
+        self.iamge_url = image.image_url
+        sql = 'UPDATE users SET image_url=%(image_url)s WHERE user_id=%(user_id)s'
+        run_sql_with_param(sql, {'image_url': self.image_url, 'user_id': self.user_id})
 
     @classmethod
     def create(cls, user: san11_platform_pb2.User, password: str):
@@ -86,17 +87,16 @@ class User:
         validate_username(user.username)
 
         sql = 'INSERT INTO users VALUES (DEFAULT, %(username)s, %(password)s, '\
-              '%(email)s, %(user_type)s, %(image_id)s) RETURNING user_id'
+              '%(email)s, %(user_type)s, %(image)s) RETURNING user_id'
         resp = run_sql_with_param_and_fetch_one(sql, {
             'username': user.username,
             'password': password,
             'email': user.email,
             'user_type': 'regular',
-            'image_id': user.image_id or None # Null from frontend will be 
-                                              # return as 0 which will violate foreign key to table images 
+            'image_url': user.image_url 
         })
 
-        return cls(resp[0], user.username, user.email, user.user_type, user.image_id)
+        return cls(resp[0], user.username, user.email, user.user_type, user.image_url)
 
     @classmethod
     def from_name(cls, username: str):
@@ -104,7 +104,7 @@ class User:
         Raise:
             LookupError: ...
         '''
-        sql = 'SELECT user_id, email, user_type, image_id FROM users WHERE username=%(username)s'
+        sql = 'SELECT user_id, email, user_type, image_url FROM users WHERE username=%(username)s'
         try:
             resp = run_sql_with_param_and_fetch_all(
                 sql, {'username': username})[0]
@@ -120,7 +120,7 @@ class User:
         Raise:
             LookupError: ...
         '''
-        sql = 'SELECT username, email, user_type, image_id FROM users WHERE user_id=%(user_id)s'
+        sql = 'SELECT username, email, user_type, image_url FROM users WHERE user_id=%(user_id)s'
         try:
             resp = run_sql_with_param_and_fetch_one(
                 sql, {'user_id': user_id})

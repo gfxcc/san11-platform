@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Package } from '../../proto/san11-platform.pb'
-import { San11PlatformServiceService } from '../san11-platform-service.service';
+import { San11PlatformServiceService } from '../service/san11-platform-service.service';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class SirePackageDashboardComponent implements OnInit {
   }
 
   listSire2Packages(): void {
-    this.san11PlatformServiceService.listPackages("SIRE2 Plugin", "默认").subscribe(
+    this.san11PlatformServiceService.listPackages(1, 0, "0").subscribe(
       value => this.packages=value.packages,
       error => console.log(error),
       () => console.log("end"),

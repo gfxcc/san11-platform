@@ -1,37 +1,46 @@
 from __future__ import annotations
 from pathlib import Path
+import logging
+import os, os.path
+import errno
 
 from .protos import san11_platform_pb2
 from .db_util import run_sql_with_param_and_fetch_one, run_sql_with_param
+from .resource import get_images_path, get_resource_path, get_image_url, create_resource
+
+
+logger = logging.getLogger(os.path.basename(__file__))
+
 
 class Image:
-    def __init__(self, image_id: int, data: bytes) -> None:
-        self.image_id = image_id
-        self.data = data
+    def __init__(self, url) -> None:
+        self.url = url
     
-    def to_pb(self) -> san11_platform_pb2.Image:
-        return san11_platform_pb2.Image(image_id=self.image_id, data=self.data)
-
+    def __str__(self) -> str:
+        return self.url
+    
     def delete(self):
-        sql = 'DELETE FROM images WHERE image_id=%(image_id)s'
-        run_sql_with_param(sql, {'image_id': self.image_id})
+        os.remove(get_resource_path(self.url))
+        logger.info(f'{self} is deleted')
 
     @classmethod
-    def from_image_id(cls, image_id: int) -> Image:
-        sql = 'SELECT image_id, data FROM images WHERE image_id=%(image_id)s' 
-        resp = run_sql_with_param_and_fetch_one(sql, {'image_id': image_id})
-        return cls(resp[0], resp[1].tobytes())
+    def create(cls, url: str, data: bytes) -> Image:
+        create_resource(url, data)
+        return cls(url)
     
     @classmethod
-    def create(cls, data: bytes) -> Image:
-        '''
-        '''
-        sql = 'INSERT INTO images VALUES (DEFAULT, %(data)s) RETURNING image_id'
-        resp = run_sql_with_param_and_fetch_one(sql, {'data': data})
-        return cls(resp[0], data)
-        
+    def create_without_filename(cls, parent: str, data: bytes) -> Image:
+        def get_file_count(path: str) -> int:
+            try:
+                return len(os.listdir(path))
+            except Exception:
+                return 0
+        file_count = get_file_count(get_images_path(parent))
+        filename = f'{file_count}.jpeg'
+        return cls.create(get_image_url(parent, filename), data)
+
     @classmethod
-    def san11_default(cls) -> Image:
-        filename = '../resources/screenshots/san11-screenshot.jpg'
-        data = Path(filename).read_bytes()
-        return cls(0, data)
+    def from_url(cls, url: str):
+        return cls(url)
+        
+        

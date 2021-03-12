@@ -5,9 +5,11 @@ import { ErrorStateMatcher } from '@angular/material/core';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Package } from '../../proto/san11-platform.pb'
-import { San11PlatformServiceService } from '../san11-platform-service.service'
+import { Package, Version } from '../../proto/san11-platform.pb'
+import { San11PlatformServiceService } from '../service/san11-platform-service.service'
 import { Binary } from '../../proto/san11-platform.pb';
+
+import { getPackageUrl } from '../utils/package_util'
 
 
 class FileSnippet {
@@ -20,6 +22,7 @@ class FileSnippet {
   styleUrls: ['./create-package.component.css']
 })
 export class CreatePackageComponent implements OnInit {
+
   selectedFile: File;
   selectedImage: File;
   selectedPrimaryCategory: string;
@@ -31,7 +34,8 @@ export class CreatePackageComponent implements OnInit {
     { value: 'Mod', viewValue: 'MOD (未开放)', disabled: true }
   ];
 
-  constructor(private _snackBar: MatSnackBar,
+  constructor(
+    private _snackBar: MatSnackBar,
     private router: Router,
     private san11PlatformServiceService: San11PlatformServiceService) { }
 
@@ -59,15 +63,13 @@ export class CreatePackageComponent implements OnInit {
       packageId: "0",
       name: createPackageForm.value.name,
       description: createPackageForm.value.description,
-      primaryCategory: "SIRE2 Plugin",
-      secondaryCategory: "默认",
+      categoryId: "1", // hardcoded to SIRE Plugin
       authorId: "0",
       binaryIds: [],
-      imageIds: []
+      imageUrls: []
     })).subscribe(
       san11Package => {
 
-        // packageId = san11Package.packageId;
         this.createdPackage = san11Package;
         this.uploadImage();
 
@@ -76,15 +78,13 @@ export class CreatePackageComponent implements OnInit {
         duration: 10000,
       })
     );
-
-
   }
 
   uploadImage() {
     let fileReader = new FileReader();
     fileReader.onload = () => {
 
-      var parent = "packages" + '/' + this.createdPackage.packageId.toString();
+      var parent = getPackageUrl(this.createdPackage);
 
       console.log('at 2');
       var arrayBuffer = fileReader.result;
@@ -101,6 +101,12 @@ export class CreatePackageComponent implements OnInit {
           }
 
           this.uploadBinary();
+        },
+        error => {
+            this._snackBar.open("上传截图失败: " + error.statusMessage, 'Done', {
+              duration: 10000,
+            });
+            return;
         }
       );
 
@@ -113,14 +119,15 @@ export class CreatePackageComponent implements OnInit {
     let fileReader = new FileReader();
     fileReader.onload = () => {
 
-      var parent = "packages" + '/' + this.createdPackage.packageId.toString();
+      var parent = getPackageUrl(this.createdPackage);
 
       var arrayBuffer = fileReader.result;
       var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
 
-      const binary = new Binary({description: "n/a", data: bytes});
+      const binary = new Binary({version: new Version({ major: '1', minor: '0', patch: '0' }), 
+                                 description: "n/a"});
 
-      this.san11PlatformServiceService.uploadBinary(parent, binary).subscribe(
+      this.san11PlatformServiceService.uploadBinary(parent, binary, bytes).subscribe(
 
         status => {
           if (status.code != '0') {

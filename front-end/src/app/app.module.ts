@@ -23,6 +23,8 @@ import { SigninComponent } from './signin/signin.component';
 import { RegisterComponent } from './register/register.component';
 import { CreatePackageComponent } from './create-package/create-package.component';
 
+import { GlobalConstants } from './common/global-constants'
+
 
 @NgModule({
   declarations: [
@@ -39,7 +41,7 @@ import { CreatePackageComponent } from './create-package/create-package.componen
   imports: [
     GrpcCoreModule.forRoot(),
     GrpcWebClientModule.forRoot({
-      settings: { host: 'http://0.0.0.0:8090' },
+      settings: { host:  GlobalConstants.san11ServerUrl },
     }),
     BrowserModule,
     BrowserAnimationsModule,

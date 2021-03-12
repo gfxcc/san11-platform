@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
-import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './mock-packages'
+import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-packages'
 
 import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
-import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, Image, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../proto/san11-platform.pb'
-import { UpdatePackageRequest } from '../proto/san11-platform.pb'
-import { User, Package, Binary, Status, Empty } from '../proto/san11-platform.pb'
-import { ListPackagesRequest, ListImagesResponse } from '../proto/san11-platform.pb';
-import { SignInRequest, SignInResponse } from '../proto/san11-platform.pb';
-import { SignUpRequest, SignUpResponse } from '../proto/san11-platform.pb';
-import { SignOutRequest } from '../proto/san11-platform.pb'
-import { GetimageRequest } from '../proto/san11-platform.pb'
-import { GetBinaryRequest } from '../proto/san11-platform.pb'
+import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
+import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
+import { User, Package, Binary, Status, Empty } from '../../proto/san11-platform.pb'
+import { ListPackagesRequest } from '../../proto/san11-platform.pb';
+import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
+import { SignUpRequest, SignUpResponse } from '../../proto/san11-platform.pb';
+import { SignOutRequest } from '../../proto/san11-platform.pb'
+import { DownloadBinaryRequest } from '../../proto/san11-platform.pb'
 
-import { RouteGuideClient } from '../proto/san11-platform.pbsc';
+import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
 import { Cacheable } from 'ts-cacheable';
 
 @Injectable({
@@ -31,8 +30,8 @@ export class San11PlatformServiceService {
 
   }
 
-  listPackages(primaryCategory: string, secondaryCategory: string): Observable<ListPackagesResponse> {
-    const request = new ListPackagesRequest({ primaryCategory: "SIRE2 Plugin", secondaryCategory: secondaryCategory});
+  listPackages(categoryId: number, page_size: number, page_token: string): Observable<ListPackagesResponse> {
+    const request = new ListPackagesRequest({ categoryId: "1" });
     return this.severClient.listPackages(request, this.getMetadata());
   }
 
@@ -59,14 +58,14 @@ export class San11PlatformServiceService {
   //   return MOD_MAKER_PACKAGES;
   // }
 
-  uploadBinary(parent: string, binary: Binary) : Observable<Status> {
-    const requst = new UploadBinaryRequest({ parent: parent, binary: binary});
+  uploadBinary(parent: string, binary: Binary, data) : Observable<Status> {
+    const requst = new UploadBinaryRequest({ parent: parent, binary: binary, data: data});
     return this.severClient.uploadBinary(requst, this.getMetadata());
   }
 
-  getBinary(binaryId: string) : Observable<Binary> {
-    const request = new GetBinaryRequest({binaryId: binaryId});
-    return this.severClient.getBinary(request, this.getMetadata());
+  downloadBinary(binaryId: string) : Observable<Binary> {
+    const request = new DownloadBinaryRequest({binaryId: binaryId});
+    return this.severClient.downloadBinary(request, this.getMetadata());
   }
 
   // images
@@ -76,11 +75,11 @@ export class San11PlatformServiceService {
     return this.severClient.uploadImage(requst, this.getMetadata());
   }
 
-  @Cacheable()
-  getImage(imageId): Observable<Image> {
-    const request = new GetimageRequest({imageId: imageId});
-    return this.severClient.getImage(request, this.getMetadata());
-  }
+  // @Cacheable()
+  // getImage(imageId): Observable<Image> {
+  //   // const request = new GetimageRequest({imageId: imageId});
+  //   // return this.severClient.getImage(request, this.getMetadata());
+  // }
 
 
   // users
@@ -102,7 +101,7 @@ export class San11PlatformServiceService {
       user: new User({
         username: user.username,
         email: user.email,
-        imageId: null
+        imageUrl: null
       }),
       password: user.password
     });

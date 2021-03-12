@@ -615,8 +615,7 @@ export class ListPackagesRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: ListPackagesRequest) {
-    _instance.primaryCategory = _instance.primaryCategory || '';
-    _instance.secondaryCategory = _instance.secondaryCategory || '';
+    _instance.categoryId = _instance.categoryId || '0';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
   }
@@ -635,15 +634,12 @@ export class ListPackagesRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.primaryCategory = _reader.readString();
+          _instance.categoryId = _reader.readInt64String();
           break;
         case 2:
-          _instance.secondaryCategory = _reader.readString();
-          break;
-        case 3:
           _instance.pageSize = _reader.readInt64String();
           break;
-        case 4:
+        case 3:
           _instance.pageToken = _reader.readString();
           break;
         default:
@@ -663,22 +659,18 @@ export class ListPackagesRequest implements GrpcMessage {
     _instance: ListPackagesRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.primaryCategory) {
-      _writer.writeString(1, _instance.primaryCategory);
-    }
-    if (_instance.secondaryCategory) {
-      _writer.writeString(2, _instance.secondaryCategory);
+    if (_instance.categoryId) {
+      _writer.writeInt64String(1, _instance.categoryId);
     }
     if (_instance.pageSize) {
-      _writer.writeInt64String(3, _instance.pageSize);
+      _writer.writeInt64String(2, _instance.pageSize);
     }
     if (_instance.pageToken) {
-      _writer.writeString(4, _instance.pageToken);
+      _writer.writeString(3, _instance.pageToken);
     }
   }
 
-  private _primaryCategory?: string;
-  private _secondaryCategory?: string;
+  private _categoryId?: string;
   private _pageSize?: string;
   private _pageToken?: string;
 
@@ -688,23 +680,16 @@ export class ListPackagesRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListPackagesRequest.AsObject>) {
     _value = _value || {};
-    this.primaryCategory = _value.primaryCategory;
-    this.secondaryCategory = _value.secondaryCategory;
+    this.categoryId = _value.categoryId;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
     ListPackagesRequest.refineValues(this);
   }
-  get primaryCategory(): string | undefined {
-    return this._primaryCategory;
+  get categoryId(): string | undefined {
+    return this._categoryId;
   }
-  set primaryCategory(value: string | undefined) {
-    this._primaryCategory = value;
-  }
-  get secondaryCategory(): string | undefined {
-    return this._secondaryCategory;
-  }
-  set secondaryCategory(value: string | undefined) {
-    this._secondaryCategory = value;
+  set categoryId(value: string | undefined) {
+    this._categoryId = value;
   }
   get pageSize(): string | undefined {
     return this._pageSize;
@@ -734,8 +719,7 @@ export class ListPackagesRequest implements GrpcMessage {
    */
   toObject(): ListPackagesRequest.AsObject {
     return {
-      primaryCategory: this.primaryCategory,
-      secondaryCategory: this.secondaryCategory,
+      categoryId: this.categoryId,
       pageSize: this.pageSize,
       pageToken: this.pageToken
     };
@@ -758,8 +742,7 @@ export class ListPackagesRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListPackagesRequest.AsProtobufJSON {
     return {
-      primaryCategory: this.primaryCategory,
-      secondaryCategory: this.secondaryCategory,
+      categoryId: this.categoryId,
       pageSize: this.pageSize,
       pageToken: this.pageToken
     };
@@ -770,8 +753,7 @@ export module ListPackagesRequest {
    * Standard JavaScript object representation for ListPackagesRequest
    */
   export interface AsObject {
-    primaryCategory?: string;
-    secondaryCategory?: string;
+    categoryId?: string;
     pageSize?: string;
     pageToken?: string;
   }
@@ -780,8 +762,7 @@ export module ListPackagesRequest {
    * Protobuf JSON representation for ListPackagesRequest
    */
   export interface AsProtobufJSON {
-    primaryCategory?: string;
-    secondaryCategory?: string;
+    categoryId?: string;
     pageSize?: string;
     pageToken?: string;
   }
@@ -938,172 +919,6 @@ export module ListPackagesResponse {
 }
 
 /**
- * Message implementation for routeguide.UploadBinaryRequest
- */
-export class UploadBinaryRequest implements GrpcMessage {
-  static id = 'routeguide.UploadBinaryRequest';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new UploadBinaryRequest();
-    UploadBinaryRequest.deserializeBinaryFromReader(
-      instance,
-      new BinaryReader(bytes)
-    );
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: UploadBinaryRequest) {
-    _instance.parent = _instance.parent || '';
-    _instance.binary = _instance.binary || undefined;
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(
-    _instance: UploadBinaryRequest,
-    _reader: BinaryReader
-  ) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.parent = _reader.readString();
-          break;
-        case 2:
-          _instance.binary = new Binary();
-          _reader.readMessage(
-            _instance.binary,
-            Binary.deserializeBinaryFromReader
-          );
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    UploadBinaryRequest.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(
-    _instance: UploadBinaryRequest,
-    _writer: BinaryWriter
-  ) {
-    if (_instance.parent) {
-      _writer.writeString(1, _instance.parent);
-    }
-    if (_instance.binary) {
-      _writer.writeMessage(
-        2,
-        _instance.binary as any,
-        Binary.serializeBinaryToWriter
-      );
-    }
-  }
-
-  private _parent?: string;
-  private _binary?: Binary;
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of UploadBinaryRequest to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<UploadBinaryRequest.AsObject>) {
-    _value = _value || {};
-    this.parent = _value.parent;
-    this.binary = _value.binary ? new Binary(_value.binary) : undefined;
-    UploadBinaryRequest.refineValues(this);
-  }
-  get parent(): string | undefined {
-    return this._parent;
-  }
-  set parent(value: string | undefined) {
-    this._parent = value;
-  }
-  get binary(): Binary | undefined {
-    return this._binary;
-  }
-  set binary(value: Binary | undefined) {
-    this._binary = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    UploadBinaryRequest.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): UploadBinaryRequest.AsObject {
-    return {
-      parent: this.parent,
-      binary: this.binary ? this.binary.toObject() : undefined
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): UploadBinaryRequest.AsProtobufJSON {
-    return {
-      parent: this.parent,
-      binary: this.binary ? this.binary.toProtobufJSON(options) : null
-    };
-  }
-}
-export module UploadBinaryRequest {
-  /**
-   * Standard JavaScript object representation for UploadBinaryRequest
-   */
-  export interface AsObject {
-    parent?: string;
-    binary?: Binary.AsObject;
-  }
-
-  /**
-   * Protobuf JSON representation for UploadBinaryRequest
-   */
-  export interface AsProtobufJSON {
-    parent?: string;
-    binary?: Binary.AsProtobufJSON | null;
-  }
-}
-
-/**
  * Message implementation for routeguide.GetBinaryRequest
  */
 export class GetBinaryRequest implements GrpcMessage {
@@ -1236,6 +1051,621 @@ export module GetBinaryRequest {
 
   /**
    * Protobuf JSON representation for GetBinaryRequest
+   */
+  export interface AsProtobufJSON {
+    binaryId?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.UploadBinaryRequest
+ */
+export class UploadBinaryRequest implements GrpcMessage {
+  static id = 'routeguide.UploadBinaryRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UploadBinaryRequest();
+    UploadBinaryRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UploadBinaryRequest) {
+    _instance.parent = _instance.parent || '';
+    _instance.binary = _instance.binary || undefined;
+    _instance.data = _instance.data || new Uint8Array();
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UploadBinaryRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
+          _instance.binary = new Binary();
+          _reader.readMessage(
+            _instance.binary,
+            Binary.deserializeBinaryFromReader
+          );
+          break;
+        case 3:
+          _instance.data = _reader.readBytes();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UploadBinaryRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UploadBinaryRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
+    if (_instance.binary) {
+      _writer.writeMessage(
+        2,
+        _instance.binary as any,
+        Binary.serializeBinaryToWriter
+      );
+    }
+    if (_instance.data && _instance.data.length) {
+      _writer.writeBytes(3, _instance.data);
+    }
+  }
+
+  private _parent?: string;
+  private _binary?: Binary;
+  private _data?: Uint8Array;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UploadBinaryRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UploadBinaryRequest.AsObject>) {
+    _value = _value || {};
+    this.parent = _value.parent;
+    this.binary = _value.binary ? new Binary(_value.binary) : undefined;
+    this.data = _value.data;
+    UploadBinaryRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
+  }
+  get binary(): Binary | undefined {
+    return this._binary;
+  }
+  set binary(value: Binary | undefined) {
+    this._binary = value;
+  }
+  get data(): Uint8Array | undefined {
+    return this._data;
+  }
+  set data(value: Uint8Array | undefined) {
+    this._data = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UploadBinaryRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UploadBinaryRequest.AsObject {
+    return {
+      parent: this.parent,
+      binary: this.binary ? this.binary.toObject() : undefined,
+      data: this.data ? this.data.subarray(0) : new Uint8Array()
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UploadBinaryRequest.AsProtobufJSON {
+    return {
+      parent: this.parent,
+      binary: this.binary ? this.binary.toProtobufJSON(options) : null,
+      data: this.data ? uint8ArrayToBase64(this.data) : ''
+    };
+  }
+}
+export module UploadBinaryRequest {
+  /**
+   * Standard JavaScript object representation for UploadBinaryRequest
+   */
+  export interface AsObject {
+    parent?: string;
+    binary?: Binary.AsObject;
+    data?: Uint8Array;
+  }
+
+  /**
+   * Protobuf JSON representation for UploadBinaryRequest
+   */
+  export interface AsProtobufJSON {
+    parent?: string;
+    binary?: Binary.AsProtobufJSON | null;
+    data?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.BatchGetBinaryRequest
+ */
+export class BatchGetBinaryRequest implements GrpcMessage {
+  static id = 'routeguide.BatchGetBinaryRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new BatchGetBinaryRequest();
+    BatchGetBinaryRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: BatchGetBinaryRequest) {
+    _instance.binaryId = _instance.binaryId || [];
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: BatchGetBinaryRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          (_instance.binaryId = _instance.binaryId || []).push(
+            ...(_reader.readPackedInt64String() || [])
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    BatchGetBinaryRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: BatchGetBinaryRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.binaryId && _instance.binaryId.length) {
+      _writer.writePackedInt64String(1, _instance.binaryId);
+    }
+  }
+
+  private _binaryId?: string[];
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of BatchGetBinaryRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<BatchGetBinaryRequest.AsObject>) {
+    _value = _value || {};
+    this.binaryId = (_value.binaryId || []).slice();
+    BatchGetBinaryRequest.refineValues(this);
+  }
+  get binaryId(): string[] | undefined {
+    return this._binaryId;
+  }
+  set binaryId(value: string[] | undefined) {
+    this._binaryId = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    BatchGetBinaryRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): BatchGetBinaryRequest.AsObject {
+    return {
+      binaryId: (this.binaryId || []).slice()
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): BatchGetBinaryRequest.AsProtobufJSON {
+    return {
+      binaryId: (this.binaryId || []).slice()
+    };
+  }
+}
+export module BatchGetBinaryRequest {
+  /**
+   * Standard JavaScript object representation for BatchGetBinaryRequest
+   */
+  export interface AsObject {
+    binaryId?: string[];
+  }
+
+  /**
+   * Protobuf JSON representation for BatchGetBinaryRequest
+   */
+  export interface AsProtobufJSON {
+    binaryId?: string[];
+  }
+}
+
+/**
+ * Message implementation for routeguide.BatchGetBinaryResponse
+ */
+export class BatchGetBinaryResponse implements GrpcMessage {
+  static id = 'routeguide.BatchGetBinaryResponse';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new BatchGetBinaryResponse();
+    BatchGetBinaryResponse.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: BatchGetBinaryResponse) {
+    _instance.binaries = _instance.binaries || [];
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: BatchGetBinaryResponse,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          const messageInitializer1 = new Binary();
+          _reader.readMessage(
+            messageInitializer1,
+            Binary.deserializeBinaryFromReader
+          );
+          (_instance.binaries = _instance.binaries || []).push(
+            messageInitializer1
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    BatchGetBinaryResponse.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: BatchGetBinaryResponse,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.binaries && _instance.binaries.length) {
+      _writer.writeRepeatedMessage(
+        1,
+        _instance.binaries as any,
+        Binary.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _binaries?: Binary[];
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of BatchGetBinaryResponse to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<BatchGetBinaryResponse.AsObject>) {
+    _value = _value || {};
+    this.binaries = (_value.binaries || []).map(m => new Binary(m));
+    BatchGetBinaryResponse.refineValues(this);
+  }
+  get binaries(): Binary[] | undefined {
+    return this._binaries;
+  }
+  set binaries(value: Binary[] | undefined) {
+    this._binaries = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    BatchGetBinaryResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): BatchGetBinaryResponse.AsObject {
+    return {
+      binaries: (this.binaries || []).map(m => m.toObject())
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): BatchGetBinaryResponse.AsProtobufJSON {
+    return {
+      binaries: (this.binaries || []).map(m => m.toProtobufJSON(options))
+    };
+  }
+}
+export module BatchGetBinaryResponse {
+  /**
+   * Standard JavaScript object representation for BatchGetBinaryResponse
+   */
+  export interface AsObject {
+    binaries?: Binary.AsObject[];
+  }
+
+  /**
+   * Protobuf JSON representation for BatchGetBinaryResponse
+   */
+  export interface AsProtobufJSON {
+    binaries?: Binary.AsProtobufJSON[] | null;
+  }
+}
+
+/**
+ * Message implementation for routeguide.DownloadBinaryRequest
+ */
+export class DownloadBinaryRequest implements GrpcMessage {
+  static id = 'routeguide.DownloadBinaryRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new DownloadBinaryRequest();
+    DownloadBinaryRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: DownloadBinaryRequest) {
+    _instance.binaryId = _instance.binaryId || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: DownloadBinaryRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.binaryId = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    DownloadBinaryRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: DownloadBinaryRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.binaryId) {
+      _writer.writeInt64String(1, _instance.binaryId);
+    }
+  }
+
+  private _binaryId?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of DownloadBinaryRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<DownloadBinaryRequest.AsObject>) {
+    _value = _value || {};
+    this.binaryId = _value.binaryId;
+    DownloadBinaryRequest.refineValues(this);
+  }
+  get binaryId(): string | undefined {
+    return this._binaryId;
+  }
+  set binaryId(value: string | undefined) {
+    this._binaryId = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    DownloadBinaryRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): DownloadBinaryRequest.AsObject {
+    return {
+      binaryId: this.binaryId
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): DownloadBinaryRequest.AsProtobufJSON {
+    return {
+      binaryId: this.binaryId
+    };
+  }
+}
+export module DownloadBinaryRequest {
+  /**
+   * Standard JavaScript object representation for DownloadBinaryRequest
+   */
+  export interface AsObject {
+    binaryId?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for DownloadBinaryRequest
    */
   export interface AsProtobufJSON {
     binaryId?: string;
@@ -1378,145 +1808,6 @@ export module DeleteBinaryRequest {
    */
   export interface AsProtobufJSON {
     binaryId?: string;
-  }
-}
-
-/**
- * Message implementation for routeguide.GetimageRequest
- */
-export class GetimageRequest implements GrpcMessage {
-  static id = 'routeguide.GetimageRequest';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new GetimageRequest();
-    GetimageRequest.deserializeBinaryFromReader(
-      instance,
-      new BinaryReader(bytes)
-    );
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: GetimageRequest) {
-    _instance.imageId = _instance.imageId || '0';
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(
-    _instance: GetimageRequest,
-    _reader: BinaryReader
-  ) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.imageId = _reader.readInt64String();
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    GetimageRequest.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(
-    _instance: GetimageRequest,
-    _writer: BinaryWriter
-  ) {
-    if (_instance.imageId) {
-      _writer.writeInt64String(1, _instance.imageId);
-    }
-  }
-
-  private _imageId?: string;
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of GetimageRequest to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<GetimageRequest.AsObject>) {
-    _value = _value || {};
-    this.imageId = _value.imageId;
-    GetimageRequest.refineValues(this);
-  }
-  get imageId(): string | undefined {
-    return this._imageId;
-  }
-  set imageId(value: string | undefined) {
-    this._imageId = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    GetimageRequest.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): GetimageRequest.AsObject {
-    return {
-      imageId: this.imageId
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): GetimageRequest.AsProtobufJSON {
-    return {
-      imageId: this.imageId
-    };
-  }
-}
-export module GetimageRequest {
-  /**
-   * Standard JavaScript object representation for GetimageRequest
-   */
-  export interface AsObject {
-    imageId?: string;
-  }
-
-  /**
-   * Protobuf JSON representation for GetimageRequest
-   */
-  export interface AsProtobufJSON {
-    imageId?: string;
   }
 }
 
@@ -1675,295 +1966,6 @@ export module UploadImageRequest {
   export interface AsProtobufJSON {
     parent?: string;
     image?: string;
-  }
-}
-
-/**
- * Message implementation for routeguide.ListImagesRequest
- */
-export class ListImagesRequest implements GrpcMessage {
-  static id = 'routeguide.ListImagesRequest';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new ListImagesRequest();
-    ListImagesRequest.deserializeBinaryFromReader(
-      instance,
-      new BinaryReader(bytes)
-    );
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: ListImagesRequest) {
-    _instance.imageIds = _instance.imageIds || [];
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(
-    _instance: ListImagesRequest,
-    _reader: BinaryReader
-  ) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          (_instance.imageIds = _instance.imageIds || []).push(
-            ...(_reader.readPackedInt64String() || [])
-          );
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    ListImagesRequest.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(
-    _instance: ListImagesRequest,
-    _writer: BinaryWriter
-  ) {
-    if (_instance.imageIds && _instance.imageIds.length) {
-      _writer.writePackedInt64String(1, _instance.imageIds);
-    }
-  }
-
-  private _imageIds?: string[];
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of ListImagesRequest to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<ListImagesRequest.AsObject>) {
-    _value = _value || {};
-    this.imageIds = (_value.imageIds || []).slice();
-    ListImagesRequest.refineValues(this);
-  }
-  get imageIds(): string[] | undefined {
-    return this._imageIds;
-  }
-  set imageIds(value: string[] | undefined) {
-    this._imageIds = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    ListImagesRequest.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): ListImagesRequest.AsObject {
-    return {
-      imageIds: (this.imageIds || []).slice()
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): ListImagesRequest.AsProtobufJSON {
-    return {
-      imageIds: (this.imageIds || []).slice()
-    };
-  }
-}
-export module ListImagesRequest {
-  /**
-   * Standard JavaScript object representation for ListImagesRequest
-   */
-  export interface AsObject {
-    imageIds?: string[];
-  }
-
-  /**
-   * Protobuf JSON representation for ListImagesRequest
-   */
-  export interface AsProtobufJSON {
-    imageIds?: string[];
-  }
-}
-
-/**
- * Message implementation for routeguide.ListImagesResponse
- */
-export class ListImagesResponse implements GrpcMessage {
-  static id = 'routeguide.ListImagesResponse';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new ListImagesResponse();
-    ListImagesResponse.deserializeBinaryFromReader(
-      instance,
-      new BinaryReader(bytes)
-    );
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: ListImagesResponse) {
-    _instance.images = _instance.images || [];
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(
-    _instance: ListImagesResponse,
-    _reader: BinaryReader
-  ) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          const messageInitializer1 = new Image();
-          _reader.readMessage(
-            messageInitializer1,
-            Image.deserializeBinaryFromReader
-          );
-          (_instance.images = _instance.images || []).push(messageInitializer1);
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    ListImagesResponse.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(
-    _instance: ListImagesResponse,
-    _writer: BinaryWriter
-  ) {
-    if (_instance.images && _instance.images.length) {
-      _writer.writeRepeatedMessage(
-        1,
-        _instance.images as any,
-        Image.serializeBinaryToWriter
-      );
-    }
-  }
-
-  private _images?: Image[];
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of ListImagesResponse to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<ListImagesResponse.AsObject>) {
-    _value = _value || {};
-    this.images = (_value.images || []).map(m => new Image(m));
-    ListImagesResponse.refineValues(this);
-  }
-  get images(): Image[] | undefined {
-    return this._images;
-  }
-  set images(value: Image[] | undefined) {
-    this._images = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    ListImagesResponse.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): ListImagesResponse.AsObject {
-    return {
-      images: (this.images || []).map(m => m.toObject())
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): ListImagesResponse.AsProtobufJSON {
-    return {
-      images: (this.images || []).map(m => m.toProtobufJSON(options))
-    };
-  }
-}
-export module ListImagesResponse {
-  /**
-   * Standard JavaScript object representation for ListImagesResponse
-   */
-  export interface AsObject {
-    images?: Image.AsObject[];
-  }
-
-  /**
-   * Protobuf JSON representation for ListImagesResponse
-   */
-  export interface AsProtobufJSON {
-    images?: Image.AsProtobufJSON[] | null;
   }
 }
 
@@ -3313,12 +3315,13 @@ export class Package implements GrpcMessage {
     _instance.packageId = _instance.packageId || '0';
     _instance.name = _instance.name || '';
     _instance.description = _instance.description || '';
-    _instance.primaryCategory = _instance.primaryCategory || '';
-    _instance.secondaryCategory = _instance.secondaryCategory || '';
+    _instance.createTimestamp = _instance.createTimestamp || '';
+    _instance.categoryId = _instance.categoryId || '0';
     _instance.status = _instance.status || '';
     _instance.authorId = _instance.authorId || '0';
     _instance.binaryIds = _instance.binaryIds || [];
-    _instance.imageIds = _instance.imageIds || [];
+    _instance.imageUrls = _instance.imageUrls || [];
+    _instance.tags = _instance.tags || [];
   }
 
   /**
@@ -3344,10 +3347,10 @@ export class Package implements GrpcMessage {
           _instance.description = _reader.readString();
           break;
         case 4:
-          _instance.primaryCategory = _reader.readString();
+          _instance.createTimestamp = _reader.readString();
           break;
         case 5:
-          _instance.secondaryCategory = _reader.readString();
+          _instance.categoryId = _reader.readInt64String();
           break;
         case 6:
           _instance.status = _reader.readString();
@@ -3361,9 +3364,12 @@ export class Package implements GrpcMessage {
           );
           break;
         case 9:
-          (_instance.imageIds = _instance.imageIds || []).push(
-            ...(_reader.readPackedInt64String() || [])
+          (_instance.imageUrls = _instance.imageUrls || []).push(
+            _reader.readString()
           );
+          break;
+        case 10:
+          (_instance.tags = _instance.tags || []).push(_reader.readString());
           break;
         default:
           _reader.skipField();
@@ -3388,11 +3394,11 @@ export class Package implements GrpcMessage {
     if (_instance.description) {
       _writer.writeString(3, _instance.description);
     }
-    if (_instance.primaryCategory) {
-      _writer.writeString(4, _instance.primaryCategory);
+    if (_instance.createTimestamp) {
+      _writer.writeString(4, _instance.createTimestamp);
     }
-    if (_instance.secondaryCategory) {
-      _writer.writeString(5, _instance.secondaryCategory);
+    if (_instance.categoryId) {
+      _writer.writeInt64String(5, _instance.categoryId);
     }
     if (_instance.status) {
       _writer.writeString(6, _instance.status);
@@ -3403,20 +3409,24 @@ export class Package implements GrpcMessage {
     if (_instance.binaryIds && _instance.binaryIds.length) {
       _writer.writePackedInt64String(8, _instance.binaryIds);
     }
-    if (_instance.imageIds && _instance.imageIds.length) {
-      _writer.writePackedInt64String(9, _instance.imageIds);
+    if (_instance.imageUrls && _instance.imageUrls.length) {
+      _writer.writeRepeatedString(9, _instance.imageUrls);
+    }
+    if (_instance.tags && _instance.tags.length) {
+      _writer.writeRepeatedString(10, _instance.tags);
     }
   }
 
   private _packageId?: string;
   private _name?: string;
   private _description?: string;
-  private _primaryCategory?: string;
-  private _secondaryCategory?: string;
+  private _createTimestamp?: string;
+  private _categoryId?: string;
   private _status?: string;
   private _authorId?: string;
   private _binaryIds?: string[];
-  private _imageIds?: string[];
+  private _imageUrls?: string[];
+  private _tags?: string[];
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3427,12 +3437,13 @@ export class Package implements GrpcMessage {
     this.packageId = _value.packageId;
     this.name = _value.name;
     this.description = _value.description;
-    this.primaryCategory = _value.primaryCategory;
-    this.secondaryCategory = _value.secondaryCategory;
+    this.createTimestamp = _value.createTimestamp;
+    this.categoryId = _value.categoryId;
     this.status = _value.status;
     this.authorId = _value.authorId;
     this.binaryIds = (_value.binaryIds || []).slice();
-    this.imageIds = (_value.imageIds || []).slice();
+    this.imageUrls = (_value.imageUrls || []).slice();
+    this.tags = (_value.tags || []).slice();
     Package.refineValues(this);
   }
   get packageId(): string | undefined {
@@ -3453,17 +3464,17 @@ export class Package implements GrpcMessage {
   set description(value: string | undefined) {
     this._description = value;
   }
-  get primaryCategory(): string | undefined {
-    return this._primaryCategory;
+  get createTimestamp(): string | undefined {
+    return this._createTimestamp;
   }
-  set primaryCategory(value: string | undefined) {
-    this._primaryCategory = value;
+  set createTimestamp(value: string | undefined) {
+    this._createTimestamp = value;
   }
-  get secondaryCategory(): string | undefined {
-    return this._secondaryCategory;
+  get categoryId(): string | undefined {
+    return this._categoryId;
   }
-  set secondaryCategory(value: string | undefined) {
-    this._secondaryCategory = value;
+  set categoryId(value: string | undefined) {
+    this._categoryId = value;
   }
   get status(): string | undefined {
     return this._status;
@@ -3483,11 +3494,17 @@ export class Package implements GrpcMessage {
   set binaryIds(value: string[] | undefined) {
     this._binaryIds = value;
   }
-  get imageIds(): string[] | undefined {
-    return this._imageIds;
+  get imageUrls(): string[] | undefined {
+    return this._imageUrls;
   }
-  set imageIds(value: string[] | undefined) {
-    this._imageIds = value;
+  set imageUrls(value: string[] | undefined) {
+    this._imageUrls = value;
+  }
+  get tags(): string[] | undefined {
+    return this._tags;
+  }
+  set tags(value: string[] | undefined) {
+    this._tags = value;
   }
 
   /**
@@ -3508,12 +3525,13 @@ export class Package implements GrpcMessage {
       packageId: this.packageId,
       name: this.name,
       description: this.description,
-      primaryCategory: this.primaryCategory,
-      secondaryCategory: this.secondaryCategory,
+      createTimestamp: this.createTimestamp,
+      categoryId: this.categoryId,
       status: this.status,
       authorId: this.authorId,
       binaryIds: (this.binaryIds || []).slice(),
-      imageIds: (this.imageIds || []).slice()
+      imageUrls: (this.imageUrls || []).slice(),
+      tags: (this.tags || []).slice()
     };
   }
 
@@ -3537,12 +3555,13 @@ export class Package implements GrpcMessage {
       packageId: this.packageId,
       name: this.name,
       description: this.description,
-      primaryCategory: this.primaryCategory,
-      secondaryCategory: this.secondaryCategory,
+      createTimestamp: this.createTimestamp,
+      categoryId: this.categoryId,
       status: this.status,
       authorId: this.authorId,
       binaryIds: (this.binaryIds || []).slice(),
-      imageIds: (this.imageIds || []).slice()
+      imageUrls: (this.imageUrls || []).slice(),
+      tags: (this.tags || []).slice()
     };
   }
 }
@@ -3554,12 +3573,13 @@ export module Package {
     packageId?: string;
     name?: string;
     description?: string;
-    primaryCategory?: string;
-    secondaryCategory?: string;
+    createTimestamp?: string;
+    categoryId?: string;
     status?: string;
     authorId?: string;
     binaryIds?: string[];
-    imageIds?: string[];
+    imageUrls?: string[];
+    tags?: string[];
   }
 
   /**
@@ -3569,12 +3589,13 @@ export module Package {
     packageId?: string;
     name?: string;
     description?: string;
-    primaryCategory?: string;
-    secondaryCategory?: string;
+    createTimestamp?: string;
+    categoryId?: string;
     status?: string;
     authorId?: string;
     binaryIds?: string[];
-    imageIds?: string[];
+    imageUrls?: string[];
+    tags?: string[];
   }
 }
 
@@ -3600,11 +3621,12 @@ export class Binary implements GrpcMessage {
    */
   static refineValues(_instance: Binary) {
     _instance.binaryId = _instance.binaryId || '0';
-    _instance.packageId = _instance.packageId || '0';
+    _instance.url = _instance.url || '';
     _instance.downloadCount = _instance.downloadCount || '0';
     _instance.version = _instance.version || undefined;
     _instance.description = _instance.description || '';
-    _instance.data = _instance.data || new Uint8Array();
+    _instance.createTimestamp = _instance.createTimestamp || '';
+    _instance.tag = _instance.tag || '';
   }
 
   /**
@@ -3621,7 +3643,7 @@ export class Binary implements GrpcMessage {
           _instance.binaryId = _reader.readInt64String();
           break;
         case 2:
-          _instance.packageId = _reader.readInt64String();
+          _instance.url = _reader.readString();
           break;
         case 3:
           _instance.downloadCount = _reader.readInt64String();
@@ -3637,7 +3659,10 @@ export class Binary implements GrpcMessage {
           _instance.description = _reader.readString();
           break;
         case 6:
-          _instance.data = _reader.readBytes();
+          _instance.createTimestamp = _reader.readString();
+          break;
+        case 7:
+          _instance.tag = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -3656,8 +3681,8 @@ export class Binary implements GrpcMessage {
     if (_instance.binaryId) {
       _writer.writeInt64String(1, _instance.binaryId);
     }
-    if (_instance.packageId) {
-      _writer.writeInt64String(2, _instance.packageId);
+    if (_instance.url) {
+      _writer.writeString(2, _instance.url);
     }
     if (_instance.downloadCount) {
       _writer.writeInt64String(3, _instance.downloadCount);
@@ -3672,17 +3697,21 @@ export class Binary implements GrpcMessage {
     if (_instance.description) {
       _writer.writeString(5, _instance.description);
     }
-    if (_instance.data && _instance.data.length) {
-      _writer.writeBytes(6, _instance.data);
+    if (_instance.createTimestamp) {
+      _writer.writeString(6, _instance.createTimestamp);
+    }
+    if (_instance.tag) {
+      _writer.writeString(7, _instance.tag);
     }
   }
 
   private _binaryId?: string;
-  private _packageId?: string;
+  private _url?: string;
   private _downloadCount?: string;
   private _version?: Version;
   private _description?: string;
-  private _data?: Uint8Array;
+  private _createTimestamp?: string;
+  private _tag?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3691,11 +3720,12 @@ export class Binary implements GrpcMessage {
   constructor(_value?: RecursivePartial<Binary.AsObject>) {
     _value = _value || {};
     this.binaryId = _value.binaryId;
-    this.packageId = _value.packageId;
+    this.url = _value.url;
     this.downloadCount = _value.downloadCount;
     this.version = _value.version ? new Version(_value.version) : undefined;
     this.description = _value.description;
-    this.data = _value.data;
+    this.createTimestamp = _value.createTimestamp;
+    this.tag = _value.tag;
     Binary.refineValues(this);
   }
   get binaryId(): string | undefined {
@@ -3704,11 +3734,11 @@ export class Binary implements GrpcMessage {
   set binaryId(value: string | undefined) {
     this._binaryId = value;
   }
-  get packageId(): string | undefined {
-    return this._packageId;
+  get url(): string | undefined {
+    return this._url;
   }
-  set packageId(value: string | undefined) {
-    this._packageId = value;
+  set url(value: string | undefined) {
+    this._url = value;
   }
   get downloadCount(): string | undefined {
     return this._downloadCount;
@@ -3728,11 +3758,17 @@ export class Binary implements GrpcMessage {
   set description(value: string | undefined) {
     this._description = value;
   }
-  get data(): Uint8Array | undefined {
-    return this._data;
+  get createTimestamp(): string | undefined {
+    return this._createTimestamp;
   }
-  set data(value: Uint8Array | undefined) {
-    this._data = value;
+  set createTimestamp(value: string | undefined) {
+    this._createTimestamp = value;
+  }
+  get tag(): string | undefined {
+    return this._tag;
+  }
+  set tag(value: string | undefined) {
+    this._tag = value;
   }
 
   /**
@@ -3751,11 +3787,12 @@ export class Binary implements GrpcMessage {
   toObject(): Binary.AsObject {
     return {
       binaryId: this.binaryId,
-      packageId: this.packageId,
+      url: this.url,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toObject() : undefined,
       description: this.description,
-      data: this.data ? this.data.subarray(0) : new Uint8Array()
+      createTimestamp: this.createTimestamp,
+      tag: this.tag
     };
   }
 
@@ -3777,11 +3814,12 @@ export class Binary implements GrpcMessage {
   ): Binary.AsProtobufJSON {
     return {
       binaryId: this.binaryId,
-      packageId: this.packageId,
+      url: this.url,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toProtobufJSON(options) : null,
       description: this.description,
-      data: this.data ? uint8ArrayToBase64(this.data) : ''
+      createTimestamp: this.createTimestamp,
+      tag: this.tag
     };
   }
 }
@@ -3791,11 +3829,12 @@ export module Binary {
    */
   export interface AsObject {
     binaryId?: string;
-    packageId?: string;
+    url?: string;
     downloadCount?: string;
     version?: Version.AsObject;
     description?: string;
-    data?: Uint8Array;
+    createTimestamp?: string;
+    tag?: string;
   }
 
   /**
@@ -3803,160 +3842,12 @@ export module Binary {
    */
   export interface AsProtobufJSON {
     binaryId?: string;
-    packageId?: string;
+    url?: string;
     downloadCount?: string;
     version?: Version.AsProtobufJSON | null;
     description?: string;
-    data?: string;
-  }
-}
-
-/**
- * Message implementation for routeguide.Image
- */
-export class Image implements GrpcMessage {
-  static id = 'routeguide.Image';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new Image();
-    Image.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: Image) {
-    _instance.imageId = _instance.imageId || '0';
-    _instance.data = _instance.data || new Uint8Array();
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(_instance: Image, _reader: BinaryReader) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.imageId = _reader.readInt64String();
-          break;
-        case 2:
-          _instance.data = _reader.readBytes();
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    Image.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(_instance: Image, _writer: BinaryWriter) {
-    if (_instance.imageId) {
-      _writer.writeInt64String(1, _instance.imageId);
-    }
-    if (_instance.data && _instance.data.length) {
-      _writer.writeBytes(2, _instance.data);
-    }
-  }
-
-  private _imageId?: string;
-  private _data?: Uint8Array;
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of Image to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<Image.AsObject>) {
-    _value = _value || {};
-    this.imageId = _value.imageId;
-    this.data = _value.data;
-    Image.refineValues(this);
-  }
-  get imageId(): string | undefined {
-    return this._imageId;
-  }
-  set imageId(value: string | undefined) {
-    this._imageId = value;
-  }
-  get data(): Uint8Array | undefined {
-    return this._data;
-  }
-  set data(value: Uint8Array | undefined) {
-    this._data = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    Image.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): Image.AsObject {
-    return {
-      imageId: this.imageId,
-      data: this.data ? this.data.subarray(0) : new Uint8Array()
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): Image.AsProtobufJSON {
-    return {
-      imageId: this.imageId,
-      data: this.data ? uint8ArrayToBase64(this.data) : ''
-    };
-  }
-}
-export module Image {
-  /**
-   * Standard JavaScript object representation for Image
-   */
-  export interface AsObject {
-    imageId?: string;
-    data?: Uint8Array;
-  }
-
-  /**
-   * Protobuf JSON representation for Image
-   */
-  export interface AsProtobufJSON {
-    imageId?: string;
-    data?: string;
+    createTimestamp?: string;
+    tag?: string;
   }
 }
 
@@ -3985,7 +3876,7 @@ export class User implements GrpcMessage {
     _instance.username = _instance.username || '';
     _instance.email = _instance.email || '';
     _instance.userType = _instance.userType || '';
-    _instance.imageId = _instance.imageId || '0';
+    _instance.imageUrl = _instance.imageUrl || '';
   }
 
   /**
@@ -4011,7 +3902,7 @@ export class User implements GrpcMessage {
           _instance.userType = _reader.readString();
           break;
         case 5:
-          _instance.imageId = _reader.readInt64String();
+          _instance.imageUrl = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -4039,8 +3930,8 @@ export class User implements GrpcMessage {
     if (_instance.userType) {
       _writer.writeString(4, _instance.userType);
     }
-    if (_instance.imageId) {
-      _writer.writeInt64String(5, _instance.imageId);
+    if (_instance.imageUrl) {
+      _writer.writeString(5, _instance.imageUrl);
     }
   }
 
@@ -4048,7 +3939,7 @@ export class User implements GrpcMessage {
   private _username?: string;
   private _email?: string;
   private _userType?: string;
-  private _imageId?: string;
+  private _imageUrl?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4060,7 +3951,7 @@ export class User implements GrpcMessage {
     this.username = _value.username;
     this.email = _value.email;
     this.userType = _value.userType;
-    this.imageId = _value.imageId;
+    this.imageUrl = _value.imageUrl;
     User.refineValues(this);
   }
   get userId(): string | undefined {
@@ -4087,11 +3978,11 @@ export class User implements GrpcMessage {
   set userType(value: string | undefined) {
     this._userType = value;
   }
-  get imageId(): string | undefined {
-    return this._imageId;
+  get imageUrl(): string | undefined {
+    return this._imageUrl;
   }
-  set imageId(value: string | undefined) {
-    this._imageId = value;
+  set imageUrl(value: string | undefined) {
+    this._imageUrl = value;
   }
 
   /**
@@ -4113,7 +4004,7 @@ export class User implements GrpcMessage {
       username: this.username,
       email: this.email,
       userType: this.userType,
-      imageId: this.imageId
+      imageUrl: this.imageUrl
     };
   }
 
@@ -4138,7 +4029,7 @@ export class User implements GrpcMessage {
       username: this.username,
       email: this.email,
       userType: this.userType,
-      imageId: this.imageId
+      imageUrl: this.imageUrl
     };
   }
 }
@@ -4151,7 +4042,7 @@ export module User {
     username?: string;
     email?: string;
     userType?: string;
-    imageId?: string;
+    imageUrl?: string;
   }
 
   /**
@@ -4162,7 +4053,7 @@ export module User {
     username?: string;
     email?: string;
     userType?: string;
-    imageId?: string;
+    imageUrl?: string;
   }
 }
 

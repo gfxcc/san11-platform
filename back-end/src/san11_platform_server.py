@@ -18,6 +18,7 @@ from lib.user import User, InvalidPassword
 from lib.image import Image
 from lib.package import Package
 from lib.binary import Binary
+from lib.url import Url
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -44,8 +45,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return san11_platform_pb2.ListPackagesResponse(packages=[
             package.to_pb()
             for package in Package.list_packages(
-                request.primary_category,
-                request.secondary_category
+                request.category_id
             ) if package.status == 'normal' or
             (user and (user.user_type == 'admin' or
                        user.user_id == package.author_id))
@@ -61,16 +61,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             context.abort(code=255, details='Please login')
             raise
 
-        package = Package.create(
-            name=request.package.name,
-            description=request.package.description,
-            primary_category=request.package.primary_category,
-            secondary_category=request.package.secondary_category,
-            status='under_review',
-            author_id=user_id,
-            binary_ids=list(request.package.binary_ids),
-            image_ids=list(request.package.image_ids)
-        )
+        package = Package.create_from_pb(request.package, user_id)
 
         logger.info(f'{package} is created')
         return package.to_pb()
@@ -103,57 +94,49 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             package.status = request.package.status
         if request.package.binary_ids:
             package.binary_ids = request.package.binary_ids
-        if request.package.image_ids:
-            package.image_ids = request.package.image_ids
+        if request.package.image_urls:
+            package.image_urls = request.package.image_urls
 
         package.update()
         return package.to_pb()
 
     # binaries
-    def GetBinary(self, request, context):
-        logger.info(f'In GetBinary: binary_id={request.binary_id}')
+    def DownloadBinary(self, request, context):
+        logger.info(f'In DownloadBinary: binary_id={request.binary_id}')
         binary = Binary.from_binary_id(request.binary_id)
-        return binary.download()
+        binary.download()
+        logger.debug(f'{binary} is downloaded')
+        return binary.to_pb()
 
     def UploadBinary(self, request, context):
         logger.info(f'In UploadBinary: parent={request.parent}')
-        package_id = int(request.parent.split('/')[1])
+        parent = Url(request.parent)
         
-        binary = Binary.from_pb(request.binary)
-        binary.persist()
+        binary = Binary.createc_under_parent(request.parent, request.binary, request.data)
 
-        Package.from_package_id(package_id).append_binary(binary)
+        Package.from_package_id(parent.id).append_binary(binary)
         return san11_platform_pb2.Status(code=0, message='上传成功')
-
-    # images
-    def GetImage(self, request, context):
-        logger.info(f'In GetImage: image_id={request.image_id}')
-        try:
-            image = Image.from_image_id(request.image_id)
-        except Exception as err:
-            logger.error(f'Failed to load image: image_id={request.image_id} err={err}')
-            image = Image.san11_default()
-        return image.to_pb()
+    
+    def getBinary(self, request, context):
+        logger.info(f'In GetBinary: binary_id={request.binary_id}')
+        binary = Binary.from_binary_id(request.binary_id)
+        return binary.to_pb()
+    # image
 
     def UploadImage(self, request, context):
         logger.info(f'In UploadImage: parent={request.parent}')
-        parent_type, parent_id = request.parent.split('/')
-        image = Image.create(request.image)
+        # e.g. packages/1010
+        parent = Url(request.parent)
+        image = Image.create_without_filename(request.parent, request.image)
 
-        if parent_type == 'packages':
-            Package.from_package_id(parent_id).append_image(image)
-        elif parent_type == 'users':
-            User.from_user_id(parent_id).set_image(image)
+        if parent.type == 'package':
+            Package.from_package_id(parent.id).append_image(image)
+        elif parent.type == 'user':
+            User.from_user_id(parent.id).set_image(image)
         else:
-            raise Exception(f'Invalid parent_type: {parent_type}')
+            raise Exception(f'Invalid parent: {parent}')
 
         return san11_platform_pb2.Status(code=0, message="上传成功")
-
-    def ListImages(self, request, context):
-        return san11_platform_pb2.ListImagesResponse(
-            images=[Image.from_image_id(image_id).to_pb()
-                    for image_id in request.image_ids]
-        )
 
     # users
     def SignIn(self, request, context):
@@ -216,7 +199,7 @@ def serve():
 
 
 def init_log():
-    FORMAT = '%(asctime)-15s %(levelno)s %(message)s'
+    FORMAT = '%(asctime)-15s %(levelname)s %(name)s %(message)s'
     logging.basicConfig(level=logging.NOTSET, format=FORMAT)
 
 if __name__ == '__main__':
