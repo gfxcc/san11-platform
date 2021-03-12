@@ -139,6 +139,48 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/GetBinary
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Binary>>
+     */
+    getBinary: (
+      requestData: thisProto.GetBinaryRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Binary>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/GetBinary',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.GetBinaryRequest,
+        responseClass: thisProto.Binary
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/BatchGetBinary
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.BatchGetBinaryResponse>>
+     */
+    batchGetBinary: (
+      requestData: thisProto.BatchGetBinaryRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.BatchGetBinaryResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/BatchGetBinary',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.BatchGetBinaryRequest,
+        responseClass: thisProto.BatchGetBinaryResponse
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/UploadBinary
      *
      * @param requestMessage Request message
@@ -157,6 +199,27 @@ export class RouteGuideClient {
         requestMetadata,
         requestClass: thisProto.UploadBinaryRequest,
         responseClass: thisProto.Status
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DownloadBinary
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Binary>>
+     */
+    downloadBinary: (
+      requestData: thisProto.DownloadBinaryRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Binary>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DownloadBinary',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DownloadBinaryRequest,
+        responseClass: thisProto.Binary
       });
     },
     /**
@@ -181,27 +244,6 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/GetBinary
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Binary>>
-     */
-    getBinary: (
-      requestData: thisProto.GetBinaryRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Binary>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/GetBinary',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.GetBinaryRequest,
-        responseClass: thisProto.Binary
-      });
-    },
-    /**
      * Unary RPC for /routeguide.RouteGuide/UploadImage
      *
      * @param requestMessage Request message
@@ -220,48 +262,6 @@ export class RouteGuideClient {
         requestMetadata,
         requestClass: thisProto.UploadImageRequest,
         responseClass: thisProto.Status
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/GetImage
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Image>>
-     */
-    getImage: (
-      requestData: thisProto.GetimageRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Image>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/GetImage',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.GetimageRequest,
-        responseClass: thisProto.Image
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/ListImages
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.ListImagesResponse>>
-     */
-    listImages: (
-      requestData: thisProto.ListImagesRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.ListImagesResponse>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/ListImages',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.ListImagesRequest,
-        responseClass: thisProto.ListImagesResponse
       });
     },
     /**
@@ -439,6 +439,38 @@ export class RouteGuideClient {
   }
 
   /**
+   * Unary RPC for /routeguide.RouteGuide/GetBinary
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Binary>
+   */
+  getBinary(
+    requestData: thisProto.GetBinaryRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Binary> {
+    return this.$raw
+      .getBinary(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/BatchGetBinary
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.BatchGetBinaryResponse>
+   */
+  batchGetBinary(
+    requestData: thisProto.BatchGetBinaryRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.BatchGetBinaryResponse> {
+    return this.$raw
+      .batchGetBinary(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
    * Unary RPC for /routeguide.RouteGuide/UploadBinary
    *
    * @param requestMessage Request message
@@ -451,6 +483,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Status> {
     return this.$raw
       .uploadBinary(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DownloadBinary
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Binary>
+   */
+  downloadBinary(
+    requestData: thisProto.DownloadBinaryRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Binary> {
+    return this.$raw
+      .downloadBinary(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -471,22 +519,6 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/GetBinary
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Binary>
-   */
-  getBinary(
-    requestData: thisProto.GetBinaryRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Binary> {
-    return this.$raw
-      .getBinary(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
    * Unary RPC for /routeguide.RouteGuide/UploadImage
    *
    * @param requestMessage Request message
@@ -499,38 +531,6 @@ export class RouteGuideClient {
   ): Observable<thisProto.Status> {
     return this.$raw
       .uploadImage(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/GetImage
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Image>
-   */
-  getImage(
-    requestData: thisProto.GetimageRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Image> {
-    return this.$raw
-      .getImage(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/ListImages
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.ListImagesResponse>
-   */
-  listImages(
-    requestData: thisProto.ListImagesRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.ListImagesResponse> {
-    return this.$raw
-      .listImages(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

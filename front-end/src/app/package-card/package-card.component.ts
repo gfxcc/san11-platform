@@ -3,15 +3,18 @@ import { Package } from '../../proto/san11-platform.pb'
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { saveAs } from 'file-saver';
+import * as FileSaver from 'file-saver';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
-import { San11PlatformServiceService } from '../san11-platform-service.service';
+import { San11PlatformServiceService } from '../service/san11-platform-service.service';
 import { Binary, Version } from '../../proto/san11-platform.pb'
 import { Url } from 'url';
+
+import { GlobalConstants } from '../common/global-constants'
+import { getPackageUrl } from '../utils/package_util'
 
 
 @Component({
@@ -25,8 +28,6 @@ export class PackageCardComponent implements OnInit {
   authorName: string;
 
   screenshot: Url = undefined;
-  retrieveURL;
-  screenshotImage;
   selectedBinary;
 
   public screenshotPlaceholderElement = true;
@@ -41,6 +42,7 @@ export class PackageCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.package);
     this.screenshotPlaceholderElement = true;
     this.screenshotElement = false;
 
@@ -48,7 +50,7 @@ export class PackageCardComponent implements OnInit {
       user => this.authorName = user.username
     );
     this.loadImage();
- }
+  }
 
   openDeleteDialog() {
     this.dialog.open(DeleteDialog, {
@@ -64,23 +66,20 @@ export class PackageCardComponent implements OnInit {
 
     let fileReader = new FileReader();
     fileReader.onload = () => {
-
-      var parent = "packages" + '/' + this.package.packageId.toString();
-
+      const parent = getPackageUrl(this.package)
       var arrayBuffer = fileReader.result;
       var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
 
       const binary: Binary = new Binary({
         version: new Version({ major: '1', minor: '0', patch: '0' }),
         description: '',
-        data: bytes
       });
 
-      this.san11PlatformServiceService.uploadBinary(parent, binary).subscribe(
+      this.san11PlatformServiceService.uploadBinary(parent, binary, bytes).subscribe(
 
         status => {
           if (status.code != '0') {
-            this._snackBar.open('更新失败:'+status.message, 'Done', {
+            this._snackBar.open('更新失败:' + status.message, 'Done', {
               duration: 10000,
             });
             return;
@@ -113,7 +112,7 @@ export class PackageCardComponent implements OnInit {
         });
       },
       error => {
-        this._snackBar.open("操作失败", 'Done', {
+        this._snackBar.open("操作失败:" + error.statusMessage, 'Done', {
           duration: 10000,
         });
       }
@@ -121,27 +120,32 @@ export class PackageCardComponent implements OnInit {
   }
 
   onDownload() {
-    this.san11PlatformServiceService.getBinary(this.package.binaryIds[this.package.binaryIds.length-1]).subscribe(
+    this.san11PlatformServiceService.downloadBinary(this.package.binaryIds[this.package.binaryIds.length-1]).subscribe(
       binary => {
-        const file : File = new File([binary.data], this.package.name+'.scp')
-        saveAs(file);
+        const fileUrl = GlobalConstants.fileServerUrl+'/'+binary.url;
+        const filename = this.package.name + '.scp';
+        console.log(fileUrl);
+        console.log(filename);
+        
+        FileSaver.saveAs(fileUrl, filename);
+      },
+      error => {
+        this._snackBar.open("下载失败: " + error.statusMessage, 'Done', {
+          duration: 10000,
+        });
       }
     ); 
-
   }
 
   loadImage() {
-    this.san11PlatformServiceService.getImage(this.package.imageIds[0]).subscribe(
-      image => {
-        this.screenshotImage = image;
-        const blob = new Blob([this.screenshotImage.data]);
-        const unsafeImageUrl = URL.createObjectURL(blob);
-        this.screenshot = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
+    if (this.package.imageUrls.length === 0){
+      this.screenshot = GlobalConstants.fileServerUrl + '/images/san11-screenshot.jpg';
+    } else {
+      this.screenshot = GlobalConstants.fileServerUrl + '/' + this.package.imageUrls[0];
+    }
 
-        this.screenshotPlaceholderElement = false;
-        this.screenshotElement = true;
-      }
-    );
+    this.screenshotPlaceholderElement = false;
+    this.screenshotElement = true;
   }
 
   isAdmin() {

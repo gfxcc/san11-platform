@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { San11PlatformServiceService } from './san11-platform-service.service';
+import { San11PlatformServiceService } from './service/san11-platform-service.service';
 
 @Component({
   selector: 'app-root',
