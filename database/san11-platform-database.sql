@@ -51,11 +51,11 @@ CREATE TABLE packages (
     image_urls TEXT[],
     tags TEXT[]
 );
-INSERT INTO packages VALUES (DEFAULT, '战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '战法连携', '战法可以互相触发。顺序 枪 戟 弩', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '功绩解锁特解', '随着功绩提升可以解锁新的特级 功绩等级 10000， 20000， 30000', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, 'AI不攻击关港', 'n/a', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '小兵系统', '自动拔擢小兵成为武将', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, 'UI现实粮草', '', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】战法连携', '战法可以互相触发。顺序 枪 戟 弩', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】功绩解锁特解', '随着功绩提升可以解锁新的特级 功绩等级 10000， 20000， 30000', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】AI不攻击关港', 'n/a', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】小兵系统', '自动拔擢小兵成为武将', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】UI现实粮草', '', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
 
 \dt;
