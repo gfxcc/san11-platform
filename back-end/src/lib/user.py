@@ -3,11 +3,13 @@ import os
 import re
 import json
 import logging
+from datetime import datetime, timezone
 
 from .protos import san11_platform_pb2
 from .db_util import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
                      run_sql_with_param
 from .image import Image
+from .time_util import get_timezone
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -87,12 +89,13 @@ class User:
         validate_username(user.username)
 
         sql = 'INSERT INTO users VALUES (DEFAULT, %(username)s, %(password)s, '\
-              '%(email)s, %(user_type)s, %(image)s) RETURNING user_id'
+              '%(email)s, %(user_type)s, %(create_timestamp)s, %(image_url)s) RETURNING user_id'
         resp = run_sql_with_param_and_fetch_one(sql, {
             'username': user.username,
             'password': password,
             'email': user.email,
             'user_type': 'regular',
+            'create_timestamp': datetime.now(get_timezone()),
             'image_url': user.image_url 
         })
 
