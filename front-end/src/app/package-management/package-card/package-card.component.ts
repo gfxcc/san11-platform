@@ -117,7 +117,7 @@ export class PackageCardComponent implements OnInit {
   }
 
   onDownload() {
-    this.san11PlatformServiceService.downloadBinary(this.package.binaryIds[this.package.binaryIds.length-1]).subscribe(
+    this.san11PlatformServiceService.downloadBinary(getPackageUrl(this.package), this.package.binaryIds[this.package.binaryIds.length-1]).subscribe(
       binary => {
         const fileUrl = GlobalConstants.fileServerUrl+'/'+binary.url;
         const filename = this.package.name + '.scp';

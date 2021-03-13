@@ -1557,6 +1557,7 @@ export class DownloadBinaryRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: DownloadBinaryRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.binaryId = _instance.binaryId || '0';
   }
 
@@ -1574,6 +1575,9 @@ export class DownloadBinaryRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
           _instance.binaryId = _reader.readInt64String();
           break;
         default:
@@ -1593,11 +1597,15 @@ export class DownloadBinaryRequest implements GrpcMessage {
     _instance: DownloadBinaryRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.binaryId) {
-      _writer.writeInt64String(1, _instance.binaryId);
+      _writer.writeInt64String(2, _instance.binaryId);
     }
   }
 
+  private _parent?: string;
   private _binaryId?: string;
 
   /**
@@ -1606,8 +1614,15 @@ export class DownloadBinaryRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<DownloadBinaryRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.binaryId = _value.binaryId;
     DownloadBinaryRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get binaryId(): string | undefined {
     return this._binaryId;
@@ -1631,6 +1646,7 @@ export class DownloadBinaryRequest implements GrpcMessage {
    */
   toObject(): DownloadBinaryRequest.AsObject {
     return {
+      parent: this.parent,
       binaryId: this.binaryId
     };
   }
@@ -1652,6 +1668,7 @@ export class DownloadBinaryRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): DownloadBinaryRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       binaryId: this.binaryId
     };
   }
@@ -1661,6 +1678,7 @@ export module DownloadBinaryRequest {
    * Standard JavaScript object representation for DownloadBinaryRequest
    */
   export interface AsObject {
+    parent?: string;
     binaryId?: string;
   }
 
@@ -1668,6 +1686,7 @@ export module DownloadBinaryRequest {
    * Protobuf JSON representation for DownloadBinaryRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     binaryId?: string;
   }
 }
@@ -3461,6 +3480,7 @@ export class Package implements GrpcMessage {
     _instance.binaryIds = _instance.binaryIds || [];
     _instance.imageUrls = _instance.imageUrls || [];
     _instance.tags = _instance.tags || [];
+    _instance.downloadCount = _instance.downloadCount || '0';
   }
 
   /**
@@ -3510,6 +3530,9 @@ export class Package implements GrpcMessage {
         case 10:
           (_instance.tags = _instance.tags || []).push(_reader.readString());
           break;
+        case 11:
+          _instance.downloadCount = _reader.readInt64String();
+          break;
         default:
           _reader.skipField();
       }
@@ -3554,6 +3577,9 @@ export class Package implements GrpcMessage {
     if (_instance.tags && _instance.tags.length) {
       _writer.writeRepeatedString(10, _instance.tags);
     }
+    if (_instance.downloadCount) {
+      _writer.writeInt64String(11, _instance.downloadCount);
+    }
   }
 
   private _packageId?: string;
@@ -3566,6 +3592,7 @@ export class Package implements GrpcMessage {
   private _binaryIds?: string[];
   private _imageUrls?: string[];
   private _tags?: string[];
+  private _downloadCount?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3583,6 +3610,7 @@ export class Package implements GrpcMessage {
     this.binaryIds = (_value.binaryIds || []).slice();
     this.imageUrls = (_value.imageUrls || []).slice();
     this.tags = (_value.tags || []).slice();
+    this.downloadCount = _value.downloadCount;
     Package.refineValues(this);
   }
   get packageId(): string | undefined {
@@ -3645,6 +3673,12 @@ export class Package implements GrpcMessage {
   set tags(value: string[] | undefined) {
     this._tags = value;
   }
+  get downloadCount(): string | undefined {
+    return this._downloadCount;
+  }
+  set downloadCount(value: string | undefined) {
+    this._downloadCount = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -3670,7 +3704,8 @@ export class Package implements GrpcMessage {
       authorId: this.authorId,
       binaryIds: (this.binaryIds || []).slice(),
       imageUrls: (this.imageUrls || []).slice(),
-      tags: (this.tags || []).slice()
+      tags: (this.tags || []).slice(),
+      downloadCount: this.downloadCount
     };
   }
 
@@ -3700,7 +3735,8 @@ export class Package implements GrpcMessage {
       authorId: this.authorId,
       binaryIds: (this.binaryIds || []).slice(),
       imageUrls: (this.imageUrls || []).slice(),
-      tags: (this.tags || []).slice()
+      tags: (this.tags || []).slice(),
+      downloadCount: this.downloadCount
     };
   }
 }
@@ -3719,6 +3755,7 @@ export module Package {
     binaryIds?: string[];
     imageUrls?: string[];
     tags?: string[];
+    downloadCount?: string;
   }
 
   /**
@@ -3735,6 +3772,7 @@ export module Package {
     binaryIds?: string[];
     imageUrls?: string[];
     tags?: string[];
+    downloadCount?: string;
   }
 }
 

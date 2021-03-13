@@ -86,7 +86,8 @@ message BatchGetBinaryResponse {
 
 
 message DownloadBinaryRequest {
-    int64 binary_id = 1;
+    string parent = 1;
+    int64 binary_id = 2;
 }
 
 message DeleteBinaryRequest {
@@ -163,6 +164,7 @@ message Package {
     repeated int64 binary_ids = 8;
     repeated string image_urls = 9;
     repeated string tags = 10;
+    int64 download_count = 11;
 }
 
 message Binary {

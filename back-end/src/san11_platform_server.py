@@ -110,7 +110,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         binary = Binary.from_binary_id(request.binary_id)
         binary.download()
         logger.debug(f'{binary} is downloaded')
+
+        # website statistic
         Statistic.load_today().increment_download()
+        # Package statistic
+        Package.from_package_id(Url(request.parent).id).increment_download()
         return binary.to_pb()
 
     def UploadBinary(self, request, context):
@@ -126,8 +130,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         logger.info(f'In GetBinary: binary_id={request.binary_id}')
         binary = Binary.from_binary_id(request.binary_id)
         return binary.to_pb()
-    # image
 
+    # image
     def UploadImage(self, request, context):
         logger.info(f'In UploadImage: parent={request.parent}')
         # e.g. packages/1010
@@ -196,6 +200,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # Statistics
     def GetStatistic(self, request, context):
         logging.info(f'In GetStatistic')
+        # TODO hardcoded to today's information for now
         return Statistic.load_today().to_pb()
 
 def serve():

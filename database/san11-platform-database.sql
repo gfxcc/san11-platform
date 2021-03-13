@@ -49,7 +49,8 @@ CREATE TABLE packages (
     author_id INT NOT NULL REFERENCES users(user_id),
     binary_ids INT[],
     image_urls TEXT[],
-    tags TEXT[]
+    tags TEXT[],
+    download_count INT DEFAULT 0
 );
 INSERT INTO packages VALUES (DEFAULT, '【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
 INSERT INTO packages VALUES (DEFAULT, '【测试】战法连携', '战法可以互相触发。顺序 枪 戟 弩', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);

@@ -64,8 +64,8 @@ export class San11PlatformServiceService {
     return this.severClient.uploadBinary(requst, this.getMetadata());
   }
 
-  downloadBinary(binaryId: string) : Observable<Binary> {
-    const request = new DownloadBinaryRequest({binaryId: binaryId});
+  downloadBinary(parent: string, binaryId: string) : Observable<Binary> {
+    const request = new DownloadBinaryRequest({parent: parent, binaryId: binaryId});
     return this.severClient.downloadBinary(request, this.getMetadata());
   }
 

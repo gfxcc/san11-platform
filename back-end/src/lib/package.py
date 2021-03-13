@@ -23,7 +23,8 @@ class Package:
     def __init__(self, package_id: int, name: str, description: str,
                  create_timestamp: datetime, category_id: int,
                  status: str, author_id: int, binary_ids: List[str],
-                 image_urls: List[str], tags: List[str]) -> None:
+                 image_urls: List[str], tags: List[str],
+                 download_count: int) -> None:
         self.package_id = package_id
         self.name = name
         self.description = description
@@ -34,6 +35,7 @@ class Package:
         self.binary_ids = binary_ids
         self.image_urls = image_urls
         self.tags = tags
+        self.download_count = download_count
 
     @property
     def binary_ids(self):
@@ -65,7 +67,8 @@ class Package:
             'status': self.status,
             'author_id': self.author_id,
             'binary_ids': self.binary_ids,
-            'image_urls': self.image_urls
+            'image_urls': self.image_urls,
+            'download_count': self.download_count,
         }
         return json.dumps(d, indent=2)
     
@@ -80,6 +83,15 @@ class Package:
         sql = 'UPDATE packages SET image_urls=%(image_urls)s WHERE package_id=%(package_id)s'
         run_sql_with_param(
             sql, {'image_urls': self.image_urls, 'package_id': self.package_id})
+    
+    def increment_download(self, delta: int=1) -> int:
+        self.download_count += 1
+        sql = 'UPDATE packages SET download_count=%(download_count)s WHERE package_id=%(package_id)s'
+        run_sql_with_param(sql, {
+            'download_count': self.download_count,
+            'package_id': self.package_id
+        })
+        return self.download_count
 
     def to_pb(self) -> san11_platform_pb2.Package:
         return san11_platform_pb2.Package(
@@ -91,7 +103,8 @@ class Package:
             status=self.status,
             author_id=self.author_id,
             binary_ids=self.binary_ids,
-            image_urls=self.image_urls
+            image_urls=self.image_urls,
+            download_count=self.download_count
         )
 
     def update(self):
@@ -141,11 +154,13 @@ class Package:
     def create(cls, name: str, description: str,
                category_id: int,
                status: str, author_id: int, binary_ids: List[int],
-               image_urls: List[int], tags: List[str]) -> Package:
+               image_urls: List[int], tags: List[str],
+               download_count: int) -> Package:
         current_timestamp = datetime.now(get_timezone())
-        sql = 'INSERT INTO packages VALUES (DEFAULT, %(name)s, %(description)s,'\
-            '%(create_timestamp)s, %(category_id)s, %(status)s,'\
-            ' %(author_id)s, %(binary_ids)s, %(image_urls)s, %(tags)s) RETURNING package_id'
+        sql = 'INSERT INTO packages (name, description, create_timestamp,'\
+            ' category_id, status, author_id, binary_ids, image_urls, tags, download_count) VALUES (%(name)s, %(description)s,'\
+            ' %(create_timestamp)s, %(category_id)s, %(status)s,'\
+            ' %(author_id)s, %(binary_ids)s, %(image_urls)s, %(tags)s, %(download_count)s) RETURNING package_id'
 
         resp = run_sql_with_param_and_fetch_one(sql, {
             'name': name,
@@ -156,11 +171,12 @@ class Package:
             'author_id': author_id,
             'binary_ids': binary_ids,
             'image_urls': image_urls,
-            'tags': tags
+            'tags': tags,
+            'download_count': download_count
         })
 
         return cls(resp[0], name, description, current_timestamp, category_id,
-                   status, author_id, binary_ids, image_urls, tags)
+                   status, author_id, binary_ids, image_urls, tags, download_count)
     
     @classmethod
     def create_from_pb(cls, pb_obj: san11_platform_pb2.Package, author_id: int):
@@ -172,7 +188,8 @@ class Package:
             author_id=author_id,
             binary_ids=[],
             image_urls=[],
-            tags=[]
+            tags=[],
+            download_count=pb_obj.download_count
         )
 
     @classmethod
