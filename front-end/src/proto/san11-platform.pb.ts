@@ -3039,6 +3039,145 @@ export module SignUpResponse {
 }
 
 /**
+ * Message implementation for routeguide.GetStatisticRequest
+ */
+export class GetStatisticRequest implements GrpcMessage {
+  static id = 'routeguide.GetStatisticRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new GetStatisticRequest();
+    GetStatisticRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: GetStatisticRequest) {
+    _instance.date = _instance.date || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: GetStatisticRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.date = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    GetStatisticRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: GetStatisticRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.date) {
+      _writer.writeString(1, _instance.date);
+    }
+  }
+
+  private _date?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of GetStatisticRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<GetStatisticRequest.AsObject>) {
+    _value = _value || {};
+    this.date = _value.date;
+    GetStatisticRequest.refineValues(this);
+  }
+  get date(): string | undefined {
+    return this._date;
+  }
+  set date(value: string | undefined) {
+    this._date = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    GetStatisticRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): GetStatisticRequest.AsObject {
+    return {
+      date: this.date
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): GetStatisticRequest.AsProtobufJSON {
+    return {
+      date: this.date
+    };
+  }
+}
+export module GetStatisticRequest {
+  /**
+   * Standard JavaScript object representation for GetStatisticRequest
+   */
+  export interface AsObject {
+    date?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for GetStatisticRequest
+   */
+  export interface AsProtobufJSON {
+    date?: string;
+  }
+}
+
+/**
  * Message implementation for routeguide.Empty
  */
 export class Empty implements GrpcMessage {
@@ -4225,5 +4364,157 @@ export module Version {
     major?: string;
     minor?: string;
     patch?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.Statistic
+ */
+export class Statistic implements GrpcMessage {
+  static id = 'routeguide.Statistic';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new Statistic();
+    Statistic.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: Statistic) {
+    _instance.visitCount = _instance.visitCount || '0';
+    _instance.downloadCount = _instance.downloadCount || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: Statistic,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.visitCount = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.downloadCount = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    Statistic.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(_instance: Statistic, _writer: BinaryWriter) {
+    if (_instance.visitCount) {
+      _writer.writeInt64String(1, _instance.visitCount);
+    }
+    if (_instance.downloadCount) {
+      _writer.writeInt64String(2, _instance.downloadCount);
+    }
+  }
+
+  private _visitCount?: string;
+  private _downloadCount?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of Statistic to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<Statistic.AsObject>) {
+    _value = _value || {};
+    this.visitCount = _value.visitCount;
+    this.downloadCount = _value.downloadCount;
+    Statistic.refineValues(this);
+  }
+  get visitCount(): string | undefined {
+    return this._visitCount;
+  }
+  set visitCount(value: string | undefined) {
+    this._visitCount = value;
+  }
+  get downloadCount(): string | undefined {
+    return this._downloadCount;
+  }
+  set downloadCount(value: string | undefined) {
+    this._downloadCount = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    Statistic.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): Statistic.AsObject {
+    return {
+      visitCount: this.visitCount,
+      downloadCount: this.downloadCount
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): Statistic.AsProtobufJSON {
+    return {
+      visitCount: this.visitCount,
+      downloadCount: this.downloadCount
+    };
+  }
+}
+export module Statistic {
+  /**
+   * Standard JavaScript object representation for Statistic
+   */
+  export interface AsObject {
+    visitCount?: string;
+    downloadCount?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for Statistic
+   */
+  export interface AsProtobufJSON {
+    visitCount?: string;
+    downloadCount?: string;
   }
 }

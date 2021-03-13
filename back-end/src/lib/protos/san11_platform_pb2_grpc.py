@@ -58,7 +58,7 @@ class RouteGuideStub(object):
         self.DownloadBinary = channel.unary_unary(
                 '/routeguide.RouteGuide/DownloadBinary',
                 request_serializer=san11__platform__pb2.DownloadBinaryRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Empty.FromString,
+                response_deserializer=san11__platform__pb2.Binary.FromString,
                 )
         self.DeleteBinary = channel.unary_unary(
                 '/routeguide.RouteGuide/DeleteBinary',
@@ -89,6 +89,11 @@ class RouteGuideStub(object):
                 '/routeguide.RouteGuide/GetUser',
                 request_serializer=san11__platform__pb2.GetUserRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.User.FromString,
+                )
+        self.GetStatistic = channel.unary_unary(
+                '/routeguide.RouteGuide/GetStatistic',
+                request_serializer=san11__platform__pb2.GetStatisticRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Statistic.FromString,
                 )
 
 
@@ -190,6 +195,13 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetStatistic(self, request, context):
+        """
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RouteGuideServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -236,7 +248,7 @@ def add_RouteGuideServicer_to_server(servicer, server):
             'DownloadBinary': grpc.unary_unary_rpc_method_handler(
                     servicer.DownloadBinary,
                     request_deserializer=san11__platform__pb2.DownloadBinaryRequest.FromString,
-                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
+                    response_serializer=san11__platform__pb2.Binary.SerializeToString,
             ),
             'DeleteBinary': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteBinary,
@@ -267,6 +279,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.GetUser,
                     request_deserializer=san11__platform__pb2.GetUserRequest.FromString,
                     response_serializer=san11__platform__pb2.User.SerializeToString,
+            ),
+            'GetStatistic': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStatistic,
+                    request_deserializer=san11__platform__pb2.GetStatisticRequest.FromString,
+                    response_serializer=san11__platform__pb2.Statistic.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -428,7 +445,7 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DownloadBinary',
             san11__platform__pb2.DownloadBinaryRequest.SerializeToString,
-            san11__platform__pb2.Empty.FromString,
+            san11__platform__pb2.Binary.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -531,5 +548,22 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/GetUser',
             san11__platform__pb2.GetUserRequest.SerializeToString,
             san11__platform__pb2.User.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetStatistic(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/GetStatistic',
+            san11__platform__pb2.GetStatisticRequest.SerializeToString,
+            san11__platform__pb2.Statistic.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

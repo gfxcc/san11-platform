@@ -58,4 +58,10 @@ INSERT INTO packages VALUES (DEFAULT, '【测试】AI不攻击关港', 'n/a', cu
 INSERT INTO packages VALUES (DEFAULT, '【测试】小兵系统', '自动拔擢小兵成为武将', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
 INSERT INTO packages VALUES (DEFAULT, '【测试】UI现实粮草', '', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
 
+CREATE TABLE statistics (
+    date DATE PRIMARY KEY,
+    visit_count INT DEFAULT 0,
+    download_count INT DEFAULT 0
+);
+
 \dt;
