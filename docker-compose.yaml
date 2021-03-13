@@ -16,6 +16,7 @@ services:
 
   nginx:
     image: nginx:latest
+    restart: always
     volumes: 
       - ./resources:/data
       - ./back-end/nginx/conf:/etc/nginx/conf.d
@@ -48,6 +49,7 @@ services:
 
   frontend:
     build: ./front-end
+    restart: always
     working_dir: /app
     volumes:
       - ./front-end:/app

@@ -1,4 +1,6 @@
-grpcio
-grpcio-tools
+# Follow libs are moved to Dockerfile to speedup build
+#grpcio
+#grpcio-tools
 psycopg2
 retry
+pytz

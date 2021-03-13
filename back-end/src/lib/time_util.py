@@ -1,4 +1,5 @@
-from datetime import timezone, datetime, date
+from datetime import datetime, date
+from pytz import timezone
 
 
 def get_datetime_format() -> str:
@@ -7,8 +8,8 @@ def get_datetime_format() -> str:
 
 
 def get_timezone() -> timezone:
-    return timezone.utc
+    return timezone('Asia/Shanghai')
 
 
 def get_today() -> date:
-    return date.today()
+    return datetime.now(get_timezone()).date()
