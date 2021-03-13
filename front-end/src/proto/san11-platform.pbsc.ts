@@ -347,6 +347,27 @@ export class RouteGuideClient {
         requestClass: thisProto.GetUserRequest,
         responseClass: thisProto.User
       });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/GetStatistic
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Statistic>>
+     */
+    getStatistic: (
+      requestData: thisProto.GetStatisticRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Statistic>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/GetStatistic',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.GetStatisticRequest,
+        responseClass: thisProto.Statistic
+      });
     }
   };
 
@@ -595,6 +616,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.User> {
     return this.$raw
       .getUser(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/GetStatistic
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Statistic>
+   */
+  getStatistic(
+    requestData: thisProto.GetStatisticRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Statistic> {
+    return this.$raw
+      .getStatistic(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

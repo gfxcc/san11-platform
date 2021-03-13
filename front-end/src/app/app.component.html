@@ -20,7 +20,25 @@
     </nav>
 
     <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
 
+    <p>
+        <span [matBadge]="this.today_visit_count" matBadgeSize="medium" matBadgeColor="accent" class="statistic">今日访问</span>
+    </p>
+    <span class="example-spacer"></span>
+    <p>
+        <span [matBadge]="this.today_download_count" matBadgeSize="medium" matBadgeColor="accent" class="statistic">今日下载</span>
+    </p>
+
+    <span class="example-spacer"></span>
 
     <div [hidden]="signedIn()">
         <a mat-button routerLink="signin" routerLinkActive="active">登陆</a>

@@ -11,7 +11,6 @@ from .version import Version
 from .resource import get_resource_path, get_binary_url, create_resource
 
 
-
 logger = logging.getLogger(os.path.basename(__file__))
 
 

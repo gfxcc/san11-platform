@@ -7,12 +7,13 @@ import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
 import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
-import { User, Package, Binary, Status, Empty } from '../../proto/san11-platform.pb'
+import { Statistic, User, Package, Binary, Status, Empty } from '../../proto/san11-platform.pb'
 import { ListPackagesRequest } from '../../proto/san11-platform.pb';
 import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
 import { SignUpRequest, SignUpResponse } from '../../proto/san11-platform.pb';
 import { SignOutRequest } from '../../proto/san11-platform.pb'
 import { DownloadBinaryRequest } from '../../proto/san11-platform.pb'
+import { GetStatisticRequest } from '../../proto/san11-platform.pb'
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
 import { Cacheable } from 'ts-cacheable';
@@ -115,6 +116,10 @@ export class San11PlatformServiceService {
     return this.severClient.getUser(request);
   }
 
+  getStatistic(): Observable<Statistic> {
+    const request = new GetStatisticRequest({date: null});
+    return this.severClient.getStatistic(request, this.getMetadata());
+  }
 
   // UTILS
 

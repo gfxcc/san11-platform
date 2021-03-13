@@ -19,6 +19,7 @@ from lib.image import Image
 from lib.package import Package
 from lib.binary import Binary
 from lib.url import Url
+from lib.statistic import Statistic
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -41,6 +42,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         except Exception:
             user = None
         logger.debug(f"ListPackage: user={user.username if user else 'visitor'}")
+
+        Statistic.load_today().increment_visit()
 
         return san11_platform_pb2.ListPackagesResponse(packages=[
             package.to_pb()
@@ -80,6 +83,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         
         package.delete()
         logger.info(f'Package is deleted: {package}')
+
         return san11_platform_pb2.Empty()
     
     def UpdatePackage(self, request, context):
@@ -106,6 +110,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         binary = Binary.from_binary_id(request.binary_id)
         binary.download()
         logger.debug(f'{binary} is downloaded')
+        Statistic.load_today().increment_download()
         return binary.to_pb()
 
     def UploadBinary(self, request, context):
@@ -187,6 +192,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             logger.info(f'GetUser: user_id={request.user_id} does not exist')
             context.abort(code=255, details='用户不存在')
         return user.to_pb()
+
+    # Statistics
+    def GetStatistic(self, request, context):
+        logging.info(f'In GetStatistic')
+        return Statistic.load_today().to_pb()
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

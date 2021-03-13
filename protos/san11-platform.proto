@@ -30,6 +30,10 @@ service RouteGuide {
   rpc SignOut(SignOutRequest) returns (Status) {}
   rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
   rpc GetUser(GetUserRequest) returns (User) {}
+
+
+  //
+  rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}
 }
 
 // package related
@@ -131,6 +135,12 @@ message SignUpResponse {
     string sid = 3;
 }
 
+//
+message GetStatisticRequest {
+    string date = 1;
+}
+
+
 
 // Types
 
@@ -177,4 +187,9 @@ message Version {
     int64 major = 1;
     int64 minor = 2;
     int64 patch = 3;
+}
+
+message Statistic {
+    int64 visit_count = 1;
+    int64 download_count = 2;
 }

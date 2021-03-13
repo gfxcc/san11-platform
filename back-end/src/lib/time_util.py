@@ -1,4 +1,4 @@
-from datetime import timezone, datetime
+from datetime import timezone, datetime, date
 
 
 def get_datetime_format() -> str:
@@ -8,3 +8,7 @@ def get_datetime_format() -> str:
 
 def get_timezone() -> timezone:
     return timezone.utc
+
+
+def get_today() -> date:
+    return date.today()

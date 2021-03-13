@@ -13,9 +13,19 @@ import { San11PlatformServiceService } from './service/san11-platform-service.se
 export class AppComponent {
   title = 'san11-platform';
 
+  today_visit_count: number = 1;
+  today_download_count: number = 2;
+
   constructor(private _snackBar: MatSnackBar,
     private san11PlatformServiceService: San11PlatformServiceService,
-    private router: Router) { }
+    private router: Router) {
+      this.san11PlatformServiceService.getStatistic().subscribe(
+        statistic => {
+          this.today_visit_count = Number(statistic.visitCount);
+          this.today_download_count = Number(statistic.downloadCount);
+        }
+      );
+  }
 
 
   signedIn() {
