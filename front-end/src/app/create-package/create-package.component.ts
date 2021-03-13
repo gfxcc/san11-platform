@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 import { Package, Version } from '../../proto/san11-platform.pb'
 import { San11PlatformServiceService } from '../service/san11-platform-service.service'
@@ -35,6 +37,7 @@ export class CreatePackageComponent implements OnInit {
   ];
 
   constructor(
+    public dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private router: Router,
     private san11PlatformServiceService: San11PlatformServiceService) { }
@@ -59,25 +62,34 @@ export class CreatePackageComponent implements OnInit {
       return;
     }
 
-    this.san11PlatformServiceService.createPackage(new Package({
-      packageId: "0",
-      name: createPackageForm.value.name,
-      description: createPackageForm.value.description,
-      categoryId: "1", // hardcoded to SIRE Plugin
-      authorId: "0",
-      binaryIds: [],
-      imageUrls: []
-    })).subscribe(
-      san11Package => {
+    let dialogRef = this.dialog.open(AuthorDialog);
+    const sub = dialogRef.componentInstance.onAdd.subscribe(() => {
+      this.san11PlatformServiceService.createPackage(new Package({
+        packageId: "0",
+        name: createPackageForm.value.name,
+        description: createPackageForm.value.description,
+        categoryId: "1", // hardcoded to SIRE Plugin
+        authorId: "0",
+        binaryIds: [],
+        imageUrls: []
+      })).subscribe(
+        san11Package => {
 
-        this.createdPackage = san11Package;
-        this.uploadImage();
+          this.createdPackage = san11Package;
+          this.uploadImage();
 
-      },
-      error => this._snackBar.open(error.statusMessage, 'Done', {
-        duration: 10000,
-      })
-    );
+        },
+        error => this._snackBar.open(error.statusMessage, 'Done', {
+          duration: 10000,
+        })
+      );
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      // unsubscribe onAdd
+    });
+
+
   }
 
   uploadImage() {
@@ -103,10 +115,10 @@ export class CreatePackageComponent implements OnInit {
           this.uploadBinary();
         },
         error => {
-            this._snackBar.open("上传截图失败: " + error.statusMessage, 'Done', {
-              duration: 10000,
-            });
-            return;
+          this._snackBar.open("上传截图失败: " + error.statusMessage, 'Done', {
+            duration: 10000,
+          });
+          return;
         }
       );
 
@@ -124,8 +136,10 @@ export class CreatePackageComponent implements OnInit {
       var arrayBuffer = fileReader.result;
       var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
 
-      const binary = new Binary({version: new Version({ major: '1', minor: '0', patch: '0' }), 
-                                 description: "n/a"});
+      const binary = new Binary({
+        version: new Version({ major: '1', minor: '0', patch: '0' }),
+        description: "n/a"
+      });
 
       this.san11PlatformServiceService.uploadBinary(parent, binary, bytes).subscribe(
 
@@ -157,7 +171,24 @@ export class CreatePackageComponent implements OnInit {
   uploadImageHandler(imageInput) {
     this.selectedImage = imageInput.files[0];
   }
+}
+
+@Component({
+  selector: 'author-dialog',
+  templateUrl: 'author-dialog.html',
+  styleUrls: ['./create-package.component.css']
+})
+export class AuthorDialog {
+  package: Package;
+
+  constructor() {
+  }
+
+  onAdd = new EventEmitter();
 
 
-
+  onAuthorConfirm() {
+    console.log('In delete');
+    this.onAdd.emit();
+  }
 }
