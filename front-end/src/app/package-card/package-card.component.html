@@ -19,10 +19,11 @@
 
     </mat-card-header>
 
-    <div *ngIf="screenshotPlaceholderElement" class="animated-background screenshot mat-card-image">
-    </div>
+    <div class="screenshot">
+        <div [hidden]="!this.hideScreenshot" class="animated-background screenshot"></div>
 
-    <img *ngIf="screenshotElement" mat-card-image [src]="screenshot" alt="screenshot" class="screenshot">
+        <img [hidden]="this.hideScreenshot" [src]="screenshot" (load)="screenshotLoaded()" class="screenshot mat-card-image">
+    </div>
 
     <mat-card-content>
         <p class="mat-card-content-p">

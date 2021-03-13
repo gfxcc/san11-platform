@@ -30,8 +30,7 @@ export class PackageCardComponent implements OnInit {
   screenshot: Url = undefined;
   selectedBinary;
 
-  public screenshotPlaceholderElement = true;
-  public screenshotElement = false;
+  hideScreenshot: boolean = true;
 
   constructor(
     private router: Router,
@@ -43,8 +42,6 @@ export class PackageCardComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.package);
-    this.screenshotPlaceholderElement = true;
-    this.screenshotElement = false;
 
     this.san11PlatformServiceService.getUser(this.package.authorId).subscribe(
       user => this.authorName = user.username
@@ -144,8 +141,10 @@ export class PackageCardComponent implements OnInit {
       this.screenshot = GlobalConstants.fileServerUrl + '/' + this.package.imageUrls[0];
     }
 
-    this.screenshotPlaceholderElement = false;
-    this.screenshotElement = true;
+  }
+
+  screenshotLoaded() {
+    this.hideScreenshot = false;
   }
 
   isAdmin() {

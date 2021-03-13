@@ -15,6 +15,10 @@
 
 .screenshot {
     height: 200px;
+}
+
+.screenshot-div {
+    height: 200px;
     display: block;
 }
 
