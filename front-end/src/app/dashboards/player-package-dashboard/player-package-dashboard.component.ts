@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Package } from '../package'
+import { Package } from '../../package'
 
-import { San11PlatformServiceService } from '../service/san11-platform-service.service'
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service'
 
 @Component({
   selector: 'app-player-package-dashboard',

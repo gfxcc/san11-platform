@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import { Package } from '../../proto/san11-platform.pb'
+import { Package } from '../../../proto/san11-platform.pb'
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -9,12 +9,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
-import { San11PlatformServiceService } from '../service/san11-platform-service.service';
-import { Binary, Version } from '../../proto/san11-platform.pb'
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+import { Binary, Version } from '../../../proto/san11-platform.pb'
 import { Url } from 'url';
 
-import { GlobalConstants } from '../common/global-constants'
-import { getPackageUrl } from '../utils/package_util'
+import { GlobalConstants } from '../../common/global-constants'
+import { getPackageUrl } from '../../utils/package_util'
 
 
 @Component({

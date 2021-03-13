@@ -7,11 +7,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
-import { Package, Version } from '../../proto/san11-platform.pb'
-import { San11PlatformServiceService } from '../service/san11-platform-service.service'
-import { Binary } from '../../proto/san11-platform.pb';
+import { Package, Version } from '../../../proto/san11-platform.pb'
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service'
+import { Binary } from '../../../proto/san11-platform.pb';
 
-import { getPackageUrl } from '../utils/package_util'
+import { getPackageUrl } from '../../utils/package_util'
 
 
 class FileSnippet {

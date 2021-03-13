@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Package } from '../../proto/san11-platform.pb'
-import { San11PlatformServiceService } from '../service/san11-platform-service.service';
+import { Package } from '../../../proto/san11-platform.pb'
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
 
 @Component({
