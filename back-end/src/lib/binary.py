@@ -9,6 +9,7 @@ from .protos import san11_platform_pb2
 from .db_util import run_sql_with_param_and_fetch_one, run_sql_with_param
 from .version import Version
 from .resource import get_resource_path, get_binary_url, create_resource
+from .url import Url
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -86,9 +87,19 @@ class Binary:
 
     @classmethod
     def createc_under_parent(cls, parent: str, pb_obj: san11_platform_pb2.Binary, data: bytes):
+        def get_binary_filename(parent: Url, version: Version):
+            category_to_extension = {
+                1: 'scp', # SIRE plugin
+                2: 'rar', # Player tools
+                3: 'rar'  # Mods
+            }
+            logger.debug(f'get_binary_filename({parent}, {version})')
+            assert parent.type == 'packages'
+            filename = f'{version}.{category_to_extension[parent.category_id]}'
+            return  filename
+        
         obj = cls.from_pb(pb_obj)
-        filename = f'{obj.version}.scp'
-        obj.url = get_binary_url(parent, filename)
+        obj.url = get_binary_url(parent, get_binary_filename(Url(parent), obj.version))
 
         sql = 'INSERT INTO binaries (url, download_count, version, description, tag) VALUES (%(url)s, %(download_count)s, %(version)s, %(description)s, %(tag)s) returning binary_id'
         binary_id = run_sql_with_param_and_fetch_one(sql, {

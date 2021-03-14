@@ -3,6 +3,7 @@
 class Url:
     def __init__(self, raw_url: str) -> None:
         self.raw = raw_url
+        self._items = raw_url.split('/')
         # TODO: mode validataion
     
     def __str__(self):
@@ -17,14 +18,13 @@ class Url:
         package:
           - categories/xxx/packages/xxx
         '''
-        parts = self.raw.split('/')
-        if parts[0] == 'users':
-            return 'user'
-        elif parts[0] == 'categories' and parts[2] == 'packages':
-            return 'package'
-        else:
-            raise Exception(f'Invalid url: {self.raw}')
+        return self._items[-2]
 
     @property
     def id(self) -> int:
-        return int(self.raw.split('/')[-1])
+        return int(self._items[-1])
+    
+    @property
+    def category_id(self) -> int:
+        assert self.type in ['categories', 'packages']
+        return int(self._items[1])

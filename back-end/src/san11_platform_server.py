@@ -138,9 +138,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         parent = Url(request.parent)
         image = Image.create_without_filename(request.parent, request.image)
 
-        if parent.type == 'package':
+        if parent.type == 'packages':
             Package.from_package_id(parent.id).append_image(image)
-        elif parent.type == 'user':
+        elif parent.type == 'users':
             User.from_user_id(parent.id).set_image(image)
         else:
             raise Exception(f'Invalid parent: {parent}')
@@ -203,8 +203,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         # TODO hardcoded to today's information for now
         return Statistic.load_today().to_pb()
 
+
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    options = [('grpc.max_receive_message_length', 30 * 1024 * 1024)] # 30 MB
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), 
+                         options=options)
     san11_platform_pb2_grpc.add_RouteGuideServicer_to_server(
         RouteGuideServicer(), server)
     server.add_insecure_port('[::]:50051')
