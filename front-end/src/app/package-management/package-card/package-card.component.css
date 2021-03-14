@@ -2,6 +2,7 @@
     max-width: 400px;
     min-height: 380px;
     max-height: 450px;
+    background-color: #ffffff47;
 }
 
 .author-image {
@@ -82,4 +83,17 @@ mat-card-header {
     background: #f6f7f8;
     background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
     background-size: 800px 104px;
+}
+
+.callout {
+    border: none;
+    transition-duration: .5s;
+    border-radius: 4px;
+    background: transparent;
+    cursor: zoom-in;
+}
+
+.callout:hover {
+    background-color: rgba(0, 0, 0, 0.139);
+    cursor: initial;
 }

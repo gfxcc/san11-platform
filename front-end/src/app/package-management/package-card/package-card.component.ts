@@ -159,6 +159,11 @@ export class PackageCardComponent implements OnInit {
     return this.package.binaryIds.length > 0;
   }
 
+
+  onClick() {
+    console.log('hitted');
+  }
+
 }
 
 export interface DialogData {

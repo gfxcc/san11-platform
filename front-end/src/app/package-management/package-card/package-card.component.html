@@ -1,47 +1,49 @@
-<mat-card class="package-card">
-    <mat-card-header>
-        <div mat-card-avatar class="author-image"></div>
-        <mat-card-title>
-            <p>{{package.name}}</p>
-        </mat-card-title>
+<div class="callout" (click)="onClick()">
+    <mat-card class="package-card">
+        <mat-card-header>
+            <div mat-card-avatar class="author-image"></div>
+            <mat-card-title>
+                <p>{{package.name}}</p>
+            </mat-card-title>
 
-        <span class="example-spacer"></span>
+            <span class="example-spacer"></span>
 
-        <div [hidden]="! (package.status==='under_review' && !isAdmin())">
-            <button mat-button mat-raised-button color="accent">审核中</button>
+            <div [hidden]="! (package.status==='under_review' && !isAdmin())">
+                <button mat-button mat-raised-button color="accent">审核中</button>
+            </div>
+
+            <div [hidden]="! (package.status==='under_review' && isAdmin())">
+                <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
+            </div>
+
+            <mat-card-subtitle>{{authorName}}</mat-card-subtitle>
+
+        </mat-card-header>
+
+        <div class="screenshot">
+            <div [hidden]="!this.hideScreenshot" class="animated-background screenshot"></div>
+
+            <img [hidden]="this.hideScreenshot" [src]="screenshot" (load)="screenshotLoaded()" class="screenshot mat-card-image">
         </div>
 
-        <div [hidden]="! (package.status==='under_review' && isAdmin())">
-            <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
-        </div>
+        <mat-card-content>
+            <p class="mat-card-content-p">
+                {{package.description}}
+            </p>
 
-        <mat-card-subtitle>{{authorName}}</mat-card-subtitle>
+        </mat-card-content>
+        <mat-card-actions class="flex-container">
+            <button mat-button mat-stroked-button color="primary" [disabled]="!(hasBinary() && (isAdmin() || isAuthor() || package.status==='normal'))" (click)="onDownload()">下载</button>
 
-    </mat-card-header>
+            <span class="example-spacer"></span>
 
-    <div class="screenshot">
-        <div [hidden]="!this.hideScreenshot" class="animated-background screenshot"></div>
-
-        <img [hidden]="this.hideScreenshot" [src]="screenshot" (load)="screenshotLoaded()" class="screenshot mat-card-image">
-    </div>
-
-    <mat-card-content>
-        <p class="mat-card-content-p">
-            {{package.description}}
-        </p>
-
-    </mat-card-content>
-    <mat-card-actions class="flex-container">
-        <button mat-button mat-stroked-button color="primary" [disabled]="!(hasBinary() && (isAdmin() || isAuthor() || package.status==='normal'))" (click)="onDownload()">下载</button>
-
-        <span class="example-spacer"></span>
-
-        <span [hidden]="! (isAuthor() || isAdmin())">
+            <span [hidden]="! (isAuthor() || isAdmin())">
             <input type="file" accept=".scp, .scp-en" hidden="true" #binaryInput (change)="onUpdateBinary(binaryInput)">
             <button mat-button mat-stroked-button color="accent" (click)="binaryInput.click()">更新</button>
 
             <button mat-button mat-stroked-button color="warn" (click)="openDeleteDialog()">删除</button>
         </span>
-    </mat-card-actions>
+        </mat-card-actions>
 
-</mat-card>
+    </mat-card>
+</div>
