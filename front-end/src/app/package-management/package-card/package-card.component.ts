@@ -17,6 +17,7 @@ import { GlobalConstants } from '../../common/global-constants'
 import { getPackageUrl } from '../../utils/package_util'
 import { getBinaryFilename } from '../../utils/binary_util'
 
+import { LoadingComponent } from "../../common/components/loading/loading.component";
 
 @Component({
   selector: 'app-package-card',
@@ -32,6 +33,9 @@ export class PackageCardComponent implements OnInit {
   selectedBinary;
 
   hideScreenshot: boolean = true;
+
+
+  loading;
 
   constructor(
     private router: Router,
@@ -60,7 +64,15 @@ export class PackageCardComponent implements OnInit {
 
   onUpdateBinary(binaryInput) {
 
-    this.selectedBinary = binaryInput.files[0];
+    const selectedBinary = binaryInput.files[0];
+    if (selectedBinary.size > GlobalConstants.maxBinarySize) {
+      alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize/1024/1024).toString() + 'MB');
+      return;
+    }
+
+    this.selectedBinary = selectedBinary;
+
+    this.loading = this.dialog.open(LoadingComponent);
 
     let fileReader = new FileReader();
     fileReader.onload = () => {
@@ -76,6 +88,7 @@ export class PackageCardComponent implements OnInit {
       this.san11PlatformServiceService.uploadBinary(parent, binary, bytes).subscribe(
 
         status => {
+          this.loading.close();
           if (status.code != '0') {
             this._snackBar.open('更新失败:' + status.message, 'Done', {
               duration: 10000,
@@ -87,6 +100,13 @@ export class PackageCardComponent implements OnInit {
             duration: 10000,
           });
           this.router.navigate(['/']);
+        },
+        error => {
+          this.loading.close();
+
+          this._snackBar.open('更新失败:' + error.statusMessage, 'Done', {
+            duration: 10000,
+          });
         }
       );
 
@@ -118,11 +138,11 @@ export class PackageCardComponent implements OnInit {
   }
 
   onDownload() {
-    this.san11PlatformServiceService.downloadBinary(getPackageUrl(this.package), this.package.binaryIds[this.package.binaryIds.length-1]).subscribe(
+    this.san11PlatformServiceService.downloadBinary(getPackageUrl(this.package), this.package.binaryIds[this.package.binaryIds.length - 1]).subscribe(
       binary => {
-        const fileUrl = GlobalConstants.fileServerUrl+'/'+binary.url;
+        const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.url;
         const filename = getBinaryFilename(this.package, binary);
-        
+
         FileSaver.saveAs(fileUrl, filename);
       },
       error => {
@@ -130,11 +150,11 @@ export class PackageCardComponent implements OnInit {
           duration: 10000,
         });
       }
-    ); 
+    );
   }
 
   loadImage() {
-    if (this.package.imageUrls.length === 0){
+    if (this.package.imageUrls.length === 0) {
       this.screenshot = GlobalConstants.fileServerUrl + '/images/san11-screenshot.jpg';
     } else {
       this.screenshot = GlobalConstants.fileServerUrl + '/' + this.package.imageUrls[0];

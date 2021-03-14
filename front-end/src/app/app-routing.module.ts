@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'app-create-package', component: CreatePackageComponent },
 
   // deprecated links
-  { path: 'sire-packages', redirectTo: '/' },
+  { path: 'sire-packages', redirectTo: '/categories/1' },
 ];
 
 @NgModule({

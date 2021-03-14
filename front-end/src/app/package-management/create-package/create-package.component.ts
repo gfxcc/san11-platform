@@ -13,11 +13,9 @@ import { Binary } from '../../../proto/san11-platform.pb';
 
 import { getPackageUrl } from '../../utils/package_util'
 import { GlobalConstants } from '../../common/global-constants'
+import { LoadingComponent } from '../../common/components/loading/loading.component'
 
 
-class FileSnippet {
-  constructor(public src: string, public file: File) { }
-}
 
 @Component({
   selector: 'app-create-package',
@@ -70,7 +68,7 @@ export class CreatePackageComponent implements OnInit {
     let dialogRef = this.dialog.open(AuthorDialog);
     const sub = dialogRef.componentInstance.onAdd.subscribe(() => {
 
-      this.loading = this.dialog.open(Loading);
+      this.loading = this.dialog.open(LoadingComponent);
 
       this.san11PlatformServiceService.createPackage(new Package({
         packageId: "0",
@@ -241,15 +239,3 @@ export class AuthorDialog {
   }
 }
 
-
-@Component({
-  selector: 'loading',
-  templateUrl: 'loading.html',
-  styleUrls: ['./create-package.component.css']
-})
-export class Loading {
-
-  constructor() {
-  }
-
-}
