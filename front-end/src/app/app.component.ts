@@ -64,4 +64,10 @@ export class AppComponent {
   myTools() {
 
   }
+
+  modDashboardOnClick() {
+    this._snackBar.open('MOD专区尚在开发中', 'Done', {
+      duration: 2000,
+    });
+  }
 }
