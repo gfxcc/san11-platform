@@ -36,5 +36,5 @@ static_resources:
       type: logical_dns
       http2_protocol_options: {}
       lb_policy: round_robin
-      hosts: [{ socket_address: { address: backend, port_value: 50051 } }]
+      hosts: [{ socket_address: { address: back-end, port_value: 50051 } }]
 

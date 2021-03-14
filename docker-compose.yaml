@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  backend:
+  back-end:
     build: ./back-end
     restart: always
     working_dir: /app
@@ -41,13 +41,8 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
-  frontend:
+  front-end:
     build: ./front-end
     restart: always
     working_dir: /app
@@ -55,7 +50,7 @@ services:
       - ./front-end:/app
     command: bash -c "npm install && ng serve --prod --host 0.0.0.0 --disable-host-check"
     depends_on: 
-      - backend
+      - back-end
       - nginx
     ports:
       - "80:4200"
