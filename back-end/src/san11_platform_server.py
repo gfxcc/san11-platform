@@ -36,7 +36,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         pass
 
     def ListPackages(self, request, context):
-        logger.info('In ListPackages')
+        logger.info(f'In ListPackages: category_id={request.category_id}')
         try:
             user = User.from_user_id(Session.from_sid(get_sid_from_context(context)).user_id)
         except Exception:

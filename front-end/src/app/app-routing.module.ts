@@ -10,16 +10,18 @@ import { PlayerPackageDashboardComponent } from './dashboards/player-package-das
 import { ModMakerPackageDashboardComponent } from './dashboards/mod-maker-package-dashboard/mod-maker-package-dashboard.component';
 import { CreatePackageComponent } from './package-management/create-package/create-package.component'
 
+import { DashboardComponent } from './dashboards/dashboard/dashboard.component'
 
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/sire-packages', pathMatch: 'full' },
+  { path: '', redirectTo: '/categories/1', pathMatch: 'full' },
+
   { path: 'signin', component: SigninComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'sire-packages', component: SirePackageDashboardComponent },
-  { path: 'player-packages', component: PlayerPackageDashboardComponent },
-  { path: 'mod-maker-packages', component: ModMakerPackageDashboardComponent },
+
+  { path: 'categories/:id', component: DashboardComponent },
+
   { path: 'app-create-package', component: CreatePackageComponent },
 
 ];

@@ -32,7 +32,7 @@ export class San11PlatformServiceService {
   }
 
   listPackages(categoryId: number, page_size: number, page_token: string): Observable<ListPackagesResponse> {
-    const request = new ListPackagesRequest({ categoryId: "1" });
+    const request = new ListPackagesRequest({ categoryId: categoryId.toString() });
     return this.severClient.listPackages(request, this.getMetadata());
   }
 

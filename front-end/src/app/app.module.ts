@@ -23,7 +23,8 @@ import { SigninComponent } from './account-management/signin/signin.component';
 import { RegisterComponent } from './account-management/register/register.component';
 import { CreatePackageComponent, AuthorDialog, Loading } from './package-management/create-package/create-package.component';
 
-import { GlobalConstants } from './common/global-constants'
+import { GlobalConstants } from './common/global-constants';
+import { DashboardComponent } from './dashboards/dashboard/dashboard.component'
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { GlobalConstants } from './common/global-constants'
     CreatePackageComponent,
     DeleteDialog,
     AuthorDialog,
-    Loading
+    Loading,
+    DashboardComponent
   ],
   imports: [
     GrpcCoreModule.forRoot(),

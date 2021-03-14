@@ -2,17 +2,17 @@
     <span class="title">San11 分享平台</span>
 
     <nav>
-        <a routerLink="/sire-packages">
+        <a [routerLink]="['/categories', 1]">
             <button mat-button class="category-button" aria-label="Example icon-button with menu icon">
           <span class="mat-button-wrapper">SIRE 插件</span>
           </button>
         </a>
-        <a routerLink="/player-packages">
+        <a [routerLink]="['/categories', 2]">
             <button mat-button class="category-button" aria-label="Example icon-button with menu icon">
         <span class="mat-button-wrapper">修改工具</span>
         </button>
         </a>
-        <a routerLink="/mod-maker-packages">
+        <a [routerLink]="['/categories', 3]">
             <button mat-button class="category-button" aria-label="Example icon-button with menu icon">
         <span class="mat-button-wrapper">MOD</span>
         </button>
