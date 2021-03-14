@@ -15,6 +15,7 @@ import { Url } from 'url';
 
 import { GlobalConstants } from '../../common/global-constants'
 import { getPackageUrl } from '../../utils/package_util'
+import { getBinaryFilename } from '../../utils/binary_util'
 
 
 @Component({
@@ -120,9 +121,7 @@ export class PackageCardComponent implements OnInit {
     this.san11PlatformServiceService.downloadBinary(getPackageUrl(this.package), this.package.binaryIds[this.package.binaryIds.length-1]).subscribe(
       binary => {
         const fileUrl = GlobalConstants.fileServerUrl+'/'+binary.url;
-        const filename = this.package.name + '.scp';
-        console.log(fileUrl);
-        console.log(filename);
+        const filename = getBinaryFilename(this.package, binary);
         
         FileSaver.saveAs(fileUrl, filename);
       },

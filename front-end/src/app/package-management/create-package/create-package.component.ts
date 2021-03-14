@@ -28,15 +28,17 @@ export class CreatePackageComponent implements OnInit {
 
   selectedFile: File;
   selectedImage: File;
-  selectedPrimaryCategory: string;
+  selectedCategory: string;
   createdPackage: Package;
+
+  acceptFileType: string = '.scp';
 
   loading;
 
-  primaryCategories = [
-    { value: 'SIRE2 Plugin', viewValue: 'SIRE(2) 插件', disabled: false },
-    { value: 'Tools', viewValue: '修改工具 (未开放)', disabled: true },
-    { value: 'Mod', viewValue: 'MOD (未开放)', disabled: true }
+  categories = [
+    { value: '1', viewValue: 'SIRE(2) 插件', disabled: false },
+    { value: '2', viewValue: '修改工具', disabled: false },
+    { value: '3', viewValue: 'MOD (未开放)', disabled: true }
   ];
 
   constructor(
@@ -74,7 +76,7 @@ export class CreatePackageComponent implements OnInit {
         packageId: "0",
         name: createPackageForm.value.name,
         description: createPackageForm.value.description,
-        categoryId: "1", // hardcoded to SIRE Plugin
+        categoryId: createPackageForm.value.category, // hardcoded to SIRE Plugin
         authorId: "0",
         binaryIds: [],
         imageUrls: []
@@ -206,6 +208,16 @@ export class CreatePackageComponent implements OnInit {
     } else {
       this.selectedImage = image;
     }
+  }
+
+
+  categoryChanged(categoryId: string) {
+    if (categoryId === '1') {
+      this.acceptFileType = '.scp, .scp-en';
+    } else {
+      this.acceptFileType = '.rar';
+    }
+
   }
 }
 

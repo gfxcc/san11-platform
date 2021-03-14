@@ -13,10 +13,10 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="fill" class="example-full-width">
-                        <mat-label>主要类别</mat-label>
-                        <mat-select [(ngModel)]="selectedPrimaryCategory" required name="primaryCategory">
-                            <mat-option *ngFor="let primaryCategory of primaryCategories" [value]="primaryCategory.value" [disabled]="primaryCategory.disabled">
-                                {{primaryCategory.viewValue}}
+                        <mat-label>类别</mat-label>
+                        <mat-select [(ngModel)]="selectedCategory" required name="category" (selectionChange)="categoryChanged($event.value)">
+                            <mat-option *ngFor="let category of categories" [value]="category.value" [disabled]="category.disabled">
+                                {{category.viewValue}}
                             </mat-option>
                         </mat-select>
                         <mat-hint></mat-hint>
@@ -46,6 +46,7 @@
                         <span>上传文件</span>
                         <input #fileInput
                                type="file"
+                               [accept]="acceptFileType"
                                name="fileInput"
                                (change)="uploadFileHandler(fileInput)">
                       </label>
