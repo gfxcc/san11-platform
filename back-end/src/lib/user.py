@@ -66,8 +66,9 @@ class User:
                 1. username is illegal
                 2. username is already used in db
             '''
-            if re.fullmatch(r'[0-9a-zA-Z\-_]{4,32}', username) is None:
-                raise ValueError("用户名要求: [长度] 4-32 [字符] 英文字母大小写 - _")
+            # if re.fullmatch(r'[0-9a-zA-Z\-_]{4,32}', username) is None:
+            if not (len(username) <= 32 and ' ' not in username):
+                raise ValueError("用户名要求: [长度] 4-32 [字符] 不包含空格")
 
             try:
                 User.from_name(username)
