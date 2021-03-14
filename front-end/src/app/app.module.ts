@@ -21,7 +21,7 @@ import { GrpcCoreModule } from '@ngx-grpc/core';
 import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
 import { SigninComponent } from './account-management/signin/signin.component';
 import { RegisterComponent } from './account-management/register/register.component';
-import { CreatePackageComponent, AuthorDialog } from './package-management/create-package/create-package.component';
+import { CreatePackageComponent, AuthorDialog, Loading } from './package-management/create-package/create-package.component';
 
 import { GlobalConstants } from './common/global-constants'
 
@@ -38,6 +38,7 @@ import { GlobalConstants } from './common/global-constants'
     CreatePackageComponent,
     DeleteDialog,
     AuthorDialog,
+    Loading
   ],
   imports: [
     GrpcCoreModule.forRoot(),

@@ -30,6 +30,8 @@ export class CreatePackageComponent implements OnInit {
   selectedPrimaryCategory: string;
   createdPackage: Package;
 
+  loading;
+
   primaryCategories = [
     { value: 'SIRE2 Plugin', viewValue: 'SIRE(2) 插件', disabled: false },
     { value: 'Tools', viewValue: '修改工具 (未开放)', disabled: true },
@@ -64,6 +66,9 @@ export class CreatePackageComponent implements OnInit {
 
     let dialogRef = this.dialog.open(AuthorDialog);
     const sub = dialogRef.componentInstance.onAdd.subscribe(() => {
+
+      this.loading = this.dialog.open(Loading);
+
       this.san11PlatformServiceService.createPackage(new Package({
         packageId: "0",
         name: createPackageForm.value.name,
@@ -79,9 +84,15 @@ export class CreatePackageComponent implements OnInit {
           this.uploadImage();
 
         },
-        error => this._snackBar.open(error.statusMessage, 'Done', {
-          duration: 10000,
-        })
+        error => {
+          this._snackBar.open(
+            error.statusMessage, 'Done', {
+              duration: 10000,
+            }
+          );
+
+          this.loading.close();
+        }
       );
     });
 
@@ -111,10 +122,11 @@ export class CreatePackageComponent implements OnInit {
             });
             return;
           }
-
           this.uploadBinary();
         },
         error => {
+          this.loading.close();
+
           this._snackBar.open("上传截图失败: " + error.statusMessage, 'Done', {
             duration: 10000,
           });
@@ -144,6 +156,8 @@ export class CreatePackageComponent implements OnInit {
       this.san11PlatformServiceService.uploadBinary(parent, binary, bytes).subscribe(
 
         status => {
+          this.loading.close();
+
           if (status.code != '0') {
             this._snackBar.open("上传文件失败: " + status.message, 'Done', {
               duration: 10000,
@@ -191,4 +205,17 @@ export class AuthorDialog {
     console.log('In delete');
     this.onAdd.emit();
   }
+}
+
+
+@Component({
+  selector: 'loading',
+  templateUrl: 'loading.html',
+  styleUrls: ['./create-package.component.css']
+})
+export class Loading {
+
+  constructor() {
+  }
+
 }
