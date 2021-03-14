@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -12,6 +12,7 @@ import { San11PlatformServiceService } from '../../service/san11-platform-servic
 import { Binary } from '../../../proto/san11-platform.pb';
 
 import { getPackageUrl } from '../../utils/package_util'
+import { GlobalConstants } from '../../common/global-constants'
 
 
 class FileSnippet {
@@ -87,8 +88,8 @@ export class CreatePackageComponent implements OnInit {
         error => {
           this._snackBar.open(
             error.statusMessage, 'Done', {
-              duration: 10000,
-            }
+            duration: 10000,
+          }
           );
 
           this.loading.close();
@@ -170,6 +171,12 @@ export class CreatePackageComponent implements OnInit {
           });
           this.router.navigate(['/']);
 
+        },
+        error => {
+          this.loading.close();
+          this._snackBar.open("上传文件失败: " + error.statusMessage, 'Done', {
+            duration: 10000,
+          });
         }
       );
 
@@ -178,12 +185,27 @@ export class CreatePackageComponent implements OnInit {
     fileReader.readAsArrayBuffer(this.selectedFile);
   }
 
-  uploadFileHandler(fielInput) {
-    this.selectedFile = fielInput.files[0];
+  @ViewChild('fileInput') fileInputElement: ElementRef
+
+  uploadFileHandler(fileInput) {
+    const file = fileInput.files[0];
+    if (file.size > GlobalConstants.maxBinarySize) {
+      alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize/1024/1024).toString() + 'MB');
+      this.fileInputElement.nativeElement.value = '';
+    } else{
+      this.selectedFile = file;
+    }
   }
 
+  @ViewChild('imageInput') imageInputElement: ElementRef
   uploadImageHandler(imageInput) {
-    this.selectedImage = imageInput.files[0];
+    const image = imageInput.files[0];
+    if (image.size > GlobalConstants.maxImageSize) {
+      alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize/1024/1024).toString() + 'MB');
+      this.imageInputElement.nativeElement.value = '';
+    } else {
+      this.selectedImage = image;
+    }
   }
 }
 

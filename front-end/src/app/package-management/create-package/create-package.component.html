@@ -28,26 +28,29 @@
                         <textarea matInput placeholder="功能，用法，提示..." required ngModel name="description"></textarea>
                     </mat-form-field>
 
-                    <p></p>
+                </mat-card-content>
+                <p></p>
 
-                    <label class="example-full-width">
+                <label class="example-full-width">
                         <span>上传截图</span>
                         <input #imageInput
                                type="file"
                                accept="image/*"
+                               name="imageInput"
                                (change)="uploadImageHandler(imageInput)">
                       </label>
 
-                    <p></p>
+                <p></p>
 
-                    <label>
+                <label>
                         <span>上传文件</span>
-                        <input #binaryInput
+                        <input #fileInput
                                type="file"
-                               (change)="uploadFileHandler(binaryInput)">
+                               name="fileInput"
+                               (change)="uploadFileHandler(fileInput)">
                       </label>
 
-                </mat-card-content>
+                <p></p>
                 <button [disabled]="!createPackageForm.valid" type="submit" mat-stroked-button color="accent" class="btn-block">创建</button>
             </form>
 
