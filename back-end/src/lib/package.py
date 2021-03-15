@@ -205,4 +205,5 @@ class Package:
         resp = run_sql_with_param_and_fetch_all(sql, {
             'category_id': category_id,
         })
-        return [Package(*item) for item in resp]
+        return sorted([Package(*item) for item in resp], key=lambda package: package.create_timestamp, reverse=True)
+
