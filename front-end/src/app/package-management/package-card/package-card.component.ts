@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Package } from '../../../proto/san11-platform.pb'
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs'
+import { HttpEventType } from "@angular/common/http";
 
 import * as FileSaver from 'file-saver';
 
@@ -18,6 +20,9 @@ import { getPackageUrl } from '../../utils/package_util'
 import { getBinaryFilename } from '../../utils/binary_util'
 
 import { LoadingComponent } from "../../common/components/loading/loading.component";
+import { DownloadService } from "../../service/download.service";
+import { saveAs } from 'file-saver'
+
 
 @Component({
   selector: 'app-package-card',
@@ -36,13 +41,17 @@ export class PackageCardComponent implements OnInit {
 
 
   loading;
+  downloadProgress = 0;
+  downloadProgressBar = false;
+
 
   constructor(
     private router: Router,
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private sanitizer: DomSanitizer,
-    private san11PlatformServiceService: San11PlatformServiceService
+    private san11PlatformServiceService: San11PlatformServiceService,
+    private downloads: DownloadService,
   ) { }
 
   ngOnInit(): void {
@@ -69,7 +78,6 @@ export class PackageCardComponent implements OnInit {
       alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize/1024/1024).toString() + 'MB');
       return;
     }
-
     this.selectedBinary = selectedBinary;
 
     this.loading = this.dialog.open(LoadingComponent);
@@ -138,12 +146,26 @@ export class PackageCardComponent implements OnInit {
   }
 
   onDownload() {
+    this.downloadProgressBar = true;
     this.san11PlatformServiceService.downloadBinary(getPackageUrl(this.package), this.package.binaryIds[this.package.binaryIds.length - 1]).subscribe(
       binary => {
         const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.url;
         const filename = getBinaryFilename(this.package, binary);
 
-        FileSaver.saveAs(fileUrl, filename);
+
+        this.downloads.download(fileUrl, filename).subscribe(
+          result => {
+            if (result.type === HttpEventType.DownloadProgress) {
+              const percentDone = Math.round(100 * result.loaded / result.total);
+              this.downloadProgress = percentDone
+            }
+            if (result.type === HttpEventType.Response) {
+              saveAs(result.body, filename);
+            }
+          }
+        );
+
+        // FileSaver.saveAs(fileUrl, filename);
       },
       error => {
         this._snackBar.open("下载失败: " + error.statusMessage, 'Done', {
@@ -180,7 +202,6 @@ export class PackageCardComponent implements OnInit {
 
 
   onClick() {
-    console.log('hitted');
   }
 
 }

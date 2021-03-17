@@ -97,3 +97,23 @@ mat-card-header {
     background-color: rgba(0, 0, 0, 0.139);
     cursor: initial;
 }
+
+.mat-card-actions {
+    margin-bottom: 0px;
+    padding-bottom: 2px;
+}
+
+.mat-progress-bar {
+    height: 2px;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.progress-bar-container {
+    height: 2px;
+}
+
+.mat-card {
+    padding-bottom: 0px;
+}

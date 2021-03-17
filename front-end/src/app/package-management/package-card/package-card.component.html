@@ -45,5 +45,8 @@
         </span>
         </mat-card-actions>
 
+        <div class="progress-bar-container">
+            <mat-progress-bar *ngIf="downloadProgressBar" color="primary" mode="determinate" [value]="downloadProgress"></mat-progress-bar>
+        </div>
     </mat-card>
 </div>

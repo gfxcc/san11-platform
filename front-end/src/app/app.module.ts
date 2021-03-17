@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,6 +29,7 @@ import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { LoadingComponent } from './common/components/loading/loading.component'
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +56,8 @@ import { LoadingComponent } from './common/components/loading/loading.component'
     AngularMaterialModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
