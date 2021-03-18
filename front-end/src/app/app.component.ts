@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { San11PlatformServiceService } from './service/san11-platform-service.service';
+import { NotificationService } from "./common/notification.service";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +15,8 @@ export class AppComponent {
   today_visit_count: number = 1;
   today_download_count: number = 2;
 
-  constructor(private _snackBar: MatSnackBar,
+  constructor(
+    private notificationService: NotificationService,
     private san11PlatformServiceService: San11PlatformServiceService,
     private router: Router) {
       this.san11PlatformServiceService.getStatistic().subscribe(
@@ -51,10 +51,7 @@ export class AppComponent {
 
     this.router.navigate(['/']);
 
-    this._snackBar.open('已登出', 'Done', {
-      duration: 2000,
-    });
-
+    this.notificationService.success('已登出')
   }
 
   uploadTool() {
@@ -66,8 +63,6 @@ export class AppComponent {
   }
 
   modDashboardOnClick() {
-    this._snackBar.open('MOD专区尚在开发中', 'Done', {
-      duration: 2000,
-    });
+    this.notificationService.warn('MOD专区尚在开发中');
   }
 }

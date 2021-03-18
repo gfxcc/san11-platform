@@ -38,7 +38,7 @@
             <span class="example-spacer"></span>
 
             <span [hidden]="! (isAuthor() || isAdmin())">
-            <input type="file" accept=".scp, .scp-en" hidden="true" #binaryInput (change)="onUpdateBinary(binaryInput)">
+            <input type="file" [accept]="this.acceptFileType" hidden="true" #binaryInput (change)="onUpdateBinary(binaryInput)">
             <button mat-button mat-stroked-button color="accent" (click)="binaryInput.click()">更新</button>
 
             <button mat-button mat-stroked-button color="warn" (click)="openDeleteDialog()">删除</button>

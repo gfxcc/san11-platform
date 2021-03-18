@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+import { NotificationService } from "../../common/notification.service";
+
 
 @Component({
   selector: 'app-signin',
@@ -13,7 +13,8 @@ import { San11PlatformServiceService } from '../../service/san11-platform-servic
 })
 export class SigninComponent implements OnInit {
 
-  constructor(private _snackBar: MatSnackBar,
+  constructor(
+    private notificationService: NotificationService,
     private san11PlatformServiceService: San11PlatformServiceService,
     private router: Router) { }
 
@@ -25,9 +26,7 @@ export class SigninComponent implements OnInit {
     this.san11PlatformServiceService.signIn(signInForm.value).subscribe(
       value => {
 
-        this._snackBar.open("登陆成功", 'Done', {
-          duration: 10000,
-        });
+        this.notificationService.success('登陆成功');
 
         localStorage.setItem('username', signInForm.value.username)
 
@@ -40,9 +39,7 @@ export class SigninComponent implements OnInit {
         });
       },
       error => {
-        this._snackBar.open(error.statusMessage, 'Done', {
-          duration: 10000,
-        });
+        this.notificationService.warn(error.statusMessage);
       }
     );
 

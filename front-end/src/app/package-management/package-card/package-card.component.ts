@@ -7,11 +7,11 @@ import { HttpEventType } from "@angular/common/http";
 
 import * as FileSaver from 'file-saver';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+import { NotificationService } from "../../common/notification.service";
 import { Binary, Version } from '../../../proto/san11-platform.pb'
 import { Url } from 'url';
 
@@ -40,15 +40,17 @@ export class PackageCardComponent implements OnInit {
   hideScreenshot: boolean = true;
 
 
-  loading;
+  loadingDialog;
   downloadProgress = 0;
   downloadProgressBar = false;
 
+  acceptFileType: string;
+
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
-    public dialog: MatDialog,
-    private _snackBar: MatSnackBar,
+    private dialog: MatDialog,
     private sanitizer: DomSanitizer,
     private san11PlatformServiceService: San11PlatformServiceService,
     private downloads: DownloadService,
@@ -61,6 +63,7 @@ export class PackageCardComponent implements OnInit {
       user => this.authorName = user.username
     );
     this.loadImage();
+    this.acceptFileType = this.package.categoryId === '1' ? '.scp, .scp-en' : '.rar';
   }
 
   openDeleteDialog() {
@@ -80,7 +83,7 @@ export class PackageCardComponent implements OnInit {
     }
     this.selectedBinary = selectedBinary;
 
-    this.loading = this.dialog.open(LoadingComponent);
+    this.loadingDialog = this.dialog.open(LoadingComponent);
 
     let fileReader = new FileReader();
     fileReader.onload = () => {
@@ -96,25 +99,13 @@ export class PackageCardComponent implements OnInit {
       this.san11PlatformServiceService.uploadBinary(parent, binary, bytes).subscribe(
 
         status => {
-          this.loading.close();
-          if (status.code != '0') {
-            this._snackBar.open('更新失败:' + status.message, 'Done', {
-              duration: 10000,
-            });
-            return;
-          }
-
-          this._snackBar.open("更新成功", 'Done', {
-            duration: 10000,
-          });
+          this.loadingDialog.close();
+          this.notificationService.success('更新成功');
           this.router.navigate(['/']);
         },
         error => {
-          this.loading.close();
-
-          this._snackBar.open('更新失败:' + error.statusMessage, 'Done', {
-            duration: 10000,
-          });
+          this.loadingDialog.close();
+          this.notificationService.warn('更新失败:' + error.statusMessage);
         }
       );
 
@@ -129,18 +120,14 @@ export class PackageCardComponent implements OnInit {
       status: 'normal'
     })).subscribe(
       san11Package => {
-        this._snackBar.open("审核通过", 'Done', {
-          duration: 10000,
-        });
+        this.notificationService.success('审核通过')
 
         this.router.navigate(['/']).then(() => {
           window.location.reload();
         });
       },
       error => {
-        this._snackBar.open("操作失败:" + error.statusMessage, 'Done', {
-          duration: 10000,
-        });
+        this.notificationService.warn('操作失败');
       }
     );
   }
@@ -168,9 +155,7 @@ export class PackageCardComponent implements OnInit {
         // FileSaver.saveAs(fileUrl, filename);
       },
       error => {
-        this._snackBar.open("下载失败: " + error.statusMessage, 'Done', {
-          duration: 10000,
-        });
+        this.notificationService.warn('下载失败'+error.statusMessage);
       }
     );
   }
@@ -220,8 +205,8 @@ export class DeleteDialog {
   package: Package;
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
-    private _snackBar: MatSnackBar,
     private san11PlatformServiceService: San11PlatformServiceService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {
     this.package = data.package
@@ -231,17 +216,13 @@ export class DeleteDialog {
     console.log('In delete');
     this.san11PlatformServiceService.deletePackage(this.package).subscribe(
       value => {
-        this._snackBar.open("删除成功", 'Done', {
-          duration: 10000,
-        });
+        this.notificationService.success('删除成功');
         this.router.navigate(['/']).then(() => {
           window.location.reload();
         });
       },
       error => {
-        this._snackBar.open("发生错误", 'Done', {
-          duration: 10000,
-        });
+        this.notificationService.warn('删除失败:'+error.statusMessage);
       }
     );
   }

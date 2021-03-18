@@ -3,8 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Package } from '../../../proto/san11-platform.pb'
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
-
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from "../../common/notification.service";
 
 
 @Component({
@@ -19,7 +18,7 @@ export class DashboardComponent implements OnInit {
   packages: Package[] = [];
 
   constructor(
-    private _snackBar: MatSnackBar,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private san11PlatformServiceService: San11PlatformServiceService
@@ -40,9 +39,7 @@ export class DashboardComponent implements OnInit {
     this.san11PlatformServiceService.listPackages(this.category_id, 0, "0").subscribe(
       value => this.packages=value.packages,
       error => {
-        this._snackBar.open("载入工具列表失败:" + error.statusMessage, 'Done', {
-          duration: 10000,
-        });
+        this.notificationService.warn('载入工具列表失败:'+error.statusMessage);
       }
     );
   }

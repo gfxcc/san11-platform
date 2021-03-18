@@ -3,7 +3,6 @@ import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { ErrorStateMatcher } from '@angular/material/core';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -14,6 +13,8 @@ import { Binary } from '../../../proto/san11-platform.pb';
 import { getPackageUrl } from '../../utils/package_util'
 import { GlobalConstants } from '../../common/global-constants'
 import { LoadingComponent } from '../../common/components/loading/loading.component'
+
+import { NotificationService } from '../../common/notification.service'
 
 
 
@@ -29,7 +30,7 @@ export class CreatePackageComponent implements OnInit {
   selectedCategory: string;
   createdPackage: Package;
 
-  acceptFileType: string = '.scp';
+  acceptFileType: string = '.scp, .scp-en';
 
   loading;
 
@@ -40,8 +41,8 @@ export class CreatePackageComponent implements OnInit {
   ];
 
   constructor(
+    public notificationService: NotificationService,
     public dialog: MatDialog,
-    private _snackBar: MatSnackBar,
     private router: Router,
     private san11PlatformServiceService: San11PlatformServiceService) { }
 
@@ -52,16 +53,12 @@ export class CreatePackageComponent implements OnInit {
 
     console.log(this.selectedFile);
     if (this.selectedImage === undefined) {
-      this._snackBar.open("请选择截图", 'Done', {
-        duration: 10000,
-      });
+      this.notificationService.warn('请选择截图');
       return;
     }
 
     if (this.selectedFile === undefined) {
-      this._snackBar.open("请选择文件", 'Done', {
-        duration: 10000,
-      });
+      this.notificationService.warn('请选择文件');
       return;
     }
 
@@ -86,12 +83,7 @@ export class CreatePackageComponent implements OnInit {
 
         },
         error => {
-          this._snackBar.open(
-            error.statusMessage, 'Done', {
-            duration: 10000,
-          }
-          );
-
+          this.notificationService.warn('创建工具失败:'+error.statusMessage);
           this.loading.close();
         }
       );
@@ -117,21 +109,11 @@ export class CreatePackageComponent implements OnInit {
       this.san11PlatformServiceService.uploadImage(parent, bytes).subscribe(
 
         status => {
-          if (status.code != '0') {
-            this._snackBar.open("上传截图失败: " + status.message, 'Done', {
-              duration: 10000,
-            });
-            return;
-          }
           this.uploadBinary();
         },
         error => {
           this.loading.close();
-
-          this._snackBar.open("上传截图失败: " + error.statusMessage, 'Done', {
-            duration: 10000,
-          });
-          return;
+          this.notificationService.warn('上传截图失败: ' + error.statusMessage);
         }
       );
 
@@ -159,24 +141,14 @@ export class CreatePackageComponent implements OnInit {
         status => {
           this.loading.close();
 
-          if (status.code != '0') {
-            this._snackBar.open("上传文件失败: " + status.message, 'Done', {
-              duration: 10000,
-            });
-            return;
-          }
-
-          this._snackBar.open("创建成功，请耐心等待审核。预期 1-2 天", 'Done', {
-            duration: 10000,
-          });
+          this.notificationService.success('创建成功，请耐心等待审核。预期 1-2 天')
           this.router.navigate(['/']);
 
         },
         error => {
           this.loading.close();
-          this._snackBar.open("上传文件失败: " + error.statusMessage, 'Done', {
-            duration: 10000,
-          });
+
+          this.notificationService.warn('上传文件失败: ' + error.statusMessage)
         }
       );
 
