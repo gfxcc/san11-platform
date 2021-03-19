@@ -11,11 +11,14 @@ import { ModMakerPackageDashboardComponent } from './dashboards/mod-maker-packag
 import { CreatePackageComponent } from './package-management/create-package/create-package.component'
 
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component'
+import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/categories/1', pathMatch: 'full' },
+
+  { path: 'detail', component: PackageDetailComponent },
 
   { path: 'signin', component: SigninComponent },
   { path: 'register', component: RegisterComponent },

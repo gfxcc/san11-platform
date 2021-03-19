@@ -27,6 +27,7 @@ import { CreatePackageComponent, AuthorDialog } from './package-management/creat
 import { GlobalConstants } from './common/global-constants';
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { LoadingComponent } from './common/components/loading/loading.component'
+import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 
 
 
@@ -43,7 +44,8 @@ import { LoadingComponent } from './common/components/loading/loading.component'
     DeleteDialog,
     AuthorDialog,
     DashboardComponent,
-    LoadingComponent
+    LoadingComponent,
+    PackageDetailComponent
   ],
   imports: [
     GrpcCoreModule.forRoot(),
