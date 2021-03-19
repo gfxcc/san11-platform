@@ -1,6 +1,15 @@
 <div class="main">
+    <div class="top-section">
+
+    </div>
     <div class="gallery-div">
         <gallery class="image-gallery" [items]="images" [counter]="false"></gallery>
+
+        <div class="package-controller under-development">
+            <span class="example-spacer"></span>
+            <button class="button" mat-button mat-stroked-button color="accent" (click)="onHide()">隐藏</button>
+            <button class="button" mat-button mat-raised-button color="warn" (click)="onDelete()">删除</button>
+        </div>
     </div>
 
 
@@ -37,15 +46,11 @@
             <div class="content"> {{this.package.description}} </div>
         </div>
 
-        <div class="binary-info under-development">
-
+        <div class="version-info under-development">
+            <app-version-panel [package]="this.package"> </app-version-panel>
         </div>
 
-        <div class="package-controller under-development">
-            <span class="example-spacer"></span>
-            <button class="button" mat-button mat-stroked-button color="accent" (click)="onHide()">隐藏</button>
-            <button class="button" mat-button mat-raised-button color="warn" (click)="onDelete()">删除</button>
-        </div>
+
 
     </div>
 

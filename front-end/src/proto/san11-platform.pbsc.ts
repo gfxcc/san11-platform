@@ -244,6 +244,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/ListBinaries
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListBinariesResponse>>
+     */
+    listBinaries: (
+      requestData: thisProto.ListBinariesRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListBinariesResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ListBinaries',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListBinariesRequest,
+        responseClass: thisProto.ListBinariesResponse
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/UploadImage
      *
      * @param requestMessage Request message
@@ -536,6 +557,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Empty> {
     return this.$raw
       .deleteBinary(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/ListBinaries
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListBinariesResponse>
+   */
+  listBinaries(
+    requestData: thisProto.ListBinariesRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListBinariesResponse> {
+    return this.$raw
+      .listBinaries(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

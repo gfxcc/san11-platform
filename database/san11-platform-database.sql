@@ -13,6 +13,7 @@ INSERT INTO categories VALUES (DEFAULT, 'Mod Maker tool');
 
 CREATE TABLE binaries (
     binary_id SERIAL PRIMARY KEY,
+    package_id INT NOT NULL,
     url TEXT,
     download_count INT DEFAULT 0,
     version TEXT NOT NULL,
@@ -47,17 +48,16 @@ CREATE TABLE packages (
     category_id INT NOT NULL REFERENCES categories(category_id),
     status TEXT NOT NULL,
     author_id INT NOT NULL REFERENCES users(user_id),
-    binary_ids INT[],
     image_urls TEXT[],
     tags TEXT[],
     download_count INT DEFAULT 0
 );
-INSERT INTO packages VALUES (DEFAULT, '【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '【测试】战法连携', '战法可以互相触发。顺序 枪 戟 弩', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '【测试】功绩解锁特解', '随着功绩提升可以解锁新的特级 功绩等级 10000， 20000， 30000', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '【测试】AI不攻击关港', 'n/a', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '【测试】小兵系统', '自动拔擢小兵成为武将', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
-INSERT INTO packages VALUES (DEFAULT, '【测试】UI现实粮草', '', current_timestamp, 1, 'normal', 1, NULL, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', current_timestamp, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】战法连携', '战法可以互相触发。顺序 枪 戟 弩', current_timestamp, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】功绩解锁特解', '随着功绩提升可以解锁新的特级 功绩等级 10000， 20000， 30000', current_timestamp, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】AI不攻击关港', 'n/a', current_timestamp, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】小兵系统', '自动拔擢小兵成为武将', current_timestamp, 1, 'normal', 1, NULL, NULL);
+INSERT INTO packages VALUES (DEFAULT, '【测试】UI现实粮草', '', current_timestamp, 1, 'normal', 1, NULL, NULL);
 
 CREATE TABLE statistics (
     date DATE PRIMARY KEY,

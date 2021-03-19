@@ -1,0 +1,42 @@
+<mat-card-header>
+    <mat-card-title>更新</mat-card-title>
+</mat-card-header>
+
+
+<form class="form" #createVersionForm='ngForm' (ngSubmit)="onCreateVersion(createVersionForm)">
+
+
+    <mat-card-content>
+        <mat-form-field class="form-field" appearance="fill">
+            <mat-label>更新类型</mat-label>
+            <mat-select required name="updateType" (selectionChange)="onVersionSelectorUpdate($event.value)" [(value)]="this.updateType">
+                <mat-option value="major">major</mat-option>
+                <mat-option value="minor">minor</mat-option>
+                <mat-option value="patch">patch</mat-option>
+            </mat-select>
+            <mat-hint></mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field" floatLabel="always">
+            <input matInput disabled=true [readonly]="true" placeholder="版本号" [value]="this.getNewVersionStr()" />
+        </mat-form-field>
+
+        <mat-form-field class="form-field form-text-input">
+            <mat-label>更新日志</mat-label>
+            <textarea style="height: 150px;" matInput placeholder="新功能，新玩法，bug修复" required ngModel name="description"></textarea>
+        </mat-form-field>
+
+    </mat-card-content>
+
+    <p></p>
+
+    <span class="form-field">上传文件</span>
+    <input #fileInput type="file" [accept]="acceptFileType" name="fileInput" (change)="selectFile(fileInput)">
+
+    <p></p>
+    <div class="actions">
+
+        <span class="example-spacer"></span>
+        <button class="button" [disabled]="!createVersionForm.valid" type="submit" mat-stroked-button color="accent">确定</button>
+    </div>
+</form>

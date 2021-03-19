@@ -28,3 +28,9 @@ class Url:
     def category_id(self) -> int:
         assert self.type in ['categories', 'packages']
         return int(self._items[1])
+    
+    @property
+    def package_id(self) -> int:
+        assert self.type in ['packages', 'binaries']
+        return int(self._items[3])
+
