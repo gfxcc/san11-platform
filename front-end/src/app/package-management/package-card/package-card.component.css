@@ -95,7 +95,7 @@ mat-card-header {
 
 .callout:hover {
     background-color: rgba(0, 0, 0, 0.139);
-    cursor: initial;
+    cursor: pointer;
 }
 
 .mat-card-actions {

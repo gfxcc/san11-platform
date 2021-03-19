@@ -29,6 +29,7 @@ import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { LoadingComponent } from './common/components/loading/loading.component'
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 
+import { GalleryModule } from  'ng-gallery';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { PackageDetailComponent } from "./package-management/package-detail/pack
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    GalleryModule
   ],
   providers: [],
   bootstrap: [AppComponent]

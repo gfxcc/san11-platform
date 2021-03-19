@@ -1,1 +1,52 @@
-<p>package-detail works!</p>
+<div class="main">
+    <div class="gallery-div">
+        <gallery class="image-gallery" [items]="images" [counter]="false"></gallery>
+    </div>
+
+
+    <div class="col-right under-development">
+        <div class="heading under-development">
+            <p class="title"> {{this.package.name}} </p>
+
+            <span class="example-spacer"></span>
+
+            <div class="timestamps content">
+                <!-- <div>创建:{{this.package.createTimestamp}}</div> -->
+                <div style="margin-left: 5px;">更新:{{this.package.createTimestamp}}</div>
+            </div>
+
+            <span class="example-spacer"></span>
+
+            <div class="statistic">
+                <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon>
+                <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">thumb_up</mat-icon>
+            </div>
+        </div>
+
+        <div class="author-info under-development">
+            <div class="title">作者</div>
+            <div class="content"> {{this.author.username}} </div>
+
+            <!-- <mat-form-field floatLabel="always" class="static-text">
+                <input class="name" matInput [readonly]="true" placeholder="作者" [value]="this.author.username" />
+            </mat-form-field> -->
+        </div>
+
+        <div class="package-info under-development">
+            <div class="title">描述</div>
+            <div class="content"> {{this.package.description}} </div>
+        </div>
+
+        <div class="binary-info under-development">
+
+        </div>
+
+        <div class="package-controller under-development">
+            <span class="example-spacer"></span>
+            <button class="button" mat-button mat-stroked-button color="accent" (click)="onHide()">隐藏</button>
+            <button class="button" mat-button mat-raised-button color="warn" (click)="onDelete()">删除</button>
+        </div>
+
+    </div>
+
+</div>
