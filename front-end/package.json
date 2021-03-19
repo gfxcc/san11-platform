@@ -13,7 +13,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~11.2.0",
-    "@angular/cdk": "^11.2.1",
+    "@angular/cdk": "^11.2.5",
     "@angular/common": "~11.2.0",
     "@angular/compiler": "~11.2.0",
     "@angular/core": "~11.2.0",
@@ -31,8 +31,10 @@
     "file-saver": "^2.0.5",
     "google-protobuf": "^3.15.0",
     "grpc-web": "^1.2.1",
+    "ng-gallery": "^5.0.0",
     "rxjs": "^6.6.3",
     "rxjs-compat": "^6.6.6",
+    "s": "^1.0.0",
     "ts-cacheable": "^1.0.4",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

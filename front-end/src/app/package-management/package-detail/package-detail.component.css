@@ -1,4 +1,129 @@
+.under-development {}
+
+.content {
+    font-size: 14px;
+    line-height: 20px;
+    color: #5f6368;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.main {
+    display: flex;
+}
+
+.gallery-div {}
+
 .image-gallery {
-    padding-left: 10px;
-    padding-right: 10px;
+    width: 500px;
+    background-color: transparent;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid grey;
+}
+
+.col-right {
+    float: left;
+    width: 500px;
+    height: 500px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+.heading {
+    width: 100%;
+    height: 50px;
+    display: block;
+    margin-bottom: 5px;
+    display: flex;
+}
+
+.heading>.title {
+    margin: 10px 0px 0px 0px;
+    height: 100%;
+    max-width: 70%;
+    font-size: xx-large;
+    font-weight: normal;
+    font-family: 'Roboto', arial, sans-serif;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.heading>.timestamps {
+    display: flex;
+    align-self: flex-end;
+}
+
+.heading>.statistic {
+    margin-right: 10px;
+    align-self: flex-end;
+}
+
+.heading>.statistic>.icon {
+    margin: 0 5px 0 5px;
+}
+
+.author-info {
+    border-top: solid 1px grey;
+    width: 100%;
+    height: 50px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.author-info>.name {
+    color: green;
+}
+
+.package-info {
+    border-top: solid 1px grey;
+    display: block;
+    width: 100%;
+    height: 150px;
+    margin-bottom: 5px;
+}
+
+.package-info>.content {
+    max-height: 100px;
+}
+
+.binary-info {
+    border-top: solid 1px grey;
+    display: block;
+    width: 100%;
+    height: 180px;
+    margin-bottom: 5px;
+}
+
+.package-controller {
+    border-top: solid 1px grey;
+    resize: horizontal;
+    display: flex;
+    width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: solid 1px grey;
+}
+
+.package-controller>.button {
+    margin-left: 5px;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 16px;
+    color: green;
+    font-family: Arial, sans-serif;
+    margin: 5px 0px 5px 0px;
 }

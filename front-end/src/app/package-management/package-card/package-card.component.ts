@@ -22,6 +22,7 @@ import { getBinaryFilename } from '../../utils/binary_util'
 import { LoadingComponent } from "../../common/components/loading/loading.component";
 import { DownloadService } from "../../service/download.service";
 import { saveAs } from 'file-saver'
+import { PackageDetailComponent } from "../package-detail/package-detail.component";
 
 
 @Component({
@@ -187,6 +188,12 @@ export class PackageCardComponent implements OnInit {
 
 
   onClick() {
+    console.log('click');
+    this.dialog.open(PackageDetailComponent, {
+      data: {
+        package: this.package
+      }
+    });
   }
 
 }
@@ -194,7 +201,6 @@ export class PackageCardComponent implements OnInit {
 export interface DialogData {
   package: Package
 }
-
 
 @Component({
   selector: 'delete-dialog',
