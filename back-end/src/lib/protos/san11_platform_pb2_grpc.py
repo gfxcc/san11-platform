@@ -65,6 +65,11 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.DeleteBinaryRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
+        self.ListBinaries = channel.unary_unary(
+                '/routeguide.RouteGuide/ListBinaries',
+                request_serializer=san11__platform__pb2.ListBinariesRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.ListBinariesResponse.FromString,
+                )
         self.UploadImage = channel.unary_unary(
                 '/routeguide.RouteGuide/UploadImage',
                 request_serializer=san11__platform__pb2.UploadImageRequest.SerializeToString,
@@ -163,6 +168,12 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListBinaries(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def UploadImage(self, request, context):
         """Image related
         """
@@ -254,6 +265,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.DeleteBinary,
                     request_deserializer=san11__platform__pb2.DeleteBinaryRequest.FromString,
                     response_serializer=san11__platform__pb2.Empty.SerializeToString,
+            ),
+            'ListBinaries': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListBinaries,
+                    request_deserializer=san11__platform__pb2.ListBinariesRequest.FromString,
+                    response_serializer=san11__platform__pb2.ListBinariesResponse.SerializeToString,
             ),
             'UploadImage': grpc.unary_unary_rpc_method_handler(
                     servicer.UploadImage,
@@ -463,6 +479,23 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteBinary',
             san11__platform__pb2.DeleteBinaryRequest.SerializeToString,
             san11__platform__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ListBinaries(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListBinaries',
+            san11__platform__pb2.ListBinariesRequest.SerializeToString,
+            san11__platform__pb2.ListBinariesResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

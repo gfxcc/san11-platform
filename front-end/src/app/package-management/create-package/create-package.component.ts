@@ -73,7 +73,6 @@ export class CreatePackageComponent implements OnInit {
         description: createPackageForm.value.description,
         categoryId: createPackageForm.value.category, // hardcoded to SIRE Plugin
         authorId: "0",
-        binaryIds: [],
         imageUrls: []
       })).subscribe(
         san11Package => {

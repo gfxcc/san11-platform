@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 16px;
+    color: green;
+    font-family: Arial, sans-serif;
+    margin: 5px 0px 5px 0px;
+}
+
+.head {
+    display: flex;
+}
+
+.head>.button {
+    margin-top: 2px;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}

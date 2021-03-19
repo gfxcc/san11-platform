@@ -19,6 +19,7 @@ service RouteGuide {
   rpc UploadBinary(UploadBinaryRequest) returns (Status) {}
   rpc DownloadBinary(DownloadBinaryRequest) returns (Binary) {}
   rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
+  rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {}
 
 
   // Image related
@@ -94,6 +95,16 @@ message DeleteBinaryRequest {
     int64 binary_id = 1;
 }
 
+message ListBinariesRequest {
+    int64 package_id = 1;
+    int64 page_size = 2;
+    string page_token = 3; 
+}
+
+message ListBinariesResponse {
+    repeated Binary binaries = 1;
+}
+
 
 // image
 
@@ -161,7 +172,6 @@ message Package {
     int64 category_id = 5;
     string status = 6; // under_review, normal, hidden, deleted
     int64 author_id = 7;
-    repeated int64 binary_ids = 8;
     repeated string image_urls = 9;
     repeated string tags = 10;
     int64 download_count = 11;
@@ -169,12 +179,13 @@ message Package {
 
 message Binary {
     int64 binary_id = 1;
-    string url = 2;
-    int64 download_count = 3;
-    Version version = 4;
-    string description = 5;
-    string create_timestamp = 6;
-    string tag = 7;
+    int64 package_id = 2;
+    string url = 3;
+    int64 download_count = 4;
+    Version version = 5;
+    string description = 6;
+    string create_timestamp = 7;
+    string tag = 8;
 }
 
 message User {

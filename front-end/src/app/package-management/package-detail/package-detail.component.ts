@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { GalleryItem, ImageItem } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
 import { Package, User } from "../../../proto/san11-platform.pb";
@@ -36,10 +37,14 @@ export class PackageDetailComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private router: Router,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
   ) { 
-    this.package = data.package
+    this.package = data.package;
+    if (this.package.imageUrls.length === 0) {
+      this.package.imageUrls.push('images/san11-screenshot.jpg');
+    }
   }
 
   ngOnInit(): void {
@@ -63,7 +68,20 @@ export class PackageDetailComponent implements OnInit {
   }
 
   onDelete(){
-
+    if (confirm('确认要删除吗?')) {
+      this.san11pkService.deletePackage(this.package).subscribe(
+        status => {
+          this.notificationService.success('成功删除');
+          
+          this.router.navigate(['/']).then(() => {
+            window.location.reload();
+          });
+        },
+        error => {
+          this.notificationService.warn('删除失败:'+error.statusMessage);
+        }
+      );
+    }
   }
 
   onHide() {

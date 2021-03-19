@@ -67,13 +67,13 @@ export class PackageCardComponent implements OnInit {
     this.acceptFileType = this.package.categoryId === '1' ? '.scp, .scp-en' : '.rar';
   }
 
-  openDeleteDialog() {
-    this.dialog.open(DeleteDialog, {
-      data: {
-        package: this.package
-      }
-    });
-  }
+  // openDeleteDialog() {
+  //   this.dialog.open(DeleteDialog, {
+  //     data: {
+  //       package: this.package
+  //     }
+  //   });
+  // }
 
   onUpdateBinary(binaryInput) {
 
@@ -134,31 +134,31 @@ export class PackageCardComponent implements OnInit {
   }
 
   onDownload() {
-    this.downloadProgressBar = true;
-    this.san11PlatformServiceService.downloadBinary(getPackageUrl(this.package), this.package.binaryIds[this.package.binaryIds.length - 1]).subscribe(
-      binary => {
-        const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.url;
-        const filename = getBinaryFilename(this.package, binary);
+    // this.downloadProgressBar = true;
+    // this.san11PlatformServiceService.downloadBinary(getPackageUrl(this.package), this.package.binaryIds[this.package.binaryIds.length - 1]).subscribe(
+    //   binary => {
+    //     const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.url;
+    //     const filename = getBinaryFilename(this.package, binary);
 
 
-        this.downloads.download(fileUrl, filename).subscribe(
-          result => {
-            if (result.type === HttpEventType.DownloadProgress) {
-              const percentDone = Math.round(100 * result.loaded / result.total);
-              this.downloadProgress = percentDone
-            }
-            if (result.type === HttpEventType.Response) {
-              saveAs(result.body, filename);
-            }
-          }
-        );
+    //     this.downloads.download(fileUrl, filename).subscribe(
+    //       result => {
+    //         if (result.type === HttpEventType.DownloadProgress) {
+    //           const percentDone = Math.round(100 * result.loaded / result.total);
+    //           this.downloadProgress = percentDone
+    //         }
+    //         if (result.type === HttpEventType.Response) {
+    //           saveAs(result.body, filename);
+    //         }
+    //       }
+    //     );
 
-        // FileSaver.saveAs(fileUrl, filename);
-      },
-      error => {
-        this.notificationService.warn('下载失败'+error.statusMessage);
-      }
-    );
+    //     // FileSaver.saveAs(fileUrl, filename);
+    //   },
+    //   error => {
+    //     this.notificationService.warn('下载失败'+error.statusMessage);
+    //   }
+    // );
   }
 
   loadImage() {
@@ -180,10 +180,6 @@ export class PackageCardComponent implements OnInit {
 
   isAuthor() {
     return this.package.authorId === localStorage.getItem('userId');
-  }
-
-  hasBinary() {
-    return this.package.binaryIds.length > 0;
   }
 
 
