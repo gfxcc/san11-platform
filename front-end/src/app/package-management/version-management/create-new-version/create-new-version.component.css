@@ -14,3 +14,13 @@
 .button {
     float: right;
 }
+
+.version-section {
+    display: flex;
+}
+
+.version-field {
+    width: 20%;
+    margin: 5px;
+    flex: 1 1 auto;
+}

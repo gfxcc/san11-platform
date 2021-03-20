@@ -13,13 +13,22 @@
                 <mat-option value="major">major</mat-option>
                 <mat-option value="minor">minor</mat-option>
                 <mat-option value="patch">patch</mat-option>
+                <mat-option value="custom">custom</mat-option>
             </mat-select>
             <mat-hint></mat-hint>
         </mat-form-field>
 
-        <mat-form-field class="form-field" floatLabel="always">
-            <input matInput disabled=true [readonly]="true" placeholder="版本号" [value]="this.getNewVersionStr()" />
-        </mat-form-field>
+        <div class="version-section">
+            <mat-form-field class="version-field" floatLabel="always">
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" placeholder="major" [value]="this.newVersion.major.toString()" #majorInput name="majorInput" (change)="updateMajor(majorInput)" />
+            </mat-form-field>
+            <mat-form-field class=" version-field " floatLabel="always ">
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot; " placeholder="major " [value]="this.newVersion.minor.toString() " #minorInput name="minorInput" (change)="updateMinor(minorInput)" />
+            </mat-form-field>
+            <mat-form-field class="version-field" floatLabel="always">
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" placeholder="major" [value]="this.newVersion.patch.toString()" #patchInput name="patchInput" (change)="updatePatch(patchInput)" />
+            </mat-form-field>
+        </div>
 
         <mat-form-field class="form-field form-text-input">
             <mat-label>更新日志</mat-label>

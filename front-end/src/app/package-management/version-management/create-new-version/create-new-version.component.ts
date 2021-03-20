@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Inject, ElementRef, ViewChild} from '@angular/core';
+import { isNumeric } from 'rxjs/util/isNumeric';
 
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { version } from 'process';
@@ -51,6 +52,9 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onVersionSelectorUpdate(updateTypeValue) {
+    this.updateType = updateTypeValue;
+    console.log(this.updateType);
+
     if (updateTypeValue === 'major') {
       this.newVersion = new Version({
         major: increment(this.latestVersion.major),
@@ -63,11 +67,17 @@ export class CreateNewVersionComponent implements OnInit {
         minor: increment(this.latestVersion.minor),
         patch: "0"
       });
+    } else if (updateTypeValue === 'patch'){
+      this.newVersion = new Version({
+        major: this.latestVersion.major,
+        minor: this.latestVersion.minor==='-1' ? '0' : this.latestVersion.minor,
+        patch: increment(this.latestVersion.patch)
+      });
     } else {
       this.newVersion = new Version({
         major: this.latestVersion.major,
-        minor: this.latestVersion.minor,
-        patch: increment(this.latestVersion.patch)
+        minor: increment(this.latestVersion.minor),
+        patch: this.latestVersion.patch
       });
     }
   }
@@ -128,5 +138,57 @@ export class CreateNewVersionComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close({data: 'updated'});
+  }
+
+
+
+  updateMajor(input) {
+    const pendingVersoin = new Version({major: input.value, minor: this.newVersion.minor, patch: this.newVersion.patch});
+    if (!this.validateVersion(pendingVersoin)) {
+      this.notificationService.warn("版本号不合法: 新的版本号必须大于最新的已发布版本");
+      input.value = this.newVersion.major;
+      return;
+    }
+    this.newVersion = pendingVersoin;
+  }
+  updateMinor(input) {
+    const pendingVersoin = new Version({major: this.newVersion.major, minor: input.value, patch: this.newVersion.patch});
+    if (!this.validateVersion(pendingVersoin)) {
+      this.notificationService.warn("版本号不合法: 新的版本号必须大于最新的已发布版本");
+      input.value = this.newVersion.minor;
+      return;
+    }
+    this.newVersion = pendingVersoin;
+  }
+  updatePatch(input) {
+    const pendingVersoin = new Version({major: this.newVersion.major, minor: this.newVersion.minor, patch: input.value});
+    if (!this.validateVersion(pendingVersoin)) {
+      this.notificationService.warn("版本号不合法: 新的版本号必须大于最新的已发布版本");
+      input.value = this.newVersion.patch;
+      return;
+    }
+    this.newVersion = pendingVersoin;
+  }
+
+  validateVersion(version: Version) {
+    if (! (isNumeric(version.major) && isNumeric(version.minor) && isNumeric(version.patch))) {
+      return false;
+    }
+
+    if (Number(version.major) < Number(this.latestVersion.major)
+      || Number(version.minor) < Number(this.latestVersion.minor)
+      || Number(version.patch) < Number(this.latestVersion.patch)
+    ) {
+      return false;
+    }
+
+    if (Number(version.major) === Number(this.latestVersion.major)
+      && Number(version.minor) === Number(this.latestVersion.minor)
+      && Number(version.patch) === Number(this.latestVersion.patch)
+    ) {
+      return false;
+    }
+
+    return true;
   }
 }
