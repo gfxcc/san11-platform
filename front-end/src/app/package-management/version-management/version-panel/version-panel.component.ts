@@ -165,6 +165,9 @@ export class VersionPanelComponent implements OnInit {
 
   }
 
+  isAdmin() {
+    return isAdmin();
+  }
 
   isAuthor() {
     return this.package.authorId === localStorage.getItem('userId');
