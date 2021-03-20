@@ -89,7 +89,8 @@ class User:
         validate_password(password)
         validate_username(user.username)
 
-        sql = 'INSERT INTO users VALUES (DEFAULT, %(username)s, %(password)s, '\
+        sql = 'INSERT INTO users (user_id, username, password, email, user_type, create_timestamp, image_url)'\
+              ' VALUES ((SELECT MAX(user_id) FROM users)+1, %(username)s, %(password)s, '\
               '%(email)s, %(user_type)s, %(create_timestamp)s, %(image_url)s) RETURNING user_id'
         resp = run_sql_with_param_and_fetch_one(sql, {
             'username': user.username,

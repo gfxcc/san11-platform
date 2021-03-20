@@ -112,8 +112,8 @@ class Binary:
         obj.url = get_binary_url(
             parent, get_binary_filename(Url(parent), obj.version))
 
-        sql = 'INSERT INTO binaries (package_id, url, download_count, version, description, create_timestamp, tag) VALUES '\
-            '(%(package_id)s, %(url)s, %(download_count)s, %(version)s, %(description)s, %(create_timestamp)s, %(tag)s) returning binary_id'
+        sql = 'INSERT INTO binaries (binary_id, package_id, url, download_count, version, description, create_timestamp, tag) VALUES '\
+            '((SELECT MAX(binary_id) FROM binaries)+1, %(package_id)s, %(url)s, %(download_count)s, %(version)s, %(description)s, %(create_timestamp)s, %(tag)s) returning binary_id'
         binary_id = run_sql_with_param_and_fetch_one(sql, {
             'package_id': Url(parent).package_id,
             'url': obj.url,
