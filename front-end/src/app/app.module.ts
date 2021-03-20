@@ -32,6 +32,7 @@ import { PackageDetailComponent } from "./package-management/package-detail/pack
 import { GalleryModule } from  'ng-gallery';
 import { VersionPanelComponent } from './package-management/version-management/version-panel/version-panel.component';
 import { CreateNewVersionComponent } from "./package-management/version-management/create-new-version/create-new-version.component";
+import { TextDialogComponent } from './common/components/text-dialog/text-dialog.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { CreateNewVersionComponent } from "./package-management/version-manageme
     LoadingComponent,
     PackageDetailComponent,
     VersionPanelComponent,
-    CreateNewVersionComponent
+    CreateNewVersionComponent,
+    TextDialogComponent
   ],
   imports: [
     GrpcCoreModule.forRoot(),

@@ -14,6 +14,7 @@ import { SignUpRequest, SignUpResponse } from '../../proto/san11-platform.pb';
 import { SignOutRequest } from '../../proto/san11-platform.pb'
 import { DownloadBinaryRequest } from '../../proto/san11-platform.pb'
 import { GetStatisticRequest } from '../../proto/san11-platform.pb'
+import { DeleteBinaryRequest } from "../../proto/san11-platform.pb";
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
 import { Cacheable } from 'ts-cacheable';
@@ -67,6 +68,11 @@ export class San11PlatformServiceService {
   downloadBinary(parent: string, binaryId: string) : Observable<Binary> {
     const request = new DownloadBinaryRequest({parent: parent, binaryId: binaryId});
     return this.severClient.downloadBinary(request, this.getMetadata());
+  }
+
+  deleteBinary(binaryId: string) : Observable<Empty> {
+    const request = new DeleteBinaryRequest({binaryId: binaryId});
+    return this.severClient.deleteBinary(request, this.getMetadata());
   }
 
   // images

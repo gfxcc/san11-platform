@@ -133,6 +133,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return san11_platform_pb2.ListBinariesResponse(binaries=[
             binary.to_pb() for binary in Binary.from_package_id(request.package_id)
         ])
+    
+    def DeleteBinary(self, request, context):
+        logger.info(f'In DeleteBinary: binary_id={request.binary_id}')
+        Binary.from_binary_id(request.binary_id).delete()
+        return san11_platform_pb2.Empty()
 
     # image
     def UploadImage(self, request, context):

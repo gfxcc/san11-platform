@@ -8,12 +8,8 @@
 
             <span class="example-spacer"></span>
 
-            <div [hidden]="! (package.status==='under_review' && !isAdmin())">
+            <div [hidden]="! (package.status==='under_review')">
                 <button mat-button mat-raised-button color="accent">审核中</button>
-            </div>
-
-            <div [hidden]="! (package.status==='under_review' && isAdmin())">
-                <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
             </div>
 
             <mat-card-subtitle>{{authorName}}</mat-card-subtitle>
@@ -37,12 +33,12 @@
 
             <span class="example-spacer"></span>
 
-            <span [hidden]="! (isAuthor() || isAdmin())">
-            <input type="file" [accept]="this.acceptFileType" hidden="true" #binaryInput (change)="onUpdateBinary(binaryInput)">
-            <button mat-button mat-stroked-button color="accent" (click)="binaryInput.click()">更新</button>
+            <!-- <span [hidden]="! (isAuthor() || isAdmin())"> -->
+            <!-- <input type="file" [accept]="this.acceptFileType" hidden="true" #binaryInput (change)="onUpdateBinary(binaryInput)"> -->
+            <!-- <button mat-button mat-stroked-button color="accent" (click)="binaryInput.click()">更新</button> -->
 
             <!-- <button mat-button mat-stroked-button color="warn" (click)="openDeleteDialog()">删除</button> -->
-        </span>
+            <!-- </span> -->
         </mat-card-actions>
 
         <div class="progress-bar-container">
