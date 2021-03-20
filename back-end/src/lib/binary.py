@@ -28,7 +28,7 @@ class Binary:
         self.download_count = download_count
         self.version = version
         self.description = description
-        self.create_timestamp = create_timestamp
+        self.create_timestamp = create_timestamp or datetime.now()
         self.tag = tag
 
     def __str__(self):
