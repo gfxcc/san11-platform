@@ -45,10 +45,9 @@ export class PackageDetailComponent implements OnInit {
     private notificationService: NotificationService,
   ) { 
     this.package = data.package;
-    if (this.package.imageUrls.length === 0) {
-      this.package.imageUrls.push('images/san11-screenshot.jpg');
+    if (this.package.imageUrls.length < 2) {
+      this.package.imageUrls.push('images/sire2.jpg');
     }
-    this.package.imageUrls.push('images/sire2.jpg');
   }
 
   ngOnInit(): void {
