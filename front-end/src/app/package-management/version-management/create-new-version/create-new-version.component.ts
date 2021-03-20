@@ -150,6 +150,7 @@ export class CreateNewVersionComponent implements OnInit {
       return;
     }
     this.newVersion = pendingVersoin;
+    console.log(this.newVersion);
   }
   updateMinor(input) {
     const pendingVersoin = new Version({major: this.newVersion.major, minor: input.value, patch: this.newVersion.patch});
@@ -159,6 +160,7 @@ export class CreateNewVersionComponent implements OnInit {
       return;
     }
     this.newVersion = pendingVersoin;
+    console.log(this.newVersion);
   }
   updatePatch(input) {
     const pendingVersoin = new Version({major: this.newVersion.major, minor: this.newVersion.minor, patch: input.value});
@@ -168,10 +170,11 @@ export class CreateNewVersionComponent implements OnInit {
       return;
     }
     this.newVersion = pendingVersoin;
+    console.log(this.newVersion);
   }
 
   validateVersion(version: Version) {
-    if (! (isNumeric(version.major) && isNumeric(version.minor) && isNumeric(version.patch))) {
+    if (isNaN(Number(version.major)) || isNaN(Number(version.minor)) || isNaN(Number(version.patch))) {
       return false;
     }
 

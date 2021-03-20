@@ -36,7 +36,7 @@ export class PackageDetailComponent implements OnInit {
     tags: ['规则修改'],
     downloadCount: "24",
   });
-  author: User;
+  author: User = new User({});
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
