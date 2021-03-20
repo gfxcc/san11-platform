@@ -9,6 +9,9 @@ import { NotificationService } from "../../common/notification.service";
 
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+import { isAdmin } from "../../utils/user_util";
+import { increment } from '../../utils/number_util';
+
 
 export interface DialogData {
   package: Package
@@ -45,6 +48,7 @@ export class PackageDetailComponent implements OnInit {
     if (this.package.imageUrls.length === 0) {
       this.package.imageUrls.push('images/san11-screenshot.jpg');
     }
+    this.package.imageUrls.push('images/sire2.jpg');
   }
 
   ngOnInit(): void {
@@ -68,7 +72,7 @@ export class PackageDetailComponent implements OnInit {
   }
 
   onDelete(){
-    if (confirm('确认要删除吗?')) {
+    if (confirm('确认要删除 ' + this.package.name + ' 吗？')) {
       this.san11pkService.deletePackage(this.package).subscribe(
         status => {
           this.notificationService.success('成功删除');
@@ -84,8 +88,38 @@ export class PackageDetailComponent implements OnInit {
     }
   }
 
+  onApprove() {
+    this.san11pkService.updatePackage(new Package({
+      packageId: this.package.packageId,
+      status: 'normal'
+    })).subscribe(
+      san11Package => {
+        this.notificationService.success('审核通过')
+
+        this.router.navigate(['/']).then(() => {
+          window.location.reload();
+        });
+      },
+      error => {
+        this.notificationService.warn('操作失败');
+      }
+    );
+  }
+
   onHide() {
 
   }
 
+  onChildDownload(msg) {
+    this.package.downloadCount = increment(this.package.downloadCount);
+  }
+
+  isAdmin() {
+    return isAdmin();
+  }
+
+
+  isAuthor() {
+    return this.package.authorId === localStorage.getItem('userId');
+  }
 }

@@ -1,4 +1,14 @@
-table {
+.mat-progress-bar {
+    height: 2px;
+    width: 100%;
+}
+
+.progress-bar-container {
+    height: 2px;
+}
+
+.table {
+    margin-top: 5px;
     width: 100%;
 }
 
@@ -21,4 +31,8 @@ table {
 
 .example-spacer {
     flex: 1 1 auto;
+}
+
+.align-right {
+    text-align: right;
 }

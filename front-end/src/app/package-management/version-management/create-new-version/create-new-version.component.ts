@@ -98,7 +98,7 @@ export class CreateNewVersionComponent implements OnInit {
 
       const binary: Binary = new Binary({
         version: this.newVersion,
-        description: createVersionForm.description,
+        description: createVersionForm.value.description,
         tag: '',
       });
 

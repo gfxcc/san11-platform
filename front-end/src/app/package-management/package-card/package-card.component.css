@@ -52,7 +52,7 @@ mat-card-content p {
     overflow-y: auto;
     white-space: pre-wrap;
     word-break: break-all;
-    max-height: 80px;
+    max-height: 100px;
 }
 
 mat-card-header {
@@ -90,7 +90,6 @@ mat-card-header {
     transition-duration: .5s;
     border-radius: 4px;
     background: transparent;
-    cursor: zoom-in;
 }
 
 .callout:hover {
