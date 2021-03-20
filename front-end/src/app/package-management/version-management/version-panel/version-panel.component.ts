@@ -19,6 +19,7 @@ import { TextDialogComponent, TextData } from "../../../common/components/text-d
 import { GlobalConstants } from "../../../common/global-constants";
 import { saveAs } from 'file-saver'
 import { increment } from '../../../utils/number_util';
+import { isAdmin } from '../../../utils/user_util';
 
 // export interface BinaryElement {
 //   version: string;
@@ -48,6 +49,8 @@ export class VersionPanelComponent implements OnInit {
   downloadProgress: Number;
   downloadProgressBar = false;
 
+  updateElement;
+
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
@@ -58,6 +61,12 @@ export class VersionPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchBinaries();
+
+    if (isAdmin() || this.isAuthor()) {
+      this.updateElement = true;
+    } else {
+      this.updateElement = false;
+    }
   }
 
 
@@ -154,5 +163,10 @@ export class VersionPanelComponent implements OnInit {
       }
     );
 
+  }
+
+
+  isAuthor() {
+    return this.package.authorId === localStorage.getItem('userId');
   }
 }
