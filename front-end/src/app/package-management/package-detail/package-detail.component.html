@@ -6,12 +6,6 @@
 
                 <span class="example-spacer"></span>
 
-                <div class="timestamps content">
-                    <!-- <div>创建:{{this.package.createTimestamp}}</div> -->
-                    <div style="margin-left: 5px;">更新:{{this.package.createTimestamp}}</div>
-                </div>
-
-                <span class="example-spacer"></span>
 
                 <div class="statistic">
                     <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon>
@@ -20,8 +14,17 @@
             </div>
 
             <div class="author-info under-development">
-                <div class="title">作者</div>
-                <div class="content"> {{this.author.username}} </div>
+                <div>
+                    <div class="title">作者</div>
+                    <div class="content"> {{this.author.username}} </div>
+                </div>
+
+                <span class="example-spacer"></span>
+
+                <div class="timestamps content">
+                    <!-- <div>创建:{{this.package.createTimestamp}}</div> -->
+                    <div style="margin-left: 5px;">创建: {{this.package.createTimestamp}}</div>
+                </div>
 
                 <!-- <mat-form-field floatLabel="always" class="static-text">
                 <input class="name" matInput [readonly]="true" placeholder="作者" [value]="this.author.username" />
