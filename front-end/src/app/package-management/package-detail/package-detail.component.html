@@ -68,7 +68,7 @@
         <div class="gallery-div">
             <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
 
-            <input type="file" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
+            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
             <!-- <button mat-button mat-stroked-button color="accent" (click)="imageInput.click()">更新</button> -->
 
         </div>
