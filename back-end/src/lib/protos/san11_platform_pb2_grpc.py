@@ -73,7 +73,7 @@ class RouteGuideStub(object):
         self.UploadImage = channel.unary_unary(
                 '/routeguide.RouteGuide/UploadImage',
                 request_serializer=san11__platform__pb2.UploadImageRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Status.FromString,
+                response_deserializer=san11__platform__pb2.Url.FromString,
                 )
         self.SignIn = channel.unary_unary(
                 '/routeguide.RouteGuide/SignIn',
@@ -274,7 +274,7 @@ def add_RouteGuideServicer_to_server(servicer, server):
             'UploadImage': grpc.unary_unary_rpc_method_handler(
                     servicer.UploadImage,
                     request_deserializer=san11__platform__pb2.UploadImageRequest.FromString,
-                    response_serializer=san11__platform__pb2.Status.SerializeToString,
+                    response_serializer=san11__platform__pb2.Url.SerializeToString,
             ),
             'SignIn': grpc.unary_unary_rpc_method_handler(
                     servicer.SignIn,
@@ -512,7 +512,7 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UploadImage',
             san11__platform__pb2.UploadImageRequest.SerializeToString,
-            san11__platform__pb2.Status.FromString,
+            san11__platform__pb2.Url.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

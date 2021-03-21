@@ -107,7 +107,7 @@ export class CreatePackageComponent implements OnInit {
 
       this.san11PlatformServiceService.uploadImage(parent, bytes).subscribe(
 
-        status => {
+        url => {
           this.uploadBinary();
         },
         error => {

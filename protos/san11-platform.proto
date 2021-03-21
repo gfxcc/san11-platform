@@ -23,7 +23,7 @@ service RouteGuide {
 
 
   // Image related
-  rpc UploadImage(UploadImageRequest) returns (Status) {}
+  rpc UploadImage(UploadImageRequest) returns (Url) {}
 
 
   // User related
@@ -205,4 +205,8 @@ message Version {
 message Statistic {
     int64 visit_count = 1;
     int64 download_count = 2;
+}
+
+message Url {
+    string url=1;
 }

@@ -269,12 +269,12 @@ export class RouteGuideClient {
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Status>>
+     * @returns Observable<GrpcEvent<thisProto.Url>>
      */
     uploadImage: (
       requestData: thisProto.UploadImageRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Status>> => {
+    ): Observable<GrpcEvent<thisProto.Url>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
@@ -282,7 +282,7 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.UploadImageRequest,
-        responseClass: thisProto.Status
+        responseClass: thisProto.Url
       });
     },
     /**
@@ -581,12 +581,12 @@ export class RouteGuideClient {
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Status>
+   * @returns Observable<thisProto.Url>
    */
   uploadImage(
     requestData: thisProto.UploadImageRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Status> {
+  ): Observable<thisProto.Url> {
     return this.$raw
       .uploadImage(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());

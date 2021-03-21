@@ -4881,3 +4881,133 @@ export module Statistic {
     downloadCount?: string;
   }
 }
+
+/**
+ * Message implementation for routeguide.Url
+ */
+export class Url implements GrpcMessage {
+  static id = 'routeguide.Url';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new Url();
+    Url.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: Url) {
+    _instance.url = _instance.url || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(_instance: Url, _reader: BinaryReader) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.url = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    Url.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(_instance: Url, _writer: BinaryWriter) {
+    if (_instance.url) {
+      _writer.writeString(1, _instance.url);
+    }
+  }
+
+  private _url?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of Url to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<Url.AsObject>) {
+    _value = _value || {};
+    this.url = _value.url;
+    Url.refineValues(this);
+  }
+  get url(): string | undefined {
+    return this._url;
+  }
+  set url(value: string | undefined) {
+    this._url = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    Url.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): Url.AsObject {
+    return {
+      url: this.url
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): Url.AsProtobufJSON {
+    return {
+      url: this.url
+    };
+  }
+}
+export module Url {
+  /**
+   * Standard JavaScript object representation for Url
+   */
+  export interface AsObject {
+    url?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for Url
+   */
+  export interface AsProtobufJSON {
+    url?: string;
+  }
+}

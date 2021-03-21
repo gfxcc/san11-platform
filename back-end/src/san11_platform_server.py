@@ -96,8 +96,18 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             package.description = request.package.description
         if request.package.status:
             package.status = request.package.status
-        if request.package.image_urls:
-            package.image_urls = request.package.image_urls
+        if request.package.image_urls or request.package.image_urls == []:
+            logger.debug(f'local package.image_urls={package.image_urls}')
+            logger.debug(f'request.package.image_urls={request.package.image_urls}')
+            for image_to_remove in set(package.image_urls) - set(request.package.image_urls):
+                try:
+                    image = Image.from_url(image_to_remove)
+                    image.delete()
+                    logger.info(f'Image is deleted: {image}')
+                except Exception as err:
+                    logger.error(f'Failed to delte image: {err}')
+            logger.debug(request.package.image_urls)
+            package.image_urls = list(request.package.image_urls)
 
         package.update()
         return package.to_pb()
@@ -153,7 +163,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         else:
             raise Exception(f'Invalid parent: {parent}')
 
-        return san11_platform_pb2.Status(code=0, message="上传成功")
+        return san11_platform_pb2.Url(url=image.url)
 
     # users
     def SignIn(self, request, context):

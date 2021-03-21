@@ -28,14 +28,12 @@ export class DashboardComponent implements OnInit {
     this.route.params.subscribe(
       (params: any) => {
         this.category_id = Number(params['id']);
-        console.log('id=' + this.category_id.toString());
         this.loadPackages();
       }
     );
   }
 
   loadPackages(): void {
-    console.log(this.category_id);
     this.san11PlatformServiceService.listPackages(this.category_id, 0, "0").subscribe(
       value => this.packages=value.packages,
       error => {

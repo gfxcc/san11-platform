@@ -7,7 +7,7 @@ import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
 import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
-import { Statistic, User, Package, Binary, Status, Empty } from '../../proto/san11-platform.pb'
+import { Url, Statistic, User, Package, Binary, Status, Empty } from '../../proto/san11-platform.pb'
 import { ListPackagesRequest } from '../../proto/san11-platform.pb';
 import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
 import { SignUpRequest, SignUpResponse } from '../../proto/san11-platform.pb';
@@ -77,7 +77,7 @@ export class San11PlatformServiceService {
 
   // images
 
-  uploadImage(parent: string, image: Uint8Array) : Observable<Status>{
+  uploadImage(parent: string, image: Uint8Array) : Observable<Url>{
     const requst = new UploadImageRequest({ parent: parent, image: image});
     return this.severClient.uploadImage(requst, this.getMetadata());
   }

@@ -3,6 +3,7 @@ from pathlib import Path
 import logging
 import os, os.path
 import errno
+import uuid
 
 from .protos import san11_platform_pb2
 from .db_util import run_sql_with_param_and_fetch_one, run_sql_with_param
@@ -35,7 +36,7 @@ class Image:
                 return len(os.listdir(path))
             except Exception:
                 return 0
-        file_count = get_file_count(get_images_path(parent))
+        file_count = uuid.uuid1()
         filename = f'{file_count}.jpeg'
         return cls.create(get_image_url(parent, filename), data)
 

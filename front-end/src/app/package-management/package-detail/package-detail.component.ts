@@ -1,17 +1,19 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GalleryItem, ImageItem } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { Package, User } from "../../../proto/san11-platform.pb";
+import { Package, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { NotificationService } from "../../common/notification.service";
 import { TextInputDialogComponent, TextData } from "../../common/components/text-input-dialog/text-input-dialog.component";
+import { LoadingComponent } from '../../common/components/loading/loading.component'
 
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { isAdmin } from "../../utils/user_util";
 import { increment } from '../../utils/number_util';
+import { getPackageUrl } from "../../utils/package_util";
 
 
 export interface DialogData {
@@ -39,6 +41,9 @@ export class PackageDetailComponent implements OnInit {
   });
   author: User = new User({});
 
+  loading;
+
+  galleryElement;
 
   // zones
   adminZone = false;
@@ -52,9 +57,6 @@ export class PackageDetailComponent implements OnInit {
     private notificationService: NotificationService,
   ) { 
     this.package = data.package;
-    if (this.package.imageUrls.length < 2) {
-      this.package.imageUrls.push('images/sire2.jpg');
-    }
 
 
     if (this.isAdmin() && this.package.status === 'under_review') {
@@ -63,15 +65,26 @@ export class PackageDetailComponent implements OnInit {
     if (this.isAdmin() || this.isAuthor()) {
       this.authorZone = true;
     }
+
   }
 
   ngOnInit(): void {
+    console.log(this.package.imageUrls);
 
     this.package.imageUrls.forEach(imageUrl => {
       const fullImageUrl = getFullUrl(imageUrl);
       this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl}));
-      console.log(this.images);
     });
+
+    if (this.package.categoryId === '1') {
+      // append a pre-set image for SIRE package
+      const fullImageUrl = getFullUrl('images/sire2.jpg');
+      this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
+    }
+    // append image for upload 
+    if (this.isAuthor() || this.isAdmin()) {
+      this.images.push(new ImageItem({src: '../../../assets/images/upload.jpg', thumb: '../../../assets/images/upload.jpg'}));
+    }
 
     this.san11pkService.getUser(this.package.authorId).subscribe(
       user => {
@@ -81,6 +94,8 @@ export class PackageDetailComponent implements OnInit {
         this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
       }
     );
+
+    console.log(this.images);
 
 
   }
@@ -124,9 +139,7 @@ export class PackageDetailComponent implements OnInit {
     }
   }
 
-  onHide() {
 
-  }
 
   onUpdateDescription() {
     this.dialog.open(TextInputDialogComponent, {
@@ -156,9 +169,94 @@ export class PackageDetailComponent implements OnInit {
     );
     
   }
-  onUpdateScreenshot() {
+
+
+
+  @ViewChild('imageInput') imageInputElement: ElementRef
+  onGalleryItemClick(imageIndex: number) {
+    if (!(this.isAdmin() || this.isAuthor())) {
+      return;
+    }
+
+    if (imageIndex === this.images.length-1) {
+      // upload new image
+      this.imageInputElement.nativeElement.click();
+
+    } else {
+      // ask for delete
+      if (confirm("确定要删除这张截图吗?")) {
+        if (this.package.categoryId === '1' && imageIndex === this.images.length-2) {
+          this.notificationService.warn('不可删除系统预设图片');
+          return;
+        }
+        this.package.imageUrls.splice(imageIndex, 1);
+        this.san11pkService.updatePackage(new Package({
+          packageId: this.package.packageId,
+          imageUrls: this.package.imageUrls
+        })).subscribe(
+          san11Package => {
+            this.images.splice(imageIndex, 1);
+            this.notificationService.success("删除成功");
+          },
+          error => {
+            this.notificationService.warn("删除截图失败:" + error.statusMessage);
+          }
+        );
+
+      }
+    }
+  }
+
+
+  @ViewChild('gallery') galleryElementCatched: ElementRef
+  onUploadScreenshot(imageInput) {
+    this.galleryElement = this.galleryElementCatched;
+
+    const image = imageInput.files[0];
+    if (image.size > GlobalConstants.maxImageSize) {
+      alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize/1024/1024).toString() + 'MB');
+      return;
+    }
+
+    this.loading = this.dialog.open(LoadingComponent);
+
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+
+      var parent = getPackageUrl(this.package);
+
+      var arrayBuffer = fileReader.result;
+      var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
+
+      this.san11pkService.uploadImage(parent, bytes).subscribe(
+
+        url => {
+          this.package.imageUrls.push(url.url);
+          const fullUrl = getFullUrl(url.url);
+          if (this.package.categoryId === '1') {
+            this.images.splice(this.images.length - 2, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
+          } else {
+
+            this.images.splice(this.images.length - 1, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
+          }
+
+          this.galleryElement.set(0);
+
+          this.notificationService.success('图片上传成功');
+          this.loading.close();
+        },
+        error => {
+          this.loading.close();
+          this.notificationService.warn('上传截图失败: ' + error.statusMessage);
+        }
+      );
+
+    }
+
+    fileReader.readAsArrayBuffer(image);
 
   }
+
 
   // childs
   onChildDownload(msg) {

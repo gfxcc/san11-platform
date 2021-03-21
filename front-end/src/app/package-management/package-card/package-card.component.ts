@@ -23,6 +23,7 @@ import { LoadingComponent } from "../../common/components/loading/loading.compon
 import { DownloadService } from "../../service/download.service";
 import { saveAs } from 'file-saver'
 import { PackageDetailComponent } from "../package-detail/package-detail.component";
+import { getFullUrl } from "../../utils/resrouce_util";
 
 
 @Component({
@@ -162,7 +163,7 @@ export class PackageCardComponent implements OnInit {
 
   loadImage() {
     if (this.package.imageUrls.length === 0) {
-      this.screenshot = GlobalConstants.fileServerUrl + '/images/san11-screenshot.jpg';
+      this.screenshot = getFullUrl('images/sire2.jpg');
     } else {
       this.screenshot = GlobalConstants.fileServerUrl + '/' + this.package.imageUrls[0];
     }
@@ -183,7 +184,6 @@ export class PackageCardComponent implements OnInit {
 
 
   onClick() {
-    console.log('click');
     this.dialog.open(PackageDetailComponent, {
       data: {
         package: this.package
@@ -214,7 +214,6 @@ export class DeleteDialog {
   }
 
   onDeleteConfirm() {
-    console.log('In delete');
     this.san11PlatformServiceService.deletePackage(this.package).subscribe(
       value => {
         this.notificationService.success('删除成功');

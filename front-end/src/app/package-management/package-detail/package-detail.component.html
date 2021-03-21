@@ -56,7 +56,6 @@
                         <div class="">
 
                             <button class="button" mat-button mat-raised-button color="primary" (click)="onUpdateDescription()">修改描述</button>
-                            <button class="button" mat-button mat-raised-button color="primary" (click)="onUpdateScreenshot()">修改截图</button>
                         </div>
                     </div>
 
@@ -67,7 +66,11 @@
         </div>
 
         <div class="gallery-div">
-            <gallery class="image-gallery" [items]="images" [thumb]="false"></gallery>
+            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
+
+            <input type="file" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
+            <!-- <button mat-button mat-stroked-button color="accent" (click)="imageInput.click()">更新</button> -->
+
         </div>
     </div>
 
