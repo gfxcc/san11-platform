@@ -77,7 +77,7 @@ export class CreateNewVersionComponent implements OnInit {
       this.newVersion = new Version({
         major: this.latestVersion.major,
         minor: increment(this.latestVersion.minor),
-        patch: this.latestVersion.patch
+        patch: "0"
       });
     }
   }

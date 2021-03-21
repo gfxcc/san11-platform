@@ -33,6 +33,7 @@ import { GalleryModule } from  'ng-gallery';
 import { VersionPanelComponent } from './package-management/version-management/version-panel/version-panel.component';
 import { CreateNewVersionComponent } from "./package-management/version-management/create-new-version/create-new-version.component";
 import { TextDialogComponent } from './common/components/text-dialog/text-dialog.component';
+import { TextInputDialogComponent } from './common/components/text-input-dialog/text-input-dialog.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { TextDialogComponent } from './common/components/text-dialog/text-dialog
     PackageDetailComponent,
     VersionPanelComponent,
     CreateNewVersionComponent,
-    TextDialogComponent
+    TextDialogComponent,
+    TextInputDialogComponent
   ],
   imports: [
     GrpcCoreModule.forRoot(),

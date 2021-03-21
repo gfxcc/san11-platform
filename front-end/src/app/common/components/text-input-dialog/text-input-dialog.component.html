@@ -1,0 +1,18 @@
+<div style="width: 400px;">
+    <form class="form" #form='ngForm' (ngSubmit)="onSubmit(form)">
+        <mat-card-content>
+
+            <mat-form-field class="form-field form-text-input">
+                <mat-label>{{this.title}}</mat-label>
+                <textarea style="height: 150px; width: 100%;" matInput placeholder="新的内容" required ngModel name="input"></textarea>
+            </mat-form-field>
+
+        </mat-card-content>
+
+        <div class="actions">
+            <span class="example-spacer"></span>
+            <button class="button" [disabled]="!form.valid" type="submit" mat-stroked-button color="accent">确定</button>
+        </div>
+    </form>
+
+</div>

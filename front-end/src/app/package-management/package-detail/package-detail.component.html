@@ -38,15 +38,28 @@
 
             <div [hidden]="! (isAdmin() || isAuthor())">
                 <div class="package-controller under-development">
-                    <div [hidden]="! (package.status==='under_review' && isAdmin())">
+                    <div class="admin-zone" *ngIf="adminZone">
                         <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
                     </div>
-                    <span class="example-spacer"></span>
-                    <!-- <button class="button" mat-button mat-stroked-button color="accent" (click)="onHide()">隐藏</button> -->
 
-                    <div>
-                        <button class="button" mat-button mat-raised-button color="warn" (click)="onDelete()">删除</button>
+                    <span [hidden]="!adminZone" class="example-spacer"></span>
+
+                    <div class="author-zone" *ngIf="authorZone">
+
+                        <!-- dangerous zone -->
+                        <div class="">
+                            <button class="button" mat-button mat-raised-button color="warn" (click)="onDelete()">删除</button>
+                        </div>
+
+                        <span class="example-spacer"></span>
+
+                        <div class="">
+
+                            <button class="button" mat-button mat-raised-button color="primary" (click)="onUpdateDescription()">修改描述</button>
+                            <button class="button" mat-button mat-raised-button color="primary" (click)="onUpdateScreenshot()">修改截图</button>
+                        </div>
                     </div>
+
                 </div>
 
             </div>

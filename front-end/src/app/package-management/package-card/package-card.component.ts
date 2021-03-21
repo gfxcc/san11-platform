@@ -58,7 +58,6 @@ export class PackageCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.package);
 
     this.san11PlatformServiceService.getUser(this.package.authorId).subscribe(
       user => this.authorName = user.username

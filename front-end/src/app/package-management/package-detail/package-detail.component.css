@@ -56,11 +56,10 @@
     height: 100%;
     max-width: 350px;
     font-size: xx-large;
-    font-weight: normal;
-    font-family: 'Roboto', arial, sans-serif;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    color: #202124;
 }
 
 .timestamps {
@@ -83,10 +82,6 @@
     height: 50px;
     display: flex;
     margin-bottom: 5px;
-}
-
-.author-info>.name {
-    color: green;
 }
 
 .package-info {
@@ -120,7 +115,7 @@
     padding-bottom: 8px;
 }
 
-.package-controller>.button {
+.button {
     margin-left: 5px;
 }
 
@@ -132,7 +127,12 @@
     font-size: 18px;
     font-weight: normal;
     margin-bottom: 16px;
-    color: green;
+    color: #202124;
     font-family: Arial, sans-serif;
     margin: 5px 0px 5px 0px;
+}
+
+.author-zone {
+    display: flex;
+    flex: auto;
 }
