@@ -173,7 +173,9 @@ export class PackageDetailComponent implements OnInit {
 
 
   @ViewChild('imageInput') imageInputElement: ElementRef
+  @ViewChild('gallery') galleryElementCatched: ElementRef
   onGalleryItemClick(imageIndex: number) {
+    this.galleryElement = this.galleryElementCatched;
     if (!(this.isAdmin() || this.isAuthor())) {
       return;
     }
@@ -197,6 +199,7 @@ export class PackageDetailComponent implements OnInit {
           san11Package => {
             this.images.splice(imageIndex, 1);
             this.notificationService.success("删除成功");
+            this.galleryElement.load(this.images);
           },
           error => {
             this.notificationService.warn("删除截图失败:" + error.statusMessage);
@@ -208,9 +211,7 @@ export class PackageDetailComponent implements OnInit {
   }
 
 
-  @ViewChild('gallery') galleryElementCatched: ElementRef
   onUploadScreenshot(imageInput) {
-    this.galleryElement = this.galleryElementCatched;
 
     const image = imageInput.files[0];
     if (image.size > GlobalConstants.maxImageSize) {
@@ -236,11 +237,10 @@ export class PackageDetailComponent implements OnInit {
           if (this.package.categoryId === '1') {
             this.images.splice(this.images.length - 2, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
           } else {
-
             this.images.splice(this.images.length - 1, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
           }
 
-          this.galleryElement.set(0);
+          this.galleryElement.load(this.images);
 
           this.notificationService.success('图片上传成功');
           this.loading.close();
