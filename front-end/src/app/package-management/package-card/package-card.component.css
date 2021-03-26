@@ -1,8 +1,8 @@
 .package-card {
     max-width: 400px;
-    min-height: 380px;
-    max-height: 450px;
+    height: auto;
     background-color: #ffffff47;
+    background: white;
 }
 
 .author-image {
@@ -16,6 +16,7 @@
 
 .screenshot {
     height: 200px;
+    border-radius: 4px;
 }
 
 .screenshot-div {
@@ -102,17 +103,6 @@ mat-card-header {
 .mat-card-actions {
     margin-bottom: 0px;
     padding-bottom: 2px;
-}
-
-.mat-progress-bar {
-    height: 2px;
-    width: calc(100% + 30px);
-    margin-left: -15px;
-    margin-right: -15px;
-}
-
-.progress-bar-container {
-    height: 2px;
 }
 
 .mat-card {

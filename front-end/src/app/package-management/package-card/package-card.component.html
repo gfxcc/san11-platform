@@ -22,27 +22,11 @@
             <img [hidden]="this.hideScreenshot" [src]="screenshot" (load)="screenshotLoaded()" class="screenshot mat-card-image">
         </div>
 
-        <mat-card-content>
+        <!-- <mat-card-content>
             <p class="mat-card-content-p">
                 {{package.description}}
             </p>
 
-        </mat-card-content>
-        <mat-card-actions class="flex-container">
-            <!-- <button mat-button mat-stroked-button color="primary" [disabled]="!(hasBinary() && (isAdmin() || isAuthor() || package.status==='normal'))" (click)="onDownload()">下载</button> -->
-
-            <span class="example-spacer"></span>
-
-            <!-- <span [hidden]="! (isAuthor() || isAdmin())"> -->
-            <!-- <input type="file" [accept]="this.acceptFileType" hidden="true" #binaryInput (change)="onUpdateBinary(binaryInput)"> -->
-            <!-- <button mat-button mat-stroked-button color="accent" (click)="binaryInput.click()">更新</button> -->
-
-            <!-- <button mat-button mat-stroked-button color="warn" (click)="openDeleteDialog()">删除</button> -->
-            <!-- </span> -->
-        </mat-card-actions>
-
-        <div class="progress-bar-container">
-            <mat-progress-bar *ngIf="downloadProgressBar" color="primary" mode="determinate" [value]="downloadProgress"></mat-progress-bar>
-        </div>
+        </mat-card-content> -->
     </mat-card>
 </div>
