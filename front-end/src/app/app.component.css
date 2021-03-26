@@ -54,19 +54,19 @@
 
 .side-section {
     width: 256px;
-    height: calc(100% - 90px);
+    height: calc(100% - 60px);
     flex: none;
     background-color: #fff;
     display: block;
     position: fixed;
-    top: 80px;
+    top: 64px;
 }
 
 .create-button {
     border-radius: 24px;
     height: 48px;
     width: 200px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 20px;
     display: inline-flex;
     align-items: center;
