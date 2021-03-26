@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { San11PlatformServiceService } from './service/san11-platform-service.service';
@@ -10,6 +10,15 @@ import { NotificationService } from "./common/notification.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @ViewChild('categoryNav') categoryNav;
+
+  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+  categories = [
+    { value: '1', text: 'SIRE 插件', link: ['/categories', 1], icon: 'extension', disabled: false , isDefault: true},
+    { value: '2', text: '修改工具', link: ['/categories', 2], icon: 'handyman', disabled: false },
+    { value: '3', text: 'MOD (未开放)', link: ['/categories', 3], icon: 'auto_fix_high', disabled: true }
+  ];
+
   title = 'san11-platform';
 
   today_visit_count: number = 1;
@@ -62,7 +71,35 @@ export class AppComponent {
 
   }
 
-  modDashboardOnClick() {
-    this.notificationService.warn('MOD专区尚在开发中');
+  onCategoryChange(selection) {
+    const selectedItem = selection.option.value;
+    if (selectedItem.disabled) {
+      this.notificationService.warn(selectedItem.text + ' 尚在开发中');
+      this.categoryNav.deselectAll();
+      return;
+    }
+    this.router.navigate(selectedItem.link);
+  }
+
+  onSignInClick() {
+    console.log(this.categoryNav);
+    this.router.navigate(['signin']);
+    this.categoryNav.deselectAll();
+  }
+
+  onSignUpClick() {
+    console.log(this.categoryNav);
+    this.router.navigate(['register']);
+    this.categoryNav.deselectAll();
+  }
+
+
+  onClickCreateTool() {
+    if (!this.signedIn()) {
+      this.notificationService.warn('上传工具需要登陆');
+    } else {
+      this.uploadTool();
+      this.categoryNav.deselectAll();
+    }
   }
 }
