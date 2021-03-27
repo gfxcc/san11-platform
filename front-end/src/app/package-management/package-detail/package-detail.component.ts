@@ -25,6 +25,9 @@ export interface DialogData {
   styleUrls: ['./package-detail.component.css']
 })
 export class PackageDetailComponent implements OnInit {
+  @ViewChild('imageInput') imageInputElement: ElementRef
+  @ViewChild('gallery') galleryElementCatched: ElementRef
+  @ViewChild('descriptionTitle') descriptionTitleElement: ElementRef
 
   images: ImageItem[] = [];
   package: Package = new Package({
@@ -95,9 +98,16 @@ export class PackageDetailComponent implements OnInit {
       }
     );
 
-    console.log(this.images);
+  }
 
-
+  ngAfterViewInit(): void {
+    if (this.isAuthor()) {
+      this.descriptionTitleElement.nativeElement.className = 'clickable';
+      this.descriptionTitleElement.nativeElement.onclick = () => { 
+        console.log('test');
+        this.onUpdateDescription();
+      };
+    }
   }
 
   // admin
@@ -172,9 +182,9 @@ export class PackageDetailComponent implements OnInit {
 
 
 
-  @ViewChild('imageInput') imageInputElement: ElementRef
-  @ViewChild('gallery') galleryElementCatched: ElementRef
   onGalleryItemClick(imageIndex: number) {
+      console.log(this.galleryElementCatched);
+
     this.galleryElement = this.galleryElementCatched;
     if (!(this.isAdmin() || this.isAuthor())) {
       return;

@@ -1,5 +1,12 @@
 <div class="main">
     <div class="top-section">
+        <div class="gallery-div">
+            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
+
+            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
+            <!-- <button mat-button mat-stroked-button color="accent" (click)="imageInput.click()">更新</button> -->
+
+        </div>
         <div class="col-left under-development">
             <div class="heading under-development">
                 <p class="title"> {{this.package.name}} </p>
@@ -32,7 +39,9 @@
             </div>
 
             <div class="package-info under-development">
-                <div class="title">描述</div>
+                <div class="title">
+                    <span #descriptionTitle class="">描述</span>
+                </div>
                 <div class="content"> {{this.package.description}} </div>
             </div>
 
@@ -44,19 +53,21 @@
 
                     <span [hidden]="!adminZone" class="example-spacer"></span>
 
+                    <span class="example-spacer"></span>
                     <div class="author-zone" *ngIf="authorZone">
 
+                        <span class="example-spacer"></span>
                         <!-- dangerous zone -->
                         <div class="">
                             <button class="button" mat-button mat-raised-button color="warn" (click)="onDelete()">删除</button>
                         </div>
 
-                        <span class="example-spacer"></span>
+                        <!-- <span class="example-spacer"></span>
 
                         <div class="">
 
                             <button class="button" mat-button mat-raised-button color="primary" (click)="onUpdateDescription()">修改描述</button>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>
@@ -65,13 +76,7 @@
 
         </div>
 
-        <div class="gallery-div">
-            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
 
-            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
-            <!-- <button mat-button mat-stroked-button color="accent" (click)="imageInput.click()">更新</button> -->
-
-        </div>
     </div>
 
     <div class="version-info under-development">
