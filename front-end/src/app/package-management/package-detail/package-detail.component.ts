@@ -134,18 +134,38 @@ export class PackageDetailComponent implements OnInit {
   // author
   onDelete(){
     if (confirm('确认要删除 ' + this.package.name + ' 吗？')) {
-      this.san11pkService.deletePackage(this.package).subscribe(
-        status => {
-          this.notificationService.success('成功删除');
-          
-          this.router.navigate(['/']).then(() => {
-            window.location.reload();
-          });
-        },
-        error => {
-          this.notificationService.warn('删除失败:'+error.statusMessage);
-        }
-      );
+      if (this.isAdmin()) {
+        this.san11pkService.deletePackage(this.package).subscribe(
+          status => {
+            this.notificationService.success('成功删除');
+
+            this.router.navigate(['/']).then(() => {
+              window.location.reload();
+            });
+          },
+          error => {
+            this.notificationService.warn('删除失败:' + error.statusMessage);
+          }
+        );
+      } else {
+        const updatedPakcage = new Package({
+          packageId: this.package.packageId,
+          status: 'hidden'
+        });
+        this.san11pkService.updatePackage(updatedPakcage).subscribe(
+          san11Package =>  {
+            this.notificationService.success('成功删除');
+
+            this.router.navigate(['/']).then(() => {
+              window.location.reload();
+            });
+          }, 
+          error => {
+            this.notificationService.warn('删除失败: ' + error.statusMessage);
+          }
+        );
+
+      }
     }
   }
 

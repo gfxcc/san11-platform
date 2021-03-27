@@ -50,8 +50,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             for package in Package.list_packages(
                 request.category_id
             ) if package.status == 'normal' or
-            (user and (user.user_type == 'admin' or
-                       user.user_id == package.author_id))
+            (user and user.user_id == package.author_id and package.status != 'deleted') or
+            (user and user.user_type == 'admin')
             # package's status is normal or user is admin or author of the package
         ])
 
