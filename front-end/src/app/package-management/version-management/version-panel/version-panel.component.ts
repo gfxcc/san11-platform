@@ -140,6 +140,9 @@ export class VersionPanelComponent implements OnInit {
               this.downloadEvent.emit();
               this.binaryOnDownload.downloadCount = increment(this.binaryOnDownload.downloadCount);
             }
+          },
+          error => {
+            this.notificationService.warn('下载失败: ' + error.name);
           }
         );
       },
@@ -150,7 +153,7 @@ export class VersionPanelComponent implements OnInit {
   }
 
   onDelete(binary: Binary) {
-    if (!confirm('确定要删除 '+version2str(binary.version)+' 吗?')) {
+    if (!confirm('确定要删除 ' + version2str(binary.version) + ' 吗?')) {
       return;
     }
     this.san11pkService.deleteBinary(binary.binaryId).subscribe(
@@ -159,7 +162,7 @@ export class VersionPanelComponent implements OnInit {
         this.fetchBinaries();
       },
       error => {
-        this.notificationService.warn('删除失败:'+error.statusMessage);
+        this.notificationService.warn('删除失败:' + error.statusMessage);
       }
     );
 
