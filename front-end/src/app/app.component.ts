@@ -17,7 +17,7 @@ export class AppComponent {
 
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   categories = [
-    { value: '1', text: 'SIRE 插件', link: ['/categories', 1], icon: 'extension', disabled: false, isDefault: true },
+    { value: '1', text: 'SIRE2 插件', link: ['/categories', 1], icon: 'extension', disabled: false, isDefault: true },
     { value: '2', text: '修改工具', link: ['/categories', 2], icon: 'handyman', disabled: false },
     { value: '3', text: 'MOD (未开放)', link: ['/categories', 3], icon: 'auto_fix_high', disabled: true }
   ];
