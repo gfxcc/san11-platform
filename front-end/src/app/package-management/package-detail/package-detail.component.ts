@@ -33,7 +33,7 @@ export class PackageDetailComponent implements OnInit {
   package: Package = new Package({
     packageId: "1",
     name: "战场迷雾",
-    description:"【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野",
+    description: "【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野",
     createTimestamp: "2021-02-21",
     categoryId: "1",
     status: "normal",
@@ -58,7 +58,7 @@ export class PackageDetailComponent implements OnInit {
     private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private notificationService: NotificationService,
-  ) { 
+  ) {
     this.package = data.package;
 
 
@@ -76,7 +76,7 @@ export class PackageDetailComponent implements OnInit {
 
     this.package.imageUrls.forEach(imageUrl => {
       const fullImageUrl = getFullUrl(imageUrl);
-      this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl}));
+      this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
     });
 
     if (this.package.categoryId === '1') {
@@ -86,7 +86,7 @@ export class PackageDetailComponent implements OnInit {
     }
     // append image for upload 
     if (this.isAuthor() || this.isAdmin()) {
-      this.images.push(new ImageItem({src: '../../../assets/images/upload.jpg', thumb: '../../../assets/images/upload.jpg'}));
+      this.images.push(new ImageItem({ src: '../../../assets/images/upload.jpg', thumb: '../../../assets/images/upload.jpg' }));
     }
 
     this.san11pkService.getUser(this.package.authorId).subscribe(
@@ -103,7 +103,7 @@ export class PackageDetailComponent implements OnInit {
   ngAfterViewInit(): void {
     if (this.isAuthor()) {
       this.descriptionTitleElement.nativeElement.className = 'clickable';
-      this.descriptionTitleElement.nativeElement.onclick = () => { 
+      this.descriptionTitleElement.nativeElement.onclick = () => {
         console.log('test');
         this.onUpdateDescription();
       };
@@ -132,7 +132,7 @@ export class PackageDetailComponent implements OnInit {
 
 
   // author
-  onDelete(){
+  onDelete() {
     if (confirm('确认要删除 ' + this.package.name + ' 吗？')) {
       if (this.isAdmin()) {
         this.san11pkService.deletePackage(this.package).subscribe(
@@ -153,13 +153,13 @@ export class PackageDetailComponent implements OnInit {
           status: 'hidden'
         });
         this.san11pkService.updatePackage(updatedPakcage).subscribe(
-          san11Package =>  {
+          san11Package => {
             this.notificationService.success('成功删除');
 
             this.router.navigate(['/']).then(() => {
               window.location.reload();
             });
-          }, 
+          },
           error => {
             this.notificationService.warn('删除失败: ' + error.statusMessage);
           }
@@ -197,34 +197,32 @@ export class PackageDetailComponent implements OnInit {
         }
       }
     );
-    
+
   }
 
 
 
   onGalleryItemClick(imageIndex: number) {
-      console.log(this.galleryElementCatched);
-
     this.galleryElement = this.galleryElementCatched;
     if (!(this.isAdmin() || this.isAuthor())) {
       return;
     }
 
-    if (imageIndex === this.images.length-1) {
+    if (imageIndex === this.images.length - 1) {
       // upload new image
       this.imageInputElement.nativeElement.click();
 
     } else {
       // ask for delete
       if (confirm("确定要删除这张截图吗?")) {
-        if (this.package.categoryId === '1' && imageIndex === this.images.length-2) {
+        if (this.package.categoryId === '1' && imageIndex === this.images.length - 2) {
           this.notificationService.warn('不可删除系统预设图片');
           return;
         }
         this.package.imageUrls.splice(imageIndex, 1);
         this.san11pkService.updatePackage(new Package({
           packageId: this.package.packageId,
-          imageUrls: this.package.imageUrls
+          imageUrls: this.package.imageUrls.length > 0 ? this.package.imageUrls : ['empty']
         })).subscribe(
           san11Package => {
             this.images.splice(imageIndex, 1);
@@ -235,7 +233,6 @@ export class PackageDetailComponent implements OnInit {
             this.notificationService.warn("删除截图失败:" + error.statusMessage);
           }
         );
-
       }
     }
   }
@@ -245,7 +242,7 @@ export class PackageDetailComponent implements OnInit {
 
     const image = imageInput.files[0];
     if (image.size > GlobalConstants.maxImageSize) {
-      alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize/1024/1024).toString() + 'MB');
+      alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize / 1024 / 1024).toString() + 'MB');
       return;
     }
 

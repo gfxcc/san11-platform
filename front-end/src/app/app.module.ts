@@ -29,11 +29,12 @@ import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { LoadingComponent } from './common/components/loading/loading.component'
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 
-import { GalleryModule } from  'ng-gallery';
+import { GalleryModule } from 'ng-gallery';
 import { VersionPanelComponent } from './package-management/version-management/version-panel/version-panel.component';
 import { CreateNewVersionComponent } from "./package-management/version-management/create-new-version/create-new-version.component";
 import { TextDialogComponent } from './common/components/text-dialog/text-dialog.component';
 import { TextInputDialogComponent } from './common/components/text-input-dialog/text-input-dialog.component';
+import { UserDetailComponent, PasswordDialog } from './account-management/user-detail/user-detail.component';
 
 
 @NgModule({
@@ -54,12 +55,14 @@ import { TextInputDialogComponent } from './common/components/text-input-dialog/
     VersionPanelComponent,
     CreateNewVersionComponent,
     TextDialogComponent,
-    TextInputDialogComponent
+    TextInputDialogComponent,
+    UserDetailComponent,
+    PasswordDialog
   ],
   imports: [
     GrpcCoreModule.forRoot(),
     GrpcWebClientModule.forRoot({
-      settings: { host:  GlobalConstants.san11ServerUrl },
+      settings: { host: GlobalConstants.san11ServerUrl },
     }),
     BrowserModule,
     BrowserAnimationsModule,

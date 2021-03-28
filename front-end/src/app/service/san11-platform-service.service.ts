@@ -15,6 +15,7 @@ import { SignOutRequest } from '../../proto/san11-platform.pb'
 import { DownloadBinaryRequest } from '../../proto/san11-platform.pb'
 import { GetStatisticRequest } from '../../proto/san11-platform.pb'
 import { DeleteBinaryRequest } from "../../proto/san11-platform.pb";
+import { UpdateUserRequest, UpdatePasswordRequest } from "../../proto/san11-platform.pb";
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
 import { Cacheable } from 'ts-cacheable';
@@ -37,18 +38,18 @@ export class San11PlatformServiceService {
     return this.severClient.listPackages(request, this.getMetadata());
   }
 
-  createPackage(san11Package: Package) : Observable<Package> {
-    const request = new CreatePackageRequest({package: san11Package});
+  createPackage(san11Package: Package): Observable<Package> {
+    const request = new CreatePackageRequest({ package: san11Package });
     return this.severClient.createPackage(request, this.getMetadata());
   }
 
-  updatePackage(san11Package: Package) : Observable<Package> {
-    const request = new UpdatePackageRequest({package: san11Package});
+  updatePackage(san11Package: Package): Observable<Package> {
+    const request = new UpdatePackageRequest({ package: san11Package });
     return this.severClient.updatePackage(request, this.getMetadata());
   }
 
-  deletePackage(san11Package: Package) : Observable<Empty> {
-    const request = new DeletePackageRequest({package: new Package({packageId: san11Package.packageId})});
+  deletePackage(san11Package: Package): Observable<Empty> {
+    const request = new DeletePackageRequest({ package: new Package({ packageId: san11Package.packageId }) });
     return this.severClient.deletePackage(request, this.getMetadata());
   }
 
@@ -60,25 +61,25 @@ export class San11PlatformServiceService {
   //   return MOD_MAKER_PACKAGES;
   // }
 
-  uploadBinary(parent: string, binary: Binary, data) : Observable<Status> {
-    const requst = new UploadBinaryRequest({ parent: parent, binary: binary, data: data});
+  uploadBinary(parent: string, binary: Binary, data): Observable<Status> {
+    const requst = new UploadBinaryRequest({ parent: parent, binary: binary, data: data });
     return this.severClient.uploadBinary(requst, this.getMetadata());
   }
 
-  downloadBinary(parent: string, binaryId: string) : Observable<Binary> {
-    const request = new DownloadBinaryRequest({parent: parent, binaryId: binaryId});
+  downloadBinary(parent: string, binaryId: string): Observable<Binary> {
+    const request = new DownloadBinaryRequest({ parent: parent, binaryId: binaryId });
     return this.severClient.downloadBinary(request, this.getMetadata());
   }
 
-  deleteBinary(binaryId: string) : Observable<Empty> {
-    const request = new DeleteBinaryRequest({binaryId: binaryId});
+  deleteBinary(binaryId: string): Observable<Empty> {
+    const request = new DeleteBinaryRequest({ binaryId: binaryId });
     return this.severClient.deleteBinary(request, this.getMetadata());
   }
 
   // images
 
-  uploadImage(parent: string, image: Uint8Array) : Observable<Url>{
-    const requst = new UploadImageRequest({ parent: parent, image: image});
+  uploadImage(parent: string, image: Uint8Array): Observable<Url> {
+    const requst = new UploadImageRequest({ parent: parent, image: image });
     return this.severClient.uploadImage(requst, this.getMetadata());
   }
 
@@ -118,18 +119,28 @@ export class San11PlatformServiceService {
   @Cacheable()
   getUser(userId): Observable<User> {
     // TODO: add a cache layer
-    const request = new GetUserRequest({userId: userId});
-    return this.severClient.getUser(request);
+    const request = new GetUserRequest({ userId: userId });
+    return this.severClient.getUser(request, this.getMetadata());
+  }
+
+  updateUser(user: User): Observable<User> {
+    const request = new UpdateUserRequest({ user: user });
+    return this.severClient.updateUser(request, this.getMetadata());
+  }
+
+  updatePassword(userId: string, password: string): Observable<Empty> {
+    const request = new UpdatePasswordRequest({ userId: userId, password: password });
+    return this.severClient.updatePassword(request, this.getMetadata());
   }
 
   getStatistic(): Observable<Statistic> {
-    const request = new GetStatisticRequest({date: null});
+    const request = new GetStatisticRequest({ date: null });
     return this.severClient.getStatistic(request, this.getMetadata());
   }
 
   // UTILS
 
   getMetadata() {
-    return new GrpcMetadata({sid: localStorage.getItem('sid')});
+    return new GrpcMetadata({ sid: localStorage.getItem('sid') });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { Package } from '../../../proto/san11-platform.pb'
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -35,11 +35,13 @@ export class PackageCardComponent implements OnInit {
   @Input() package: Package;
 
   authorName: string;
+  authorImage: string;
 
   screenshot: Url = undefined;
   selectedBinary;
 
   hideScreenshot: boolean = true;
+  hideAuthorImage: boolean = true;
 
 
   loadingDialog;
@@ -56,15 +58,26 @@ export class PackageCardComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private san11PlatformServiceService: San11PlatformServiceService,
     private downloads: DownloadService,
+    private renderer: Renderer2,
   ) { }
 
   ngOnInit(): void {
-
     this.san11PlatformServiceService.getUser(this.package.authorId).subscribe(
-      user => this.authorName = user.username
+      user => {
+        this.authorName = user.username;
+        if (user.imageUrl != '') {
+          this.authorImage = getFullUrl(user.imageUrl);
+        } else {
+          this.authorImage = '../../../assets/images/zhuge.jpg';
+        }
+      }
     );
     this.loadImage();
     this.acceptFileType = this.package.categoryId === '1' ? '.scp, .scp-en' : '.rar';
+  }
+
+  ngAfterViewInit() {
+    // this.renderer.setStyle(this.authorImageElement.nativeElement, 'background-image', "url('" + this.authorImage + "')");
   }
 
   // openDeleteDialog() {
@@ -79,7 +92,7 @@ export class PackageCardComponent implements OnInit {
 
     const selectedBinary = binaryInput.files[0];
     if (selectedBinary.size > GlobalConstants.maxBinarySize) {
-      alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize/1024/1024).toString() + 'MB');
+      alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize / 1024 / 1024).toString() + 'MB');
       return;
     }
     this.selectedBinary = selectedBinary;
@@ -165,13 +178,9 @@ export class PackageCardComponent implements OnInit {
     if (this.package.imageUrls.length === 0) {
       this.screenshot = getFullUrl('images/sire2.jpg');
     } else {
-      this.screenshot = GlobalConstants.fileServerUrl + '/' + this.package.imageUrls[0];
+      this.screenshot = getFullUrl(this.package.imageUrls[0]);
     }
 
-  }
-
-  screenshotLoaded() {
-    this.hideScreenshot = false;
   }
 
   isAdmin() {
@@ -222,7 +231,7 @@ export class DeleteDialog {
         });
       },
       error => {
-        this.notificationService.warn('删除失败:'+error.statusMessage);
+        this.notificationService.warn('删除失败:' + error.statusMessage);
       }
     );
   }

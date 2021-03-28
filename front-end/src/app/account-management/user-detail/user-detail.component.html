@@ -1,0 +1,43 @@
+<div class="main">
+    <div class="top-section">
+        <div class="gallery-div">
+            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
+            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
+        </div>
+        <div class="col-right under-development">
+            <div class="heading under-development">
+                <p class="title"> {{this.user.username}} </p>
+
+                <span class="example-spacer"></span>
+            </div>
+
+            <form class="form" #userForm='ngForm' (ngSubmit)="onUpdateUserForm(userForm)">
+                <mat-card-content>
+                    <mat-form-field class="form-field">
+                        <input matInput #emailInput [(ngModel)]="this.user.email" [disabled]="false" placeholder="email" name="email" />
+                    </mat-form-field>
+
+                    <mat-form-field class="form-field">
+                        <input matInput #websiteInput [(ngModel)]="this.user.website" [disabled]="false" placeholder="网站" name="website" />
+                    </mat-form-field>
+                </mat-card-content>
+
+                <div [hidden]="!this.iAmTheUser()">
+                    <div class="control-section under-development">
+                        <button class="button" mat-raised-button color="primary" (click)="onUpdatePasswordClick()">修改密码</button>
+
+                        <span class="example-spacer"></span>
+
+                        <button class="button" [disabled]="!userForm.valid" type="submit" mat-stroked-button color="primary">更新</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- <div class="version-info under-development">
+        <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)"> </app-version-panel>
+    </div> -->
+
+</div>

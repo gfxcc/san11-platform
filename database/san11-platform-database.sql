@@ -29,10 +29,11 @@ CREATE TABLE users (
     email TEXT NOT NULL,
     user_type TEXT NOT NULL,
     create_timestamp TIMESTAMP,
-    image_url TEXT
+    image_url TEXT,
+    website TEXT
 );
-INSERT INTO users VALUES (DEFAULT, 'admin', 'admin', 'a@a.com', 'admin', current_timestamp, NULL);
-INSERT INTO users VALUES (DEFAULT, 'yong', 'yong', 'a@a.com', 'regular', current_timestamp, NULL);
+INSERT INTO users VALUES (DEFAULT, 'admin', 'admin', 'a@a.com', 'admin', current_timestamp, NULL, NULL);
+INSERT INTO users VALUES (DEFAULT, 'yong', 'yong', 'a@a.com', 'regular', current_timestamp, NULL, NULL);
 
 CREATE TABLE sessions (
     sid TEXT NOT NULL,

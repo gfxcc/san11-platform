@@ -3385,6 +3385,308 @@ export module SignUpResponse {
 }
 
 /**
+ * Message implementation for routeguide.UpdateUserRequest
+ */
+export class UpdateUserRequest implements GrpcMessage {
+  static id = 'routeguide.UpdateUserRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UpdateUserRequest();
+    UpdateUserRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UpdateUserRequest) {
+    _instance.user = _instance.user || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UpdateUserRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.user = new User();
+          _reader.readMessage(_instance.user, User.deserializeBinaryFromReader);
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UpdateUserRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UpdateUserRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.user) {
+      _writer.writeMessage(
+        1,
+        _instance.user as any,
+        User.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _user?: User;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UpdateUserRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UpdateUserRequest.AsObject>) {
+    _value = _value || {};
+    this.user = _value.user ? new User(_value.user) : undefined;
+    UpdateUserRequest.refineValues(this);
+  }
+  get user(): User | undefined {
+    return this._user;
+  }
+  set user(value: User | undefined) {
+    this._user = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UpdateUserRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UpdateUserRequest.AsObject {
+    return {
+      user: this.user ? this.user.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UpdateUserRequest.AsProtobufJSON {
+    return {
+      user: this.user ? this.user.toProtobufJSON(options) : null
+    };
+  }
+}
+export module UpdateUserRequest {
+  /**
+   * Standard JavaScript object representation for UpdateUserRequest
+   */
+  export interface AsObject {
+    user?: User.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for UpdateUserRequest
+   */
+  export interface AsProtobufJSON {
+    user?: User.AsProtobufJSON | null;
+  }
+}
+
+/**
+ * Message implementation for routeguide.UpdatePasswordRequest
+ */
+export class UpdatePasswordRequest implements GrpcMessage {
+  static id = 'routeguide.UpdatePasswordRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UpdatePasswordRequest();
+    UpdatePasswordRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UpdatePasswordRequest) {
+    _instance.userId = _instance.userId || '0';
+    _instance.password = _instance.password || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UpdatePasswordRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.userId = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.password = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UpdatePasswordRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UpdatePasswordRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.userId) {
+      _writer.writeInt64String(1, _instance.userId);
+    }
+    if (_instance.password) {
+      _writer.writeString(2, _instance.password);
+    }
+  }
+
+  private _userId?: string;
+  private _password?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UpdatePasswordRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UpdatePasswordRequest.AsObject>) {
+    _value = _value || {};
+    this.userId = _value.userId;
+    this.password = _value.password;
+    UpdatePasswordRequest.refineValues(this);
+  }
+  get userId(): string | undefined {
+    return this._userId;
+  }
+  set userId(value: string | undefined) {
+    this._userId = value;
+  }
+  get password(): string | undefined {
+    return this._password;
+  }
+  set password(value: string | undefined) {
+    this._password = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UpdatePasswordRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UpdatePasswordRequest.AsObject {
+    return {
+      userId: this.userId,
+      password: this.password
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UpdatePasswordRequest.AsProtobufJSON {
+    return {
+      userId: this.userId,
+      password: this.password
+    };
+  }
+}
+export module UpdatePasswordRequest {
+  /**
+   * Standard JavaScript object representation for UpdatePasswordRequest
+   */
+  export interface AsObject {
+    userId?: string;
+    password?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for UpdatePasswordRequest
+   */
+  export interface AsProtobufJSON {
+    userId?: string;
+    password?: string;
+  }
+}
+
+/**
  * Message implementation for routeguide.GetStatisticRequest
  */
 export class GetStatisticRequest implements GrpcMessage {
@@ -4379,6 +4681,7 @@ export class User implements GrpcMessage {
     _instance.email = _instance.email || '';
     _instance.userType = _instance.userType || '';
     _instance.imageUrl = _instance.imageUrl || '';
+    _instance.website = _instance.website || '';
   }
 
   /**
@@ -4405,6 +4708,9 @@ export class User implements GrpcMessage {
           break;
         case 5:
           _instance.imageUrl = _reader.readString();
+          break;
+        case 6:
+          _instance.website = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -4435,6 +4741,9 @@ export class User implements GrpcMessage {
     if (_instance.imageUrl) {
       _writer.writeString(5, _instance.imageUrl);
     }
+    if (_instance.website) {
+      _writer.writeString(6, _instance.website);
+    }
   }
 
   private _userId?: string;
@@ -4442,6 +4751,7 @@ export class User implements GrpcMessage {
   private _email?: string;
   private _userType?: string;
   private _imageUrl?: string;
+  private _website?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4454,6 +4764,7 @@ export class User implements GrpcMessage {
     this.email = _value.email;
     this.userType = _value.userType;
     this.imageUrl = _value.imageUrl;
+    this.website = _value.website;
     User.refineValues(this);
   }
   get userId(): string | undefined {
@@ -4486,6 +4797,12 @@ export class User implements GrpcMessage {
   set imageUrl(value: string | undefined) {
     this._imageUrl = value;
   }
+  get website(): string | undefined {
+    return this._website;
+  }
+  set website(value: string | undefined) {
+    this._website = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -4506,7 +4823,8 @@ export class User implements GrpcMessage {
       username: this.username,
       email: this.email,
       userType: this.userType,
-      imageUrl: this.imageUrl
+      imageUrl: this.imageUrl,
+      website: this.website
     };
   }
 
@@ -4531,7 +4849,8 @@ export class User implements GrpcMessage {
       username: this.username,
       email: this.email,
       userType: this.userType,
-      imageUrl: this.imageUrl
+      imageUrl: this.imageUrl,
+      website: this.website
     };
   }
 }
@@ -4545,6 +4864,7 @@ export module User {
     email?: string;
     userType?: string;
     imageUrl?: string;
+    website?: string;
   }
 
   /**
@@ -4556,6 +4876,7 @@ export module User {
     email?: string;
     userType?: string;
     imageUrl?: string;
+    website?: string;
   }
 }
 

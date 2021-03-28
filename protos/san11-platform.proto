@@ -31,7 +31,8 @@ service RouteGuide {
   rpc SignOut(SignOutRequest) returns (Status) {}
   rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
   rpc GetUser(GetUserRequest) returns (User) {}
-
+  rpc UpdateUser(UpdateUserRequest) returns (User) {}
+  rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
 
   //
   rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}
@@ -147,6 +148,15 @@ message SignUpResponse {
     string sid = 3;
 }
 
+message UpdateUserRequest {
+    User user = 1;
+}
+
+message UpdatePasswordRequest {
+    int64 user_id = 1;
+    string password = 2;
+}
+
 //
 message GetStatisticRequest {
     string date = 1;
@@ -194,6 +204,7 @@ message User {
     string email = 3;
     string user_type = 4;
     string image_url = 5;
+    string website = 6;
 }
 
 message Version {
