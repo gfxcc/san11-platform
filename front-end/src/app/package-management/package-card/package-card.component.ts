@@ -59,21 +59,25 @@ export class PackageCardComponent implements OnInit {
     private san11PlatformServiceService: San11PlatformServiceService,
     private downloads: DownloadService,
     private renderer: Renderer2,
-  ) { }
+  ) {
+
+
+  }
 
   ngOnInit(): void {
     this.san11PlatformServiceService.getUser(this.package.authorId).subscribe(
       user => {
         this.authorName = user.username;
-        if (user.imageUrl != '') {
-          this.authorImage = getFullUrl(user.imageUrl);
-        } else {
-          this.authorImage = '../../../assets/images/zhuge.jpg';
-        }
       }
     );
     this.loadImage();
     this.acceptFileType = this.package.categoryId === '1' ? '.scp, .scp-en' : '.rar';
+
+    if (this.package.authorImageUrl != '') {
+      this.authorImage = getFullUrl(this.package.authorImageUrl);
+    } else {
+      this.authorImage = '../../../assets/images/zhuge.jpg';
+    }
   }
 
   ngAfterViewInit() {

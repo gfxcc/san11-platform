@@ -48,6 +48,23 @@ class Package:
     def url(self):
         return f'categories/{self.category_id}/packages/{self.package_id}'
 
+    @property
+    def author_id(self) -> int:
+        return self._author_id
+    
+    @author_id.setter
+    def author_id(self, author_id: int) -> None:
+        self._author_id = author_id
+        self.author_image_url = ''
+        try:
+            sql = 'SELECT image_url FROM users WHERE user_id=%(user_id)s'
+            resp = run_sql_with_param_and_fetch_one(sql, {
+                'user_id': author_id
+            })
+            self.author_image_url = resp[0]
+        except Exception as err:
+            logger.error(f'Failed to load author_image_url for user_id={author_id}: {err}')
+
     def __str__(self):
         d = {
             'package_id': self.package_id,
@@ -86,6 +103,7 @@ class Package:
             category_id=self.category_id,
             status=self.status,
             author_id=self.author_id,
+            author_image_url=self.author_image_url,
             image_urls=self.image_urls,
             download_count=self.download_count
         )
