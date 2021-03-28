@@ -11,7 +11,7 @@ export function getAcceptFileType(categoryId: string): string {
     if (categoryId === '1') {
         return '.scp, .scp-en';
     } else {
-        return '.rar';
+        return '.rar, .zip, .7z';
     }
     return '';
 }

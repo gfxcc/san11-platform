@@ -14,7 +14,7 @@ export function getBinaryFilename(san11Package: Package, binary: Binary): string
     if (san11Package.categoryId === '1') {
         extension = 'scp';
     } else {
-        extension = 'rar'
+        extension = 'zip'
     }
     return filenameBase.replace('/\ /-', 'best') + '.' + extension;
 }
