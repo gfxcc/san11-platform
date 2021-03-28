@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 
 import { San11PlatformServiceService } from './service/san11-platform-service.service';
 import { NotificationService } from "./common/notification.service";
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { UserDetailComponent, UserData } from "./account-management/user-detail/user-detail.component";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +17,7 @@ export class AppComponent {
 
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   categories = [
-    { value: '1', text: 'SIRE 插件', link: ['/categories', 1], icon: 'extension', disabled: false , isDefault: true},
+    { value: '1', text: 'SIRE 插件', link: ['/categories', 1], icon: 'extension', disabled: false, isDefault: true },
     { value: '2', text: '修改工具', link: ['/categories', 2], icon: 'handyman', disabled: false },
     { value: '3', text: 'MOD (未开放)', link: ['/categories', 3], icon: 'auto_fix_high', disabled: true }
   ];
@@ -27,13 +30,14 @@ export class AppComponent {
   constructor(
     private notificationService: NotificationService,
     private san11PlatformServiceService: San11PlatformServiceService,
+    private dialog: MatDialog,
     private router: Router) {
-      this.san11PlatformServiceService.getStatistic().subscribe(
-        statistic => {
-          this.today_visit_count = Number(statistic.visitCount);
-          this.today_download_count = Number(statistic.downloadCount);
-        }
-      );
+    this.san11PlatformServiceService.getStatistic().subscribe(
+      statistic => {
+        this.today_visit_count = Number(statistic.visitCount);
+        this.today_download_count = Number(statistic.downloadCount);
+      }
+    );
   }
 
 
@@ -45,6 +49,14 @@ export class AppComponent {
   }
   userId() {
     return localStorage.getItem('userId');
+  }
+
+  onUserDetail() {
+    this.dialog.open(UserDetailComponent, {
+      data: {
+        userId: localStorage.getItem('userId')
+      }
+    });
   }
 
   onSignOut() {

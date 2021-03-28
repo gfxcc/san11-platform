@@ -1,0 +1,53 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-section {
+    display: flex;
+    width: auto;
+    height: auto;
+}
+
+.gallery-div {
+    height: auto;
+}
+
+.image-gallery {
+    width: 200px;
+    height: 200px;
+    background-color: transparent;
+    border: 1px solid grey;
+}
+
+.col-right {
+    width: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 10px;
+}
+
+.heading {
+    /* border-bottom: solid 1px grey; */
+}
+
+.title {
+    font-size: 28px;
+    font-weight: normal;
+    color: #202124;
+    font-family: Arial, sans-serif;
+    margin: 5px 0px 5px 5px;
+}
+
+.form-field {
+    width: 100%;
+}
+
+.control-section {
+    display: flex;
+}

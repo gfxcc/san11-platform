@@ -6,8 +6,11 @@
 }
 
 .author-image {
-    background-image: url('../../../assets/images/zhuge.jpg');
+    /* background-image: url('../../../assets/images/zhuge.jpg'); */
     background-size: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
 .met-card-title {
