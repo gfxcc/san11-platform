@@ -175,7 +175,7 @@ export class PackageDetailComponent implements OnInit {
     this.dialog.open(TextInputDialogComponent, {
       data: {
         title: "描述",
-        description: this.package.description
+        preSetText: this.package.description
       }
     }).afterClosed().subscribe(
       data => {
