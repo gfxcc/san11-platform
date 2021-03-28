@@ -4106,6 +4106,7 @@ export class Package implements GrpcMessage {
     _instance.categoryId = _instance.categoryId || '0';
     _instance.status = _instance.status || '';
     _instance.authorId = _instance.authorId || '0';
+    _instance.authorImageUrl = _instance.authorImageUrl || '';
     _instance.imageUrls = _instance.imageUrls || [];
     _instance.tags = _instance.tags || [];
     _instance.downloadCount = _instance.downloadCount || '0';
@@ -4144,6 +4145,9 @@ export class Package implements GrpcMessage {
           break;
         case 7:
           _instance.authorId = _reader.readInt64String();
+          break;
+        case 8:
+          _instance.authorImageUrl = _reader.readString();
           break;
         case 9:
           (_instance.imageUrls = _instance.imageUrls || []).push(
@@ -4191,6 +4195,9 @@ export class Package implements GrpcMessage {
     if (_instance.authorId) {
       _writer.writeInt64String(7, _instance.authorId);
     }
+    if (_instance.authorImageUrl) {
+      _writer.writeString(8, _instance.authorImageUrl);
+    }
     if (_instance.imageUrls && _instance.imageUrls.length) {
       _writer.writeRepeatedString(9, _instance.imageUrls);
     }
@@ -4209,6 +4216,7 @@ export class Package implements GrpcMessage {
   private _categoryId?: string;
   private _status?: string;
   private _authorId?: string;
+  private _authorImageUrl?: string;
   private _imageUrls?: string[];
   private _tags?: string[];
   private _downloadCount?: string;
@@ -4226,6 +4234,7 @@ export class Package implements GrpcMessage {
     this.categoryId = _value.categoryId;
     this.status = _value.status;
     this.authorId = _value.authorId;
+    this.authorImageUrl = _value.authorImageUrl;
     this.imageUrls = (_value.imageUrls || []).slice();
     this.tags = (_value.tags || []).slice();
     this.downloadCount = _value.downloadCount;
@@ -4273,6 +4282,12 @@ export class Package implements GrpcMessage {
   set authorId(value: string | undefined) {
     this._authorId = value;
   }
+  get authorImageUrl(): string | undefined {
+    return this._authorImageUrl;
+  }
+  set authorImageUrl(value: string | undefined) {
+    this._authorImageUrl = value;
+  }
   get imageUrls(): string[] | undefined {
     return this._imageUrls;
   }
@@ -4314,6 +4329,7 @@ export class Package implements GrpcMessage {
       categoryId: this.categoryId,
       status: this.status,
       authorId: this.authorId,
+      authorImageUrl: this.authorImageUrl,
       imageUrls: (this.imageUrls || []).slice(),
       tags: (this.tags || []).slice(),
       downloadCount: this.downloadCount
@@ -4344,6 +4360,7 @@ export class Package implements GrpcMessage {
       categoryId: this.categoryId,
       status: this.status,
       authorId: this.authorId,
+      authorImageUrl: this.authorImageUrl,
       imageUrls: (this.imageUrls || []).slice(),
       tags: (this.tags || []).slice(),
       downloadCount: this.downloadCount
@@ -4362,6 +4379,7 @@ export module Package {
     categoryId?: string;
     status?: string;
     authorId?: string;
+    authorImageUrl?: string;
     imageUrls?: string[];
     tags?: string[];
     downloadCount?: string;
@@ -4378,6 +4396,7 @@ export module Package {
     categoryId?: string;
     status?: string;
     authorId?: string;
+    authorImageUrl?: string;
     imageUrls?: string[];
     tags?: string[];
     downloadCount?: string;

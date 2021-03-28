@@ -182,6 +182,7 @@ message Package {
     int64 category_id = 5;
     string status = 6; // under_review, normal, hidden, deleted
     int64 author_id = 7;
+    string author_image_url = 8;
     repeated string image_urls = 9;
     repeated string tags = 10;
     int64 download_count = 11;
