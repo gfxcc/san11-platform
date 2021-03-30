@@ -1,5 +1,5 @@
 import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GalleryItem, ImageItem } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
 import { Package, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
@@ -30,18 +30,8 @@ export class PackageDetailComponent implements OnInit {
   @ViewChild('descriptionTitle') descriptionTitleElement: ElementRef
 
   images: ImageItem[] = [];
-  package: Package = new Package({
-    packageId: "1",
-    name: "战场迷雾",
-    description: "【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野",
-    createTimestamp: "2021-02-21",
-    categoryId: "1",
-    status: "normal",
-    authorId: "1",
-    imageUrls: ['categories/1/packages/43/images/0.jpeg', 'categories/1/packages/25/images/0.jpeg'],
-    tags: ['规则修改'],
-    downloadCount: "24",
-  });
+  packageId: string;
+  package: Package;
   author: User = new User({});
 
   loading;
@@ -54,11 +44,13 @@ export class PackageDetailComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private route: ActivatedRoute,
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private notificationService: NotificationService,
   ) {
+    console.log('constructor for package-detail');
     this.package = data.package;
 
 
@@ -72,8 +64,22 @@ export class PackageDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.package.imageUrls);
+    console.log('ngOnInit for package-detail');
 
+    this.loadPage();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.isAuthor()) {
+      this.descriptionTitleElement.nativeElement.className = 'clickable';
+      this.descriptionTitleElement.nativeElement.onclick = () => {
+        console.log('test');
+        this.onUpdateDescription();
+      };
+    }
+  }
+
+  loadPage() {
     this.package.imageUrls.forEach(imageUrl => {
       const fullImageUrl = getFullUrl(imageUrl);
       this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
@@ -97,17 +103,6 @@ export class PackageDetailComponent implements OnInit {
         this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
       }
     );
-
-  }
-
-  ngAfterViewInit(): void {
-    if (this.isAuthor()) {
-      this.descriptionTitleElement.nativeElement.className = 'clickable';
-      this.descriptionTitleElement.nativeElement.onclick = () => {
-        console.log('test');
-        this.onUpdateDescription();
-      };
-    }
   }
 
   // admin

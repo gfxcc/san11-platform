@@ -54,6 +54,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             (user and user.user_type == 'admin')
             # package's status is normal or user is admin or author of the package
         ])
+    
+    def GetPackage(self, request, context):
+        logger.info(f'In GetPackage: package_id={request.package_id}')
+        return Package.from_package_id(request.package_id).to_pb()
 
     def CreatePackage(self, request, context):
         logger.info('In CreatePackage')

@@ -6,6 +6,7 @@ import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-pa
 import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
 import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
+import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
 import { Url, Statistic, User, Package, Binary, Status, Empty } from '../../proto/san11-platform.pb'
 import { ListPackagesRequest } from '../../proto/san11-platform.pb';
@@ -36,6 +37,11 @@ export class San11PlatformServiceService {
   listPackages(categoryId: number, page_size: number, page_token: string): Observable<ListPackagesResponse> {
     const request = new ListPackagesRequest({ categoryId: categoryId.toString() });
     return this.severClient.listPackages(request, this.getMetadata());
+  }
+
+  getPackage(packageId: string): Observable<Package> {
+    const request = new GetPackageRequest({ packageId: packageId });
+    return this.severClient.getPackage(request, this.getMetadata());
   }
 
   createPackage(san11Package: Package): Observable<Package> {

@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SigninComponent} from './account-management/signin/signin.component'
-import { RegisterComponent} from './account-management/register/register.component'
+import { SigninComponent } from './account-management/signin/signin.component'
+import { RegisterComponent } from './account-management/register/register.component'
 import { SirePackageDashboardComponent } from './dashboards/sire-package-dashboard/sire-package-dashboard.component';
 import { PackageCardComponent } from './package-management/package-card/package-card.component';
 import { PlayerPackageDashboardComponent } from './dashboards/player-package-dashboard/player-package-dashboard.component';
@@ -23,7 +23,14 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent },
   { path: 'register', component: RegisterComponent },
 
-  { path: 'categories/:id', component: DashboardComponent },
+  {
+    path: 'categories/:categoryId/packages/:packageId',
+    component: DashboardComponent,
+  },
+  {
+    path: 'categories/:categoryId',
+    component: DashboardComponent,
+  },
 
   { path: 'app-create-package', component: CreatePackageComponent },
 
@@ -32,8 +39,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }
 
