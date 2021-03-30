@@ -793,6 +793,7 @@ export class ListPackagesResponse implements GrpcMessage {
    */
   static refineValues(_instance: ListPackagesResponse) {
     _instance.packages = _instance.packages || [];
+    _instance.nextPageToken = _instance.nextPageToken || '';
   }
 
   /**
@@ -818,6 +819,9 @@ export class ListPackagesResponse implements GrpcMessage {
             messageInitializer1
           );
           break;
+        case 2:
+          _instance.nextPageToken = _reader.readString();
+          break;
         default:
           _reader.skipField();
       }
@@ -842,9 +846,13 @@ export class ListPackagesResponse implements GrpcMessage {
         Package.serializeBinaryToWriter
       );
     }
+    if (_instance.nextPageToken) {
+      _writer.writeString(2, _instance.nextPageToken);
+    }
   }
 
   private _packages?: Package[];
+  private _nextPageToken?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -853,6 +861,7 @@ export class ListPackagesResponse implements GrpcMessage {
   constructor(_value?: RecursivePartial<ListPackagesResponse.AsObject>) {
     _value = _value || {};
     this.packages = (_value.packages || []).map(m => new Package(m));
+    this.nextPageToken = _value.nextPageToken;
     ListPackagesResponse.refineValues(this);
   }
   get packages(): Package[] | undefined {
@@ -860,6 +869,12 @@ export class ListPackagesResponse implements GrpcMessage {
   }
   set packages(value: Package[] | undefined) {
     this._packages = value;
+  }
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
+  }
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
   }
 
   /**
@@ -877,7 +892,8 @@ export class ListPackagesResponse implements GrpcMessage {
    */
   toObject(): ListPackagesResponse.AsObject {
     return {
-      packages: (this.packages || []).map(m => m.toObject())
+      packages: (this.packages || []).map(m => m.toObject()),
+      nextPageToken: this.nextPageToken
     };
   }
 
@@ -898,7 +914,8 @@ export class ListPackagesResponse implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListPackagesResponse.AsProtobufJSON {
     return {
-      packages: (this.packages || []).map(m => m.toProtobufJSON(options))
+      packages: (this.packages || []).map(m => m.toProtobufJSON(options)),
+      nextPageToken: this.nextPageToken
     };
   }
 }
@@ -908,6 +925,7 @@ export module ListPackagesResponse {
    */
   export interface AsObject {
     packages?: Package.AsObject[];
+    nextPageToken?: string;
   }
 
   /**
@@ -915,6 +933,353 @@ export module ListPackagesResponse {
    */
   export interface AsProtobufJSON {
     packages?: Package.AsProtobufJSON[] | null;
+    nextPageToken?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.SearchPackagesRequest
+ */
+export class SearchPackagesRequest implements GrpcMessage {
+  static id = 'routeguide.SearchPackagesRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new SearchPackagesRequest();
+    SearchPackagesRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: SearchPackagesRequest) {
+    _instance.query = _instance.query || '';
+    _instance.pageSize = _instance.pageSize || '0';
+    _instance.pageToken = _instance.pageToken || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: SearchPackagesRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.query = _reader.readString();
+          break;
+        case 2:
+          _instance.pageSize = _reader.readInt64String();
+          break;
+        case 3:
+          _instance.pageToken = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    SearchPackagesRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: SearchPackagesRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.query) {
+      _writer.writeString(1, _instance.query);
+    }
+    if (_instance.pageSize) {
+      _writer.writeInt64String(2, _instance.pageSize);
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(3, _instance.pageToken);
+    }
+  }
+
+  private _query?: string;
+  private _pageSize?: string;
+  private _pageToken?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of SearchPackagesRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<SearchPackagesRequest.AsObject>) {
+    _value = _value || {};
+    this.query = _value.query;
+    this.pageSize = _value.pageSize;
+    this.pageToken = _value.pageToken;
+    SearchPackagesRequest.refineValues(this);
+  }
+  get query(): string | undefined {
+    return this._query;
+  }
+  set query(value: string | undefined) {
+    this._query = value;
+  }
+  get pageSize(): string | undefined {
+    return this._pageSize;
+  }
+  set pageSize(value: string | undefined) {
+    this._pageSize = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    SearchPackagesRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): SearchPackagesRequest.AsObject {
+    return {
+      query: this.query,
+      pageSize: this.pageSize,
+      pageToken: this.pageToken
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): SearchPackagesRequest.AsProtobufJSON {
+    return {
+      query: this.query,
+      pageSize: this.pageSize,
+      pageToken: this.pageToken
+    };
+  }
+}
+export module SearchPackagesRequest {
+  /**
+   * Standard JavaScript object representation for SearchPackagesRequest
+   */
+  export interface AsObject {
+    query?: string;
+    pageSize?: string;
+    pageToken?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for SearchPackagesRequest
+   */
+  export interface AsProtobufJSON {
+    query?: string;
+    pageSize?: string;
+    pageToken?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.SearchPackagesResponse
+ */
+export class SearchPackagesResponse implements GrpcMessage {
+  static id = 'routeguide.SearchPackagesResponse';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new SearchPackagesResponse();
+    SearchPackagesResponse.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: SearchPackagesResponse) {
+    _instance.packages = _instance.packages || [];
+    _instance.nextPageToken = _instance.nextPageToken || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: SearchPackagesResponse,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          const messageInitializer1 = new Package();
+          _reader.readMessage(
+            messageInitializer1,
+            Package.deserializeBinaryFromReader
+          );
+          (_instance.packages = _instance.packages || []).push(
+            messageInitializer1
+          );
+          break;
+        case 2:
+          _instance.nextPageToken = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    SearchPackagesResponse.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: SearchPackagesResponse,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.packages && _instance.packages.length) {
+      _writer.writeRepeatedMessage(
+        1,
+        _instance.packages as any,
+        Package.serializeBinaryToWriter
+      );
+    }
+    if (_instance.nextPageToken) {
+      _writer.writeString(2, _instance.nextPageToken);
+    }
+  }
+
+  private _packages?: Package[];
+  private _nextPageToken?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of SearchPackagesResponse to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<SearchPackagesResponse.AsObject>) {
+    _value = _value || {};
+    this.packages = (_value.packages || []).map(m => new Package(m));
+    this.nextPageToken = _value.nextPageToken;
+    SearchPackagesResponse.refineValues(this);
+  }
+  get packages(): Package[] | undefined {
+    return this._packages;
+  }
+  set packages(value: Package[] | undefined) {
+    this._packages = value;
+  }
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
+  }
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    SearchPackagesResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): SearchPackagesResponse.AsObject {
+    return {
+      packages: (this.packages || []).map(m => m.toObject()),
+      nextPageToken: this.nextPageToken
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): SearchPackagesResponse.AsProtobufJSON {
+    return {
+      packages: (this.packages || []).map(m => m.toProtobufJSON(options)),
+      nextPageToken: this.nextPageToken
+    };
+  }
+}
+export module SearchPackagesResponse {
+  /**
+   * Standard JavaScript object representation for SearchPackagesResponse
+   */
+  export interface AsObject {
+    packages?: Package.AsObject[];
+    nextPageToken?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for SearchPackagesResponse
+   */
+  export interface AsProtobufJSON {
+    packages?: Package.AsProtobufJSON[] | null;
+    nextPageToken?: string;
   }
 }
 

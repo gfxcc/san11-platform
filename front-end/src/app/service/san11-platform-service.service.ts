@@ -8,6 +8,7 @@ import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
+import { SearchPackagesRequest, SearchPackagesResponse } from "../../proto/san11-platform.pb";
 import { Url, Statistic, User, Package, Binary, Status, Empty } from '../../proto/san11-platform.pb'
 import { ListPackagesRequest } from '../../proto/san11-platform.pb';
 import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
@@ -34,19 +35,14 @@ export class San11PlatformServiceService {
 
   }
 
-  listPackages(categoryId: number, page_size: number, page_token: string): Observable<ListPackagesResponse> {
-    const request = new ListPackagesRequest({ categoryId: categoryId.toString() });
-    return this.severClient.listPackages(request, this.getMetadata());
-  }
-
-  getPackage(packageId: string): Observable<Package> {
-    const request = new GetPackageRequest({ packageId: packageId });
-    return this.severClient.getPackage(request, this.getMetadata());
-  }
-
   createPackage(san11Package: Package): Observable<Package> {
     const request = new CreatePackageRequest({ package: san11Package });
     return this.severClient.createPackage(request, this.getMetadata());
+  }
+
+  deletePackage(san11Package: Package): Observable<Empty> {
+    const request = new DeletePackageRequest({ package: new Package({ packageId: san11Package.packageId }) });
+    return this.severClient.deletePackage(request, this.getMetadata());
   }
 
   updatePackage(san11Package: Package): Observable<Package> {
@@ -54,9 +50,19 @@ export class San11PlatformServiceService {
     return this.severClient.updatePackage(request, this.getMetadata());
   }
 
-  deletePackage(san11Package: Package): Observable<Empty> {
-    const request = new DeletePackageRequest({ package: new Package({ packageId: san11Package.packageId }) });
-    return this.severClient.deletePackage(request, this.getMetadata());
+  getPackage(packageId: string): Observable<Package> {
+    const request = new GetPackageRequest({ packageId: packageId });
+    return this.severClient.getPackage(request, this.getMetadata());
+  }
+
+  listPackages(categoryId: number, page_size: number, page_token: string): Observable<ListPackagesResponse> {
+    const request = new ListPackagesRequest({ categoryId: categoryId.toString() });
+    return this.severClient.listPackages(request, this.getMetadata());
+  }
+
+  searchPackages(query: string, pageSize: number, pageToken: string): Observable<SearchPackagesResponse> {
+    const request = new SearchPackagesRequest({ query: query, pageSize: pageSize.toString(), pageToken: pageToken });
+    return this.severClient.searchPackages(request, this.getMetadata());
   }
 
   // getPlayerPackages(): Package[] {

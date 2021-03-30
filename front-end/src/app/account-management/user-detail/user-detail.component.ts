@@ -11,6 +11,9 @@ import { TextInputDialogComponent, TextData } from "../../common/components/text
 import { LoadingComponent } from '../../common/components/loading/loading.component'
 
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { isAdmin } from "../../utils/user_util";
 import { increment } from '../../utils/number_util';
@@ -26,14 +29,18 @@ export interface UserData {
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
-  @ViewChild('gallery') galleryElement: GalleryComponent
+  @ViewChild('userGallery') galleryElement: GalleryComponent
   @ViewChild('imageInput') imageInputElement: ElementRef
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   user: User;
   images: ImageItem[];
   loading;
 
   hidePassword: boolean = true;
+
+  displayedColumns: string[] = ['name', 'createTimestamp', 'downloadCount'];
+  dataSource: MatTableDataSource<Package>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: UserData,
@@ -45,6 +52,7 @@ export class UserDetailComponent implements OnInit {
     this.san11pkService.getUser(data.userId).subscribe(
       user => {
         this.user = user;
+        this.loadPackageList();
       },
       error => {
         this.notificationService.warn('获取用户资料失败: ' + error.statusMessage);
@@ -57,6 +65,19 @@ export class UserDetailComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.setUpUserImage(this.user.imageUrl === '' ? '' : getFullUrl(this.user.imageUrl));
+  }
+
+  loadPackageList() {
+    this.san11pkService.searchPackages("{\"author_name\": \"" + this.user.username + "\"}", 0, '').subscribe(
+      resp => {
+        console.log(resp.packages);
+        this.dataSource = new MatTableDataSource(resp.packages);
+        this.dataSource.paginator = this.paginator;
+      },
+      error => {
+        this.notificationService.warn('获取工具列表 失败: ' + error.statusMessage);
+      }
+    );
   }
 
   setUpUserImage(imageUrl: string): void {
@@ -173,7 +194,9 @@ export class UserDetailComponent implements OnInit {
   }
   // import functions
 
-
+  getLinkForPackage(san11Package: Package) {
+    return 'categories/' + san11Package.categoryId + '/packages/' + san11Package.packageId;
+  }
 
 }
 

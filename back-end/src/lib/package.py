@@ -14,6 +14,7 @@ from .category import Category
 from .binary import Binary
 from .time_util import get_datetime_format, get_timezone
 from .resource import get_resource_path
+from .query import Query
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -205,3 +206,9 @@ class Package:
         })
         return sorted([Package(*item) for item in resp], key=lambda package: package.create_timestamp, reverse=True)
 
+    @classmethod
+    def search(cls, query: Query) -> List[Package]:
+        sql = 'SELECT * FROM packages WHERE ' + query.to_sql()
+        logger.debug(f'Package.search(): sql={sql}')
+        resp = run_sql_with_param_and_fetch_all(sql, {})
+        return [Package(*item) for item in resp]

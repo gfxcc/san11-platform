@@ -20,6 +20,7 @@ from lib.package import Package
 from lib.binary import Binary
 from lib.url import Url
 from lib.statistic import Statistic
+from lib.query import Query
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -35,30 +36,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def __init__(self):
         pass
 
-    def ListPackages(self, request, context):
-        logger.info(f'In ListPackages: category_id={request.category_id}')
-        try:
-            user = User.from_user_id(Session.from_sid(get_sid_from_context(context)).user_id)
-        except Exception:
-            user = None
-        logger.debug(f"ListPackage: user={user.username if user else 'visitor'}")
-
-        Statistic.load_today().increment_visit()
-
-        return san11_platform_pb2.ListPackagesResponse(packages=[
-            package.to_pb()
-            for package in Package.list_packages(
-                request.category_id
-            ) if package.status == 'normal' or
-            (user and user.user_id == package.author_id and package.status != 'deleted') or
-            (user and user.user_type == 'admin')
-            # package's status is normal or user is admin or author of the package
-        ])
-    
-    def GetPackage(self, request, context):
-        logger.info(f'In GetPackage: package_id={request.package_id}')
-        return Package.from_package_id(request.package_id).to_pb()
-
     def CreatePackage(self, request, context):
         logger.info('In CreatePackage')
         try:
@@ -72,11 +49,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         logger.info(f'{package} is created')
         return package.to_pb()
-    
+
     def DeletePackage(self, request, context):
-        logger.info(f'In DeletePackage: package_id={request.package.package_id}')
+        logger.info(
+            f'In DeletePackage: package_id={request.package.package_id}')
         try:
-            user = User.from_user_id(Session.from_sid(get_sid_from_context(context)).user_id)
+            user = User.from_user_id(Session.from_sid(
+                get_sid_from_context(context)).user_id)
         except Exception as err:
             logger.info(f'User need to login to create package:{err}')
             context.abort(code=255, details='请登录')
@@ -84,14 +63,45 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         package = Package.from_package_id(request.package.package_id)
         if not (user.user_type == 'admin' or user.user_id == package.author_id):
             context.abort(code=255, details='只有 工具作者 或 管理员 可以删除工具')
-        
+
         package.delete()
         logger.info(f'Package is deleted: {package}')
 
         return san11_platform_pb2.Empty()
-    
+
+    def GetPackage(self, request, context):
+        logger.info(f'In GetPackage: package_id={request.package_id}')
+        return Package.from_package_id(request.package_id).to_pb()
+
+    def ListPackages(self, request, context):
+        logger.info(f'In ListPackages: category_id={request.category_id}')
+        try:
+            user = User.from_user_id(Session.from_sid(
+                get_sid_from_context(context)).user_id)
+        except Exception:
+            user = None
+        logger.debug(
+            f"ListPackage: user={user.username if user else 'visitor'}")
+
+        Statistic.load_today().increment_visit()
+
+        return san11_platform_pb2.ListPackagesResponse(packages=[
+            package.to_pb()
+            for package in Package.list_packages(
+                request.category_id
+            ) if package.status == 'normal' or
+            (user and user.user_id == package.author_id and package.status != 'deleted') or
+            (user and user.user_type == 'admin')
+            # package's status is normal or user is admin or author of the package
+        ])
+
+    def SearchPackages(self, request, context):
+        logger.info(f'In SearchPackage: query={request.query}')
+        return san11_platform_pb2.SearchPackagesResponse(packages=[package.to_pb() for package in Package.search(Query.from_str(request.query))])
+
     def UpdatePackage(self, request, context):
-        logger.info(f'In UpdatePackage: package_id={request.package.package_id}')
+        logger.info(
+            f'In UpdatePackage: package_id={request.package.package_id}')
         logger.debug(request.package.image_urls)
 
         package = Package.from_package_id(request.package.package_id)
@@ -102,7 +112,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         if request.package.status:
             package.status = request.package.status
         if request.package.image_urls or request.package.image_urls == ['empty']:
-            updated_image_urls = set() if request.package.image_urls == ['empty'] else set(request.package.image_urls)
+            updated_image_urls = set() if request.package.image_urls == [
+                'empty'] else set(request.package.image_urls)
             for image_to_remove in set(package.image_urls) - updated_image_urls:
                 try:
                     image = Image.from_url(image_to_remove)
@@ -132,22 +143,23 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def UploadBinary(self, request, context):
         logger.info(f'In UploadBinary: parent={request.parent}')
         parent = Url(request.parent)
-        
-        binary = Binary.createc_under_parent(request.parent, request.binary, request.data)
+
+        binary = Binary.createc_under_parent(
+            request.parent, request.binary, request.data)
 
         return san11_platform_pb2.Status(code=0, message='上传成功')
-    
+
     def getBinary(self, request, context):
         logger.info(f'In GetBinary: binary_id={request.binary_id}')
         binary = Binary.from_binary_id(request.binary_id)
         return binary.to_pb()
-    
+
     def ListBinaries(self, request, context):
         logger.info(f'In ListBinaries: package_id: {request.package_id}')
         return san11_platform_pb2.ListBinariesResponse(binaries=[
             binary.to_pb() for binary in Binary.from_package_id(request.package_id)
         ])
-    
+
     def DeleteBinary(self, request, context):
         logger.info(f'In DeleteBinary: binary_id={request.binary_id}')
         Binary.from_binary_id(request.binary_id).delete()
@@ -218,7 +230,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             logger.info(f'GetUser: user_id={request.user_id} does not exist')
             context.abort(code=255, details='用户不存在')
         return user.to_pb()
-    
+
     def UpdateUser(self, request, context):
         logger.info(f'In UpdateUser: user_id={request.user.user_id}')
         logger.debug(f'user.website={request.user.website}')
@@ -231,12 +243,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             try:
                 Image.from_url(user.image_url).delete()
             except Exception as err:
-                logger.error(f'Failed to delete image_url={user.image_url}: {err}')
+                logger.error(
+                    f'Failed to delete image_url={user.image_url}: {err}')
             user.image_url = ''
 
         user.update()
         return user.to_pb()
-    
+
     def UpdatePassword(self, request, context):
         logger.info(f'In UpdatePassword: user_id={request.user_id}')
         user = User.from_user_id(request.user_id)
@@ -251,8 +264,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
 
 def serve():
-    options = [('grpc.max_receive_message_length', 30 * 1024 * 1024)] # 30 MB
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), 
+    options = [('grpc.max_receive_message_length', 30 * 1024 * 1024)]  # 30 MB
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10),
                          options=options)
     san11_platform_pb2_grpc.add_RouteGuideServicer_to_server(
         RouteGuideServicer(), server)
@@ -265,6 +278,7 @@ def serve():
 def init_log():
     FORMAT = '%(asctime)-15s %(levelname)s %(name)s %(message)s'
     logging.basicConfig(level=logging.NOTSET, format=FORMAT)
+
 
 if __name__ == '__main__':
     init_log()

@@ -40,6 +40,11 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.ListPackagesRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.ListPackagesResponse.FromString,
                 )
+        self.SearchPackages = channel.unary_unary(
+                '/routeguide.RouteGuide/SearchPackages',
+                request_serializer=san11__platform__pb2.SearchPackagesRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.SearchPackagesResponse.FromString,
+                )
         self.GetBinary = channel.unary_unary(
                 '/routeguide.RouteGuide/GetBinary',
                 request_serializer=san11__platform__pb2.GetBinaryRequest.SerializeToString,
@@ -142,6 +147,12 @@ class RouteGuideServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ListPackages(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SearchPackages(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -262,6 +273,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.ListPackages,
                     request_deserializer=san11__platform__pb2.ListPackagesRequest.FromString,
                     response_serializer=san11__platform__pb2.ListPackagesResponse.SerializeToString,
+            ),
+            'SearchPackages': grpc.unary_unary_rpc_method_handler(
+                    servicer.SearchPackages,
+                    request_deserializer=san11__platform__pb2.SearchPackagesRequest.FromString,
+                    response_serializer=san11__platform__pb2.SearchPackagesResponse.SerializeToString,
             ),
             'GetBinary': grpc.unary_unary_rpc_method_handler(
                     servicer.GetBinary,
@@ -426,6 +442,23 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListPackages',
             san11__platform__pb2.ListPackagesRequest.SerializeToString,
             san11__platform__pb2.ListPackagesResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SearchPackages(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/SearchPackages',
+            san11__platform__pb2.SearchPackagesRequest.SerializeToString,
+            san11__platform__pb2.SearchPackagesResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

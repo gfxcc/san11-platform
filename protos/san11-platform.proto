@@ -7,19 +7,25 @@ package routeguide;
 service RouteGuide {
   // package related
   rpc CreatePackage(CreatePackageRequest) returns (Package) {}
-  rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
+
   rpc DeletePackage(DeletePackageRequest) returns (Empty) {}
+
   rpc GetPackage(GetPackageRequest) returns (Package) {}
   rpc ListPackages(ListPackagesRequest) returns (ListPackagesResponse) {}
+  rpc SearchPackages(SearchPackagesRequest) returns (SearchPackagesResponse) {}
+
+  rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
 
 
   // Binary related 
+  rpc UploadBinary(UploadBinaryRequest) returns (Status) {}
+
+  rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
+
   rpc GetBinary(GetBinaryRequest) returns (Binary) {}
   rpc BatchGetBinary(BatchGetBinaryRequest) returns (BatchGetBinaryResponse) {}
-  rpc UploadBinary(UploadBinaryRequest) returns (Status) {}
-  rpc DownloadBinary(DownloadBinaryRequest) returns (Binary) {}
-  rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
   rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {}
+  rpc DownloadBinary(DownloadBinaryRequest) returns (Binary) {}
 
 
   // Image related
@@ -27,10 +33,11 @@ service RouteGuide {
 
 
   // User related
+  rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
   rpc SignIn(SignInRequest) returns (SignInResponse) {}
   rpc SignOut(SignOutRequest) returns (Status) {}
-  rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
   rpc GetUser(GetUserRequest) returns (User) {}
+
   rpc UpdateUser(UpdateUserRequest) returns (User) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
 
@@ -64,6 +71,29 @@ message ListPackagesRequest {
 
 message ListPackagesResponse {
     repeated Package packages = 1;
+    string next_page_token = 2;
+}
+
+
+message SearchPackagesRequest {
+    // A json object contains search parameters
+    // Supported parameters:
+    //   - category_id
+    //   - author_name
+    // Plan to support:
+    //   - create_after
+    //   - accessibility
+    //   - tags
+    //   - name
+    //   - description
+    string query = 1;
+    int64 page_size = 2;
+    string page_token = 3;
+}
+
+message SearchPackagesResponse {
+    repeated Package packages = 1;
+    string next_page_token = 2;
 }
 
 // binary

@@ -1,7 +1,7 @@
 <div class="main">
     <div class="top-section">
         <div class="gallery-div">
-            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
+            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #userGallery></gallery>
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
         </div>
         <div class="col-right under-development">
@@ -24,7 +24,7 @@
 
                 <div [hidden]="!this.iAmTheUser()">
                     <div class="control-section under-development">
-                        <button class="button" mat-raised-button color="primary" (click)="onUpdatePasswordClick()">修改密码</button>
+                        <button class="button" mat-raised-button color="primary" type="button" (click)="onUpdatePasswordClick()">修改密码</button>
 
                         <span class="example-spacer"></span>
 
@@ -39,5 +39,38 @@
     <!-- <div class="version-info under-development">
         <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)"> </app-version-panel>
     </div> -->
+
+    <div>
+        <table mat-table [dataSource]="dataSource" class="table">
+
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+            <!-- name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> 工具 </th>
+                <!-- <td mat-cell *matCellDef="let package" class="package-name clickable" [routerLink]="this.getLinkForPackage(package)"> -->
+                <td mat-cell *matCellDef="let package" class="package-name clickable">
+                    {{package.name}}
+                </td>
+            </ng-container>
+
+            <!-- createTimeStamp Column -->
+            <ng-container matColumnDef="createTimestamp">
+                <th mat-header-cell *matHeaderCellDef> 创建于 </th>
+                <td mat-cell *matCellDef="let package"> {{package.createTimestamp}} </td>
+            </ng-container>
+
+            <!-- downloadCount Column -->
+            <ng-container matColumnDef="downloadCount">
+                <th mat-header-cell *matHeaderCellDef> 下载量 </th>
+                <td mat-cell *matCellDef="let package"> {{package.downloadCount}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[3]"></mat-paginator>
+    </div>
 
 </div>
