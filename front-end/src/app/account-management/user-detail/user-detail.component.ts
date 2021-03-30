@@ -52,7 +52,7 @@ export class UserDetailComponent implements OnInit {
     this.san11pkService.getUser(data.userId).subscribe(
       user => {
         this.user = user;
-        this.loadPackageList();
+        this.loadPackageList(user);
       },
       error => {
         this.notificationService.warn('获取用户资料失败: ' + error.statusMessage);
@@ -67,8 +67,9 @@ export class UserDetailComponent implements OnInit {
     this.setUpUserImage(this.user.imageUrl === '' ? '' : getFullUrl(this.user.imageUrl));
   }
 
-  loadPackageList() {
-    this.san11pkService.searchPackages("{\"author_name\": \"" + this.user.username + "\"}", 0, '').subscribe(
+  loadPackageList(user) {
+    console.log(user);
+    this.san11pkService.searchPackages("{\"author_name\": \"" + user.username + "\"}", 0, '').subscribe(
       resp => {
         console.log(resp.packages);
         this.dataSource = new MatTableDataSource(resp.packages);
