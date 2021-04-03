@@ -1,5 +1,5 @@
 import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { GalleryItem, ImageItem, GalleryComponent } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
 import { Package, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
@@ -18,6 +18,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { isAdmin } from "../../utils/user_util";
 import { increment } from '../../utils/number_util';
 import { getPackageUrl } from "../../utils/package_util";
+import { PackageDetailComponent } from '../../package-management/package-detail/package-detail.component';
 
 
 export interface UserData {
@@ -33,6 +34,7 @@ export class UserDetailComponent implements OnInit {
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  userId: string;
   user: User;
   images: ImageItem[];
   loading;
@@ -43,13 +45,24 @@ export class UserDetailComponent implements OnInit {
   dataSource: MatTableDataSource<Package>;
 
   constructor(
+    public dialogRef: MatDialogRef<UserDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserData,
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private notificationService: NotificationService,
+    private route: ActivatedRoute,
   ) {
-    this.san11pkService.getUser(data.userId).subscribe(
+    console.log('construct UserDetail');
+    this.userId = data.userId;
+  }
+
+  ngOnInit(): void {
+    this.loadPage();
+  }
+
+  loadPage() {
+    this.san11pkService.getUser(this.userId).subscribe(
       user => {
         this.user = user;
         this.loadPackageList(user);
@@ -58,9 +71,6 @@ export class UserDetailComponent implements OnInit {
         this.notificationService.warn('获取用户资料失败: ' + error.statusMessage);
       }
     );
-  }
-
-  ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
@@ -187,6 +197,23 @@ export class UserDetailComponent implements OnInit {
         userId: this.user.userId
       }
     });
+  }
+
+  onPackageClick(san11Package: Package) {
+    this.dialogRef.close();
+    this.router.navigate(['categories', san11Package.categoryId, 'packages', san11Package.packageId]);
+    // this.san11pkService.getPackage(packageId).subscribe(
+    //   san11Package => {
+    //     this.dialog.open(PackageDetailComponent, {
+    //       data: {
+    //         package: san11Package
+    //       }
+    //     });
+    //   },
+    //   error => {
+    //     this.notificationService.warn('获取工具详情 失败: ' + error.statusMessage);
+    //   }
+    // );
   }
 
 

@@ -7,6 +7,7 @@ import { NotificationService } from "../../common/notification.service";
 
 import { PackageDetailComponent } from "../../package-management/package-detail/package-detail.component";
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserDetailComponent } from '../../account-management/user-detail/user-detail.component';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class DashboardComponent implements OnInit {
 
-  category_id: number;
+  categoryId: number = 1;
 
   packages: Package[] = [];
 
@@ -31,15 +32,20 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: any) => {
-        this.category_id = Number(params['categoryId']);
+        const categoryId = params['categoryId'];
+        if (categoryId != undefined) {
+          this.categoryId = Number(categoryId);
+        }
         this.loadPackages();
 
-        console.log(params);
         const packageId = params['packageId'];
-        console.log('packageId=' + packageId);
-
         if (packageId != undefined) {
           this.loadPackageDetail(packageId);
+        }
+
+        const userId = params['userId'];
+        if (userId != undefined) {
+          this.loadUserDetail(userId);
         }
 
       }
@@ -47,7 +53,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadPackages(): void {
-    this.san11PlatformServiceService.listPackages(this.category_id, 0, "0").subscribe(
+    this.san11PlatformServiceService.listPackages(this.categoryId, 0, "0").subscribe(
       value => this.packages = value.packages,
       error => {
         this.notificationService.warn('载入工具列表失败:' + error.statusMessage);
@@ -70,6 +76,14 @@ export class DashboardComponent implements OnInit {
         this.notificationService.warn('载入工具 失败:' + error.statusMessage);
       }
     );
+  }
+
+  loadUserDetail(userId: string) {
+    this.dialog.open(UserDetailComponent, {
+      data: {
+        userId: userId
+      }
+    });
   }
 
 }

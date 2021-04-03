@@ -12,17 +12,17 @@ import { CreatePackageComponent } from './package-management/create-package/crea
 
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component'
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
+import { UserDetailComponent } from './account-management/user-detail/user-detail.component';
 
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/categories/1', pathMatch: 'full' },
 
-  { path: 'detail', component: PackageDetailComponent },
-
   { path: 'signin', component: SigninComponent },
   { path: 'register', component: RegisterComponent },
 
+  { path: 'app-create-package', component: CreatePackageComponent },
   {
     path: 'categories/:categoryId/packages/:packageId',
     component: DashboardComponent,
@@ -32,7 +32,11 @@ const routes: Routes = [
     component: DashboardComponent,
   },
 
-  { path: 'app-create-package', component: CreatePackageComponent },
+  {
+    path: 'users/:userId',
+    component: DashboardComponent
+  },
+
 
   // deprecated links
   { path: 'sire-packages', redirectTo: '/categories/1' },

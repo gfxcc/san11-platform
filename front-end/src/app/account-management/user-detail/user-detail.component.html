@@ -14,11 +14,11 @@
             <form class="form" #userForm='ngForm' (ngSubmit)="onUpdateUserForm(userForm)">
                 <mat-card-content>
                     <mat-form-field class="form-field">
-                        <input matInput #emailInput [(ngModel)]="this.user.email" [disabled]="false" placeholder="email" name="email" />
+                        <input matInput #emailInput [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" placeholder="email" name="email" />
                     </mat-form-field>
 
                     <mat-form-field class="form-field">
-                        <input matInput #websiteInput [(ngModel)]="this.user.website" [disabled]="false" placeholder="网站" name="website" />
+                        <input matInput #websiteInput [(ngModel)]="this.user.website" [disabled]="!this.iAmTheUser()" placeholder="网站" name="website" />
                     </mat-form-field>
                 </mat-card-content>
 
@@ -50,7 +50,7 @@
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> 工具 </th>
                 <!-- <td mat-cell *matCellDef="let package" class="package-name clickable" [routerLink]="this.getLinkForPackage(package)"> -->
-                <td mat-cell *matCellDef="let package" class="package-name clickable">
+                <td mat-cell *matCellDef="let package" class="package-name clickable" (click)="onPackageClick(package)">
                     {{package.name}}
                 </td>
             </ng-container>

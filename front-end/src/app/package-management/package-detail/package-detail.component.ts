@@ -9,7 +9,9 @@ import { NotificationService } from "../../common/notification.service";
 import { TextInputDialogComponent, TextData } from "../../common/components/text-input-dialog/text-input-dialog.component";
 import { LoadingComponent } from '../../common/components/loading/loading.component'
 
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserDetailComponent } from "../../account-management/user-detail/user-detail.component";
+
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { isAdmin } from "../../utils/user_util";
 import { increment } from '../../utils/number_util';
@@ -28,6 +30,7 @@ export class PackageDetailComponent implements OnInit {
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild('gallery') galleryElementCatched: ElementRef
   @ViewChild('descriptionTitle') descriptionTitleElement: ElementRef
+  @ViewChild('authorName') authroNameElement: ElementRef
 
   images: ImageItem[] = [];
   packageId: string;
@@ -43,6 +46,7 @@ export class PackageDetailComponent implements OnInit {
   authorZone = false;
 
   constructor(
+    public dialogRef: MatDialogRef<PackageDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private route: ActivatedRoute,
     private router: Router,
@@ -70,13 +74,25 @@ export class PackageDetailComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.isAuthor()) {
+    if (this.isAdmin() || this.isAuthor()) {
       this.descriptionTitleElement.nativeElement.className = 'clickable';
       this.descriptionTitleElement.nativeElement.onclick = () => {
         console.log('test');
         this.onUpdateDescription();
       };
     }
+
+    this.authroNameElement.nativeElement.className = 'clickable';
+    this.authroNameElement.nativeElement.onclick = () => {
+      this.dialogRef.close();
+
+      this.router.navigate(['users', this.package.authorId]);
+      // this.dialog.open(UserDetailComponent, {
+      //   data: {
+      //     userId: this.package.authorId
+      //   }
+      // });
+    };
   }
 
   loadPage() {

@@ -135,13 +135,3 @@
     display: flex;
     flex: auto;
 }
-
-.clickable {
-    /* box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%); */
-    color: #3f51b5;
-}
-
-.clickable:hover {
-    cursor: pointer;
-    border-bottom: solid 1px grey;
-}
