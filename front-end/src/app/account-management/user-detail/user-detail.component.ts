@@ -22,7 +22,7 @@ import { PackageDetailComponent } from '../../package-management/package-detail/
 
 
 export interface UserData {
-  userId: string
+  user: User
 }
 @Component({
   selector: 'app-user-detail',
@@ -36,7 +36,6 @@ export class UserDetailComponent implements OnInit {
 
   userId: string;
   user: User;
-  images: ImageItem[];
   loading;
 
   hidePassword: boolean = true;
@@ -45,27 +44,36 @@ export class UserDetailComponent implements OnInit {
   dataSource: MatTableDataSource<Package>;
 
   constructor(
-    public dialogRef: MatDialogRef<UserDetailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: UserData,
+    // public dialogRef: MatDialogRef<UserDetailComponent>,
+    // @Inject(MAT_DIALOG_DATA) public data: UserData,
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
   ) {
-    console.log('construct UserDetail');
-    this.userId = data.userId;
   }
 
   ngOnInit(): void {
+    this.route.data.subscribe(
+      (data: { user: User }) => {
+        if (data.user) {
+          this.user = data.user;
+        }
+      }
+    );
+    console.log(this.user);
     this.loadPage();
   }
 
   loadPage() {
-    this.san11pkService.getUser(this.userId).subscribe(
+    this.san11pkService.getUser(this.user.userId).subscribe(
       user => {
         this.user = user;
         this.loadPackageList(user);
+        if (this.canSetupGallery()) {
+          this.setUpUserImage(this.user.imageUrl === '' ? '' : getFullUrl(this.user.imageUrl));
+        }
       },
       error => {
         this.notificationService.warn('获取用户资料失败: ' + error.statusMessage);
@@ -74,7 +82,13 @@ export class UserDetailComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.setUpUserImage(this.user.imageUrl === '' ? '' : getFullUrl(this.user.imageUrl));
+    if (this.canSetupGallery()) {
+      this.setUpUserImage(this.user.imageUrl === '' ? '' : getFullUrl(this.user.imageUrl));
+    }
+  }
+
+  canSetupGallery() {
+    return this.user != undefined && this.galleryElement != undefined;
   }
 
   loadPackageList(user) {
@@ -200,7 +214,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   onPackageClick(san11Package: Package) {
-    this.dialogRef.close();
+    // this.dialogRef.close();
     this.router.navigate(['categories', san11Package.categoryId, 'packages', san11Package.packageId]);
     // this.san11pkService.getPackage(packageId).subscribe(
     //   san11Package => {
@@ -225,10 +239,13 @@ export class UserDetailComponent implements OnInit {
   getLinkForPackage(san11Package: Package) {
     return 'categories/' + san11Package.categoryId + '/packages/' + san11Package.packageId;
   }
-
 }
 
 
+
+export interface UserIdData {
+  userId: string
+}
 @Component({
   selector: 'password-dialog',
   templateUrl: 'password-dialog.html',
@@ -239,13 +256,12 @@ export class PasswordDialog implements OnInit {
   hidePassword = true;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: UserData,
+    @Inject(MAT_DIALOG_DATA) public data: UserIdData,
     public dialogRef: MatDialogRef<TextInputDialogComponent>,
     private notificationService: NotificationService,
     private san11Service: San11PlatformServiceService
   ) {
     this.userId = data.userId;
-
   }
 
   ngOnInit(): void {

@@ -1,4 +1,23 @@
 <div class="main">
+
+    <div class="heading under-development">
+        <div class="back-btn-div">
+            <button mat-button (click)="onBack()" class="back-btn">
+                <span class="material-icons back-btn-span">
+                    arrow_back
+                </span>
+            </button>
+        </div>
+        <p class="title"> {{this.package.name}} </p>
+
+        <span class="example-spacer"></span>
+
+
+        <div class="statistic">
+            <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon>
+            <!-- <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">thumb_up</mat-icon> -->
+        </div>
+    </div>
     <div class="top-section">
         <div class="gallery-div">
             <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
@@ -8,17 +27,6 @@
 
         </div>
         <div class="col-left under-development">
-            <div class="heading under-development">
-                <p class="title"> {{this.package.name}} </p>
-
-                <span class="example-spacer"></span>
-
-
-                <div class="statistic">
-                    <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon>
-                    <!-- <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">thumb_up</mat-icon> -->
-                </div>
-            </div>
 
             <div class="author-info under-development">
                 <div>

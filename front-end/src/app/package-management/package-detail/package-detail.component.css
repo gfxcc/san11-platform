@@ -2,6 +2,23 @@
     /* border: 2px solid red; */
 }
 
+.back-btn-div {
+    height: 48px;
+    width: 48px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.back-btn {
+    border-radius: 50%;
+    min-width: 0px;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+}
+
 .content {
     font-size: 14px;
     line-height: 20px;
@@ -14,8 +31,10 @@
 .main {
     min-height: 600px;
     max-height: 700px;
+    max-width: 1000px;
     display: flex;
     flex-direction: column;
+    padding: 5px 5px 5px 5px;
 }
 
 .top-section {

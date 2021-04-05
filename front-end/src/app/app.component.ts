@@ -52,11 +52,8 @@ export class AppComponent {
   }
 
   onUserDetail() {
-    this.dialog.open(UserDetailComponent, {
-      data: {
-        userId: localStorage.getItem('userId')
-      }
-    });
+    const userId = localStorage.getItem('userId');
+    this.router.navigate(['users', userId]);
   }
 
   onSignOut() {
@@ -83,14 +80,19 @@ export class AppComponent {
 
   }
 
-  onCategoryChange(selection) {
-    const selectedItem = selection.option.value;
-    if (selectedItem.disabled) {
-      this.notificationService.warn(selectedItem.text + ' 尚在开发中');
+  onCategoryLabelClick(category) {
+    if (category.disabled) {
+      this.notificationService.warn(category.text + ' 尚在开发中');
       this.categoryNav.deselectAll();
       return;
     }
-    this.router.navigate(selectedItem.link);
+    this.router.navigate(category.link);
+  }
+
+  compareWith(o1, o2) {
+    console.log('compareWith o1=');
+    console.log(o1);
+    return false;
   }
 
   onSignInClick() {

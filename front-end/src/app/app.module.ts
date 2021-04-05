@@ -57,7 +57,7 @@ import { UserDetailComponent, PasswordDialog } from './account-management/user-d
     TextDialogComponent,
     TextInputDialogComponent,
     UserDetailComponent,
-    PasswordDialog
+    PasswordDialog,
   ],
   imports: [
     GrpcCoreModule.forRoot(),

@@ -19,8 +19,8 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     min-height: 100vh;
-    /* background: white; */
-    background: #e2e2e2;
+    background: white;
+    /* background: #e2e2e2; */
 }
 
 .app-header {

@@ -12,7 +12,9 @@ import { CreatePackageComponent } from './package-management/create-package/crea
 
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component'
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
+import { PackageResolverService } from "./package-management/package-detail/package-resolver.service";
 import { UserDetailComponent } from './account-management/user-detail/user-detail.component';
+import { UserResolverService } from "./account-management/user-detail/user-resolver.service";
 
 
 
@@ -25,7 +27,8 @@ const routes: Routes = [
   { path: 'app-create-package', component: CreatePackageComponent },
   {
     path: 'categories/:categoryId/packages/:packageId',
-    component: DashboardComponent,
+    component: PackageDetailComponent,
+    resolve: { package: PackageResolverService }
   },
   {
     path: 'categories/:categoryId',
@@ -34,7 +37,8 @@ const routes: Routes = [
 
   {
     path: 'users/:userId',
-    component: DashboardComponent
+    component: UserDetailComponent,
+    resolve: { user: UserResolverService }
   },
 
 

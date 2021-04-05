@@ -54,8 +54,8 @@
 
         <div class="category-section">
 
-            <mat-selection-list #categoryNav [multiple]="false" (selectionChange)="onCategoryChange($event)">
-                <mat-list-option *ngFor="let category of categories" [value]="category" [selected]="category.isDefault">
+            <mat-selection-list #categoryNav [multiple]="false">
+                <mat-list-option *ngFor="let category of categories" [value]="category" [selected]="category.isDefault" (click)="onCategoryLabelClick(category)">
                     <div class="nav-link">
                         <span style="margin-left: 10px;"> <mat-icon>{{category.icon}}</mat-icon>  </span>
                         <span style="margin-left: 10px;">{{category.text}}</span>

@@ -46,8 +46,8 @@ export class PackageDetailComponent implements OnInit {
   authorZone = false;
 
   constructor(
-    public dialogRef: MatDialogRef<PackageDetailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    // public dialogRef: MatDialogRef<PackageDetailComponent>,
+    // @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private route: ActivatedRoute,
     private router: Router,
     private san11pkService: San11PlatformServiceService,
@@ -55,20 +55,15 @@ export class PackageDetailComponent implements OnInit {
     private notificationService: NotificationService,
   ) {
     console.log('constructor for package-detail');
-    this.package = data.package;
-
-
-    if (this.isAdmin() && this.package.status === 'under_review') {
-      this.adminZone = true;
-    }
-    if (this.isAdmin() || this.isAuthor()) {
-      this.authorZone = true;
-    }
-
+    // this.package = data.package;
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit for package-detail');
+    this.route.data.subscribe(
+      (data: { package: Package }) => {
+        this.package = data.package;
+      }
+    );
 
     this.loadPage();
   }
@@ -84,18 +79,20 @@ export class PackageDetailComponent implements OnInit {
 
     this.authroNameElement.nativeElement.className = 'clickable';
     this.authroNameElement.nativeElement.onclick = () => {
-      this.dialogRef.close();
 
       this.router.navigate(['users', this.package.authorId]);
-      // this.dialog.open(UserDetailComponent, {
-      //   data: {
-      //     userId: this.package.authorId
-      //   }
-      // });
+
     };
   }
 
   loadPage() {
+    if (this.isAdmin() && this.package.status === 'under_review') {
+      this.adminZone = true;
+    }
+    if (this.isAdmin() || this.isAuthor()) {
+      this.authorZone = true;
+    }
+
     this.package.imageUrls.forEach(imageUrl => {
       const fullImageUrl = getFullUrl(imageUrl);
       this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
@@ -293,6 +290,10 @@ export class PackageDetailComponent implements OnInit {
 
     fileReader.readAsArrayBuffer(image);
 
+  }
+
+  onBack() {
+    this.router.navigate(['categories', this.package.categoryId]);
   }
 
 

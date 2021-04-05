@@ -239,7 +239,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             user.email = request.user.email
         if request.user.website:
             user.website = request.user.website
-        logger.debug(f"has field={request.user.HasField('image_url')}")
         if request.user.image_url == 'empty':
             try:
                 Image.from_url(user.image_url).delete()

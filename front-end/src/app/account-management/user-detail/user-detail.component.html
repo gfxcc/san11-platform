@@ -1,12 +1,12 @@
 <div class="main">
     <div class="top-section">
         <div class="gallery-div">
-            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #userGallery></gallery>
+            <gallery class="image-gallery" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #userGallery></gallery>
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
         </div>
         <div class="col-right under-development">
             <div class="heading under-development">
-                <p class="title"> {{this.user.username}} </p>
+                <p class="title" *ngIf="this.user != undefined"> {{this.user.username}} </p>
 
                 <span class="example-spacer"></span>
             </div>
@@ -14,11 +14,11 @@
             <form class="form" #userForm='ngForm' (ngSubmit)="onUpdateUserForm(userForm)">
                 <mat-card-content>
                     <mat-form-field class="form-field">
-                        <input matInput #emailInput [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" placeholder="email" name="email" />
+                        <input matInput #emailInput *ngIf="this.user != undefined" [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" placeholder="email" name="email" />
                     </mat-form-field>
 
                     <mat-form-field class="form-field">
-                        <input matInput #websiteInput [(ngModel)]="this.user.website" [disabled]="!this.iAmTheUser()" placeholder="网站" name="website" />
+                        <input matInput #websiteInput *ngIf="this.user != undefined" [(ngModel)]="this.user.website" [disabled]="!this.iAmTheUser()" placeholder="网站" name="website" />
                     </mat-form-field>
                 </mat-card-content>
 

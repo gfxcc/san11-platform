@@ -60,8 +60,6 @@ export class PackageCardComponent implements OnInit {
     private downloads: DownloadService,
     private renderer: Renderer2,
   ) {
-
-
   }
 
   ngOnInit(): void {
@@ -84,13 +82,6 @@ export class PackageCardComponent implements OnInit {
     // this.renderer.setStyle(this.authorImageElement.nativeElement, 'background-image', "url('" + this.authorImage + "')");
   }
 
-  // openDeleteDialog() {
-  //   this.dialog.open(DeleteDialog, {
-  //     data: {
-  //       package: this.package
-  //     }
-  //   });
-  // }
 
   onUpdateBinary(binaryInput) {
 
@@ -150,34 +141,6 @@ export class PackageCardComponent implements OnInit {
     );
   }
 
-  onDownload() {
-    // this.downloadProgressBar = true;
-    // this.san11PlatformServiceService.downloadBinary(getPackageUrl(this.package), this.package.binaryIds[this.package.binaryIds.length - 1]).subscribe(
-    //   binary => {
-    //     const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.url;
-    //     const filename = getBinaryFilename(this.package, binary);
-
-
-    //     this.downloads.download(fileUrl, filename).subscribe(
-    //       result => {
-    //         if (result.type === HttpEventType.DownloadProgress) {
-    //           const percentDone = Math.round(100 * result.loaded / result.total);
-    //           this.downloadProgress = percentDone
-    //         }
-    //         if (result.type === HttpEventType.Response) {
-    //           saveAs(result.body, filename);
-    //         }
-    //       }
-    //     );
-
-    //     // FileSaver.saveAs(fileUrl, filename);
-    //   },
-    //   error => {
-    //     this.notificationService.warn('下载失败'+error.statusMessage);
-    //   }
-    // );
-  }
-
   loadImage() {
     if (this.package.imageUrls.length === 0) {
       this.screenshot = getFullUrl('images/sire2.jpg');
@@ -195,13 +158,13 @@ export class PackageCardComponent implements OnInit {
     return this.package.authorId === localStorage.getItem('userId');
   }
 
-
   onClick() {
-    this.dialog.open(PackageDetailComponent, {
-      data: {
-        package: this.package
-      }
-    });
+    this.router.navigate(['categories', this.package.categoryId, 'packages', this.package.packageId]);
+    // this.dialog.open(PackageDetailComponent, {
+    //   data: {
+    //     package: this.package
+    //   }
+    // });
   }
 
 }
