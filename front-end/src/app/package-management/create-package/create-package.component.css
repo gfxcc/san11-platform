@@ -2,4 +2,6 @@
     float: right;
 }
 
-.login-wrapper {}
+.login-wrapper {
+    height: 70%;
+}
