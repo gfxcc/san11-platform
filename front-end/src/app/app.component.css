@@ -52,7 +52,7 @@
     height: 100%;
     display: flex;
     place-content: center;
-    align-items: flex-start;
+    /* align-items: flex-start; */
 }
 
 .side-section {
