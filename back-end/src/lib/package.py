@@ -200,15 +200,15 @@ class Package:
 
     @classmethod
     def list_packages(cls, category_id: int) -> List[Package]:
-        sql = 'SELECT * FROM packages WHERE category_id=%(category_id)s'
+        sql = 'SELECT * FROM packages WHERE category_id=%(category_id)s ORDER BY create_timestamp DESC'
         resp = run_sql_with_param_and_fetch_all(sql, {
             'category_id': category_id,
         })
-        return sorted([Package(*item) for item in resp], key=lambda package: package.create_timestamp, reverse=True)
+        return [Package(*item) for item in resp]
 
     @classmethod
     def search(cls, query: Query) -> List[Package]:
-        sql = 'SELECT * FROM packages WHERE ' + query.to_sql()
+        sql = 'SELECT * FROM packages WHERE ' + query.to_sql() + ' ORDER BY create_timestamp DESC'
         logger.debug(f'Package.search(): sql={sql}')
         resp = run_sql_with_param_and_fetch_all(sql, {})
         return [Package(*item) for item in resp]
