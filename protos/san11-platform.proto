@@ -32,6 +32,13 @@ service RouteGuide {
   rpc UploadImage(UploadImageRequest) returns (Url) {}
 
 
+  // comment related
+  rpc CreateComment(CreateCommentRequest) returns (Comment) {}
+  rpc DeleteComment(DeleteCommentRequest) returns (Empty) {}
+  rpc ListComment(ListCommentRequest) returns (ListCommentResponse) {}
+//   rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
+
+
   // User related
   rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
   rpc SignIn(SignInRequest) returns (SignInResponse) {}
@@ -145,6 +152,25 @@ message ListBinariesResponse {
 message UploadImageRequest {
     string parent = 1; // packages/package_id or users/user_id
     bytes image = 2;
+}
+
+
+// Comments
+message CreateCommentRequest {
+    Comment comment = 1;
+}
+
+message DeleteCommentRequest {
+    Comment comment = 1;
+}
+
+message ListCommentRequest {
+    // Supported values:
+    // `packages/package_id`
+    // `website`
+    string parent = 1;
+    int64 page_size = 2;
+    string page_token = 3;
 }
 
 // user

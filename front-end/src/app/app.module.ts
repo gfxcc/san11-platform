@@ -35,6 +35,7 @@ import { CreateNewVersionComponent } from "./package-management/version-manageme
 import { TextDialogComponent } from './common/components/text-dialog/text-dialog.component';
 import { TextInputDialogComponent } from './common/components/text-input-dialog/text-input-dialog.component';
 import { UserDetailComponent, PasswordDialog } from './account-management/user-detail/user-detail.component';
+import { CommentCardComponent } from './common/components/comment-card/comment-card.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { UserDetailComponent, PasswordDialog } from './account-management/user-d
     TextInputDialogComponent,
     UserDetailComponent,
     PasswordDialog,
+    CommentCardComponent,
   ],
   imports: [
     GrpcCoreModule.forRoot(),
