@@ -159,7 +159,7 @@ class Package:
         current_timestamp = datetime.now(get_timezone())
         sql = 'INSERT INTO packages (package_id, name, description, create_timestamp,'\
             ' category_id, status, author_id, image_urls, tags, download_count) VALUES '\
-             '((SELECT MAX(package_id) FROM packages)+1, %(name)s, %(description)s,'\
+             '( COALESCE((SELECT MAX(package_id) FROM packages)+1, 1), %(name)s, %(description)s,'\
             ' %(create_timestamp)s, %(category_id)s, %(status)s,'\
             ' %(author_id)s, %(image_urls)s, %(tags)s, %(download_count)s) RETURNING package_id'
 

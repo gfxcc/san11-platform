@@ -142,9 +142,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def UploadBinary(self, request, context):
         logger.info(f'In UploadBinary: parent={request.parent}')
-        parent = Url(request.parent)
 
-        binary = Binary.createc_under_parent(
+        Binary.createc_under_parent(
             request.parent, request.binary, request.data)
 
         return san11_platform_pb2.Status(code=0, message='上传成功')

@@ -48,7 +48,13 @@
                 <div [hidden]="! (isAdmin() || isAuthor())">
                     <button mat-button mat-stroked-button color="warn" (click)="onDelete(binary)">删除</button>
                 </div>
-                <button mat-button mat-stroked-button color="primary" (click)="onDownload(binary)" style="margin-left: 5px;">下载</button>
+                <div [hidden]="this.package.categoryId === &quot;3&quot;">
+                    <button mat-button mat-stroked-button color="primary" (click)="onDownload(binary)" style="margin-left: 5px;">下载</button>
+                </div>
+
+                <div [hidden]="this.package.categoryId != &quot;3&quot;">
+                    <button mat-button mat-stroked-button color="primary" (click)="onDownloadMethod(binary)" style="margin-left: 5px;">下载方式</button>
+                </div>
             </div>
         </td>
     </ng-container>

@@ -35,12 +35,18 @@
             <textarea style="height: 150px;" matInput placeholder="新功能，新玩法，bug修复" required ngModel name="description"></textarea>
         </mat-form-field>
 
+        <mat-form-field class="form-field form-text-input" *ngIf="this.categoryId===&quot;3&quot;">
+            <mat-label>下载方式</mat-label>
+            <textarea style="height: 150px;" matInput placeholder="下载链接:http......   验证码:....." required ngModel name="downloadMethod"></textarea>
+        </mat-form-field>
     </mat-card-content>
 
     <p></p>
 
-    <span class="form-field">上传文件</span>
-    <input #fileInput type="file" [accept]="acceptFileType" name="fileInput" (change)="selectFile(fileInput)">
+    <div *ngIf="this.categoryId!=&quot;3&quot;">
+        <span class="form-field">上传文件</span>
+        <input #fileInput type="file" [accept]="acceptFileType" name="fileInput" (change)="selectFile(fileInput)">
+    </div>
 
     <p></p>
     <div class="actions">

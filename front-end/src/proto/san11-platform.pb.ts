@@ -1448,7 +1448,6 @@ export class UploadBinaryRequest implements GrpcMessage {
   static refineValues(_instance: UploadBinaryRequest) {
     _instance.parent = _instance.parent || '';
     _instance.binary = _instance.binary || undefined;
-    _instance.data = _instance.data || new Uint8Array();
   }
 
   /**
@@ -1476,6 +1475,9 @@ export class UploadBinaryRequest implements GrpcMessage {
           break;
         case 3:
           _instance.data = _reader.readBytes();
+          break;
+        case 4:
+          _instance.downloadMethod = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -1507,11 +1509,18 @@ export class UploadBinaryRequest implements GrpcMessage {
     if (_instance.data && _instance.data.length) {
       _writer.writeBytes(3, _instance.data);
     }
+    if (_instance.downloadMethod || _instance.downloadMethod === '') {
+      _writer.writeString(4, _instance.downloadMethod);
+    }
   }
 
   private _parent?: string;
   private _binary?: Binary;
   private _data?: Uint8Array;
+  private _downloadMethod?: string;
+
+  private _resource: UploadBinaryRequest.ResourceCase =
+    UploadBinaryRequest.ResourceCase.none;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -1522,6 +1531,7 @@ export class UploadBinaryRequest implements GrpcMessage {
     this.parent = _value.parent;
     this.binary = _value.binary ? new Binary(_value.binary) : undefined;
     this.data = _value.data;
+    this.downloadMethod = _value.downloadMethod;
     UploadBinaryRequest.refineValues(this);
   }
   get parent(): string | undefined {
@@ -1540,7 +1550,24 @@ export class UploadBinaryRequest implements GrpcMessage {
     return this._data;
   }
   set data(value: Uint8Array | undefined) {
+    if (value !== undefined && value !== null) {
+      this._downloadMethod = undefined;
+      this._resource = UploadBinaryRequest.ResourceCase.data;
+    }
     this._data = value;
+  }
+  get downloadMethod(): string | undefined {
+    return this._downloadMethod;
+  }
+  set downloadMethod(value: string | undefined) {
+    if (value !== undefined && value !== null) {
+      this._data = undefined;
+      this._resource = UploadBinaryRequest.ResourceCase.downloadMethod;
+    }
+    this._downloadMethod = value;
+  }
+  get resource() {
+    return this._resource;
   }
 
   /**
@@ -1560,7 +1587,8 @@ export class UploadBinaryRequest implements GrpcMessage {
     return {
       parent: this.parent,
       binary: this.binary ? this.binary.toObject() : undefined,
-      data: this.data ? this.data.subarray(0) : new Uint8Array()
+      data: this.data ? this.data.subarray(0) : new Uint8Array(),
+      downloadMethod: this.downloadMethod
     };
   }
 
@@ -1583,7 +1611,8 @@ export class UploadBinaryRequest implements GrpcMessage {
     return {
       parent: this.parent,
       binary: this.binary ? this.binary.toProtobufJSON(options) : null,
-      data: this.data ? uint8ArrayToBase64(this.data) : ''
+      data: this.data ? uint8ArrayToBase64(this.data) : '',
+      downloadMethod: this.downloadMethod ?? null
     };
   }
 }
@@ -1595,6 +1624,7 @@ export module UploadBinaryRequest {
     parent?: string;
     binary?: Binary.AsObject;
     data?: Uint8Array;
+    downloadMethod?: string;
   }
 
   /**
@@ -1604,6 +1634,12 @@ export module UploadBinaryRequest {
     parent?: string;
     binary?: Binary.AsProtobufJSON | null;
     data?: string;
+    downloadMethod?: string | null;
+  }
+  export enum ResourceCase {
+    none = 0,
+    data = 1,
+    downloadMethod = 2
   }
 }
 
@@ -4792,6 +4828,7 @@ export class Binary implements GrpcMessage {
     _instance.binaryId = _instance.binaryId || '0';
     _instance.packageId = _instance.packageId || '0';
     _instance.url = _instance.url || '';
+    _instance.downloadMethod = _instance.downloadMethod || '';
     _instance.downloadCount = _instance.downloadCount || '0';
     _instance.version = _instance.version || undefined;
     _instance.description = _instance.description || '';
@@ -4819,22 +4856,25 @@ export class Binary implements GrpcMessage {
           _instance.url = _reader.readString();
           break;
         case 4:
-          _instance.downloadCount = _reader.readInt64String();
+          _instance.downloadMethod = _reader.readString();
           break;
         case 5:
+          _instance.downloadCount = _reader.readInt64String();
+          break;
+        case 6:
           _instance.version = new Version();
           _reader.readMessage(
             _instance.version,
             Version.deserializeBinaryFromReader
           );
           break;
-        case 6:
+        case 7:
           _instance.description = _reader.readString();
           break;
-        case 7:
+        case 8:
           _instance.createTimestamp = _reader.readString();
           break;
-        case 8:
+        case 9:
           _instance.tag = _reader.readString();
           break;
         default:
@@ -4860,30 +4900,34 @@ export class Binary implements GrpcMessage {
     if (_instance.url) {
       _writer.writeString(3, _instance.url);
     }
+    if (_instance.downloadMethod) {
+      _writer.writeString(4, _instance.downloadMethod);
+    }
     if (_instance.downloadCount) {
-      _writer.writeInt64String(4, _instance.downloadCount);
+      _writer.writeInt64String(5, _instance.downloadCount);
     }
     if (_instance.version) {
       _writer.writeMessage(
-        5,
+        6,
         _instance.version as any,
         Version.serializeBinaryToWriter
       );
     }
     if (_instance.description) {
-      _writer.writeString(6, _instance.description);
+      _writer.writeString(7, _instance.description);
     }
     if (_instance.createTimestamp) {
-      _writer.writeString(7, _instance.createTimestamp);
+      _writer.writeString(8, _instance.createTimestamp);
     }
     if (_instance.tag) {
-      _writer.writeString(8, _instance.tag);
+      _writer.writeString(9, _instance.tag);
     }
   }
 
   private _binaryId?: string;
   private _packageId?: string;
   private _url?: string;
+  private _downloadMethod?: string;
   private _downloadCount?: string;
   private _version?: Version;
   private _description?: string;
@@ -4899,6 +4943,7 @@ export class Binary implements GrpcMessage {
     this.binaryId = _value.binaryId;
     this.packageId = _value.packageId;
     this.url = _value.url;
+    this.downloadMethod = _value.downloadMethod;
     this.downloadCount = _value.downloadCount;
     this.version = _value.version ? new Version(_value.version) : undefined;
     this.description = _value.description;
@@ -4923,6 +4968,12 @@ export class Binary implements GrpcMessage {
   }
   set url(value: string | undefined) {
     this._url = value;
+  }
+  get downloadMethod(): string | undefined {
+    return this._downloadMethod;
+  }
+  set downloadMethod(value: string | undefined) {
+    this._downloadMethod = value;
   }
   get downloadCount(): string | undefined {
     return this._downloadCount;
@@ -4973,6 +5024,7 @@ export class Binary implements GrpcMessage {
       binaryId: this.binaryId,
       packageId: this.packageId,
       url: this.url,
+      downloadMethod: this.downloadMethod,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toObject() : undefined,
       description: this.description,
@@ -5001,6 +5053,7 @@ export class Binary implements GrpcMessage {
       binaryId: this.binaryId,
       packageId: this.packageId,
       url: this.url,
+      downloadMethod: this.downloadMethod,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toProtobufJSON(options) : null,
       description: this.description,
@@ -5017,6 +5070,7 @@ export module Binary {
     binaryId?: string;
     packageId?: string;
     url?: string;
+    downloadMethod?: string;
     downloadCount?: string;
     version?: Version.AsObject;
     description?: string;
@@ -5031,6 +5085,7 @@ export module Binary {
     binaryId?: string;
     packageId?: string;
     url?: string;
+    downloadMethod?: string;
     downloadCount?: string;
     version?: Version.AsProtobufJSON | null;
     description?: string;
