@@ -36,7 +36,13 @@ def get_parent_type(parent: str) -> str:
     parts = parent.split('/')
     return parts[0]
 
-def create_resource(url: str, data: bytes):
+def create_resource(url: str, data: bytes) -> None:
+    '''
+    Create a file based on given url.
+    E.g. url='categories/1/packages/4/binaries/v1.2.1.scp'
+      -> file='categories/1/packages/4/binaries/v1.2.1.scp'
+
+    '''
     path = get_resource_path(url)
     if not os.path.exists(os.path.dirname(path)):
         try:

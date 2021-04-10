@@ -105,7 +105,10 @@ message GetBinaryRequest {
 message UploadBinaryRequest {
     string parent = 1; // packages/package_id
     Binary binary = 2;
-    bytes data = 3;
+    oneof resource {
+        bytes data = 3;
+        string download_method = 4;
+    }
 }
 
 message BatchGetBinaryRequest {
@@ -222,11 +225,12 @@ message Binary {
     int64 binary_id = 1;
     int64 package_id = 2;
     string url = 3;
-    int64 download_count = 4;
-    Version version = 5;
-    string description = 6;
-    string create_timestamp = 7;
-    string tag = 8;
+    string download_method= 4;
+    int64 download_count = 5;
+    Version version = 6;
+    string description = 7;
+    string create_timestamp = 8;
+    string tag = 9;
 }
 
 message User {

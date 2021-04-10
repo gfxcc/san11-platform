@@ -15,7 +15,8 @@ import { NotificationService } from "../../../common/notification.service";
 export interface VersionData {
   latestVersion: Version,
   acceptFileType: string,
-  parent: string
+  parent: string,
+  categoryId: string,
 }
 @Component({
   selector: 'app-create-new-version',
@@ -27,6 +28,7 @@ export class CreateNewVersionComponent implements OnInit {
   latestVersion: Version;
   acceptFileType: string;
   parent: string;
+  categoryId: string;
 
   // locals
   newVersion: Version;
@@ -45,6 +47,7 @@ export class CreateNewVersionComponent implements OnInit {
     this.latestVersion = data.latestVersion;
     this.acceptFileType = data.acceptFileType;
     this.parent = data.parent;
+    this.categoryId = data.categoryId;
 
     if (this.isFirstTimeUpload(this.latestVersion)) {
       this.updateType = 'custom';
@@ -100,46 +103,53 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onCreateVersion(createVersionForm) {
-    if (this.selectedFile === undefined) {
+    if (this.categoryId != "3" && this.selectedFile === undefined) {
       this.notificationService.warn('请选择文件');
       return;
     }
 
-    this.loadingDialog = this.dialog.open(LoadingComponent);
+    if (this.categoryId != '3') {
 
-    let fileReader = new FileReader();
-    fileReader.onload = () => {
-      var arrayBuffer = fileReader.result;
-      var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
-
-      const binary: Binary = new Binary({
-        version: this.newVersion,
-        description: createVersionForm.value.description,
-        tag: '',
-      });
-
-      this.san11PkService.uploadBinary(this.parent, binary, bytes).subscribe(
-
-        status => {
-          this.loadingDialog.close();
-          this.notificationService.success('更新成功');
-          this.onClose();
-        },
-        error => {
-          this.loadingDialog.close();
-          this.notificationService.warn('更新失败:' + error.statusMessage);
-
-          this.onClose();
-        }
-      );
-
+      this.loadingDialog = this.dialog.open(LoadingComponent);
+      let fileReader = new FileReader();
+      fileReader.onload = () => {
+        this.createBinary(fileReader.result, createVersionForm);
+      }
+      fileReader.readAsArrayBuffer(this.selectedFile);
+    } else {
+      this.createBinary(undefined, createVersionForm);
     }
-
-    fileReader.readAsArrayBuffer(this.selectedFile);
   }
 
-  getNewVersionStr() {
-    return '  ' + version2str(this.newVersion);
+  createBinary(data, createVersionForm) {
+    var arrayBuffer = data;
+    var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
+
+    const binary: Binary = new Binary({
+      version: this.newVersion,
+      description: createVersionForm.value.description,
+      tag: '',
+      downloadMethod: this.categoryId === '3' ? createVersionForm.value.downloadMethod : '',
+    });
+
+    this.san11PkService.uploadBinary(this.parent, binary, bytes).subscribe(
+
+      status => {
+        if (this.loadingDialog != undefined) {
+          this.loadingDialog.close();
+        }
+        this.notificationService.success('更新成功');
+        this.onClose();
+      },
+      error => {
+        if (this.loadingDialog != undefined) {
+          this.loadingDialog.close();
+        }
+        this.notificationService.warn('更新失败:' + error.statusMessage);
+
+        this.onClose();
+      }
+    );
   }
 
   onClose() {

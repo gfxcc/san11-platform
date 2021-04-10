@@ -38,6 +38,7 @@ import { isAdmin } from '../../../utils/user_util';
 })
 export class VersionPanelComponent implements OnInit {
   @Input() package: Package;
+  @Output() downloadEvent = new EventEmitter();
   displayedColumns: string[] = ['version', 'createTimestamp', 'downloadCount', 'actions'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -79,11 +80,11 @@ export class VersionPanelComponent implements OnInit {
       data: {
         latestVersion: this.binaries.length > 0 ? this.binaries[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" }),
         acceptFileType: getAcceptFileType(this.package.categoryId),
-        parent: getPackageUrl(this.package)
+        parent: getPackageUrl(this.package),
+        categoryId: this.package.categoryId,
       }
     }).afterClosed().subscribe(
       data => {
-        console.log(data);
         if (data != undefined) {
           // new version is created
           this.fetchBinaries();
@@ -96,6 +97,7 @@ export class VersionPanelComponent implements OnInit {
   fetchBinaries() {
     this.binaryService.listBinaries(this.package.packageId).subscribe(
       resp => {
+        console.log(resp.binaries);
         this.binaries = resp.binaries;
         this.configDataSource();
       },
@@ -119,7 +121,6 @@ export class VersionPanelComponent implements OnInit {
     });
   }
 
-  @Output() downloadEvent = new EventEmitter();
   onDownload(binary: Binary) {
     this.downloadProgress = 0;
     this.downloadProgressBar = true;
@@ -150,6 +151,18 @@ export class VersionPanelComponent implements OnInit {
         this.notificationService.warn('下载失败' + error.statusMessage);
       }
     );
+  }
+
+  onDownloadMethod(binary: Binary) {
+    this.dialog.open(TextDialogComponent, {
+      data: {
+        title: '下载方式',
+        content: binary.downloadMethod
+      }
+    });
+    binary.downloadCount = increment(binary.downloadCount);
+    this.downloadEvent.emit();
+    this.san11pkService.downloadBinary(getPackageUrl(this.package), binary.binaryId).subscribe();
   }
 
   onDelete(binary: Binary) {
