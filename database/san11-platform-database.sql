@@ -15,12 +15,12 @@ CREATE TABLE binaries (
     binary_id SERIAL PRIMARY KEY,
     package_id INT NOT NULL,
     url TEXT,
-    download_method TEXT,
     download_count INT DEFAULT 0,
     version TEXT NOT NULL,
     description TEXT NOT NULL,
     create_timestamp TIMESTAMP,
-    tag TEXT
+    tag TEXT,
+    download_method TEXT
 );
 
 CREATE TABLE users (

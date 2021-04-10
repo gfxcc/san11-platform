@@ -20,18 +20,18 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class Binary:
-    def __init__(self, binary_id: int, package_id: int, url: str, download_method: str, download_count: int,
+    def __init__(self, binary_id: int, package_id: int, url: str, download_count: int,
                  version: Version, description: str,
-                 create_timestamp: datetime, tag: str):
+                 create_timestamp: datetime, tag: str, download_method: str):
         self.binary_id = binary_id
         self.package_id = package_id
         self.url = url
-        self.download_method = download_method
         self.download_count = download_count
         self.version = version
         self.description = description
         self.create_timestamp = create_timestamp or datetime.now()
         self.tag = tag
+        self.download_method = download_method
 
     def __str__(self):
         return f'{{binary_id: {self.binary_id}, url: {self.url}, download_method: {self.download_method}}}'
@@ -93,7 +93,7 @@ class Binary:
 
     @classmethod
     def from_binary_id(cls, binary_id):
-        sql = 'SELECT package_id, url, download_method, download_count, version, description, create_timestamp, tag FROM binaries WHERE binary_id=%(binary_id)s'
+        sql = 'SELECT package_id, url, download_count, version, description, create_timestamp, tag, download_method FROM binaries WHERE binary_id=%(binary_id)s'
         resp = run_sql_with_param_and_fetch_one(sql, {'binary_id': binary_id})
         if resp is None:
             raise LookupError(f'Invalid binary_id:{binary_id}')
