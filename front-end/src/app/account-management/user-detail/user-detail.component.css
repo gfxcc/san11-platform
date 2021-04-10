@@ -6,11 +6,12 @@
     padding-top: 20px;
     display: flex;
     flex-direction: column;
+    max-width: 800px;
 }
 
 .top-section {
     display: flex;
-    width: auto;
+    width: 100%;
     height: auto;
 }
 
@@ -26,7 +27,7 @@
 }
 
 .col-right {
-    width: 300px;
+    width: 100%;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 0px;
