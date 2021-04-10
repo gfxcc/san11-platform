@@ -16,7 +16,7 @@
                         <mat-label>类别</mat-label>
                         <mat-select [(ngModel)]="selectedCategory" required name="category" (selectionChange)="categoryChanged($event.value)">
                             <mat-option *ngFor="let category of categories" [value]="category.value" [disabled]="category.disabled">
-                                {{category.viewValue}}
+                                {{category.text}}
                             </mat-option>
                         </mat-select>
                         <mat-hint></mat-hint>

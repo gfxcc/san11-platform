@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { San11PlatformServiceService } from './service/san11-platform-service.service';
 import { NotificationService } from "./common/notification.service";
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GlobalConstants } from './common/global-constants'
 
 import { UserDetailComponent, UserData } from "./account-management/user-detail/user-detail.component";
 
@@ -16,11 +17,7 @@ export class AppComponent {
   @ViewChild('categoryNav') categoryNav;
 
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
-  categories = [
-    { value: '1', text: 'SIRE2 插件', link: ['/categories', 1], icon: 'extension', disabled: false, isDefault: true },
-    { value: '2', text: '修改工具', link: ['/categories', 2], icon: 'handyman', disabled: false },
-    { value: '3', text: 'MOD (未开放)', link: ['/categories', 3], icon: 'auto_fix_high', disabled: true }
-  ];
+  categories = GlobalConstants.categories;
 
   title = 'san11-platform';
 

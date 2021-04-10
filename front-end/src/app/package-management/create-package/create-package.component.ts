@@ -34,11 +34,7 @@ export class CreatePackageComponent implements OnInit {
 
   loading;
 
-  categories = [
-    { value: '1', viewValue: 'SIRE(2) 插件', disabled: false },
-    { value: '2', viewValue: '修改工具', disabled: false },
-    { value: '3', viewValue: 'MOD (未开放)', disabled: true }
-  ];
+  categories = GlobalConstants.categories;
 
   constructor(
     public notificationService: NotificationService,
@@ -85,7 +81,7 @@ export class CreatePackageComponent implements OnInit {
           this.router.navigate(['/']);
         },
         error => {
-          this.notificationService.warn('创建工具失败:'+error.statusMessage);
+          this.notificationService.warn('创建工具失败:' + error.statusMessage);
           this.loading.close();
         }
       );
