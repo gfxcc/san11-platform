@@ -78,7 +78,7 @@ export class CreatePackageComponent implements OnInit {
           this.loading.close();
 
           this.notificationService.success('创建成功，请耐心等待审核。预期 1-2 天')
-          this.router.navigate(['/']);
+          this.router.navigate(['categories', createPackageForm.value.category]);
         },
         error => {
           this.notificationService.warn('创建工具失败:' + error.statusMessage);
