@@ -127,7 +127,7 @@ export class PackageDetailComponent implements OnInit {
       san11Package => {
         this.notificationService.success('审核通过')
 
-        this.router.navigate(['/']).then(() => {
+        this.router.navigate(['categories', this.package.categoryId]).then(() => {
           window.location.reload();
         });
       },

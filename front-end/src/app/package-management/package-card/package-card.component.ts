@@ -123,24 +123,6 @@ export class PackageCardComponent implements OnInit {
     fileReader.readAsArrayBuffer(this.selectedBinary);
   }
 
-  onApprove() {
-    this.san11PlatformServiceService.updatePackage(new Package({
-      packageId: this.package.packageId,
-      status: 'normal'
-    })).subscribe(
-      san11Package => {
-        this.notificationService.success('审核通过')
-
-        this.router.navigate(['/']).then(() => {
-          window.location.reload();
-        });
-      },
-      error => {
-        this.notificationService.warn('操作失败');
-      }
-    );
-  }
-
   loadImage() {
     if (this.package.imageUrls.length === 0) {
       this.screenshot = getFullUrl('images/sire2.jpg');
