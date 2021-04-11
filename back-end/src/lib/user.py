@@ -63,6 +63,9 @@ class User:
         })
         if not resp:
             raise InvalidPassword()
+    
+    def isAdmin(self) -> bool:
+        return self.user_type == 'admin'
 
     def to_pb(self) -> san11_platform_pb2.User:
         return san11_platform_pb2.User(user_id=self.user_id,

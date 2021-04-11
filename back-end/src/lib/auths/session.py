@@ -3,17 +3,19 @@ import time
 import logging
 import uuid
 
-from .db_util import run_sql_with_param, run_sql_with_param_and_fetch_one
+from ..db_util import run_sql_with_param, run_sql_with_param_and_fetch_one
+from ..user import User
 
 
 logger = logging.getLogger(os.path.basename(__file__))
 
 
 class Session:
-    def __init__(self, sid: int, user_id: int, expiration: int):
+    def __init__(self, sid: str, user_id: int, expiration: int):
         self.sid = sid
         self.user_id = user_id
         self.expiration = expiration
+        self.user = User.from_user_id(user_id)
     
     def __str__(self):
         return f'{{sid: {self.sid}, user_id: {self.user_id}, expiration: {self.expiration}}}'
@@ -40,7 +42,7 @@ class Session:
         logger.info(f'session:{self} is revoked')
 
     @classmethod
-    def from_sid(cls, sid: int):
+    def from_sid(cls, sid: str):
         '''
         Raise:
             LookUpError
@@ -50,7 +52,11 @@ class Session:
             user_id, expiration = run_sql_with_param_and_fetch_one(sql, {'sid': sid})
         except Exception:
             raise LookupError(f'Failed to find session: sid={sid}')
-        return cls(sid, user_id, expiration)
+        obj = cls(sid, user_id, expiration)
+        if not obj.is_valid():
+            logger.warn(f'{obj} is expired')
+            raise Exception('请重新登陆')
+        return obj
 
     @classmethod
     def from_user_id(cls, user_id: int):

@@ -37,6 +37,8 @@ service RouteGuide {
   rpc DeleteComment(DeleteCommentRequest) returns (Empty) {}
   rpc ListComment(ListCommentRequest) returns (ListCommentResponse) {}
 //   rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
+  rpc CreateReply(CreateReplyRequest) returns (Reply) {}
+  rpc DeleteReply(DeleteReplyRequest) returns (Empty) {}
 
 
   // User related
@@ -173,6 +175,20 @@ message ListCommentRequest {
     string page_token = 3;
 }
 
+message ListCommentResponse {
+    repeated Comment comments = 1;
+    string page_token = 2;
+}
+
+message CreateReplyRequest {
+    Reply reply = 1;
+}
+
+message DeleteReplyRequest {
+    Reply reply = 1;
+}
+
+
 // user
 
 message GetUserRequest {
@@ -281,4 +297,25 @@ message Statistic {
 
 message Url {
     string url=1;
+}
+
+message Comment {
+    int64 package_id = 1;
+    int64 comment_id = 2;
+    string create_time = 3;
+    string update_time = 4;
+    string text = 5;
+    int64 author_id = 6;
+    int64 upvote_count = 7;
+    repeated Reply replies = 8;
+}
+
+message Reply {
+    int64 comment_id = 1;
+    int64 note_id = 2;
+    string create_time = 3;
+    string update_time = 4;
+    string text = 5;
+    int64 author_id = 6;
+    int64 upvote_count = 7;
 }
