@@ -15,6 +15,7 @@ from .binary import Binary
 from .time_util import get_datetime_format, get_timezone
 from .resource import get_resource_path
 from .query import Query
+from .url import Url
 
 
 logger = logging.getLogger(os.path.basename(__file__))

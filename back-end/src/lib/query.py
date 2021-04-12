@@ -3,7 +3,7 @@ import json
 import logging
 from typing import Dict, Tuple
 
-from .user import User
+from .user.user import User
 
 
 logger = logging.getLogger(os.path.basename(__file__))

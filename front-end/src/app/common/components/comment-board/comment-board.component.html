@@ -1,0 +1,32 @@
+<div class="main">
+    <div class="header">
+        <div mat-card-avatar class="author-image">
+            <img [hidden]="this.hideAuthorImage" [src]="this.authorImage" (load)="this.hideAuthorImage = false;" class="author-image">
+        </div>
+        <div class="right">
+            <form #commentForm="ngForm" (ngSubmit)="onCreateComment(commentForm.value)">
+
+                <mat-form-field style="width: 100%;">
+                    <textarea style="width: 100%;" matInput placeholder="输入评论" ngModel required name="input"></textarea>
+                </mat-form-field>
+
+                <div class="actions-section" *ngIf="commentForm.valid">
+                    <span class="example-spacer"></span>
+                    <button style="margin-left: 5px;" mat-button color="grey" (click)="commentForm.reset()">取消</button>
+                    <button style="margin-left: 5px;" type="submit" mat-raised-button color="primary">确定</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="contents">
+        <!-- <app-comment-card *ngFor="let package of packages" class="col-1-4">
+            <app-package-card [package]="package" class="module package"></app-package-card>
+        </app-comment-card> -->
+        <ng-container *ngFor="let comment of this.comments">
+            <app-comment-card [comment]="comment" class="comment-card" (commentDeleteEvent)="onCommentDelete($event)"></app-comment-card>
+        </ng-container>
+    </div>
+
+</div>

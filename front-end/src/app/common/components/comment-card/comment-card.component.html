@@ -1,1 +1,53 @@
-<p>comment-card works!</p>
+<div class="main" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
+    <div mat-card-avatar class="author-image">
+        <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
+    </div>
+    <div class="right">
+        <div class="header">
+            <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
+            <span class="create-time">{{this.comment.createTime}}</span>
+
+            <span class="example-spacer"></span>
+
+            <div *ngIf="!this.hideControl">
+                <button mat-icon-button class="icon-button" (click)="onDeleteComment()">
+                    <mat-icon class="icon">delete</mat-icon>
+                </button>
+            </div>
+
+        </div>
+        <div class="content">
+            {{this.comment.text}}
+        </div>
+        <div class="bottom">
+            <button mat-icon-button (click)="onUpvote()">
+                <mat-icon class="icon">thumb_up</mat-icon>
+            </button>
+            <span [hidden]="this.comment.upvoteCount===&quot;0&quot;">{{this.comment.upvoteCount}}</span>
+
+            <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
+        </div>
+
+        <div *ngIf="!this.hideReply" class="reply-section">
+
+            <div mat-card-avatar class="author-image">
+                <img [hidden]="this.hideAuthorImage" [src]="this.authorImage" (load)="this.hideAuthorImage = false;" class="author-image">
+            </div>
+
+            <form #replyForm="ngForm" (ngSubmit)="onCreateComment(replyForm.value)">
+
+                <mat-form-field style="width: 100%;">
+                    <input matInput type="text" matInput placeholder="输入回复" ngModel name="input">
+                </mat-form-field>
+
+                <div class="actions-section">
+                    <span class="example-spacer"></span>
+                    <button class="button" mat-button color="grey" (click)="onCancelReply()">取消</button>
+                    <button class="button" [disabled]="!replyForm.valid" type="submit" mat-raised-button color="primary">确定</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>

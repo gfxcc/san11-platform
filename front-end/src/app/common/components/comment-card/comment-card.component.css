@@ -1,0 +1,79 @@
+.main {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.main:hover {
+    /* background-color: rgba(0, 0, 0, 0.139); */
+    /* box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%); */
+    /* cursor: pointer; */
+}
+
+.author-image {
+    /* background-image: url('../../../assets/images/zhuge.jpg'); */
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.right {
+    width: calc(100% - 40px);
+    padding-left: 10px;
+}
+
+.right>.header {
+    display: flex;
+    margin-bottom: 2px;
+    height: 18px;
+}
+
+.right>.header>.user-name {
+    color: black;
+}
+
+.right>.header>.create-time {
+    margin-left: 10px;
+    color: #5f6368;
+}
+
+.right>.bottom {
+    height: 32px;
+}
+
+.icon {
+    color: #5f6368;
+    font-size: 16px;
+}
+
+.right>.bottom>.button {
+    margin-left: 5px;
+    height: 32px;
+    color: #5f6368;
+}
+
+.reply-section {
+    display: flex;
+}
+
+.right .author-image {
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.comment-input {
+    overflow: initial;
+    outline: none;
+}
+
+.reply-section form {
+    width: 90%;
+    margin-left: 10px;
+}
+
+.actions-section button {
+    margin-left: 5px;
+    height: 32px;
+}

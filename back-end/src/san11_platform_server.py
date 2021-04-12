@@ -13,15 +13,19 @@ import lib.db_util as db_util
 
 from lib.protos import san11_platform_pb2
 from lib.protos import san11_platform_pb2_grpc
-from lib.user import User, InvalidPassword
+from lib.user.user import User, InvalidPassword
 from lib.image import Image
 from lib.package import Package
 from lib.binary import Binary
 from lib.url import Url
 from lib.statistic import Statistic
 from lib.query import Query
+
 from lib.auths.session import Session
 from lib.auths.authenticator import Authenticator
+
+from lib.comment.comment import Comment
+from lib.user.activity import Activity, Action
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -50,7 +54,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         authenticator = Authenticator.from_context(context)
         if not authenticator.canDeletePackage(package):
-            context.abort(code=255, details='删除操作被拒绝:权限不足')
+            context.abort(code=255, details='权限不足')
 
         package.delete()
         logger.info(f'Package is deleted: {package}')
@@ -95,7 +99,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUpdatePackage(package):
-            context.abort(code=255, details='更新操作被拒绝:权限不足')
+            context.abort(code=255, details='权限不足')
 
         if request.package.name:
             package.name = request.package.name
@@ -136,7 +140,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         logger.info(f'In UploadBinary: parent={request.parent}')
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUploadBinary(parent=Url(request.parent)):
-            context.abort(code=255, details='上传操作被拒绝:权限不足')
+            context.abort(code=255, details='权限不足')
 
         Binary.createc_under_parent(
             request.parent, request.binary, request.data)
@@ -159,7 +163,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         binary = Binary.from_binary_id(request.binary_id)
         authenticate = Authenticator.from_context(context)
         if not authenticate.canDeleteBinary(binary):
-            context.abort(code=255, details='删除操作被拒绝:权限不足')
+            context.abort(code=255, details='权限不足')
 
         binary.delete()
         return san11_platform_pb2.Empty()
@@ -173,7 +177,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUploadImage(parent=parent):
-            context.abort(code=255, details='上传操作被拒绝:权限不足')
+            context.abort(code=255, details='权限不足')
 
         if parent.type == 'packages':
             Package.from_package_id(parent.id).append_image(image)
@@ -188,8 +192,50 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def CreateComment(self, request, context):
         logger.info('In CreateComment')
         authenticator = Authenticator.from_context(context)
+        logger.debug(f'{request.comment.author_id} =? {authenticator.session.user.user_id}')
+        assert request.comment.author_id == authenticator.session.user.user_id
 
+        comment = Comment.from_pb(request.comment)
+        comment.create()
+        
+        return comment.to_pb()
+    
+    def DeleteComment(self, request, context):
+        logger.info(f'In DeleteComment: comment_id={request.comment_id}')
+        comment = Comment.from_id(request.comment_id)
+        authenticator = Authenticator.from_context(context)
+        if not authenticator.canDeleteComment(comment):
+            context.abort(code=255, details='权限不足')
+        comment.delete()
+        return san11_platform_pb2.Empty()
+    
+    def UpdateComment(self, request, context):
+        logger.info(f'In UpdateComment: comment_id={request.comment.comment_id}')
+        comment = Comment.from_id(request.comment.comment_id)
+        authenticator = Authenticator.from_context(context)
+        if not authenticator.canUpdateComment(current=comment, requested=request.comment):
+            context.abort(code=255, details='权限不足')
 
+        if request.comment.upvote_count:
+            package_url = Package.from_package_id(comment.package_id).url
+            resource = f'{package_url}/comments/{comment.comment_id}'
+            activity = Activity(authenticator.session.user.user_id, resource, Action.UPVOTE)
+            if activity.isExist():
+            # upvote from the same user will result as cancelling previous upvote
+                activity.delete()
+                request.comment.upvote_count -= 2
+            else:
+                activity.create()
+
+        comment.update_to(request.comment)
+        return comment.to_pb()
+    
+    def ListComments(self, request, context):
+        logger.info(f'In ListComments: parent={request.parent}')
+        comments = Comment.list_comment(parent=Url(request.parent))
+        return san11_platform_pb2.ListCommentsResponse(
+            comments=[comment.to_pb() for comment in comments]
+        )
 
     # users
     def SignIn(self, request, context):
@@ -248,7 +294,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUpdateUser(user=user):
-            context.abort(code=255, details='修改操作被拒绝:权限不足')
+            context.abort(code=255, details='权限不足')
 
         if request.user.email:
             user.email = request.user.email
@@ -271,7 +317,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUpdateUser(user=user):
-            context.abort(code=255, details='修改操作被拒绝:权限不足')
+            context.abort(code=255, details='权限不足')
 
         user.set_password(request.password)
         return san11_platform_pb2.Empty()

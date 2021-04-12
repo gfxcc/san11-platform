@@ -7,14 +7,13 @@ package routeguide;
 service RouteGuide {
   // package related
   rpc CreatePackage(CreatePackageRequest) returns (Package) {}
-
   rpc DeletePackage(DeletePackageRequest) returns (Empty) {}
+  rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
 
   rpc GetPackage(GetPackageRequest) returns (Package) {}
   rpc ListPackages(ListPackagesRequest) returns (ListPackagesResponse) {}
   rpc SearchPackages(SearchPackagesRequest) returns (SearchPackagesResponse) {}
 
-  rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
 
 
   // Binary related 
@@ -35,7 +34,8 @@ service RouteGuide {
   // comment related
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}
   rpc DeleteComment(DeleteCommentRequest) returns (Empty) {}
-  rpc ListComment(ListCommentRequest) returns (ListCommentResponse) {}
+  rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
+  rpc ListComments(ListCommentsRequest) returns (ListCommentsResponse) {}
 //   rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
   rpc CreateReply(CreateReplyRequest) returns (Reply) {}
   rpc DeleteReply(DeleteReplyRequest) returns (Empty) {}
@@ -112,7 +112,7 @@ message GetBinaryRequest {
 }
 
 message UploadBinaryRequest {
-    string parent = 1; // packages/package_id
+    string parent = 1; // categories/xxx/packages/xxxx
     Binary binary = 2;
     oneof resource {
         bytes data = 3;
@@ -130,7 +130,7 @@ message BatchGetBinaryResponse {
 
 
 message DownloadBinaryRequest {
-    string parent = 1;
+    string parent = 1; // categories/xxx/packages/xxx
     int64 binary_id = 2;
 }
 
@@ -152,7 +152,7 @@ message ListBinariesResponse {
 // image
 
 message UploadImageRequest {
-    string parent = 1; // packages/package_id or users/user_id
+    string parent = 1; // categories/xxx/packages/xxx or users/user_id
     bytes image = 2;
 }
 
@@ -163,19 +163,23 @@ message CreateCommentRequest {
 }
 
 message DeleteCommentRequest {
+    int64 comment_id = 1;
+}
+
+message UpdateCommentRequest {
     Comment comment = 1;
 }
 
-message ListCommentRequest {
+message ListCommentsRequest {
     // Supported values:
-    // `packages/package_id`
+    // `categories/xxx/packages/xxx`
     // `website`
     string parent = 1;
     int64 page_size = 2;
     string page_token = 3;
 }
 
-message ListCommentResponse {
+message ListCommentsResponse {
     repeated Comment comments = 1;
     string page_token = 2;
 }
@@ -185,7 +189,7 @@ message CreateReplyRequest {
 }
 
 message DeleteReplyRequest {
-    Reply reply = 1;
+    int64 reply_id = 1;
 }
 
 
@@ -312,7 +316,7 @@ message Comment {
 
 message Reply {
     int64 comment_id = 1;
-    int64 note_id = 2;
+    int64 reply_id = 2;
     string create_time = 3;
     string update_time = 4;
     string text = 5;

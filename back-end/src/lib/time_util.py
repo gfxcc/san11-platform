@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, tzinfo
 from pytz import timezone
 
 
@@ -7,9 +7,13 @@ def get_datetime_format() -> str:
     return f'%Y-%m/%d-%H:%M %Z'
 
 
-def get_timezone() -> timezone:
+def get_timezone() -> tzinfo:
     return timezone('Asia/Shanghai')
 
 
 def get_today() -> date:
     return datetime.now(get_timezone()).date()
+
+
+def get_now() -> datetime:
+    return datetime.now(get_timezone())

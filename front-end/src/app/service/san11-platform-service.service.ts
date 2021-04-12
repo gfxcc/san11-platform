@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, ObservedValueOf, Subscription } from 'rxjs';
 
 import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-packages'
 
@@ -9,7 +9,7 @@ import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackage
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
 import { SearchPackagesRequest, SearchPackagesResponse } from "../../proto/san11-platform.pb";
-import { Url, Statistic, User, Package, Binary, Status, Empty } from '../../proto/san11-platform.pb'
+import { Url, Statistic, User, Package, Binary, Status, Empty, Comment, Reply } from '../../proto/san11-platform.pb'
 import { ListPackagesRequest } from '../../proto/san11-platform.pb';
 import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
 import { SignUpRequest, SignUpResponse } from '../../proto/san11-platform.pb';
@@ -18,6 +18,8 @@ import { DownloadBinaryRequest } from '../../proto/san11-platform.pb'
 import { GetStatisticRequest } from '../../proto/san11-platform.pb'
 import { DeleteBinaryRequest } from "../../proto/san11-platform.pb";
 import { UpdateUserRequest, UpdatePasswordRequest } from "../../proto/san11-platform.pb";
+import { UpdateCommentRequest, CreateCommentRequest, DeleteCommentRequest, ListCommentsRequest, ListCommentsResponse } from "../../proto/san11-platform.pb";
+
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
 import { Cacheable } from 'ts-cacheable';
@@ -95,11 +97,26 @@ export class San11PlatformServiceService {
     return this.severClient.uploadImage(requst, this.getMetadata());
   }
 
-  // @Cacheable()
-  // getImage(imageId): Observable<Image> {
-  //   // const request = new GetimageRequest({imageId: imageId});
-  //   // return this.severClient.getImage(request, this.getMetadata());
-  // }
+  // comments
+  createComment(comment: Comment): Observable<Comment> {
+    const request = new CreateCommentRequest({ comment: comment });
+    return this.severClient.createComment(request, this.getMetadata());
+  }
+
+  deleteComment(commentId: string): Observable<Empty> {
+    const request = new DeleteCommentRequest({ commentId: commentId });
+    return this.severClient.deleteComment(request, this.getMetadata());
+  }
+
+  updateComment(comment: Comment): Observable<Comment> {
+    const request = new UpdateCommentRequest({ comment: comment });
+    return this.severClient.updateComment(request, this.getMetadata());
+  }
+
+  listComments(parent: string): Observable<ListCommentsResponse> {
+    const request = new ListCommentsRequest({ parent: parent });
+    return this.severClient.listComments(request, this.getMetadata());
+  }
 
 
   // users

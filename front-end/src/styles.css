@@ -131,3 +131,7 @@ body {
     cursor: pointer;
     border-bottom: solid 1px grey;
 }
+
+.actions-section {
+    display: flex;
+}

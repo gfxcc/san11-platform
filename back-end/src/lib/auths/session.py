@@ -4,7 +4,7 @@ import logging
 import uuid
 
 from ..db_util import run_sql_with_param, run_sql_with_param_and_fetch_one
-from ..user import User
+from ..user.user import User
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -13,12 +13,11 @@ logger = logging.getLogger(os.path.basename(__file__))
 class Session:
     def __init__(self, sid: str, user_id: int, expiration: int):
         self.sid = sid
-        self.user_id = user_id
         self.expiration = expiration
         self.user = User.from_user_id(user_id)
     
     def __str__(self):
-        return f'{{sid: {self.sid}, user_id: {self.user_id}, expiration: {self.expiration}}}'
+        return f'{{sid: {self.sid}, user_id: {self.user.user_id}, expiration: {self.expiration}}}'
 
     def is_valid(self):
         '''

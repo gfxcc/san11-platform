@@ -67,4 +67,38 @@ CREATE TABLE statistics (
     download_count INT DEFAULT 0
 );
 
+CREATE TABLE comments (
+    package_id INT NOT NULL,
+    comment_id INT NOT NULL,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP,
+    text TEXT NOT NULL,
+    author_id INT NOT NULL,
+    upvote_count INT DEFAULT 0,
+
+    PRIMARY KEY (package_id, comment_id)
+);
+
+CREATE TABLE replies (
+    comment_id INT NOT NULL,
+    reply_id INT NOT NULL,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP,
+    text TEXT NOT NULL,
+    author_id INT NOT NULL,
+    upvote_count INT DEFAULT 0,
+
+    PRIMARY KEY (comment_id, reply_id)
+);
+
+CREATE TABLE activities (
+    user_id INT NOT NULL,
+    resource TEXT NOT NULL,
+    action TEXT NOT NULL,
+    create_time TIMESTAMP
+
+    PRIMARY KEY (user_id, resource, action)
+)
+
+
 \dt;

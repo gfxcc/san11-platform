@@ -2,10 +2,12 @@ import os
 import logging
 from typing import Union
 
+from ..protos import san11_platform_pb2
 from ..package import Package
 from ..binary import Binary
 from ..url import Url
-from ..user import User
+from ..user.user import User
+from ..comment.comment import Comment
 from .session import Session
 
 
@@ -35,7 +37,7 @@ class Authenticator:
     
     # Package
     def canDeletePackage(self, package: Package) -> bool:
-        if self._super_admin():
+        if self.isAdmin() or self._super_admin():
             return True
         user = self.session.user
         return user.user_id == package.author_id
@@ -55,7 +57,7 @@ class Authenticator:
         return user.user_id == package.author_id
     
     def canDeleteBinary(self, binary: Binary) -> bool:
-        if self._super_admin():
+        if self.isAdmin() or self._super_admin():
             return True
         user = self.session.user
         package = Package.from_package_id(binary.package_id)
@@ -75,12 +77,31 @@ class Authenticator:
             return self.canUpdateUser(user)
         return False
     
+    # Comment
+    def canDeleteComment(self, comment: Comment) -> bool:
+        if self.isAdmin() or self._super_admin():
+            return True
+        user = self.session.user
+        return user.user_id == comment.author_id
+
+    def canUpdateComment(self, current: Comment, requested: san11_platform_pb2.Comment) -> bool:
+        if self._super_admin():
+            return True
+        user = self.session.user
+        can = True
+        if requested.text:
+            can = can and (user.user_id == current.author_id)
+        if requested.upvote_count:
+            can = can and True
+        return can
+            
+
     # User
     def canUpdateUser(self, user: User) -> bool:
         if self._super_admin():
             return True
         return user.user_id == self.session.user.user_id
-    
+
     # internals
     def _super_admin(self) -> bool:
         '''

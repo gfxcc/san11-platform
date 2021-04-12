@@ -25,6 +25,11 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.DeletePackageRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
+        self.UpdatePackage = channel.unary_unary(
+                '/routeguide.RouteGuide/UpdatePackage',
+                request_serializer=san11__platform__pb2.UpdatePackageRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Package.FromString,
+                )
         self.GetPackage = channel.unary_unary(
                 '/routeguide.RouteGuide/GetPackage',
                 request_serializer=san11__platform__pb2.GetPackageRequest.SerializeToString,
@@ -39,11 +44,6 @@ class RouteGuideStub(object):
                 '/routeguide.RouteGuide/SearchPackages',
                 request_serializer=san11__platform__pb2.SearchPackagesRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.SearchPackagesResponse.FromString,
-                )
-        self.UpdatePackage = channel.unary_unary(
-                '/routeguide.RouteGuide/UpdatePackage',
-                request_serializer=san11__platform__pb2.UpdatePackageRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Package.FromString,
                 )
         self.UploadBinary = channel.unary_unary(
                 '/routeguide.RouteGuide/UploadBinary',
@@ -90,10 +90,15 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.DeleteCommentRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
-        self.ListComment = channel.unary_unary(
-                '/routeguide.RouteGuide/ListComment',
-                request_serializer=san11__platform__pb2.ListCommentRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.ListCommentResponse.FromString,
+        self.UpdateComment = channel.unary_unary(
+                '/routeguide.RouteGuide/UpdateComment',
+                request_serializer=san11__platform__pb2.UpdateCommentRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Comment.FromString,
+                )
+        self.ListComments = channel.unary_unary(
+                '/routeguide.RouteGuide/ListComments',
+                request_serializer=san11__platform__pb2.ListCommentsRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.ListCommentsResponse.FromString,
                 )
         self.CreateReply = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateReply',
@@ -159,6 +164,12 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdatePackage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetPackage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -172,12 +183,6 @@ class RouteGuideServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def SearchPackages(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UpdatePackage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -240,7 +245,13 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListComment(self, request, context):
+    def UpdateComment(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListComments(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -316,6 +327,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.DeletePackageRequest.FromString,
                     response_serializer=san11__platform__pb2.Empty.SerializeToString,
             ),
+            'UpdatePackage': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdatePackage,
+                    request_deserializer=san11__platform__pb2.UpdatePackageRequest.FromString,
+                    response_serializer=san11__platform__pb2.Package.SerializeToString,
+            ),
             'GetPackage': grpc.unary_unary_rpc_method_handler(
                     servicer.GetPackage,
                     request_deserializer=san11__platform__pb2.GetPackageRequest.FromString,
@@ -330,11 +346,6 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.SearchPackages,
                     request_deserializer=san11__platform__pb2.SearchPackagesRequest.FromString,
                     response_serializer=san11__platform__pb2.SearchPackagesResponse.SerializeToString,
-            ),
-            'UpdatePackage': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdatePackage,
-                    request_deserializer=san11__platform__pb2.UpdatePackageRequest.FromString,
-                    response_serializer=san11__platform__pb2.Package.SerializeToString,
             ),
             'UploadBinary': grpc.unary_unary_rpc_method_handler(
                     servicer.UploadBinary,
@@ -381,10 +392,15 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.DeleteCommentRequest.FromString,
                     response_serializer=san11__platform__pb2.Empty.SerializeToString,
             ),
-            'ListComment': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListComment,
-                    request_deserializer=san11__platform__pb2.ListCommentRequest.FromString,
-                    response_serializer=san11__platform__pb2.ListCommentResponse.SerializeToString,
+            'UpdateComment': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateComment,
+                    request_deserializer=san11__platform__pb2.UpdateCommentRequest.FromString,
+                    response_serializer=san11__platform__pb2.Comment.SerializeToString,
+            ),
+            'ListComments': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListComments,
+                    request_deserializer=san11__platform__pb2.ListCommentsRequest.FromString,
+                    response_serializer=san11__platform__pb2.ListCommentsResponse.SerializeToString,
             ),
             'CreateReply': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateReply,
@@ -477,6 +493,23 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def UpdatePackage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdatePackage',
+            san11__platform__pb2.UpdatePackageRequest.SerializeToString,
+            san11__platform__pb2.Package.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def GetPackage(request,
             target,
             options=(),
@@ -524,23 +557,6 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/SearchPackages',
             san11__platform__pb2.SearchPackagesRequest.SerializeToString,
             san11__platform__pb2.SearchPackagesResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UpdatePackage(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdatePackage',
-            san11__platform__pb2.UpdatePackageRequest.SerializeToString,
-            san11__platform__pb2.Package.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -698,7 +714,7 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def ListComment(request,
+    def UpdateComment(request,
             target,
             options=(),
             channel_credentials=None,
@@ -708,9 +724,26 @@ class RouteGuide(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListComment',
-            san11__platform__pb2.ListCommentRequest.SerializeToString,
-            san11__platform__pb2.ListCommentResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateComment',
+            san11__platform__pb2.UpdateCommentRequest.SerializeToString,
+            san11__platform__pb2.Comment.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ListComments(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListComments',
+            san11__platform__pb2.ListCommentsRequest.SerializeToString,
+            san11__platform__pb2.ListCommentsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

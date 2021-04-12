@@ -5,11 +5,11 @@ import json
 import logging
 from datetime import datetime, timezone
 
-from .protos import san11_platform_pb2
-from .db_util import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
+from ..protos import san11_platform_pb2
+from ..db_util import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
                      run_sql_with_param
-from .image import Image
-from .time_util import get_timezone
+from ..image import Image
+from ..time_util import get_timezone
 
 
 logger = logging.getLogger(os.path.basename(__file__))
