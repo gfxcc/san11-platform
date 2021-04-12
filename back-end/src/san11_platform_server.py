@@ -224,6 +224,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             # upvote from the same user will result as cancelling previous upvote
                 activity.delete()
                 request.comment.upvote_count -= 2
+                if request.comment.upvote_count == 0:
+                    comment.upvote_count = 0
             else:
                 activity.create()
 

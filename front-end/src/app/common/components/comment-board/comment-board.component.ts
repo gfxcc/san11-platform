@@ -1,4 +1,4 @@
-import { Input, Component, OnInit } from '@angular/core';
+import { ViewChild, ElementRef, Input, Component, OnInit } from '@angular/core';
 import { Package, Comment, Reply } from "../../../../proto/san11-platform.pb";
 
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
@@ -14,6 +14,8 @@ import { getPackageUrl } from '../../../utils/package_util';
 })
 export class CommentBoardComponent implements OnInit {
   @Input() package: Package;
+
+  @ViewChild('commentForm') commentFormElement: ElementRef
 
   hideAuthorImage = true;
 
@@ -69,7 +71,7 @@ export class CommentBoardComponent implements OnInit {
     });
     this.san11pkService.createComment(comment).subscribe(
       comment => {
-        this.notificationService.success('comment created');
+        this.notificationService.success('评论添加 成功!');
         this.comments.splice(0, 0, comment);
       },
       error => {

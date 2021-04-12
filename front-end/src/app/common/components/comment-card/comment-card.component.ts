@@ -71,7 +71,7 @@ export class CommentCardComponent implements OnInit {
   }
 
   onDeleteComment() {
-    if (!confirm('确定要删除这条评论吗?')) {
+    if (!confirm('确定要删除评论 ' + this.comment.text + ' 吗?')) {
       return;
     }
 
@@ -94,8 +94,8 @@ export class CommentCardComponent implements OnInit {
       upvoteCount: increment(this.comment.upvoteCount)
     });
     this.san11pkService.updateComment(comment).subscribe(
-      comment => {
-        this.comment = comment;
+      commentResp => {
+        this.comment = commentResp;
       },
       error => {
         this.notificationService.warn(error.statusMessage);

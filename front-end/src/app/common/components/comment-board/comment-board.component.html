@@ -4,7 +4,7 @@
             <img [hidden]="this.hideAuthorImage" [src]="this.authorImage" (load)="this.hideAuthorImage = false;" class="author-image">
         </div>
         <div class="right">
-            <form #commentForm="ngForm" (ngSubmit)="onCreateComment(commentForm.value)">
+            <form #commentForm="ngForm" (ngSubmit)="onCreateComment(commentForm.value); commentForm.resetForm();">
 
                 <mat-form-field style="width: 100%;">
                     <textarea style="width: 100%;" matInput placeholder="输入评论" ngModel required name="input"></textarea>
