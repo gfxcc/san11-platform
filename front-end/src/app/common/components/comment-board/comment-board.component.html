@@ -1,4 +1,9 @@
-<div class="main">
+<div class="main top-border">
+    <div style="margin-bottom: 24px; margin-top: 24px;">
+        <span>{{this.commentCount}}</span>
+        <span style="margin-left: 5px;">Comments</span>
+    </div>
+
     <div class="header">
         <div mat-card-avatar class="author-image">
             <img [hidden]="this.hideAuthorImage" [src]="this.authorImage" (load)="this.hideAuthorImage = false;" class="author-image">

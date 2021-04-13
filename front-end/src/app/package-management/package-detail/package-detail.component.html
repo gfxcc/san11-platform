@@ -28,7 +28,7 @@
         </div>
         <div class="col-right under-development">
 
-            <div class="author-info under-development">
+            <div class="author-info top-border under-development">
                 <div>
                     <div class="title">作者</div>
                     <div #authorName class="content"> {{this.author.username}} </div>
@@ -46,7 +46,7 @@
             </mat-form-field> -->
             </div>
 
-            <div class="package-info under-development">
+            <div class="package-info top-border under-development">
                 <div class="title">
                     <span #descriptionTitle class="">描述</span>
                 </div>
@@ -54,7 +54,7 @@
             </div>
 
             <div [hidden]="! (isAdmin() || isAuthor())">
-                <div class="package-controller under-development">
+                <div class="package-controller top-border under-development">
                     <div class="admin-zone" *ngIf="adminZone">
                         <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
                     </div>
@@ -87,7 +87,7 @@
 
     </div>
 
-    <div class="version-info under-development">
+    <div class="version-info top-border under-development">
         <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)"> </app-version-panel>
     </div>
 

@@ -23,6 +23,7 @@ export class CommentBoardComponent implements OnInit {
   authorImage: string;
 
   comments: Comment[] = [];
+  commentCount: string;
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -55,12 +56,22 @@ export class CommentBoardComponent implements OnInit {
     this.san11pkService.listComments(getPackageUrl(this.package)).subscribe(
       resp => {
         this.comments = resp.comments;
+        this.commentCount = this.computeCommentCount(this.comments);
       },
       error => {
         this.notificationService.warn('获取评论列表失败: ' + error.statusMessage);
       }
     );
   }
+
+  computeCommentCount(comments: Comment[]): string {
+    let cnt = comments.length;
+    comments.forEach(comment => {
+      cnt += comment.replies.length;
+    });
+    return cnt.toString();
+  }
+
   onCreateComment(value) {
     const text = value.input;
 

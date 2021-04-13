@@ -135,3 +135,7 @@ body {
 .actions-section {
     display: flex;
 }
+
+.top-border {
+    border-top: solid 1px #ebebeb;
+}
