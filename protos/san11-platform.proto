@@ -39,7 +39,7 @@ service RouteGuide {
 //   rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
   rpc CreateReply(CreateReplyRequest) returns (Reply) {}
   rpc DeleteReply(DeleteReplyRequest) returns (Empty) {}
-
+  rpc UpdateReply(UpdateReplyRequest) returns (Reply) {}
 
   // User related
   rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
@@ -192,6 +192,9 @@ message DeleteReplyRequest {
     int64 reply_id = 1;
 }
 
+message UpdateReplyRequest{
+    Reply reply = 1;
+}
 
 // user
 

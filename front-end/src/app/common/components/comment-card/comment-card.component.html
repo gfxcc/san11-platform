@@ -1,23 +1,26 @@
-<div class="main" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
+<div class="main">
+
     <div mat-card-avatar class="author-image">
         <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
     </div>
     <div class="right">
-        <div class="header">
-            <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
-            <span class="create-time">{{this.comment.createTime}}</span>
+        <div (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
+            <div class="header">
+                <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
+                <span class="create-time">{{this.comment.createTime}}</span>
 
-            <span class="example-spacer"></span>
+                <span class="example-spacer"></span>
 
-            <div *ngIf="!this.hideControl">
-                <button mat-icon-button class="icon-button" (click)="onDeleteComment()">
+                <div *ngIf="!this.hideControl">
+                    <button mat-icon-button class="icon-button" (click)="onDeleteComment()">
                     <mat-icon class="icon">delete</mat-icon>
                 </button>
-            </div>
+                </div>
 
-        </div>
-        <div class="content">
-            {{this.comment.text}}
+            </div>
+            <div class="content">
+                {{this.comment.text}}
+            </div>
         </div>
         <div class="bottom">
             <button mat-icon-button (click)="onUpvote()">
@@ -28,16 +31,22 @@
             <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
         </div>
 
-        <div *ngIf="!this.hideReply" class="reply-section">
+        <div *ngIf="this.comment.replies.length!=0" style="margin-top: 5px; margin-right: 50px;">
+            <ng-container *ngFor="let reply of this.comment.replies">
+                <app-reply-card [reply]="reply" class="reply-card" (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply()"></app-reply-card>
+            </ng-container>
+        </div>
+
+        <div *ngIf="!this.hideReplyEnter" class="reply-section">
 
             <div mat-card-avatar class="author-image">
                 <img [hidden]="this.hideAuthorImage" [src]="this.authorImage" (load)="this.hideAuthorImage = false;" class="author-image">
             </div>
 
-            <form #replyForm="ngForm" (ngSubmit)="onCreateComment(replyForm.value)">
+            <form #replyForm="ngForm" (ngSubmit)="onCreateReply(replyForm.value);replyForm.resetForm();">
 
                 <mat-form-field style="width: 100%;">
-                    <input matInput type="text" matInput placeholder="输入回复" ngModel name="input">
+                    <textarea #replyInput matInput type="text" matInput placeholder="输入回复" ngModel name="input"> </textarea>
                 </mat-form-field>
 
                 <div class="actions-section">

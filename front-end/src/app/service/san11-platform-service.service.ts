@@ -19,6 +19,7 @@ import { GetStatisticRequest } from '../../proto/san11-platform.pb'
 import { DeleteBinaryRequest } from "../../proto/san11-platform.pb";
 import { UpdateUserRequest, UpdatePasswordRequest } from "../../proto/san11-platform.pb";
 import { UpdateCommentRequest, CreateCommentRequest, DeleteCommentRequest, ListCommentsRequest, ListCommentsResponse } from "../../proto/san11-platform.pb";
+import { UpdateReplyRequest, CreateReplyRequest, DeleteReplyRequest } from "../../proto/san11-platform.pb";
 
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
@@ -118,7 +119,20 @@ export class San11PlatformServiceService {
     return this.severClient.listComments(request, this.getMetadata());
   }
 
+  createReply(reply: Reply): Observable<Reply> {
+    const request = new CreateReplyRequest({ reply: reply });
+    return this.severClient.createReply(request, this.getMetadata());
+  }
 
+  deleteReply(replyId: string): Observable<Empty> {
+    const request = new DeleteReplyRequest({ replyId: replyId });
+    return this.severClient.deleteReply(request, this.getMetadata());
+  }
+
+  updateReply(reply: Reply): Observable<Reply> {
+    const request = new UpdateReplyRequest({ reply: reply });
+    return this.severClient.updateReply(request, this.getMetadata());
+  }
   // users
 
   signIn(user): Observable<SignInResponse> {

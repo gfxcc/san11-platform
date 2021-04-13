@@ -110,6 +110,11 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.DeleteReplyRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
+        self.UpdateReply = channel.unary_unary(
+                '/routeguide.RouteGuide/UpdateReply',
+                request_serializer=san11__platform__pb2.UpdateReplyRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Reply.FromString,
+                )
         self.SignUp = channel.unary_unary(
                 '/routeguide.RouteGuide/SignUp',
                 request_serializer=san11__platform__pb2.SignUpRequest.SerializeToString,
@@ -270,6 +275,12 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateReply(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def SignUp(self, request, context):
         """User related
         """
@@ -411,6 +422,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.DeleteReply,
                     request_deserializer=san11__platform__pb2.DeleteReplyRequest.FromString,
                     response_serializer=san11__platform__pb2.Empty.SerializeToString,
+            ),
+            'UpdateReply': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateReply,
+                    request_deserializer=san11__platform__pb2.UpdateReplyRequest.FromString,
+                    response_serializer=san11__platform__pb2.Reply.SerializeToString,
             ),
             'SignUp': grpc.unary_unary_rpc_method_handler(
                     servicer.SignUp,
@@ -778,6 +794,23 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteReply',
             san11__platform__pb2.DeleteReplyRequest.SerializeToString,
             san11__platform__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateReply(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateReply',
+            san11__platform__pb2.UpdateReplyRequest.SerializeToString,
+            san11__platform__pb2.Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

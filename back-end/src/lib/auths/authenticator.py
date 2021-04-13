@@ -8,6 +8,7 @@ from ..binary import Binary
 from ..url import Url
 from ..user.user import User
 from ..comment.comment import Comment
+from ..comment.reply import Reply
 from .session import Session
 
 
@@ -94,7 +95,12 @@ class Authenticator:
         if requested.upvote_count:
             can = can and True
         return can
-            
+
+    def canDeleteReply(self, reply: Reply) -> bool:
+        if self.isAdmin() or self._super_admin():
+            return True
+        user = self.session.user
+        return user.user_id == reply.author_id
 
     # User
     def canUpdateUser(self, user: User) -> bool:

@@ -1,4 +1,6 @@
-.main {}
+.main {
+    padding: 10px;
+}
 
 .header {
     display: flex;

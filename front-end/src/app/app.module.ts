@@ -33,6 +33,7 @@ import { TextInputDialogComponent } from './common/components/text-input-dialog/
 import { UserDetailComponent, PasswordDialog } from './account-management/user-detail/user-detail.component';
 import { CommentCardComponent } from './common/components/comment-card/comment-card.component';
 import { CommentBoardComponent } from './common/components/comment-board/comment-board.component';
+import { ReplyCardComponent } from './common/components/comment-card/reply-card/reply-card.component';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { CommentBoardComponent } from './common/components/comment-board/comment
     PasswordDialog,
     CommentCardComponent,
     CommentBoardComponent,
+    ReplyCardComponent,
   ],
   imports: [
     GrpcCoreModule.forRoot(),

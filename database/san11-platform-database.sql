@@ -95,10 +95,9 @@ CREATE TABLE activities (
     user_id INT NOT NULL,
     resource TEXT NOT NULL,
     action TEXT NOT NULL,
-    create_time TIMESTAMP
+    create_time TIMESTAMP,
 
     PRIMARY KEY (user_id, resource, action)
-)
-
+);
 
 \dt;

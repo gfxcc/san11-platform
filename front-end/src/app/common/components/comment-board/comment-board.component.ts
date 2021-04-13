@@ -29,20 +29,32 @@ export class CommentBoardComponent implements OnInit {
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
   ) {
-    console.log(this.package);
 
     this.authorId = localStorage.getItem('userId');
-    this.authorImage = localStorage.getItem('userImageUrl');
-    if (this.authorImage === null) {
-      this.san11pkService.getUser(this.authorId).subscribe(
-        user => {
-          this.authorImage = getFullUrl(user.imageUrl);
-        },
-        error => {
-          this.authorImage = '../../../assets/images/zhuge.jpg';
-          this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
-        }
-      );
+    if (this.authorId != null) {
+      const localAuthorImage = localStorage.getItem('userImageUrl');
+      console.log('hi');
+      console.log(localAuthorImage);
+      if (localAuthorImage === null) {
+        this.san11pkService.getUser(this.authorId).subscribe(
+          user => {
+            console.log(user.imageUrl);
+            if (user.imageUrl === '') {
+              this.authorImage = '../../../assets/images/zhuge.jpg';
+            } else {
+              this.authorImage = getFullUrl(user.imageUrl);
+            }
+          },
+          error => {
+            this.authorImage = '../../../assets/images/zhuge.jpg';
+            this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
+          }
+        );
+      } else {
+        this.authorImage = getFullUrl(localAuthorImage);
+      }
+    } else {
+      this.authorImage = '../../../assets/images/zhuge.jpg';
     }
 
   }
@@ -73,6 +85,10 @@ export class CommentBoardComponent implements OnInit {
   }
 
   onCreateComment(value) {
+    if (this.authorId === null) {
+      this.notificationService.warn('请登录');
+      return;
+    }
     const text = value.input;
 
     const comment = new Comment({

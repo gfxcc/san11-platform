@@ -3782,6 +3782,153 @@ export module DeleteReplyRequest {
 }
 
 /**
+ * Message implementation for routeguide.UpdateReplyRequest
+ */
+export class UpdateReplyRequest implements GrpcMessage {
+  static id = 'routeguide.UpdateReplyRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UpdateReplyRequest();
+    UpdateReplyRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UpdateReplyRequest) {
+    _instance.reply = _instance.reply || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UpdateReplyRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.reply = new Reply();
+          _reader.readMessage(
+            _instance.reply,
+            Reply.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UpdateReplyRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UpdateReplyRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.reply) {
+      _writer.writeMessage(
+        1,
+        _instance.reply as any,
+        Reply.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _reply?: Reply;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UpdateReplyRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UpdateReplyRequest.AsObject>) {
+    _value = _value || {};
+    this.reply = _value.reply ? new Reply(_value.reply) : undefined;
+    UpdateReplyRequest.refineValues(this);
+  }
+  get reply(): Reply | undefined {
+    return this._reply;
+  }
+  set reply(value: Reply | undefined) {
+    this._reply = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UpdateReplyRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UpdateReplyRequest.AsObject {
+    return {
+      reply: this.reply ? this.reply.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UpdateReplyRequest.AsProtobufJSON {
+    return {
+      reply: this.reply ? this.reply.toProtobufJSON(options) : null
+    };
+  }
+}
+export module UpdateReplyRequest {
+  /**
+   * Standard JavaScript object representation for UpdateReplyRequest
+   */
+  export interface AsObject {
+    reply?: Reply.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for UpdateReplyRequest
+   */
+  export interface AsProtobufJSON {
+    reply?: Reply.AsProtobufJSON | null;
+  }
+}
+
+/**
  * Message implementation for routeguide.GetUserRequest
  */
 export class GetUserRequest implements GrpcMessage {

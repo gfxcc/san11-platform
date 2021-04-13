@@ -25,6 +25,7 @@ from lib.auths.session import Session
 from lib.auths.authenticator import Authenticator
 
 from lib.comment.comment import Comment
+from lib.comment.reply import Reply
 from lib.user.activity import Activity, Action
 
 
@@ -238,6 +239,48 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return san11_platform_pb2.ListCommentsResponse(
             comments=[comment.to_pb() for comment in comments]
         )
+    
+    def CreateReply(self, request, context):
+        logger.info(f'In CreateReply: {request.reply.author_id}-> {request.reply.text}')
+        authenticator = Authenticator.from_context(context)
+        assert request.reply.author_id == authenticator.session.user.user_id
+
+        reply = Reply.from_pb(request.reply)
+        reply.create()
+        
+        return reply.to_pb()
+
+    def DeleteReply(self, request, context):
+        logger.info(f'In DeleteReply: reply_id={request.reply_id}')
+        reply = Reply.from_id(request.reply_id)
+        authenticator = Authenticator.from_context(context)
+        if not authenticator.canDeleteReply(reply):
+            context.abort(code=255, details='权限不足')
+        reply.delete()
+        return san11_platform_pb2.Empty()
+
+    def UpdateReply(self, request, context):
+        logger.info(f'In UpdateReply: reply_id={request.reply.reply_id}')
+        reply = Reply.from_id(request.reply.reply_id)
+        # TODO: fix authentication
+        authenticator = Authenticator.from_context(context)
+
+        if request.reply.upvote_count:
+            comment = Comment.from_id(reply.comment_id)
+            package_url = Package.from_package_id(comment.package_id).url
+            resource = f'{package_url}/comments/{comment.comment_id}/replys/{reply.reply_id}'
+            activity = Activity(authenticator.session.user.user_id, resource, Action.UPVOTE)
+            if activity.isExist():
+            # upvote from the same user will result as cancelling previous upvote
+                activity.delete()
+                request.reply.upvote_count -= 2
+                if request.reply.upvote_count == 0:
+                    reply.upvote_count = 0
+            else:
+                activity.create()
+
+        reply.update_to(request.reply)
+        return reply.to_pb()
 
     # users
     def SignIn(self, request, context):

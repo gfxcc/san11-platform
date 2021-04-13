@@ -4,7 +4,8 @@ import logging
 from typing import List
 from enum import Enum
 
-from ..db_util import run_sql_with_param_and_fetch_one, run_sql_with_param
+from ..db_util import run_sql_with_param_and_fetch_one, run_sql_with_param,\
+                      get_db_fields_placeholder_str, get_db_fields_str
 from ..time_util import get_now
 
 
@@ -42,8 +43,8 @@ class Activity:
         if self.isExist():
             logger.info(f'{self} exist: no-op')
             return
-        sql = f'INSERT INTO activities ({self._db_fields_str()}) '\
-              f'VALUES ({self._db_fileds_value_str()})'
+        sql = f'INSERT INTO activities ({get_db_fields_str(self._db_fields())}) '\
+              f'VALUES ({get_db_fields_placeholder_str(self._db_fields())})'
         run_sql_with_param(sql, {
             'user_id': self.user_id,
             'resource': self.resource,
@@ -69,11 +70,3 @@ class Activity:
     @classmethod
     def _db_fields(cls) -> List[str]:
         return ['user_id', 'resource', 'action', 'create_time']
-
-    @classmethod
-    def _db_fields_str(cls) -> str:
-        return ','.join(cls._db_fields())
-    
-    @classmethod
-    def _db_fileds_value_str(cls) -> str:
-        return ','.join(f'%({field})s' for field in cls._db_fields())

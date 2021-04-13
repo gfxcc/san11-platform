@@ -433,6 +433,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateReply
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Reply>>
+     */
+    updateReply: (
+      requestData: thisProto.UpdateReplyRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Reply>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateReply',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateReplyRequest,
+        responseClass: thisProto.Reply
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/SignUp
      *
      * @param requestMessage Request message
@@ -890,6 +911,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Empty> {
     return this.$raw
       .deleteReply(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateReply
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Reply>
+   */
+  updateReply(
+    requestData: thisProto.UpdateReplyRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Reply> {
+    return this.$raw
+      .updateReply(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

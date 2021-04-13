@@ -7,7 +7,7 @@ from typing import Iterable
 from .reply import Reply
 from ..protos import san11_platform_pb2
 from ..db_util import run_sql_with_param, run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all
-from ..time_util import get_now
+from ..time_util import get_now, datetime_to_str
 from ..url import Url
 from ..user.activity import Action, Activity
 
@@ -21,8 +21,8 @@ class Comment:
                  upvote_count: int) -> None:
         self.package_id = package_id
         self.comment_id = comment_id
-        self.create_time = create_time.replace(microsecond=0)
-        self.update_time = update_time.replace(microsecond=0)
+        self.create_time = create_time
+        self.update_time = update_time
         self.text = text
         self.author_id = author_id
         self.upvote_count = upvote_count
@@ -30,7 +30,7 @@ class Comment:
     
     def __str__(self) -> str:
         return f'{{comment_id: {self.comment_id}, text: {self.text}, author_id: {self.author_id} }}'
-    
+
     @classmethod
     def from_pb(cls, pb_obj:san11_platform_pb2.Comment):
         return cls(
@@ -66,8 +66,8 @@ class Comment:
         return san11_platform_pb2.Comment(
             package_id=self.package_id,
             comment_id=self.comment_id,
-            create_time=str(self.create_time),
-            update_time=str(self.update_time),
+            create_time=datetime_to_str(self.create_time),
+            update_time=datetime_to_str(self.update_time),
             text=self.text,
             author_id=self.author_id,
             upvote_count=self.upvote_count,

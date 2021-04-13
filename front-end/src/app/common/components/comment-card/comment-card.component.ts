@@ -5,6 +5,7 @@ import { Comment, User } from "../../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { NotificationService } from "../../../common/notification.service";
 import { getFullUrl } from '../../../utils/resrouce_util';
+import { Reply } from "../../../../proto/san11-platform.pb";
 
 import { increment } from '../../../utils/number_util';
 
@@ -17,6 +18,7 @@ import { increment } from '../../../utils/number_util';
 export class CommentCardComponent implements OnInit {
   @Input() comment: Comment;
   @Output() commentDeleteEvent = new EventEmitter();
+  @ViewChild('replyInput') replyInputElement: ElementRef;
 
   hideUserImage = true;
   userImage: string;
@@ -28,7 +30,8 @@ export class CommentCardComponent implements OnInit {
   authorId: string;
 
   hideControl = true;
-  hideReply = true;
+  hideReplies = true;
+  hideReplyEnter = true;
 
   constructor(
     private router: Router,
@@ -36,17 +39,27 @@ export class CommentCardComponent implements OnInit {
     private notificationService: NotificationService,
   ) {
     this.authorId = localStorage.getItem('userId');
-    this.authorImage = localStorage.getItem('userImageUrl');
-    if (this.authorImage === null) {
-      this.san11pkService.getUser(this.authorId).subscribe(
-        user => {
-          this.authorImage = getFullUrl(user.imageUrl);
-        },
-        error => {
-          this.authorImage = '../../../assets/images/zhuge.jpg';
-          this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
-        }
-      );
+    if (this.authorId != null) {
+      const localAuthorImage = localStorage.getItem('userImageUrl');
+      if (localAuthorImage === null) {
+        this.san11pkService.getUser(this.authorId).subscribe(
+          user => {
+            if (user.imageUrl === '') {
+              this.authorImage = '../../../../assets/images/zhuge.jpg';
+            } else {
+              this.authorImage = getFullUrl(user.imageUrl);
+            }
+          },
+          error => {
+            this.authorImage = '../../../../assets/images/zhuge.jpg';
+            this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
+          }
+        );
+      } else {
+        this.authorImage = getFullUrl(localAuthorImage);
+      }
+    } else {
+      this.authorImage = '../../../../assets/images/zhuge.jpg';
     }
 
   }
@@ -55,15 +68,18 @@ export class CommentCardComponent implements OnInit {
     this.san11pkService.getUser(this.comment.authorId).subscribe(
       user => {
         this.user = user;
-        this.userImage = getFullUrl(this.user.imageUrl);
+        if (user.imageUrl != '') {
+          this.userImage = getFullUrl(this.user.imageUrl);
+        } else {
+          this.userImage = '../../../../assets/images/zhuge.jpg';
+        }
       },
       error => {
         console.log('Failed to load user ' + this.comment.authorId + ':' + error.statusMessage);
 
-        this.userImage = '../../../assets/images/zhuge.jpg';
+        this.userImage = '../../../../assets/images/zhuge.jpg';
       }
     );
-
   }
 
   onUserClick() {
@@ -105,17 +121,41 @@ export class CommentCardComponent implements OnInit {
   }
 
   onReply() {
-    this.hideReply = false;
+    this.hideReplyEnter = false;
+    setTimeout(() => {
+      this.replyInputElement.nativeElement.focus();
+    });
   }
 
   onCancelReply() {
-    this.hideReply = true;
+    this.hideReplyEnter = true;
   }
 
-  onCreateComment(value) {
+  onCreateReply(value) {
+    if (this.authorId === null) {
+      this.notificationService.warn('请登录');
+      return;
+    }
     const text = value.input;
+    const reply = new Reply({
+      commentId: this.comment.commentId,
+      authorId: this.authorId,
+      text: text,
+    });
+    this.san11pkService.createReply(reply).subscribe(
+      reply => {
+        this.notificationService.success('评论添加 成功!');
+        this.comment.replies.push(reply);
+      },
+      error => {
+        this.notificationService.warn('failed' + error.statusMessage);
+      }
+    );
   }
 
+  onReplyDelete(event) {
+    this.commentDeleteEvent.emit();
+  }
 
   mouseEnter() {
     this.hideControl = false;
