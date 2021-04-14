@@ -54,7 +54,7 @@ export class ReplyCardComponent implements OnInit {
 
     const reply = new Reply({
       replyId: this.reply.replyId,
-      upvoteCount: increment(this.reply.upvoteCount)
+      upvoteCount: '1'
     });
     this.san11pkService.updateReply(reply).subscribe(
       reply => {

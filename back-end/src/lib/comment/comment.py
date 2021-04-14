@@ -114,16 +114,7 @@ class Comment:
         })
         logger.info(f'{self} is deleted')
     
-    def update_to(self, requested: san11_platform_pb2.Comment) -> None:
-        update_stamp = False
-        if requested.text:
-            self.text = requested.text
-            update_stamp = True
-        if requested.upvote_count:
-            self.upvote_count = requested.upvote_count
-        self._update(update_stamp=update_stamp)
-
-    def _update(self, update_stamp: bool) -> None:
+    def update(self, update_stamp: bool = False) -> None:
         if update_stamp:
             sql = 'UPDATE comments SET text=%(text)s, upvote_count=%(upvote_count)s, update_time=%(update_time)s WHERE comment_id=%(comment_id)s'
         else:

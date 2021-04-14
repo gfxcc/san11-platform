@@ -227,15 +227,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             if activity.isExist():
             # upvote from the same user will result as cancelling previous upvote
                 activity.delete()
-                request.comment.upvote_count -= 2
-                if request.comment.upvote_count == 0:
-                    comment.upvote_count = 0
+                comment.upvote_count -= 1
             else:
                 # upvote_count from user may stale
-                request.comment.upvote_count = comment.upvote_count + 1
                 activity.create()
+                comment.upvote_count += 1
 
-        comment.update_to(request.comment)
+        comment.update()
         return comment.to_pb()
     
     def ListComments(self, request, context):
@@ -279,15 +277,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             if activity.isExist():
             # upvote from the same user will result as cancelling previous upvote
                 activity.delete()
-                request.reply.upvote_count -= 2
-                if request.reply.upvote_count == 0:
-                    reply.upvote_count = 0
+                reply.upvote_count -= 1
             else:
                 # upvote_count from user may stale
-                request.reply.upvote_count = reply.upvote_count + 1
                 activity.create()
+                reply.upvote_count += 1
 
-        reply.update_to(request.reply)
+        reply.update()
         return reply.to_pb()
 
     # users

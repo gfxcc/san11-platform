@@ -98,7 +98,7 @@ export class CommentCardComponent implements OnInit {
 
     const comment = new Comment({
       commentId: this.comment.commentId,
-      upvoteCount: increment(this.comment.upvoteCount)
+      upvoteCount: '1'
     });
     this.san11pkService.updateComment(comment).subscribe(
       commentResp => {
