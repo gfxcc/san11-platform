@@ -19,6 +19,10 @@ class Action(Enum):
 
 class Activity:
     def __init__(self, user_id: int, resource: str, action: Action):
+        '''
+        Args:
+            resource: E.g. `package_id:xxxx`, `comment_id:xxxx`
+        '''
         self.user_id = user_id
         self.resource = resource
         self.action = action
@@ -66,6 +70,13 @@ class Activity:
             'action': self.action.name
         })
         logger.info(f'{self} is deleted.')
+    
+    @classmethod
+    def delete_resource(cls, resource: str):
+        sql = 'DELETE FROM activities WHERE resource=%(resource)s'
+        run_sql_with_param(sql, {
+            'resource': resource
+        })
     
     @classmethod
     def _db_fields(cls) -> List[str]:

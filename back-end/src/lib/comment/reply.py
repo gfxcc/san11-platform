@@ -8,6 +8,7 @@ from ..db_util import run_sql_with_param_and_fetch_one, run_sql_with_param_and_f
     get_db_fields_placeholder_str, get_db_fields_str, run_sql_with_param
 from ..protos import san11_platform_pb2
 from ..time_util import get_now, datetime_to_str
+from ..user.activity import Activity
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -104,6 +105,11 @@ class Reply:
         run_sql_with_param(sql, {
             'reply_id': self.reply_id
         })
+        try:
+            Activity.delete_resource(f'comment_id:{self.comment_id}')
+        except Exception as err:
+            logger.error(f'Failed to delete related activities for {self}: {err}')
+
         logger.info(f'{self} is deleted')
 
     def update_to(self, requested: san11_platform_pb2.Reply) -> None:

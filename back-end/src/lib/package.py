@@ -16,6 +16,7 @@ from .time_util import get_datetime_format, get_timezone
 from .resource import get_resource_path
 from .query import Query
 from .url import Url
+from .comment.comment import Comment
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -141,6 +142,12 @@ class Package:
                 binary.delete()
             except Exception as err:
                 logger.error(f'Failed to delete binary: binary={binary} err={err}')
+        
+        for comment in Comment.list_comment(Url(self.url)):
+            try:
+                comment.delete()
+            except Exception as err:
+                logger.error(f'Failed to delete {comment} under {self}: {err}')
 
         sql = 'DELETE FROM packages WHERE package_id=%(package_id)s'
         run_sql_with_param(sql, {'package_id': self.package_id})

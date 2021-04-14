@@ -18,6 +18,7 @@ import { increment } from '../../../utils/number_util';
 export class CommentCardComponent implements OnInit {
   @Input() comment: Comment;
   @Output() commentDeleteEvent = new EventEmitter();
+  @Output() replyCreateEvent = new EventEmitter();
   @ViewChild('replyInput') replyInputElement: ElementRef;
 
   hideUserImage = true;
@@ -136,6 +137,7 @@ export class CommentCardComponent implements OnInit {
       reply => {
         this.notificationService.success('评论添加 成功!');
         this.comment.replies.push(reply);
+        this.replyCreateEvent.emit();
       },
       error => {
         this.notificationService.warn('failed' + error.statusMessage);

@@ -99,6 +99,17 @@ class Comment:
         self.comment_id = resp[0]
     
     def delete(self) -> None:
+        for reply in self.replies:
+            try:
+                reply.delete()
+            except Exception as err:
+                logger.error(f'Failed to delete reply={reply} under comment={self}: {err}')
+        
+        try:
+            Activity.delete_resource(f'comment_id:{self.comment_id}')
+        except Exception as err:
+            logger.error(f'Failed to delete related activities for {self}: {err}')
+
         sql = 'DELETE FROM comments WHERE comment_id=%(comment_id)s'
         run_sql_with_param(sql, {
             'comment_id': self.comment_id

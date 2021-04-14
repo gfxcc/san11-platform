@@ -5,6 +5,7 @@ import { San11PlatformServiceService } from "../../../service/san11-platform-ser
 import { NotificationService } from "../../../common/notification.service";
 import { getFullUrl } from "../../../utils/resrouce_util";
 import { getPackageUrl } from '../../../utils/package_util';
+import { decrement, increment } from "../../../utils/number_util";
 
 
 @Component({
@@ -94,6 +95,7 @@ export class CommentBoardComponent implements OnInit {
       comment => {
         this.notificationService.success('评论添加 成功!');
         this.comments.splice(0, 0, comment);
+        this.commentCount = increment(this.commentCount);
       },
       error => {
         this.notificationService.warn('failed' + error.statusMessage);
@@ -104,5 +106,9 @@ export class CommentBoardComponent implements OnInit {
   onCommentDelete(event) {
     console.log('in onCommentDelete');
     this.loadComments();
+  }
+
+  onReplyCreate(event) {
+    this.commentCount = increment(this.commentCount);
   }
 }

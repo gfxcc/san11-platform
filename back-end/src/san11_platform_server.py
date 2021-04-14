@@ -218,8 +218,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             context.abort(code=255, details='权限不足')
 
         if request.comment.upvote_count:
-            package_url = Package.from_package_id(comment.package_id).url
-            resource = f'{package_url}/comments/{comment.comment_id}'
+            resource = f'comment_id:{comment.comment_id}'
             activity = Activity(authenticator.session.user.user_id, resource, Action.UPVOTE)
             if activity.isExist():
             # upvote from the same user will result as cancelling previous upvote
@@ -266,9 +265,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         authenticator = Authenticator.from_context(context)
 
         if request.reply.upvote_count:
-            comment = Comment.from_id(reply.comment_id)
-            package_url = Package.from_package_id(comment.package_id).url
-            resource = f'{package_url}/comments/{comment.comment_id}/replys/{reply.reply_id}'
+            resource = f'reply_id:{reply.reply_id}'
             activity = Activity(authenticator.session.user.user_id, resource, Action.UPVOTE)
             if activity.isExist():
             # upvote from the same user will result as cancelling previous upvote
