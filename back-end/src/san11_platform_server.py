@@ -77,7 +77,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         logger.debug(
             f"ListPackage: user={user.username if user else 'visitor'}")
 
-        if user.username != 'admin':
+        if user is None or user.username != 'admin':
             Statistic.load_today().increment_visit()
 
         return san11_platform_pb2.ListPackagesResponse(packages=[
