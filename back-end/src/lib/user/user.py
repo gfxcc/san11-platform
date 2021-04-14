@@ -5,14 +5,15 @@ import json
 import logging
 from datetime import datetime, timezone
 
-from .protos import san11_platform_pb2
-from .db_util import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
+from ..protos import san11_platform_pb2
+from ..db_util import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
                      run_sql_with_param
-from .image import Image
-from .time_util import get_timezone
+from ..image import Image
+from ..time_util import get_timezone
 
 
 logger = logging.getLogger(os.path.basename(__file__))
+DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
 
 class InvalidPassword(Exception):
@@ -63,13 +64,16 @@ class User:
         })
         if not resp:
             raise InvalidPassword()
+    
+    def isAdmin(self) -> bool:
+        return self.user_type == 'admin'
 
     def to_pb(self) -> san11_platform_pb2.User:
         return san11_platform_pb2.User(user_id=self.user_id,
                                        username=self.username,
                                        email=self.email,
                                        user_type=self.user_type,
-                                       image_url=self.image_url,
+                                       image_url=self.image_url or DEFAULT_USER_AVATAR,
                                        website=self.website)
     
     def set_image(self, image: Image):

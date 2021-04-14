@@ -1,0 +1,32 @@
+<div class="main" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
+    <div mat-card-avatar class="author-image">
+        <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
+    </div>
+    <div class="right">
+        <div class="header">
+            <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
+            <span class="create-time">{{this.reply.createTime}}</span>
+
+            <span class="example-spacer"></span>
+
+            <div *ngIf="!this.hideControl">
+                <button mat-icon-button class="icon-button" (click)="onDeleteReply()">
+                    <mat-icon class="icon">delete</mat-icon>
+                </button>
+            </div>
+
+        </div>
+        <div class="content">
+            {{this.reply.text}}
+        </div>
+        <div class="bottom">
+            <button mat-icon-button (click)="onUpvote()">
+                <mat-icon class="icon">thumb_up</mat-icon>
+            </button>
+            <span [hidden]="this.reply.upvoteCount===&quot;0&quot;">{{this.reply.upvoteCount}}</span>
+
+            <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
+        </div>
+
+    </div>
+</div>

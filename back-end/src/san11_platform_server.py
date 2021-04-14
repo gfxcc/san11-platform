@@ -13,14 +13,20 @@ import lib.db_util as db_util
 
 from lib.protos import san11_platform_pb2
 from lib.protos import san11_platform_pb2_grpc
-from lib.session import Session
-from lib.user import User, InvalidPassword
+from lib.user.user import User, InvalidPassword
 from lib.image import Image
 from lib.package import Package
 from lib.binary import Binary
 from lib.url import Url
 from lib.statistic import Statistic
 from lib.query import Query
+
+from lib.auths.session import Session
+from lib.auths.authenticator import Authenticator
+
+from lib.comment.comment import Comment
+from lib.comment.reply import Reply
+from lib.user.activity import Activity, Action
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -38,31 +44,18 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def CreatePackage(self, request, context):
         logger.info('In CreatePackage')
-        try:
-            user_id = Session.from_sid(get_sid_from_context(context)).user_id
-        except Exception as err:
-            logger.info(f'User need to login to create package:{err}')
-            context.abort(code=255, details='Please login')
-            raise
-
-        package = Package.create_from_pb(request.package, user_id)
-
-        logger.info(f'{package} is created')
+        authenticator = Authenticator.from_context(context)
+        package = Package.create_from_pb(request.package, authenticator.session.user.user_id)
         return package.to_pb()
 
     def DeletePackage(self, request, context):
         logger.info(
             f'In DeletePackage: package_id={request.package.package_id}')
-        try:
-            user = User.from_user_id(Session.from_sid(
-                get_sid_from_context(context)).user_id)
-        except Exception as err:
-            logger.info(f'User need to login to create package:{err}')
-            context.abort(code=255, details='请登录')
-
         package = Package.from_package_id(request.package.package_id)
-        if not (user.user_type == 'admin' or user.user_id == package.author_id):
-            context.abort(code=255, details='只有 工具作者 或 管理员 可以删除工具')
+
+        authenticator = Authenticator.from_context(context)
+        if not authenticator.canDeletePackage(package):
+            context.abort(code=255, details='权限不足')
 
         package.delete()
         logger.info(f'Package is deleted: {package}')
@@ -90,7 +83,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             for package in Package.list_packages(
                 request.category_id
             ) if package.status == 'normal' or
-            (user and user.user_id == package.author_id and package.status != 'deleted') or
+            (user and user.user_id == package.author_id and package.status != 'hidden') or
             (user and user.user_type == 'admin')
             # package's status is normal or user is admin or author of the package
         ])
@@ -103,8 +96,12 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         logger.info(
             f'In UpdatePackage: package_id={request.package.package_id}')
         logger.debug(request.package.image_urls)
-
         package = Package.from_package_id(request.package.package_id)
+
+        authenticate = Authenticator.from_context(context)
+        if not authenticate.canUpdatePackage(package):
+            context.abort(code=255, details='权限不足')
+
         if request.package.name:
             package.name = request.package.name
         if request.package.description:
@@ -142,6 +139,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def UploadBinary(self, request, context):
         logger.info(f'In UploadBinary: parent={request.parent}')
+        authenticate = Authenticator.from_context(context)
+        if not authenticate.canUploadBinary(parent=Url(request.parent)):
+            context.abort(code=255, details='权限不足')
 
         Binary.createc_under_parent(
             request.parent, request.binary, request.data)
@@ -161,7 +161,12 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def DeleteBinary(self, request, context):
         logger.info(f'In DeleteBinary: binary_id={request.binary_id}')
-        Binary.from_binary_id(request.binary_id).delete()
+        binary = Binary.from_binary_id(request.binary_id)
+        authenticate = Authenticator.from_context(context)
+        if not authenticate.canDeleteBinary(binary):
+            context.abort(code=255, details='权限不足')
+
+        binary.delete()
         return san11_platform_pb2.Empty()
 
     # image
@@ -171,6 +176,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         parent = Url(request.parent)
         image = Image.create_without_filename(request.parent, request.image)
 
+        authenticate = Authenticator.from_context(context)
+        if not authenticate.canUploadImage(parent=parent):
+            context.abort(code=255, details='权限不足')
+
         if parent.type == 'packages':
             Package.from_package_id(parent.id).append_image(image)
         elif parent.type == 'users':
@@ -179,6 +188,99 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             raise Exception(f'Invalid parent: {parent}')
 
         return san11_platform_pb2.Url(url=image.url)
+
+    # Comments
+    def CreateComment(self, request, context):
+        logger.info('In CreateComment')
+        authenticator = Authenticator.from_context(context)
+        logger.debug(f'{request.comment.author_id} =? {authenticator.session.user.user_id}')
+        assert request.comment.author_id == authenticator.session.user.user_id
+
+        comment = Comment.from_pb(request.comment)
+        comment.create()
+        
+        return comment.to_pb()
+    
+    def DeleteComment(self, request, context):
+        logger.info(f'In DeleteComment: comment_id={request.comment_id}')
+        comment = Comment.from_id(request.comment_id)
+        authenticator = Authenticator.from_context(context)
+        if not authenticator.canDeleteComment(comment):
+            context.abort(code=255, details='权限不足')
+        comment.delete()
+        return san11_platform_pb2.Empty()
+    
+    def UpdateComment(self, request, context):
+        logger.info(f'In UpdateComment: comment_id={request.comment.comment_id}')
+        comment = Comment.from_id(request.comment.comment_id)
+        authenticator = Authenticator.from_context(context)
+        if not authenticator.canUpdateComment(current=comment, requested=request.comment):
+            context.abort(code=255, details='权限不足')
+
+        if request.comment.upvote_count:
+            package_url = Package.from_package_id(comment.package_id).url
+            resource = f'{package_url}/comments/{comment.comment_id}'
+            activity = Activity(authenticator.session.user.user_id, resource, Action.UPVOTE)
+            if activity.isExist():
+            # upvote from the same user will result as cancelling previous upvote
+                activity.delete()
+                request.comment.upvote_count -= 2
+                if request.comment.upvote_count == 0:
+                    comment.upvote_count = 0
+            else:
+                activity.create()
+
+        comment.update_to(request.comment)
+        return comment.to_pb()
+    
+    def ListComments(self, request, context):
+        logger.info(f'In ListComments: parent={request.parent}')
+        comments = Comment.list_comment(parent=Url(request.parent))
+        return san11_platform_pb2.ListCommentsResponse(
+            comments=[comment.to_pb() for comment in comments]
+        )
+    
+    def CreateReply(self, request, context):
+        logger.info(f'In CreateReply: {request.reply.author_id}-> {request.reply.text}')
+        authenticator = Authenticator.from_context(context)
+        assert request.reply.author_id == authenticator.session.user.user_id
+
+        reply = Reply.from_pb(request.reply)
+        reply.create()
+        
+        return reply.to_pb()
+
+    def DeleteReply(self, request, context):
+        logger.info(f'In DeleteReply: reply_id={request.reply_id}')
+        reply = Reply.from_id(request.reply_id)
+        authenticator = Authenticator.from_context(context)
+        if not authenticator.canDeleteReply(reply):
+            context.abort(code=255, details='权限不足')
+        reply.delete()
+        return san11_platform_pb2.Empty()
+
+    def UpdateReply(self, request, context):
+        logger.info(f'In UpdateReply: reply_id={request.reply.reply_id}')
+        reply = Reply.from_id(request.reply.reply_id)
+        # TODO: fix authentication
+        authenticator = Authenticator.from_context(context)
+
+        if request.reply.upvote_count:
+            comment = Comment.from_id(reply.comment_id)
+            package_url = Package.from_package_id(comment.package_id).url
+            resource = f'{package_url}/comments/{comment.comment_id}/replys/{reply.reply_id}'
+            activity = Activity(authenticator.session.user.user_id, resource, Action.UPVOTE)
+            if activity.isExist():
+            # upvote from the same user will result as cancelling previous upvote
+                activity.delete()
+                request.reply.upvote_count -= 2
+                if request.reply.upvote_count == 0:
+                    reply.upvote_count = 0
+            else:
+                activity.create()
+
+        reply.update_to(request.reply)
+        return reply.to_pb()
 
     # users
     def SignIn(self, request, context):
@@ -234,6 +336,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         logger.info(f'In UpdateUser: user_id={request.user.user_id}')
         logger.debug(f'user.website={request.user.website}')
         user = User.from_user_id(request.user.user_id)
+
+        authenticate = Authenticator.from_context(context)
+        if not authenticate.canUpdateUser(user=user):
+            context.abort(code=255, details='权限不足')
+
         if request.user.email:
             user.email = request.user.email
         if request.user.website:
@@ -252,6 +359,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def UpdatePassword(self, request, context):
         logger.info(f'In UpdatePassword: user_id={request.user_id}')
         user = User.from_user_id(request.user_id)
+
+        authenticate = Authenticator.from_context(context)
+        if not authenticate.canUpdateUser(user=user):
+            context.abort(code=255, details='权限不足')
+
         user.set_password(request.password)
         return san11_platform_pb2.Empty()
 

@@ -59,10 +59,12 @@ export class AppComponent {
       () => console.log('log out')
     );
 
+    // TODO: wrap those into a function
     localStorage.removeItem('sid');
     localStorage.removeItem('userId');
     localStorage.removeItem('userType');
     localStorage.removeItem('username');
+    localStorage.removeItem('userImageUrl');
 
     this.router.navigate(['/']);
 

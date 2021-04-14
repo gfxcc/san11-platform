@@ -57,3 +57,20 @@ def run_sql_with_param_and_fetch_one(sql: str, param: Dict) -> List[Tuple]:
         DB_CONN.reconnect()
         raise
 
+
+def get_db_fields_str(fields: List[str]) -> str:
+    '''
+    Return a string which represent a full list of db fields, which can be used
+    in sql.
+    E.g. `field1, field2, field3`
+    '''
+    return ','.join(fields)
+
+
+def get_db_fields_placeholder_str(fields: List[str]) -> str:
+    '''
+    Return a string which represent a full list of db fields placeholder, which can be used
+    in sql.
+    E.g. `%(field1)s, %(field2)s, %(field3)s`
+    '''
+    return ','.join(f'%({field})s' for field in fields)

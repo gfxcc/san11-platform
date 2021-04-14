@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x14san11-platform.proto\x12\nrouteguide\"<\n\x14\x43reatePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"<\n\x14UpdatePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"<\n\x14\x44\x65letePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"\'\n\x11GetPackageRequest\x12\x12\n\npackage_id\x18\x01 \x01(\x03\"Q\n\x13ListPackagesRequest\x12\x13\n\x0b\x63\x61tegory_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"V\n\x14ListPackagesResponse\x12%\n\x08packages\x18\x01 \x03(\x0b\x32\x13.routeguide.Package\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"M\n\x15SearchPackagesRequest\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"X\n\x16SearchPackagesResponse\x12%\n\x08packages\x18\x01 \x03(\x0b\x32\x13.routeguide.Package\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"%\n\x10GetBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\"\x80\x01\n\x13UploadBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\"\n\x06\x62inary\x18\x02 \x01(\x0b\x32\x12.routeguide.Binary\x12\x0e\n\x04\x64\x61ta\x18\x03 \x01(\x0cH\x00\x12\x19\n\x0f\x64ownload_method\x18\x04 \x01(\tH\x00\x42\n\n\x08resource\"*\n\x15\x42\x61tchGetBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x03(\x03\">\n\x16\x42\x61tchGetBinaryResponse\x12$\n\x08\x62inaries\x18\x01 \x03(\x0b\x32\x12.routeguide.Binary\":\n\x15\x44ownloadBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tbinary_id\x18\x02 \x01(\x03\"(\n\x13\x44\x65leteBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\"P\n\x13ListBinariesRequest\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"<\n\x14ListBinariesResponse\x12$\n\x08\x62inaries\x18\x01 \x03(\x0b\x32\x12.routeguide.Binary\"3\n\x12UploadImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\r\n\x05image\x18\x02 \x01(\x0c\"!\n\x0eGetUserRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"1\n\x0fGetUserResponse\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\"3\n\rSignInRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"=\n\x0eSignInResponse\x12\x1e\n\x04user\x18\x02 \x01(\x0b\x32\x10.routeguide.User\x12\x0b\n\x03sid\x18\x03 \x01(\t\"!\n\x0eSignOutRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"A\n\rSignUpRequest\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\x12\x10\n\x08password\x18\x03 \x01(\t\"=\n\x0eSignUpResponse\x12\x1e\n\x04user\x18\x02 \x01(\x0b\x32\x10.routeguide.User\x12\x0b\n\x03sid\x18\x03 \x01(\t\"3\n\x11UpdateUserRequest\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\":\n\x15UpdatePasswordRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\x10\n\x08password\x18\x02 \x01(\t\"#\n\x13GetStatisticRequest\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\"\x07\n\x05\x45mpty\"\'\n\x06Status\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\"\xe6\x01\n\x07Package\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x18\n\x10\x63reate_timestamp\x18\x04 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x05 \x01(\x03\x12\x0e\n\x06status\x18\x06 \x01(\t\x12\x11\n\tauthor_id\x18\x07 \x01(\x03\x12\x18\n\x10\x61uthor_image_url\x18\x08 \x01(\t\x12\x12\n\nimage_urls\x18\t \x03(\t\x12\x0c\n\x04tags\x18\n \x03(\t\x12\x16\n\x0e\x64ownload_count\x18\x0b \x01(\x03\"\xcf\x01\n\x06\x42inary\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\x12\x12\n\npackage_id\x18\x02 \x01(\x03\x12\x0b\n\x03url\x18\x03 \x01(\t\x12\x17\n\x0f\x64ownload_method\x18\x04 \x01(\t\x12\x16\n\x0e\x64ownload_count\x18\x05 \x01(\x03\x12$\n\x07version\x18\x06 \x01(\x0b\x32\x13.routeguide.Version\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t\x12\x18\n\x10\x63reate_timestamp\x18\x08 \x01(\t\x12\x0b\n\x03tag\x18\t \x01(\t\"o\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x11\n\tuser_type\x18\x04 \x01(\t\x12\x11\n\timage_url\x18\x05 \x01(\t\x12\x0f\n\x07website\x18\x06 \x01(\t\"6\n\x07Version\x12\r\n\x05major\x18\x01 \x01(\x03\x12\r\n\x05minor\x18\x02 \x01(\x03\x12\r\n\x05patch\x18\x03 \x01(\x03\"8\n\tStatistic\x12\x13\n\x0bvisit_count\x18\x01 \x01(\x03\x12\x16\n\x0e\x64ownload_count\x18\x02 \x01(\x03\"\x12\n\x03Url\x12\x0b\n\x03url\x18\x01 \x01(\t2\xba\x0b\n\nRouteGuide\x12H\n\rCreatePackage\x12 .routeguide.CreatePackageRequest\x1a\x13.routeguide.Package\"\x00\x12\x46\n\rDeletePackage\x12 .routeguide.DeletePackageRequest\x1a\x11.routeguide.Empty\"\x00\x12\x42\n\nGetPackage\x12\x1d.routeguide.GetPackageRequest\x1a\x13.routeguide.Package\"\x00\x12S\n\x0cListPackages\x12\x1f.routeguide.ListPackagesRequest\x1a .routeguide.ListPackagesResponse\"\x00\x12Y\n\x0eSearchPackages\x12!.routeguide.SearchPackagesRequest\x1a\".routeguide.SearchPackagesResponse\"\x00\x12H\n\rUpdatePackage\x12 .routeguide.UpdatePackageRequest\x1a\x13.routeguide.Package\"\x00\x12\x45\n\x0cUploadBinary\x12\x1f.routeguide.UploadBinaryRequest\x1a\x12.routeguide.Status\"\x00\x12\x44\n\x0c\x44\x65leteBinary\x12\x1f.routeguide.DeleteBinaryRequest\x1a\x11.routeguide.Empty\"\x00\x12?\n\tGetBinary\x12\x1c.routeguide.GetBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12Y\n\x0e\x42\x61tchGetBinary\x12!.routeguide.BatchGetBinaryRequest\x1a\".routeguide.BatchGetBinaryResponse\"\x00\x12S\n\x0cListBinaries\x12\x1f.routeguide.ListBinariesRequest\x1a .routeguide.ListBinariesResponse\"\x00\x12I\n\x0e\x44ownloadBinary\x12!.routeguide.DownloadBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12@\n\x0bUploadImage\x12\x1e.routeguide.UploadImageRequest\x1a\x0f.routeguide.Url\"\x00\x12\x41\n\x06SignUp\x12\x19.routeguide.SignUpRequest\x1a\x1a.routeguide.SignUpResponse\"\x00\x12\x41\n\x06SignIn\x12\x19.routeguide.SignInRequest\x1a\x1a.routeguide.SignInResponse\"\x00\x12;\n\x07SignOut\x12\x1a.routeguide.SignOutRequest\x1a\x12.routeguide.Status\"\x00\x12\x39\n\x07GetUser\x12\x1a.routeguide.GetUserRequest\x1a\x10.routeguide.User\"\x00\x12?\n\nUpdateUser\x12\x1d.routeguide.UpdateUserRequest\x1a\x10.routeguide.User\"\x00\x12H\n\x0eUpdatePassword\x12!.routeguide.UpdatePasswordRequest\x1a\x11.routeguide.Empty\"\x00\x12H\n\x0cGetStatistic\x12\x1f.routeguide.GetStatisticRequest\x1a\x15.routeguide.Statistic\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x14san11-platform.proto\x12\nrouteguide\"<\n\x14\x43reatePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"<\n\x14UpdatePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"<\n\x14\x44\x65letePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"\'\n\x11GetPackageRequest\x12\x12\n\npackage_id\x18\x01 \x01(\x03\"Q\n\x13ListPackagesRequest\x12\x13\n\x0b\x63\x61tegory_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"V\n\x14ListPackagesResponse\x12%\n\x08packages\x18\x01 \x03(\x0b\x32\x13.routeguide.Package\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"M\n\x15SearchPackagesRequest\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"X\n\x16SearchPackagesResponse\x12%\n\x08packages\x18\x01 \x03(\x0b\x32\x13.routeguide.Package\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"%\n\x10GetBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\"\x80\x01\n\x13UploadBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\"\n\x06\x62inary\x18\x02 \x01(\x0b\x32\x12.routeguide.Binary\x12\x0e\n\x04\x64\x61ta\x18\x03 \x01(\x0cH\x00\x12\x19\n\x0f\x64ownload_method\x18\x04 \x01(\tH\x00\x42\n\n\x08resource\"*\n\x15\x42\x61tchGetBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x03(\x03\">\n\x16\x42\x61tchGetBinaryResponse\x12$\n\x08\x62inaries\x18\x01 \x03(\x0b\x32\x12.routeguide.Binary\":\n\x15\x44ownloadBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tbinary_id\x18\x02 \x01(\x03\"(\n\x13\x44\x65leteBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\"P\n\x13ListBinariesRequest\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"<\n\x14ListBinariesResponse\x12$\n\x08\x62inaries\x18\x01 \x03(\x0b\x32\x12.routeguide.Binary\"3\n\x12UploadImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\r\n\x05image\x18\x02 \x01(\x0c\"<\n\x14\x43reateCommentRequest\x12$\n\x07\x63omment\x18\x01 \x01(\x0b\x32\x13.routeguide.Comment\"*\n\x14\x44\x65leteCommentRequest\x12\x12\n\ncomment_id\x18\x01 \x01(\x03\"<\n\x14UpdateCommentRequest\x12$\n\x07\x63omment\x18\x01 \x01(\x0b\x32\x13.routeguide.Comment\"L\n\x13ListCommentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"Q\n\x14ListCommentsResponse\x12%\n\x08\x63omments\x18\x01 \x03(\x0b\x32\x13.routeguide.Comment\x12\x12\n\npage_token\x18\x02 \x01(\t\"6\n\x12\x43reateReplyRequest\x12 \n\x05reply\x18\x01 \x01(\x0b\x32\x11.routeguide.Reply\"&\n\x12\x44\x65leteReplyRequest\x12\x10\n\x08reply_id\x18\x01 \x01(\x03\"6\n\x12UpdateReplyRequest\x12 \n\x05reply\x18\x01 \x01(\x0b\x32\x11.routeguide.Reply\"!\n\x0eGetUserRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"1\n\x0fGetUserResponse\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\"3\n\rSignInRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"=\n\x0eSignInResponse\x12\x1e\n\x04user\x18\x02 \x01(\x0b\x32\x10.routeguide.User\x12\x0b\n\x03sid\x18\x03 \x01(\t\"!\n\x0eSignOutRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"A\n\rSignUpRequest\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\x12\x10\n\x08password\x18\x03 \x01(\t\"=\n\x0eSignUpResponse\x12\x1e\n\x04user\x18\x02 \x01(\x0b\x32\x10.routeguide.User\x12\x0b\n\x03sid\x18\x03 \x01(\t\"3\n\x11UpdateUserRequest\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\":\n\x15UpdatePasswordRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\x10\n\x08password\x18\x02 \x01(\t\"#\n\x13GetStatisticRequest\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\"\x07\n\x05\x45mpty\"\'\n\x06Status\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\"\xe6\x01\n\x07Package\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x18\n\x10\x63reate_timestamp\x18\x04 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x05 \x01(\x03\x12\x0e\n\x06status\x18\x06 \x01(\t\x12\x11\n\tauthor_id\x18\x07 \x01(\x03\x12\x18\n\x10\x61uthor_image_url\x18\x08 \x01(\t\x12\x12\n\nimage_urls\x18\t \x03(\t\x12\x0c\n\x04tags\x18\n \x03(\t\x12\x16\n\x0e\x64ownload_count\x18\x0b \x01(\x03\"\xcf\x01\n\x06\x42inary\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\x12\x12\n\npackage_id\x18\x02 \x01(\x03\x12\x0b\n\x03url\x18\x03 \x01(\t\x12\x17\n\x0f\x64ownload_method\x18\x04 \x01(\t\x12\x16\n\x0e\x64ownload_count\x18\x05 \x01(\x03\x12$\n\x07version\x18\x06 \x01(\x0b\x32\x13.routeguide.Version\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t\x12\x18\n\x10\x63reate_timestamp\x18\x08 \x01(\t\x12\x0b\n\x03tag\x18\t \x01(\t\"o\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x11\n\tuser_type\x18\x04 \x01(\t\x12\x11\n\timage_url\x18\x05 \x01(\t\x12\x0f\n\x07website\x18\x06 \x01(\t\"6\n\x07Version\x12\r\n\x05major\x18\x01 \x01(\x03\x12\r\n\x05minor\x18\x02 \x01(\x03\x12\r\n\x05patch\x18\x03 \x01(\x03\"8\n\tStatistic\x12\x13\n\x0bvisit_count\x18\x01 \x01(\x03\x12\x16\n\x0e\x64ownload_count\x18\x02 \x01(\x03\"\x12\n\x03Url\x12\x0b\n\x03url\x18\x01 \x01(\t\"\xb6\x01\n\x07\x43omment\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x12\n\ncomment_id\x18\x02 \x01(\x03\x12\x13\n\x0b\x63reate_time\x18\x03 \x01(\t\x12\x13\n\x0bupdate_time\x18\x04 \x01(\t\x12\x0c\n\x04text\x18\x05 \x01(\t\x12\x11\n\tauthor_id\x18\x06 \x01(\x03\x12\x14\n\x0cupvote_count\x18\x07 \x01(\x03\x12\"\n\x07replies\x18\x08 \x03(\x0b\x32\x11.routeguide.Reply\"\x8e\x01\n\x05Reply\x12\x12\n\ncomment_id\x18\x01 \x01(\x03\x12\x10\n\x08reply_id\x18\x02 \x01(\x03\x12\x13\n\x0b\x63reate_time\x18\x03 \x01(\t\x12\x13\n\x0bupdate_time\x18\x04 \x01(\t\x12\x0c\n\x04text\x18\x05 \x01(\t\x12\x11\n\tauthor_id\x18\x06 \x01(\x03\x12\x14\n\x0cupvote_count\x18\x07 \x01(\x03\x32\xb7\x0f\n\nRouteGuide\x12H\n\rCreatePackage\x12 .routeguide.CreatePackageRequest\x1a\x13.routeguide.Package\"\x00\x12\x46\n\rDeletePackage\x12 .routeguide.DeletePackageRequest\x1a\x11.routeguide.Empty\"\x00\x12H\n\rUpdatePackage\x12 .routeguide.UpdatePackageRequest\x1a\x13.routeguide.Package\"\x00\x12\x42\n\nGetPackage\x12\x1d.routeguide.GetPackageRequest\x1a\x13.routeguide.Package\"\x00\x12S\n\x0cListPackages\x12\x1f.routeguide.ListPackagesRequest\x1a .routeguide.ListPackagesResponse\"\x00\x12Y\n\x0eSearchPackages\x12!.routeguide.SearchPackagesRequest\x1a\".routeguide.SearchPackagesResponse\"\x00\x12\x45\n\x0cUploadBinary\x12\x1f.routeguide.UploadBinaryRequest\x1a\x12.routeguide.Status\"\x00\x12\x44\n\x0c\x44\x65leteBinary\x12\x1f.routeguide.DeleteBinaryRequest\x1a\x11.routeguide.Empty\"\x00\x12?\n\tGetBinary\x12\x1c.routeguide.GetBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12Y\n\x0e\x42\x61tchGetBinary\x12!.routeguide.BatchGetBinaryRequest\x1a\".routeguide.BatchGetBinaryResponse\"\x00\x12S\n\x0cListBinaries\x12\x1f.routeguide.ListBinariesRequest\x1a .routeguide.ListBinariesResponse\"\x00\x12I\n\x0e\x44ownloadBinary\x12!.routeguide.DownloadBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12@\n\x0bUploadImage\x12\x1e.routeguide.UploadImageRequest\x1a\x0f.routeguide.Url\"\x00\x12H\n\rCreateComment\x12 .routeguide.CreateCommentRequest\x1a\x13.routeguide.Comment\"\x00\x12\x46\n\rDeleteComment\x12 .routeguide.DeleteCommentRequest\x1a\x11.routeguide.Empty\"\x00\x12H\n\rUpdateComment\x12 .routeguide.UpdateCommentRequest\x1a\x13.routeguide.Comment\"\x00\x12S\n\x0cListComments\x12\x1f.routeguide.ListCommentsRequest\x1a .routeguide.ListCommentsResponse\"\x00\x12\x42\n\x0b\x43reateReply\x12\x1e.routeguide.CreateReplyRequest\x1a\x11.routeguide.Reply\"\x00\x12\x42\n\x0b\x44\x65leteReply\x12\x1e.routeguide.DeleteReplyRequest\x1a\x11.routeguide.Empty\"\x00\x12\x42\n\x0bUpdateReply\x12\x1e.routeguide.UpdateReplyRequest\x1a\x11.routeguide.Reply\"\x00\x12\x41\n\x06SignUp\x12\x19.routeguide.SignUpRequest\x1a\x1a.routeguide.SignUpResponse\"\x00\x12\x41\n\x06SignIn\x12\x19.routeguide.SignInRequest\x1a\x1a.routeguide.SignInResponse\"\x00\x12;\n\x07SignOut\x12\x1a.routeguide.SignOutRequest\x1a\x12.routeguide.Status\"\x00\x12\x39\n\x07GetUser\x12\x1a.routeguide.GetUserRequest\x1a\x10.routeguide.User\"\x00\x12?\n\nUpdateUser\x12\x1d.routeguide.UpdateUserRequest\x1a\x10.routeguide.User\"\x00\x12H\n\x0eUpdatePassword\x12!.routeguide.UpdatePasswordRequest\x1a\x11.routeguide.Empty\"\x00\x12H\n\x0cGetStatistic\x12\x1f.routeguide.GetStatisticRequest\x1a\x15.routeguide.Statistic\"\x00\x62\x06proto3'
 )
 
 
@@ -665,6 +665,283 @@ _UPLOADIMAGEREQUEST = _descriptor.Descriptor(
 )
 
 
+_CREATECOMMENTREQUEST = _descriptor.Descriptor(
+  name='CreateCommentRequest',
+  full_name='routeguide.CreateCommentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='comment', full_name='routeguide.CreateCommentRequest.comment', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1180,
+  serialized_end=1240,
+)
+
+
+_DELETECOMMENTREQUEST = _descriptor.Descriptor(
+  name='DeleteCommentRequest',
+  full_name='routeguide.DeleteCommentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='comment_id', full_name='routeguide.DeleteCommentRequest.comment_id', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1242,
+  serialized_end=1284,
+)
+
+
+_UPDATECOMMENTREQUEST = _descriptor.Descriptor(
+  name='UpdateCommentRequest',
+  full_name='routeguide.UpdateCommentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='comment', full_name='routeguide.UpdateCommentRequest.comment', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1286,
+  serialized_end=1346,
+)
+
+
+_LISTCOMMENTSREQUEST = _descriptor.Descriptor(
+  name='ListCommentsRequest',
+  full_name='routeguide.ListCommentsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='routeguide.ListCommentsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='routeguide.ListCommentsRequest.page_size', index=1,
+      number=2, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='routeguide.ListCommentsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1348,
+  serialized_end=1424,
+)
+
+
+_LISTCOMMENTSRESPONSE = _descriptor.Descriptor(
+  name='ListCommentsResponse',
+  full_name='routeguide.ListCommentsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='comments', full_name='routeguide.ListCommentsResponse.comments', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='routeguide.ListCommentsResponse.page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1426,
+  serialized_end=1507,
+)
+
+
+_CREATEREPLYREQUEST = _descriptor.Descriptor(
+  name='CreateReplyRequest',
+  full_name='routeguide.CreateReplyRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='reply', full_name='routeguide.CreateReplyRequest.reply', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1509,
+  serialized_end=1563,
+)
+
+
+_DELETEREPLYREQUEST = _descriptor.Descriptor(
+  name='DeleteReplyRequest',
+  full_name='routeguide.DeleteReplyRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='reply_id', full_name='routeguide.DeleteReplyRequest.reply_id', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1565,
+  serialized_end=1603,
+)
+
+
+_UPDATEREPLYREQUEST = _descriptor.Descriptor(
+  name='UpdateReplyRequest',
+  full_name='routeguide.UpdateReplyRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='reply', full_name='routeguide.UpdateReplyRequest.reply', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1605,
+  serialized_end=1659,
+)
+
+
 _GETUSERREQUEST = _descriptor.Descriptor(
   name='GetUserRequest',
   full_name='routeguide.GetUserRequest',
@@ -692,8 +969,8 @@ _GETUSERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1180,
-  serialized_end=1213,
+  serialized_start=1661,
+  serialized_end=1694,
 )
 
 
@@ -724,8 +1001,8 @@ _GETUSERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1215,
-  serialized_end=1264,
+  serialized_start=1696,
+  serialized_end=1745,
 )
 
 
@@ -763,8 +1040,8 @@ _SIGNINREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1266,
-  serialized_end=1317,
+  serialized_start=1747,
+  serialized_end=1798,
 )
 
 
@@ -802,8 +1079,8 @@ _SIGNINRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1319,
-  serialized_end=1380,
+  serialized_start=1800,
+  serialized_end=1861,
 )
 
 
@@ -834,8 +1111,8 @@ _SIGNOUTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1382,
-  serialized_end=1415,
+  serialized_start=1863,
+  serialized_end=1896,
 )
 
 
@@ -873,8 +1150,8 @@ _SIGNUPREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1417,
-  serialized_end=1482,
+  serialized_start=1898,
+  serialized_end=1963,
 )
 
 
@@ -912,8 +1189,8 @@ _SIGNUPRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1484,
-  serialized_end=1545,
+  serialized_start=1965,
+  serialized_end=2026,
 )
 
 
@@ -944,8 +1221,8 @@ _UPDATEUSERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1547,
-  serialized_end=1598,
+  serialized_start=2028,
+  serialized_end=2079,
 )
 
 
@@ -983,8 +1260,8 @@ _UPDATEPASSWORDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1600,
-  serialized_end=1658,
+  serialized_start=2081,
+  serialized_end=2139,
 )
 
 
@@ -1015,8 +1292,8 @@ _GETSTATISTICREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1660,
-  serialized_end=1695,
+  serialized_start=2141,
+  serialized_end=2176,
 )
 
 
@@ -1040,8 +1317,8 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1697,
-  serialized_end=1704,
+  serialized_start=2178,
+  serialized_end=2185,
 )
 
 
@@ -1079,8 +1356,8 @@ _STATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1706,
-  serialized_end=1745,
+  serialized_start=2187,
+  serialized_end=2226,
 )
 
 
@@ -1181,8 +1458,8 @@ _PACKAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1748,
-  serialized_end=1978,
+  serialized_start=2229,
+  serialized_end=2459,
 )
 
 
@@ -1269,8 +1546,8 @@ _BINARY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1981,
-  serialized_end=2188,
+  serialized_start=2462,
+  serialized_end=2669,
 )
 
 
@@ -1336,8 +1613,8 @@ _USER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2190,
-  serialized_end=2301,
+  serialized_start=2671,
+  serialized_end=2782,
 )
 
 
@@ -1382,8 +1659,8 @@ _VERSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2303,
-  serialized_end=2357,
+  serialized_start=2784,
+  serialized_end=2838,
 )
 
 
@@ -1421,8 +1698,8 @@ _STATISTIC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2359,
-  serialized_end=2415,
+  serialized_start=2840,
+  serialized_end=2896,
 )
 
 
@@ -1453,8 +1730,163 @@ _URL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2417,
-  serialized_end=2435,
+  serialized_start=2898,
+  serialized_end=2916,
+)
+
+
+_COMMENT = _descriptor.Descriptor(
+  name='Comment',
+  full_name='routeguide.Comment',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='package_id', full_name='routeguide.Comment.package_id', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='comment_id', full_name='routeguide.Comment.comment_id', index=1,
+      number=2, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='create_time', full_name='routeguide.Comment.create_time', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='update_time', full_name='routeguide.Comment.update_time', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='text', full_name='routeguide.Comment.text', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='author_id', full_name='routeguide.Comment.author_id', index=5,
+      number=6, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='upvote_count', full_name='routeguide.Comment.upvote_count', index=6,
+      number=7, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='replies', full_name='routeguide.Comment.replies', index=7,
+      number=8, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2919,
+  serialized_end=3101,
+)
+
+
+_REPLY = _descriptor.Descriptor(
+  name='Reply',
+  full_name='routeguide.Reply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='comment_id', full_name='routeguide.Reply.comment_id', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='reply_id', full_name='routeguide.Reply.reply_id', index=1,
+      number=2, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='create_time', full_name='routeguide.Reply.create_time', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='update_time', full_name='routeguide.Reply.update_time', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='text', full_name='routeguide.Reply.text', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='author_id', full_name='routeguide.Reply.author_id', index=5,
+      number=6, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='upvote_count', full_name='routeguide.Reply.upvote_count', index=6,
+      number=7, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3104,
+  serialized_end=3246,
 )
 
 _CREATEPACKAGEREQUEST.fields_by_name['package'].message_type = _PACKAGE
@@ -1471,12 +1903,18 @@ _UPLOADBINARYREQUEST.oneofs_by_name['resource'].fields.append(
 _UPLOADBINARYREQUEST.fields_by_name['download_method'].containing_oneof = _UPLOADBINARYREQUEST.oneofs_by_name['resource']
 _BATCHGETBINARYRESPONSE.fields_by_name['binaries'].message_type = _BINARY
 _LISTBINARIESRESPONSE.fields_by_name['binaries'].message_type = _BINARY
+_CREATECOMMENTREQUEST.fields_by_name['comment'].message_type = _COMMENT
+_UPDATECOMMENTREQUEST.fields_by_name['comment'].message_type = _COMMENT
+_LISTCOMMENTSRESPONSE.fields_by_name['comments'].message_type = _COMMENT
+_CREATEREPLYREQUEST.fields_by_name['reply'].message_type = _REPLY
+_UPDATEREPLYREQUEST.fields_by_name['reply'].message_type = _REPLY
 _GETUSERRESPONSE.fields_by_name['user'].message_type = _USER
 _SIGNINRESPONSE.fields_by_name['user'].message_type = _USER
 _SIGNUPREQUEST.fields_by_name['user'].message_type = _USER
 _SIGNUPRESPONSE.fields_by_name['user'].message_type = _USER
 _UPDATEUSERREQUEST.fields_by_name['user'].message_type = _USER
 _BINARY.fields_by_name['version'].message_type = _VERSION
+_COMMENT.fields_by_name['replies'].message_type = _REPLY
 DESCRIPTOR.message_types_by_name['CreatePackageRequest'] = _CREATEPACKAGEREQUEST
 DESCRIPTOR.message_types_by_name['UpdatePackageRequest'] = _UPDATEPACKAGEREQUEST
 DESCRIPTOR.message_types_by_name['DeletePackageRequest'] = _DELETEPACKAGEREQUEST
@@ -1494,6 +1932,14 @@ DESCRIPTOR.message_types_by_name['DeleteBinaryRequest'] = _DELETEBINARYREQUEST
 DESCRIPTOR.message_types_by_name['ListBinariesRequest'] = _LISTBINARIESREQUEST
 DESCRIPTOR.message_types_by_name['ListBinariesResponse'] = _LISTBINARIESRESPONSE
 DESCRIPTOR.message_types_by_name['UploadImageRequest'] = _UPLOADIMAGEREQUEST
+DESCRIPTOR.message_types_by_name['CreateCommentRequest'] = _CREATECOMMENTREQUEST
+DESCRIPTOR.message_types_by_name['DeleteCommentRequest'] = _DELETECOMMENTREQUEST
+DESCRIPTOR.message_types_by_name['UpdateCommentRequest'] = _UPDATECOMMENTREQUEST
+DESCRIPTOR.message_types_by_name['ListCommentsRequest'] = _LISTCOMMENTSREQUEST
+DESCRIPTOR.message_types_by_name['ListCommentsResponse'] = _LISTCOMMENTSRESPONSE
+DESCRIPTOR.message_types_by_name['CreateReplyRequest'] = _CREATEREPLYREQUEST
+DESCRIPTOR.message_types_by_name['DeleteReplyRequest'] = _DELETEREPLYREQUEST
+DESCRIPTOR.message_types_by_name['UpdateReplyRequest'] = _UPDATEREPLYREQUEST
 DESCRIPTOR.message_types_by_name['GetUserRequest'] = _GETUSERREQUEST
 DESCRIPTOR.message_types_by_name['GetUserResponse'] = _GETUSERRESPONSE
 DESCRIPTOR.message_types_by_name['SignInRequest'] = _SIGNINREQUEST
@@ -1512,6 +1958,8 @@ DESCRIPTOR.message_types_by_name['User'] = _USER
 DESCRIPTOR.message_types_by_name['Version'] = _VERSION
 DESCRIPTOR.message_types_by_name['Statistic'] = _STATISTIC
 DESCRIPTOR.message_types_by_name['Url'] = _URL
+DESCRIPTOR.message_types_by_name['Comment'] = _COMMENT
+DESCRIPTOR.message_types_by_name['Reply'] = _REPLY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 CreatePackageRequest = _reflection.GeneratedProtocolMessageType('CreatePackageRequest', (_message.Message,), {
@@ -1632,6 +2080,62 @@ UploadImageRequest = _reflection.GeneratedProtocolMessageType('UploadImageReques
   # @@protoc_insertion_point(class_scope:routeguide.UploadImageRequest)
   })
 _sym_db.RegisterMessage(UploadImageRequest)
+
+CreateCommentRequest = _reflection.GeneratedProtocolMessageType('CreateCommentRequest', (_message.Message,), {
+  'DESCRIPTOR' : _CREATECOMMENTREQUEST,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.CreateCommentRequest)
+  })
+_sym_db.RegisterMessage(CreateCommentRequest)
+
+DeleteCommentRequest = _reflection.GeneratedProtocolMessageType('DeleteCommentRequest', (_message.Message,), {
+  'DESCRIPTOR' : _DELETECOMMENTREQUEST,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.DeleteCommentRequest)
+  })
+_sym_db.RegisterMessage(DeleteCommentRequest)
+
+UpdateCommentRequest = _reflection.GeneratedProtocolMessageType('UpdateCommentRequest', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATECOMMENTREQUEST,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.UpdateCommentRequest)
+  })
+_sym_db.RegisterMessage(UpdateCommentRequest)
+
+ListCommentsRequest = _reflection.GeneratedProtocolMessageType('ListCommentsRequest', (_message.Message,), {
+  'DESCRIPTOR' : _LISTCOMMENTSREQUEST,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.ListCommentsRequest)
+  })
+_sym_db.RegisterMessage(ListCommentsRequest)
+
+ListCommentsResponse = _reflection.GeneratedProtocolMessageType('ListCommentsResponse', (_message.Message,), {
+  'DESCRIPTOR' : _LISTCOMMENTSRESPONSE,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.ListCommentsResponse)
+  })
+_sym_db.RegisterMessage(ListCommentsResponse)
+
+CreateReplyRequest = _reflection.GeneratedProtocolMessageType('CreateReplyRequest', (_message.Message,), {
+  'DESCRIPTOR' : _CREATEREPLYREQUEST,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.CreateReplyRequest)
+  })
+_sym_db.RegisterMessage(CreateReplyRequest)
+
+DeleteReplyRequest = _reflection.GeneratedProtocolMessageType('DeleteReplyRequest', (_message.Message,), {
+  'DESCRIPTOR' : _DELETEREPLYREQUEST,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.DeleteReplyRequest)
+  })
+_sym_db.RegisterMessage(DeleteReplyRequest)
+
+UpdateReplyRequest = _reflection.GeneratedProtocolMessageType('UpdateReplyRequest', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEREPLYREQUEST,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.UpdateReplyRequest)
+  })
+_sym_db.RegisterMessage(UpdateReplyRequest)
 
 GetUserRequest = _reflection.GeneratedProtocolMessageType('GetUserRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETUSERREQUEST,
@@ -1759,6 +2263,20 @@ Url = _reflection.GeneratedProtocolMessageType('Url', (_message.Message,), {
   })
 _sym_db.RegisterMessage(Url)
 
+Comment = _reflection.GeneratedProtocolMessageType('Comment', (_message.Message,), {
+  'DESCRIPTOR' : _COMMENT,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.Comment)
+  })
+_sym_db.RegisterMessage(Comment)
+
+Reply = _reflection.GeneratedProtocolMessageType('Reply', (_message.Message,), {
+  'DESCRIPTOR' : _REPLY,
+  '__module__' : 'san11_platform_pb2'
+  # @@protoc_insertion_point(class_scope:routeguide.Reply)
+  })
+_sym_db.RegisterMessage(Reply)
+
 
 
 _ROUTEGUIDE = _descriptor.ServiceDescriptor(
@@ -1768,8 +2286,8 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=2438,
-  serialized_end=3904,
+  serialized_start=3249,
+  serialized_end=5224,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreatePackage',
@@ -1792,9 +2310,19 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='UpdatePackage',
+    full_name='routeguide.RouteGuide.UpdatePackage',
+    index=2,
+    containing_service=None,
+    input_type=_UPDATEPACKAGEREQUEST,
+    output_type=_PACKAGE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='GetPackage',
     full_name='routeguide.RouteGuide.GetPackage',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_GETPACKAGEREQUEST,
     output_type=_PACKAGE,
@@ -1804,7 +2332,7 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ListPackages',
     full_name='routeguide.RouteGuide.ListPackages',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_LISTPACKAGESREQUEST,
     output_type=_LISTPACKAGESRESPONSE,
@@ -1814,20 +2342,10 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SearchPackages',
     full_name='routeguide.RouteGuide.SearchPackages',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_SEARCHPACKAGESREQUEST,
     output_type=_SEARCHPACKAGESRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdatePackage',
-    full_name='routeguide.RouteGuide.UpdatePackage',
-    index=5,
-    containing_service=None,
-    input_type=_UPDATEPACKAGEREQUEST,
-    output_type=_PACKAGE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
@@ -1902,9 +2420,79 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='CreateComment',
+    full_name='routeguide.RouteGuide.CreateComment',
+    index=13,
+    containing_service=None,
+    input_type=_CREATECOMMENTREQUEST,
+    output_type=_COMMENT,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteComment',
+    full_name='routeguide.RouteGuide.DeleteComment',
+    index=14,
+    containing_service=None,
+    input_type=_DELETECOMMENTREQUEST,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateComment',
+    full_name='routeguide.RouteGuide.UpdateComment',
+    index=15,
+    containing_service=None,
+    input_type=_UPDATECOMMENTREQUEST,
+    output_type=_COMMENT,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListComments',
+    full_name='routeguide.RouteGuide.ListComments',
+    index=16,
+    containing_service=None,
+    input_type=_LISTCOMMENTSREQUEST,
+    output_type=_LISTCOMMENTSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateReply',
+    full_name='routeguide.RouteGuide.CreateReply',
+    index=17,
+    containing_service=None,
+    input_type=_CREATEREPLYREQUEST,
+    output_type=_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteReply',
+    full_name='routeguide.RouteGuide.DeleteReply',
+    index=18,
+    containing_service=None,
+    input_type=_DELETEREPLYREQUEST,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateReply',
+    full_name='routeguide.RouteGuide.UpdateReply',
+    index=19,
+    containing_service=None,
+    input_type=_UPDATEREPLYREQUEST,
+    output_type=_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='SignUp',
     full_name='routeguide.RouteGuide.SignUp',
-    index=13,
+    index=20,
     containing_service=None,
     input_type=_SIGNUPREQUEST,
     output_type=_SIGNUPRESPONSE,
@@ -1914,7 +2502,7 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SignIn',
     full_name='routeguide.RouteGuide.SignIn',
-    index=14,
+    index=21,
     containing_service=None,
     input_type=_SIGNINREQUEST,
     output_type=_SIGNINRESPONSE,
@@ -1924,7 +2512,7 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SignOut',
     full_name='routeguide.RouteGuide.SignOut',
-    index=15,
+    index=22,
     containing_service=None,
     input_type=_SIGNOUTREQUEST,
     output_type=_STATUS,
@@ -1934,7 +2522,7 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetUser',
     full_name='routeguide.RouteGuide.GetUser',
-    index=16,
+    index=23,
     containing_service=None,
     input_type=_GETUSERREQUEST,
     output_type=_USER,
@@ -1944,7 +2532,7 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='UpdateUser',
     full_name='routeguide.RouteGuide.UpdateUser',
-    index=17,
+    index=24,
     containing_service=None,
     input_type=_UPDATEUSERREQUEST,
     output_type=_USER,
@@ -1954,7 +2542,7 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='UpdatePassword',
     full_name='routeguide.RouteGuide.UpdatePassword',
-    index=18,
+    index=25,
     containing_service=None,
     input_type=_UPDATEPASSWORDREQUEST,
     output_type=_EMPTY,
@@ -1964,7 +2552,7 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetStatistic',
     full_name='routeguide.RouteGuide.GetStatistic',
-    index=19,
+    index=26,
     containing_service=None,
     input_type=_GETSTATISTICREQUEST,
     output_type=_STATISTIC,

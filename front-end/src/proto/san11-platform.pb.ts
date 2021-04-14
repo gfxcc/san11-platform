@@ -2717,6 +2717,1218 @@ export module UploadImageRequest {
 }
 
 /**
+ * Message implementation for routeguide.CreateCommentRequest
+ */
+export class CreateCommentRequest implements GrpcMessage {
+  static id = 'routeguide.CreateCommentRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new CreateCommentRequest();
+    CreateCommentRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: CreateCommentRequest) {
+    _instance.comment = _instance.comment || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: CreateCommentRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.comment = new Comment();
+          _reader.readMessage(
+            _instance.comment,
+            Comment.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    CreateCommentRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: CreateCommentRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.comment) {
+      _writer.writeMessage(
+        1,
+        _instance.comment as any,
+        Comment.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _comment?: Comment;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of CreateCommentRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<CreateCommentRequest.AsObject>) {
+    _value = _value || {};
+    this.comment = _value.comment ? new Comment(_value.comment) : undefined;
+    CreateCommentRequest.refineValues(this);
+  }
+  get comment(): Comment | undefined {
+    return this._comment;
+  }
+  set comment(value: Comment | undefined) {
+    this._comment = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    CreateCommentRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): CreateCommentRequest.AsObject {
+    return {
+      comment: this.comment ? this.comment.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): CreateCommentRequest.AsProtobufJSON {
+    return {
+      comment: this.comment ? this.comment.toProtobufJSON(options) : null
+    };
+  }
+}
+export module CreateCommentRequest {
+  /**
+   * Standard JavaScript object representation for CreateCommentRequest
+   */
+  export interface AsObject {
+    comment?: Comment.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for CreateCommentRequest
+   */
+  export interface AsProtobufJSON {
+    comment?: Comment.AsProtobufJSON | null;
+  }
+}
+
+/**
+ * Message implementation for routeguide.DeleteCommentRequest
+ */
+export class DeleteCommentRequest implements GrpcMessage {
+  static id = 'routeguide.DeleteCommentRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new DeleteCommentRequest();
+    DeleteCommentRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: DeleteCommentRequest) {
+    _instance.commentId = _instance.commentId || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: DeleteCommentRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.commentId = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    DeleteCommentRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: DeleteCommentRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.commentId) {
+      _writer.writeInt64String(1, _instance.commentId);
+    }
+  }
+
+  private _commentId?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of DeleteCommentRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<DeleteCommentRequest.AsObject>) {
+    _value = _value || {};
+    this.commentId = _value.commentId;
+    DeleteCommentRequest.refineValues(this);
+  }
+  get commentId(): string | undefined {
+    return this._commentId;
+  }
+  set commentId(value: string | undefined) {
+    this._commentId = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    DeleteCommentRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): DeleteCommentRequest.AsObject {
+    return {
+      commentId: this.commentId
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): DeleteCommentRequest.AsProtobufJSON {
+    return {
+      commentId: this.commentId
+    };
+  }
+}
+export module DeleteCommentRequest {
+  /**
+   * Standard JavaScript object representation for DeleteCommentRequest
+   */
+  export interface AsObject {
+    commentId?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for DeleteCommentRequest
+   */
+  export interface AsProtobufJSON {
+    commentId?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.UpdateCommentRequest
+ */
+export class UpdateCommentRequest implements GrpcMessage {
+  static id = 'routeguide.UpdateCommentRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UpdateCommentRequest();
+    UpdateCommentRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UpdateCommentRequest) {
+    _instance.comment = _instance.comment || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UpdateCommentRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.comment = new Comment();
+          _reader.readMessage(
+            _instance.comment,
+            Comment.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UpdateCommentRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UpdateCommentRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.comment) {
+      _writer.writeMessage(
+        1,
+        _instance.comment as any,
+        Comment.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _comment?: Comment;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UpdateCommentRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UpdateCommentRequest.AsObject>) {
+    _value = _value || {};
+    this.comment = _value.comment ? new Comment(_value.comment) : undefined;
+    UpdateCommentRequest.refineValues(this);
+  }
+  get comment(): Comment | undefined {
+    return this._comment;
+  }
+  set comment(value: Comment | undefined) {
+    this._comment = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UpdateCommentRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UpdateCommentRequest.AsObject {
+    return {
+      comment: this.comment ? this.comment.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UpdateCommentRequest.AsProtobufJSON {
+    return {
+      comment: this.comment ? this.comment.toProtobufJSON(options) : null
+    };
+  }
+}
+export module UpdateCommentRequest {
+  /**
+   * Standard JavaScript object representation for UpdateCommentRequest
+   */
+  export interface AsObject {
+    comment?: Comment.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for UpdateCommentRequest
+   */
+  export interface AsProtobufJSON {
+    comment?: Comment.AsProtobufJSON | null;
+  }
+}
+
+/**
+ * Message implementation for routeguide.ListCommentsRequest
+ */
+export class ListCommentsRequest implements GrpcMessage {
+  static id = 'routeguide.ListCommentsRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ListCommentsRequest();
+    ListCommentsRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ListCommentsRequest) {
+    _instance.parent = _instance.parent || '';
+    _instance.pageSize = _instance.pageSize || '0';
+    _instance.pageToken = _instance.pageToken || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ListCommentsRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
+          _instance.pageSize = _reader.readInt64String();
+          break;
+        case 3:
+          _instance.pageToken = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ListCommentsRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ListCommentsRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
+    if (_instance.pageSize) {
+      _writer.writeInt64String(2, _instance.pageSize);
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(3, _instance.pageToken);
+    }
+  }
+
+  private _parent?: string;
+  private _pageSize?: string;
+  private _pageToken?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ListCommentsRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ListCommentsRequest.AsObject>) {
+    _value = _value || {};
+    this.parent = _value.parent;
+    this.pageSize = _value.pageSize;
+    this.pageToken = _value.pageToken;
+    ListCommentsRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
+  }
+  get pageSize(): string | undefined {
+    return this._pageSize;
+  }
+  set pageSize(value: string | undefined) {
+    this._pageSize = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ListCommentsRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ListCommentsRequest.AsObject {
+    return {
+      parent: this.parent,
+      pageSize: this.pageSize,
+      pageToken: this.pageToken
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ListCommentsRequest.AsProtobufJSON {
+    return {
+      parent: this.parent,
+      pageSize: this.pageSize,
+      pageToken: this.pageToken
+    };
+  }
+}
+export module ListCommentsRequest {
+  /**
+   * Standard JavaScript object representation for ListCommentsRequest
+   */
+  export interface AsObject {
+    parent?: string;
+    pageSize?: string;
+    pageToken?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for ListCommentsRequest
+   */
+  export interface AsProtobufJSON {
+    parent?: string;
+    pageSize?: string;
+    pageToken?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.ListCommentsResponse
+ */
+export class ListCommentsResponse implements GrpcMessage {
+  static id = 'routeguide.ListCommentsResponse';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ListCommentsResponse();
+    ListCommentsResponse.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ListCommentsResponse) {
+    _instance.comments = _instance.comments || [];
+    _instance.pageToken = _instance.pageToken || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ListCommentsResponse,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          const messageInitializer1 = new Comment();
+          _reader.readMessage(
+            messageInitializer1,
+            Comment.deserializeBinaryFromReader
+          );
+          (_instance.comments = _instance.comments || []).push(
+            messageInitializer1
+          );
+          break;
+        case 2:
+          _instance.pageToken = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ListCommentsResponse.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ListCommentsResponse,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.comments && _instance.comments.length) {
+      _writer.writeRepeatedMessage(
+        1,
+        _instance.comments as any,
+        Comment.serializeBinaryToWriter
+      );
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(2, _instance.pageToken);
+    }
+  }
+
+  private _comments?: Comment[];
+  private _pageToken?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ListCommentsResponse to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ListCommentsResponse.AsObject>) {
+    _value = _value || {};
+    this.comments = (_value.comments || []).map(m => new Comment(m));
+    this.pageToken = _value.pageToken;
+    ListCommentsResponse.refineValues(this);
+  }
+  get comments(): Comment[] | undefined {
+    return this._comments;
+  }
+  set comments(value: Comment[] | undefined) {
+    this._comments = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ListCommentsResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ListCommentsResponse.AsObject {
+    return {
+      comments: (this.comments || []).map(m => m.toObject()),
+      pageToken: this.pageToken
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ListCommentsResponse.AsProtobufJSON {
+    return {
+      comments: (this.comments || []).map(m => m.toProtobufJSON(options)),
+      pageToken: this.pageToken
+    };
+  }
+}
+export module ListCommentsResponse {
+  /**
+   * Standard JavaScript object representation for ListCommentsResponse
+   */
+  export interface AsObject {
+    comments?: Comment.AsObject[];
+    pageToken?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for ListCommentsResponse
+   */
+  export interface AsProtobufJSON {
+    comments?: Comment.AsProtobufJSON[] | null;
+    pageToken?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.CreateReplyRequest
+ */
+export class CreateReplyRequest implements GrpcMessage {
+  static id = 'routeguide.CreateReplyRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new CreateReplyRequest();
+    CreateReplyRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: CreateReplyRequest) {
+    _instance.reply = _instance.reply || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: CreateReplyRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.reply = new Reply();
+          _reader.readMessage(
+            _instance.reply,
+            Reply.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    CreateReplyRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: CreateReplyRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.reply) {
+      _writer.writeMessage(
+        1,
+        _instance.reply as any,
+        Reply.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _reply?: Reply;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of CreateReplyRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<CreateReplyRequest.AsObject>) {
+    _value = _value || {};
+    this.reply = _value.reply ? new Reply(_value.reply) : undefined;
+    CreateReplyRequest.refineValues(this);
+  }
+  get reply(): Reply | undefined {
+    return this._reply;
+  }
+  set reply(value: Reply | undefined) {
+    this._reply = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    CreateReplyRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): CreateReplyRequest.AsObject {
+    return {
+      reply: this.reply ? this.reply.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): CreateReplyRequest.AsProtobufJSON {
+    return {
+      reply: this.reply ? this.reply.toProtobufJSON(options) : null
+    };
+  }
+}
+export module CreateReplyRequest {
+  /**
+   * Standard JavaScript object representation for CreateReplyRequest
+   */
+  export interface AsObject {
+    reply?: Reply.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for CreateReplyRequest
+   */
+  export interface AsProtobufJSON {
+    reply?: Reply.AsProtobufJSON | null;
+  }
+}
+
+/**
+ * Message implementation for routeguide.DeleteReplyRequest
+ */
+export class DeleteReplyRequest implements GrpcMessage {
+  static id = 'routeguide.DeleteReplyRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new DeleteReplyRequest();
+    DeleteReplyRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: DeleteReplyRequest) {
+    _instance.replyId = _instance.replyId || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: DeleteReplyRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.replyId = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    DeleteReplyRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: DeleteReplyRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.replyId) {
+      _writer.writeInt64String(1, _instance.replyId);
+    }
+  }
+
+  private _replyId?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of DeleteReplyRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<DeleteReplyRequest.AsObject>) {
+    _value = _value || {};
+    this.replyId = _value.replyId;
+    DeleteReplyRequest.refineValues(this);
+  }
+  get replyId(): string | undefined {
+    return this._replyId;
+  }
+  set replyId(value: string | undefined) {
+    this._replyId = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    DeleteReplyRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): DeleteReplyRequest.AsObject {
+    return {
+      replyId: this.replyId
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): DeleteReplyRequest.AsProtobufJSON {
+    return {
+      replyId: this.replyId
+    };
+  }
+}
+export module DeleteReplyRequest {
+  /**
+   * Standard JavaScript object representation for DeleteReplyRequest
+   */
+  export interface AsObject {
+    replyId?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for DeleteReplyRequest
+   */
+  export interface AsProtobufJSON {
+    replyId?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.UpdateReplyRequest
+ */
+export class UpdateReplyRequest implements GrpcMessage {
+  static id = 'routeguide.UpdateReplyRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UpdateReplyRequest();
+    UpdateReplyRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UpdateReplyRequest) {
+    _instance.reply = _instance.reply || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UpdateReplyRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.reply = new Reply();
+          _reader.readMessage(
+            _instance.reply,
+            Reply.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UpdateReplyRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UpdateReplyRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.reply) {
+      _writer.writeMessage(
+        1,
+        _instance.reply as any,
+        Reply.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _reply?: Reply;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UpdateReplyRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UpdateReplyRequest.AsObject>) {
+    _value = _value || {};
+    this.reply = _value.reply ? new Reply(_value.reply) : undefined;
+    UpdateReplyRequest.refineValues(this);
+  }
+  get reply(): Reply | undefined {
+    return this._reply;
+  }
+  set reply(value: Reply | undefined) {
+    this._reply = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UpdateReplyRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UpdateReplyRequest.AsObject {
+    return {
+      reply: this.reply ? this.reply.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UpdateReplyRequest.AsProtobufJSON {
+    return {
+      reply: this.reply ? this.reply.toProtobufJSON(options) : null
+    };
+  }
+}
+export module UpdateReplyRequest {
+  /**
+   * Standard JavaScript object representation for UpdateReplyRequest
+   */
+  export interface AsObject {
+    reply?: Reply.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for UpdateReplyRequest
+   */
+  export interface AsProtobufJSON {
+    reply?: Reply.AsProtobufJSON | null;
+  }
+}
+
+/**
  * Message implementation for routeguide.GetUserRequest
  */
 export class GetUserRequest implements GrpcMessage {
@@ -5769,5 +6981,526 @@ export module Url {
    */
   export interface AsProtobufJSON {
     url?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.Comment
+ */
+export class Comment implements GrpcMessage {
+  static id = 'routeguide.Comment';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new Comment();
+    Comment.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: Comment) {
+    _instance.packageId = _instance.packageId || '0';
+    _instance.commentId = _instance.commentId || '0';
+    _instance.createTime = _instance.createTime || '';
+    _instance.updateTime = _instance.updateTime || '';
+    _instance.text = _instance.text || '';
+    _instance.authorId = _instance.authorId || '0';
+    _instance.upvoteCount = _instance.upvoteCount || '0';
+    _instance.replies = _instance.replies || [];
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: Comment,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.packageId = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.commentId = _reader.readInt64String();
+          break;
+        case 3:
+          _instance.createTime = _reader.readString();
+          break;
+        case 4:
+          _instance.updateTime = _reader.readString();
+          break;
+        case 5:
+          _instance.text = _reader.readString();
+          break;
+        case 6:
+          _instance.authorId = _reader.readInt64String();
+          break;
+        case 7:
+          _instance.upvoteCount = _reader.readInt64String();
+          break;
+        case 8:
+          const messageInitializer8 = new Reply();
+          _reader.readMessage(
+            messageInitializer8,
+            Reply.deserializeBinaryFromReader
+          );
+          (_instance.replies = _instance.replies || []).push(
+            messageInitializer8
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    Comment.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(_instance: Comment, _writer: BinaryWriter) {
+    if (_instance.packageId) {
+      _writer.writeInt64String(1, _instance.packageId);
+    }
+    if (_instance.commentId) {
+      _writer.writeInt64String(2, _instance.commentId);
+    }
+    if (_instance.createTime) {
+      _writer.writeString(3, _instance.createTime);
+    }
+    if (_instance.updateTime) {
+      _writer.writeString(4, _instance.updateTime);
+    }
+    if (_instance.text) {
+      _writer.writeString(5, _instance.text);
+    }
+    if (_instance.authorId) {
+      _writer.writeInt64String(6, _instance.authorId);
+    }
+    if (_instance.upvoteCount) {
+      _writer.writeInt64String(7, _instance.upvoteCount);
+    }
+    if (_instance.replies && _instance.replies.length) {
+      _writer.writeRepeatedMessage(
+        8,
+        _instance.replies as any,
+        Reply.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _packageId?: string;
+  private _commentId?: string;
+  private _createTime?: string;
+  private _updateTime?: string;
+  private _text?: string;
+  private _authorId?: string;
+  private _upvoteCount?: string;
+  private _replies?: Reply[];
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of Comment to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<Comment.AsObject>) {
+    _value = _value || {};
+    this.packageId = _value.packageId;
+    this.commentId = _value.commentId;
+    this.createTime = _value.createTime;
+    this.updateTime = _value.updateTime;
+    this.text = _value.text;
+    this.authorId = _value.authorId;
+    this.upvoteCount = _value.upvoteCount;
+    this.replies = (_value.replies || []).map(m => new Reply(m));
+    Comment.refineValues(this);
+  }
+  get packageId(): string | undefined {
+    return this._packageId;
+  }
+  set packageId(value: string | undefined) {
+    this._packageId = value;
+  }
+  get commentId(): string | undefined {
+    return this._commentId;
+  }
+  set commentId(value: string | undefined) {
+    this._commentId = value;
+  }
+  get createTime(): string | undefined {
+    return this._createTime;
+  }
+  set createTime(value: string | undefined) {
+    this._createTime = value;
+  }
+  get updateTime(): string | undefined {
+    return this._updateTime;
+  }
+  set updateTime(value: string | undefined) {
+    this._updateTime = value;
+  }
+  get text(): string | undefined {
+    return this._text;
+  }
+  set text(value: string | undefined) {
+    this._text = value;
+  }
+  get authorId(): string | undefined {
+    return this._authorId;
+  }
+  set authorId(value: string | undefined) {
+    this._authorId = value;
+  }
+  get upvoteCount(): string | undefined {
+    return this._upvoteCount;
+  }
+  set upvoteCount(value: string | undefined) {
+    this._upvoteCount = value;
+  }
+  get replies(): Reply[] | undefined {
+    return this._replies;
+  }
+  set replies(value: Reply[] | undefined) {
+    this._replies = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    Comment.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): Comment.AsObject {
+    return {
+      packageId: this.packageId,
+      commentId: this.commentId,
+      createTime: this.createTime,
+      updateTime: this.updateTime,
+      text: this.text,
+      authorId: this.authorId,
+      upvoteCount: this.upvoteCount,
+      replies: (this.replies || []).map(m => m.toObject())
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): Comment.AsProtobufJSON {
+    return {
+      packageId: this.packageId,
+      commentId: this.commentId,
+      createTime: this.createTime,
+      updateTime: this.updateTime,
+      text: this.text,
+      authorId: this.authorId,
+      upvoteCount: this.upvoteCount,
+      replies: (this.replies || []).map(m => m.toProtobufJSON(options))
+    };
+  }
+}
+export module Comment {
+  /**
+   * Standard JavaScript object representation for Comment
+   */
+  export interface AsObject {
+    packageId?: string;
+    commentId?: string;
+    createTime?: string;
+    updateTime?: string;
+    text?: string;
+    authorId?: string;
+    upvoteCount?: string;
+    replies?: Reply.AsObject[];
+  }
+
+  /**
+   * Protobuf JSON representation for Comment
+   */
+  export interface AsProtobufJSON {
+    packageId?: string;
+    commentId?: string;
+    createTime?: string;
+    updateTime?: string;
+    text?: string;
+    authorId?: string;
+    upvoteCount?: string;
+    replies?: Reply.AsProtobufJSON[] | null;
+  }
+}
+
+/**
+ * Message implementation for routeguide.Reply
+ */
+export class Reply implements GrpcMessage {
+  static id = 'routeguide.Reply';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new Reply();
+    Reply.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: Reply) {
+    _instance.commentId = _instance.commentId || '0';
+    _instance.replyId = _instance.replyId || '0';
+    _instance.createTime = _instance.createTime || '';
+    _instance.updateTime = _instance.updateTime || '';
+    _instance.text = _instance.text || '';
+    _instance.authorId = _instance.authorId || '0';
+    _instance.upvoteCount = _instance.upvoteCount || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(_instance: Reply, _reader: BinaryReader) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.commentId = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.replyId = _reader.readInt64String();
+          break;
+        case 3:
+          _instance.createTime = _reader.readString();
+          break;
+        case 4:
+          _instance.updateTime = _reader.readString();
+          break;
+        case 5:
+          _instance.text = _reader.readString();
+          break;
+        case 6:
+          _instance.authorId = _reader.readInt64String();
+          break;
+        case 7:
+          _instance.upvoteCount = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    Reply.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(_instance: Reply, _writer: BinaryWriter) {
+    if (_instance.commentId) {
+      _writer.writeInt64String(1, _instance.commentId);
+    }
+    if (_instance.replyId) {
+      _writer.writeInt64String(2, _instance.replyId);
+    }
+    if (_instance.createTime) {
+      _writer.writeString(3, _instance.createTime);
+    }
+    if (_instance.updateTime) {
+      _writer.writeString(4, _instance.updateTime);
+    }
+    if (_instance.text) {
+      _writer.writeString(5, _instance.text);
+    }
+    if (_instance.authorId) {
+      _writer.writeInt64String(6, _instance.authorId);
+    }
+    if (_instance.upvoteCount) {
+      _writer.writeInt64String(7, _instance.upvoteCount);
+    }
+  }
+
+  private _commentId?: string;
+  private _replyId?: string;
+  private _createTime?: string;
+  private _updateTime?: string;
+  private _text?: string;
+  private _authorId?: string;
+  private _upvoteCount?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of Reply to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<Reply.AsObject>) {
+    _value = _value || {};
+    this.commentId = _value.commentId;
+    this.replyId = _value.replyId;
+    this.createTime = _value.createTime;
+    this.updateTime = _value.updateTime;
+    this.text = _value.text;
+    this.authorId = _value.authorId;
+    this.upvoteCount = _value.upvoteCount;
+    Reply.refineValues(this);
+  }
+  get commentId(): string | undefined {
+    return this._commentId;
+  }
+  set commentId(value: string | undefined) {
+    this._commentId = value;
+  }
+  get replyId(): string | undefined {
+    return this._replyId;
+  }
+  set replyId(value: string | undefined) {
+    this._replyId = value;
+  }
+  get createTime(): string | undefined {
+    return this._createTime;
+  }
+  set createTime(value: string | undefined) {
+    this._createTime = value;
+  }
+  get updateTime(): string | undefined {
+    return this._updateTime;
+  }
+  set updateTime(value: string | undefined) {
+    this._updateTime = value;
+  }
+  get text(): string | undefined {
+    return this._text;
+  }
+  set text(value: string | undefined) {
+    this._text = value;
+  }
+  get authorId(): string | undefined {
+    return this._authorId;
+  }
+  set authorId(value: string | undefined) {
+    this._authorId = value;
+  }
+  get upvoteCount(): string | undefined {
+    return this._upvoteCount;
+  }
+  set upvoteCount(value: string | undefined) {
+    this._upvoteCount = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    Reply.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): Reply.AsObject {
+    return {
+      commentId: this.commentId,
+      replyId: this.replyId,
+      createTime: this.createTime,
+      updateTime: this.updateTime,
+      text: this.text,
+      authorId: this.authorId,
+      upvoteCount: this.upvoteCount
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): Reply.AsProtobufJSON {
+    return {
+      commentId: this.commentId,
+      replyId: this.replyId,
+      createTime: this.createTime,
+      updateTime: this.updateTime,
+      text: this.text,
+      authorId: this.authorId,
+      upvoteCount: this.upvoteCount
+    };
+  }
+}
+export module Reply {
+  /**
+   * Standard JavaScript object representation for Reply
+   */
+  export interface AsObject {
+    commentId?: string;
+    replyId?: string;
+    createTime?: string;
+    updateTime?: string;
+    text?: string;
+    authorId?: string;
+    upvoteCount?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for Reply
+   */
+  export interface AsProtobufJSON {
+    commentId?: string;
+    replyId?: string;
+    createTime?: string;
+    updateTime?: string;
+    text?: string;
+    authorId?: string;
+    upvoteCount?: string;
   }
 }

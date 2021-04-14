@@ -117,7 +117,6 @@ class Binary:
         obj = cls.from_pb(pb_obj)
 
         if data != b'':
-            logger.debug(f'{data} in')
             obj.url = get_binary_url(
                 parent, get_binary_filename(Url(parent), obj.version))
             create_resource(obj.url, data)

@@ -5,17 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { SirePackageDashboardComponent } from './dashboards/sire-package-dashboard/sire-package-dashboard.component';
 import { PackageCardComponent, DeleteDialog } from './package-management/package-card/package-card.component';
-import { PlayerPackageDashboardComponent } from './dashboards/player-package-dashboard/player-package-dashboard.component';
-import { ModMakerPackageDashboardComponent } from './dashboards/mod-maker-package-dashboard/mod-maker-package-dashboard.component';
 
 import { AngularMaterialModule } from './angular-material.module';
 /* Angular Flex Layout */
 import { FlexLayoutModule } from "@angular/flex-layout";
 /* FormsModule */
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 
 
 import { GrpcCoreModule } from '@ngx-grpc/core';
@@ -35,15 +31,15 @@ import { CreateNewVersionComponent } from "./package-management/version-manageme
 import { TextDialogComponent } from './common/components/text-dialog/text-dialog.component';
 import { TextInputDialogComponent } from './common/components/text-input-dialog/text-input-dialog.component';
 import { UserDetailComponent, PasswordDialog } from './account-management/user-detail/user-detail.component';
+import { CommentCardComponent } from './common/components/comment-card/comment-card.component';
+import { CommentBoardComponent } from './common/components/comment-board/comment-board.component';
+import { ReplyCardComponent } from './common/components/comment-card/reply-card/reply-card.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SirePackageDashboardComponent,
     PackageCardComponent,
-    PlayerPackageDashboardComponent,
-    ModMakerPackageDashboardComponent,
     SigninComponent,
     RegisterComponent,
     CreatePackageComponent,
@@ -58,6 +54,9 @@ import { UserDetailComponent, PasswordDialog } from './account-management/user-d
     TextInputDialogComponent,
     UserDetailComponent,
     PasswordDialog,
+    CommentCardComponent,
+    CommentBoardComponent,
+    ReplyCardComponent,
   ],
   imports: [
     GrpcCoreModule.forRoot(),

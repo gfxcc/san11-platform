@@ -131,3 +131,11 @@ body {
     cursor: pointer;
     border-bottom: solid 1px grey;
 }
+
+.actions-section {
+    display: flex;
+}
+
+.top-border {
+    border-top: solid 1px #ebebeb;
+}
