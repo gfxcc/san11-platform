@@ -10,6 +10,7 @@ from ..user.user import User
 from ..comment.comment import Comment
 from ..comment.reply import Reply
 from .session import Session
+from ..exception import Unauthenticated, PermissionDenied
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -23,8 +24,9 @@ class Authenticator:
     def from_context(cls, context):
         session = None
         sid = dict(context.invocation_metadata()).get('sid', None)
-        if sid is None:
-            raise Exception('请登录')
+        logger.debug(f'sid={sid}.')
+        if not sid:
+            raise Unauthenticated('请登录')
 
         try:
             session = Session.from_sid(sid)

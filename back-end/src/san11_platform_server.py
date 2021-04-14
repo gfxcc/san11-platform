@@ -13,6 +13,7 @@ import lib.db_util as db_util
 
 from lib.protos import san11_platform_pb2
 from lib.protos import san11_platform_pb2_grpc
+from lib.exception import Unauthenticated
 from lib.user.user import User, InvalidPassword
 from lib.image import Image
 from lib.package import Package
@@ -213,7 +214,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def UpdateComment(self, request, context):
         logger.info(f'In UpdateComment: comment_id={request.comment.comment_id}')
         comment = Comment.from_id(request.comment.comment_id)
-        authenticator = Authenticator.from_context(context)
+        try:
+            authenticator = Authenticator.from_context(context)
+        except Unauthenticated as err:
+            context.abort(code=err.code, details=str(err))
         if not authenticator.canUpdateComment(current=comment, requested=request.comment):
             context.abort(code=255, details='权限不足')
 
@@ -262,7 +266,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         logger.info(f'In UpdateReply: reply_id={request.reply.reply_id}')
         reply = Reply.from_id(request.reply.reply_id)
         # TODO: fix authentication
-        authenticator = Authenticator.from_context(context)
+        try:
+            authenticator = Authenticator.from_context(context)
+        except Unauthenticated as err:
+            context.abort(code=err.code, details=str(err))
 
         if request.reply.upvote_count:
             resource = f'reply_id:{reply.reply_id}'
