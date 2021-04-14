@@ -346,6 +346,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         if request.user.website:
             user.website = request.user.website
         if request.user.image_url == 'empty':
+            # TODO: Need to delete current user avatar
             try:
                 Image.from_url(user.image_url).delete()
             except Exception as err:
