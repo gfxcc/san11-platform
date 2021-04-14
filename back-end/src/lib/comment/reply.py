@@ -1,7 +1,7 @@
 import os
 import logging
 from typing import Iterable, List
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Iterable
 
 from ..db_util import run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all, \
@@ -20,8 +20,8 @@ class Reply:
                  upvote_count: int) -> None:
         self.comment_id = comment_id
         self.reply_id = reply_id
-        self.create_time = create_time
-        self.update_time = update_time
+        self.create_time = create_time.replace(tzinfo=timezone.utc)
+        self.update_time = update_time.replace(tzinfo=timezone.utc)
         self.text = text
         self.author_id = author_id
         self.upvote_count = upvote_count

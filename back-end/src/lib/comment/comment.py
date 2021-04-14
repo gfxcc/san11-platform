@@ -1,13 +1,13 @@
 import os
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Iterable
 
 
 from .reply import Reply
 from ..protos import san11_platform_pb2
 from ..db_util import run_sql_with_param, run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all
-from ..time_util import get_now, datetime_to_str
+from ..time_util import get_now, datetime_to_str, get_timezone
 from ..url import Url
 from ..user.activity import Action, Activity
 
@@ -21,8 +21,8 @@ class Comment:
                  upvote_count: int) -> None:
         self.parent = parent
         self.comment_id = comment_id
-        self.create_time = create_time
-        self.update_time = update_time
+        self.create_time = create_time.replace(tzinfo=timezone.utc)
+        self.update_time = update_time.replace(tzinfo=timezone.utc)
         self.text = text
         self.author_id = author_id
         self.upvote_count = upvote_count
@@ -61,6 +61,7 @@ class Comment:
         return comments
 
     def to_pb(self) -> san11_platform_pb2.Comment:
+        logger.debug(f'{self.create_time} -> {datetime_to_str(self.create_time)}')
         return san11_platform_pb2.Comment(
             parent=self.parent,
             comment_id=self.comment_id,
