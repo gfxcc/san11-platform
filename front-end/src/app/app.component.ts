@@ -28,7 +28,7 @@ export class AppComponent {
     private notificationService: NotificationService,
     private san11PlatformServiceService: San11PlatformServiceService,
     private dialog: MatDialog,
-    private router: Router) {
+    public router: Router) {
     this.san11PlatformServiceService.getStatistic().subscribe(
       statistic => {
         this.today_visit_count = Number(statistic.visitCount);
