@@ -33,9 +33,7 @@ export class SigninComponent implements OnInit {
         localStorage.setItem('sid', value.sid);
         localStorage.setItem('userId', value.user.userId);
         localStorage.setItem('userType', value.user.userType);
-        if (value.user.imageUrl != '') {
-          localStorage.setItem('userImageUrl', value.user.imageUrl);
-        }
+        localStorage.setItem('userImageUrl', value.user.imageUrl);
 
         this.router.navigate(['/']).then(() => {
           window.location.reload();

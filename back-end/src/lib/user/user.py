@@ -13,6 +13,7 @@ from ..time_util import get_timezone
 
 
 logger = logging.getLogger(os.path.basename(__file__))
+DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
 
 class InvalidPassword(Exception):
@@ -72,7 +73,7 @@ class User:
                                        username=self.username,
                                        email=self.email,
                                        user_type=self.user_type,
-                                       image_url=self.image_url,
+                                       image_url=self.image_url or DEFAULT_USER_AVATAR,
                                        website=self.website)
     
     def set_image(self, image: Image):

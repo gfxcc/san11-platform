@@ -44,11 +44,7 @@ export class CommentCardComponent implements OnInit {
       if (localAuthorImage === null) {
         this.san11pkService.getUser(this.authorId).subscribe(
           user => {
-            if (user.imageUrl === '') {
-              this.authorImage = '../../../../assets/images/zhuge.jpg';
-            } else {
-              this.authorImage = getFullUrl(user.imageUrl);
-            }
+            this.authorImage = getFullUrl(user.imageUrl);
           },
           error => {
             this.authorImage = '../../../../assets/images/zhuge.jpg';
@@ -68,15 +64,9 @@ export class CommentCardComponent implements OnInit {
     this.san11pkService.getUser(this.comment.authorId).subscribe(
       user => {
         this.user = user;
-        if (user.imageUrl != '') {
-          this.userImage = getFullUrl(this.user.imageUrl);
-        } else {
-          this.userImage = '../../../../assets/images/zhuge.jpg';
-        }
+        this.userImage = getFullUrl(this.user.imageUrl);
       },
       error => {
-        console.log('Failed to load user ' + this.comment.authorId + ':' + error.statusMessage);
-
         this.userImage = '../../../../assets/images/zhuge.jpg';
       }
     );
@@ -158,10 +148,16 @@ export class CommentCardComponent implements OnInit {
   }
 
   mouseEnter() {
+    if (this.authorId != this.comment.authorId) {
+      return;
+    }
     this.hideControl = false;
   }
 
   mouseLeave() {
+    if (this.authorId != this.comment.authorId) {
+      return;
+    }
     this.hideControl = true;
   }
 }

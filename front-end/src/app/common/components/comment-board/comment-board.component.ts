@@ -38,12 +38,7 @@ export class CommentBoardComponent implements OnInit {
       if (localAuthorImage === null) {
         this.san11pkService.getUser(this.authorId).subscribe(
           user => {
-            console.log(user.imageUrl);
-            if (user.imageUrl === '') {
-              this.authorImage = '../../../assets/images/zhuge.jpg';
-            } else {
-              this.authorImage = getFullUrl(user.imageUrl);
-            }
+            this.authorImage = getFullUrl(user.imageUrl);
           },
           error => {
             this.authorImage = '../../../assets/images/zhuge.jpg';
@@ -60,7 +55,6 @@ export class CommentBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.loadComments();
   }
 

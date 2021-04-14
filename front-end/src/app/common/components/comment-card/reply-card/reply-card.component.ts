@@ -24,6 +24,7 @@ export class ReplyCardComponent implements OnInit {
   hideUserImage = true;
   userImage: string;
   user: User;
+  authorId: string;
 
   hideControl = true;
 
@@ -31,17 +32,15 @@ export class ReplyCardComponent implements OnInit {
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
-  ) { }
+  ) {
+    this.authorId = localStorage.getItem('userId');
+  }
 
   ngOnInit(): void {
     this.san11pkService.getUser(this.reply.authorId).subscribe(
       user => {
         this.user = user;
-        if (this.user.imageUrl != '') {
-          this.userImage = getFullUrl(this.user.imageUrl);
-        } else {
-          this.userImage = '../../../../assets/images/zhuge.jpg';
-        }
+        this.userImage = getFullUrl(this.user.imageUrl);
       },
       error => {
         console.log('Failed to load user ' + this.reply.authorId + ':' + error.statusMessage);
@@ -92,10 +91,16 @@ export class ReplyCardComponent implements OnInit {
   }
 
   mouseEnter() {
+    if (this.authorId != this.reply.authorId) {
+      return;
+    }
     this.hideControl = false;
   }
 
   mouseLeave() {
+    if (this.authorId != this.reply.authorId) {
+      return;
+    }
     this.hideControl = true;
   }
 }
