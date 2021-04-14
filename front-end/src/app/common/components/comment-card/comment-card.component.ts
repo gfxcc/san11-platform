@@ -102,7 +102,7 @@ export class CommentCardComponent implements OnInit {
     });
     this.san11pkService.updateComment(comment).subscribe(
       commentResp => {
-        this.comment = commentResp;
+        this.comment.upvoteCount = commentResp.upvoteCount;
       },
       error => {
         this.notificationService.warn(error.statusMessage);

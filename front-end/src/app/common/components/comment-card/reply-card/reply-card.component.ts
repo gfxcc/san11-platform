@@ -58,7 +58,7 @@ export class ReplyCardComponent implements OnInit {
     });
     this.san11pkService.updateReply(reply).subscribe(
       reply => {
-        this.reply = reply;
+        this.reply.upvoteCount = reply.upvoteCount;
       },
       error => {
         this.notificationService.warn(error.statusMessage);
