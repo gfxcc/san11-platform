@@ -7005,7 +7005,7 @@ export class Comment implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Comment) {
-    _instance.packageId = _instance.packageId || '0';
+    _instance.parent = _instance.parent || '';
     _instance.commentId = _instance.commentId || '0';
     _instance.createTime = _instance.createTime || '';
     _instance.updateTime = _instance.updateTime || '';
@@ -7029,7 +7029,7 @@ export class Comment implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.packageId = _reader.readInt64String();
+          _instance.parent = _reader.readString();
           break;
         case 2:
           _instance.commentId = _reader.readInt64String();
@@ -7073,8 +7073,8 @@ export class Comment implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: Comment, _writer: BinaryWriter) {
-    if (_instance.packageId) {
-      _writer.writeInt64String(1, _instance.packageId);
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
     }
     if (_instance.commentId) {
       _writer.writeInt64String(2, _instance.commentId);
@@ -7103,7 +7103,7 @@ export class Comment implements GrpcMessage {
     }
   }
 
-  private _packageId?: string;
+  private _parent?: string;
   private _commentId?: string;
   private _createTime?: string;
   private _updateTime?: string;
@@ -7118,7 +7118,7 @@ export class Comment implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<Comment.AsObject>) {
     _value = _value || {};
-    this.packageId = _value.packageId;
+    this.parent = _value.parent;
     this.commentId = _value.commentId;
     this.createTime = _value.createTime;
     this.updateTime = _value.updateTime;
@@ -7128,11 +7128,11 @@ export class Comment implements GrpcMessage {
     this.replies = (_value.replies || []).map(m => new Reply(m));
     Comment.refineValues(this);
   }
-  get packageId(): string | undefined {
-    return this._packageId;
+  get parent(): string | undefined {
+    return this._parent;
   }
-  set packageId(value: string | undefined) {
-    this._packageId = value;
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get commentId(): string | undefined {
     return this._commentId;
@@ -7192,7 +7192,7 @@ export class Comment implements GrpcMessage {
    */
   toObject(): Comment.AsObject {
     return {
-      packageId: this.packageId,
+      parent: this.parent,
       commentId: this.commentId,
       createTime: this.createTime,
       updateTime: this.updateTime,
@@ -7220,7 +7220,7 @@ export class Comment implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Comment.AsProtobufJSON {
     return {
-      packageId: this.packageId,
+      parent: this.parent,
       commentId: this.commentId,
       createTime: this.createTime,
       updateTime: this.updateTime,
@@ -7236,7 +7236,7 @@ export module Comment {
    * Standard JavaScript object representation for Comment
    */
   export interface AsObject {
-    packageId?: string;
+    parent?: string;
     commentId?: string;
     createTime?: string;
     updateTime?: string;
@@ -7250,7 +7250,7 @@ export module Comment {
    * Protobuf JSON representation for Comment
    */
   export interface AsProtobufJSON {
-    packageId?: string;
+    parent?: string;
     commentId?: string;
     createTime?: string;
     updateTime?: string;

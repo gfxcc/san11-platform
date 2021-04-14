@@ -15,6 +15,7 @@ import { decrement, increment } from "../../../utils/number_util";
 })
 export class CommentBoardComponent implements OnInit {
   @Input() package: Package;
+  @Input() parent: string;
 
   @ViewChild('commentForm') commentFormElement: ElementRef
 
@@ -60,7 +61,7 @@ export class CommentBoardComponent implements OnInit {
   }
 
   loadComments() {
-    this.san11pkService.listComments(getPackageUrl(this.package)).subscribe(
+    this.san11pkService.listComments(this.parent).subscribe(
       resp => {
         this.comments = resp.comments;
         this.commentCount = this.computeCommentCount(this.comments);
@@ -87,7 +88,7 @@ export class CommentBoardComponent implements OnInit {
     const text = value.input;
 
     const comment = new Comment({
-      packageId: this.package.packageId,
+      parent: this.parent,
       authorId: this.authorId,
       text: text,
     });

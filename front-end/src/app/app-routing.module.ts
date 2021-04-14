@@ -7,6 +7,7 @@ import { RegisterComponent } from './account-management/register/register.compon
 import { PackageCardComponent } from './package-management/package-card/package-card.component';
 import { CreatePackageComponent } from './package-management/create-package/create-package.component'
 
+import { MessageBoardComponent } from "./dashboards/message-board/message-board.component";
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component'
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 import { PackageResolverService } from "./package-management/package-detail/package-resolver.service";
@@ -36,6 +37,11 @@ const routes: Routes = [
     path: 'users/:userId',
     component: UserDetailComponent,
     resolve: { user: UserResolverService }
+  },
+
+  {
+    path: 'message-board',
+    component: MessageBoardComponent
   },
 
 

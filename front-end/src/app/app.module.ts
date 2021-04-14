@@ -34,6 +34,7 @@ import { UserDetailComponent, PasswordDialog } from './account-management/user-d
 import { CommentCardComponent } from './common/components/comment-card/comment-card.component';
 import { CommentBoardComponent } from './common/components/comment-board/comment-board.component';
 import { ReplyCardComponent } from './common/components/comment-card/reply-card/reply-card.component';
+import { MessageBoardComponent } from './dashboards/message-board/message-board.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { ReplyCardComponent } from './common/components/comment-card/reply-card/
     CommentCardComponent,
     CommentBoardComponent,
     ReplyCardComponent,
+    MessageBoardComponent,
   ],
   imports: [
     GrpcCoreModule.forRoot(),

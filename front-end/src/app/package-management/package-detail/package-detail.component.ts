@@ -312,4 +312,8 @@ export class PackageDetailComponent implements OnInit {
   isAuthor() {
     return this.package.authorId === localStorage.getItem('userId');
   }
+
+  getPackageUrl() {
+    return getPackageUrl(this.package);
+  }
 }
