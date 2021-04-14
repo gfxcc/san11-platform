@@ -283,6 +283,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
                 if request.reply.upvote_count == 0:
                     reply.upvote_count = 0
             else:
+                # upvote_count from user may stale
+                request.reply.upvote_count = reply.upvote_count + 1
                 activity.create()
 
         reply.update_to(request.reply)
