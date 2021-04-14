@@ -307,7 +307,8 @@ message Url {
 }
 
 message Comment {
-    int64 package_id = 1;
+    // E.g. categories/xxx/pacakges/xxx, users/xxx, website, 
+    string parent = 1;
     int64 comment_id = 2;
     string create_time = 3;
     string update_time = 4;

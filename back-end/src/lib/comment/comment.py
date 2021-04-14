@@ -16,10 +16,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class Comment:
-    def __init__(self, package_id: int, comment_id: int, create_time: datetime,
+    def __init__(self, parent: str, comment_id: int, create_time: datetime,
                  update_time: datetime, text: str, author_id: int, 
                  upvote_count: int) -> None:
-        self.package_id = package_id
+        self.parent = parent
         self.comment_id = comment_id
         self.create_time = create_time
         self.update_time = update_time
@@ -34,7 +34,7 @@ class Comment:
     @classmethod
     def from_pb(cls, pb_obj:san11_platform_pb2.Comment):
         return cls(
-            package_id=pb_obj.package_id,
+            parent=pb_obj.parent,
             comment_id=pb_obj.comment_id,
             create_time=pb_obj.create_time or get_now(),
             update_time=pb_obj.update_time or get_now(),
@@ -52,19 +52,17 @@ class Comment:
         return cls(*resp)
     
     @classmethod
-    def list_comment(cls, parent: Url) -> Iterable:
-        if parent.type != 'packages':
-            raise Exception('只有工具支持评论')
-        sql = f'SELECT {cls._db_fields()} FROM comments WHERE package_id=%(package_id)s ORDER BY create_time DESC'
+    def list_comment(cls, parent: str) -> Iterable:
+        sql = f'SELECT {cls._db_fields()} FROM comments WHERE parent=%(parent)s ORDER BY create_time DESC'
         resp = run_sql_with_param_and_fetch_all(sql, {
-            'package_id': parent.id
+            'parent': parent
         })
         comments = (cls(*item) for item in resp)
         return comments
 
     def to_pb(self) -> san11_platform_pb2.Comment:
         return san11_platform_pb2.Comment(
-            package_id=self.package_id,
+            parent=self.parent,
             comment_id=self.comment_id,
             create_time=datetime_to_str(self.create_time),
             update_time=datetime_to_str(self.update_time),
@@ -89,7 +87,7 @@ class Comment:
         sql = f'INSERT INTO comments ({self._db_fields()}) '\
               f'VALUES ({self._db_fileds_value()}) RETURNING comment_id'
         resp = run_sql_with_param_and_fetch_one(sql, {
-            'package_id': self.package_id,
+            'parent': self.parent,
             'create_time': self.create_time,
             'update_time': self.update_time,
             'text': self.text,
@@ -142,11 +140,11 @@ class Comment:
         '''
         This list match parameter list of constructor
         '''
-        return 'package_id, comment_id, create_time, update_time, text, author_id, upvote_count'
+        return 'parent, comment_id, create_time, update_time, text, author_id, upvote_count'
     
     @staticmethod
     def _db_fileds_value() -> str:
-        return '%(package_id)s, COALESCE((SELECT MAX(comment_id) FROM comments)+1, 1) '\
+        return '%(parent)s, COALESCE((SELECT MAX(comment_id) FROM comments)+1, 1) '\
             ', %(create_time)s, %(update_time)s, %(text)s, %(author_id)s '\
             ', %(upvote_count)s'
 

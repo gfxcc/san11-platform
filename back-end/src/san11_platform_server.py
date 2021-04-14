@@ -238,7 +238,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     
     def ListComments(self, request, context):
         logger.info(f'In ListComments: parent={request.parent}')
-        comments = Comment.list_comment(parent=Url(request.parent))
+        comments = Comment.list_comment(request.parent)
         return san11_platform_pb2.ListCommentsResponse(
             comments=[comment.to_pb() for comment in comments]
         )

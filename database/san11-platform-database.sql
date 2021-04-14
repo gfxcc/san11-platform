@@ -68,7 +68,7 @@ CREATE TABLE statistics (
 );
 
 CREATE TABLE comments (
-    package_id INT NOT NULL,
+    parent TEXT NOT NULL,
     comment_id INT NOT NULL,
     create_time TIMESTAMP NOT NULL,
     update_time TIMESTAMP,
@@ -76,7 +76,7 @@ CREATE TABLE comments (
     author_id INT NOT NULL,
     upvote_count INT DEFAULT 0,
 
-    PRIMARY KEY (package_id, comment_id)
+    PRIMARY KEY (parent, comment_id)
 );
 
 CREATE TABLE replies (
