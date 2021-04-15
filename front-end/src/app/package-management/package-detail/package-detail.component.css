@@ -33,10 +33,10 @@
     max-height: 900px;
     min-width: 800px;
     max-width: 1200px;
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     /* display: flex; */
     /* flex-direction: column; */
-    padding: 5px 5px 5px 5px;
+    padding: 5px 15px 5px 5px;
 }
 
 .top-section {
