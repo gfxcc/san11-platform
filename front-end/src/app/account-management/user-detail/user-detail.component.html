@@ -13,9 +13,9 @@
 
             <form class="form" #userForm='ngForm' (ngSubmit)="onUpdateUserForm(userForm)">
                 <mat-card-content>
-                    <mat-form-field class="form-field">
+                    <!-- <mat-form-field class="form-field">
                         <input matInput #emailInput *ngIf="this.user != undefined" [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" placeholder="email" name="email" />
-                    </mat-form-field>
+                    </mat-form-field> -->
 
                     <mat-form-field class="form-field">
                         <input matInput #websiteInput *ngIf="this.user != undefined" [(ngModel)]="this.user.website" [disabled]="!this.iAmTheUser()" placeholder="网站" name="website" />
