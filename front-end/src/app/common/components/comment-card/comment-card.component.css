@@ -1,11 +1,15 @@
 .main {
     display: flex;
     margin-bottom: 16px;
+    transition-duration: .5s;
+    border-radius: 4px;
+    background: transparent;
+    padding: 10px;
 }
 
 .main:hover {
     /* background-color: rgba(0, 0, 0, 0.139); */
-    /* box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%); */
+    box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
     /* cursor: pointer; */
 }
 
@@ -37,7 +41,7 @@
     color: #5f6368;
 }
 
-.right>.bottom {
+.right .bottom {
     height: 32px;
 }
 
@@ -50,7 +54,7 @@
     font-size: 16px;
 }
 
-.right>.bottom>.button {
+.right .bottom .button {
     margin-left: 5px;
     height: 32px;
     color: #5f6368;

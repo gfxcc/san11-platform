@@ -21,14 +21,14 @@
             <div class="content">
                 {{this.comment.text}}
             </div>
-        </div>
-        <div class="bottom">
-            <button mat-icon-button (click)="onUpvote()">
-                <mat-icon class="icon">thumb_up</mat-icon>
-            </button>
-            <span [hidden]="this.comment.upvoteCount===&quot;0&quot;">{{this.comment.upvoteCount}}</span>
+            <div class="bottom">
+                <button mat-icon-button (click)="onUpvote()">
+                    <mat-icon class="icon">thumb_up</mat-icon>
+                </button>
+                <span [hidden]="this.comment.upvoteCount===&quot;0&quot;">{{this.comment.upvoteCount}}</span>
 
-            <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
+                <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
+            </div>
         </div>
 
         <div *ngIf="this.comment.replies.length!=0" style="margin-top: 5px; margin-right: 50px;">
