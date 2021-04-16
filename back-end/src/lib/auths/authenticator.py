@@ -26,11 +26,11 @@ class Authenticator:
         sid = dict(context.invocation_metadata()).get('sid', None)
         logger.debug(f'sid={sid}.')
         if not sid:
-            context.abort(code=255, details='请登录')
+            raise Unauthenticated('请登录')
         try:
             session = Session.from_sid(sid)
         except LookupError as err:
-            context.abort(code=255, details='请重新登录')
+            raise Unauthenticated('请重新登录')
         except Exception as err:
             logger.error(f'Failed to load session: {err}')
             raise
