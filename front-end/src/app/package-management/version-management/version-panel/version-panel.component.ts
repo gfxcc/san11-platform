@@ -97,7 +97,6 @@ export class VersionPanelComponent implements OnInit {
   fetchBinaries() {
     this.binaryService.listBinaries(this.package.packageId).subscribe(
       resp => {
-        console.log(resp.binaries);
         this.binaries = resp.binaries;
         this.configDataSource();
       },

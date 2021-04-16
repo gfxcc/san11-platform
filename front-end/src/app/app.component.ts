@@ -7,6 +7,10 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GlobalConstants } from './common/global-constants'
 
 import { UserDetailComponent, UserData } from "./account-management/user-detail/user-detail.component";
+import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
+import { PackageDetailComponent } from './package-management/package-detail/package-detail.component';
+import { EventEmiterService } from "./service/event-emiter.service";
+
 
 @Component({
   selector: 'app-root',
@@ -23,11 +27,13 @@ export class AppComponent {
 
   today_visit_count: number = 1;
   today_download_count: number = 2;
+  selectedCategory = '1';
 
   constructor(
     private notificationService: NotificationService,
     private san11PlatformServiceService: San11PlatformServiceService,
     private dialog: MatDialog,
+    private _eventEmiter: EventEmiterService,
     public router: Router) {
     this.san11PlatformServiceService.getStatistic().subscribe(
       statistic => {
@@ -114,5 +120,21 @@ export class AppComponent {
       this.uploadTool();
       this.categoryNav.deselectAll();
     }
+  }
+
+  onActivate(elementRef) {
+    this._eventEmiter.dataStr.subscribe(data => {
+      console.log(data);
+      setTimeout(() => {
+        this.selectedCategory = data;
+      });
+    });
+    // if (elementRef instanceof DashboardComponent) {
+    //   console.log(1);
+    //   console.log(elementRef.categoryId);
+    // } else if (elementRef instanceof PackageDetailComponent) {
+    //   console.log(2);
+    //   console.log(elementRef.package.categoryId);
+    // }
   }
 }

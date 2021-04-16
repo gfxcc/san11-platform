@@ -55,7 +55,7 @@
         <div class="category-section">
 
             <mat-selection-list #categoryNav [multiple]="false">
-                <mat-list-option *ngFor="let category of categories" [value]="category" [selected]="category.isDefault" (click)="onCategoryLabelClick(category)">
+                <mat-list-option *ngFor="let category of categories" [value]="category" [selected]="category.value===this.selectedCategory" (click)="onCategoryLabelClick(category)">
                     <div class="nav-link">
                         <span style="margin-left: 10px;"> <mat-icon>{{category.icon}}</mat-icon>  </span>
                         <span style="margin-left: 10px;">{{category.text}}</span>
@@ -75,6 +75,6 @@
     </div>
 
     <div class="content-section">
-        <router-outlet></router-outlet>
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
     </div>
 </div>

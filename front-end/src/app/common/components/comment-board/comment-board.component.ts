@@ -35,8 +35,6 @@ export class CommentBoardComponent implements OnInit {
     this.authorId = localStorage.getItem('userId');
     if (this.authorId != null) {
       const localAuthorImage = localStorage.getItem('userImageUrl');
-      console.log('hi');
-      console.log(localAuthorImage);
       if (localAuthorImage === null) {
         this.san11pkService.getUser(this.authorId).subscribe(
           user => {

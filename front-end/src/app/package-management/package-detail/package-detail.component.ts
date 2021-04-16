@@ -8,6 +8,7 @@ import { San11PlatformServiceService } from "../../service/san11-platform-servic
 import { NotificationService } from "../../common/notification.service";
 import { TextInputDialogComponent, TextData } from "../../common/components/text-input-dialog/text-input-dialog.component";
 import { LoadingComponent } from '../../common/components/loading/loading.component'
+import { EventEmiterService } from "../../service/event-emiter.service";
 
 import { UserDetailComponent } from "../../account-management/user-detail/user-detail.component";
 
@@ -53,15 +54,15 @@ export class PackageDetailComponent implements OnInit {
     private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private notificationService: NotificationService,
+    private _eventEmiter: EventEmiterService,
   ) {
-    console.log('constructor for package-detail');
-    // this.package = data.package;
   }
 
   ngOnInit(): void {
     this.route.data.subscribe(
       (data: { package: Package }) => {
         this.package = data.package;
+        this._eventEmiter.sendMessage(this.package.categoryId);
       }
     );
 
@@ -72,7 +73,6 @@ export class PackageDetailComponent implements OnInit {
     if (this.isAdmin() || this.isAuthor()) {
       this.descriptionTitleElement.nativeElement.className = 'clickable';
       this.descriptionTitleElement.nativeElement.onclick = () => {
-        console.log('test');
         this.onUpdateDescription();
       };
     }
