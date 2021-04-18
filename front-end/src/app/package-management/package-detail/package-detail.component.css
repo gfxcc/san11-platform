@@ -47,9 +47,9 @@
 
 .image-gallery {
     width: 900px;
-    height: 600px;
+    height: 500px;
     background-color: transparent;
-    border: 1px solid grey;
+    border: solid 1px #ebebeb;
 }
 
 .heading {

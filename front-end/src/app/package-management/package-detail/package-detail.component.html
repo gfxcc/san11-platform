@@ -20,7 +20,7 @@
     </div>
     <div class="top-section">
         <div>
-            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
+            <gallery class="image-gallery" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free" [counter]="false" slidingDirection="vertical" [nav]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="false" [playerInterval]="5000" #gallery></gallery>
 
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
             <!-- <button mat-button mat-stroked-button color="accent" (click)="imageInput.click()">更新</button> -->
