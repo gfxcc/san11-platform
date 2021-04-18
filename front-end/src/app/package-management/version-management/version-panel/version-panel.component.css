@@ -12,15 +12,6 @@
     width: 100%;
 }
 
-.title {
-    font-size: 18px;
-    font-weight: normal;
-    margin-bottom: 16px;
-    color: #202124;
-    font-family: Arial, sans-serif;
-    margin: 5px 0px 5px 0px;
-}
-
 .head {
     display: flex;
 }

@@ -1,5 +1,12 @@
 import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
+import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
+// import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
+// import Image from '@ckeditor/ckeditor5-image/src/image';
+
 import { GalleryItem, ImageItem } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
 import { Package, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
@@ -30,13 +37,13 @@ export interface DialogData {
 export class PackageDetailComponent implements OnInit {
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild('gallery') galleryElementCatched: ElementRef
-  @ViewChild('descriptionTitle') descriptionTitleElement: ElementRef
-  @ViewChild('authorName') authroNameElement: ElementRef
 
   images: ImageItem[] = [];
   packageId: string;
   package: Package;
   author: User = new User({});
+  hideAuthorImage = true;
+  authorImageUrl: string;
 
   loading;
 
@@ -45,6 +52,13 @@ export class PackageDetailComponent implements OnInit {
   // zones
   adminZone = false;
   authorZone = false;
+
+  descEditor = InlineEditor;
+  descEditor_element;
+  descEditor_disabled = true;
+  descEditor_updated = false;
+  descEditor_data: string;
+  descEditor_config;
 
   constructor(
     // public dialogRef: MatDialogRef<PackageDetailComponent>,
@@ -67,22 +81,72 @@ export class PackageDetailComponent implements OnInit {
     );
 
     this.loadPage();
+    this.configDescEditor();
   }
 
   ngAfterViewInit(): void {
-    if (this.isAdmin() || this.isAuthor()) {
-      this.descriptionTitleElement.nativeElement.className = 'clickable';
-      this.descriptionTitleElement.nativeElement.onclick = () => {
-        this.onUpdateDescription();
-      };
+
+    // this.authroNameElement.nativeElement.className = 'clickable';
+    // this.authroNameElement.nativeElement.onclick = () => {
+
+
+    // };
+
+    // console.log(this.descEditor);
+  }
+
+  configDescEditor() {
+    this.descEditor_data = this.package.description;
+    this.descEditor_disabled = !this.isAuthor();
+    // this.descEditor_config = "{ toolbar: [ 'heading', '|', 'bold', 'italic', 'link' , 'numberedList', 'bulletedList', '|', 'decreaseIndent', 'increaseIndent', '|', 'insertImage', 'insertTable', '|', 'undo', 'redo'] }";
+    this.descEditor_config = {
+      // plugins: [ImageInsert],
+      toolbar: ['heading',
+        '|',
+        'bold',
+        'italic',
+        'link',
+        'bulletedList',
+        'numberedList',
+        '|',
+        'outdent',
+        'indent',
+        '|',
+        // 'imageUpload',
+        'insertTable',
+        'undo',
+        'redo'],
+    };
+  }
+
+  onUpdateDesc() {
+    console.log('on update dec');
+    const newDesc = this.descEditor_element.getData();
+
+    if (newDesc != undefined) {
+      const newPackage = new Package({
+        packageId: this.package.packageId,
+        description: newDesc
+      });
+      this.san11pkService.updatePackage(newPackage).subscribe(
+        san11Package => {
+          this.package.description = san11Package.description;
+          this.notificationService.success("更新成功");
+        },
+        error => {
+          this.notificationService.warn("更新失败: " + error.statusMessage);
+        }
+      );
     }
 
-    this.authroNameElement.nativeElement.className = 'clickable';
-    this.authroNameElement.nativeElement.onclick = () => {
+  }
 
-      this.router.navigate(['users', this.package.authorId]);
+  onDescEditorReady(event) {
+    this.descEditor_element = event;
+  }
 
-    };
+  onDescEditorChange(event) {
+    this.descEditor_updated = true;
   }
 
   loadPage() {
@@ -111,11 +175,16 @@ export class PackageDetailComponent implements OnInit {
     this.san11pkService.getUser(this.package.authorId).subscribe(
       user => {
         this.author = user;
+        this.authorImageUrl = getFullUrl(this.author.imageUrl);
       },
       error => {
         this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
       }
     );
+  }
+
+  onAuthorClick() {
+    this.router.navigate(['users', this.package.authorId]);
   }
 
   // admin
@@ -176,7 +245,6 @@ export class PackageDetailComponent implements OnInit {
       }
     }
   }
-
 
 
   onUpdateDescription() {

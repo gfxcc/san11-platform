@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { PackageCardComponent, DeleteDialog } from './package-management/package-card/package-card.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { AngularMaterialModule } from './angular-material.module';
 /* Angular Flex Layout */
@@ -73,7 +74,8 @@ import { MessageBoardComponent } from './dashboards/message-board/message-board.
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    GalleryModule
+    GalleryModule,
+    CKEditorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

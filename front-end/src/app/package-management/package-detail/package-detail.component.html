@@ -1,6 +1,6 @@
 <div class="main">
 
-    <div class="heading under-development">
+    <div class="heading show-border">
         <div class="back-btn-div">
             <button mat-button (click)="onBack()" class="back-btn">
                 <span class="material-icons back-btn-span">
@@ -19,42 +19,34 @@
         </div>
     </div>
     <div class="top-section">
-        <div class="gallery-div">
-            <gallery class="image-gallery" [items]="images" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #gallery></gallery>
+        <div>
+            <gallery class="image-gallery" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free" [counter]="false" slidingDirection="vertical" [nav]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="false" [playerInterval]="5000" #gallery></gallery>
 
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
             <!-- <button mat-button mat-stroked-button color="accent" (click)="imageInput.click()">更新</button> -->
 
         </div>
-        <div class="col-right under-development">
+        <div style="width: 100%; padding-left: 10px;">
+            <div class="col-right show-border">
 
-            <div class="author-info top-border under-development">
+                <div class="author-info top-border show-border">
+                    <div class="heading-1">作者</div>
+                    <div class="author-card show-border" style="display: flex;" (click)="onAuthorClick()">
+                        <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage = false;" class="author-image">
+
+                        <span style="display: inline-flex;  align-items: center;">
+                        {{this.author.username}}
+                        </span>
+                    </div>
+                </div>
+
+
                 <div>
-                    <div class="title">作者</div>
-                    <div #authorName class="content"> {{this.author.username}} </div>
+                    <div class="heading-1">创建日期</div>
+                    <div class="content">{{this.package.createTimestamp}}</div>
                 </div>
 
-                <span class="example-spacer"></span>
-
-                <div class="timestamps content">
-                    <!-- <div>创建:{{this.package.createTimestamp}}</div> -->
-                    <div style="margin-left: 5px;">创建: {{this.package.createTimestamp}}</div>
-                </div>
-
-                <!-- <mat-form-field floatLabel="always" class="static-text">
-                <input class="name" matInput [readonly]="true" placeholder="作者" [value]="this.author.username" />
-            </mat-form-field> -->
-            </div>
-
-            <div class="package-info top-border under-development">
-                <div class="title">
-                    <span #descriptionTitle class="">描述</span>
-                </div>
-                <div class="content"> {{this.package.description}} </div>
-            </div>
-
-            <div [hidden]="! (isAdmin() || isAuthor())">
-                <div class="package-controller top-border under-development">
+                <div [hidden]="! (isAdmin() || isAuthor())" class="package-controller top-border show-border">
                     <div class="admin-zone" *ngIf="adminZone">
                         <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
                     </div>
@@ -70,27 +62,26 @@
                             <button class="button" mat-button mat-raised-button color="warn" (click)="onDelete()">删除</button>
                         </div>
 
-                        <!-- <span class="example-spacer"></span>
-
-                        <div class="">
-
-                            <button class="button" mat-button mat-raised-button color="primary" (click)="onUpdateDescription()">修改描述</button>
-                        </div> -->
                     </div>
-
                 </div>
 
             </div>
-
         </div>
-
-
     </div>
 
-    <div class="version-info top-border under-development">
-        <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)"> </app-version-panel>
+    <div class="top-border">
+        <div class="heading-1" style="display: flex;">
+            <span class="">描述</span>
+            <span class="example-spacer"></span>
+            <button *ngIf="!this.descEditor_disabled" [disabled]="!this.descEditor_updated" mat-button mat-raised-button color="primary" (click)="onUpdateDesc()">更新</button>
+        </div>
+        <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
     </div>
 
-    <app-comment-board [parent]="this.getPackageUrl()" class="comment-section"></app-comment-board>
+    <div class="version-info top-border show-border ">
+        <app-version-panel [package]="this.package " (downloadEvent)="onChildDownload($event) "> </app-version-panel>
+    </div>
+
+    <app-comment-board [parent]="this.getPackageUrl() " class="comment-section "></app-comment-board>
 
 </div>
