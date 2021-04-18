@@ -105,7 +105,7 @@ export class PackageDetailComponent implements OnInit {
         '|',
         'bold',
         'italic',
-        'link',
+        // 'link',
         'bulletedList',
         'numberedList',
         '|',
