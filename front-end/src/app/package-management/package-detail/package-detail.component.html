@@ -73,9 +73,9 @@
         <div class="heading-1" style="display: flex;">
             <span class="">描述</span>
             <span class="example-spacer"></span>
-            <button *ngIf="!this.descEditor_disabled" mat-button mat-raised-button color="primary" (click)="onUpdateDesc()">更新</button>
+            <button *ngIf="!this.descEditor_disabled" [disabled]="!this.descEditor_updated" mat-button mat-raised-button color="primary" (click)="onUpdateDesc()">更新</button>
         </div>
-        <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
+        <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
     </div>
 
     <div class="version-info top-border show-border ">

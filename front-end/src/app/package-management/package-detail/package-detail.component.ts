@@ -56,6 +56,7 @@ export class PackageDetailComponent implements OnInit {
   descEditor = InlineEditor;
   descEditor_element;
   descEditor_disabled = true;
+  descEditor_updated = false;
   descEditor_data: string;
   descEditor_config;
 
@@ -142,6 +143,10 @@ export class PackageDetailComponent implements OnInit {
 
   onDescEditorReady(event) {
     this.descEditor_element = event;
+  }
+
+  onDescEditorChange(event) {
+    this.descEditor_updated = true;
   }
 
   loadPage() {

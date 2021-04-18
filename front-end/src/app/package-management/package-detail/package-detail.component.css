@@ -106,6 +106,7 @@
     padding: 10px;
     transition-duration: .5s;
     border-radius: 4px;
+    border: solid 1px #ebebeb;
 }
 
 .author-card:hover {
