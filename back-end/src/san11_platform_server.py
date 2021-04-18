@@ -311,7 +311,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def SignOut(self, request, context):
         logger.info(f'In SignOut: user_id={request.user_id}')
-        Session.from_user_id(request.user_id).revoke()
         return san11_platform_pb2.Status(code=0, message="登出成功")
 
     def SignUp(self, request, context):
