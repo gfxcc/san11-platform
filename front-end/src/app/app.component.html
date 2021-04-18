@@ -27,7 +27,12 @@
         </div>
         <div [hidden]="!signedIn()">
 
-            <a mat-button mat-raised-button [matMenuTriggerFor]="menu">账号: {{username()}}</a>
+            <button mat-icon-button [matMenuTriggerFor]="menu" style="margin-right: 10px;">
+                    <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
+                    <!-- <span style="width: 10px;"> </span> -->
+                    <!-- <span>{{username()}}</span> -->
+
+            </button>
             <mat-menu #menu="matMenu" xPosition="before">
                 <button mat-menu-item (click)="onUserDetail()">账户详情</button>
                 <button mat-menu-item (click)="onSignOut()">登出</button>

@@ -10,6 +10,7 @@ import { UserDetailComponent, UserData } from "./account-management/user-detail/
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { PackageDetailComponent } from './package-management/package-detail/package-detail.component';
 import { EventEmiterService } from "./service/event-emiter.service";
+import { getFullUrl } from './utils/resrouce_util';
 
 
 @Component({
@@ -29,6 +30,9 @@ export class AppComponent {
   today_download_count: number = 2;
   selectedCategory = '1';
 
+  hideUserImage = true;
+  userImage: string;
+
   constructor(
     private notificationService: NotificationService,
     private san11PlatformServiceService: San11PlatformServiceService,
@@ -45,6 +49,7 @@ export class AppComponent {
 
 
   signedIn() {
+    this.userImage = getFullUrl(localStorage.getItem('userImageUrl'));
     return localStorage.getItem('sid');
   }
   username() {
