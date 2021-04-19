@@ -36,6 +36,7 @@ import { CommentCardComponent } from './common/components/comment-card/comment-c
 import { CommentBoardComponent } from './common/components/comment-board/comment-board.component';
 import { ReplyCardComponent } from './common/components/comment-card/reply-card/reply-card.component';
 import { MessageBoardComponent } from './dashboards/message-board/message-board.component';
+import { UserCardComponent } from './common/components/user-card/user-card.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { MessageBoardComponent } from './dashboards/message-board/message-board.
     CommentBoardComponent,
     ReplyCardComponent,
     MessageBoardComponent,
+    UserCardComponent,
   ],
   imports: [
     GrpcCoreModule.forRoot(),

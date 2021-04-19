@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { NotificationService } from "../../common/notification.service";
+import { saveUser } from '../../utils/user_util';
 
 
 @Component({
@@ -28,12 +29,8 @@ export class SigninComponent implements OnInit {
 
         this.notificationService.success('登陆成功');
 
-        localStorage.setItem('username', signInForm.value.username);
-
         localStorage.setItem('sid', value.sid);
-        localStorage.setItem('userId', value.user.userId);
-        localStorage.setItem('userType', value.user.userType);
-        localStorage.setItem('userImageUrl', value.user.imageUrl);
+        saveUser(value.user);
 
         this.router.navigate(['/']).then(() => {
           window.location.reload();

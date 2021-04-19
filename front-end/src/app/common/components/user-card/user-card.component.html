@@ -1,0 +1,13 @@
+<div class="author-card" style="display: flex;">
+    <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage = false;" class="author-image">
+
+    <span class="example-spacer"></span>
+    <span class="heading-1" style="display: inline-flex;  align-items: center;">
+    {{this.user?.username}}
+    </span>
+
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+</div>

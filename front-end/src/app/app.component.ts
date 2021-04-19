@@ -11,6 +11,8 @@ import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { PackageDetailComponent } from './package-management/package-detail/package-detail.component';
 import { EventEmiterService } from "./service/event-emiter.service";
 import { getFullUrl } from './utils/resrouce_util';
+import { User } from '../proto/san11-platform.pb';
+import { clearUser, loadUser, signedIn } from './utils/user_util';
 
 
 @Component({
@@ -30,6 +32,7 @@ export class AppComponent {
   today_download_count: number = 2;
   selectedCategory = '1';
 
+  user: User;
   hideUserImage = true;
   userImage: string;
 
@@ -45,13 +48,16 @@ export class AppComponent {
         this.today_download_count = Number(statistic.downloadCount);
       }
     );
-  }
 
+    if (signedIn()) {
+      this.user = loadUser();
+    }
+  }
 
   signedIn() {
-    this.userImage = getFullUrl(localStorage.getItem('userImageUrl'));
-    return localStorage.getItem('sid');
+    return signedIn();
   }
+
   username() {
     return localStorage.getItem('username');
   }
@@ -69,15 +75,9 @@ export class AppComponent {
       () => console.log('log out')
     );
 
-    // TODO: wrap those into a function
-    localStorage.removeItem('sid');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userType');
-    localStorage.removeItem('username');
-    localStorage.removeItem('userImageUrl');
+    clearUser();
 
     this.router.navigate(['/']);
-
     this.notificationService.success('已登出')
   }
 

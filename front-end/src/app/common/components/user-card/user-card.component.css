@@ -1,0 +1,28 @@
+.author-card {
+    /* width: calc(100% - 20px); */
+    min-width: 150px;
+    height: 100%;
+    padding-left: 10px;
+    transition-duration: .5s;
+    border-radius: 4px;
+    border: solid 1px #ebebeb;
+    background: white;
+    display: inline-flex;
+    align-items: center;
+}
+
+.author-card:hover {
+    /* background-color: rgba(0, 0, 0, 0.139); */
+    cursor: pointer;
+    box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
+    /* cursor: pointer; */
+}
+
+.author-image {
+    /* background-image: url('../../../assets/images/zhuge.jpg'); */
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
