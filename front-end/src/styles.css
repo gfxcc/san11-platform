@@ -23,6 +23,15 @@ body {
     /* background: #e2e2e2; */
 }
 
+.title {
+    min-width: 400px;
+    font-size: xx-large;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #202124;
+}
+
 .heading-1 {
     font-size: 18px;
     font-weight: normal;

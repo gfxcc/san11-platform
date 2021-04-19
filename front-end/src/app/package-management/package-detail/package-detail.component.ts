@@ -1,4 +1,4 @@
-import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core';
+import { ViewChild, ChangeDetectorRef, ElementRef, Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
@@ -35,6 +35,7 @@ export interface DialogData {
   styleUrls: ['./package-detail.component.css']
 })
 export class PackageDetailComponent implements OnInit {
+  @ViewChild('packageNameTitle') packageNameElement: ElementRef
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild('gallery') galleryElementCatched: ElementRef
 
@@ -45,6 +46,7 @@ export class PackageDetailComponent implements OnInit {
   hideAuthorImage = true;
   authorImageUrl: string;
 
+  packageNameUpdated = false;
   loading;
 
   galleryElement;
@@ -69,6 +71,7 @@ export class PackageDetailComponent implements OnInit {
     private dialog: MatDialog,
     private notificationService: NotificationService,
     private _eventEmiter: EventEmiterService,
+    private cd: ChangeDetectorRef,
   ) {
   }
 
@@ -89,8 +92,11 @@ export class PackageDetailComponent implements OnInit {
     // this.authroNameElement.nativeElement.className = 'clickable';
     // this.authroNameElement.nativeElement.onclick = () => {
 
-
     // };
+    if (this.isAuthor()) {
+      // this.packageNameElement.nativeElement.className = 'clickable title';
+      this.packageNameElement.nativeElement.contentEditable = true;
+    }
 
     // console.log(this.descEditor);
   }
@@ -105,7 +111,7 @@ export class PackageDetailComponent implements OnInit {
         '|',
         'bold',
         'italic',
-        // 'link',
+        'link',
         'bulletedList',
         'numberedList',
         '|',
@@ -117,6 +123,24 @@ export class PackageDetailComponent implements OnInit {
         'undo',
         'redo'],
     };
+  }
+
+  onUpdateTitle() {
+    const updatedPackageName = this.packageNameElement.nativeElement.innerHTML;
+    const newPackage = new Package({
+      packageId: this.package.packageId,
+      name: updatedPackageName
+    });
+    this.san11pkService.updatePackage(newPackage).subscribe(
+      san11Package => {
+        this.package.name = updatedPackageName;
+        this.packageNameUpdated = false;
+        this.notificationService.success("更新成功");
+      },
+      error => {
+        this.notificationService.warn("更新失败: " + error.statusMessage);
+      }
+    );
   }
 
   onUpdateDesc() {
@@ -131,6 +155,7 @@ export class PackageDetailComponent implements OnInit {
       this.san11pkService.updatePackage(newPackage).subscribe(
         san11Package => {
           this.package.description = san11Package.description;
+          this.descEditor_updated = false;
           this.notificationService.success("更新成功");
         },
         error => {

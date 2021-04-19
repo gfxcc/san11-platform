@@ -8,15 +8,12 @@
                 </span>
             </button>
         </div>
-        <p class="title"> {{this.package.name}} </p>
+        <div #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;"> {{this.package.name}} </div>
 
         <span class="example-spacer"></span>
 
+        <button mat-stroked-button color="primary" *ngIf="this.packageNameUpdated" (click)="onUpdateTitle()" style="height: 36px;">更新</button>
 
-        <div class="statistic">
-            <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon>
-            <!-- <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">thumb_up</mat-icon> -->
-        </div>
     </div>
     <div class="top-section">
         <div class="image-gallery">
@@ -28,7 +25,7 @@
         <div class="col-right">
             <div class="info-section show-border">
 
-                <div class="author-info top-border show-border">
+                <div class="author-info show-border">
                     <div class="heading-1">作者</div>
                     <div class="author-card show-border" style="display: flex;" (click)="onAuthorClick()">
                         <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage = false;" class="author-image">
@@ -45,22 +42,30 @@
                     <div class="content">{{this.package.createTimestamp}}</div>
                 </div>
 
-                <div [hidden]="! (isAdmin() || isAuthor())" class="package-controller top-border show-border">
-                    <div class="admin-zone" *ngIf="adminZone">
-                        <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
+                <div class="right-bottom">
+                    <div class="icon-section">
+                        <span class="example-spacer"></span>
+                        <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon>
+                        <!-- <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">thumb_up</mat-icon> -->
                     </div>
 
-                    <span [hidden]="!adminZone" class="example-spacer"></span>
-
-                    <span class="example-spacer"></span>
-                    <div class="author-zone" *ngIf="authorZone">
-
-                        <span class="example-spacer"></span>
-                        <!-- dangerous zone -->
-                        <div class="">
-                            <button class="button" mat-button mat-raised-button color="warn" (click)="onDelete()">删除</button>
+                    <div *ngIf="(isAdmin() || isAuthor())" class="package-controller top-border show-border">
+                        <div class="admin-zone" *ngIf="adminZone">
+                            <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
                         </div>
 
+                        <span [hidden]="!adminZone" class="example-spacer"></span>
+
+                        <span class="example-spacer"></span>
+                        <div class="author-zone" *ngIf="authorZone">
+
+                            <span class="example-spacer"></span>
+                            <!-- dangerous zone -->
+                            <div class="">
+                                <button class="button" mat-stroked-button color="warn" (click)="onDelete()">删除</button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
@@ -69,10 +74,10 @@
     </div>
 
     <div class="top-border">
-        <div class="heading-1" style="display: flex;">
+        <div class="heading-1" style="display: flex; height: 36px;">
             <span class="">描述</span>
             <span class="example-spacer"></span>
-            <button *ngIf="!this.descEditor_disabled" [disabled]="!this.descEditor_updated" mat-button mat-raised-button color="primary" (click)="onUpdateDesc()">更新</button>
+            <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()">更新</button>
         </div>
         <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
     </div>
