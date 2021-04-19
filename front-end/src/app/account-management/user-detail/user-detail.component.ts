@@ -62,7 +62,6 @@ export class UserDetailComponent implements OnInit {
         }
       }
     );
-    console.log(this.user);
     this.loadPage();
   }
 
@@ -92,10 +91,8 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadPackageList(user) {
-    console.log(user);
     this.san11pkService.searchPackages("{\"author_name\": \"" + user.username + "\"}", 0, '').subscribe(
       resp => {
-        console.log(resp.packages);
         this.dataSource = new MatTableDataSource(resp.packages);
         this.dataSource.paginator = this.paginator;
       },
@@ -185,14 +182,11 @@ export class UserDetailComponent implements OnInit {
   }
 
   onUpdateUserForm(form) {
-    console.log(form);
     let updatedUser = new User({
       userId: this.user.userId,
       email: form.value.email,
       website: form.value.website
     });
-    console.log(updatedUser);
-    console.log(updatedUser.imageUrl);
     this.san11pkService.updateUser(updatedUser).subscribe(
       user => {
         this.notificationService.success('更新用户 成功');

@@ -65,7 +65,6 @@ export class AppComponent {
   }
 
   onSignOut() {
-    console.log(localStorage.getItem('userId'));
     this.san11PlatformServiceService.signOut(localStorage.getItem('userId')).subscribe(
       () => console.log('log out')
     );
@@ -106,13 +105,11 @@ export class AppComponent {
   }
 
   onSignInClick() {
-    console.log(this.categoryNav);
     this.router.navigate(['signin']);
     this.categoryNav.deselectAll();
   }
 
   onSignUpClick() {
-    console.log(this.categoryNav);
     this.router.navigate(['register']);
     this.categoryNav.deselectAll();
   }
@@ -129,7 +126,6 @@ export class AppComponent {
 
   onActivate(elementRef) {
     this._eventEmiter.dataStr.subscribe(data => {
-      console.log(data);
       setTimeout(() => {
         this.selectedCategory = data;
       });

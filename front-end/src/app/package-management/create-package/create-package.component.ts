@@ -100,7 +100,6 @@ export class CreatePackageComponent implements OnInit {
 
   //     var parent = getPackageUrl(this.createdPackage);
 
-  //     console.log('at 2');
   //     var arrayBuffer = fileReader.result;
   //     var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
 
