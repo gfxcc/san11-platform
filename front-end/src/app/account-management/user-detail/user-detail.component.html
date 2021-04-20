@@ -1,7 +1,7 @@
 <div class="main">
     <div class="top-section">
         <div class="gallery-div">
-            <gallery class="image-gallery" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="true" #userGallery></gallery>
+            <gallery class="image-gallery" [thumb]="false" (itemClick)="onGalleryItemClick($event)" [counter]="false" #userGallery></gallery>
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
         </div>
         <div class="col-right under-development">
