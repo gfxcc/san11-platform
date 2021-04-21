@@ -112,11 +112,14 @@ export class PackageDetailComponent implements OnInit {
           'heading',
           '|',
           'fontColor',
+          'fontBackgroundColor',
           'bold',
+          'underline',
           'italic',
           'code',
           'link',
           'bulletedList',
+          'todoList',
           'numberedList',
           '|',
           'outdent',
@@ -125,7 +128,7 @@ export class PackageDetailComponent implements OnInit {
           'horizontalLine',
           '|',
           'codeBlock',
-          // 'imageUpload',
+          'imageUpload',
           'blockQuote',
           'insertTable',
           'undo',
@@ -137,7 +140,8 @@ export class PackageDetailComponent implements OnInit {
         toolbar: [
           'imageTextAlternative',
           'imageStyle:full',
-          'imageStyle:side'
+          'imageStyle:side',
+          'linkImage'
         ]
       },
       table: {
