@@ -1,7 +1,8 @@
 import { ViewChild, ChangeDetectorRef, ElementRef, Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
-import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+// import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import * as Editor from "../../common/components/ckeditor/ckeditor";
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 // import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
@@ -55,7 +56,7 @@ export class PackageDetailComponent implements OnInit {
   adminZone = false;
   authorZone = false;
 
-  descEditor = InlineEditor;
+  descEditor = Editor;
   descEditor_element;
   descEditor_disabled = true;
   descEditor_updated = false;
@@ -106,22 +107,49 @@ export class PackageDetailComponent implements OnInit {
     this.descEditor_disabled = !this.isAuthor();
     // this.descEditor_config = "{ toolbar: [ 'heading', '|', 'bold', 'italic', 'link' , 'numberedList', 'bulletedList', '|', 'decreaseIndent', 'increaseIndent', '|', 'insertImage', 'insertTable', '|', 'undo', 'redo'] }";
     this.descEditor_config = {
-      // plugins: [ImageInsert],
-      toolbar: ['heading',
-        '|',
-        'bold',
-        'italic',
-        'link',
-        'bulletedList',
-        'numberedList',
-        '|',
-        'outdent',
-        'indent',
-        '|',
-        // 'imageUpload',
-        'insertTable',
-        'undo',
-        'redo'],
+      toolbar: {
+        items: [
+          'heading',
+          '|',
+          'fontColor',
+          'bold',
+          'italic',
+          'code',
+          'link',
+          'bulletedList',
+          'numberedList',
+          '|',
+          'outdent',
+          'indent',
+          'alignment',
+          'horizontalLine',
+          '|',
+          'codeBlock',
+          // 'imageUpload',
+          'blockQuote',
+          'insertTable',
+          'undo',
+          'redo'
+        ]
+      },
+      language: 'zh-cn',
+      image: {
+        toolbar: [
+          'imageTextAlternative',
+          'imageStyle:full',
+          'imageStyle:side'
+        ]
+      },
+      table: {
+        contentToolbar: [
+          'tableColumn',
+          'tableRow',
+          'mergeTableCells',
+          'tableCellProperties',
+          'tableProperties'
+        ]
+      },
+      licenseKey: '',
     };
   }
 
