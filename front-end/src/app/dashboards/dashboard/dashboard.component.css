@@ -1,39 +1,19 @@
 /* DashboardComponent's private CSS styles */
 
-[class*='col-'] {
-    float: left;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    width: 500px;
+.grid {
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 350px);
+    grid-auto-rows: auto;
+    place-content: center;
+    overflow-x: none;
+    overflow-y: scroll;
 }
 
 .col-1-4 {
-    width: 350px;
-}
-
-a {
-    text-decoration: none;
-}
-
-*,
-*::after,
-*::before {
-    box-sizing: border-box;
-}
-
-h3 {
-    text-align: center;
-    margin-bottom: 0;
-}
-
-h4 {
-    position: relative;
-}
-
-.grid {
-    margin: 0;
-    padding: 10px 0;
+    float: left;
+    /* width: 350px; */
+    margin: 10px;
 }
 
 .module {
@@ -42,22 +22,5 @@ h4 {
 
 .module:hover {
     background-color: #eee;
-    /* cursor: pointer; */
     color: #607d8b;
-}
-
-@media (max-width: 600px) {
-    .module {
-        font-size: 10px;
-        max-height: 75px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .grid {
-        margin: 0;
-    }
-    .module {
-        min-width: 60px;
-    }
 }
