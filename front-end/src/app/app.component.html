@@ -68,6 +68,15 @@
                         <span style="margin-left: 10px;">{{category.text}}</span>
                     </div>
                 </mat-list-option>
+
+                <mat-divider></mat-divider>
+
+                <mat-list-option *ngFor="let webModule of webModules" [value]="webModule" [selected]="webModule.value===this.selectedCategory" (click)="onCategoryLabelClick(webModule)">
+                    <div class="nav-link">
+                        <span style="margin-left: 10px;"> <mat-icon>{{webModule.icon}}</mat-icon>  </span>
+                        <span style="margin-left: 10px;">{{webModule.text}}</span>
+                    </div>
+                </mat-list-option>
             </mat-selection-list>
 
 

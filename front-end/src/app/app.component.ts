@@ -25,6 +25,7 @@ export class AppComponent {
 
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   categories = GlobalConstants.categories;
+  webModules = GlobalConstants.webModules;
 
   title = 'san11-platform';
 
@@ -90,11 +91,6 @@ export class AppComponent {
   }
 
   onCategoryLabelClick(category) {
-    if (category.disabled) {
-      this.notificationService.warn(category.text + ' 尚在开发中');
-      this.categoryNav.deselectAll();
-      return;
-    }
     this.router.navigate(category.link);
   }
 

@@ -10,9 +10,12 @@ export class GlobalConstants {
     public static defaultUserImage: string = '../../../assets/images/zhuge.jpg';
 
     public static categories = [
-        { value: '1', text: 'SIRE2 插件', link: ['/categories', 1], icon: 'extension', disabled: false, isDefault: true },
-        { value: '2', text: '修改工具', link: ['/categories', 2], icon: 'handyman', disabled: false },
-        { value: '3', text: 'MOD', link: ['/categories', 3], icon: 'auto_fix_high', disabled: false },
-        { value: '4', text: '留言板', link: ['/message-board'], icon: 'sticky_note_2', disabled: false },
+        { value: '1', text: 'SIRE2 插件', link: ['/categories', 1], icon: 'extension' },
+        { value: '2', text: '修改工具', link: ['/categories', 2], icon: 'handyman' },
+        { value: '3', text: 'MOD', link: ['/categories', 3], icon: 'auto_fix_high' },
     ];
+
+    public static webModules = [
+        { value: '4', text: '留言板', link: ['/message-board'], icon: 'sticky_note_2' },
+    ]
 }
