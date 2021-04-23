@@ -5,6 +5,7 @@
     border-radius: 4px;
     background: transparent;
     padding: 10px;
+    min-width: 250px;
 }
 
 .main:hover {
