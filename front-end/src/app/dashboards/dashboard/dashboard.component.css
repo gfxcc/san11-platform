@@ -6,8 +6,8 @@
     grid-template-columns: repeat(auto-fill, 350px);
     grid-auto-rows: auto;
     place-content: center;
-    overflow-x: none;
-    overflow-y: scroll;
+    /* overflow-x: none; */
+    /* overflow-y: scroll; */
 }
 
 .col-1-4 {
