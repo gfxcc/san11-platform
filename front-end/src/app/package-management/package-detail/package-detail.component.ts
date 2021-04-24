@@ -182,7 +182,6 @@ export class PackageDetailComponent implements OnInit {
           link: `${GlobalConstants.domain}/${getUserUrl(user)}`,
           userAvatar: getFullUrl(user.imageUrl)
         }));
-        console.log(this.userFeeds);
       },
       error => {
         console.log('Failed to load user feeds');
