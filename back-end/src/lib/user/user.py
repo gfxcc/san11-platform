@@ -173,6 +173,7 @@ class User:
     @staticmethod
     def validate_email(email: str) -> None:
         if re.fullmatch(r'[^@]+@[^@]+\.[^@]+', email) is None:
+            logger.error(f'Invalid email: {email}')
             raise ValueError('无效的邮箱地址')
 
     @staticmethod
