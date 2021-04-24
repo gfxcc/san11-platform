@@ -100,7 +100,6 @@ export class PackageDetailComponent implements OnInit {
       this.packageNameElement.nativeElement.contentEditable = true;
     }
 
-    // console.log(this.descEditor);
   }
 
   configDescEditor() {
@@ -165,7 +164,6 @@ export class PackageDetailComponent implements OnInit {
   }
 
   onUpdateDesc() {
-    console.log('on update dec');
     const newDesc = this.descEditor_element.getData();
 
     if (newDesc != undefined) {
@@ -192,8 +190,6 @@ export class PackageDetailComponent implements OnInit {
   }
 
   onDescEditorChange(event) {
-    console.log(event.editor.getData());
-    console.log('Desc is changed');
     this.descEditor_updated = true;
   }
 

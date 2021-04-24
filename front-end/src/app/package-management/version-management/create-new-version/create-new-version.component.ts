@@ -117,8 +117,6 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onDescEditorChange(event) {
-    console.log(event.editor.getData());
-    console.log('Desc is changed');
   }
 
 
@@ -126,7 +124,6 @@ export class CreateNewVersionComponent implements OnInit {
 
   onVersionSelectorUpdate(updateTypeValue) {
     this.updateType = updateTypeValue;
-    console.log(this.updateType);
 
     if (updateTypeValue === 'major') {
       this.newVersion = new Version({

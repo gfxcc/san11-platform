@@ -103,7 +103,6 @@ export class CommentBoardComponent implements OnInit {
   }
 
   onCommentDelete(event) {
-    console.log('in onCommentDelete');
     this.loadComments();
   }
 

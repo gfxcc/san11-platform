@@ -95,8 +95,6 @@ export class AppComponent {
   }
 
   compareWith(o1, o2) {
-    console.log('compareWith o1=');
-    console.log(o1);
     return false;
   }
 
@@ -126,12 +124,5 @@ export class AppComponent {
         this.selectedCategory = data;
       });
     });
-    // if (elementRef instanceof DashboardComponent) {
-    //   console.log(1);
-    //   console.log(elementRef.categoryId);
-    // } else if (elementRef instanceof PackageDetailComponent) {
-    //   console.log(2);
-    //   console.log(elementRef.package.categoryId);
-    // }
   }
 }
