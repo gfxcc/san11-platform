@@ -179,7 +179,7 @@ export class PackageDetailComponent implements OnInit {
           id: `@${user.username}`,
           userId: user.userId,
           username: user.username,
-          link: `${GlobalConstants.domain}/${getUserUrl(user)}`,
+          link: getUserUrl(user),
           userAvatar: getFullUrl(user.imageUrl)
         }));
       },
