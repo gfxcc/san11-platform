@@ -37,6 +37,7 @@ export class CreateNewVersionComponent implements OnInit {
   updateType: string = 'minor';
 
   selectedFile: File;
+  canCreateBinary = false;
   loadingDialog;
 
 
@@ -117,6 +118,7 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onDescEditorChange(event) {
+    this.canCreateBinary = this.validateCreation();
   }
 
 
@@ -155,17 +157,31 @@ export class CreateNewVersionComponent implements OnInit {
   @ViewChild('fileInput') fileInputElement: ElementRef
   selectFile(fileInput) {
     const file = fileInput.files[0];
-    if (file.size > GlobalConstants.maxBinarySize) {
+    if (file === undefined) {
+      this.selectedFile = undefined;
+    } else if (file.size > GlobalConstants.maxBinarySize) {
       alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize / 1024 / 1024).toString() + 'MB');
       this.fileInputElement.nativeElement.value = '';
     } else {
       this.selectedFile = file;
     }
+    this.canCreateBinary = this.validateCreation();
   }
 
-  onCreateVersion(createVersionForm) {
+  validateCreation(): boolean {
     if (this.categoryId != "3" && this.selectedFile === undefined) {
-      this.notificationService.warn('请选择文件');
+      return false;
+    }
+    if (this.descEditor_element.getData() === '') {
+      return false;
+    }
+
+    return true;
+  }
+
+
+  onCreateVersion(createVersionForm) {
+    if (!this.canCreateBinary) {
       return;
     }
 

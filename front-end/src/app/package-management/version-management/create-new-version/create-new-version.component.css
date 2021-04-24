@@ -11,10 +11,6 @@
     width: 100%;
 }
 
-.button {
-    float: right;
-}
-
 .version-section {
     display: flex;
 }
