@@ -1,5 +1,6 @@
 import { ViewChild, ChangeDetectorRef, ElementRef, Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable, isObservable } from "rxjs";
 
 import { saveAs } from 'file-saver'
 // import InlineEditor from '@ckeditor/ckeditor5-build-inline';
@@ -23,7 +24,7 @@ import { UserDetailComponent } from "../../account-management/user-detail/user-d
 
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { isAdmin } from "../../utils/user_util";
+import { isAdmin, getUsernameFeeds } from "../../utils/user_util";
 import { increment } from '../../utils/number_util';
 import { getPackageUrl } from "../../utils/package_util";
 
@@ -69,7 +70,7 @@ export class PackageDetailComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private route: ActivatedRoute,
     private router: Router,
-    private san11pkService: San11PlatformServiceService,
+    public san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private notificationService: NotificationService,
     private _eventEmiter: EventEmiterService,
@@ -86,6 +87,7 @@ export class PackageDetailComponent implements OnInit {
     );
 
     this.loadPage();
+    this.preLoadUsernameFeeds();
     this.configDescEditor();
   }
 
@@ -103,6 +105,8 @@ export class PackageDetailComponent implements OnInit {
   }
 
   configDescEditor() {
+
+
     this.descEditor_data = this.package.description;
     this.descEditor_disabled = !this.isAuthor();
     // this.descEditor_config = "{ toolbar: [ 'heading', '|', 'bold', 'italic', 'link' , 'numberedList', 'bulletedList', '|', 'decreaseIndent', 'increaseIndent', '|', 'insertImage', 'insertTable', '|', 'undo', 'redo'] }";
@@ -141,8 +145,57 @@ export class PackageDetailComponent implements OnInit {
           'mergeTableCells',
         ]
       },
+      mention: {
+        feeds: [
+          {
+            marker: '@',
+            feed: this.getUsernameFeedItems,
+            minimumCharacters: 1
+          }
+        ]
+      },
       licenseKey: '',
     };
+  }
+
+  preLoadUsernameFeeds() {
+    const usernamesFeed = getUsernameFeeds(this.san11pkService);
+
+    if (isObservable(usernamesFeed)) {
+      usernamesFeed.subscribe(
+        usernames => {
+          console.log('username feeds is preloaded');
+        }
+      );
+    }
+  }
+
+  getUsernameFeedItems(queryText: string) {
+    const usernamesFeed = getUsernameFeeds(this.san11pkService);
+
+    if (!isObservable(usernamesFeed)) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const itemsToDisplay = usernamesFeed
+            // Filter out the full list of all items to only those matching the query text.
+            .filter(isItemMatching)
+            // Return 10 items max - needed for generic queries when the list may contain hundreds of elements.
+            .slice(0, 10);
+
+          resolve(itemsToDisplay);
+        }, 100);
+      });
+    }
+
+    function isItemMatching(item) {
+      // Make the search case-insensitive.
+      const searchString = queryText.toLowerCase();
+
+      // Include an item in the search results if the name or username includes the current user input.
+      return (
+        item.toLowerCase().includes(searchString)
+      );
+    }
   }
 
   onUpdateTitle() {
@@ -182,7 +235,6 @@ export class PackageDetailComponent implements OnInit {
         }
       );
     }
-
   }
 
   onDescEditorReady(event) {

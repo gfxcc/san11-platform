@@ -370,6 +370,12 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         user.set_password(request.password)
         return san11_platform_pb2.Empty()
+    
+    def listUsers(self, request, context):
+        authenticate = Authenticator.from_context(context)
+        return san11_platform_pb2.ListUsersResponse(users=[
+            user.to_pb() for user in User.list()
+        ])
 
     # Statistics
     def GetStatistic(self, request, context):

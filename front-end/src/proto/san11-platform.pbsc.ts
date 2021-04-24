@@ -538,6 +538,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/listUsers
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListUsersResponse>>
+     */
+    listUsers: (
+      requestData: thisProto.ListUsersRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListUsersResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/listUsers',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListUsersRequest,
+        responseClass: thisProto.ListUsersResponse
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/UpdateUser
      *
      * @param requestMessage Request message
@@ -991,6 +1012,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.User> {
     return this.$raw
       .getUser(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/listUsers
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListUsersResponse>
+   */
+  listUsers(
+    requestData: thisProto.ListUsersRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListUsersResponse> {
+    return this.$raw
+      .listUsers(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

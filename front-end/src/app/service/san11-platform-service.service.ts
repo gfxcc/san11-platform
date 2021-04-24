@@ -11,6 +11,7 @@ import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
 import { SearchPackagesRequest, SearchPackagesResponse } from "../../proto/san11-platform.pb";
 import { Url, Statistic, User, Package, Binary, Status, Empty, Comment, Reply } from '../../proto/san11-platform.pb'
 import { ListPackagesRequest } from '../../proto/san11-platform.pb';
+import { ListUsersRequest, ListUsersResponse } from "../../proto/san11-platform.pb";
 import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
 import { SignUpRequest, SignUpResponse } from '../../proto/san11-platform.pb';
 import { SignOutRequest } from '../../proto/san11-platform.pb'
@@ -179,6 +180,11 @@ export class San11PlatformServiceService {
   getStatistic(): Observable<Statistic> {
     const request = new GetStatisticRequest({ date: null });
     return this.severClient.getStatistic(request, this.getMetadata());
+  }
+
+  listUsers(): Observable<ListUsersResponse> {
+    const request = new ListUsersRequest({});
+    return this.severClient.listUsers(request, this.getMetadata());
   }
 
   // UTILS

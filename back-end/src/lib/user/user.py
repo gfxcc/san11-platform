@@ -4,10 +4,11 @@ import re
 import json
 import logging
 from datetime import datetime, timezone
+from typing import List
 
 from ..protos import san11_platform_pb2
 from ..db_util import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
-                     run_sql_with_param
+                     run_sql_with_param, get_db_fields_str
 from ..image import Image
 from ..time_util import get_timezone
 
@@ -157,7 +158,18 @@ class User:
             raise LookupError(f'user_id: {user_id} does not exist')
 
         return cls(user_id, resp[0], resp[1], resp[2], resp[3], resp[4])
+    
+    @classmethod
+    def list(cls) -> List[User]:
+        sql = f'SELECT {get_db_fields_str(cls._db_fields())} FROM users'
+        resp = run_sql_with_param_and_fetch_all(sql, {})
+        return [cls(*item) for item in resp]
 
+    @staticmethod
+    def _db_fields() -> List[str]:
+        return ['user_id', 'username', 'email', 'user_type', 'image_url', 'website']
+
+        
     @staticmethod
     def validate_email(email: str) -> None:
         if re.fullmatch(r'[^@]+@[^@]+\.[^@]+', email) is None:

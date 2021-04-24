@@ -1,4 +1,8 @@
-import { User } from "../../proto/san11-platform.pb";
+import { transition } from "@angular/animations";
+import { map, filter, tap } from 'rxjs/operators';
+import { Observer, Observable } from "rxjs";
+import { User, ListUsersResponse } from "../../proto/san11-platform.pb";
+import { San11PlatformServiceService } from "../service/san11-platform-service.service";
 
 
 export function isAdmin(): boolean {
@@ -38,3 +42,30 @@ export function loadUser(): User {
     });
 }
 
+export function getUsernameFeeds(san11PkService: San11PlatformServiceService): string[] | Observable<string[]> {
+    const cachedUserameFeeds = loadCacheUsernameFeeds();
+    if (cachedUserameFeeds != null) {
+        return cachedUserameFeeds;
+    }
+
+    return san11PkService.listUsers().pipe(
+        map((resp: ListUsersResponse) => {
+            const usernames = resp.users.map((user: User) => `@${user.username}`);
+            cacheUsernameFeeds(usernames);
+            return usernames;
+        })
+    );
+}
+
+function cacheUsernameFeeds(usernames: string[]) {
+    const cacheStr = usernames.join('|');
+    localStorage.setItem('usernameFeeds', cacheStr);
+}
+
+function loadCacheUsernameFeeds(): null | string[] {
+    const cachedUserames = localStorage.getItem('usernameFeeds');
+    if (cachedUserames != null) {
+        return cachedUserames.split('|');
+    }
+    return null;
+}

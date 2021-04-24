@@ -5300,6 +5300,331 @@ export module UpdatePasswordRequest {
 }
 
 /**
+ * Message implementation for routeguide.ListUsersRequest
+ */
+export class ListUsersRequest implements GrpcMessage {
+  static id = 'routeguide.ListUsersRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ListUsersRequest();
+    ListUsersRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ListUsersRequest) {
+    _instance.pageSize = _instance.pageSize || '0';
+    _instance.pageToken = _instance.pageToken || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ListUsersRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.pageSize = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.pageToken = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ListUsersRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ListUsersRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.pageSize) {
+      _writer.writeInt64String(1, _instance.pageSize);
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(2, _instance.pageToken);
+    }
+  }
+
+  private _pageSize?: string;
+  private _pageToken?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ListUsersRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ListUsersRequest.AsObject>) {
+    _value = _value || {};
+    this.pageSize = _value.pageSize;
+    this.pageToken = _value.pageToken;
+    ListUsersRequest.refineValues(this);
+  }
+  get pageSize(): string | undefined {
+    return this._pageSize;
+  }
+  set pageSize(value: string | undefined) {
+    this._pageSize = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ListUsersRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ListUsersRequest.AsObject {
+    return {
+      pageSize: this.pageSize,
+      pageToken: this.pageToken
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ListUsersRequest.AsProtobufJSON {
+    return {
+      pageSize: this.pageSize,
+      pageToken: this.pageToken
+    };
+  }
+}
+export module ListUsersRequest {
+  /**
+   * Standard JavaScript object representation for ListUsersRequest
+   */
+  export interface AsObject {
+    pageSize?: string;
+    pageToken?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for ListUsersRequest
+   */
+  export interface AsProtobufJSON {
+    pageSize?: string;
+    pageToken?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.ListUsersResponse
+ */
+export class ListUsersResponse implements GrpcMessage {
+  static id = 'routeguide.ListUsersResponse';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ListUsersResponse();
+    ListUsersResponse.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ListUsersResponse) {
+    _instance.users = _instance.users || [];
+    _instance.pageToken = _instance.pageToken || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ListUsersResponse,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          const messageInitializer1 = new User();
+          _reader.readMessage(
+            messageInitializer1,
+            User.deserializeBinaryFromReader
+          );
+          (_instance.users = _instance.users || []).push(messageInitializer1);
+          break;
+        case 2:
+          _instance.pageToken = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ListUsersResponse.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ListUsersResponse,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.users && _instance.users.length) {
+      _writer.writeRepeatedMessage(
+        1,
+        _instance.users as any,
+        User.serializeBinaryToWriter
+      );
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(2, _instance.pageToken);
+    }
+  }
+
+  private _users?: User[];
+  private _pageToken?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ListUsersResponse to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ListUsersResponse.AsObject>) {
+    _value = _value || {};
+    this.users = (_value.users || []).map(m => new User(m));
+    this.pageToken = _value.pageToken;
+    ListUsersResponse.refineValues(this);
+  }
+  get users(): User[] | undefined {
+    return this._users;
+  }
+  set users(value: User[] | undefined) {
+    this._users = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ListUsersResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ListUsersResponse.AsObject {
+    return {
+      users: (this.users || []).map(m => m.toObject()),
+      pageToken: this.pageToken
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ListUsersResponse.AsProtobufJSON {
+    return {
+      users: (this.users || []).map(m => m.toProtobufJSON(options)),
+      pageToken: this.pageToken
+    };
+  }
+}
+export module ListUsersResponse {
+  /**
+   * Standard JavaScript object representation for ListUsersResponse
+   */
+  export interface AsObject {
+    users?: User.AsObject[];
+    pageToken?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for ListUsersResponse
+   */
+  export interface AsProtobufJSON {
+    users?: User.AsProtobufJSON[] | null;
+    pageToken?: string;
+  }
+}
+
+/**
  * Message implementation for routeguide.GetStatisticRequest
  */
 export class GetStatisticRequest implements GrpcMessage {

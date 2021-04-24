@@ -46,6 +46,7 @@ service RouteGuide {
   rpc SignIn(SignInRequest) returns (SignInResponse) {}
   rpc SignOut(SignOutRequest) returns (Status) {}
   rpc GetUser(GetUserRequest) returns (User) {}
+  rpc listUsers(ListUsersRequest) returns (ListUsersResponse) {}
 
   rpc UpdateUser(UpdateUserRequest) returns (User) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
@@ -237,6 +238,16 @@ message UpdateUserRequest {
 message UpdatePasswordRequest {
     int64 user_id = 1;
     string password = 2;
+}
+
+message ListUsersRequest {
+    int64 page_size = 1;
+    string page_token = 2;
+}
+
+message ListUsersResponse {
+    repeated User users = 1;
+    string page_token = 2;
 }
 
 //
