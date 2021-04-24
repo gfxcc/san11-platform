@@ -33,7 +33,9 @@
         <mat-form-field class="form-field form-text-input">
             <mat-label>更新日志</mat-label>
             <textarea style="height: 150px;" matInput placeholder="新功能，新玩法，bug修复" required ngModel name="description"></textarea>
+
         </mat-form-field>
+        <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
 
         <mat-form-field class="form-field form-text-input" *ngIf="this.categoryId===&quot;3&quot;">
             <mat-label>下载方式</mat-label>

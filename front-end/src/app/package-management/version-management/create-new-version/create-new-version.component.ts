@@ -4,6 +4,8 @@ import { isNumeric } from 'rxjs/util/isNumeric';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { version } from 'process';
 
+import * as Editor from "../../../common/components/ckeditor/ckeditor";
+
 import { Version, Binary } from "../../../../proto/san11-platform.pb";
 import { version2str } from "../../../utils/binary_util";
 import { increment } from "../../../utils/number_util";
@@ -37,6 +39,14 @@ export class CreateNewVersionComponent implements OnInit {
   selectedFile: File;
   loadingDialog;
 
+
+  descEditor = Editor;
+  descEditor_element;
+  descEditor_disabled = true;
+  descEditor_updated = false;
+  descEditor_data = '新功能，新玩法，bug修复';
+  descEditor_config;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: VersionData,
     private dialog: MatDialog,
@@ -59,6 +69,20 @@ export class CreateNewVersionComponent implements OnInit {
   ngOnInit(): void {
     this.onVersionSelectorUpdate(this.updateType);
   }
+
+  // Desc-BEGIN
+  onDescEditorReady(event) {
+    this.descEditor_element = event;
+  }
+
+  onDescEditorChange(event) {
+    console.log(event.editor.getData());
+    console.log('Desc is changed');
+    this.descEditor_updated = true;
+  }
+
+
+  // Desc-END
 
   onVersionSelectorUpdate(updateTypeValue) {
     this.updateType = updateTypeValue;

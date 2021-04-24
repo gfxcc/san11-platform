@@ -127,29 +127,18 @@ export class PackageDetailComponent implements OnInit {
           'horizontalLine',
           '|',
           'codeBlock',
-          // 'imageUpload',
           'insertTable',
+          '|',
           'undo',
           'redo'
         ]
       },
       language: 'zh-cn',
-      // image: {
-      //   toolbar: [
-      //     'imageTextAlternative',
-      //     'imageStyle:full',
-      //     'imageStyle:side',
-      //     'linkImage'
-      //   ]
-      // },
       table: {
         contentToolbar: [
           'tableColumn',
           'tableRow',
           'mergeTableCells',
-          // Markdown does not support tableProperty
-          // 'tableCellProperties',
-          // 'tableProperties'
         ]
       },
       licenseKey: '',
