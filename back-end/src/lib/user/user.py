@@ -37,7 +37,6 @@ class User:
 
     @email.setter
     def email(self, email: str) -> None:
-        self.validate_email(email)
         self._email = email
 
     @property
