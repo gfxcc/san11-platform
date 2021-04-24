@@ -76,6 +76,10 @@
     <div class="top-border">
         <div class="heading-1" style="display: flex; height: 36px;">
             <span class="">描述</span>
+
+            <button *ngIf="this.isAuthor()" mat-icon-button (click)="onDownloadDesc()">
+                <mat-icon class="icon">download</mat-icon>
+            </button>
             <span class="example-spacer"></span>
             <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()">更新</button>
         </div>

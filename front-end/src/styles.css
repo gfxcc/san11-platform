@@ -39,6 +39,8 @@ body {
     color: #202124;
     font-family: Arial, sans-serif;
     margin: 5px 0px 5px 0px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .app-header {

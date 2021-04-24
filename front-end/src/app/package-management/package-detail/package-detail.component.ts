@@ -1,6 +1,7 @@
 import { ViewChild, ChangeDetectorRef, ElementRef, Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
+import { saveAs } from 'file-saver'
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -204,6 +205,13 @@ export class PackageDetailComponent implements OnInit {
     console.log(event.editor.getData());
     console.log('Desc is changed');
     this.descEditor_updated = true;
+  }
+
+  onDownloadDesc() {
+    const data = this.descEditor_element.getData();
+    const filename = `${this.package.name}-desc.md`;
+    var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, filename);
   }
 
   loadPage() {

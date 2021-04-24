@@ -64,11 +64,11 @@ export class CreatePackageComponent implements OnInit {
       this.loading = this.dialog.open(LoadingComponent);
 
       this.san11PlatformServiceService.createPackage(new Package({
-        packageId: "0",
+        packageId: '0',
         name: createPackageForm.value.name,
         description: '请添加描述',
         categoryId: createPackageForm.value.category, // hardcoded to SIRE Plugin
-        authorId: "0",
+        authorId: '0',
         imageUrls: []
       })).subscribe(
         san11Package => {
