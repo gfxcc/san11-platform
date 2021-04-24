@@ -1,7 +1,7 @@
 import { ViewChild, ChangeDetectorRef, ElementRef, Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
-// import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
@@ -111,46 +111,44 @@ export class PackageDetailComponent implements OnInit {
         items: [
           'heading',
           '|',
-          'fontColor',
-          'fontBackgroundColor',
           'bold',
-          'underline',
           'italic',
+          'blockQuote',
           'code',
           'link',
+          '|',
           'bulletedList',
           'todoList',
           'numberedList',
           '|',
           'outdent',
           'indent',
-          'alignment',
           'horizontalLine',
           '|',
           'codeBlock',
-          'imageUpload',
-          'blockQuote',
+          // 'imageUpload',
           'insertTable',
           'undo',
           'redo'
         ]
       },
       language: 'zh-cn',
-      image: {
-        toolbar: [
-          'imageTextAlternative',
-          'imageStyle:full',
-          'imageStyle:side',
-          'linkImage'
-        ]
-      },
+      // image: {
+      //   toolbar: [
+      //     'imageTextAlternative',
+      //     'imageStyle:full',
+      //     'imageStyle:side',
+      //     'linkImage'
+      //   ]
+      // },
       table: {
         contentToolbar: [
           'tableColumn',
           'tableRow',
           'mergeTableCells',
-          'tableCellProperties',
-          'tableProperties'
+          // Markdown does not support tableProperty
+          // 'tableCellProperties',
+          // 'tableProperties'
         ]
       },
       licenseKey: '',
@@ -203,6 +201,8 @@ export class PackageDetailComponent implements OnInit {
   }
 
   onDescEditorChange(event) {
+    console.log(event.editor.getData());
+    console.log('Desc is changed');
     this.descEditor_updated = true;
   }
 
