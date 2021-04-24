@@ -65,6 +65,8 @@ export class PackageDetailComponent implements OnInit {
   descEditor_data: string;
   descEditor_config;
 
+  userFeeds;
+
   constructor(
     // public dialogRef: MatDialogRef<PackageDetailComponent>,
     // @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -87,7 +89,7 @@ export class PackageDetailComponent implements OnInit {
     );
 
     this.loadPage();
-    this.preLoadUsernameFeeds();
+    this.preloadUserFeeds();
     this.configDescEditor();
   }
 
@@ -116,41 +118,53 @@ export class PackageDetailComponent implements OnInit {
         items: [
           'heading',
           '|',
+          'fontColor',
           'bold',
           'italic',
+          'underline',
           'blockQuote',
           'code',
           'link',
           '|',
           'bulletedList',
-          'todoList',
           'numberedList',
+          'todoList',
+          'horizontalLine',
           '|',
           'outdent',
           'indent',
-          'horizontalLine',
+          'alignment',
           '|',
           'codeBlock',
           'insertTable',
-          '|',
           'undo',
           'redo'
         ]
       },
       language: 'zh-cn',
+      image: {
+        toolbar: [
+          'imageTextAlternative',
+          'imageStyle:full',
+          'imageStyle:side',
+          'linkImage'
+        ]
+      },
       table: {
         contentToolbar: [
           'tableColumn',
           'tableRow',
           'mergeTableCells',
+          'tableCellProperties',
+          'tableProperties'
         ]
       },
       mention: {
         feeds: [
           {
             marker: '@',
-            feed: this.getUsernameFeedItems,
-            minimumCharacters: 1
+            feed: this.getUsernameFeedItems.bind(this),
+            minimumCharacters: 1,
           }
         ]
       },
@@ -158,34 +172,36 @@ export class PackageDetailComponent implements OnInit {
     };
   }
 
-  preLoadUsernameFeeds() {
-    const usernamesFeed = getUsernameFeeds(this.san11pkService);
-
-    if (isObservable(usernamesFeed)) {
-      usernamesFeed.subscribe(
-        usernames => {
-          console.log('username feeds is preloaded');
-        }
-      );
-    }
+  preloadUserFeeds() {
+    this.san11pkService.listUsers().subscribe(
+      resp => {
+        this.userFeeds = resp.users.map((user: User) => ({
+          id: `@${user.username}`,
+          userId: user.userId,
+          username: user.username,
+          link: getFullUrl(`users/${user.userId}`),
+          userAvatar: getFullUrl(user.imageUrl)
+        }));
+        console.log(this.userFeeds);
+      },
+      error => {
+        console.log('Failed to load user feeds');
+      }
+    );
   }
 
   getUsernameFeedItems(queryText: string) {
-    const usernamesFeed = getUsernameFeeds(this.san11pkService);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const itemsToDisplay = this.userFeeds
+          // Filter out the full list of all items to only those matching the query text.
+          .filter(isItemMatching)
+          // Return 10 items max - needed for generic queries when the list may contain hundreds of elements.
+          .slice(0, 10);
 
-    if (!isObservable(usernamesFeed)) {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          const itemsToDisplay = usernamesFeed
-            // Filter out the full list of all items to only those matching the query text.
-            .filter(isItemMatching)
-            // Return 10 items max - needed for generic queries when the list may contain hundreds of elements.
-            .slice(0, 10);
-
-          resolve(itemsToDisplay);
-        }, 100);
-      });
-    }
+        resolve(itemsToDisplay);
+      }, 100);
+    });
 
     function isItemMatching(item) {
       // Make the search case-insensitive.
@@ -193,7 +209,8 @@ export class PackageDetailComponent implements OnInit {
 
       // Include an item in the search results if the name or username includes the current user input.
       return (
-        item.toLowerCase().includes(searchString)
+        item.username.toLowerCase().includes(searchString) ||
+        item.userId.toLowerCase().includes(searchString)
       );
     }
   }
@@ -243,13 +260,6 @@ export class PackageDetailComponent implements OnInit {
 
   onDescEditorChange(event) {
     this.descEditor_updated = true;
-  }
-
-  onDownloadDesc() {
-    const data = this.descEditor_element.getData();
-    const filename = `${this.package.name}-desc.md`;
-    var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, filename);
   }
 
   loadPage() {

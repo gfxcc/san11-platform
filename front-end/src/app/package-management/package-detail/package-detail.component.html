@@ -1,6 +1,6 @@
 <div class="main">
 
-    <div class="heading show-border-dev">
+    <div class="heading show-border">
         <div class="back-btn-div">
             <button mat-button (click)="onBack()" class="back-btn">
                 <span class="material-icons back-btn-span">
@@ -23,11 +23,11 @@
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
         </div>
         <div class="col-right">
-            <div class="info-section show-border-dev">
+            <div class="info-section show-border">
 
-                <div class="author-info show-border-dev">
+                <div class="author-info show-border">
                     <div class="heading-1">作者</div>
-                    <div class="author-card show-border-dev" style="display: flex;" (click)="onAuthorClick()">
+                    <div class="author-card show-border" style="display: flex;" (click)="onAuthorClick()">
                         <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage = false;" class="author-image">
 
                         <span style="display: inline-flex;  align-items: center;">
@@ -49,7 +49,7 @@
                         <!-- <mat-icon class="icon" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">thumb_up</mat-icon> -->
                     </div>
 
-                    <div *ngIf="(isAdmin() || isAuthor())" class="package-controller top-border show-border-dev">
+                    <div *ngIf="(isAdmin() || isAuthor())" class="package-controller top-border show-border">
                         <div class="admin-zone" *ngIf="adminZone">
                             <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
                         </div>
@@ -77,16 +77,16 @@
         <div class="heading-1" style="display: flex; height: 36px;">
             <span class="">描述</span>
 
-            <button *ngIf="this.isAuthor()" mat-icon-button (click)="onDownloadDesc()">
+            <!-- <button *ngIf="this.isAuthor()" mat-icon-button (click)="onDownloadDesc()">
                 <mat-icon class="icon">download</mat-icon>
-            </button>
+            </button> -->
             <span class="example-spacer"></span>
             <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()">更新</button>
         </div>
         <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
     </div>
 
-    <div class="version-info top-border show-border-dev ">
+    <div class="version-info top-border show-border ">
         <app-version-panel [package]="this.package " (downloadEvent)="onChildDownload($event) "> </app-version-panel>
     </div>
 
