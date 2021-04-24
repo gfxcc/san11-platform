@@ -66,7 +66,7 @@ export class CreatePackageComponent implements OnInit {
       this.san11PlatformServiceService.createPackage(new Package({
         packageId: '0',
         name: createPackageForm.value.name,
-        description: '请添加描述',
+        description: '',
         categoryId: createPackageForm.value.category, // hardcoded to SIRE Plugin
         authorId: '0',
         imageUrls: []

@@ -159,3 +159,11 @@ body {
 .top-border {
     border-top: solid 1px #ebebeb;
 }
+
+.bottom-bord {
+    border-bottom: solid 1px rgb(148, 148, 148);
+}
+
+.show-border {
+    border: solid 1px #ebebeb;
+}

@@ -42,9 +42,7 @@ export class CreateNewVersionComponent implements OnInit {
 
   descEditor = Editor;
   descEditor_element;
-  descEditor_disabled = true;
-  descEditor_updated = false;
-  descEditor_data = '新功能，新玩法，bug修复';
+  descEditor_data: string;
   descEditor_config;
 
   constructor(
@@ -64,6 +62,8 @@ export class CreateNewVersionComponent implements OnInit {
     } else {
       this.updateType = 'minor';
     }
+
+    this.configDescEditor();
   }
 
   ngOnInit(): void {
@@ -71,6 +71,47 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   // Desc-BEGIN
+  configDescEditor() {
+    this.descEditor_data = '';
+    this.descEditor_config = {
+      placeholder: '新功能，新玩法，bug修复 (支持 Markdown)',
+      toolbar: {
+        items: [
+          'heading',
+          '|',
+          'bold',
+          'italic',
+          'blockQuote',
+          'code',
+          'link',
+          '|',
+          'bulletedList',
+          'todoList',
+          'numberedList',
+          '|',
+          'outdent',
+          'indent',
+          'horizontalLine',
+          '|',
+          'codeBlock',
+          'insertTable',
+          '|',
+          'undo',
+          'redo'
+        ]
+      },
+      language: 'zh-cn',
+      table: {
+        contentToolbar: [
+          'tableColumn',
+          'tableRow',
+          'mergeTableCells',
+        ]
+      },
+      licenseKey: '',
+    };
+  }
+
   onDescEditorReady(event) {
     this.descEditor_element = event;
   }
@@ -78,7 +119,6 @@ export class CreateNewVersionComponent implements OnInit {
   onDescEditorChange(event) {
     console.log(event.editor.getData());
     console.log('Desc is changed');
-    this.descEditor_updated = true;
   }
 
 
@@ -151,7 +191,7 @@ export class CreateNewVersionComponent implements OnInit {
 
     const binary: Binary = new Binary({
       version: this.newVersion,
-      description: createVersionForm.value.description,
+      description: this.descEditor_element.getData(),
       tag: '',
       downloadMethod: this.categoryId === '3' ? createVersionForm.value.downloadMethod : '',
     });
