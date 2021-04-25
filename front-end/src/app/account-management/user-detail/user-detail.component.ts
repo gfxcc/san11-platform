@@ -40,7 +40,7 @@ export class UserDetailComponent implements OnInit {
 
   hidePassword: boolean = true;
 
-  displayedColumns: string[] = ['name', 'createTimestamp', 'downloadCount'];
+  displayedColumns: string[] = ['name', 'createTime', 'downloadCount'];
   dataSource: MatTableDataSource<Package>;
 
   constructor(

@@ -5625,6 +5625,350 @@ export module ListUsersResponse {
 }
 
 /**
+ * Message implementation for routeguide.ListTagsRequest
+ */
+export class ListTagsRequest implements GrpcMessage {
+  static id = 'routeguide.ListTagsRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ListTagsRequest();
+    ListTagsRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ListTagsRequest) {
+    _instance.pageSize = _instance.pageSize || '0';
+    _instance.pageToken = _instance.pageToken || '';
+    _instance.categoryId = _instance.categoryId || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ListTagsRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.pageSize = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.pageToken = _reader.readString();
+          break;
+        case 3:
+          _instance.categoryId = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ListTagsRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ListTagsRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.pageSize) {
+      _writer.writeInt64String(1, _instance.pageSize);
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(2, _instance.pageToken);
+    }
+    if (_instance.categoryId) {
+      _writer.writeInt64String(3, _instance.categoryId);
+    }
+  }
+
+  private _pageSize?: string;
+  private _pageToken?: string;
+  private _categoryId?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ListTagsRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ListTagsRequest.AsObject>) {
+    _value = _value || {};
+    this.pageSize = _value.pageSize;
+    this.pageToken = _value.pageToken;
+    this.categoryId = _value.categoryId;
+    ListTagsRequest.refineValues(this);
+  }
+  get pageSize(): string | undefined {
+    return this._pageSize;
+  }
+  set pageSize(value: string | undefined) {
+    this._pageSize = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+  get categoryId(): string | undefined {
+    return this._categoryId;
+  }
+  set categoryId(value: string | undefined) {
+    this._categoryId = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ListTagsRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ListTagsRequest.AsObject {
+    return {
+      pageSize: this.pageSize,
+      pageToken: this.pageToken,
+      categoryId: this.categoryId
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ListTagsRequest.AsProtobufJSON {
+    return {
+      pageSize: this.pageSize,
+      pageToken: this.pageToken,
+      categoryId: this.categoryId
+    };
+  }
+}
+export module ListTagsRequest {
+  /**
+   * Standard JavaScript object representation for ListTagsRequest
+   */
+  export interface AsObject {
+    pageSize?: string;
+    pageToken?: string;
+    categoryId?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for ListTagsRequest
+   */
+  export interface AsProtobufJSON {
+    pageSize?: string;
+    pageToken?: string;
+    categoryId?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.ListTagsResponse
+ */
+export class ListTagsResponse implements GrpcMessage {
+  static id = 'routeguide.ListTagsResponse';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ListTagsResponse();
+    ListTagsResponse.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ListTagsResponse) {
+    _instance.tags = _instance.tags || [];
+    _instance.pageToken = _instance.pageToken || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ListTagsResponse,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          const messageInitializer1 = new Tag();
+          _reader.readMessage(
+            messageInitializer1,
+            Tag.deserializeBinaryFromReader
+          );
+          (_instance.tags = _instance.tags || []).push(messageInitializer1);
+          break;
+        case 2:
+          _instance.pageToken = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ListTagsResponse.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ListTagsResponse,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.tags && _instance.tags.length) {
+      _writer.writeRepeatedMessage(
+        1,
+        _instance.tags as any,
+        Tag.serializeBinaryToWriter
+      );
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(2, _instance.pageToken);
+    }
+  }
+
+  private _tags?: Tag[];
+  private _pageToken?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ListTagsResponse to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ListTagsResponse.AsObject>) {
+    _value = _value || {};
+    this.tags = (_value.tags || []).map(m => new Tag(m));
+    this.pageToken = _value.pageToken;
+    ListTagsResponse.refineValues(this);
+  }
+  get tags(): Tag[] | undefined {
+    return this._tags;
+  }
+  set tags(value: Tag[] | undefined) {
+    this._tags = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ListTagsResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ListTagsResponse.AsObject {
+    return {
+      tags: (this.tags || []).map(m => m.toObject()),
+      pageToken: this.pageToken
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ListTagsResponse.AsProtobufJSON {
+    return {
+      tags: (this.tags || []).map(m => m.toProtobufJSON(options)),
+      pageToken: this.pageToken
+    };
+  }
+}
+export module ListTagsResponse {
+  /**
+   * Standard JavaScript object representation for ListTagsResponse
+   */
+  export interface AsObject {
+    tags?: Tag.AsObject[];
+    pageToken?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for ListTagsResponse
+   */
+  export interface AsProtobufJSON {
+    tags?: Tag.AsProtobufJSON[] | null;
+    pageToken?: string;
+  }
+}
+
+/**
  * Message implementation for routeguide.GetStatisticRequest
  */
 export class GetStatisticRequest implements GrpcMessage {
@@ -6040,14 +6384,15 @@ export class Package implements GrpcMessage {
     _instance.packageId = _instance.packageId || '0';
     _instance.name = _instance.name || '';
     _instance.description = _instance.description || '';
-    _instance.createTimestamp = _instance.createTimestamp || '';
+    _instance.createTime = _instance.createTime || '';
     _instance.categoryId = _instance.categoryId || '0';
     _instance.status = _instance.status || '';
     _instance.authorId = _instance.authorId || '0';
     _instance.authorImageUrl = _instance.authorImageUrl || '';
     _instance.imageUrls = _instance.imageUrls || [];
-    _instance.tags = _instance.tags || [];
     _instance.downloadCount = _instance.downloadCount || '0';
+    _instance.tags = _instance.tags || [];
+    _instance.updateTime = _instance.updateTime || '';
   }
 
   /**
@@ -6073,7 +6418,7 @@ export class Package implements GrpcMessage {
           _instance.description = _reader.readString();
           break;
         case 4:
-          _instance.createTimestamp = _reader.readString();
+          _instance.createTime = _reader.readString();
           break;
         case 5:
           _instance.categoryId = _reader.readInt64String();
@@ -6093,10 +6438,18 @@ export class Package implements GrpcMessage {
           );
           break;
         case 10:
-          (_instance.tags = _instance.tags || []).push(_reader.readString());
+          _instance.downloadCount = _reader.readInt64String();
           break;
         case 11:
-          _instance.downloadCount = _reader.readInt64String();
+          const messageInitializer11 = new Tag();
+          _reader.readMessage(
+            messageInitializer11,
+            Tag.deserializeBinaryFromReader
+          );
+          (_instance.tags = _instance.tags || []).push(messageInitializer11);
+          break;
+        case 12:
+          _instance.updateTime = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -6121,8 +6474,8 @@ export class Package implements GrpcMessage {
     if (_instance.description) {
       _writer.writeString(3, _instance.description);
     }
-    if (_instance.createTimestamp) {
-      _writer.writeString(4, _instance.createTimestamp);
+    if (_instance.createTime) {
+      _writer.writeString(4, _instance.createTime);
     }
     if (_instance.categoryId) {
       _writer.writeInt64String(5, _instance.categoryId);
@@ -6139,25 +6492,33 @@ export class Package implements GrpcMessage {
     if (_instance.imageUrls && _instance.imageUrls.length) {
       _writer.writeRepeatedString(9, _instance.imageUrls);
     }
-    if (_instance.tags && _instance.tags.length) {
-      _writer.writeRepeatedString(10, _instance.tags);
-    }
     if (_instance.downloadCount) {
-      _writer.writeInt64String(11, _instance.downloadCount);
+      _writer.writeInt64String(10, _instance.downloadCount);
+    }
+    if (_instance.tags && _instance.tags.length) {
+      _writer.writeRepeatedMessage(
+        11,
+        _instance.tags as any,
+        Tag.serializeBinaryToWriter
+      );
+    }
+    if (_instance.updateTime) {
+      _writer.writeString(12, _instance.updateTime);
     }
   }
 
   private _packageId?: string;
   private _name?: string;
   private _description?: string;
-  private _createTimestamp?: string;
+  private _createTime?: string;
   private _categoryId?: string;
   private _status?: string;
   private _authorId?: string;
   private _authorImageUrl?: string;
   private _imageUrls?: string[];
-  private _tags?: string[];
   private _downloadCount?: string;
+  private _tags?: Tag[];
+  private _updateTime?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -6168,14 +6529,15 @@ export class Package implements GrpcMessage {
     this.packageId = _value.packageId;
     this.name = _value.name;
     this.description = _value.description;
-    this.createTimestamp = _value.createTimestamp;
+    this.createTime = _value.createTime;
     this.categoryId = _value.categoryId;
     this.status = _value.status;
     this.authorId = _value.authorId;
     this.authorImageUrl = _value.authorImageUrl;
     this.imageUrls = (_value.imageUrls || []).slice();
-    this.tags = (_value.tags || []).slice();
     this.downloadCount = _value.downloadCount;
+    this.tags = (_value.tags || []).map(m => new Tag(m));
+    this.updateTime = _value.updateTime;
     Package.refineValues(this);
   }
   get packageId(): string | undefined {
@@ -6196,11 +6558,11 @@ export class Package implements GrpcMessage {
   set description(value: string | undefined) {
     this._description = value;
   }
-  get createTimestamp(): string | undefined {
-    return this._createTimestamp;
+  get createTime(): string | undefined {
+    return this._createTime;
   }
-  set createTimestamp(value: string | undefined) {
-    this._createTimestamp = value;
+  set createTime(value: string | undefined) {
+    this._createTime = value;
   }
   get categoryId(): string | undefined {
     return this._categoryId;
@@ -6232,17 +6594,23 @@ export class Package implements GrpcMessage {
   set imageUrls(value: string[] | undefined) {
     this._imageUrls = value;
   }
-  get tags(): string[] | undefined {
-    return this._tags;
-  }
-  set tags(value: string[] | undefined) {
-    this._tags = value;
-  }
   get downloadCount(): string | undefined {
     return this._downloadCount;
   }
   set downloadCount(value: string | undefined) {
     this._downloadCount = value;
+  }
+  get tags(): Tag[] | undefined {
+    return this._tags;
+  }
+  set tags(value: Tag[] | undefined) {
+    this._tags = value;
+  }
+  get updateTime(): string | undefined {
+    return this._updateTime;
+  }
+  set updateTime(value: string | undefined) {
+    this._updateTime = value;
   }
 
   /**
@@ -6263,14 +6631,15 @@ export class Package implements GrpcMessage {
       packageId: this.packageId,
       name: this.name,
       description: this.description,
-      createTimestamp: this.createTimestamp,
+      createTime: this.createTime,
       categoryId: this.categoryId,
       status: this.status,
       authorId: this.authorId,
       authorImageUrl: this.authorImageUrl,
       imageUrls: (this.imageUrls || []).slice(),
-      tags: (this.tags || []).slice(),
-      downloadCount: this.downloadCount
+      downloadCount: this.downloadCount,
+      tags: (this.tags || []).map(m => m.toObject()),
+      updateTime: this.updateTime
     };
   }
 
@@ -6294,14 +6663,15 @@ export class Package implements GrpcMessage {
       packageId: this.packageId,
       name: this.name,
       description: this.description,
-      createTimestamp: this.createTimestamp,
+      createTime: this.createTime,
       categoryId: this.categoryId,
       status: this.status,
       authorId: this.authorId,
       authorImageUrl: this.authorImageUrl,
       imageUrls: (this.imageUrls || []).slice(),
-      tags: (this.tags || []).slice(),
-      downloadCount: this.downloadCount
+      downloadCount: this.downloadCount,
+      tags: (this.tags || []).map(m => m.toProtobufJSON(options)),
+      updateTime: this.updateTime
     };
   }
 }
@@ -6313,14 +6683,15 @@ export module Package {
     packageId?: string;
     name?: string;
     description?: string;
-    createTimestamp?: string;
+    createTime?: string;
     categoryId?: string;
     status?: string;
     authorId?: string;
     authorImageUrl?: string;
     imageUrls?: string[];
-    tags?: string[];
     downloadCount?: string;
+    tags?: Tag.AsObject[];
+    updateTime?: string;
   }
 
   /**
@@ -6330,14 +6701,15 @@ export module Package {
     packageId?: string;
     name?: string;
     description?: string;
-    createTimestamp?: string;
+    createTime?: string;
     categoryId?: string;
     status?: string;
     authorId?: string;
     authorImageUrl?: string;
     imageUrls?: string[];
-    tags?: string[];
     downloadCount?: string;
+    tags?: Tag.AsProtobufJSON[] | null;
+    updateTime?: string;
   }
 }
 
@@ -7827,5 +8199,192 @@ export module Reply {
     text?: string;
     authorId?: string;
     upvoteCount?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.Tag
+ */
+export class Tag implements GrpcMessage {
+  static id = 'routeguide.Tag';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new Tag();
+    Tag.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: Tag) {
+    _instance.tagId = _instance.tagId || '0';
+    _instance.name = _instance.name || '';
+    _instance.categoryId = _instance.categoryId || '0';
+    _instance.mutable = _instance.mutable || false;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(_instance: Tag, _reader: BinaryReader) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.tagId = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.name = _reader.readString();
+          break;
+        case 3:
+          _instance.categoryId = _reader.readInt64String();
+          break;
+        case 4:
+          _instance.mutable = _reader.readBool();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    Tag.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(_instance: Tag, _writer: BinaryWriter) {
+    if (_instance.tagId) {
+      _writer.writeInt64String(1, _instance.tagId);
+    }
+    if (_instance.name) {
+      _writer.writeString(2, _instance.name);
+    }
+    if (_instance.categoryId) {
+      _writer.writeInt64String(3, _instance.categoryId);
+    }
+    if (_instance.mutable) {
+      _writer.writeBool(4, _instance.mutable);
+    }
+  }
+
+  private _tagId?: string;
+  private _name?: string;
+  private _categoryId?: string;
+  private _mutable?: boolean;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of Tag to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<Tag.AsObject>) {
+    _value = _value || {};
+    this.tagId = _value.tagId;
+    this.name = _value.name;
+    this.categoryId = _value.categoryId;
+    this.mutable = _value.mutable;
+    Tag.refineValues(this);
+  }
+  get tagId(): string | undefined {
+    return this._tagId;
+  }
+  set tagId(value: string | undefined) {
+    this._tagId = value;
+  }
+  get name(): string | undefined {
+    return this._name;
+  }
+  set name(value: string | undefined) {
+    this._name = value;
+  }
+  get categoryId(): string | undefined {
+    return this._categoryId;
+  }
+  set categoryId(value: string | undefined) {
+    this._categoryId = value;
+  }
+  get mutable(): boolean | undefined {
+    return this._mutable;
+  }
+  set mutable(value: boolean | undefined) {
+    this._mutable = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    Tag.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): Tag.AsObject {
+    return {
+      tagId: this.tagId,
+      name: this.name,
+      categoryId: this.categoryId,
+      mutable: this.mutable
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): Tag.AsProtobufJSON {
+    return {
+      tagId: this.tagId,
+      name: this.name,
+      categoryId: this.categoryId,
+      mutable: this.mutable
+    };
+  }
+}
+export module Tag {
+  /**
+   * Standard JavaScript object representation for Tag
+   */
+  export interface AsObject {
+    tagId?: string;
+    name?: string;
+    categoryId?: string;
+    mutable?: boolean;
+  }
+
+  /**
+   * Protobuf JSON representation for Tag
+   */
+  export interface AsProtobufJSON {
+    tagId?: string;
+    name?: string;
+    categoryId?: string;
+    mutable?: boolean;
   }
 }

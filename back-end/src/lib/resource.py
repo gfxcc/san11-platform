@@ -1,6 +1,8 @@
-
 import os, os.path
 import errno
+from abc import ABC, abstractclassmethod, abstractmethod, abstractproperty
+from typing import List, Any, Iterable
+from .exception import NotFound, AlreadyExists
 
 
 RESOURCE_PATH = '/data'
@@ -52,3 +54,81 @@ def create_resource(url: str, data: bytes) -> None:
                 raise
     with open(path, 'wb') as fd:
         fd.write(data)
+
+
+class ResourceExistsError(Exception):
+    ...
+
+
+class ResourceMixin(ABC):
+    # properties
+    @abstractproperty
+    def url(self) -> str:
+        ...
+
+    # classmethods
+    @abstractclassmethod
+    def db_table(cls) -> str:
+        '''
+        Table name
+        '''
+        ...
+
+    @abstractclassmethod
+    def db_fields(cls) -> Iterable[str]:
+        '''
+        Return a list for DB fields.
+        The order of those fields should match its order is the constructor.
+        '''
+        ...
+    
+    # factory classmethods 
+    @abstractclassmethod
+    def from_id(cls, id: int):
+        '''
+        Return the object by id.
+        Raise:
+            NotFound: if there is not a resource stored with given `id`.
+        '''
+        ...
+
+    @abstractclassmethod
+    def from_pb(cls, pb_obj):
+        '''
+        Convert the pb_obj into a `Resource` object
+        '''
+        ...
+
+    @abstractclassmethod
+    def list(cls, page_size: int, page_token: str, **kwargs) -> Iterable[Any]:
+        '''
+        List resource.
+        '''
+        ...
+    
+    # Methods
+    @abstractmethod
+    def create(self) -> None:
+        '''
+        Persist the resource to DB.
+        Raise:
+            AlreadyExists: if the resource is already exists in DB.
+        '''
+        ...
+    
+    @abstractmethod
+    def delete(self) -> None:
+        '''
+        Delete the resource from DB.
+        Raise:
+            NotFound: if the resource is not exists in DB.
+        '''
+        ...
+
+    @abstractmethod
+    def to_pb(self) -> Any:
+        '''
+        Convert the resource to its correspond proto object
+        '''
+        ...
+    

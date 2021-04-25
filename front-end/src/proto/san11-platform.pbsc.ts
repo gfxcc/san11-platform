@@ -601,6 +601,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/ListTags
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListTagsResponse>>
+     */
+    listTags: (
+      requestData: thisProto.ListTagsRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListTagsResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ListTags',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListTagsRequest,
+        responseClass: thisProto.ListTagsResponse
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/GetStatistic
      *
      * @param requestMessage Request message
@@ -1060,6 +1081,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Empty> {
     return this.$raw
       .updatePassword(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/ListTags
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListTagsResponse>
+   */
+  listTags(
+    requestData: thisProto.ListTagsRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListTagsResponse> {
+    return this.$raw
+      .listTags(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

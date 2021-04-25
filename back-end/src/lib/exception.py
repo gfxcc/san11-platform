@@ -6,3 +6,11 @@ class Unauthenticated(Exception):
 
 class PermissionDenied(Exception):
     code = 7
+
+
+class AlreadyExists(Exception):
+    code = 6
+
+
+class NotFound(Exception):
+    code = 5

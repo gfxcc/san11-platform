@@ -257,6 +257,7 @@ message ListUsersResponse {
 message ListTagsRequest {
     int64 page_size = 1;
     string page_token = 2;
+    int64 category_id = 3;
 }
 
 message ListTagsResponse {
@@ -285,14 +286,15 @@ message Package {
     int64 package_id = 1;
     string name = 2;
     string description = 3;
-    string create_timestamp = 4;
+    string create_time = 4;
     int64 category_id = 5;
     string status = 6; // under_review, normal, hidden, deleted
     int64 author_id = 7;
     string author_image_url = 8;
     repeated string image_urls = 9;
-    repeated Tag tags = 10;
-    int64 download_count = 11;
+    int64 download_count = 10;
+    repeated Tag tags = 11;
+    string update_time = 12;
 }
 
 message Binary {

@@ -19,6 +19,7 @@ from lib.binary import Binary
 from lib.url import Url
 from lib.statistic import Statistic
 from lib.query import Query
+from lib.tag import Tag
 
 from lib.auths.session import Session
 from lib.auths.authenticator import Authenticator
@@ -44,13 +45,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def CreatePackage(self, request, context):
         logger.info('In CreatePackage')
         authenticator = Authenticator.from_context(context)
-        package = Package.create_from_pb(request.package, authenticator.session.user.user_id)
+        package = Package.from_pb(request.package)
+        package.author_id = authenticator.session.user.user_id
+        package.create()
         return package.to_pb()
 
     def DeletePackage(self, request, context):
         logger.info(
             f'In DeletePackage: package_id={request.package.package_id}')
-        package = Package.from_package_id(request.package.package_id)
+        package = Package.from_id(request.package.package_id)
 
         authenticator = Authenticator.from_context(context)
         if not authenticator.canDeletePackage(package):
@@ -63,7 +66,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def GetPackage(self, request, context):
         logger.info(f'In GetPackage: package_id={request.package_id}')
-        return Package.from_package_id(request.package_id).to_pb()
+        return Package.from_id(request.package_id).to_pb()
 
     def ListPackages(self, request, context):
         logger.info(f'In ListPackages: category_id={request.category_id}')
@@ -76,23 +79,23 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         return san11_platform_pb2.ListPackagesResponse(packages=[
             package.to_pb()
-            for package in Package.list_packages(
-                request.category_id
+            for package in Package.list(0, '',
+                category_id=request.category_id
             ) if package.status == 'normal' or
             (user and user.user_id == package.author_id and package.status != 'hidden') or
             (user and user.user_type == 'admin')
             # package's status is normal or user is admin or author of the package
         ])
 
-    def SearchPackages(self, request, context):
-        logger.info(f'In SearchPackage: query={request.query}')
-        return san11_platform_pb2.SearchPackagesResponse(packages=[package.to_pb() for package in Package.search(Query.from_str(request.query))])
+    # def SearchPackages(self, request, context):
+        # logger.info(f'In SearchPackage: query={request.query}')
+        # return san11_platform_pb2.SearchPackagesResponse(packages=[package.to_pb() for package in Package.search(Query.from_str(request.query))])
 
     def UpdatePackage(self, request, context):
         logger.info(
             f'In UpdatePackage: package_id={request.package.package_id}')
         logger.debug(request.package.image_urls)
-        package = Package.from_package_id(request.package.package_id)
+        package = Package.from_id(request.package.package_id)
 
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUpdatePackage(package):
@@ -130,7 +133,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         # website statistic
         Statistic.load_today().increment_download()
         # Package statistic
-        Package.from_package_id(Url(request.parent).id).increment_download()
+        Package.from_id(Url(request.parent).id).increment_download()
         return binary.to_pb()
 
     def UploadBinary(self, request, context):
@@ -177,7 +180,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             context.abort(code=255, details='权限不足')
 
         if parent.type == 'packages':
-            Package.from_package_id(parent.id).append_image(image)
+            Package.from_id(parent.id).append_image(image)
         elif parent.type == 'users':
             User.from_user_id(parent.id).set_image(image)
         else:
@@ -189,14 +192,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def CreateComment(self, request, context):
         logger.info('In CreateComment')
         authenticator = Authenticator.from_context(context)
-        logger.debug(f'{request.comment.author_id} =? {authenticator.session.user.user_id}')
+        logger.debug(
+            f'{request.comment.author_id} =? {authenticator.session.user.user_id}')
         assert request.comment.author_id == authenticator.session.user.user_id
 
         comment = Comment.from_pb(request.comment)
         comment.create()
-        
+
         return comment.to_pb()
-    
+
     def DeleteComment(self, request, context):
         logger.info(f'In DeleteComment: comment_id={request.comment_id}')
         comment = Comment.from_id(request.comment_id)
@@ -205,9 +209,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             context.abort(code=255, details='权限不足')
         comment.delete()
         return san11_platform_pb2.Empty()
-    
+
     def UpdateComment(self, request, context):
-        logger.info(f'In UpdateComment: comment_id={request.comment.comment_id}')
+        logger.info(
+            f'In UpdateComment: comment_id={request.comment.comment_id}')
         comment = Comment.from_id(request.comment.comment_id)
         try:
             authenticator = Authenticator.from_context(context)
@@ -218,9 +223,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         if request.comment.upvote_count:
             resource = f'comment_id:{comment.comment_id}'
-            activity = Activity(authenticator.session.user.user_id, resource, Action.UPVOTE)
+            activity = Activity(
+                authenticator.session.user.user_id, resource, Action.UPVOTE)
             if activity.isExist():
-            # upvote from the same user will result as cancelling previous upvote
+                # upvote from the same user will result as cancelling previous upvote
                 activity.delete()
                 comment.upvote_count -= 1
             else:
@@ -230,22 +236,23 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         comment.update()
         return comment.to_pb()
-    
+
     def ListComments(self, request, context):
         logger.info(f'In ListComments: parent={request.parent}')
         comments = Comment.list_comment(request.parent)
         return san11_platform_pb2.ListCommentsResponse(
             comments=[comment.to_pb() for comment in comments]
         )
-    
+
     def CreateReply(self, request, context):
-        logger.info(f'In CreateReply: {request.reply.author_id}-> {request.reply.text}')
+        logger.info(
+            f'In CreateReply: {request.reply.author_id}-> {request.reply.text}')
         authenticator = Authenticator.from_context(context)
         assert request.reply.author_id == authenticator.session.user.user_id
 
         reply = Reply.from_pb(request.reply)
         reply.create()
-        
+
         return reply.to_pb()
 
     def DeleteReply(self, request, context):
@@ -268,9 +275,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         if request.reply.upvote_count:
             resource = f'reply_id:{reply.reply_id}'
-            activity = Activity(authenticator.session.user.user_id, resource, Action.UPVOTE)
+            activity = Activity(
+                authenticator.session.user.user_id, resource, Action.UPVOTE)
             if activity.isExist():
-            # upvote from the same user will result as cancelling previous upvote
+                # upvote from the same user will result as cancelling previous upvote
                 activity.delete()
                 reply.upvote_count -= 1
             else:
@@ -365,16 +373,16 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
         user.set_password(request.password)
         return san11_platform_pb2.Empty()
-    
+
     def listUsers(self, request, context):
-        authenticate = Authenticator.from_context(context)
+        Authenticator.from_context(context)
         return san11_platform_pb2.ListUsersResponse(users=[
             user.to_pb() for user in User.list()
         ])
 
     # Statistics
     def GetStatistic(self, request, context):
-        logging.info(f'In GetStatistic')
+        logger.info(f'In GetStatistic')
         # TODO hardcoded to today's information for now
         try:
             user = Authenticator.from_context(context=context).session.user
@@ -383,6 +391,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         if user is None or user.username != 'admin':
             Statistic.load_today().increment_visit()
         return Statistic.load_today().to_pb()
+
+    # Tags
+    def ListTags(self, request, context):
+        logger.info(f'In ListTags')
+        return san11_platform_pb2.ListUsersResponse(
+            tags=[tag.to_pb() for tag in Tag.list(page_size=0,
+                                                  page_token='',
+                                                  category_id=request.category_id)]
+        )
 
 
 def serve():

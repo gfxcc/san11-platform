@@ -150,6 +150,11 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.UpdatePasswordRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
+        self.ListTags = channel.unary_unary(
+                '/routeguide.RouteGuide/ListTags',
+                request_serializer=san11__platform__pb2.ListTagsRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.ListTagsResponse.FromString,
+                )
         self.GetStatistic = channel.unary_unary(
                 '/routeguide.RouteGuide/GetStatistic',
                 request_serializer=san11__platform__pb2.GetStatisticRequest.SerializeToString,
@@ -329,6 +334,13 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListTags(self, request, context):
+        """Tag related
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetStatistic(self, request, context):
         """
         """
@@ -473,6 +485,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.UpdatePassword,
                     request_deserializer=san11__platform__pb2.UpdatePasswordRequest.FromString,
                     response_serializer=san11__platform__pb2.Empty.SerializeToString,
+            ),
+            'ListTags': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTags,
+                    request_deserializer=san11__platform__pb2.ListTagsRequest.FromString,
+                    response_serializer=san11__platform__pb2.ListTagsResponse.SerializeToString,
             ),
             'GetStatistic': grpc.unary_unary_rpc_method_handler(
                     servicer.GetStatistic,
@@ -946,6 +963,23 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdatePassword',
             san11__platform__pb2.UpdatePasswordRequest.SerializeToString,
             san11__platform__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ListTags(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListTags',
+            san11__platform__pb2.ListTagsRequest.SerializeToString,
+            san11__platform__pb2.ListTagsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
