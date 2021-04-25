@@ -72,8 +72,8 @@ export class VersionPanelComponent implements OnInit {
         tag: 'sire2.0',
         dataSource: undefined,
       }, {
-        text: 'SIRE 1.3',
-        tag: 'sire1.3',
+        text: 'SIRE 1.30',
+        tag: 'sire1.30',
         dataSource: undefined,
       }];
     } else {

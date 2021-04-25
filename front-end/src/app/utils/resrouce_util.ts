@@ -11,7 +11,7 @@ export function getAcceptFileType(categoryId: string, tag: string): string {
     if (categoryId === '1') {
         if (tag === 'sire2.0') {
             return '.scp, .scp-en';
-        } else if (tag === 'sire1.3') {
+        } else if (tag === 'sire1.30') {
             return '.sirecm';
         }
     } else {
