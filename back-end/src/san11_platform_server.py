@@ -76,9 +76,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         logger.debug(
             f"ListPackage: user={user.username if user else 'visitor'}")
 
-        if user is None or user.username != 'admin':
-            Statistic.load_today().increment_visit()
-
         return san11_platform_pb2.ListPackagesResponse(packages=[
             package.to_pb()
             for package in Package.list_packages(
@@ -381,6 +378,12 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def GetStatistic(self, request, context):
         logging.info(f'In GetStatistic')
         # TODO hardcoded to today's information for now
+        try:
+            user = Authenticator.from_context(context=context).session.user
+        except Exception:
+            user = None
+        if user is None or user.username != 'admin':
+            Statistic.load_today().increment_visit()
         return Statistic.load_today().to_pb()
 
 
