@@ -11,7 +11,7 @@ export class GlobalConstants {
     public static defaultUserImage: string = '../../../assets/images/zhuge.jpg';
 
     public static categories = [
-        { value: '1', text: 'SIRE2 插件', link: ['/categories', 1], icon: 'extension' },
+        { value: '1', text: 'SIRE 插件', link: ['/categories', 1], icon: 'extension' },
         { value: '2', text: '修改工具', link: ['/categories', 2], icon: 'handyman' },
         { value: '3', text: 'MOD', link: ['/categories', 3], icon: 'auto_fix_high' },
     ];
