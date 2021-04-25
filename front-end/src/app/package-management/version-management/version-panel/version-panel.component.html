@@ -8,8 +8,20 @@
     <button *ngIf="updateElement" class="button" mat-button mat-raised-button color="primary" (click)="onUpdate()">更新</button>
 </div>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table">
+<mat-tab-group dynamicHeight>
+    <mat-tab label="Short tab">
+        <div class="example-small-box mat-elevation-z4">
+            Small content
+        </div>
+    </mat-tab>
+    <mat-tab label="Long tab">
+        <div class="example-large-box mat-elevation-z4">
+            Large content
+        </div>
+    </mat-tab>
+</mat-tab-group>
 
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table">
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
