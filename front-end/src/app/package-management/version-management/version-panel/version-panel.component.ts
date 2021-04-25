@@ -103,7 +103,7 @@ export class VersionPanelComponent implements OnInit {
     this.dialog.open(CreateNewVersionComponent, {
       data: {
         latestVersion: selectedTab.dataSource.data.length > 0 ? selectedTab.dataSource.data[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" }),
-        acceptFileType: getAcceptFileType(this.package.categoryId),
+        acceptFileType: getAcceptFileType(this.package.categoryId, selectedTab.tag),
         parent: getPackageUrl(this.package),
         categoryId: this.package.categoryId,
         tag: this.package.categoryId === '1' ? selectedTab.tag : '',

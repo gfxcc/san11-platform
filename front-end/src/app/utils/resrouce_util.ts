@@ -7,9 +7,13 @@ export function getFullUrl(url: string): string {
 }
 
 
-export function getAcceptFileType(categoryId: string): string {
+export function getAcceptFileType(categoryId: string, tag: string): string {
     if (categoryId === '1') {
-        return '.scp, .scp-en';
+        if (tag === 'sire2.0') {
+            return '.scp, .scp-en';
+        } else if (tag === 'sire1.3') {
+            return '.sirecm';
+        }
     } else {
         return '.rar, .zip, .7z';
     }
