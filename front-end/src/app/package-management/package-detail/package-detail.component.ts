@@ -89,8 +89,11 @@ export class PackageDetailComponent implements OnInit {
     );
 
     this.loadPage();
-    this.preloadUserFeeds();
     this.configDescEditor();
+
+    if (this.isAuthor()) {
+      this.preloadUserFeeds();
+    }
   }
 
   ngAfterViewInit(): void {
