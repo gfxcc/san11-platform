@@ -3,12 +3,12 @@
 </div>
 
 <div class="head">
-    <div class="heading-1">版本</div>
+    <!-- <div class="heading-1">版本</div> -->
     <span class="example-spacer"></span>
     <button *ngIf="updateElement" class="button" mat-button mat-raised-button color="primary" (click)="onUpdate()">更新</button>
 </div>
 
-<mat-tab-group dynamicHeight [(selectedIndex)]="this.tabSelectedIndex">
+<mat-tab-group dynamicHeight [(selectedIndex)]="this.tabSelectedIndex" style="margin-top: -38px;">
     <div *ngFor="let tab of tabs">
         <mat-tab [label]="tab.text">
             <div>
