@@ -19,6 +19,7 @@ export interface VersionData {
   acceptFileType: string,
   parent: string,
   categoryId: string,
+  tag: string
 }
 @Component({
   selector: 'app-create-new-version',
@@ -31,13 +32,13 @@ export class CreateNewVersionComponent implements OnInit {
   acceptFileType: string;
   parent: string;
   categoryId: string;
+  tag: string;
 
   // locals
   newVersion: Version;
   updateType: string = 'minor';
 
   selectedFile: File;
-  canCreateBinary = false;
   loadingDialog;
 
 
@@ -57,6 +58,7 @@ export class CreateNewVersionComponent implements OnInit {
     this.acceptFileType = data.acceptFileType;
     this.parent = data.parent;
     this.categoryId = data.categoryId;
+    this.tag = data.tag;
 
     if (this.isFirstTimeUpload(this.latestVersion)) {
       this.updateType = 'custom';
@@ -118,7 +120,6 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onDescEditorChange(event) {
-    this.canCreateBinary = this.validateCreation();
   }
 
 
@@ -165,25 +166,9 @@ export class CreateNewVersionComponent implements OnInit {
     } else {
       this.selectedFile = file;
     }
-    this.canCreateBinary = this.validateCreation();
   }
-
-  validateCreation(): boolean {
-    if (this.categoryId != "3" && this.selectedFile === undefined) {
-      return false;
-    }
-    if (this.descEditor_element.getData() === '') {
-      return false;
-    }
-
-    return true;
-  }
-
 
   onCreateVersion(createVersionForm) {
-    if (!this.canCreateBinary) {
-      return;
-    }
 
     if (this.categoryId != '3') {
 
@@ -202,10 +187,12 @@ export class CreateNewVersionComponent implements OnInit {
     var arrayBuffer = data;
     var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
 
+    console.log(createVersionForm.value);
+
     const binary: Binary = new Binary({
       version: this.newVersion,
-      description: this.descEditor_element.getData(),
-      tag: '',
+      description: createVersionForm.value.updateDesc,
+      tag: this.tag,
       downloadMethod: this.categoryId === '3' ? createVersionForm.value.downloadMethod : '',
     });
 

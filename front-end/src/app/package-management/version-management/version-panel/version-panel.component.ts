@@ -45,10 +45,14 @@ export class VersionPanelComponent implements OnInit {
 
   binaries: Binary[];
   dataSource: MatTableDataSource<Binary>;
+  binaries_2_0: MatTableDataSource<Binary>;
+  binaries_1_3: MatTableDataSource<Binary>;
   binaryOnDownload: Binary;
 
   downloadProgress: Number;
   downloadProgressBar = false;
+  tabs;
+  tabSelectedIndex = 0;
 
   updateElement;
 
@@ -58,9 +62,28 @@ export class VersionPanelComponent implements OnInit {
     private binaryService: BinaryService,
     private dialog: MatDialog,
     private downloads: DownloadService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
+    if (this.package.categoryId === '1') {
+      this.tabs = [{
+        text: 'SIRE 2',
+        tag: 'sire2.0',
+        dataSource: undefined,
+      }, {
+        text: 'SIRE 1.3',
+        tag: 'sire1.3',
+        dataSource: undefined,
+      }];
+    } else {
+      this.tabs = [{
+        text: '默认',
+        tag: '',
+        dataSource: undefined,
+      }]
+    }
+
     this.fetchBinaries();
 
     if (isAdmin() || this.isAuthor()) {
@@ -76,12 +99,14 @@ export class VersionPanelComponent implements OnInit {
   }
 
   onUpdate() {
+    const selectedTab = this.tabs[this.tabSelectedIndex];
     this.dialog.open(CreateNewVersionComponent, {
       data: {
-        latestVersion: this.binaries.length > 0 ? this.binaries[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" }),
+        latestVersion: selectedTab.dataSource.data.length > 0 ? selectedTab.dataSource.data[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" }),
         acceptFileType: getAcceptFileType(this.package.categoryId),
         parent: getPackageUrl(this.package),
         categoryId: this.package.categoryId,
+        tag: this.package.categoryId === '1' ? selectedTab.tag : '',
       }
     }).afterClosed().subscribe(
       data => {
@@ -108,6 +133,12 @@ export class VersionPanelComponent implements OnInit {
 
   configDataSource() {
     this.dataSource = new MatTableDataSource(this.binaries);
+    this.tabs.forEach(tab => {
+      tab.dataSource = new MatTableDataSource(this.binaries.filter((binary: Binary) => binary.tag === tab.tag));
+    });
+
+    console.log(this.tabs);
+
     this.dataSource.paginator = this.paginator;
   }
 
