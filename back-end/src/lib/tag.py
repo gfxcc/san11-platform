@@ -47,7 +47,7 @@ class Tag(ResourceMixin):
         sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()}'
         constrains = []
         for key in SUPPORTED_KEY:
-            if key in kwargs:
+            if key in kwargs and kwargs[key]:
                 constrains.append(f'{key}={kwargs[key]}')
         if constrains:
             sql = f"{sql} WHERE {' AND '.join(constrains)}"

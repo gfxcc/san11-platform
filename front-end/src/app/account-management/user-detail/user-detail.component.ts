@@ -2,7 +2,7 @@ import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router';
 import { GalleryItem, ImageItem, GalleryComponent } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { Package, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
+import { ListPackagesRequest, Package, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { getUserUrl } from "../../utils/user_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
@@ -90,8 +90,8 @@ export class UserDetailComponent implements OnInit {
     return this.user != undefined && this.galleryElement != undefined;
   }
 
-  loadPackageList(user) {
-    this.san11pkService.searchPackages("{\"author_name\": \"" + user.username + "\"}", 0, '').subscribe(
+  loadPackageList(user: User) {
+    this.san11pkService.listPackages(new ListPackagesRequest({ authorId: user.userId })).subscribe(
       resp => {
         this.dataSource = new MatTableDataSource(resp.packages);
         this.dataSource.paginator = this.paginator;

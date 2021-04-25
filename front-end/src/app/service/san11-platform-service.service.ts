@@ -59,8 +59,7 @@ export class San11PlatformServiceService {
     return this.severClient.getPackage(request, this.getMetadata());
   }
 
-  listPackages(categoryId: number, page_size: number, page_token: string): Observable<ListPackagesResponse> {
-    const request = new ListPackagesRequest({ categoryId: categoryId.toString() });
+  listPackages(request: ListPackagesRequest): Observable<ListPackagesResponse> {
     return this.severClient.listPackages(request, this.getMetadata());
   }
 

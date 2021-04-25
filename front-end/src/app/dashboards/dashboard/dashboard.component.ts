@@ -1,7 +1,7 @@
 import { EventEmitter, Output, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
-import { Package } from '../../../proto/san11-platform.pb'
+import { ListPackagesRequest, Package } from '../../../proto/san11-platform.pb'
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { NotificationService } from "../../common/notification.service";
 
@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
 
   loadPackages(): void {
     this._eventEmiter.sendMessage(this.categoryId.toString());
-    this.san11PlatformServiceService.listPackages(this.categoryId, 0, "0").subscribe(
+    this.san11PlatformServiceService.listPackages(new ListPackagesRequest({ categoryId: this.categoryId.toString() })).subscribe(
       value => this.packages = value.packages,
       error => {
         this.notificationService.warn('载入工具列表失败:' + error.statusMessage);

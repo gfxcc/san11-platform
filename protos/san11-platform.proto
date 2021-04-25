@@ -77,9 +77,10 @@ message GetPackageRequest {
 }
 
 message ListPackagesRequest {
-    int64 category_id = 1;
-    int64 page_size = 2;
-    string page_token = 3;
+    int64 page_size = 1;
+    string page_token = 2;
+    int64 category_id = 3;
+    int64 author_id = 4;
 }
 
 message ListPackagesResponse {

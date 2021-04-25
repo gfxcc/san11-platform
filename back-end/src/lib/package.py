@@ -126,11 +126,11 @@ class Package(ResourceMixin):
 
     @classmethod
     def list(cls, page_size: int, page_token: str, **kwargs) -> List[Package]:
-        SUPPORTED_KEY = ['category_id']
+        SUPPORTED_KEY = ['category_id', 'author_id']
         sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()}'
         constrains = []
         for key in SUPPORTED_KEY:
-            if key in kwargs:
+            if key in kwargs and kwargs[key]:
                 constrains.append(f'{key}={kwargs[key]}')
         if constrains:
             sql = f"{sql} WHERE {' AND '.join(constrains)}"

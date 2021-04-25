@@ -615,9 +615,10 @@ export class ListPackagesRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: ListPackagesRequest) {
-    _instance.categoryId = _instance.categoryId || '0';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
+    _instance.categoryId = _instance.categoryId || '0';
+    _instance.authorId = _instance.authorId || '0';
   }
 
   /**
@@ -634,13 +635,16 @@ export class ListPackagesRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.categoryId = _reader.readInt64String();
-          break;
-        case 2:
           _instance.pageSize = _reader.readInt64String();
           break;
-        case 3:
+        case 2:
           _instance.pageToken = _reader.readString();
+          break;
+        case 3:
+          _instance.categoryId = _reader.readInt64String();
+          break;
+        case 4:
+          _instance.authorId = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -659,20 +663,24 @@ export class ListPackagesRequest implements GrpcMessage {
     _instance: ListPackagesRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.categoryId) {
-      _writer.writeInt64String(1, _instance.categoryId);
-    }
     if (_instance.pageSize) {
-      _writer.writeInt64String(2, _instance.pageSize);
+      _writer.writeInt64String(1, _instance.pageSize);
     }
     if (_instance.pageToken) {
-      _writer.writeString(3, _instance.pageToken);
+      _writer.writeString(2, _instance.pageToken);
+    }
+    if (_instance.categoryId) {
+      _writer.writeInt64String(3, _instance.categoryId);
+    }
+    if (_instance.authorId) {
+      _writer.writeInt64String(4, _instance.authorId);
     }
   }
 
-  private _categoryId?: string;
   private _pageSize?: string;
   private _pageToken?: string;
+  private _categoryId?: string;
+  private _authorId?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -680,16 +688,11 @@ export class ListPackagesRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListPackagesRequest.AsObject>) {
     _value = _value || {};
-    this.categoryId = _value.categoryId;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
+    this.categoryId = _value.categoryId;
+    this.authorId = _value.authorId;
     ListPackagesRequest.refineValues(this);
-  }
-  get categoryId(): string | undefined {
-    return this._categoryId;
-  }
-  set categoryId(value: string | undefined) {
-    this._categoryId = value;
   }
   get pageSize(): string | undefined {
     return this._pageSize;
@@ -702,6 +705,18 @@ export class ListPackagesRequest implements GrpcMessage {
   }
   set pageToken(value: string | undefined) {
     this._pageToken = value;
+  }
+  get categoryId(): string | undefined {
+    return this._categoryId;
+  }
+  set categoryId(value: string | undefined) {
+    this._categoryId = value;
+  }
+  get authorId(): string | undefined {
+    return this._authorId;
+  }
+  set authorId(value: string | undefined) {
+    this._authorId = value;
   }
 
   /**
@@ -719,9 +734,10 @@ export class ListPackagesRequest implements GrpcMessage {
    */
   toObject(): ListPackagesRequest.AsObject {
     return {
-      categoryId: this.categoryId,
       pageSize: this.pageSize,
-      pageToken: this.pageToken
+      pageToken: this.pageToken,
+      categoryId: this.categoryId,
+      authorId: this.authorId
     };
   }
 
@@ -742,9 +758,10 @@ export class ListPackagesRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListPackagesRequest.AsProtobufJSON {
     return {
-      categoryId: this.categoryId,
       pageSize: this.pageSize,
-      pageToken: this.pageToken
+      pageToken: this.pageToken,
+      categoryId: this.categoryId,
+      authorId: this.authorId
     };
   }
 }
@@ -753,18 +770,20 @@ export module ListPackagesRequest {
    * Standard JavaScript object representation for ListPackagesRequest
    */
   export interface AsObject {
-    categoryId?: string;
     pageSize?: string;
     pageToken?: string;
+    categoryId?: string;
+    authorId?: string;
   }
 
   /**
    * Protobuf JSON representation for ListPackagesRequest
    */
   export interface AsProtobufJSON {
-    categoryId?: string;
     pageSize?: string;
     pageToken?: string;
+    categoryId?: string;
+    authorId?: string;
   }
 }
 
