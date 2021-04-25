@@ -41,7 +41,7 @@ export class VersionPanelComponent implements OnInit {
   @Output() downloadEvent = new EventEmitter();
   displayedColumns: string[] = ['version', 'createTimestamp', 'downloadCount', 'actions'];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
 
   binaries: Binary[];
   dataSource: MatTableDataSource<Binary>;
@@ -135,11 +135,10 @@ export class VersionPanelComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.binaries);
     this.tabs.forEach(tab => {
       tab.dataSource = new MatTableDataSource(this.binaries.filter((binary: Binary) => binary.tag === tab.tag));
+      // tab.dataSource.paginator = this.paginator;
     });
 
-    console.log(this.tabs);
-
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
   }
 
   onDescription(binary: Binary) {
