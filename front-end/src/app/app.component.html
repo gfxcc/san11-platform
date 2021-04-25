@@ -77,7 +77,17 @@
                         <span style="margin-left: 10px;">{{webModule.text}}</span>
                     </div>
                 </mat-list-option>
+
+                <mat-divider></mat-divider>
             </mat-selection-list>
+
+            <div style="margin-top: 10px; padding: 5px;">
+                <div class="round-border" style="margin-bottom: 5px;" *ngFor="let tagGroup of tagGroups">
+                    <mat-chip-list>
+                        <mat-chip color="primary" *ngFor="let tag of tagGroup.tags">{{tag}}</mat-chip>
+                    </mat-chip-list>
+                </div>
+            </div>
 
 
         </div>

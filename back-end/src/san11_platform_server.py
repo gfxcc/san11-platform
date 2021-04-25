@@ -9,8 +9,6 @@ from typing import List
 from concurrent import futures
 
 
-import lib.db_util as db_util
-
 from lib.protos import san11_platform_pb2
 from lib.protos import san11_platform_pb2_grpc
 from lib.exception import Unauthenticated

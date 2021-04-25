@@ -6,7 +6,7 @@ import errno
 import uuid
 
 from .protos import san11_platform_pb2
-from .db_util import run_sql_with_param_and_fetch_one, run_sql_with_param
+from .db import run_sql_with_param_and_fetch_one, run_sql_with_param
 from .resource import get_images_path, get_resource_path, get_image_url, create_resource
 
 

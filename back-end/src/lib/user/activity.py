@@ -4,7 +4,7 @@ import logging
 from typing import List
 from enum import Enum
 
-from ..db_util import run_sql_with_param_and_fetch_one, run_sql_with_param,\
+from ..db import run_sql_with_param_and_fetch_one, run_sql_with_param,\
                       get_db_fields_placeholder_str, get_db_fields_str
 from ..time_util import get_now
 

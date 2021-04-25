@@ -6,7 +6,7 @@ from typing import Iterable
 
 from .reply import Reply
 from ..protos import san11_platform_pb2
-from ..db_util import run_sql_with_param, run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all
+from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all
 from ..time_util import get_now, datetime_to_str, get_timezone
 from ..url import Url
 from ..user.activity import Action, Activity

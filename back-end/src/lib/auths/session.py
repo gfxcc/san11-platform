@@ -3,7 +3,7 @@ import time
 import logging
 import uuid
 
-from ..db_util import run_sql_with_param, run_sql_with_param_and_fetch_one
+from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one
 from ..user.user import User
 
 

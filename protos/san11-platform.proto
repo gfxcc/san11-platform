@@ -51,6 +51,9 @@ service RouteGuide {
   rpc UpdateUser(UpdateUserRequest) returns (User) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
 
+  // Tag related
+  rpc ListTags(ListTagsRequest) returns (ListTagsResponse) {}
+
   //
   rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}
 }
@@ -250,6 +253,17 @@ message ListUsersResponse {
     string page_token = 2;
 }
 
+// tag related
+message ListTagsRequest {
+    int64 page_size = 1;
+    string page_token = 2;
+}
+
+message ListTagsResponse {
+    repeated Tag tags = 1;
+    string page_token = 2;
+}
+
 //
 message GetStatisticRequest {
     string date = 1;
@@ -277,7 +291,7 @@ message Package {
     int64 author_id = 7;
     string author_image_url = 8;
     repeated string image_urls = 9;
-    repeated string tags = 10;
+    repeated Tag tags = 10;
     int64 download_count = 11;
 }
 
@@ -337,4 +351,14 @@ message Reply {
     string text = 5;
     int64 author_id = 6;
     int64 upvote_count = 7;
+}
+
+message Tag {
+    int64 tag_id = 1;
+    // A string not longer than 8
+    string name = 2;
+    int64 category_id = 3;
+    // Whether a user can update (assign or remove) this tag.
+    // A immutable tag can only be updated by backend. E.g. `SIRE 1`, `SIRE 2`
+    bool mutable = 4;
 }

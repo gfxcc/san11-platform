@@ -100,4 +100,14 @@ CREATE TABLE activities (
     PRIMARY KEY (user_id, resource, action)
 );
 
+CREATE TABLE tags (
+    tag_id INT NOT NULL,
+    name INT NOT NULL,
+    category_id INT NOT NULL,
+    mutable BOOLEAN NOT NULL,
+
+
+    PRIMARY KEY (tag_id)
+);
+
 \dt;

@@ -37,6 +37,14 @@ export class AppComponent {
   hideUserImage = true;
   userImage: string;
 
+  tagGroups = [{
+    groupName: 'SIRE 版本',
+    tags: ['SIRE 2', 'SIRE 1']
+  }, {
+    groupName: '类型',
+    tags: ['通用', '战法', '特技', '计略', '部队', '战略', '地形', 'AI']
+  }];
+
   constructor(
     private notificationService: NotificationService,
     private san11PlatformServiceService: San11PlatformServiceService,

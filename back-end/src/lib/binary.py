@@ -9,7 +9,7 @@ from typing import Any, Iterable, List, Union
 from datetime import datetime
 
 from .protos import san11_platform_pb2
-from .db_util import run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
+from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
 from .version import Version
 from .resource import get_resource_path, get_binary_url, create_resource
 from .url import Url

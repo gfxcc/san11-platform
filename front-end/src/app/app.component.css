@@ -153,3 +153,9 @@ footer>a {
     height: 40px;
     border-radius: 50%;
 }
+
+mat-chip {
+    /* width: 20px; */
+    /* height: 10px; */
+    font-size: 10px;
+}
