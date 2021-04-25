@@ -170,6 +170,10 @@ export class VersionPanelComponent implements OnInit {
               saveAs(result.body, filename);
               this.downloadEvent.emit();
               this.binaryOnDownload.downloadCount = increment(this.binaryOnDownload.downloadCount);
+
+              setTimeout(() => {
+                this.downloadProgressBar = false;
+              }, 5000);
             }
           },
           error => {
