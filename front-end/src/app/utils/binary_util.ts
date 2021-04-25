@@ -12,9 +12,9 @@ export function getBinaryFilename(san11Package: Package, binary: Binary): string
 
     let extension: string;
     if (san11Package.categoryId === '1') {
-        if (binary.tag === 'sire2.0') {
+        if (binary.tag === 'sire2') {
             extension = 'scp';
-        } else if (binary.tag === 'sire1.30') {
+        } else if (binary.tag === 'sire1') {
             extension = 'sirecm';
         } else {
             console.log('unknow tag for sire plugin');

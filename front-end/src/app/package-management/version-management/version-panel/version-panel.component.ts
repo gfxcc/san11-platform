@@ -69,11 +69,11 @@ export class VersionPanelComponent implements OnInit {
     if (this.package.categoryId === '1') {
       this.tabs = [{
         text: 'SIRE 2',
-        tag: 'sire2.0',
+        tag: 'sire2',
         dataSource: undefined,
       }, {
-        text: 'SIRE 1.30',
-        tag: 'sire1.30',
+        text: 'SIRE 1',
+        tag: 'sire1',
         dataSource: undefined,
       }];
     } else {
