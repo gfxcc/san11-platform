@@ -1,6 +1,8 @@
 import { ViewChild, ChangeDetectorRef, ElementRef, Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { FormControl } from '@angular/forms';
 import { Observable, isObservable } from "rxjs";
+import { map, startWith } from 'rxjs/operators';
 
 import { saveAs } from 'file-saver'
 // import InlineEditor from '@ckeditor/ckeditor5-build-inline';
@@ -12,7 +14,7 @@ import * as Editor from "../../common/components/ckeditor/ckeditor";
 
 import { GalleryItem, ImageItem } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { Package, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
+import { ListTagsRequest, Package, Tag, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { NotificationService } from "../../common/notification.service";
@@ -42,6 +44,10 @@ export class PackageDetailComponent implements OnInit {
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild('gallery') galleryElementCatched: ElementRef
 
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
+
   images: ImageItem[] = [];
   packageId: string;
   package: Package;
@@ -66,6 +72,8 @@ export class PackageDetailComponent implements OnInit {
   descEditor_config;
 
   userFeeds;
+  allTags: Tag[];
+  tagCanEdit: boolean;
 
   constructor(
     // public dialogRef: MatDialogRef<PackageDetailComponent>,
@@ -89,11 +97,24 @@ export class PackageDetailComponent implements OnInit {
     );
 
     this.loadPage();
+    this.loadTags();
     this.configDescEditor();
 
     if (this.isAuthor()) {
       this.preloadUserFeeds();
     }
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+    this.tagCanEdit = this.isAuthor() || this.isAdmin();
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
   ngAfterViewInit(): void {
@@ -324,6 +345,57 @@ export class PackageDetailComponent implements OnInit {
     this.descEditor_updated = true;
   }
 
+  newTagSelected(tagId: string) {
+    for (const tag of this.package.tags) {
+      if (tag.tagId === tagId) {
+        return;
+      }
+    }
+    let updateTags = this.package.tags.map(x => new Tag({ tagId: x.tagId }));
+    updateTags.push(new Tag({ tagId: tagId }));
+    this.san11pkService.updatePackage(new Package({
+      packageId: this.package.packageId,
+      tags: updateTags
+    })).subscribe(
+      resp => {
+        this.package.tags = resp.tags;
+        this.notificationService.success('添加标签成功');
+      },
+      error => {
+        this.notificationService.warn("添加标签失败: " + error.statusMessage);
+      }
+    );
+  }
+
+  removeTag(tagToRemove: Tag) {
+    let updateTags = this.package.tags.filter((tag: Tag) => tag.tagId != tagToRemove.tagId);
+    if (updateTags.length === 0) {
+      updateTags = [new Tag({ tagId: '0' })];
+    }
+    this.san11pkService.updatePackage(new Package({
+      packageId: this.package.packageId,
+      tags: updateTags
+    })).subscribe(
+      resp => {
+        this.package.tags = resp.tags;
+        this.notificationService.success('删除标签成功');
+      },
+      error => {
+        this.notificationService.warn("删除标签失败: " + error.statusMessage);
+      }
+    );
+  }
+
+  loadTags() {
+    this.san11pkService.listTags(new ListTagsRequest({ categoryId: this.package.categoryId })).subscribe(
+      resp => {
+        this.allTags = resp.tags;
+      },
+      error => {
+        this.notificationService.warn('加载便签失败:' + error.statusMessage);
+      }
+    );
+  }
   loadPage() {
     if (this.isAdmin() && this.package.status === 'under_review') {
       this.adminZone = true;

@@ -43,7 +43,7 @@ class Package(ResourceMixin):
         self.image_urls = image_urls
         self.download_count = download_count
         self.tag_ids = tag_ids or []
-        self.update_time = update_time
+        self.update_time = update_time or self.create_time
 
     @property
     def url(self):
@@ -86,7 +86,8 @@ class Package(ResourceMixin):
             'author_id': self.author_id,
             'image_urls': self.image_urls,
             'download_count': self.download_count,
-            'update_time': datetime_to_str(self.update_time)
+            'update_time': datetime_to_str(self.update_time),
+            'tag_ids': self.tag_ids
         }
         return json.dumps(d, indent=2)
 
@@ -126,16 +127,19 @@ class Package(ResourceMixin):
 
     @classmethod
     def list(cls, page_size: int, page_token: str, **kwargs) -> List[Package]:
-        SUPPORTED_KEY = ['category_id', 'author_id']
+        SUPPORTED_KEY = ['category_id', 'author_id', 'tag_id']
         sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()}'
         constrains = []
         for key in SUPPORTED_KEY:
             if key in kwargs and kwargs[key]:
-                constrains.append(f'{key}={kwargs[key]}')
+                if key == 'tag_id':
+                    constrains.append(f"'{kwargs[key]}'=ANY(tag_ids)")
+                else:
+                    constrains.append(f'{key}={kwargs[key]}')
         if constrains:
             sql = f"{sql} WHERE {' AND '.join(constrains)}"
         sql += ' ORDER BY create_time DESC'
-
+        logger.debug(f'listPackage: {sql}')
         resp = run_sql_with_param_and_fetch_all(sql, {})
         return [cls(*item) for item in resp]
 
@@ -232,12 +236,15 @@ class Package(ResourceMixin):
             ',description=%(description)s'\
             ',status=%(status)s'\
             ',image_urls=%(image_urls)s'\
+            ',tag_ids=%(tag_ids)s'\
             ' WHERE package_id=%(package_id)s'
+        logger.debug(f'updating {self}')
 
         run_sql_with_param(sql, {
             'name': self.name,
             'description': self.description,
             'status': self.status,
             'image_urls': self.image_urls,
+            'tag_ids': self.tag_ids,
             'package_id': self.package_id
         })

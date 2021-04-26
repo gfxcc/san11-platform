@@ -21,6 +21,7 @@ import { DeleteBinaryRequest } from "../../proto/san11-platform.pb";
 import { UpdateUserRequest, UpdatePasswordRequest } from "../../proto/san11-platform.pb";
 import { UpdateCommentRequest, CreateCommentRequest, DeleteCommentRequest, ListCommentsRequest, ListCommentsResponse } from "../../proto/san11-platform.pb";
 import { UpdateReplyRequest, CreateReplyRequest, DeleteReplyRequest } from "../../proto/san11-platform.pb";
+import { ListTagsRequest, ListTagsResponse } from "../../proto/san11-platform.pb";
 
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
@@ -184,6 +185,11 @@ export class San11PlatformServiceService {
   listUsers(): Observable<ListUsersResponse> {
     const request = new ListUsersRequest({});
     return this.severClient.listUsers(request, this.getMetadata());
+  }
+
+  // tags
+  listTags(request: ListTagsRequest): Observable<ListTagsResponse> {
+    return this.severClient.listTags(request, this.getMetadata());
   }
 
   // UTILS

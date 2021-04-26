@@ -11,7 +11,7 @@ import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { PackageDetailComponent } from './package-management/package-detail/package-detail.component';
 import { EventEmiterService } from "./service/event-emiter.service";
 import { getFullUrl } from './utils/resrouce_util';
-import { User } from '../proto/san11-platform.pb';
+import { ListTagsRequest, Tag, User } from '../proto/san11-platform.pb';
 import { clearUser, loadUser, signedIn } from './utils/user_util';
 
 
@@ -37,21 +37,22 @@ export class AppComponent {
   hideUserImage = true;
   userImage: string;
 
-  tagGroups = [{
-    groupName: 'SIRE 版本',
-    tags: ['SIRE 2', 'SIRE 1']
-  }, {
-    groupName: '类型',
-    tags: ['通用', '战法', '特技', '计略', '部队', '战略', '地形', 'AI']
-  }];
+  tagGroups = [];
+  // tagGroups = [{
+  //   groupName: 'SIRE 版本',
+  //   tags: ['SIRE 2', 'SIRE 1']
+  // }, {
+  //   groupName: '类型',
+  //   tags: ['通用', '战法', '特技', '计略', '部队', '战略', '地形', 'AI']
+  // }];
 
   constructor(
     private notificationService: NotificationService,
-    private san11PlatformServiceService: San11PlatformServiceService,
+    private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private _eventEmiter: EventEmiterService,
     public router: Router) {
-    this.san11PlatformServiceService.getStatistic().subscribe(
+    this.san11pkService.getStatistic().subscribe(
       statistic => {
         this.today_visit_count = Number(statistic.visitCount);
         this.today_download_count = Number(statistic.downloadCount);
@@ -61,6 +62,49 @@ export class AppComponent {
     if (signedIn()) {
       this.user = loadUser();
     }
+
+    // if (this.selectedCategory === '1') {
+    //   this.tagGroups = [{
+    //     groupName: 'SIRE 版本',
+    //     tags: [new Tag({
+    //       tagId: '1',
+    //       name: 'SIRE 1',
+    //       categoryId: '1',
+    //       mutable: false
+    //     }), new Tag({
+    //       tagId: '2',
+    //       name: 'SIRE 2',
+    //       categoryId: '1',
+    //       mutable: false
+    //     })]
+    //   }];
+    // }
+  }
+
+  ngOnInit(): void {
+    this.loadTags();
+  }
+
+  onClickTag(tag: Tag) {
+    this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.tagId } });
+  }
+
+  loadTags() {
+    this.san11pkService.listTags(new ListTagsRequest({ categoryId: this.selectedCategory })).subscribe(
+      resp => {
+        if (resp.tags.length === 0) {
+          this.tagGroups = [];
+        } else {
+          this.tagGroups = [{
+            groupName: '类型',
+            tags: resp.tags
+          }];
+        }
+      },
+      error => {
+        this.notificationService.warn('无法获取 标签:' + error.statusMessage);
+      }
+    );
   }
 
   signedIn() {
@@ -80,7 +124,7 @@ export class AppComponent {
   }
 
   onSignOut() {
-    this.san11PlatformServiceService.signOut(localStorage.getItem('userId')).subscribe(
+    this.san11pkService.signOut(localStorage.getItem('userId')).subscribe(
       () => console.log('log out')
     );
 
@@ -100,6 +144,7 @@ export class AppComponent {
 
   onCategoryLabelClick(category) {
     this.router.navigate(category.link);
+    this.loadTags();
   }
 
   compareWith(o1, o2) {
@@ -130,6 +175,7 @@ export class AppComponent {
     this._eventEmiter.dataStr.subscribe(data => {
       setTimeout(() => {
         this.selectedCategory = data;
+        this.loadTags();
       });
     });
   }

@@ -51,8 +51,8 @@ CREATE TABLE packages (
     status TEXT NOT NULL,
     author_id INT NOT NULL REFERENCES users(user_id),
     image_urls TEXT[],
-    tag_ids INT[],
     download_count INT DEFAULT 0,
+    tag_ids INT[],
     update_time TIMESTAMP
 );
 INSERT INTO packages VALUES (DEFAULT, '【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', current_timestamp, 1, 'normal', 1, NULL, NULL, current_timestamp);

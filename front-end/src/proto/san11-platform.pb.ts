@@ -619,6 +619,7 @@ export class ListPackagesRequest implements GrpcMessage {
     _instance.pageToken = _instance.pageToken || '';
     _instance.categoryId = _instance.categoryId || '0';
     _instance.authorId = _instance.authorId || '0';
+    _instance.tagId = _instance.tagId || '0';
   }
 
   /**
@@ -645,6 +646,9 @@ export class ListPackagesRequest implements GrpcMessage {
           break;
         case 4:
           _instance.authorId = _reader.readInt64String();
+          break;
+        case 5:
+          _instance.tagId = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -675,12 +679,16 @@ export class ListPackagesRequest implements GrpcMessage {
     if (_instance.authorId) {
       _writer.writeInt64String(4, _instance.authorId);
     }
+    if (_instance.tagId) {
+      _writer.writeInt64String(5, _instance.tagId);
+    }
   }
 
   private _pageSize?: string;
   private _pageToken?: string;
   private _categoryId?: string;
   private _authorId?: string;
+  private _tagId?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -692,6 +700,7 @@ export class ListPackagesRequest implements GrpcMessage {
     this.pageToken = _value.pageToken;
     this.categoryId = _value.categoryId;
     this.authorId = _value.authorId;
+    this.tagId = _value.tagId;
     ListPackagesRequest.refineValues(this);
   }
   get pageSize(): string | undefined {
@@ -718,6 +727,12 @@ export class ListPackagesRequest implements GrpcMessage {
   set authorId(value: string | undefined) {
     this._authorId = value;
   }
+  get tagId(): string | undefined {
+    return this._tagId;
+  }
+  set tagId(value: string | undefined) {
+    this._tagId = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -737,7 +752,8 @@ export class ListPackagesRequest implements GrpcMessage {
       pageSize: this.pageSize,
       pageToken: this.pageToken,
       categoryId: this.categoryId,
-      authorId: this.authorId
+      authorId: this.authorId,
+      tagId: this.tagId
     };
   }
 
@@ -761,7 +777,8 @@ export class ListPackagesRequest implements GrpcMessage {
       pageSize: this.pageSize,
       pageToken: this.pageToken,
       categoryId: this.categoryId,
-      authorId: this.authorId
+      authorId: this.authorId,
+      tagId: this.tagId
     };
   }
 }
@@ -774,6 +791,7 @@ export module ListPackagesRequest {
     pageToken?: string;
     categoryId?: string;
     authorId?: string;
+    tagId?: string;
   }
 
   /**
@@ -784,6 +802,7 @@ export module ListPackagesRequest {
     pageToken?: string;
     categoryId?: string;
     authorId?: string;
+    tagId?: string;
   }
 }
 

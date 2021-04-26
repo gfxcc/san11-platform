@@ -1,4 +1,5 @@
 import { EventEmitter, Output, Component, OnInit } from '@angular/core';
+import { combineLatest } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { ListPackagesRequest, Package } from '../../../proto/san11-platform.pb'
@@ -17,8 +18,6 @@ import { EventEmiterService } from "../../service/event-emiter.service";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  categoryId: number = 1;
-
   packages: Package[] = [];
 
   constructor(
@@ -31,61 +30,29 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (params: any) => {
-        const categoryId = params['categoryId'];
-        if (categoryId != undefined) {
-          this.categoryId = Number(categoryId);
-        }
-        this.loadPackages();
+    // this.route.params.subscribe(
+    //   (params: any) => {
+    //     this.categoryId = Number(params['categoryId']);
+    //     this.loadPackages();
+    //   }
+    // );
 
-        const packageId = params['packageId'];
-        if (packageId != undefined) {
-          this.loadPackageDetail(packageId);
-        }
+    var obsComb = combineLatest(this.route.params, this.route.queryParams,
+      (params, qparams) => ({ params, qparams }));
 
-        const userId = params['userId'];
-        if (userId != undefined) {
-          this.loadUserDetail(userId);
-        }
-
-      }
-    );
+    obsComb.subscribe(ap => {
+      this.loadPackages(ap.params['categoryId'], ap.qparams['tagId']);
+    });
   }
 
-  loadPackages(): void {
-    this._eventEmiter.sendMessage(this.categoryId.toString());
-    this.san11PlatformServiceService.listPackages(new ListPackagesRequest({ categoryId: this.categoryId.toString() })).subscribe(
+  loadPackages(categoryId: string, tagId: string): void {
+    console.log(`tag: ${tagId}`);
+    this._eventEmiter.sendMessage(categoryId);
+    this.san11PlatformServiceService.listPackages(new ListPackagesRequest({ categoryId: categoryId, tagId: tagId })).subscribe(
       value => this.packages = value.packages,
       error => {
         this.notificationService.warn('载入工具列表失败:' + error.statusMessage);
       }
     );
   }
-
-
-  loadPackageDetail(packageId: string) {
-    this.san11PlatformServiceService.getPackage(packageId).subscribe(
-      san11Package => {
-        this.dialog.open(PackageDetailComponent, {
-          data: {
-            package: san11Package
-          }
-        });
-
-      },
-      error => {
-        this.notificationService.warn('载入工具 失败:' + error.statusMessage);
-      }
-    );
-  }
-
-  loadUserDetail(userId: string) {
-    this.dialog.open(UserDetailComponent, {
-      data: {
-        userId: userId
-      }
-    });
-  }
-
 }

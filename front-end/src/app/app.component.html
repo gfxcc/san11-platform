@@ -81,10 +81,10 @@
                 <mat-divider></mat-divider>
             </mat-selection-list>
 
-            <div style="margin-top: 10px; padding: 5px;">
+            <div *ngIf="this.tagGroups.length > 0" style="margin-top: 10px; padding: 5px;">
                 <div class="round-border" style="margin-bottom: 5px;" *ngFor="let tagGroup of tagGroups">
                     <mat-chip-list>
-                        <mat-chip color="primary" *ngFor="let tag of tagGroup.tags">{{tag}}</mat-chip>
+                        <mat-chip color="primary" *ngFor="let tag of tagGroup.tags" (click)="onClickTag(tag)">{{tag.name}}</mat-chip>
                     </mat-chip-list>
                 </div>
             </div>

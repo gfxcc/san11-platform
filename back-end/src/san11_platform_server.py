@@ -80,7 +80,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return san11_platform_pb2.ListPackagesResponse(packages=[
             package.to_pb()
             for package in Package.list(0, '',
-                category_id=request.category_id
+                category_id=request.category_id,
+                author_id=request.author_id,
+                tag_id=request.tag_id
             ) if package.status == 'normal' or
             (user and user.user_id == package.author_id and package.status != 'hidden') or
             (user and user.user_type == 'admin')
@@ -119,7 +121,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
                     logger.error(f'Failed to delete image: {err}')
             logger.debug(request.package.image_urls)
             package.image_urls = list(updated_image_urls)
-
+        if request.package.tags:
+            package.tag_ids = [] if request.package.tags[0].tag_id == 0 else list(set(tag.tag_id for tag in request.package.tags))
         package.update()
         return package.to_pb()
 
@@ -395,7 +398,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # Tags
     def ListTags(self, request, context):
         logger.info(f'In ListTags')
-        return san11_platform_pb2.ListUsersResponse(
+        return san11_platform_pb2.ListTagsResponse(
             tags=[tag.to_pb() for tag in Tag.list(page_size=0,
                                                   page_token='',
                                                   category_id=request.category_id)]
