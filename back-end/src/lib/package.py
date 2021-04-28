@@ -14,7 +14,8 @@ from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, \
 from .image import Image
 from .category import Category
 from .binary import Binary
-from .time_util import get_datetime_format, get_timezone, get_now, datetime_to_str
+from .time_util import get_datetime_format, get_timezone, get_now, datetime_to_str, \
+                        get_age
 from .resource import get_resource_path
 from .query import Query
 from .url import Url
@@ -36,14 +37,14 @@ class Package(ResourceMixin):
         self.package_id = package_id
         self.name = name
         self.description = description
-        self.create_time = create_time
+        self.create_time = create_time.replace(tzinfo=timezone.utc)
         self.category_id = category_id
         self.status = status
         self.author_id = author_id
         self.image_urls = image_urls
         self.download_count = download_count
         self.tag_ids = tag_ids or []
-        self.update_time = update_time or self.create_time
+        self.update_time = update_time.replace(tzinfo=timezone.utc) if update_time else self.create_time
 
     @property
     def url(self):
@@ -204,7 +205,7 @@ class Package(ResourceMixin):
             package_id=self.package_id,
             name=self.name,
             description=self.description,
-            create_time=datetime_to_str(self.create_time),
+            create_time=get_age(self.create_time),
             category_id=self.category_id,
             status=self.status,
             author_id=self.author_id,
@@ -212,7 +213,7 @@ class Package(ResourceMixin):
             image_urls=self.image_urls,
             download_count=self.download_count,
             tags=[Tag.from_id(tag_id).to_pb() for tag_id in self.tag_ids],
-            update_time=datetime_to_str(self.update_time or self.create_time)
+            update_time=get_age(self.update_time or self.create_time)
         )
 
     def append_image(self, image: Image) -> None:

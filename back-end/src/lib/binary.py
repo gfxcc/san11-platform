@@ -13,7 +13,7 @@ from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_wi
 from .version import Version
 from .resource import get_resource_path, get_binary_url, create_resource
 from .url import Url
-from .time_util import get_datetime_format, get_timezone
+from .time_util import datetime_to_str, get_datetime_format, get_timezone
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -74,8 +74,7 @@ class Binary:
             download_count=self.download_count,
             version=self.version.to_pb(),
             description=self.description,
-            create_timestamp=self.create_timestamp.strftime(
-                get_datetime_format()),
+            create_timestamp=datetime_to_str(self.create_timestamp),
             tag=self.tag
         )
 

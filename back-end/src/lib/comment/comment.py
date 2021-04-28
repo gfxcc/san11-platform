@@ -7,7 +7,7 @@ from typing import Iterable
 from .reply import Reply
 from ..protos import san11_platform_pb2
 from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all
-from ..time_util import get_now, datetime_to_str, get_timezone
+from ..time_util import get_now, datetime_to_str, get_timezone, get_age
 from ..url import Url
 from ..user.activity import Action, Activity
 
@@ -65,8 +65,8 @@ class Comment:
         return san11_platform_pb2.Comment(
             parent=self.parent,
             comment_id=self.comment_id,
-            create_time=datetime_to_str(self.create_time),
-            update_time=datetime_to_str(self.update_time),
+            create_time=get_age(self.create_time),
+            update_time=get_age(self.update_time),
             text=self.text,
             author_id=self.author_id,
             upvote_count=self.upvote_count,
