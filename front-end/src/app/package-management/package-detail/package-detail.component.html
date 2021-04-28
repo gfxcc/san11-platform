@@ -37,26 +37,24 @@
                 </div>
 
 
-                <div>
+                <div style="margin-bottom: 10px">
                     <div class="heading-1">创建日期</div>
                     <div class="content">{{this.package.createTime}}</div>
                 </div>
 
-                <div *ngIf="true" style="width:150px;">
-                    <div>
-                        <mat-form-field>
-                            <div class="heading-1">标签</div>
-                            <mat-chip-list #chipList>
-                                <mat-chip *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
-                                    {{tag.name}}
-                                    <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
-                                </mat-chip>
-                            </mat-chip-list>
-                        </mat-form-field>
+                <div *ngIf="true">
+                    <div style="margin-bottom: 5px;">
+                        <div class="heading-1">标签</div>
+                        <mat-chip-list #chipList>
+                            <mat-chip *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
+                                {{tag.name}}
+                                <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
                     </div>
 
                     <div *ngIf="tagCanEdit">
-                        <mat-form-field class="example-full-width">
+                        <mat-form-field style="width: 100%;">
                             <mat-label>新标签...</mat-label>
                             <mat-select required (selectionChange)="newTagSelected($event.value)">
                                 <mat-option *ngFor="let tag of this.allTags" [value]="tag.tagId">

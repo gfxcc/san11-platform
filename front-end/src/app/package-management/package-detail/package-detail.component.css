@@ -81,6 +81,7 @@
 .col-right {
     flex-grow: 10;
     min-width: 50px;
+    max-width: 170px;
     padding-left: 10px;
 }
 
