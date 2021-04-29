@@ -80,18 +80,21 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return san11_platform_pb2.ListPackagesResponse(packages=[
             package.to_pb()
             for package in Package.list(0, '',
-                category_id=request.category_id,
-                author_id=request.author_id,
-                tag_id=request.tag_id
-            ) if package.status == 'normal' or
+                                        category_id=request.category_id,
+                                        author_id=request.author_id,
+                                        tag_id=request.tag_id
+                                        ) if package.status == 'normal' or
             (user and user.user_id == package.author_id and package.status != 'hidden') or
             (user and user.user_type == 'admin')
             # package's status is normal or user is admin or author of the package
         ])
 
-    # def SearchPackages(self, request, context):
-        # logger.info(f'In SearchPackage: query={request.query}')
-        # return san11_platform_pb2.SearchPackagesResponse(packages=[package.to_pb() for package in Package.search(Query.from_str(request.query))])
+    def SearchPackages(self, request, context):
+        logger.info(f'In SearchPackage: query={request.query}')
+        return san11_platform_pb2.SearchPackagesResponse(
+            packages=[package.to_pb() for package in Package.search(request.page_size,
+                                                                    request.page_token, 
+                                                                    request.query)])
 
     def UpdatePackage(self, request, context):
         logger.info(
@@ -122,7 +125,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             logger.debug(request.package.image_urls)
             package.image_urls = list(updated_image_urls)
         if request.package.tags:
-            package.tag_ids = [] if request.package.tags[0].tag_id == 0 else list(set(tag.tag_id for tag in request.package.tags))
+            package.tag_ids = [] if request.package.tags[0].tag_id == 0 else list(
+                set(tag.tag_id for tag in request.package.tags))
         package.update()
         return package.to_pb()
 

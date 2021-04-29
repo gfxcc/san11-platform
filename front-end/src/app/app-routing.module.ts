@@ -19,6 +19,8 @@ import { UserResolverService } from "./account-management/user-detail/user-resol
 const routes: Routes = [
   { path: '', redirectTo: '/categories/1', pathMatch: 'full' },
 
+  { path: 'search', component: DashboardComponent },
+
   { path: 'signin', component: SigninComponent },
   { path: 'register', component: RegisterComponent },
 

@@ -74,3 +74,14 @@ def get_db_fields_placeholder_str(fields: List[str]) -> str:
     E.g. `%(field1)s, %(field2)s, %(field3)s`
     '''
     return ','.join(f'%({field})s' for field in fields)
+
+
+def sanitize_str(input: str) -> str:
+    '''
+    Remove characters which could be used for SQL injection.
+    '''
+    remove_set = {'\'', '\"', '%', '\0', '\\', '\t', '\r', '\n', '\b'}
+    ret = ''
+    for c in input:
+        ret += c if c not in remove_set else ''
+    return ret

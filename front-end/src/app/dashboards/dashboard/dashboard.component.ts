@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private san11PlatformServiceService: San11PlatformServiceService,
+    private san11pkService: San11PlatformServiceService,
     private _eventEmiter: EventEmiterService,
   ) { }
 
@@ -41,18 +41,38 @@ export class DashboardComponent implements OnInit {
       (params, qparams) => ({ params, qparams }));
 
     obsComb.subscribe(ap => {
-      this.loadPackages(ap.params['categoryId'], ap.qparams['tagId']);
+      const categoryId = ap.params['categoryId'];
+      const tagId = ap.qparams['tagId'];
+      const query = ap.qparams['query']
+
+      if (query != undefined) {
+        this.searchPackages(query);
+      } else {
+        this.loadPackages(ap.params['categoryId'], ap.qparams['tagId']);
+      }
     });
   }
 
   loadPackages(categoryId: string, tagId: string): void {
     console.log(`tag: ${tagId}`);
     this._eventEmiter.sendMessage(categoryId);
-    this.san11PlatformServiceService.listPackages(new ListPackagesRequest({ categoryId: categoryId, tagId: tagId })).subscribe(
+    this.san11pkService.listPackages(new ListPackagesRequest({ categoryId: categoryId, tagId: tagId })).subscribe(
       value => this.packages = value.packages,
       error => {
         this.notificationService.warn('载入工具列表失败:' + error.statusMessage);
       }
     );
+  }
+
+  searchPackages(query: string): void {
+    this.san11pkService.searchPackages(query, 0, '').subscribe(
+      resp => {
+        this.packages = resp.packages;
+      },
+      error => {
+        this.notificationService.warn('搜索失败: ' + error.statusMessage);
+      }
+    );
+
   }
 }

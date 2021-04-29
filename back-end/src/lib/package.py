@@ -10,7 +10,8 @@ from google.protobuf import descriptor
 
 from .protos import san11_platform_pb2
 from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, \
-    run_sql_with_param_and_fetch_all, get_db_fields_str, get_db_fields_placeholder_str
+    run_sql_with_param_and_fetch_all, get_db_fields_str, get_db_fields_placeholder_str, \
+    sanitize_str
 from .image import Image
 from .category import Category
 from .binary import Binary
@@ -145,10 +146,10 @@ class Package(ResourceMixin):
         return [cls(*item) for item in resp]
 
     @classmethod
-    def search(cls, page_size: int, page_token: str, query: Query) -> List[Package]:
+    def search(cls, page_size: int, page_token: str, query: str) -> List[Package]:
         sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()} '\
-            f' WHERE {query.to_sql()} ORDER BY create_time DESC'
-        logger.debug(f'Package.search(): sql={sql}')
+            f"WHERE name LIKE '%%{sanitize_str(query)}%%' ORDER BY create_time DESC"
+        logger.debug(sql)
         resp = run_sql_with_param_and_fetch_all(sql, {})
         return [Package(*item) for item in resp]
 

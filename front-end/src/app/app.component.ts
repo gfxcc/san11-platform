@@ -22,6 +22,7 @@ import { clearUser, loadUser, signedIn } from './utils/user_util';
 })
 export class AppComponent {
   @ViewChild('categoryNav') categoryNav;
+  @ViewChild('searchInput') searchInput;
 
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   categories = GlobalConstants.categories;
@@ -38,6 +39,8 @@ export class AppComponent {
   userImage: string;
 
   tagGroups = [];
+
+  searchQuery: string = '';
   // tagGroups = [{
   //   groupName: 'SIRE 版本',
   //   tags: ['SIRE 2', 'SIRE 1']
@@ -85,6 +88,9 @@ export class AppComponent {
     this.loadTags();
   }
 
+  ngAfterViewInit(): void {
+  }
+
   onClickTag(tag: Tag) {
     this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.tagId } });
   }
@@ -105,6 +111,13 @@ export class AppComponent {
         this.notificationService.warn('无法获取 标签:' + error.statusMessage);
       }
     );
+  }
+
+  searchChanged() {
+
+    this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+
+    // console.log(this.searchQuery);
   }
 
   signedIn() {

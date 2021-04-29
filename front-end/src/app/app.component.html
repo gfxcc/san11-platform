@@ -1,15 +1,15 @@
 <header class="head-bar">
     <mat-toolbar color="primary">
         <span class="website-title clickable" (click)="this.router.navigate([&quot;/&quot;]);">San11 分享平台</span>
+        <span class="example-spacer"></span>
 
+        <div class="search-bar-container">
+            <div class="search-bar-input-wrapper">
+                <input #searchInput [(ngModel)]="this.searchQuery" type="text" spellcheck="false" autocomplete="off" placeholder="搜索 ..." (ngModelChange)="this.searchChanged()" class="search-input">
+                <span matTooltip="支持 工具名" class="help-icon"></span>
+            </div>
+        </div>
 
-
-        <span class="example-spacer"></span>
-        <span class="example-spacer"></span>
-        <span class="example-spacer"></span>
-        <span class="example-spacer"></span>
-        <span class="example-spacer"></span>
-        <span class="example-spacer"></span>
         <span class="example-spacer"></span>
         <span class="example-spacer"></span>
         <span class="example-spacer"></span>
@@ -44,6 +44,7 @@
 </header>
 
 <div class="main">
+
     <div class="side-section under-development">
         <div style="height: 80px;">
             <button class="create-button under-development" mat-raised-button (click)="onClickCreateTool()">
