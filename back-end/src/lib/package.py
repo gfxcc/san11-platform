@@ -44,18 +44,8 @@ class Package(ResourceMixin):
         self.image_urls = image_urls
         self.download_count = download_count
         self.tag_ids = tag_ids or []
-        if not update_time:
-            self._update_update_time(self.create_time)
-        self.update_time = update_time.replace(tzinfo=timezone.utc) if update_time else self.create_time
+        self.update_time = update_time.replace(tzinfo=timezone.utc)
     
-    def _update_update_time(self, update_time):
-        sql = 'update packages set update_time=%(update_time)s where package_id=%(id)s'
-        run_sql_with_param(sql, {
-            'update_time': update_time,
-            'id': self.package_id
-        })
-
-
     @property
     def url(self):
         return f'categories/{self.category_id}/packages/{self.package_id}'
@@ -248,6 +238,7 @@ class Package(ResourceMixin):
             ',status=%(status)s'\
             ',image_urls=%(image_urls)s'\
             ',tag_ids=%(tag_ids)s'\
+            ',update_time=%(update_time)s'\
             ' WHERE package_id=%(package_id)s'
         logger.debug(f'updating {self}')
 
@@ -257,5 +248,6 @@ class Package(ResourceMixin):
             'status': self.status,
             'image_urls': self.image_urls,
             'tag_ids': self.tag_ids,
+            'update_time': get_now(),
             'package_id': self.package_id
         })
