@@ -56,10 +56,6 @@ def create_resource(url: str, data: bytes) -> None:
         fd.write(data)
 
 
-class ResourceExistsError(Exception):
-    ...
-
-
 class ResourceMixin(ABC):
     # properties
     @abstractproperty

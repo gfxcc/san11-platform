@@ -44,7 +44,17 @@ class Package(ResourceMixin):
         self.image_urls = image_urls
         self.download_count = download_count
         self.tag_ids = tag_ids or []
+        if not update_time:
+            self._update_update_time(self.create_time)
         self.update_time = update_time.replace(tzinfo=timezone.utc) if update_time else self.create_time
+    
+    def _update_update_time(self, update_time):
+        sql = 'update packages set update_time=%(update_time)s where package_id=%(id)s'
+        run_sql_with_param(sql, {
+            'update_time': update_time,
+            'id': self.package_id
+        })
+
 
     @property
     def url(self):
