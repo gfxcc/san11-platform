@@ -19,10 +19,6 @@ from handler import PackageHandler, BinaryHandler, ImageHandler, \
 logger = logging.getLogger(os.path.basename(__file__))
 
 
-def get_sid_from_context(context) -> str:
-    return dict(context.invocation_metadata())['sid']
-
-
 class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def __init__(self):
         self.package_handler = PackageHandler()

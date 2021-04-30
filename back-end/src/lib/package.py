@@ -241,7 +241,6 @@ class Package(ResourceMixin):
             ',tag_ids=%(tag_ids)s'\
             ',update_time=%(update_time)s'\
             ' WHERE package_id=%(package_id)s'
-        logger.debug(f'updating {self}')
 
         run_sql_with_param(sql, {
             'name': self.name,
