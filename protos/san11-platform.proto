@@ -15,7 +15,6 @@ service RouteGuide {
   rpc SearchPackages(SearchPackagesRequest) returns (SearchPackagesResponse) {}
 
 
-
   // Binary related 
   rpc UploadBinary(UploadBinaryRequest) returns (Status) {}
 

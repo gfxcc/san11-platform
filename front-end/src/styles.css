@@ -173,3 +173,11 @@ body {
     border: solid 1px #ebebeb;
     padding: 5px;
 }
+
+.help-icon {
+    height: 20px;
+    width: 20px;
+    display: block;
+    background: url('./assets/images/help_icon.png');
+    background-size: 20px 20px;
+}

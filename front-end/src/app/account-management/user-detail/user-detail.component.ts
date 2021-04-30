@@ -37,6 +37,7 @@ export class UserDetailComponent implements OnInit {
   userId: string;
   user: User;
   loading;
+  userFormUpdated = false;
 
   hidePassword: boolean = true;
 
@@ -84,6 +85,10 @@ export class UserDetailComponent implements OnInit {
     if (this.canSetupGallery()) {
       this.setUpUserImage(this.user.imageUrl === '' ? '' : getFullUrl(this.user.imageUrl));
     }
+  }
+
+  formUpdated() {
+    this.userFormUpdated = true;
   }
 
   canSetupGallery() {

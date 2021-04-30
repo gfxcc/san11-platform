@@ -14,11 +14,11 @@
             <form class="form" #userForm='ngForm' (ngSubmit)="onUpdateUserForm(userForm)">
                 <mat-card-content>
                     <mat-form-field class="form-field" *ngIf="this.iAmTheUser()">
-                        <input matInput #emailInput *ngIf="this.user != undefined" [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" placeholder="email" name="email" />
+                        <input matInput #emailInput *ngIf="this.user != undefined" [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" (ngModelChange)="formUpdated()" placeholder="email" name="email" />
                     </mat-form-field>
 
                     <mat-form-field class="form-field">
-                        <input matInput #websiteInput *ngIf="this.user != undefined" [(ngModel)]="this.user.website" [disabled]="!this.iAmTheUser()" placeholder="网站" name="website" />
+                        <input matInput #websiteInput *ngIf="this.user != undefined" [(ngModel)]="this.user.website" [disabled]="!this.iAmTheUser()" (ngModelChange)="formUpdated()" placeholder="网站" name="website" />
                     </mat-form-field>
                 </mat-card-content>
 
@@ -28,7 +28,7 @@
 
                         <span class="example-spacer"></span>
 
-                        <button class="button" [disabled]="!userForm.valid" type="submit" mat-stroked-button color="primary">更新</button>
+                        <button class="button" *ngIf="this.userFormUpdated" [disabled]="!userForm.valid" type="submit" mat-stroked-button color="primary">更新</button>
                     </div>
                 </div>
 
