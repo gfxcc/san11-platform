@@ -8,25 +8,12 @@ import grpc
 from typing import List
 from concurrent import futures
 
-
-from lib.protos import san11_platform_pb2
 from lib.protos import san11_platform_pb2_grpc
-from lib.exception import Unauthenticated
-from lib.user.user import User, InvalidPassword
-from lib.image import Image
-from lib.package import Package
-from lib.binary import Binary
-from lib.url import Url
-from lib.statistic import Statistic
-from lib.query import Query
-from lib.tag import Tag
 
-from lib.auths.session import Session
-from lib.auths.authenticator import Authenticator
 
-from lib.comment.comment import Comment
-from lib.comment.reply import Reply
-from lib.user.activity import Activity, Action
+from handler import PackageHandler, BinaryHandler, ImageHandler, \
+                    CommentHandler, ReplyHandler, UserHandler, \
+                    GeneralHandler, TagHandler
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -37,391 +24,111 @@ def get_sid_from_context(context) -> str:
 
 
 class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
-    """Provides methods that implement functionality of route guide server."""
-
     def __init__(self):
-        pass
+        self.package_handler = PackageHandler()
+        self.binary_handler = BinaryHandler()
+        self.image_handler = ImageHandler()
+        self.comment_handler = CommentHandler()
+        self.reply_handler = ReplyHandler()
+        self.user_handler = UserHandler()
+        self.general_handler = GeneralHandler()
+        self.tag_handler = TagHandler()
 
     def CreatePackage(self, request, context):
-        logger.info('In CreatePackage')
-        authenticator = Authenticator.from_context(context)
-        package = Package.from_pb(request.package)
-        package.author_id = authenticator.session.user.user_id
-        package.create()
-        return package.to_pb()
-
+        return self.package_handler.create_package(request, context)
+    
     def DeletePackage(self, request, context):
-        logger.info(
-            f'In DeletePackage: package_id={request.package.package_id}')
-        package = Package.from_id(request.package.package_id)
-
-        authenticator = Authenticator.from_context(context)
-        if not authenticator.canDeletePackage(package):
-            context.abort(code=255, details='权限不足')
-
-        package.delete()
-        logger.info(f'Package is deleted: {package}')
-
-        return san11_platform_pb2.Empty()
-
+        return self.package_handler.delete_package(request, context)
+    
+    def UpdatePackage(self, request, context):
+        return self.package_handler.update_package(request, context)
+    
     def GetPackage(self, request, context):
-        logger.info(f'In GetPackage: package_id={request.package_id}')
-        return Package.from_id(request.package_id).to_pb()
+        return self.package_handler.get_package(request, context)
 
     def ListPackages(self, request, context):
-        logger.info(f'In ListPackages: category_id={request.category_id}')
-        try:
-            user = Authenticator.from_context(context=context).session.user
-        except Exception:
-            user = None
-        logger.debug(
-            f"ListPackage: user={user.username if user else 'visitor'}")
-
-        return san11_platform_pb2.ListPackagesResponse(packages=[
-            package.to_pb()
-            for package in Package.list(0, '',
-                                        category_id=request.category_id,
-                                        author_id=request.author_id,
-                                        tag_id=request.tag_id
-                                        ) if package.status == 'normal' or
-            (user and user.user_id == package.author_id and package.status != 'hidden') or
-            (user and user.user_type == 'admin')
-            # package's status is normal or user is admin or author of the package
-        ])
-
+        return self.package_handler.list_packages(request, context)
+    
     def SearchPackages(self, request, context):
-        logger.info(f'In SearchPackage: query={request.query}')
-        return san11_platform_pb2.SearchPackagesResponse(
-            packages=[package.to_pb() for package in Package.search(request.page_size,
-                                                                    request.page_token, 
-                                                                    request.query)])
-
-    def UpdatePackage(self, request, context):
-        logger.info(
-            f'In UpdatePackage: package_id={request.package.package_id}')
-        logger.debug(request.package.image_urls)
-        package = Package.from_id(request.package.package_id)
-
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUpdatePackage(package):
-            context.abort(code=255, details='权限不足')
-
-        if request.package.name:
-            package.name = request.package.name
-        if request.package.description:
-            package.description = request.package.description
-        if request.package.status:
-            package.status = request.package.status
-        if request.package.image_urls or request.package.image_urls == ['empty']:
-            updated_image_urls = set() if request.package.image_urls == [
-                'empty'] else set(request.package.image_urls)
-            for image_to_remove in set(package.image_urls) - updated_image_urls:
-                try:
-                    image = Image.from_url(image_to_remove)
-                    image.delete()
-                    logger.info(f'Image is deleted: {image}')
-                except Exception as err:
-                    logger.error(f'Failed to delete image: {err}')
-            logger.debug(request.package.image_urls)
-            package.image_urls = list(updated_image_urls)
-        if request.package.tags:
-            package.tag_ids = [] if request.package.tags[0].tag_id == 0 else list(
-                set(tag.tag_id for tag in request.package.tags))
-        package.update()
-        return package.to_pb()
+        return self.package_handler.search_packages(request, context)
 
     # binaries
-    def DownloadBinary(self, request, context):
-        logger.info(f'In DownloadBinary: binary_id={request.binary_id}')
-        binary = Binary.from_binary_id(request.binary_id)
-        binary.download()
-        logger.debug(f'{binary} is downloaded')
-
-        # website statistic
-        Statistic.load_today().increment_download()
-        # Package statistic
-        Package.from_id(Url(request.parent).id).increment_download()
-        return binary.to_pb()
-
     def UploadBinary(self, request, context):
-        logger.info(f'In UploadBinary: parent={request.parent}')
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUploadBinary(parent=Url(request.parent)):
-            context.abort(code=255, details='权限不足')
+        return self.binary_handler.upload_binary(request, context)
+    
+    def DeleteBinary(self, request, context):
+        return self.binary_handler.delete_binary(request, context)
 
-        Binary.createc_under_parent(
-            request.parent, request.binary, request.data)
-
-        return san11_platform_pb2.Status(code=0, message='上传成功')
-
-    def getBinary(self, request, context):
-        logger.info(f'In GetBinary: binary_id={request.binary_id}')
-        binary = Binary.from_binary_id(request.binary_id)
-        return binary.to_pb()
+    def GetBinary(self, request, context):
+        return self.binary_handler.get_binary(request, context)
 
     def ListBinaries(self, request, context):
-        logger.info(f'In ListBinaries: package_id: {request.package_id}')
-        return san11_platform_pb2.ListBinariesResponse(binaries=[
-            binary.to_pb() for binary in Binary.from_package_id(request.package_id)
-        ])
+        return self.binary_handler.list_binaries(request, context)
 
-    def DeleteBinary(self, request, context):
-        logger.info(f'In DeleteBinary: binary_id={request.binary_id}')
-        binary = Binary.from_binary_id(request.binary_id)
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canDeleteBinary(binary):
-            context.abort(code=255, details='权限不足')
-
-        binary.delete()
-        return san11_platform_pb2.Empty()
+    def DownloadBinary(self, request, context):
+        return self.binary_handler.download_binary(request, context)
 
     # image
     def UploadImage(self, request, context):
-        logger.info(f'In UploadImage: parent={request.parent}')
-        # e.g. packages/1010
-        parent = Url(request.parent)
-        image = Image.create_without_filename(request.parent, request.image)
-
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUploadImage(parent=parent):
-            context.abort(code=255, details='权限不足')
-
-        if parent.type == 'packages':
-            Package.from_id(parent.id).append_image(image)
-        elif parent.type == 'users':
-            User.from_user_id(parent.id).set_image(image)
-        else:
-            raise Exception(f'Invalid parent: {parent}')
-
-        return san11_platform_pb2.Url(url=image.url)
+        return self.image_handler.upload_image(request, context)
 
     # Comments
     def CreateComment(self, request, context):
-        logger.info('In CreateComment')
-        authenticator = Authenticator.from_context(context)
-        logger.debug(
-            f'{request.comment.author_id} =? {authenticator.session.user.user_id}')
-        assert request.comment.author_id == authenticator.session.user.user_id
-
-        comment = Comment.from_pb(request.comment)
-        comment.create()
-
-        return comment.to_pb()
+        return self.comment_handler.create_comment(request, context)
 
     def DeleteComment(self, request, context):
-        logger.info(f'In DeleteComment: comment_id={request.comment_id}')
-        comment = Comment.from_id(request.comment_id)
-        authenticator = Authenticator.from_context(context)
-        if not authenticator.canDeleteComment(comment):
-            context.abort(code=255, details='权限不足')
-        comment.delete()
-        return san11_platform_pb2.Empty()
+        return self.comment_handler.delete_comment(request, context)
 
     def UpdateComment(self, request, context):
-        logger.info(
-            f'In UpdateComment: comment_id={request.comment.comment_id}')
-        comment = Comment.from_id(request.comment.comment_id)
-        try:
-            authenticator = Authenticator.from_context(context)
-        except Unauthenticated as err:
-            context.abort(code=err.code, details=str(err))
-        if not authenticator.canUpdateComment(current=comment, requested=request.comment):
-            context.abort(code=255, details='权限不足')
-
-        if request.comment.upvote_count:
-            resource = f'comment_id:{comment.comment_id}'
-            activity = Activity(
-                authenticator.session.user.user_id, resource, Action.UPVOTE)
-            if activity.isExist():
-                # upvote from the same user will result as cancelling previous upvote
-                activity.delete()
-                comment.upvote_count -= 1
-            else:
-                # upvote_count from user may stale
-                activity.create()
-                comment.upvote_count += 1
-
-        comment.update()
-        return comment.to_pb()
+        return self.comment_handler.update_comment(request, context)
 
     def ListComments(self, request, context):
-        logger.info(f'In ListComments: parent={request.parent}')
-        comments = Comment.list_comment(request.parent)
-        return san11_platform_pb2.ListCommentsResponse(
-            comments=[comment.to_pb() for comment in comments]
-        )
+        return self.comment_handler.list_comments(request, context)
 
     def CreateReply(self, request, context):
-        logger.info(
-            f'In CreateReply: {request.reply.author_id}-> {request.reply.text}')
-        authenticator = Authenticator.from_context(context)
-        assert request.reply.author_id == authenticator.session.user.user_id
-
-        reply = Reply.from_pb(request.reply)
-        reply.create()
-
-        return reply.to_pb()
+        return self.reply_handler.create_reply(request, context)
 
     def DeleteReply(self, request, context):
-        logger.info(f'In DeleteReply: reply_id={request.reply_id}')
-        reply = Reply.from_id(request.reply_id)
-        authenticator = Authenticator.from_context(context)
-        if not authenticator.canDeleteReply(reply):
-            context.abort(code=255, details='权限不足')
-        reply.delete()
-        return san11_platform_pb2.Empty()
+        return self.reply_handler.delete_reply(request, context)
 
     def UpdateReply(self, request, context):
-        logger.info(f'In UpdateReply: reply_id={request.reply.reply_id}')
-        reply = Reply.from_id(request.reply.reply_id)
-        # TODO: fix authentication
-        try:
-            authenticator = Authenticator.from_context(context)
-        except Unauthenticated as err:
-            context.abort(code=err.code, details=str(err))
-
-        if request.reply.upvote_count:
-            resource = f'reply_id:{reply.reply_id}'
-            activity = Activity(
-                authenticator.session.user.user_id, resource, Action.UPVOTE)
-            if activity.isExist():
-                # upvote from the same user will result as cancelling previous upvote
-                activity.delete()
-                reply.upvote_count -= 1
-            else:
-                # upvote_count from user may stale
-                activity.create()
-                reply.upvote_count += 1
-
-        reply.update()
-        return reply.to_pb()
+        return self.reply_handler.update_reply(request, context)
 
     # users
+    def SignUp(self, request, context):
+        return self.user_handler.sign_up(request, context)
+
     def SignIn(self, request, context):
-        logger.info('In SignIn')
-
-        try:
-            user = User.from_name(request.username)
-            user.validate(request.password)
-        except LookupError:
-            context.abort(code=255, details='用户名不存在')
-        except InvalidPassword:
-            context.abort(code=255, details='用户名,密码 不匹配')
-
-        try:
-            session = Session.from_user_id(user.user_id)
-        except LookupError:
-            session = Session.create(user.user_id)
-        else:
-            session.extend()
-
-        logger.info(f'Login: user_id={user.user_id} sid={session.sid}')
-        return san11_platform_pb2.SignInResponse(user=user.to_pb(),
-                                                 sid=session.sid)
+        return self.user_handler.sign_in(request, context)
 
     def SignOut(self, request, context):
-        logger.info(f'In SignOut: user_id={request.user_id}')
-        return san11_platform_pb2.Status(code=0, message="登出成功")
-
-    def SignUp(self, request, context):
-        try:
-            user = User.create(request.user, request.password)
-        except ValueError as err:
-            context.abort(code=255, details=str(err))
-
-        session = Session.create(user.user_id)
-        resp = san11_platform_pb2.SignUpResponse(
-            user=user.to_pb(),
-            sid=session.sid)
-        logger.info(f'user is created: resp={resp}')
-        return resp
-
-    def GetUser(self, request, context):
-        logger.info(f'In GetUser: user_id={request.user_id}')
-        try:
-            user = User.from_user_id(request.user_id)
-        except LookupError:
-            logger.info(f'GetUser: user_id={request.user_id} does not exist')
-            context.abort(code=255, details='用户不存在')
-        return user.to_pb()
+        return self.user_handler.sign_out(request, context)
 
     def UpdateUser(self, request, context):
-        logger.info(f'In UpdateUser: user_id={request.user.user_id}')
-        logger.debug(f'user.website={request.user.website}')
-        user = User.from_user_id(request.user.user_id)
-
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUpdateUser(user=user):
-            context.abort(code=255, details='权限不足')
-
-        if request.user.email:
-            user.email = request.user.email
-        if request.user.website:
-            user.website = request.user.website
-        if request.user.image_url == 'empty':
-            # TODO: Need to delete current user avatar
-            try:
-                Image.from_url(user.image_url).delete()
-            except Exception as err:
-                logger.error(
-                    f'Failed to delete image_url={user.image_url}: {err}')
-            user.image_url = ''
-
-        user.update()
-        return user.to_pb()
+        return self.user_handler.update_user(request, context)
 
     def UpdatePassword(self, request, context):
-        logger.info(f'In UpdatePassword: user_id={request.user_id}')
-        user = User.from_user_id(request.user_id)
+        return self.user_handler.update_password(request, context)
 
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUpdateUser(user=user):
-            context.abort(code=255, details='权限不足')
-
-        user.set_password(request.password)
-        return san11_platform_pb2.Empty()
+    def GetUser(self, request, context):
+        return self.user_handler.get_user(request, context)
 
     def listUsers(self, request, context):
-        Authenticator.from_context(context)
-        return san11_platform_pb2.ListUsersResponse(users=[
-            user.to_pb() for user in User.list()
-        ])
+        return self.user_handler.list_users(request, context)
 
-    # Statistics
+    # general
     def GetStatistic(self, request, context):
-        logger.info(f'In GetStatistic')
-        # TODO hardcoded to today's information for now
-        try:
-            user = Authenticator.from_context(context=context).session.user
-        except Exception:
-            user = None
-        if user is None or user.username != 'admin':
-            Statistic.load_today().increment_visit()
-        return Statistic.load_today().to_pb()
+        return self.general_handler.get_statistic(request, context)
 
     # Tags
     def CreateTag(self, request, context):
-        logger.info(f'In CreateTag: {request.tag.name}')
-        assert Authenticator.from_context(context=context).isAdmin()
-        tag = Tag.from_pb(request.tag)
-        tag.create()
-        return tag.to_pb()
-
+        return self.tag_handler.create_tag(request, context)
 
     def DeleteTag(self, request, context):
-        logger.info('In DeleteTag')
-        assert Authenticator.from_context(context=context).isAdmin()
-        Tag.from_id(request.tag_id).delete()
-        return san11_platform_pb2.Empty()
+        return self.tag_handler.delete_tag(request, context)
 
     def ListTags(self, request, context):
-        logger.info(f'In ListTags')
-        return san11_platform_pb2.ListTagsResponse(
-            tags=[tag.to_pb() for tag in Tag.list(page_size=0,
-                                                  page_token='',
-                                                  category_id=request.category_id)]
-        )
-
+        return self.tag_handler.list_tags(request, context)
 
 
 def serve():

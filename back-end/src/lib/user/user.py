@@ -11,14 +11,11 @@ from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_
                      run_sql_with_param, get_db_fields_str
 from ..image import Image
 from ..time_util import get_timezone
+from ..exception import Unauthenticated
 
 
 logger = logging.getLogger(os.path.basename(__file__))
 DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
-
-
-class InvalidPassword(Exception):
-    pass
 
 
 class User:
@@ -55,7 +52,7 @@ class User:
     def validate(self, password: str) -> None:
         '''
         Raise:
-            InvalidPassword: ...
+            Unauthenticated: ...
         '''
         sql = 'SELECT * FROM users WHERE username=%(username)s AND password=%(password)s'
         resp = run_sql_with_param_and_fetch_all(sql, {
@@ -63,7 +60,7 @@ class User:
             'password': password
         })
         if not resp:
-            raise InvalidPassword()
+            raise Unauthenticated()
     
     def isAdmin(self) -> bool:
         return self.user_type == 'admin'
