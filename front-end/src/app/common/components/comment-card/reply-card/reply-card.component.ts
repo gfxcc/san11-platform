@@ -6,6 +6,7 @@ import { San11PlatformServiceService } from "../../../../service/san11-platform-
 import { NotificationService } from "../../../../common/notification.service";
 import { getFullUrl } from '../../../../utils/resrouce_util';
 import { Reply } from "../../../../../proto/san11-platform.pb";
+import { isAdmin } from "../../../../utils/user_util";
 
 import { increment } from '../../../../utils/number_util';
 
@@ -91,16 +92,13 @@ export class ReplyCardComponent implements OnInit {
   }
 
   mouseEnter() {
-    if (this.authorId != this.reply.authorId) {
+    if (!isAdmin() && this.authorId != this.reply.authorId) {
       return;
     }
     this.hideControl = false;
   }
 
   mouseLeave() {
-    if (this.authorId != this.reply.authorId) {
-      return;
-    }
     this.hideControl = true;
   }
 }
