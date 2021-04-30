@@ -107,8 +107,7 @@ CREATE TABLE tags (
     category_id INT NOT NULL,
     mutable BOOLEAN NOT NULL,
 
-
-    PRIMARY KEY (tag_id)
+    PRIMARY KEY (name, category_id)
 );
 
 \dt;

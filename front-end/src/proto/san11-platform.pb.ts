@@ -5663,6 +5663,150 @@ export module ListUsersResponse {
 }
 
 /**
+ * Message implementation for routeguide.CreateTagRequest
+ */
+export class CreateTagRequest implements GrpcMessage {
+  static id = 'routeguide.CreateTagRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new CreateTagRequest();
+    CreateTagRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: CreateTagRequest) {
+    _instance.tag = _instance.tag || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: CreateTagRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.tag = new Tag();
+          _reader.readMessage(_instance.tag, Tag.deserializeBinaryFromReader);
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    CreateTagRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: CreateTagRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.tag) {
+      _writer.writeMessage(
+        1,
+        _instance.tag as any,
+        Tag.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _tag?: Tag;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of CreateTagRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<CreateTagRequest.AsObject>) {
+    _value = _value || {};
+    this.tag = _value.tag ? new Tag(_value.tag) : undefined;
+    CreateTagRequest.refineValues(this);
+  }
+  get tag(): Tag | undefined {
+    return this._tag;
+  }
+  set tag(value: Tag | undefined) {
+    this._tag = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    CreateTagRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): CreateTagRequest.AsObject {
+    return {
+      tag: this.tag ? this.tag.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): CreateTagRequest.AsProtobufJSON {
+    return {
+      tag: this.tag ? this.tag.toProtobufJSON(options) : null
+    };
+  }
+}
+export module CreateTagRequest {
+  /**
+   * Standard JavaScript object representation for CreateTagRequest
+   */
+  export interface AsObject {
+    tag?: Tag.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for CreateTagRequest
+   */
+  export interface AsProtobufJSON {
+    tag?: Tag.AsProtobufJSON | null;
+  }
+}
+
+/**
  * Message implementation for routeguide.ListTagsRequest
  */
 export class ListTagsRequest implements GrpcMessage {
@@ -6003,6 +6147,145 @@ export module ListTagsResponse {
   export interface AsProtobufJSON {
     tags?: Tag.AsProtobufJSON[] | null;
     pageToken?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.DeleteTagRequest
+ */
+export class DeleteTagRequest implements GrpcMessage {
+  static id = 'routeguide.DeleteTagRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new DeleteTagRequest();
+    DeleteTagRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: DeleteTagRequest) {
+    _instance.tagId = _instance.tagId || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: DeleteTagRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.tagId = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    DeleteTagRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: DeleteTagRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.tagId) {
+      _writer.writeInt64String(1, _instance.tagId);
+    }
+  }
+
+  private _tagId?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of DeleteTagRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<DeleteTagRequest.AsObject>) {
+    _value = _value || {};
+    this.tagId = _value.tagId;
+    DeleteTagRequest.refineValues(this);
+  }
+  get tagId(): string | undefined {
+    return this._tagId;
+  }
+  set tagId(value: string | undefined) {
+    this._tagId = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    DeleteTagRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): DeleteTagRequest.AsObject {
+    return {
+      tagId: this.tagId
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): DeleteTagRequest.AsProtobufJSON {
+    return {
+      tagId: this.tagId
+    };
+  }
+}
+export module DeleteTagRequest {
+  /**
+   * Standard JavaScript object representation for DeleteTagRequest
+   */
+  export interface AsObject {
+    tagId?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for DeleteTagRequest
+   */
+  export interface AsProtobufJSON {
+    tagId?: string;
   }
 }
 

@@ -52,6 +52,8 @@ service RouteGuide {
   rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
 
   // Tag related
+  rpc CreateTag(CreateTagRequest) returns (Tag) {}
+  rpc DeleteTag(DeleteTagRequest) returns (Empty) {}
   rpc ListTags(ListTagsRequest) returns (ListTagsResponse) {}
 
   //
@@ -247,6 +249,10 @@ message ListUsersResponse {
 }
 
 // tag related
+message CreateTagRequest {
+    Tag tag = 1;
+}
+
 message ListTagsRequest {
     int64 page_size = 1;
     string page_token = 2;
@@ -256,6 +262,10 @@ message ListTagsRequest {
 message ListTagsResponse {
     repeated Tag tags = 1;
     string page_token = 2;
+}
+
+message DeleteTagRequest {
+    int64 tag_id = 1;
 }
 
 //

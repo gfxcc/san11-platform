@@ -9,7 +9,7 @@ import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackage
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
 import { SearchPackagesRequest, SearchPackagesResponse } from "../../proto/san11-platform.pb";
-import { Url, Statistic, User, Package, Binary, Status, Empty, Comment, Reply } from '../../proto/san11-platform.pb'
+import { Tag, Url, Statistic, User, Package, Binary, Status, Empty, Comment, Reply } from '../../proto/san11-platform.pb'
 import { ListPackagesRequest } from '../../proto/san11-platform.pb';
 import { ListUsersRequest, ListUsersResponse } from "../../proto/san11-platform.pb";
 import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
@@ -21,7 +21,7 @@ import { DeleteBinaryRequest } from "../../proto/san11-platform.pb";
 import { UpdateUserRequest, UpdatePasswordRequest } from "../../proto/san11-platform.pb";
 import { UpdateCommentRequest, CreateCommentRequest, DeleteCommentRequest, ListCommentsRequest, ListCommentsResponse } from "../../proto/san11-platform.pb";
 import { UpdateReplyRequest, CreateReplyRequest, DeleteReplyRequest } from "../../proto/san11-platform.pb";
-import { ListTagsRequest, ListTagsResponse } from "../../proto/san11-platform.pb";
+import { CreateTagRequest, ListTagsRequest, ListTagsResponse, DeleteTagRequest } from "../../proto/san11-platform.pb";
 
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
@@ -188,6 +188,14 @@ export class San11PlatformServiceService {
   }
 
   // tags
+  createTag(request: CreateTagRequest): Observable<Tag> {
+    return this.severClient.createTag(request, this.getMetadata());
+  }
+
+  deleteTag(request: DeleteTagRequest): Observable<Empty> {
+    return this.severClient.deleteTag(request, this.getMetadata());
+  }
+
   listTags(request: ListTagsRequest): Observable<ListTagsResponse> {
     return this.severClient.listTags(request, this.getMetadata());
   }

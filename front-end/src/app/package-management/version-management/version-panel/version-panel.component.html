@@ -18,10 +18,10 @@
 
                     <!-- Position Column -->
                     <ng-container matColumnDef="version">
-                        <th mat-header-cell *matHeaderCellDef> version </th>
+                        <th mat-header-cell *matHeaderCellDef> 版本 </th>
                         <td mat-cell *matCellDef="let binary">
                             <div style="display: flex;">
-                                <button mat-button (click)="onDescription(binary)">
+                                <button mat-button (click)="onDescription(binary)" matTooltip="更新日志">
                     {{this.getVersionStr(binary)}}
                     <mat-icon>subject</mat-icon>
                 </button>
@@ -31,19 +31,19 @@
 
                     <!-- Name Column -->
                     <ng-container matColumnDef="createTime">
-                        <th mat-header-cell *matHeaderCellDef> date </th>
+                        <th mat-header-cell *matHeaderCellDef> 更新于 </th>
                         <td mat-cell *matCellDef="let binary"> {{binary.createTimestamp}} </td>
                     </ng-container>
 
                     <!-- Weight Column -->
                     <ng-container matColumnDef="downloadCount">
-                        <th mat-header-cell *matHeaderCellDef> downloadCount </th>
+                        <th mat-header-cell *matHeaderCellDef> 下载量 </th>
                         <td mat-cell *matCellDef="let binary"> {{binary.downloadCount}} </td>
                     </ng-container>
 
                     <!-- Symbol Column -->
                     <ng-container matColumnDef="actions">
-                        <th mat-header-cell *matHeaderCellDef class="align-right"> actions </th>
+                        <th mat-header-cell *matHeaderCellDef class="align-right"> 选项 </th>
 
                         <td mat-cell *matCellDef="let binary" class="align-right">
                             <div class="actions-sections">

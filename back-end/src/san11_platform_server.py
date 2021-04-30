@@ -400,6 +400,20 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return Statistic.load_today().to_pb()
 
     # Tags
+    def CreateTag(self, request, context):
+        logger.info(f'In CreateTag: {request.tag.name}')
+        assert Authenticator.from_context(context=context).isAdmin()
+        tag = Tag.from_pb(request.tag)
+        tag.create()
+        return tag.to_pb()
+
+
+    def DeleteTag(self, request, context):
+        logger.info('In DeleteTag')
+        assert Authenticator.from_context(context=context).isAdmin()
+        Tag.from_id(request.tag_id).delete()
+        return san11_platform_pb2.Empty()
+
     def ListTags(self, request, context):
         logger.info(f'In ListTags')
         return san11_platform_pb2.ListTagsResponse(
@@ -407,6 +421,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
                                                   page_token='',
                                                   category_id=request.category_id)]
         )
+
 
 
 def serve():

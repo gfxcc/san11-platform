@@ -601,6 +601,48 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/CreateTag
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Tag>>
+     */
+    createTag: (
+      requestData: thisProto.CreateTagRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Tag>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/CreateTag',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.CreateTagRequest,
+        responseClass: thisProto.Tag
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DeleteTag
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     */
+    deleteTag: (
+      requestData: thisProto.DeleteTagRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Empty>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DeleteTag',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DeleteTagRequest,
+        responseClass: thisProto.Empty
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/ListTags
      *
      * @param requestMessage Request message
@@ -1081,6 +1123,38 @@ export class RouteGuideClient {
   ): Observable<thisProto.Empty> {
     return this.$raw
       .updatePassword(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/CreateTag
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Tag>
+   */
+  createTag(
+    requestData: thisProto.CreateTagRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Tag> {
+    return this.$raw
+      .createTag(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DeleteTag
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Empty>
+   */
+  deleteTag(
+    requestData: thisProto.DeleteTagRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Empty> {
+    return this.$raw
+      .deleteTag(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

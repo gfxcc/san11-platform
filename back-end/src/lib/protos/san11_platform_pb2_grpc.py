@@ -150,6 +150,16 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.UpdatePasswordRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
+        self.CreateTag = channel.unary_unary(
+                '/routeguide.RouteGuide/CreateTag',
+                request_serializer=san11__platform__pb2.CreateTagRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Tag.FromString,
+                )
+        self.DeleteTag = channel.unary_unary(
+                '/routeguide.RouteGuide/DeleteTag',
+                request_serializer=san11__platform__pb2.DeleteTagRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Empty.FromString,
+                )
         self.ListTags = channel.unary_unary(
                 '/routeguide.RouteGuide/ListTags',
                 request_serializer=san11__platform__pb2.ListTagsRequest.SerializeToString,
@@ -334,9 +344,21 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListTags(self, request, context):
+    def CreateTag(self, request, context):
         """Tag related
         """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTag(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListTags(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -484,6 +506,16 @@ def add_RouteGuideServicer_to_server(servicer, server):
             'UpdatePassword': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdatePassword,
                     request_deserializer=san11__platform__pb2.UpdatePasswordRequest.FromString,
+                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
+            ),
+            'CreateTag': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateTag,
+                    request_deserializer=san11__platform__pb2.CreateTagRequest.FromString,
+                    response_serializer=san11__platform__pb2.Tag.SerializeToString,
+            ),
+            'DeleteTag': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTag,
+                    request_deserializer=san11__platform__pb2.DeleteTagRequest.FromString,
                     response_serializer=san11__platform__pb2.Empty.SerializeToString,
             ),
             'ListTags': grpc.unary_unary_rpc_method_handler(
@@ -962,6 +994,40 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdatePassword',
             san11__platform__pb2.UpdatePasswordRequest.SerializeToString,
+            san11__platform__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CreateTag(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateTag',
+            san11__platform__pb2.CreateTagRequest.SerializeToString,
+            san11__platform__pb2.Tag.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DeleteTag(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteTag',
+            san11__platform__pb2.DeleteTagRequest.SerializeToString,
             san11__platform__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

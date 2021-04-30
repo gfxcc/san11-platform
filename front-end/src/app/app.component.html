@@ -82,13 +82,22 @@
                 <mat-divider></mat-divider>
             </mat-selection-list>
 
-            <div *ngIf="this.tagGroups.length > 0" style="margin-top: 10px; padding: 5px;">
+            <div *ngIf="this.isAdmin() || this.tagGroups.length > 0" style="margin-top: 10px; padding: 5px;">
                 <div class="round-border" style="margin-bottom: 5px;" *ngFor="let tagGroup of tagGroups">
                     <mat-chip-list>
-                        <mat-chip color="primary" *ngFor="let tag of tagGroup.tags" (click)="onClickTag(tag)">{{tag.name}}</mat-chip>
+                        <mat-chip color="primary" *ngFor="let tag of tagGroup.tags" (click)="onClickTag(tag)" (removed)="removeTag(tag)">{{tag.name}}
+                            <mat-icon matChipRemove *ngIf="this.isAdmin()">cancel</mat-icon>
+                        </mat-chip>
                     </mat-chip-list>
                 </div>
+
+                <mat-form-field *ngIf="this.isAdmin()" style="width: 100%; margin-top: 10px; margin-bottom: -10px;">
+                    <mat-label>新标签</mat-label>
+                    <input #tagInput matInput autocomplete="off" (keyup.enter)="createTag($event); tagInput.value=&quot;&quot;">
+                </mat-form-field>
+
             </div>
+
 
 
         </div>

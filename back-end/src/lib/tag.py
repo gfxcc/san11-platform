@@ -2,8 +2,9 @@ from typing import Iterable, List, Any
 
 from .protos import san11_platform_pb2
 from .resource import ResourceMixin
-from .db.db_util import get_db_fields_str, get_db_fields_placeholder_str,\
+from .db.db_util import get_db_fields_str, get_db_fields_placeholder_str, run_sql_with_param,\
                         run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all
+from .exception import PermissionDenied
 
 
 class Tag(ResourceMixin):
@@ -55,10 +56,23 @@ class Tag(ResourceMixin):
         return [cls(*item) for item in resp]
     
     def create(self) -> None:
-        raise NotImplementedError()
+        sql = f'INSERT INTO {self.db_table()} ({get_db_fields_str(self.db_fields())}) VALUES '\
+            f'( COALESCE((SELECT MAX(tag_id) FROM {self.db_table()})+1, 1), '\
+            f'{get_db_fields_placeholder_str(self.db_fields()[1:])}) RETURNING tag_id'
+        resp = run_sql_with_param_and_fetch_one(sql, {
+            'name': self.name,
+            'category_id': self.category_id,
+            'mutable': True
+        })
+        self.tag_id = resp[0]
     
     def delete(self) -> None:
-        raise NotImplementedError()
+        if self.in_use():
+            raise PermissionDenied('请先将标签从所有工具中移除')
+        sql = f'DELETE FROM {self.db_table()} WHERE tag_id=%(tag_id)s'
+        run_sql_with_param(sql, {
+            'tag_id': self.tag_id
+        })
     
     def to_pb(self) -> san11_platform_pb2.Tag:
         return san11_platform_pb2.Tag(
@@ -68,3 +82,14 @@ class Tag(ResourceMixin):
             mutable=self.mutable
         )
     
+    def in_use(self) -> bool:
+        '''
+        Returns:
+            true: if this tag is associated on packages.
+            false: no package has this tag
+        '''
+        sql = 'SELECT count(*) FROM packages WHERE %(tag_id)s=ANY(tag_ids)'
+        resp = run_sql_with_param_and_fetch_one(sql, {
+            'tag_id': self.tag_id
+        })
+        return resp[0] > 0

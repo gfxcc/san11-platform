@@ -11,8 +11,8 @@ import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { PackageDetailComponent } from './package-management/package-detail/package-detail.component';
 import { EventEmiterService } from "./service/event-emiter.service";
 import { getFullUrl } from './utils/resrouce_util';
-import { ListTagsRequest, Tag, User } from '../proto/san11-platform.pb';
-import { clearUser, loadUser, signedIn } from './utils/user_util';
+import { CreateTagRequest, ListTagsRequest, DeleteTagRequest, Tag, User } from '../proto/san11-platform.pb';
+import { clearUser, loadUser, signedIn, isAdmin } from './utils/user_util';
 
 
 @Component({
@@ -95,6 +95,38 @@ export class AppComponent {
     this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.tagId } });
   }
 
+  removeTag(tag: Tag) {
+    if (!confirm(`删除标签【${tag.name}】?`)) {
+      return;
+    }
+    this.san11pkService.deleteTag(new DeleteTagRequest({ tagId: tag.tagId })).subscribe(
+      resp => {
+        this.notificationService.success('删除标签 成功');
+        this.loadTags();
+      },
+      error => {
+        this.notificationService.warn(`无法删除标签【${tag.name}】: ${error.statusMessage}`)
+      }
+    );
+  }
+
+  createTag(event) {
+    const newTagName = event.target.value;
+    this.san11pkService.createTag(new CreateTagRequest({
+      tag: new Tag({
+        categoryId: this.selectedCategory,
+        name: newTagName
+      })
+    })).subscribe(
+      tag => {
+        this.loadTags();
+      },
+      error => {
+        this.notificationService.warn(`创建标签 失败: ${error.statusMessage}`);
+      }
+    );
+  }
+
   loadTags() {
     this.san11pkService.listTags(new ListTagsRequest({ categoryId: this.selectedCategory })).subscribe(
       resp => {
@@ -129,6 +161,9 @@ export class AppComponent {
   }
   userId() {
     return localStorage.getItem('userId');
+  }
+  isAdmin() {
+    return isAdmin();
   }
 
   onUserDetail() {
