@@ -2,7 +2,6 @@ import { Injectable, EventEmitter } from '@angular/core';
 
 export interface ComponentMessage {
   categoryId: string,
-  signedIn: boolean
 }
 
 @Injectable({

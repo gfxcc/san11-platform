@@ -21,11 +21,11 @@
 
         <span class="example-spacer"></span>
 
-        <div [hidden]="signedIn">
+        <div *ngIf="this.user === undefined">
             <a mat-button (click)="onSignInClick()">登陆</a>
             <a mat-button mat-raised-button (click)="onSignUpClick()">注册</a>
         </div>
-        <div *ngIf="signedIn" style="height: 100%; display: inline-flex; align-items: center;">
+        <div *ngIf="this.user != undefined" style="height: 100%; display: inline-flex; align-items: center;">
 
             <!-- <button mat-icon-button [matMenuTriggerFor]="menu" style="margin-right: 10px;">
                     <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">

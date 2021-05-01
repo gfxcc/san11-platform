@@ -25,12 +25,12 @@ export class SigninComponent implements OnInit {
   onSignIn(signInForm: NgForm) {
 
     this.san11PlatformServiceService.signIn(signInForm.value).subscribe(
-      value => {
+      resp => {
 
         this.notificationService.success('登陆成功');
 
-        localStorage.setItem('sid', value.sid);
-        saveUser(value.user);
+        localStorage.setItem('sid', resp.sid);
+        saveUser(resp.user);
 
         this.router.navigate(['/']).then(() => {
           window.location.reload();

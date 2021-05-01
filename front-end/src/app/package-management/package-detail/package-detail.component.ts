@@ -92,7 +92,7 @@ export class PackageDetailComponent implements OnInit {
     this.route.data.subscribe(
       (data: { package: Package }) => {
         this.package = data.package;
-        this._eventEmiter.sendMessage({ categoryId: this.package.categoryId, signedIn: undefined });
+        this._eventEmiter.sendMessage({ categoryId: this.package.categoryId });
       }
     );
 

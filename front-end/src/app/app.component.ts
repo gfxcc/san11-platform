@@ -35,7 +35,6 @@ export class AppComponent {
   selectedCategory = '1';
 
   user: User;
-  signedIn = false;
   hideUserImage = true;
   userImage: string;
 
@@ -65,7 +64,6 @@ export class AppComponent {
 
     if (signedIn()) {
       this.user = loadUser();
-      this.signedIn = true;
     }
   }
 
@@ -159,7 +157,6 @@ export class AppComponent {
 
     clearUser();
 
-    this.signedIn = false;
     this.user = undefined;
     this.router.navigate(['/']);
     this.notificationService.success('已登出')
@@ -204,22 +201,12 @@ export class AppComponent {
 
   onActivate(elementRef) {
     this._eventEmiter.dataStr.subscribe((data: ComponentMessage) => {
-      console.log(data);
       if (data.categoryId != undefined) {
         console.log('in');
         setTimeout(() => {
           this.selectedCategory = data.categoryId;
           this.loadTags();
         });
-      }
-      if (data.signedIn != undefined) {
-        if (data.signedIn) {
-          this.signedIn = true;
-          this.user = loadUser();
-        } else {
-          this.signedIn = false;
-          this.user = undefined;
-        }
       }
     });
   }

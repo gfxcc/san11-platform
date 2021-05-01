@@ -17,10 +17,12 @@ from ..resource import ResourceMixin
 
 
 logger = logging.getLogger(os.path.basename(__file__))
-DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
 
 class User(ResourceMixin):
+    DEFAULT_USER_TYPE = 'regular'
+    DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
+
     def __init__(self, user_id: int, username: str, password: str, email: str, user_type: str,
                  image_url: str, website: str):
         self.user_id = user_id
@@ -91,12 +93,13 @@ class User(ResourceMixin):
             'username': self.username,
             'password': password,
             'email': self.email,
-            'user_type': 'regular',
+            'user_type': self.DEFAULT_USER_TYPE,
             'create_timestamp': get_now(),
             'image_url': self.image_url ,
             'website': self.website
         })
         self.user_id = resp[0]
+        self.user_type = self.DEFAULT_USER_TYPE
     
     def delete(self):
         raise NotImplementedError()
@@ -106,7 +109,7 @@ class User(ResourceMixin):
                                        username=self.username,
                                        email=self.email,
                                        user_type=self.user_type,
-                                       image_url=self.image_url or DEFAULT_USER_AVATAR,
+                                       image_url=self.image_url or self.DEFAULT_USER_AVATAR,
                                        website=self.website)
 
     def validate(self, password: str) -> None:
