@@ -105,5 +105,5 @@ class UserHandler:
     def list_users(self, request, context):
         Authenticator.from_context(context)
         return san11_platform_pb2.ListUsersResponse(users=[
-            user.to_pb() for user in User.list()
+            user.to_pb() for user in User.list(0, '')
         ])

@@ -1486,6 +1486,9 @@ export class UploadBinaryRequest implements GrpcMessage {
   static refineValues(_instance: UploadBinaryRequest) {
     _instance.parent = _instance.parent || '';
     _instance.binary = _instance.binary || undefined;
+
+    _instance.sireVersion = _instance.sireVersion || '0';
+    _instance.sireAutoConvert = _instance.sireAutoConvert || false;
   }
 
   /**
@@ -1516,6 +1519,12 @@ export class UploadBinaryRequest implements GrpcMessage {
           break;
         case 4:
           _instance.downloadMethod = _reader.readString();
+          break;
+        case 5:
+          _instance.sireVersion = _reader.readInt64String();
+          break;
+        case 6:
+          _instance.sireAutoConvert = _reader.readBool();
           break;
         default:
           _reader.skipField();
@@ -1550,12 +1559,20 @@ export class UploadBinaryRequest implements GrpcMessage {
     if (_instance.downloadMethod || _instance.downloadMethod === '') {
       _writer.writeString(4, _instance.downloadMethod);
     }
+    if (_instance.sireVersion) {
+      _writer.writeInt64String(5, _instance.sireVersion);
+    }
+    if (_instance.sireAutoConvert) {
+      _writer.writeBool(6, _instance.sireAutoConvert);
+    }
   }
 
   private _parent?: string;
   private _binary?: Binary;
   private _data?: Uint8Array;
   private _downloadMethod?: string;
+  private _sireVersion?: string;
+  private _sireAutoConvert?: boolean;
 
   private _resource: UploadBinaryRequest.ResourceCase =
     UploadBinaryRequest.ResourceCase.none;
@@ -1570,6 +1587,8 @@ export class UploadBinaryRequest implements GrpcMessage {
     this.binary = _value.binary ? new Binary(_value.binary) : undefined;
     this.data = _value.data;
     this.downloadMethod = _value.downloadMethod;
+    this.sireVersion = _value.sireVersion;
+    this.sireAutoConvert = _value.sireAutoConvert;
     UploadBinaryRequest.refineValues(this);
   }
   get parent(): string | undefined {
@@ -1604,6 +1623,18 @@ export class UploadBinaryRequest implements GrpcMessage {
     }
     this._downloadMethod = value;
   }
+  get sireVersion(): string | undefined {
+    return this._sireVersion;
+  }
+  set sireVersion(value: string | undefined) {
+    this._sireVersion = value;
+  }
+  get sireAutoConvert(): boolean | undefined {
+    return this._sireAutoConvert;
+  }
+  set sireAutoConvert(value: boolean | undefined) {
+    this._sireAutoConvert = value;
+  }
   get resource() {
     return this._resource;
   }
@@ -1626,7 +1657,9 @@ export class UploadBinaryRequest implements GrpcMessage {
       parent: this.parent,
       binary: this.binary ? this.binary.toObject() : undefined,
       data: this.data ? this.data.subarray(0) : new Uint8Array(),
-      downloadMethod: this.downloadMethod
+      downloadMethod: this.downloadMethod,
+      sireVersion: this.sireVersion,
+      sireAutoConvert: this.sireAutoConvert
     };
   }
 
@@ -1650,7 +1683,9 @@ export class UploadBinaryRequest implements GrpcMessage {
       parent: this.parent,
       binary: this.binary ? this.binary.toProtobufJSON(options) : null,
       data: this.data ? uint8ArrayToBase64(this.data) : '',
-      downloadMethod: this.downloadMethod ?? null
+      downloadMethod: this.downloadMethod ?? null,
+      sireVersion: this.sireVersion,
+      sireAutoConvert: this.sireAutoConvert
     };
   }
 }
@@ -1663,6 +1698,8 @@ export module UploadBinaryRequest {
     binary?: Binary.AsObject;
     data?: Uint8Array;
     downloadMethod?: string;
+    sireVersion?: string;
+    sireAutoConvert?: boolean;
   }
 
   /**
@@ -1673,6 +1710,8 @@ export module UploadBinaryRequest {
     binary?: Binary.AsProtobufJSON | null;
     data?: string;
     downloadMethod?: string | null;
+    sireVersion?: string;
+    sireAutoConvert?: boolean;
   }
   export enum ResourceCase {
     none = 0,

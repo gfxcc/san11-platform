@@ -1,0 +1,1 @@
+from .sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX

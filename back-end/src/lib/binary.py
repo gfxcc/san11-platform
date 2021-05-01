@@ -99,25 +99,28 @@ class Binary:
         return cls(binary_id, *resp)
 
     @classmethod
-    def createc_under_parent(cls, parent: str, pb_obj: san11_platform_pb2.Binary, data: bytes):
+    def create_under_parent(cls, parent: str, pb_obj: san11_platform_pb2.Binary, data: bytes, suffix: str=None):
         '''
         '''
-        def get_binary_filename(parent: Url, version: Version):
+        logger.debug(f'create_under_parent({parent}, {pb_obj.tag}, ..., {suffix})')
+        def get_binary_filename(parent: Url, version: Version, suffix: str):
             category_to_extension = {
-                1: 'scp',  # SIRE plugin
-                2: 'rar',  # Player tools
-                3: 'rar'  # Mods
+                1: '.scp',  # SIRE plugin
+                2: '.rar',  # Player tools
+                3: '.rar'  # Mods
             }
+            if suffix is None:
+                suffix = category_to_extension[parent.category_id]
             logger.debug(f'get_binary_filename({parent}, {version})')
             assert parent.type == 'packages'
-            filename = f'{version}.{category_to_extension[parent.category_id]}'
+            filename = f'{version}{suffix}'
             return filename
 
         obj = cls.from_pb(pb_obj)
 
         if data != b'':
             obj.url = get_binary_url(
-                parent, get_binary_filename(Url(parent), obj.version))
+                parent, get_binary_filename(Url(parent), obj.version, suffix))
             create_resource(obj.url, data)
 
         sql = 'INSERT INTO binaries (binary_id, package_id, url, download_method, download_count, version, description, create_timestamp, tag) VALUES '\
