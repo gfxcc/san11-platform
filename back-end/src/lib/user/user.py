@@ -9,25 +9,41 @@ from typing import List
 from ..protos import san11_platform_pb2
 from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
                      run_sql_with_param, get_db_fields_str
+from ..time_util import get_now
 from ..image import Image
 from ..time_util import get_timezone
 from ..exception import Unauthenticated
+from ..resource import ResourceMixin
 
 
 logger = logging.getLogger(os.path.basename(__file__))
 DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
 
-class User:
-    def __init__(self, user_id: int, username: str, email: str, user_type: str,
+class User(ResourceMixin):
+    def __init__(self, user_id: int, username: str, password: str, email: str, user_type: str,
                  image_url: str, website: str):
         self.user_id = user_id
         self.username = username
+        # Avoid loading password to prevent this sensitive information be propagated
+        # self.password = password 
         self.email = email
         self.user_type = user_type
         self.image_url = image_url
         self.website = website
     
+    @property
+    def url(self) -> str:
+        return f'users/{self.user_id}'
+
+    @classmethod
+    def db_table(cls) -> str:
+        return 'users'
+
+    @classmethod
+    def db_fields(cls) -> List[str]:
+        return ['user_id', 'username', 'password', 'email', 'user_type', 'image_url', 'website']
+
     @property
     def email(self) -> str:
         return self._email
@@ -48,6 +64,50 @@ class User:
     def __str___(self):
         return f'{{ user_id: {self.user_id}, username: {self.username}, '\
                f'email: {self.email}, image_url: {self.image_url}, website: {self.website} }}'
+    
+    @classmethod
+    def from_pb(cls, pb_obj: san11_platform_pb2.User) -> User:
+        cls.validate_email(pb_obj.email)
+        cls.validate_username(pb_obj.username)
+        return cls(
+            user_id=pb_obj.user_id,
+            username=pb_obj.username,
+            password='password_placeholder',
+            email=pb_obj.email,
+            user_type=pb_obj.user_type,
+            image_url=pb_obj.image_url,
+            website=pb_obj.website
+        )
+
+    def create(self, password: str):
+        '''
+        Override default implementation as `User` require specific handling on `password`
+        '''
+        self.validate_password(password)
+        sql = f'INSERT INTO {self.db_table()} '\
+              ' VALUES ((SELECT MAX(user_id) FROM users)+1, %(username)s, %(password)s, '\
+              '%(email)s, %(user_type)s, %(create_timestamp)s, %(image_url)s, %(website)s) RETURNING user_id'
+        resp = run_sql_with_param_and_fetch_one(sql, {
+            'username': self.username,
+            'password': password,
+            'email': self.email,
+            'user_type': 'regular',
+            'create_timestamp': get_now(),
+            'image_url': self.image_url ,
+            'website': self.website
+        })
+        self.user_id = resp[0]
+    
+    def delete(self):
+        raise NotImplementedError()
+
+    def to_pb(self) -> san11_platform_pb2.User:
+        return san11_platform_pb2.User(user_id=self.user_id,
+                                       username=self.username,
+                                       email=self.email,
+                                       user_type=self.user_type,
+                                       image_url=self.image_url or DEFAULT_USER_AVATAR,
+                                       website=self.website)
 
     def validate(self, password: str) -> None:
         '''
@@ -65,14 +125,6 @@ class User:
     def isAdmin(self) -> bool:
         return self.user_type == 'admin'
 
-    def to_pb(self) -> san11_platform_pb2.User:
-        return san11_platform_pb2.User(user_id=self.user_id,
-                                       username=self.username,
-                                       email=self.email,
-                                       user_type=self.user_type,
-                                       image_url=self.image_url or DEFAULT_USER_AVATAR,
-                                       website=self.website)
-    
     def set_image(self, image: Image):
         self.image_url = image.url
         sql = 'UPDATE users SET image_url=%(image_url)s WHERE user_id=%(user_id)s'
@@ -101,26 +153,6 @@ class User:
             'user_id': self.user_id
         })
 
-    @classmethod
-    def create(cls, user: san11_platform_pb2.User, password: str):
-        cls.validate_email(user.email)
-        cls.validate_password(password)
-        cls.validate_username(user.username)
-
-        sql = 'INSERT INTO users (user_id, username, password, email, user_type, create_timestamp, image_url, website)'\
-              ' VALUES ((SELECT MAX(user_id) FROM users)+1, %(username)s, %(password)s, '\
-              '%(email)s, %(user_type)s, %(create_timestamp)s, %(image_url)s, %(website)s) RETURNING user_id'
-        resp = run_sql_with_param_and_fetch_one(sql, {
-            'username': user.username,
-            'password': password,
-            'email': user.email,
-            'user_type': 'regular',
-            'create_timestamp': datetime.now(get_timezone()),
-            'image_url': user.image_url ,
-            'website': user.website
-        })
-
-        return cls(resp[0], user.username, user.email, user.user_type, user.image_url, user.website)
 
     @classmethod
     def from_name(cls, username: str):
@@ -136,36 +168,8 @@ class User:
             logger.info(f'user: {username} does not exist. ')
             raise LookupError(f'user: {username} does not exist')
 
-        return cls(resp[0], username, resp[1], resp[2], resp[3], resp[4])
+        return cls(resp[0], username, 'password_placeholder', resp[1], resp[2], resp[3], resp[4])
     
-    @classmethod
-    def from_user_id(cls, user_id: int) -> User:
-        '''
-        Raise:
-            LookupError: ...
-        '''
-        sql = 'SELECT username, email, user_type, image_url, website FROM users WHERE user_id=%(user_id)s'
-        try:
-            resp = run_sql_with_param_and_fetch_one(
-                sql, {'user_id': user_id})
-        except Exception as err:
-            logger.debug(err)
-            logger.info(f'user_id: {user_id} does not exist. ')
-            raise LookupError(f'user_id: {user_id} does not exist')
-
-        return cls(user_id, resp[0], resp[1], resp[2], resp[3], resp[4])
-    
-    @classmethod
-    def list(cls) -> List[User]:
-        sql = f'SELECT {get_db_fields_str(cls._db_fields())} FROM users'
-        resp = run_sql_with_param_and_fetch_all(sql, {})
-        return [cls(*item) for item in resp]
-
-    @staticmethod
-    def _db_fields() -> List[str]:
-        return ['user_id', 'username', 'email', 'user_type', 'image_url', 'website']
-
-        
     @staticmethod
     def validate_email(email: str) -> None:
         if re.fullmatch(r'[^@]+@[^@]+\.[^@]+', email) is None:

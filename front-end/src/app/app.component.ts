@@ -9,7 +9,7 @@ import { GlobalConstants } from './common/global-constants'
 import { UserDetailComponent, UserData } from "./account-management/user-detail/user-detail.component";
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { PackageDetailComponent } from './package-management/package-detail/package-detail.component';
-import { EventEmiterService } from "./service/event-emiter.service";
+import { ComponentMessage, EventEmiterService } from "./service/event-emiter.service";
 import { getFullUrl } from './utils/resrouce_util';
 import { CreateTagRequest, ListTagsRequest, DeleteTagRequest, Tag, User } from '../proto/san11-platform.pb';
 import { clearUser, loadUser, signedIn, isAdmin } from './utils/user_util';
@@ -35,6 +35,7 @@ export class AppComponent {
   selectedCategory = '1';
 
   user: User;
+  signedIn = false;
   hideUserImage = true;
   userImage: string;
 
@@ -64,24 +65,8 @@ export class AppComponent {
 
     if (signedIn()) {
       this.user = loadUser();
+      this.signedIn = true;
     }
-
-    // if (this.selectedCategory === '1') {
-    //   this.tagGroups = [{
-    //     groupName: 'SIRE 版本',
-    //     tags: [new Tag({
-    //       tagId: '1',
-    //       name: 'SIRE 1',
-    //       categoryId: '1',
-    //       mutable: false
-    //     }), new Tag({
-    //       tagId: '2',
-    //       name: 'SIRE 2',
-    //       categoryId: '1',
-    //       mutable: false
-    //     })]
-    //   }];
-    // }
   }
 
   ngOnInit(): void {
@@ -152,10 +137,6 @@ export class AppComponent {
     // console.log(this.searchQuery);
   }
 
-  signedIn() {
-    return signedIn();
-  }
-
   username() {
     return localStorage.getItem('username');
   }
@@ -178,6 +159,8 @@ export class AppComponent {
 
     clearUser();
 
+    this.signedIn = false;
+    this.user = undefined;
     this.router.navigate(['/']);
     this.notificationService.success('已登出')
   }
@@ -211,7 +194,7 @@ export class AppComponent {
 
 
   onClickCreateTool() {
-    if (!this.signedIn()) {
+    if (!signedIn()) {
       this.notificationService.warn('上传工具需要登陆');
     } else {
       this.uploadTool();
@@ -220,11 +203,24 @@ export class AppComponent {
   }
 
   onActivate(elementRef) {
-    this._eventEmiter.dataStr.subscribe(data => {
-      setTimeout(() => {
-        this.selectedCategory = data;
-        this.loadTags();
-      });
+    this._eventEmiter.dataStr.subscribe((data: ComponentMessage) => {
+      console.log(data);
+      if (data.categoryId != undefined) {
+        console.log('in');
+        setTimeout(() => {
+          this.selectedCategory = data.categoryId;
+          this.loadTags();
+        });
+      }
+      if (data.signedIn != undefined) {
+        if (data.signedIn) {
+          this.signedIn = true;
+          this.user = loadUser();
+        } else {
+          this.signedIn = false;
+          this.user = undefined;
+        }
+      }
     });
   }
 }

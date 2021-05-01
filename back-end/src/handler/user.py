@@ -19,7 +19,8 @@ logger = logging.getLogger(os.path.basename(__file__))
 class UserHandler:
     def sign_up(self, request, context):
         try:
-            user = User.create(request.user, request.password)
+            user = User.from_pb(request.user)
+            user.create(request.password)
         except ValueError as err:
             context.abort(code=255, details=str(err))
 
@@ -59,7 +60,7 @@ class UserHandler:
     def update_user(self, request, context):
         logger.info(f'In UpdateUser: user_id={request.user.user_id}')
         logger.debug(f'user.website={request.user.website}')
-        user = User.from_user_id(request.user.user_id)
+        user = User.from_id(request.user.user_id)
 
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUpdateUser(user=user):
@@ -83,7 +84,7 @@ class UserHandler:
 
     def update_password(self, request, context):
         logger.info(f'In UpdatePassword: user_id={request.user_id}')
-        user = User.from_user_id(request.user_id)
+        user = User.from_id(request.user_id)
 
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUpdateUser(user=user):
@@ -95,7 +96,7 @@ class UserHandler:
     def get_user(self, request, context):
         logger.info(f'In GetUser: user_id={request.user_id}')
         try:
-            user = User.from_user_id(request.user_id)
+            user = User.from_id(request.user_id)
         except LookupError:
             logger.info(f'GetUser: user_id={request.user_id} does not exist')
             context.abort(code=255, details='用户不存在')

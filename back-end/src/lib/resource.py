@@ -1,8 +1,12 @@
+from logging import Logger
 import os, os.path
 import errno
 from abc import ABC, abstractclassmethod, abstractmethod, abstractproperty
 from typing import List, Any, Iterable
 from .exception import NotFound, AlreadyExists
+
+from .db import get_db_fields_placeholder_str, get_db_fields_str, run_sql_with_param_and_fetch_one, \
+    run_sql_with_param, run_sql_with_param_and_fetch_all
 
 
 RESOURCE_PATH = '/data'
@@ -75,18 +79,23 @@ class ResourceMixin(ABC):
         '''
         Return a list for DB fields.
         The order of those fields should match its order is the constructor.
+        First field MUST BE the resource_id field. E.g. package_id, image_id, user_id
         '''
         ...
     
     # factory classmethods 
-    @abstractclassmethod
-    def from_id(cls, id: int):
+    @classmethod
+    def from_id(cls, resource_id: int):
         '''
-        Return the object by id.
-        Raise:
-            NotFound: if there is not a resource stored with given `id`.
+        Construct the resource based on `resource_id`
+        This rely on the first field of `cls.db_fields()` is the resource_id field.
         '''
-        ...
+        sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()} '\
+            f'WHERE {cls.db_fields()[0]}=%(resource_id)s'
+        resp = run_sql_with_param_and_fetch_one(
+            sql, {'resource_id': resource_id})
+        return cls(*resp)
+
 
     @abstractclassmethod
     def from_pb(cls, pb_obj):
@@ -95,22 +104,38 @@ class ResourceMixin(ABC):
         '''
         ...
 
-    @abstractclassmethod
-    def list(cls, page_size: int, page_token: str, **kwargs) -> Iterable[Any]:
-        '''
-        List resource.
-        '''
-        ...
+    @classmethod
+    def list(cls, page_size: int, page_token: str, **kwargs) -> List[Any]:
+        SUPPORTED_KEY = ['category_id', 'author_id', 'tag_id']
+        sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()}'
+        constrains = []
+        for key in SUPPORTED_KEY:
+            if key in kwargs and kwargs[key]:
+                if key == 'tag_id':
+                    constrains.append(f"'{kwargs[key]}'=ANY(tag_ids)")
+                else:
+                    constrains.append(f'{key}={kwargs[key]}')
+        if constrains:
+            sql = f"{sql} WHERE {' AND '.join(constrains)}"
+        if 'create_time' in cls.db_fields():
+            sql += ' ORDER BY create_time DESC'
+        resp = run_sql_with_param_and_fetch_all(sql, {})
+        return [cls(*item) for item in resp]
     
     # Methods
-    @abstractmethod
     def create(self) -> None:
         '''
         Persist the resource to DB.
         Raise:
             AlreadyExists: if the resource is already exists in DB.
         '''
-        ...
+        sql = f'INSERT INTO {self.db_table()} ({get_db_fields_str(self.db_fields())}) VALUES '\
+            f'( COALESCE((SELECT MAX({self.db_fields()[0]}) FROM {self.db_table()})+1, 1), '\
+            f'{get_db_fields_placeholder_str(self.db_fields()[1:])}) RETURNING {self.db_fields()[0]}'
+        params_raw = ','.join(f"'{field}': self.{field}" for field in self.db_fields())
+        params = eval(f'{{ {params_raw} }}')
+        resource_id = run_sql_with_param_and_fetch_one(sql, params)[0]
+        exec(f"self.{self.db_fields()[0]} = resource_id")
     
     @abstractmethod
     def delete(self) -> None:

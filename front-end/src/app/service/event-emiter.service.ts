@@ -1,5 +1,10 @@
 import { Injectable, EventEmitter } from '@angular/core';
 
+export interface ComponentMessage {
+  categoryId: string,
+  signedIn: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +14,7 @@ export class EventEmiterService {
 
   constructor() { }
 
-  sendMessage(data: string) {
+  sendMessage(data: ComponentMessage) {
     this.dataStr.emit(data);
   }
 }

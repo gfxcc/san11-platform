@@ -77,7 +77,7 @@ class Authenticator:
             package = Package.from_package_id(parent.id)
             return self.canUpdatePackage(package)
         elif parent.type == 'users':
-            user = User.from_user_id(parent.id)
+            user = User.from_id(parent.id)
             return self.canUpdateUser(user)
         return False
     

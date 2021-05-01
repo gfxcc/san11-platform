@@ -29,7 +29,13 @@ class ImageHandler:
         if parent.type == 'packages':
             Package.from_id(parent.id).append_image(image)
         elif parent.type == 'users':
-            User.from_user_id(parent.id).set_image(image)
+            user = User.from_id(parent.id)
+            if user.image_url:
+                try:
+                    Image.from_url(user.image_url).delete()
+                except Exception as err:
+                    logger.error(f'Failed to delete image: {err}')
+            user.set_image(image)
         else:
             raise Exception(f'Invalid parent: {parent}')
 

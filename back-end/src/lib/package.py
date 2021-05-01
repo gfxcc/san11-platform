@@ -104,14 +104,6 @@ class Package(ResourceMixin):
                 'download_count', 'tag_ids', 'update_time']
 
     @classmethod
-    def from_id(cls, id: int) -> Package:
-        sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM packages '\
-            'WHERE package_id=%(id)s'
-        resp = run_sql_with_param_and_fetch_one(
-            sql, {'id': id})
-        return cls(*resp)
-
-    @classmethod
     def from_pb(cls, pb_obj: san11_platform_pb2.Package):
         return cls(
             package_id=pb_obj.package_id,
@@ -128,49 +120,12 @@ class Package(ResourceMixin):
         )
 
     @classmethod
-    def list(cls, page_size: int, page_token: str, **kwargs) -> List[Package]:
-        SUPPORTED_KEY = ['category_id', 'author_id', 'tag_id']
-        sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()}'
-        constrains = []
-        for key in SUPPORTED_KEY:
-            if key in kwargs and kwargs[key]:
-                if key == 'tag_id':
-                    constrains.append(f"'{kwargs[key]}'=ANY(tag_ids)")
-                else:
-                    constrains.append(f'{key}={kwargs[key]}')
-        if constrains:
-            sql = f"{sql} WHERE {' AND '.join(constrains)}"
-        sql += ' ORDER BY create_time DESC'
-        logger.debug(f'listPackage: {sql}')
-        resp = run_sql_with_param_and_fetch_all(sql, {})
-        return [cls(*item) for item in resp]
-
-    @classmethod
     def search(cls, page_size: int, page_token: str, query: str) -> List[Package]:
         sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()} '\
             f"WHERE name LIKE '%%{sanitize_str(query)}%%' ORDER BY create_time DESC"
         logger.debug(sql)
         resp = run_sql_with_param_and_fetch_all(sql, {})
         return [Package(*item) for item in resp]
-
-    def create(self) -> None:
-        sql = f'INSERT INTO {self.db_table()} ({get_db_fields_str(self.db_fields())}) VALUES '\
-            f'( COALESCE((SELECT MAX(package_id) FROM packages)+1, 1), '\
-            f'{get_db_fields_placeholder_str(self.db_fields()[1:])}) RETURNING package_id'
-
-        resp = run_sql_with_param_and_fetch_one(sql, {
-            'name': self.name,
-            'description': self.description,
-            'create_time': self.create_time,
-            'category_id': self.category_id,
-            'status': self.status,
-            'author_id': self.author_id,
-            'image_urls': self.image_urls,
-            'download_count': self.download_count,
-            'tag_ids': self.tag_ids,
-            'update_time': self.update_time
-        })
-        self.package_id = resp[0]
 
     def delete(self) -> None:
         for image_url in self.image_urls:
@@ -219,28 +174,28 @@ class Package(ResourceMixin):
 
     def append_image(self, image: Image) -> None:
         self.image_urls.append(image.url)
-        sql = 'UPDATE packages SET image_urls=%(image_urls)s WHERE package_id=%(package_id)s'
+        sql = f'UPDATE {self.db_table()} SET image_urls=%(image_urls)s WHERE {self.db_fields()[0]}=%(id)s'
         run_sql_with_param(
-            sql, {'image_urls': self.image_urls, 'package_id': self.package_id})
+            sql, {'image_urls': self.image_urls, 'id': self.package_id})
 
     def increment_download(self, delta: int = 1) -> int:
         self.download_count += 1
-        sql = 'UPDATE packages SET download_count=%(download_count)s WHERE package_id=%(package_id)s'
+        sql = f'UPDATE {self.db_table()} SET download_count=%(download_count)s WHERE {self.db_fields()[0]}=%(id)s'
         run_sql_with_param(sql, {
             'download_count': self.download_count,
-            'package_id': self.package_id
+            'id': self.package_id
         })
         return self.download_count
 
     def update(self):
-        sql = 'UPDATE packages SET'\
+        sql = f'UPDATE {self.db_table()} SET'\
             ' name=%(name)s'\
             ',description=%(description)s'\
             ',status=%(status)s'\
             ',image_urls=%(image_urls)s'\
             ',tag_ids=%(tag_ids)s'\
             ',update_time=%(update_time)s'\
-            ' WHERE package_id=%(package_id)s'
+            f' WHERE {self.db_fields()[0]}=%(id)s'
 
         run_sql_with_param(sql, {
             'name': self.name,
@@ -249,5 +204,5 @@ class Package(ResourceMixin):
             'image_urls': self.image_urls,
             'tag_ids': self.tag_ids,
             'update_time': get_now(),
-            'package_id': self.package_id
+            'id': self.package_id
         })

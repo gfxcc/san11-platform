@@ -42,19 +42,6 @@ class Tag(ResourceMixin):
                    category_id=pb_obj.category_id,
                    mutable=pb_obj.mutable)
 
-    @classmethod
-    def list(cls, page_size: int, page_token: str, **kwargs) -> Iterable[Any]:
-        SUPPORTED_KEY = ['category_id']
-        sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()}'
-        constrains = []
-        for key in SUPPORTED_KEY:
-            if key in kwargs and kwargs[key]:
-                constrains.append(f'{key}={kwargs[key]}')
-        if constrains:
-            sql = f"{sql} WHERE {' AND '.join(constrains)}"
-        resp = run_sql_with_param_and_fetch_all(sql, {})
-        return [cls(*item) for item in resp]
-    
     def create(self) -> None:
         sql = f'INSERT INTO {self.db_table()} ({get_db_fields_str(self.db_fields())}) VALUES '\
             f'( COALESCE((SELECT MAX(tag_id) FROM {self.db_table()})+1, 1), '\

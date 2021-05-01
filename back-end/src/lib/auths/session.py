@@ -14,7 +14,7 @@ class Session:
     def __init__(self, sid: str, user_id: int, expiration: int):
         self.sid = sid
         self.expiration = expiration
-        self.user = User.from_user_id(user_id)
+        self.user = User.from_id(user_id)
     
     def __str__(self):
         return f'{{sid: {self.sid}, user_id: {self.user.user_id}, expiration: {self.expiration}}}'
