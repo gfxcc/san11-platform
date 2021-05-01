@@ -116,6 +116,8 @@ message UploadBinaryRequest {
         bytes data = 3;
         string download_method = 4;
     }
+    int64 sire_version = 5;
+    bool sire_auto_convert = 6;
 }
 
 message BatchGetBinaryRequest {

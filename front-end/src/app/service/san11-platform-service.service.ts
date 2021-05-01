@@ -77,9 +77,8 @@ export class San11PlatformServiceService {
   //   return MOD_MAKER_PACKAGES;
   // }
 
-  uploadBinary(parent: string, binary: Binary, data): Observable<Status> {
-    const requst = new UploadBinaryRequest({ parent: parent, binary: binary, data: data });
-    return this.severClient.uploadBinary(requst, this.getMetadata());
+  uploadBinary(request: UploadBinaryRequest): Observable<Status> {
+    return this.severClient.uploadBinary(request, this.getMetadata());
   }
 
   downloadBinary(parent: string, binaryId: string): Observable<Binary> {

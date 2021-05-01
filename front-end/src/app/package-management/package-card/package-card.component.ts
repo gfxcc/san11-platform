@@ -82,47 +82,6 @@ export class PackageCardComponent implements OnInit {
     // this.renderer.setStyle(this.authorImageElement.nativeElement, 'background-image', "url('" + this.authorImage + "')");
   }
 
-
-  onUpdateBinary(binaryInput) {
-
-    const selectedBinary = binaryInput.files[0];
-    if (selectedBinary.size > GlobalConstants.maxBinarySize) {
-      alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize / 1024 / 1024).toString() + 'MB');
-      return;
-    }
-    this.selectedBinary = selectedBinary;
-
-    this.loadingDialog = this.dialog.open(LoadingComponent);
-
-    let fileReader = new FileReader();
-    fileReader.onload = () => {
-      const parent = getPackageUrl(this.package)
-      var arrayBuffer = fileReader.result;
-      var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
-
-      const binary: Binary = new Binary({
-        version: new Version({ major: '1', minor: '0', patch: '0' }),
-        description: '',
-      });
-
-      this.san11PlatformServiceService.uploadBinary(parent, binary, bytes).subscribe(
-
-        status => {
-          this.loadingDialog.close();
-          this.notificationService.success('更新成功');
-          this.router.navigate(['/']);
-        },
-        error => {
-          this.loadingDialog.close();
-          this.notificationService.warn('更新失败:' + error.statusMessage);
-        }
-      );
-
-    }
-
-    fileReader.readAsArrayBuffer(this.selectedBinary);
-  }
-
   loadImage() {
     if (this.package.imageUrls.length === 0) {
       this.screenshot = getFullUrl('images/sire2.jpg');

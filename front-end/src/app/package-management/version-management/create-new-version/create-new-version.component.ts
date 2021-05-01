@@ -6,13 +6,14 @@ import { version } from 'process';
 
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 
-import { Version, Binary } from "../../../../proto/san11-platform.pb";
+import { Version, Binary, UploadBinaryRequest } from "../../../../proto/san11-platform.pb";
 import { version2str } from "../../../utils/binary_util";
 import { increment } from "../../../utils/number_util";
 import { GlobalConstants } from "../../../common/global-constants";
 import { LoadingComponent } from "../../../common/components/loading/loading.component";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { NotificationService } from "../../../common/notification.service";
+
 
 export interface VersionData {
   latestVersion: Version,
@@ -46,6 +47,9 @@ export class CreateNewVersionComponent implements OnInit {
   descEditor_element;
   descEditor_data: string;
   descEditor_config;
+
+  selectSireVersion: string;
+  convertedSireVersion: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: VersionData,
@@ -160,11 +164,26 @@ export class CreateNewVersionComponent implements OnInit {
     const file = fileInput.files[0];
     if (file === undefined) {
       this.selectedFile = undefined;
+      return;
     } else if (file.size > GlobalConstants.maxBinarySize) {
       alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize / 1024 / 1024).toString() + 'MB');
       this.fileInputElement.nativeElement.value = '';
+      return;
     } else {
       this.selectedFile = file;
+    }
+
+    if (this.categoryId === '1') {
+      const re = /(?:\.([^.]+))?$/;
+      const ext = re.exec(file.name)[1];
+      console.log(ext);
+      if (ext === 'scp') {
+        this.selectSireVersion = '2';
+        this.convertedSireVersion = '1'
+      } else {
+        this.selectSireVersion = '1';
+        this.convertedSireVersion = '2';
+      }
     }
   }
 
@@ -196,7 +215,15 @@ export class CreateNewVersionComponent implements OnInit {
       downloadMethod: this.categoryId === '3' ? createVersionForm.value.downloadMethod : '',
     });
 
-    this.san11PkService.uploadBinary(this.parent, binary, bytes).subscribe(
+    console.log(createVersionForm.value);
+    const request = new UploadBinaryRequest({
+      parent: this.parent,
+      binary: binary,
+      data: bytes,
+      sireVersion: this.selectSireVersion,
+      sireAutoConvert: createVersionForm.value.sireAutoConvertToggle
+    });
+    this.san11PkService.uploadBinary(request).subscribe(
 
       status => {
         if (this.loadingDialog != undefined) {
