@@ -204,6 +204,9 @@ export class AppComponent {
       if (data.categoryId != undefined) {
         console.log('in');
         setTimeout(() => {
+          if (this.selectedCategory === data.categoryId) {
+            return;
+          }
           this.selectedCategory = data.categoryId;
           this.loadTags();
         });
