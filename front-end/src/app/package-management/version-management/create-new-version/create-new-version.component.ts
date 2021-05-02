@@ -81,7 +81,7 @@ export class CreateNewVersionComponent implements OnInit {
   configDescEditor() {
     this.descEditor_data = '';
     this.descEditor_config = {
-      placeholder: '新功能，新玩法，bug修复 (支持 Markdown)',
+      placeholder: '请添加更新日志...',
       toolbar: {
         items: [
           'heading',

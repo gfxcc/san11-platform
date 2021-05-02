@@ -137,7 +137,7 @@ export class PackageDetailComponent implements OnInit {
     this.descEditor_disabled = !this.isAuthor();
     // this.descEditor_config = "{ toolbar: [ 'heading', '|', 'bold', 'italic', 'link' , 'numberedList', 'bulletedList', '|', 'decreaseIndent', 'increaseIndent', '|', 'insertImage', 'insertTable', '|', 'undo', 'redo'] }";
     this.descEditor_config = {
-      placeholder: '请添加描述 (支持 Markdown)',
+      placeholder: '请添加描述...',
       toolbar: {
         items: [
           'heading',
