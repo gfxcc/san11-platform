@@ -19,6 +19,7 @@ class PackageHandler:
         authenticator = Authenticator.from_context(context)
         package = Package.from_pb(request.package)
         package.author_id = authenticator.session.user.user_id
+        logger.debug(package.create_time)
         package.create()
         return package.to_pb()
 

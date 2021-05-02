@@ -56,7 +56,7 @@ class Authenticator:
     def canUploadBinary(self, parent: Url) -> bool:
         if self._super_admin():
             return True
-        package = Package.from_package_id(parent.package_id)
+        package = Package.from_id(parent.package_id)
         user = self.session.user
         return user.user_id == package.author_id
     
@@ -64,7 +64,7 @@ class Authenticator:
         if self.isAdmin() or self._super_admin():
             return True
         user = self.session.user
-        package = Package.from_package_id(binary.package_id)
+        package = Package.from_id(binary.package_id)
         return user.user_id == package.author_id
 
     # Image
@@ -74,7 +74,7 @@ class Authenticator:
         user = self.session.user
 
         if parent.type == 'packages':
-            package = Package.from_package_id(parent.id)
+            package = Package.from_id(parent.id)
             return self.canUpdatePackage(package)
         elif parent.type == 'users':
             user = User.from_id(parent.id)

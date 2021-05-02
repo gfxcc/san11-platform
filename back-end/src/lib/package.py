@@ -38,14 +38,14 @@ class Package(ResourceMixin):
         self.package_id = package_id
         self.name = name
         self.description = description
-        self.create_time = create_time.replace(tzinfo=timezone.utc)
+        self.create_time = create_time.replace(tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
         self.category_id = category_id
         self.status = status
         self.author_id = author_id
         self.image_urls = image_urls
         self.download_count = download_count
         self.tag_ids = tag_ids or []
-        self.update_time = update_time.replace(tzinfo=timezone.utc)
+        self.update_time = update_time.replace(tzinfo=timezone.utc) if update_time.tzinfo is None else update_time
     
     @property
     def url(self):

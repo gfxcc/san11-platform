@@ -21,8 +21,8 @@ class Comment:
                  upvote_count: int) -> None:
         self.parent = parent
         self.comment_id = comment_id
-        self.create_time = create_time.replace(tzinfo=timezone.utc)
-        self.update_time = update_time.replace(tzinfo=timezone.utc)
+        self.create_time = create_time.replace(tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
+        self.update_time = update_time.replace(tzinfo=timezone.utc) if update_time.tzinfo is None else update_time
         self.text = text
         self.author_id = author_id
         self.upvote_count = upvote_count
