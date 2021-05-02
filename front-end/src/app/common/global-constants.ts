@@ -5,7 +5,7 @@ export class GlobalConstants {
     public static fileServerUrl: string = GlobalConstants.serverIp + ':8080';
 
     public static maxBinarySize: number = 30 * 1024 * 1024;
-    public static maxImageSize: number = 3 * 1024 * 1024;
+    public static maxImageSize: number = 5 * 1024 * 1024;
 
 
     public static defaultUserImage: string = '../../../assets/images/zhuge.jpg';

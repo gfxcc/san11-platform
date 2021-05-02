@@ -61,7 +61,6 @@ class Comment:
         return comments
 
     def to_pb(self) -> san11_platform_pb2.Comment:
-        logger.debug(f'{self.create_time} -> {datetime_to_str(self.create_time)}')
         return san11_platform_pb2.Comment(
             parent=self.parent,
             comment_id=self.comment_id,
