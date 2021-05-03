@@ -15,9 +15,10 @@
         <span class="example-spacer"></span>
         <span class="example-spacer"></span>
 
-        <span [matBadge]="this.today_visit_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日访问</span>
-        <span class="example-spacer"></span>
-        <span [matBadge]="this.today_download_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日下载</span>
+        <div *ngIf="this.isAdmin()" style="display: inline-flex;">
+            <span [matBadge]="this.today_visit_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日访问</span>
+            <span [matBadge]="this.today_download_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日下载</span>
+        </div>
 
         <span class="example-spacer"></span>
 
