@@ -58,7 +58,9 @@ export class DashboardComponent implements OnInit {
     this._eventEmiter.sendMessage({ categoryId: categoryId });
 
     this.san11pkService.listPackages(new ListPackagesRequest({ categoryId: categoryId, tagId: tagId })).subscribe(
-      value => this.packages = value.packages,
+      resp => {
+        this.packages = resp.packages
+      },
       error => {
         this.notificationService.warn('载入工具列表失败:' + error.statusMessage);
       }
