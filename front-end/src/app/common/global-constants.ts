@@ -19,4 +19,10 @@ export class GlobalConstants {
     public static webModules = [
         { value: '4', text: '留言板', link: ['/message-board'], icon: 'sticky_note_2' },
     ]
+
+    public static adminModules = [
+        {
+            value: '1', text: '管理员', link: ['/admin-message-board'], icon: 'admin_panel_settings',
+        }
+    ]
 }

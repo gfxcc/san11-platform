@@ -6,3 +6,4 @@ from .reply import ReplyHandler
 from .user import UserHandler
 from .general import GeneralHandler
 from .tag import TagHandler
+from .admin import AdminHandler

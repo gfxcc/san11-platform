@@ -27,6 +27,7 @@ export class AppComponent {
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   categories = GlobalConstants.categories;
   webModules = GlobalConstants.webModules;
+  adminModules = GlobalConstants.adminModules;
 
   title = 'san11-platform';
 
@@ -173,6 +174,10 @@ export class AppComponent {
   onCategoryLabelClick(category) {
     this.router.navigate(category.link);
     this.loadTags();
+  }
+
+  onAdminLabelClick(adminModule) {
+    this.router.navigate(adminModule.link);
   }
 
   compareWith(o1, o2) {

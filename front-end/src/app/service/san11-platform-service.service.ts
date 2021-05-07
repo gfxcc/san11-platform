@@ -9,7 +9,7 @@ import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackage
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
 import { SearchPackagesRequest, SearchPackagesResponse } from "../../proto/san11-platform.pb";
-import { Tag, Url, Statistic, User, Package, Binary, Status, Empty, Comment, Reply } from '../../proto/san11-platform.pb'
+import { AdminMessage, Tag, Url, Statistic, User, Package, Binary, Status, Empty, Comment, Reply } from '../../proto/san11-platform.pb'
 import { ListPackagesRequest } from '../../proto/san11-platform.pb';
 import { ListUsersRequest, ListUsersResponse } from "../../proto/san11-platform.pb";
 import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
@@ -179,6 +179,11 @@ export class San11PlatformServiceService {
   getStatistic(): Observable<Statistic> {
     const request = new GetStatisticRequest({ date: null });
     return this.severClient.getStatistic(request, this.getMetadata());
+  }
+
+  getAdminMessage(): Observable<AdminMessage> {
+    const request = new GetStatisticRequest({ date: null });
+    return this.severClient.getAdminMessage(request, this.getMetadata());
   }
 
   listUsers(): Observable<ListUsersResponse> {

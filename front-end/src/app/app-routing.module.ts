@@ -13,6 +13,7 @@ import { PackageDetailComponent } from "./package-management/package-detail/pack
 import { PackageResolverService } from "./package-management/package-detail/package-resolver.service";
 import { UserDetailComponent } from './account-management/user-detail/user-detail.component';
 import { UserResolverService } from "./account-management/user-detail/user-resolver.service";
+import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
 
 
 
@@ -44,6 +45,11 @@ const routes: Routes = [
   {
     path: 'message-board',
     component: MessageBoardComponent
+  },
+
+  {
+    path: 'admin-message-board',
+    component: AdminMessageBoardComponent
   },
 
 

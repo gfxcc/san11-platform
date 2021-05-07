@@ -683,6 +683,27 @@ export class RouteGuideClient {
         requestClass: thisProto.GetStatisticRequest,
         responseClass: thisProto.Statistic
       });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/GetAdminMessage
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.AdminMessage>>
+     */
+    getAdminMessage: (
+      requestData: thisProto.GetAdminMessageRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.AdminMessage>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/GetAdminMessage',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.GetAdminMessageRequest,
+        responseClass: thisProto.AdminMessage
+      });
     }
   };
 
@@ -1187,6 +1208,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Statistic> {
     return this.$raw
       .getStatistic(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/GetAdminMessage
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.AdminMessage>
+   */
+  getAdminMessage(
+    requestData: thisProto.GetAdminMessageRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.AdminMessage> {
+    return this.$raw
+      .getAdminMessage(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

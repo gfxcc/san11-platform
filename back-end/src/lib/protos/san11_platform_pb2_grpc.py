@@ -170,6 +170,11 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.GetStatisticRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Statistic.FromString,
                 )
+        self.GetAdminMessage = channel.unary_unary(
+                '/routeguide.RouteGuide/GetAdminMessage',
+                request_serializer=san11__platform__pb2.GetAdminMessageRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.AdminMessage.FromString,
+                )
 
 
 class RouteGuideServicer(object):
@@ -370,6 +375,12 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetAdminMessage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RouteGuideServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -527,6 +538,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.GetStatistic,
                     request_deserializer=san11__platform__pb2.GetStatisticRequest.FromString,
                     response_serializer=san11__platform__pb2.Statistic.SerializeToString,
+            ),
+            'GetAdminMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAdminMessage,
+                    request_deserializer=san11__platform__pb2.GetAdminMessageRequest.FromString,
+                    response_serializer=san11__platform__pb2.AdminMessage.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1063,5 +1079,22 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/GetStatistic',
             san11__platform__pb2.GetStatisticRequest.SerializeToString,
             san11__platform__pb2.Statistic.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetAdminMessage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/GetAdminMessage',
+            san11__platform__pb2.GetAdminMessageRequest.SerializeToString,
+            san11__platform__pb2.AdminMessage.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -6468,6 +6468,119 @@ export module GetStatisticRequest {
 }
 
 /**
+ * Message implementation for routeguide.GetAdminMessageRequest
+ */
+export class GetAdminMessageRequest implements GrpcMessage {
+  static id = 'routeguide.GetAdminMessageRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new GetAdminMessageRequest();
+    GetAdminMessageRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: GetAdminMessageRequest) {}
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: GetAdminMessageRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        default:
+          _reader.skipField();
+      }
+    }
+
+    GetAdminMessageRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: GetAdminMessageRequest,
+    _writer: BinaryWriter
+  ) {}
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of GetAdminMessageRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<GetAdminMessageRequest.AsObject>) {
+    _value = _value || {};
+    GetAdminMessageRequest.refineValues(this);
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    GetAdminMessageRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): GetAdminMessageRequest.AsObject {
+    return {};
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): GetAdminMessageRequest.AsProtobufJSON {
+    return {};
+  }
+}
+export module GetAdminMessageRequest {
+  /**
+   * Standard JavaScript object representation for GetAdminMessageRequest
+   */
+  export interface AsObject {}
+
+  /**
+   * Protobuf JSON representation for GetAdminMessageRequest
+   */
+  export interface AsProtobufJSON {}
+}
+
+/**
  * Message implementation for routeguide.Empty
  */
 export class Empty implements GrpcMessage {
@@ -8746,5 +8859,141 @@ export module Tag {
     name?: string;
     categoryId?: string;
     mutable?: boolean;
+  }
+}
+
+/**
+ * Message implementation for routeguide.AdminMessage
+ */
+export class AdminMessage implements GrpcMessage {
+  static id = 'routeguide.AdminMessage';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new AdminMessage();
+    AdminMessage.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: AdminMessage) {
+    _instance.message = _instance.message || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: AdminMessage,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.message = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    AdminMessage.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: AdminMessage,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.message) {
+      _writer.writeString(1, _instance.message);
+    }
+  }
+
+  private _message?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of AdminMessage to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<AdminMessage.AsObject>) {
+    _value = _value || {};
+    this.message = _value.message;
+    AdminMessage.refineValues(this);
+  }
+  get message(): string | undefined {
+    return this._message;
+  }
+  set message(value: string | undefined) {
+    this._message = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    AdminMessage.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): AdminMessage.AsObject {
+    return {
+      message: this.message
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): AdminMessage.AsProtobufJSON {
+    return {
+      message: this.message
+    };
+  }
+}
+export module AdminMessage {
+  /**
+   * Standard JavaScript object representation for AdminMessage
+   */
+  export interface AsObject {
+    message?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for AdminMessage
+   */
+  export interface AsProtobufJSON {
+    message?: string;
   }
 }

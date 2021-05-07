@@ -81,6 +81,16 @@
                 </mat-list-option>
 
                 <mat-divider></mat-divider>
+
+
+                <div *ngIf="this.isAdmin()">
+                    <mat-list-option *ngFor="let adminModule of adminModules" [value]="adminModule" (click)="onAdminLabelClick(adminModule)">
+                        <div class="nav-link">
+                            <span style="margin-left: 10px;"> <mat-icon>{{adminModule.icon}}</mat-icon>  </span>
+                            <span style="margin-left: 10px;">{{adminModule.text}}</span>
+                        </div>
+                    </mat-list-option>
+                </div>
             </mat-selection-list>
 
             <div *ngIf="this.isAdmin() || this.tagGroups.length > 0" style="margin-top: 10px; padding: 5px;">
