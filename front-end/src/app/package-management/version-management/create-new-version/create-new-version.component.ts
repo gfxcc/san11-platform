@@ -6,13 +6,16 @@ import { version } from 'process';
 
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 
-import { Version, Binary, UploadBinaryRequest } from "../../../../proto/san11-platform.pb";
+import { CreateBinaryRequest, Version, Binary, UploadBinaryRequest } from "../../../../proto/san11-platform.pb";
 import { version2str } from "../../../utils/binary_util";
 import { increment } from "../../../utils/number_util";
 import { GlobalConstants } from "../../../common/global-constants";
 import { LoadingComponent } from "../../../common/components/loading/loading.component";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { NotificationService } from "../../../common/notification.service";
+
+import { UploadService } from "../../../service/upload.service";
+import { Upload } from '../../../service/upload';
 
 
 export interface VersionData {
@@ -39,8 +42,9 @@ export class CreateNewVersionComponent implements OnInit {
   newVersion: Version;
   updateType: string = 'minor';
 
-  selectedFile: File;
+  file: File;
   loadingDialog;
+  tmpUrl: string = undefined;
 
 
   descEditor = Editor;
@@ -51,12 +55,15 @@ export class CreateNewVersionComponent implements OnInit {
   selectSireVersion: string;
   convertedSireVersion: string;
 
+  upload: Upload | undefined;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: VersionData,
     private dialog: MatDialog,
     private san11PkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<CreateNewVersionComponent>,
+    public uploadService: UploadService,
   ) {
     this.latestVersion = data.latestVersion;
     this.acceptFileType = data.acceptFileType;
@@ -160,17 +167,18 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   @ViewChild('fileInput') fileInputElement: ElementRef
-  selectFile(fileInput) {
-    const file = fileInput.files[0];
+  selectFile(files: FileList | null): void {
+    const file = files[0];
+
     if (file === undefined) {
-      this.selectedFile = undefined;
+      this.file = undefined;
       return;
     } else if (file.size > GlobalConstants.maxBinarySize) {
       alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize / 1024 / 1024).toString() + 'MB');
       this.fileInputElement.nativeElement.value = '';
       return;
     } else {
-      this.selectedFile = file;
+      this.file = file;
     }
 
     if (this.categoryId === '1') {
@@ -187,45 +195,31 @@ export class CreateNewVersionComponent implements OnInit {
     }
   }
 
-  onCreateVersion(createVersionForm) {
-
-    if (this.categoryId != '3') {
-
-      this.loadingDialog = this.dialog.open(LoadingComponent);
-      let fileReader = new FileReader();
-      fileReader.onload = () => {
-        this.createBinary(fileReader.result, createVersionForm);
-      }
-      fileReader.readAsArrayBuffer(this.selectedFile);
-    } else {
-      this.createBinary(undefined, createVersionForm);
-    }
+  uploadTmpFile(): void {
+    const filename = `${this.parent}/binaries/${version2str(this.newVersion)}`;
+    this.tmpUrl = filename;
+    this.uploadService.upload(this.file, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
+      this.upload = upload;
+    });
   }
 
-  createBinary(data, createVersionForm) {
-    var arrayBuffer = data;
-    var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
-
+  onCreateBinary(createVersionForm) {
     console.log(createVersionForm.value);
 
     const binary: Binary = new Binary({
       version: this.newVersion,
       description: createVersionForm.value.updateDesc,
       tag: this.tag,
-      downloadMethod: this.categoryId === '3' ? createVersionForm.value.downloadMethod : '',
     });
 
-    console.log(createVersionForm.value);
-    const request = new UploadBinaryRequest({
+    const request = new CreateBinaryRequest({
       parent: this.parent,
       binary: binary,
-      data: bytes,
-      sireVersion: this.selectSireVersion,
-      sireAutoConvert: createVersionForm.value.sireAutoConvertToggle
+      url: this.tmpUrl
     });
-    this.san11PkService.uploadBinary(request).subscribe(
 
-      status => {
+    this.san11PkService.createBinary(request).subscribe(
+      resp => {
         if (this.loadingDialog != undefined) {
           this.loadingDialog.close();
         }

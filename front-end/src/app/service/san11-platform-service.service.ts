@@ -6,6 +6,7 @@ import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-pa
 import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
 import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
+import { CreateBinaryRequest } from '../../proto/san11-platform.pb'
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
 import { SearchPackagesRequest, SearchPackagesResponse } from "../../proto/san11-platform.pb";
@@ -79,6 +80,10 @@ export class San11PlatformServiceService {
 
   uploadBinary(request: UploadBinaryRequest): Observable<Status> {
     return this.severClient.uploadBinary(request, this.getMetadata());
+  }
+
+  createBinary(request: CreateBinaryRequest): Observable<Binary> {
+    return this.severClient.createBinary(request, this.getMetadata());
   }
 
   downloadBinary(parent: string, binaryId: string): Observable<Binary> {

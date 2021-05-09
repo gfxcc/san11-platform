@@ -29,7 +29,7 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     email TEXT NOT NULL,
     user_type TEXT NOT NULL,
-    create_timestamp TIMESTAMP,
+    create_time TIMESTAMP,
     image_url TEXT,
     website TEXT
 );

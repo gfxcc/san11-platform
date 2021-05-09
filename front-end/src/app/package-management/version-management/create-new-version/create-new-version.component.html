@@ -3,7 +3,7 @@
 </mat-card-header>
 
 
-<form class="form" #createVersionForm='ngForm' (ngSubmit)="onCreateVersion(createVersionForm)">
+<form class="form" #createVersionForm='ngForm' (ngSubmit)="onCreateBinary(createVersionForm)">
     <mat-card-content>
         <mat-form-field class="form-field" appearance="fill">
             <mat-label>更新类型</mat-label>
@@ -33,28 +33,35 @@
             <ckeditor ngModel required name="updateDesc" [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [config]="this.descEditor_config"></ckeditor>
         </div>
 
-        <mat-form-field class="form-field" style="margin-top: 10px;" *ngIf="this.categoryId===&quot;3&quot;">
-            <mat-label>下载方式</mat-label>
-            <textarea style="height: 50px;" matInput placeholder="下载链接:http......   验证码:....." required ngModel name="downloadMethod"></textarea>
-        </mat-form-field>
     </mat-card-content>
 
     <p></p>
 
-    <div *ngIf="this.categoryId!=&quot;3&quot;" style="margin-bottom: 10px;">
-        <span class="form-field">上传文件</span>
-        <input #fileInput type="file" [accept]="acceptFileType" ngModel required name="fileInput" (change)="selectFile(fileInput)">
+    <div style="margin-bottom: 10px;">
+        <div style="display: flex;">
+            <input hidden #fileInput type="file" [accept]="acceptFileType" ngModel required name="fileInput" (change)="selectFile(fileInput.files)">
+            <button type="button" mat-raised-button (click)="fileInput.click()">
+               {{ file ? file.name : '选择文件' }}
+            </button>
+            <span class="example-spacer"></span>
+            <button [disabled]="this.file === undefined" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()">
+                上传
+            </button>
+        </div>
+
+        <mat-progress-bar *ngIf="upload" [mode]="upload.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="upload.progress" style="margin-top: 3px; height: 2px;">
+        </mat-progress-bar>
     </div>
 
-    <div *ngIf="this.categoryId===&quot;1&quot; && this.selectedFile != undefined">
+    <!-- <div *ngIf="this.categoryId===&quot;1&quot; && this.file != undefined">
         <mat-slide-toggle ngModel color='primary' name="sireAutoConvertToggle" matTooltip="必须未加密">系统自动转换并发布到SIRE {{this.convertedSireVersion}}</mat-slide-toggle>
-    </div>
+    </div> -->
 
     <p></p>
     <div class="actions">
 
         <span class="example-spacer"></span>
         <button mat-stroked-button mat-dialog-close color="accent" style="margin-right: 5px">取消</button>
-        <button [disabled]="!createVersionForm.valid" type="submit" mat-stroked-button color="primary">创建</button>
+        <button [disabled]="!(createVersionForm.valid && this.upload && this.upload.progress===100)" type="submit" mat-stroked-button color="primary">创建</button>
     </div>
 </form>

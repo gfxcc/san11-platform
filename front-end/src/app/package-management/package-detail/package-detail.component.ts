@@ -396,6 +396,7 @@ export class PackageDetailComponent implements OnInit {
       }
     );
   }
+
   loadPage() {
     if (this.isAdmin() && this.package.status === 'under_review') {
       this.adminZone = true;
@@ -522,8 +523,6 @@ export class PackageDetailComponent implements OnInit {
     );
 
   }
-
-
 
   onGalleryItemClick(imageIndex: number) {
     this.galleryElement = this.galleryElementCatched;
