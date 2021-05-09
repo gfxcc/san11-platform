@@ -112,7 +112,7 @@ class Binary(ResourceMixin):
 
     def delete(self) -> None:
         sql = f'DELETE FROM {self.db_table()} WHERE {self.db_fields()[0]}=%(resource_id)s'
-        run_sql_with_param(sql, {'binary_id': self.binary_id})
+        run_sql_with_param(sql, {'resource_id': self.binary_id})
         self._remove_resource()
         logger.debug(f'{self} is deleted')
 
