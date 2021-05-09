@@ -13,7 +13,7 @@ from lib.statistic import Statistic
 from lib.exception import INVALID_ARGUMENT
 from lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
 from lib.resource import create_resource
-from lib.gcs import move_tmp_resource_to_canonical_bucket
+from lib import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -70,8 +70,11 @@ class BinaryHandler:
         binary.url = get_binary_url(parent, binary)
         # prepare resource
         if request.HasField('url'):
+            if gcs.get_file_size(gcs.TMP_BUCKET, request.url) + gcs.disk_usage_under(request.parent) > gcs.PACKAGE_LIMIT_GB:
+                gcs.delete_file(gcs.TMP_BUCKET, request.url)
+                context.abort(code=255, details=f'工具存储空间 {gcs.PACKAGE_LIMIT_GB}GB 已用完，请考虑删除历史版本.')
             # move resource from tmp location to canonical bucket
-            move_tmp_resource_to_canonical_bucket(request.url, binary.url)
+            gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, binary.url)
         elif request.HasField('data'):
             create_resource(binary.url, request.data)
         elif request.HasField('download_method'):
