@@ -50,5 +50,5 @@ def disk_usage_under(prefix: str) -> int:
 def get_file_size(bucket_name: str, filename: str) -> int:
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(filename)
+    blob = bucket.get_blob(filename)
     return blob.size
