@@ -70,11 +70,13 @@ class BinaryHandler:
         binary.url = get_binary_url(parent, binary)
         # prepare resource
         if request.HasField('url'):
-            if gcs.get_file_size(gcs.TMP_BUCKET, request.url) + gcs.disk_usage_under(request.parent) > gcs.PACKAGE_LIMIT_GB:
+            expected_disk_usage = gcs.get_file_size(gcs.TMP_BUCKET, request.url) + gcs.disk_usage_under(request.parent)
+            if  expected_disk_usage > gcs.PACKAGE_LIMIT_GB * 1024 * 1024 * 1024:
                 gcs.delete_file(gcs.TMP_BUCKET, request.url)
                 context.abort(code=255, details=f'工具存储空间 {gcs.PACKAGE_LIMIT_GB}GB 已用完，请考虑删除历史版本.')
             # move resource from tmp location to canonical bucket
             gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, binary.url)
+            logger.info(f'{expected_disk_usage/(1024*1024*1024)}GB is used for {request.parent}')
         elif request.HasField('data'):
             create_resource(binary.url, request.data)
         elif request.HasField('download_method'):

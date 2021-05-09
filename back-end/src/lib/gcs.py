@@ -47,7 +47,7 @@ def disk_usage_under(prefix: str) -> int:
     return sum(blob.size for blob in blobs)
 
 
-def get_file_size(bucket_name: str, filename: str) -> str:
+def get_file_size(bucket_name: str, filename: str) -> int:
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(filename)
