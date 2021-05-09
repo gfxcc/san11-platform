@@ -133,7 +133,6 @@ class Binary(ResourceMixin):
         Return the data and increment the download_count by 1
         '''
         self._increment_download_count()
-        logger.debug(f'{self} is downloaded')
         return self.to_pb()
 
     def _remove_resource(self) -> None:

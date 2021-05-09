@@ -4,8 +4,8 @@ export class GlobalConstants {
     public static san11ServerUrl: string = GlobalConstants.serverIp + ':8090';
     public static fileServerUrl: string = 'https://storage.googleapis.com/san11-resources';
 
-    public static maxBinarySize: number = 30 * 1024 * 1024;
-    public static maxImageSize: number = 5 * 1024 * 1024;
+    public static maxBinarySize: number = 4096 * 1024 * 1024; // 4GB
+    public static maxImageSize: number = 5 * 1024 * 1024; // 5MB
 
     public static tmpBucket = 'san11-tmp';
     public static resourceBucket = 'san11-resources';
