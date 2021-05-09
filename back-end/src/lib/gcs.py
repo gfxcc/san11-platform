@@ -20,7 +20,7 @@ def move_file(src_bucket_name: str, src_filename: str, dest_bucket_name: str, de
     )
     logger.debug(f'({dest_filename}) is created in bucket {dest_bucket_name}')
 
-    source_bucket.delete()
+    source_blob.delete()
     logger.debug(f'({src_filename}) is deleted from bucket {src_bucket_name}')
 
 

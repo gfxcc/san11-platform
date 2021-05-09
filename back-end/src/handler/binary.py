@@ -55,7 +55,7 @@ class BinaryHandler:
                 3: '.zip'  # Mods
             }
             assert parent.type == 'packages'
-            if parent.id == 1:
+            if parent.category_id == 1:
                 ext = category_to_ext[parent.category_id][binary.tag]
             else:
                 ext = category_to_ext[parent.category_id]
