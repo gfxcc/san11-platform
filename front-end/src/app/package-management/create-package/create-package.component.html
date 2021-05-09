@@ -14,7 +14,7 @@
 
                     <mat-form-field appearance="fill" class="example-full-width">
                         <mat-label>类别</mat-label>
-                        <mat-select [(ngModel)]="selectedCategory" required name="category" (selectionChange)="categoryChanged($event.value)">
+                        <mat-select [(ngModel)]="selectedCategory" required name="category">
                             <mat-option *ngFor="let category of categories" [value]="category.value" [disabled]="category.disabled">
                                 {{category.text}}
                             </mat-option>

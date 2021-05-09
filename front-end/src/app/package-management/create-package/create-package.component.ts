@@ -30,8 +30,6 @@ export class CreatePackageComponent implements OnInit {
   selectedCategory: string;
   createdPackage: Package;
 
-  acceptFileType: string = '.scp, .scp-en';
-
   loading;
 
   categories = GlobalConstants.categories;
@@ -94,98 +92,6 @@ export class CreatePackageComponent implements OnInit {
 
   }
 
-  // uploadImage() {
-  //   let fileReader = new FileReader();
-  //   fileReader.onload = () => {
-
-  //     var parent = getPackageUrl(this.createdPackage);
-
-  //     var arrayBuffer = fileReader.result;
-  //     var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
-
-  //     this.san11PlatformServiceService.uploadImage(parent, bytes).subscribe(
-
-  //       url => {
-  //         this.uploadBinary();
-  //       },
-  //       error => {
-  //         this.loading.close();
-  //         this.notificationService.warn('上传截图失败: ' + error.statusMessage);
-  //       }
-  //     );
-
-  //   }
-
-  //   fileReader.readAsArrayBuffer(this.selectedImage);
-  // }
-
-  // uploadBinary() {
-  //   let fileReader = new FileReader();
-  //   fileReader.onload = () => {
-
-  //     var parent = getPackageUrl(this.createdPackage);
-
-  //     var arrayBuffer = fileReader.result;
-  //     var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
-
-  //     const binary = new Binary({
-  //       version: new Version({ major: '1', minor: '0', patch: '0' }),
-  //       description: "n/a"
-  //     });
-
-  //     this.san11PlatformServiceService.uploadBinary(parent, binary, bytes).subscribe(
-
-  //       status => {
-  //         this.loading.close();
-
-  //         this.notificationService.success('创建成功，请耐心等待审核。预期 1-2 天')
-  //         this.router.navigate(['/']);
-
-  //       },
-  //       error => {
-  //         this.loading.close();
-
-  //         this.notificationService.warn('上传文件失败: ' + error.statusMessage)
-  //       }
-  //     );
-
-  //   }
-
-  //   fileReader.readAsArrayBuffer(this.selectedFile);
-  // }
-
-  // @ViewChild('fileInput') fileInputElement: ElementRef
-
-  // uploadFileHandler(fileInput) {
-  //   const file = fileInput.files[0];
-  //   if (file.size > GlobalConstants.maxBinarySize) {
-  //     alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize/1024/1024).toString() + 'MB');
-  //     this.fileInputElement.nativeElement.value = '';
-  //   } else{
-  //     this.selectedFile = file;
-  //   }
-  // }
-
-  // @ViewChild('imageInput') imageInputElement: ElementRef
-  // uploadImageHandler(imageInput) {
-  //   const image = imageInput.files[0];
-  //   if (image.size > GlobalConstants.maxImageSize) {
-  //     alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize/1024/1024).toString() + 'MB');
-  //     this.imageInputElement.nativeElement.value = '';
-  //   } else {
-  //     this.selectedImage = image;
-  //   }
-  // }
-
-
-  categoryChanged(categoryId: string) {
-    if (categoryId === '1') {
-      this.acceptFileType = '.scp, .scp-en';
-    } else {
-      this.acceptFileType = '.rar';
-    }
-
-  }
 }
 
 @Component({

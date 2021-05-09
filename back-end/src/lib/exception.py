@@ -14,3 +14,7 @@ class AlreadyExists(Exception):
 
 class NotFound(Exception):
     code = 5
+
+
+class INVALID_ARGUMENT(Exception):
+    code = 3

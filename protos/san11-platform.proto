@@ -17,9 +17,8 @@ service RouteGuide {
 
   // Binary related 
   rpc UploadBinary(UploadBinaryRequest) returns (Status) {}
-
+  rpc CreateBinary(CreateBinaryRequest) returns (Binary) {}
   rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
-
   rpc GetBinary(GetBinaryRequest) returns (Binary) {}
   rpc BatchGetBinary(BatchGetBinaryRequest) returns (BatchGetBinaryResponse) {}
   rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {}
@@ -28,7 +27,6 @@ service RouteGuide {
 
   // Image related
   rpc UploadImage(UploadImageRequest) returns (Url) {}
-
 
   // comment related
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}
@@ -55,9 +53,13 @@ service RouteGuide {
   rpc DeleteTag(DeleteTagRequest) returns (Empty) {}
   rpc ListTags(ListTagsRequest) returns (ListTagsResponse) {}
 
-  //
+  // Generic
   rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
+
+  // Auth
+  rpc GetAuth(GetAuthRequest) returns (Auth) {}
+
 }
 
 // package related
@@ -116,9 +118,20 @@ message UploadBinaryRequest {
     oneof resource {
         bytes data = 3;
         string download_method = 4;
+        string url = 7;
     }
     int64 sire_version = 5;
     bool sire_auto_convert = 6;
+}
+
+message CreateBinaryRequest {
+    string parent = 1;
+    Binary binary = 2;
+    oneof resource {
+        string url = 3;
+        bytes data = 4;
+        string download_method = 5;
+    }
 }
 
 message BatchGetBinaryRequest {
@@ -279,6 +292,15 @@ message GetAdminMessageRequest {
 
 }
 
+message GetAuthRequest {
+    Action action = 1;
+
+    enum Action {
+        UNSPECIFIED = 0;
+        UPLOAD_MOD = 1;
+    }
+}
+
 
 // Types
 
@@ -308,13 +330,13 @@ message Package {
 message Binary {
     int64 binary_id = 1;
     int64 package_id = 2;
-    string url = 3;
-    string download_method= 4;
-    int64 download_count = 5;
-    Version version = 6;
-    string description = 7;
-    string create_timestamp = 8;
-    string tag = 9;
+    string url = 3; // OUTPUT_ONLY;
+    int64 download_count = 4;
+    Version version = 5;
+    string description = 6;
+    string create_time = 7;
+    string tag = 8;
+    string download_method= 9; // OUTPUT_ONLY;
 }
 
 message User {
@@ -375,4 +397,8 @@ message Tag {
 
 message AdminMessage {
     string message = 1;
+}
+
+message Auth {
+    string oauth2_token = 1;
 }

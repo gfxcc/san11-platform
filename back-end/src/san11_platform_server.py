@@ -13,7 +13,8 @@ from lib.protos import san11_platform_pb2_grpc
 
 from handler import PackageHandler, BinaryHandler, ImageHandler, \
                     CommentHandler, ReplyHandler, UserHandler, \
-                    GeneralHandler, TagHandler, AdminHandler
+                    GeneralHandler, TagHandler, AdminHandler, \
+                    AuthHandler
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -30,6 +31,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.general_handler = GeneralHandler()
         self.tag_handler = TagHandler()
         self.admin_handler = AdminHandler()
+        self.auth_handler = AuthHandler()
 
     def CreatePackage(self, request, context):
         return self.package_handler.create_package(request, context)
@@ -52,6 +54,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # binaries
     def UploadBinary(self, request, context):
         return self.binary_handler.upload_binary(request, context)
+    
+    def CreateBinary(self, request, context):
+        return self.binary_handler.create_binary(request, context)
     
     def DeleteBinary(self, request, context):
         return self.binary_handler.delete_binary(request, context)
@@ -119,6 +124,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     
     def GetAdminMessage(self, request, context):
         return self.admin_handler.get_admin_message(request, context)
+    
+    def GetAuth(self, request, context):
+        return self.auth_handler.get_auth(request, context)
 
     # Tags
     def CreateTag(self, request, context):

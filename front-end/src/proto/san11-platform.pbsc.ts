@@ -181,6 +181,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/CreateBinary
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Binary>>
+     */
+    createBinary: (
+      requestData: thisProto.CreateBinaryRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Binary>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/CreateBinary',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.CreateBinaryRequest,
+        responseClass: thisProto.Binary
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/DeleteBinary
      *
      * @param requestMessage Request message
@@ -704,6 +725,27 @@ export class RouteGuideClient {
         requestClass: thisProto.GetAdminMessageRequest,
         responseClass: thisProto.AdminMessage
       });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/GetAuth
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Auth>>
+     */
+    getAuth: (
+      requestData: thisProto.GetAuthRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Auth>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/GetAuth',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.GetAuthRequest,
+        responseClass: thisProto.Auth
+      });
     }
   };
 
@@ -824,6 +866,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Status> {
     return this.$raw
       .uploadBinary(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/CreateBinary
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Binary>
+   */
+  createBinary(
+    requestData: thisProto.CreateBinaryRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Binary> {
+    return this.$raw
+      .createBinary(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -1224,6 +1282,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.AdminMessage> {
     return this.$raw
       .getAdminMessage(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/GetAuth
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Auth>
+   */
+  getAuth(
+    requestData: thisProto.GetAuthRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Auth> {
+    return this.$raw
+      .getAuth(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

@@ -25,4 +25,3 @@ export function getBinaryFilename(san11Package: Package, binary: Binary): string
     }
     return filenameBase.replace('/\ /-', 'best') + '.' + extension;
 }
-

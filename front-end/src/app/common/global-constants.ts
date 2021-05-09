@@ -2,11 +2,13 @@ export class GlobalConstants {
     public static serverIp: string = "http://0.0.0.0";
     public static domain: string = 'san11pk';
     public static san11ServerUrl: string = GlobalConstants.serverIp + ':8090';
-    public static fileServerUrl: string = GlobalConstants.serverIp + ':8080';
+    public static fileServerUrl: string = 'https://storage.googleapis.com/san11-resources';
 
     public static maxBinarySize: number = 30 * 1024 * 1024;
     public static maxImageSize: number = 5 * 1024 * 1024;
 
+    public static tmpBucket = 'san11-tmp';
+    public static resourceBucket = 'san11-resources';
 
     public static defaultUserImage: string = '../../../assets/images/zhuge.jpg';
 

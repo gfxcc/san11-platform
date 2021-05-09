@@ -106,7 +106,7 @@ class ResourceMixin(ABC):
 
     @classmethod
     def list(cls, page_size: int, page_token: str, **kwargs) -> List[Any]:
-        SUPPORTED_KEY = ['category_id', 'author_id', 'tag_id']
+        SUPPORTED_KEY = ['category_id', 'author_id', 'tag_id', 'package_id']
         sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()}'
         constrains = []
         for key in SUPPORTED_KEY:
