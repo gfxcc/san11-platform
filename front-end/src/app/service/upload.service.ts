@@ -9,6 +9,7 @@ export class UploadService {
 
   upload(file: File, bucket: string, filename: string): Observable<Upload> {
     const data = new FormData();
+    data.append('file', file);
     return this.http
       .post(`https://storage.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${filename}`, data, {
         headers: {

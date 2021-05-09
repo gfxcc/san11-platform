@@ -198,6 +198,7 @@ export class CreateNewVersionComponent implements OnInit {
   uploadTmpFile(): void {
     const filename = `${this.parent}/binaries/${version2str(this.newVersion)}`;
     this.tmpUrl = filename;
+    console.log(this.file);
     this.uploadService.upload(this.file, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
       this.upload = upload;
     });
