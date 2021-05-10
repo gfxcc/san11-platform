@@ -10,7 +10,7 @@ from lib.auths import Authenticator
 from lib.image import Image
 from lib.package import Package
 from lib.user import User
-from lib import get_image_url
+from lib.image import get_image_url
 from lib import gcs
 
 
