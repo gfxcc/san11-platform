@@ -79,7 +79,7 @@ class Binary(ResourceMixin):
 
     def to_pb(self) -> san11_platform_pb2.Binary:
         # TODO: backfill size. Can be removed after couple weeks
-        if not self.size:
+        if self.url and not self.size:
             self.size = size(gcs.get_file_size(gcs.CANONICAL_BUCKET, self.url))
             sql = f'UPDATE {self.db_table()} SET size=%(size)s WHERE {self.db_fields()[0]}=%(resource_id)s'
             run_sql_with_param(sql, {
