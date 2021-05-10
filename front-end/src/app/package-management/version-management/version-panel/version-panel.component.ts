@@ -39,7 +39,7 @@ import { isAdmin } from '../../../utils/user_util';
 export class VersionPanelComponent implements OnInit {
   @Input() package: Package;
   @Output() downloadEvent = new EventEmitter();
-  displayedColumns: string[] = ['version', 'createTime', 'downloadCount', 'actions'];
+  displayedColumns: string[] = ['version', 'createTime', 'size', 'downloadCount', 'actions'];
 
   // @ViewChild(MatPaginator) paginator: MatPaginator;
 
