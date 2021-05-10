@@ -7784,6 +7784,7 @@ export class Binary implements GrpcMessage {
     _instance.createTime = _instance.createTime || '';
     _instance.tag = _instance.tag || '';
     _instance.downloadMethod = _instance.downloadMethod || '';
+    _instance.size = _instance.size || '';
   }
 
   /**
@@ -7826,6 +7827,9 @@ export class Binary implements GrpcMessage {
           break;
         case 9:
           _instance.downloadMethod = _reader.readString();
+          break;
+        case 10:
+          _instance.size = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -7872,6 +7876,9 @@ export class Binary implements GrpcMessage {
     if (_instance.downloadMethod) {
       _writer.writeString(9, _instance.downloadMethod);
     }
+    if (_instance.size) {
+      _writer.writeString(10, _instance.size);
+    }
   }
 
   private _binaryId?: string;
@@ -7883,6 +7890,7 @@ export class Binary implements GrpcMessage {
   private _createTime?: string;
   private _tag?: string;
   private _downloadMethod?: string;
+  private _size?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -7899,6 +7907,7 @@ export class Binary implements GrpcMessage {
     this.createTime = _value.createTime;
     this.tag = _value.tag;
     this.downloadMethod = _value.downloadMethod;
+    this.size = _value.size;
     Binary.refineValues(this);
   }
   get binaryId(): string | undefined {
@@ -7955,6 +7964,12 @@ export class Binary implements GrpcMessage {
   set downloadMethod(value: string | undefined) {
     this._downloadMethod = value;
   }
+  get size(): string | undefined {
+    return this._size;
+  }
+  set size(value: string | undefined) {
+    this._size = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -7979,7 +7994,8 @@ export class Binary implements GrpcMessage {
       description: this.description,
       createTime: this.createTime,
       tag: this.tag,
-      downloadMethod: this.downloadMethod
+      downloadMethod: this.downloadMethod,
+      size: this.size
     };
   }
 
@@ -8008,7 +8024,8 @@ export class Binary implements GrpcMessage {
       description: this.description,
       createTime: this.createTime,
       tag: this.tag,
-      downloadMethod: this.downloadMethod
+      downloadMethod: this.downloadMethod,
+      size: this.size
     };
   }
 }
@@ -8026,6 +8043,7 @@ export module Binary {
     createTime?: string;
     tag?: string;
     downloadMethod?: string;
+    size?: string;
   }
 
   /**
@@ -8041,6 +8059,7 @@ export module Binary {
     createTime?: string;
     tag?: string;
     downloadMethod?: string;
+    size?: string;
   }
 }
 
