@@ -14,16 +14,6 @@ services:
       - db
       - envoy
 
-  nginx:
-    image: nginx:latest
-    restart: always
-    volumes: 
-      - ./resources:/data
-      - ./back-end/nginx/conf:/etc/nginx/conf.d
-    command: []
-    ports:
-      - "8080:8080"
-
   envoy:
     image: envoyproxy/envoy-alpine:v1.13.0
     restart: always
