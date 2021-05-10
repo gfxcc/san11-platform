@@ -328,6 +328,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/CreateImage
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Url>>
+     */
+    createImage: (
+      requestData: thisProto.CreateImageRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Url>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/CreateImage',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.CreateImageRequest,
+        responseClass: thisProto.Url
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/CreateComment
      *
      * @param requestMessage Request message
@@ -978,6 +999,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Url> {
     return this.$raw
       .uploadImage(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/CreateImage
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Url>
+   */
+  createImage(
+    requestData: thisProto.CreateImageRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Url> {
+    return this.$raw
+      .createImage(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

@@ -72,7 +72,6 @@ export class CreatePackageComponent implements OnInit {
         san11Package => {
 
           this.createdPackage = san11Package;
-          // this.uploadImage();
           this.loading.close();
 
           this.notificationService.success('创建成功，请耐心等待审核。预期 1-2 天')

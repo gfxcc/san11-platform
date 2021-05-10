@@ -73,6 +73,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # image
     def UploadImage(self, request, context):
         return self.image_handler.upload_image(request, context)
+    
+    def CreateImage(self, request, context):
+        return self.image_handler.create_image(request, context)
 
     # Comments
     def CreateComment(self, request, context):

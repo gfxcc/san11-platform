@@ -14,7 +14,7 @@ import * as Editor from "../../common/components/ckeditor/ckeditor";
 
 import { GalleryItem, ImageItem } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { ListTagsRequest, Package, Tag, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
+import { CreateImageRequest, ListTagsRequest, Package, Tag, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { NotificationService } from "../../common/notification.service";
@@ -29,6 +29,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dial
 import { isAdmin, getUsernameFeeds, getUserUrl } from "../../utils/user_util";
 import { increment } from '../../utils/number_util';
 import { getPackageUrl } from "../../utils/package_util";
+import { UploadService } from '../../service/upload.service';
 
 
 export interface DialogData {
@@ -85,6 +86,7 @@ export class PackageDetailComponent implements OnInit {
     private notificationService: NotificationService,
     private _eventEmiter: EventEmiterService,
     private cd: ChangeDetectorRef,
+    private uploadService: UploadService,
   ) {
   }
 
@@ -570,40 +572,36 @@ export class PackageDetailComponent implements OnInit {
 
     this.loading = this.dialog.open(LoadingComponent);
 
-    let fileReader = new FileReader();
-    fileReader.onload = () => {
+    const parent = getPackageUrl(this.package);
+    const filename = `${parent}/images/tmp.jpeg`
+    this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
+      if (upload.progress === 100) {
+        this.san11pkService.createImage(new CreateImageRequest({
+          parent: parent,
+          url: filename
+        })).subscribe(
+          url => {
+            this.package.imageUrls.push(url.url);
+            const fullUrl = getFullUrl(url.url);
+            if (this.package.categoryId === '1') {
+              this.images.splice(this.images.length - 2, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
+            } else {
+              this.images.splice(this.images.length - 1, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
+            }
 
-      var parent = getPackageUrl(this.package);
+            this.galleryElement.load(this.images);
 
-      var arrayBuffer = fileReader.result;
-      var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
-
-      this.san11pkService.uploadImage(parent, bytes).subscribe(
-
-        url => {
-          this.package.imageUrls.push(url.url);
-          const fullUrl = getFullUrl(url.url);
-          if (this.package.categoryId === '1') {
-            this.images.splice(this.images.length - 2, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
-          } else {
-            this.images.splice(this.images.length - 1, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
+            this.notificationService.success('图片上传成功');
+            this.loading.close();
+          },
+          error => {
+            this.loading.close();
+            this.notificationService.warn('上传截图失败: ' + error.statusMessage);
           }
+        );
 
-          this.galleryElement.load(this.images);
-
-          this.notificationService.success('图片上传成功');
-          this.loading.close();
-        },
-        error => {
-          this.loading.close();
-          this.notificationService.warn('上传截图失败: ' + error.statusMessage);
-        }
-      );
-
-    }
-
-    fileReader.readAsArrayBuffer(image);
-
+      }
+    });
   }
 
   onBack() {

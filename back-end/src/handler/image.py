@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, uuid
 # TODO: switch to a moduel based solution
 sys.path.insert(0, os.path.abspath('..'))
 import logging
@@ -10,6 +10,8 @@ from lib.auths import Authenticator
 from lib.image import Image
 from lib.package import Package
 from lib.user import User
+from lib import get_image_url
+from lib import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -39,4 +41,30 @@ class ImageHandler:
         else:
             raise Exception(f'Invalid parent: {parent}')
 
+        return san11_platform_pb2.Url(url=image.url)
+    
+    def create_image(self, request, context):
+        logger.info(f'In create_image: parent={request.parent}')
+        parent = Url(request.parent)
+        image = Image(request.url)
+
+        authenticate = Authenticator.from_context(context)
+        if not authenticate.canUploadImage(parent=parent):
+            context.abort(code=255, details='权限不足')
+
+        if parent.type == 'packages':
+            Package.from_id(parent.id).append_image(image)
+        elif parent.type == 'users':
+            user = User.from_id(parent.id)
+            if user.image_url:
+                try:
+                    Image.from_url(user.image_url).delete()
+                except Exception as err:
+                    logger.error(f'Failed to delete image: {err}')
+            user.set_image(image)
+        else:
+            raise Exception(f'Invalid parent: {parent}')
+        
+        url = get_image_url(request.parent, f'{uuid.uuid1()}.jpeg')
+        gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, url)
         return san11_platform_pb2.Url(url=image.url)

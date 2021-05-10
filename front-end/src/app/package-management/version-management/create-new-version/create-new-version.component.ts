@@ -179,6 +179,7 @@ export class CreateNewVersionComponent implements OnInit {
       return;
     } else {
       this.file = file;
+      this.upload = undefined;
     }
 
     if (this.categoryId === '1') {

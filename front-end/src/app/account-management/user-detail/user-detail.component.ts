@@ -2,7 +2,7 @@ import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router';
 import { GalleryItem, ImageItem, GalleryComponent } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { ListPackagesRequest, Package, UploadImageRequest, User } from "../../../proto/san11-platform.pb";
+import { CreateImageRequest, ListPackagesRequest, Package, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { getUserUrl } from "../../utils/user_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
@@ -19,6 +19,7 @@ import { isAdmin } from "../../utils/user_util";
 import { increment } from '../../utils/number_util';
 import { getPackageUrl } from "../../utils/package_util";
 import { PackageDetailComponent } from '../../package-management/package-detail/package-detail.component';
+import { UploadService } from '../../service/upload.service';
 
 
 export interface UserData {
@@ -52,6 +53,7 @@ export class UserDetailComponent implements OnInit {
     private dialog: MatDialog,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private uploadService: UploadService,
   ) {
   }
 
@@ -158,32 +160,28 @@ export class UserDetailComponent implements OnInit {
 
     this.loading = this.dialog.open(LoadingComponent);
 
-    let fileReader = new FileReader();
-    fileReader.onload = () => {
+    const parent = getUserUrl(this.user);
+    const filename = `${parent}/images/tmp.jpeg`
+    this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
+      if (upload.progress === 100) {
+        this.san11pkService.createImage(new CreateImageRequest({
+          parent: parent,
+          url: filename
+        })).subscribe(
+          url => {
+            this.user.imageUrl = url.url;
+            this.setUpUserImage(getFullUrl(this.user.imageUrl));
 
-      var parent = getUserUrl(this.user);
-
-      var arrayBuffer = fileReader.result;
-      var bytes = new Uint8Array(arrayBuffer as ArrayBuffer);
-
-      this.san11pkService.uploadImage(parent, bytes).subscribe(
-
-        url => {
-          this.user.imageUrl = url.url;
-          this.setUpUserImage(getFullUrl(this.user.imageUrl));
-
-          this.notificationService.success('图片上传成功');
-          this.loading.close();
-        },
-        error => {
-          this.loading.close();
-          this.notificationService.warn('上传截图失败: ' + error.statusMessage);
-        }
-      );
-
-    }
-
-    fileReader.readAsArrayBuffer(image);
+            this.notificationService.success('图片上传成功');
+            this.loading.close();
+          },
+          error => {
+            this.notificationService.warn('上传截图失败: ' + error.statusMessage);
+            this.loading.close();
+          }
+        );
+      }
+    });
   }
 
   onUpdateUserForm(form) {

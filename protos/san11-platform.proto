@@ -27,6 +27,7 @@ service RouteGuide {
 
   // Image related
   rpc UploadImage(UploadImageRequest) returns (Url) {}
+  rpc CreateImage(CreateImageRequest) returns (Url) {}
 
   // comment related
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}
@@ -168,6 +169,11 @@ message ListBinariesResponse {
 message UploadImageRequest {
     string parent = 1; // categories/xxx/packages/xxx or users/user_id
     bytes image = 2;
+}
+
+message CreateImageRequest {
+    string parent = 1;
+    string url = 2;
 }
 
 
