@@ -23,20 +23,23 @@ function isHttpProgressEvent(
 export interface Upload {
     progress: number;
     state: 'PENDING' | 'IN_PROGRESS' | 'DONE';
+    loaded: number;
+    total: number;
 }
 
 export function upload(): (
     source: Observable<HttpEvent<unknown>>
 ) => Observable<Upload> {
-    const initialState: Upload = { state: 'PENDING', progress: 0 };
+    const initialState: Upload = { state: 'PENDING', progress: 0, loaded: 1, total: 1 };
     const reduceState = (upload: Upload, event: HttpEvent<unknown>): Upload => {
-        console.log(event);
         if (isHttpProgressEvent(event)) {
             return {
                 progress: event.total
                     ? Math.round((100 * event.loaded) / event.total)
                     : upload.progress,
                 state: 'IN_PROGRESS',
+                loaded: event.loaded,
+                total: event.total
             };
         }
         // TODO: this is a workaround while GCS return 401 due to non-authenticated request
@@ -44,6 +47,8 @@ export function upload(): (
             return {
                 progress: 100,
                 state: 'DONE',
+                loaded: 1,
+                total: 1
             };
         }
         return upload;

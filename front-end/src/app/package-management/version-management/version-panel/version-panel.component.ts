@@ -56,6 +56,15 @@ export class VersionPanelComponent implements OnInit {
 
   updateElement;
 
+  startTime: any;
+  endTime: any;
+  currTime: any;
+  prevTime: any;
+  speed: number = 0;
+  bytesReceied: number = 0;
+  oldbytes: number = 0;
+  unit: string = "Mbps";
+
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
@@ -160,11 +169,29 @@ export class VersionPanelComponent implements OnInit {
         const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.url;
         const filename = getBinaryFilename(this.package, binary);
 
+        this.prevTime = new Date().getTime();
+        this.oldbytes = 0;
+
         this.downloads.download(fileUrl, filename).subscribe(
           result => {
+
             if (result.type === HttpEventType.DownloadProgress) {
               const percentDone = Math.round(100 * result.loaded / result.total);
-              this.downloadProgress = percentDone
+              this.downloadProgress = percentDone;
+
+              this.bytesReceied = result.loaded / 1000000;
+              this.currTime = new Date().getTime();
+              this.speed =
+                (this.bytesReceied - this.oldbytes) /
+                ((this.currTime - this.prevTime) / 1000);
+              if (this.speed < 1) {
+                this.unit = "Kbps";
+                this.speed *= 1000;
+              } else this.unit = "Mbps";
+
+              this.prevTime = this.currTime;
+              this.oldbytes = this.bytesReceied;
+
             }
             if (result.type === HttpEventType.Response) {
               saveAs(result.body, filename);

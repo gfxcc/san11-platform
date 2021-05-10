@@ -56,6 +56,14 @@ export class CreateNewVersionComponent implements OnInit {
   convertedSireVersion: string;
 
   upload: Upload | undefined;
+  startTime: any;
+  endTime: any;
+  currTime: any;
+  prevTime: any;
+  speed: number = 0;
+  bytesReceied: number = 0;
+  oldbytes: number = 0;
+  unit: string = "Mbps";
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: VersionData,
@@ -199,8 +207,23 @@ export class CreateNewVersionComponent implements OnInit {
   uploadTmpFile(): void {
     const filename = `${this.parent}/binaries/${version2str(this.newVersion)}`;
     this.tmpUrl = filename;
+    this.prevTime = new Date().getTime();
+    this.oldbytes = 0;
     this.uploadService.upload(this.file, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
       this.upload = upload;
+
+      this.bytesReceied = upload.loaded / 1000000;
+      this.currTime = new Date().getTime();
+      this.speed =
+        (this.bytesReceied - this.oldbytes) /
+        ((this.currTime - this.prevTime) / 1000);
+      if (this.speed < 1) {
+        this.unit = "Kbps";
+        this.speed *= 1000;
+      } else this.unit = "Mbps";
+
+      this.prevTime = this.currTime;
+      this.oldbytes = this.bytesReceied;
     });
   }
 

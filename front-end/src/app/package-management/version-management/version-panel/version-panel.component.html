@@ -1,5 +1,9 @@
-<div class="progress-bar-container">
-    <mat-progress-bar *ngIf="downloadProgressBar" color="primary" mode="determinate" [value]="downloadProgress"></mat-progress-bar>
+<div *ngIf="downloadProgressBar" class="progress-bar-container">
+    <mat-progress-bar color="primary" mode="determinate" [value]="downloadProgress"></mat-progress-bar>
+    <div style="display: flex;">
+        <span class="example-spacer"></span>
+        <div style="margin-right: 100px;">{{this.speed.toPrecision(2)}} {{this.unit}}</div>
+    </div>
 </div>
 
 <div class="head" style="height: 38px;">
