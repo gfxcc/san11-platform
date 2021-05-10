@@ -3,6 +3,7 @@ import { isNumeric } from 'rxjs/util/isNumeric';
 
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { version } from 'process';
+import { v4 as uuid } from 'uuid'
 
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 
@@ -205,7 +206,7 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   uploadTmpFile(): void {
-    const filename = `${this.parent}/binaries/${version2str(this.newVersion)}`;
+    const filename = `${this.parent}/binaries/${uuid()}`;
     this.tmpUrl = filename;
     this.prevTime = new Date().getTime();
     this.oldbytes = 0;

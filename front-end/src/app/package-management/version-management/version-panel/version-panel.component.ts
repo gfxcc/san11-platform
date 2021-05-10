@@ -61,6 +61,7 @@ export class VersionPanelComponent implements OnInit {
   currTime: any;
   prevTime: any;
   speed: number = 0;
+  SPEED_UPDATE_DELTA = 2;
   bytesReceied: number = 0;
   oldbytes: number = 0;
   unit: string = "Mbps";
@@ -181,14 +182,17 @@ export class VersionPanelComponent implements OnInit {
 
               this.bytesReceied = result.loaded / 1000000;
               this.currTime = new Date().getTime();
-              this.speed =
+              let speed =
                 (this.bytesReceied - this.oldbytes) /
                 ((this.currTime - this.prevTime) / 1000); // mb/second
-              if (this.speed < 1) {
+              if (speed < 1) {
                 this.unit = "KB/S";
-                this.speed *= 1000;
+                speed *= 1000;
               } else this.unit = "MB/S";
 
+              if (Math.abs(this.speed - speed) > this.SPEED_UPDATE_DELTA) {
+                this.speed = speed;
+              }
               this.prevTime = this.currTime;
               this.oldbytes = this.bytesReceied;
 
