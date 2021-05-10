@@ -575,7 +575,7 @@ export class PackageDetailComponent implements OnInit {
     const parent = getPackageUrl(this.package);
     const filename = `${parent}/images/tmp.jpeg`
     this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
-      if (upload.progress === 100) {
+      if (upload.state === 'DONE') {
         this.san11pkService.createImage(new CreateImageRequest({
           parent: parent,
           url: filename

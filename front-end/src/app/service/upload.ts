@@ -30,6 +30,7 @@ export function upload(): (
 ) => Observable<Upload> {
     const initialState: Upload = { state: 'PENDING', progress: 0 };
     const reduceState = (upload: Upload, event: HttpEvent<unknown>): Upload => {
+        console.log(event);
         if (isHttpProgressEvent(event)) {
             return {
                 progress: event.total
@@ -38,7 +39,8 @@ export function upload(): (
                 state: 'IN_PROGRESS',
             };
         }
-        if (isHttpResponse(event)) {
+        // TODO: this is a workaround while GCS return 401 due to non-authenticated request
+        if (isHttpResponse(event) || event.type === 3) {
             return {
                 progress: 100,
                 state: 'DONE',

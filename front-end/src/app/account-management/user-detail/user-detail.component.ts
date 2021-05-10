@@ -163,7 +163,7 @@ export class UserDetailComponent implements OnInit {
     const parent = getUserUrl(this.user);
     const filename = `${parent}/images/tmp.jpeg`
     this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
-      if (upload.progress === 100) {
+      if (upload.state === 'DONE') {
         this.san11pkService.createImage(new CreateImageRequest({
           parent: parent,
           url: filename
