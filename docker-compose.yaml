@@ -41,7 +41,6 @@ services:
     command: bash -c "npm install && ng serve --prod --host 0.0.0.0 --disable-host-check"
     depends_on: 
       - back-end
-      - nginx
     ports:
       - "80:4200"
     
