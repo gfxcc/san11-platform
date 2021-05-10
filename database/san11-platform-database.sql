@@ -20,7 +20,8 @@ CREATE TABLE binaries (
     description TEXT NOT NULL,
     create_timestamp TIMESTAMP,
     tag TEXT,
-    download_method TEXT
+    download_method TEXT,
+    size TEXT
 );
 
 CREATE TABLE users (

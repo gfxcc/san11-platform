@@ -343,6 +343,7 @@ message Binary {
     string create_time = 7;
     string tag = 8;
     string download_method= 9; // OUTPUT_ONLY;
+    string size = 10; // human readable size. E.g. 20M, 1.2G
 }
 
 message User {
