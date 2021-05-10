@@ -27,7 +27,7 @@ class Session:
         '''
         return self.expiration > int(time.time())
     
-    def extend(self, validity_day: int = 7):
+    def extend(self, validity_day: int = 30):
         expiration = int(time.time()) + validity_day * 24 * 60 * 60
         
         sql = 'UPDATE sessions SET expiration=%(expiration)s WHERE sid=%(sid)s'
@@ -71,7 +71,7 @@ class Session:
         return cls(sid, user_id, expiration)
 
     @classmethod
-    def create(cls, user_id, validity_day: int = 7):
+    def create(cls, user_id, validity_day: int = 30):
         expiration = int(time.time()) + validity_day * 24 * 60 * 60
         sid = str(uuid.uuid1())
 
