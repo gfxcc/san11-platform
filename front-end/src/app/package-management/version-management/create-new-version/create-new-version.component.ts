@@ -220,7 +220,7 @@ export class CreateNewVersionComponent implements OnInit {
       if (this.speed < 1) {
         this.unit = "KB/S";
         this.speed *= 1000;
-      } else this.unit = "KB/S";
+      } else this.unit = "MB/S";
 
       this.prevTime = this.currTime;
       this.oldbytes = this.bytesReceied;
