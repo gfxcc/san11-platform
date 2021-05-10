@@ -46,12 +46,14 @@ class ImageHandler:
     def create_image(self, request, context):
         logger.info(f'In create_image: parent={request.parent}')
         parent = Url(request.parent)
-        image = Image(request.url)
 
         authenticate = Authenticator.from_context(context)
         if not authenticate.canUploadImage(parent=parent):
             context.abort(code=255, details='权限不足')
 
+        url = get_image_url(request.parent, f'{uuid.uuid1()}.jpeg')
+        gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, url)
+        image = Image(url)
         if parent.type == 'packages':
             Package.from_id(parent.id).append_image(image)
         elif parent.type == 'users':
@@ -65,6 +67,4 @@ class ImageHandler:
         else:
             raise Exception(f'Invalid parent: {parent}')
         
-        url = get_image_url(request.parent, f'{uuid.uuid1()}.jpeg')
-        gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, url)
         return san11_platform_pb2.Url(url=image.url)

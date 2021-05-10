@@ -8,6 +8,7 @@ import uuid
 from .protos import san11_platform_pb2
 from .db import run_sql_with_param_and_fetch_one, run_sql_with_param
 from .resource import get_images_path, get_resource_path, get_image_url, create_resource
+from . import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -21,7 +22,7 @@ class Image:
         return self.url
     
     def delete(self):
-        os.remove(get_resource_path(self.url))
+        gcs.delete_file(gcs.CANONICAL_BUCKET, self.url)
         logger.info(f'{self} is deleted')
 
     @classmethod
