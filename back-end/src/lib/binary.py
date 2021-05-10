@@ -81,7 +81,7 @@ class Binary(ResourceMixin):
         # TODO: backfill size. Can be removed after couple weeks
         if not self.size:
             self.size = size(gcs.get_file_size(gcs.CANONICAL_BUCKET, self.url))
-            sql = f'UPDATE {self.db_table()} SET size=%{size}s WHERE {self.db_fields()[0]}=%(resource_id)s'
+            sql = f'UPDATE {self.db_table()} SET size=%(size)s WHERE {self.db_fields()[0]}=%(resource_id)s'
             run_sql_with_param(sql, {
                 'size': self.size,
                 'resource_id': self.binary_id
