@@ -29,7 +29,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class Package(ResourceMixin):
-    DEFAULT_STATUS_FOR_NEW_PACKAGE = 'under_review'
+    DEFAULT_STATUS_FOR_NEW_PACKAGE = 'normal'
     def __init__(self, package_id: int, name: str, description: str,
                  create_time: datetime, category_id: int,
                  status: str, author_id: int,
