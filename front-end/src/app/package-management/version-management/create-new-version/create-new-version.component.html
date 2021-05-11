@@ -45,7 +45,7 @@
             </button>
             <span class="example-spacer"></span>
             <button [disabled]="!(this.file != undefined && this.upload === undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()">
-                {{this.upload ? (this.upload.progress != 100 ? this.speed.toPrecision(2) + this.unit : '已上传') : '上传'}}
+                {{this.upload ? (this.upload.progress != 100 ? this.speed.toFixed(1) + this.unit : '已上传') : '上传'}}
             </button>
         </div>
 
