@@ -137,6 +137,7 @@ export class CommentCardComponent implements OnInit {
     this.san11pkService.createReply(reply).subscribe(
       reply => {
         this.notificationService.success('评论添加 成功!');
+        this.hideReplyEnter = true;
         this.comment.replies.push(reply);
         this.replyCreateEvent.emit();
       },
