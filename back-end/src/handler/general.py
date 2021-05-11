@@ -18,9 +18,10 @@ class GeneralHandler:
         logger.info(f'In GetStatistic')
         # TODO hardcoded to today's information for now
         try:
-            user = Authenticator.from_context(context=context).session.user
+            session = Authenticator.from_context(context=context).session
+            session.extend()
+            if session.user.username != 'admin':
+                Statistic.load_today().increment_visit()
         except Exception:
-            user = None
-        if user is None or user.username != 'admin':
-            Statistic.load_today().increment_visit()
+            pass
         return Statistic.load_today().to_pb()
