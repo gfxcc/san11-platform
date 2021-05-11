@@ -134,7 +134,7 @@ class Package(ResourceMixin):
             except Exception:
                 logger.error(f'Failed to delete image: image_url={image_url}')
 
-        for binary in Binary.from_package_id(self.package_id):
+        for binary in Binary.list(0, '', package_id=self.package_id):
             try:
                 binary.delete()
             except Exception as err:
