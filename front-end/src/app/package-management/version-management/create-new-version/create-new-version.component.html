@@ -45,7 +45,7 @@
             </button>
             <span class="example-spacer"></span>
             <button [disabled]="!(this.file != undefined && this.upload === undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()">
-                {{this.upload ? (this.upload.progress != 100 ? this.speed.toFixed(1) + this.unit : '已上传') : '上传'}}
+                {{this.upload ? (this.upload.state != 'DONE' ? this.speed.toFixed(1) + this.unit : '已上传') : '上传'}}
             </button>
         </div>
 
@@ -62,6 +62,6 @@
 
         <span class="example-spacer"></span>
         <button mat-stroked-button mat-dialog-close color="accent" style="margin-right: 5px">取消</button>
-        <button [disabled]="!(createVersionForm.valid && this.upload && this.upload.progress===100)" type="submit" mat-stroked-button color="primary">创建</button>
+        <button [disabled]="!(createVersionForm.valid && this.upload && this.upload.state===&quot;DONE&quot;)" type="submit" mat-stroked-button color="primary">创建</button>
     </div>
 </form>
