@@ -229,7 +229,6 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onCreateBinary(createVersionForm) {
-    console.log(createVersionForm.value);
 
     const binary: Binary = new Binary({
       version: this.newVersion,
@@ -242,6 +241,8 @@ export class CreateNewVersionComponent implements OnInit {
       binary: binary,
       url: this.tmpUrl
     });
+
+    this.loadingDialog = this.dialog.open(LoadingComponent);
 
     this.san11PkService.createBinary(request).subscribe(
       resp => {
