@@ -46,7 +46,7 @@
             <form #replyForm="ngForm" (ngSubmit)="onCreateReply(replyForm.value);replyForm.resetForm();">
 
                 <mat-form-field style="width: 100%;">
-                    <textarea #replyInput matInput type="text" matInput placeholder="输入回复" ngModel name="input" style="height: 15px;"> </textarea>
+                    <textarea #replyInput (keyup)="textAreaAdjust($event)" matInput type="text" matInput placeholder="输入回复" ngModel name="input" style="height: 15px;"> </textarea>
                 </mat-form-field>
 
                 <div class="actions-section">

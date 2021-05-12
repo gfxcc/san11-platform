@@ -147,6 +147,11 @@ export class CommentCardComponent implements OnInit {
     );
   }
 
+  textAreaAdjust(textArea) {
+    textArea.target.style.height = "0px";
+    textArea.target.style.height = (textArea.target.scrollHeight + 25) + "px";
+  }
+
   onReplyDelete(event) {
     this.commentDeleteEvent.emit();
   }
