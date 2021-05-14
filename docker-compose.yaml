@@ -28,6 +28,7 @@ services:
     restart: always
     volumes: 
       - ./database/postgres-data:/var/lib/postgresql/data
+      - ./database/backup:/backup
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
