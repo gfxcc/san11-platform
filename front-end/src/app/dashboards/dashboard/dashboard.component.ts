@@ -54,7 +54,6 @@ export class DashboardComponent implements OnInit {
   }
 
   loadPackages(categoryId: string, tagId: string): void {
-    console.log(`tag: ${tagId}`);
     this._eventEmiter.sendMessage({ categoryId: categoryId });
 
     this.san11pkService.listPackages(new ListPackagesRequest({ categoryId: categoryId, tagId: tagId })).subscribe(

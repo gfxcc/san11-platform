@@ -20,3 +20,13 @@
     margin: 5px;
     flex: 1 1 auto;
 }
+
+.upload-section {
+    margin-bottom: 10px;
+}
+
+.upload-section mat-button-wrapper {
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

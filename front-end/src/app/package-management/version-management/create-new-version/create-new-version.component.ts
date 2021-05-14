@@ -17,6 +17,7 @@ import { NotificationService } from "../../../common/notification.service";
 
 import { UploadService } from "../../../service/upload.service";
 import { Upload } from '../../../service/upload';
+import { Subscription } from 'rxjs';
 
 
 export interface VersionData {
@@ -57,6 +58,7 @@ export class CreateNewVersionComponent implements OnInit {
   convertedSireVersion: string;
 
   upload: Upload | undefined;
+  uploadSub: Subscription;
   startTime: any;
   endTime: any;
   currTime: any;
@@ -194,7 +196,6 @@ export class CreateNewVersionComponent implements OnInit {
     if (this.categoryId === '1') {
       const re = /(?:\.([^.]+))?$/;
       const ext = re.exec(file.name)[1];
-      console.log(ext);
       if (ext === 'scp') {
         this.selectSireVersion = '2';
         this.convertedSireVersion = '1'
@@ -210,9 +211,10 @@ export class CreateNewVersionComponent implements OnInit {
     this.tmpUrl = filename;
     this.prevTime = new Date().getTime();
     this.oldbytes = 0;
-    this.uploadService.upload(this.file, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
-      this.upload = upload;
+    this.uploadSub = this.uploadService.upload(this.file, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
+      console.log(upload);
 
+      this.upload = upload;
       this.bytesReceied = upload.loaded / 1000000;
       this.currTime = new Date().getTime();
       this.speed =
@@ -263,6 +265,16 @@ export class CreateNewVersionComponent implements OnInit {
     );
   }
 
+  onCancel() {
+    if (this.uploadSub && !this.uploadSub.closed) {
+      if (!confirm('上传尚未完成，确定要取消上传吗？')) {
+        return;
+      }
+      this.uploadSub.unsubscribe();
+    }
+    this.dialogRef.close();
+  }
+
   onClose() {
     this.dialogRef.close({ data: 'updated' });
   }
@@ -277,7 +289,6 @@ export class CreateNewVersionComponent implements OnInit {
       return;
     }
     this.newVersion = pendingVersoin;
-    console.log(this.newVersion);
   }
   updateMinor(input) {
     const pendingVersoin = new Version({ major: this.newVersion.major, minor: input.value, patch: this.newVersion.patch });
@@ -287,7 +298,6 @@ export class CreateNewVersionComponent implements OnInit {
       return;
     }
     this.newVersion = pendingVersoin;
-    console.log(this.newVersion);
   }
   updatePatch(input) {
     const pendingVersoin = new Version({ major: this.newVersion.major, minor: this.newVersion.minor, patch: input.value });
@@ -297,7 +307,6 @@ export class CreateNewVersionComponent implements OnInit {
       return;
     }
     this.newVersion = pendingVersoin;
-    console.log(this.newVersion);
   }
 
   validateVersion(version: Version) {

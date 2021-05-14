@@ -153,7 +153,6 @@ export class AppComponent {
 
   onSignOut() {
     this.san11pkService.signOut(localStorage.getItem('userId')).subscribe(
-      () => console.log('log out')
     );
 
     clearUser();
@@ -207,7 +206,6 @@ export class AppComponent {
   onActivate(elementRef) {
     this._eventEmiter.dataStr.subscribe((data: ComponentMessage) => {
       if (data.categoryId != undefined) {
-        console.log('in');
         setTimeout(() => {
           if (this.selectedCategory === data.categoryId) {
             return;

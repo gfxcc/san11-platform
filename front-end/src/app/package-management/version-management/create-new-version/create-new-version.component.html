@@ -21,10 +21,10 @@
                 <input matInput [disabled]="this.updateType!=&quot;custom&quot;" placeholder="major" [value]="this.newVersion.major.toString()" #majorInput name="majorInput" (change)="updateMajor(majorInput)" />
             </mat-form-field>
             <mat-form-field class=" version-field " floatLabel="always ">
-                <input matInput [disabled]="this.updateType!=&quot;custom&quot; " placeholder="major " [value]="this.newVersion.minor.toString() " #minorInput name="minorInput" (change)="updateMinor(minorInput)" />
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot; " placeholder="minor " [value]="this.newVersion.minor.toString() " #minorInput name="minorInput" (change)="updateMinor(minorInput)" />
             </mat-form-field>
             <mat-form-field class="version-field" floatLabel="always">
-                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" placeholder="major" [value]="this.newVersion.patch.toString()" #patchInput name="patchInput" (change)="updatePatch(patchInput)" />
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" placeholder="patch" [value]="this.newVersion.patch.toString()" #patchInput name="patchInput" (change)="updatePatch(patchInput)" />
             </mat-form-field>
         </div>
 
@@ -37,15 +37,15 @@
 
     <p></p>
 
-    <div style="margin-bottom: 10px;">
+    <div class="upload-section">
         <div style="display: flex;">
             <input hidden #fileInput type="file" [accept]="acceptFileType" ngModel required name="fileInput" (change)="selectFile(fileInput.files)">
-            <button type="button" mat-raised-button (click)="fileInput.click()">
-               {{ file ? file.name : '选择文件' }}
+            <button type="button" mat-raised-button (click)="fileInput.click()" style="text-overflow: ellipsis; overflow:hidden; white-space:nowrap; margin-right: 10px;">
+                {{ file ? file.name : '选择文件' }}
             </button>
             <span class="example-spacer"></span>
             <button [disabled]="!(this.file != undefined && this.upload === undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()">
-                {{this.upload ? (this.upload.state != 'DONE' ? this.speed.toFixed(1) + this.unit : '已上传') : '上传'}}
+                {{this.upload ? (this.upload.state != 'DONE' ? this.speed.toFixed(1) + this.unit: '已上传') : '上传'}}
             </button>
         </div>
 
@@ -61,7 +61,7 @@
     <div class="actions">
 
         <span class="example-spacer"></span>
-        <button mat-stroked-button mat-dialog-close color="accent" style="margin-right: 5px">取消</button>
+        <button mat-stroked-button type="button" (click)="onCancel()" color="accent" style="margin-right: 5px">取消</button>
         <button [disabled]="!(createVersionForm.valid && this.upload && this.upload.state===&quot;DONE&quot;)" type="submit" mat-stroked-button color="primary">创建</button>
     </div>
 </form>

@@ -111,6 +111,7 @@ export class VersionPanelComponent implements OnInit {
   onUpdate() {
     const selectedTab = this.tabs[this.tabSelectedIndex];
     this.dialog.open(CreateNewVersionComponent, {
+      disableClose: true,
       data: {
         latestVersion: selectedTab.dataSource.data.length > 0 ? selectedTab.dataSource.data[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" }),
         acceptFileType: getAcceptFileType(this.package.categoryId, selectedTab.tag),
@@ -132,7 +133,6 @@ export class VersionPanelComponent implements OnInit {
   fetchBinaries() {
     this.binaryService.listBinaries(this.package.packageId).subscribe(
       resp => {
-        console.log(resp);
         this.binaries = resp.binaries;
         this.configDataSource();
       },
