@@ -40,11 +40,11 @@
     <div class="upload-section">
         <div style="display: flex;">
             <input hidden #fileInput type="file" [accept]="acceptFileType" ngModel required name="fileInput" (change)="selectFile(fileInput.files)">
-            <button type="button" mat-raised-button (click)="fileInput.click()" style="text-overflow: ellipsis; overflow:hidden; white-space:nowrap; margin-right: 10px;">
+            <button type="button" mat-raised-button (click)="fileInput.click()" style="text-overflow: ellipsis; overflow:hidden; white-space:nowrap; margin-right: 10px; flex-shrink: 1;">
                 {{ file ? file.name : '选择文件' }}
             </button>
             <span class="example-spacer"></span>
-            <button [disabled]="!(this.file != undefined && this.upload === undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()">
+            <button [disabled]="!(this.file != undefined && this.upload === undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()" style="display: inline-block; flex-shrink: 0;">
                 {{this.upload ? (this.upload.state != 'DONE' ? this.speed.toFixed(1) + this.unit: '已上传') : '上传'}}
             </button>
         </div>
