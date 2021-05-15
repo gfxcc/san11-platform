@@ -10,8 +10,8 @@
 
             <span class="example-spacer"></span>
 
-            <div [hidden]="! (package.status==='under_review')">
-                <button mat-button mat-raised-button color="accent">审核中</button>
+            <div [hidden]="! (isAdmin() && package.status!=1)">
+                <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
             </div>
 
             <mat-card-subtitle>{{authorName}}</mat-card-subtitle>
@@ -28,7 +28,6 @@
             <p class="mat-card-content-p">
                 {{package.description}}
             </p>
-
         </mat-card-content> -->
     </mat-card>
 </div>

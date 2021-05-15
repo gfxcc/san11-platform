@@ -7427,7 +7427,7 @@ export class Package implements GrpcMessage {
     _instance.description = _instance.description || '';
     _instance.createTime = _instance.createTime || '';
     _instance.categoryId = _instance.categoryId || '0';
-    _instance.status = _instance.status || '';
+    _instance.status = _instance.status || 0;
     _instance.authorId = _instance.authorId || '0';
     _instance.authorImageUrl = _instance.authorImageUrl || '';
     _instance.imageUrls = _instance.imageUrls || [];
@@ -7465,7 +7465,7 @@ export class Package implements GrpcMessage {
           _instance.categoryId = _reader.readInt64String();
           break;
         case 6:
-          _instance.status = _reader.readString();
+          _instance.status = _reader.readEnum();
           break;
         case 7:
           _instance.authorId = _reader.readInt64String();
@@ -7522,7 +7522,7 @@ export class Package implements GrpcMessage {
       _writer.writeInt64String(5, _instance.categoryId);
     }
     if (_instance.status) {
-      _writer.writeString(6, _instance.status);
+      _writer.writeEnum(6, _instance.status);
     }
     if (_instance.authorId) {
       _writer.writeInt64String(7, _instance.authorId);
@@ -7553,7 +7553,7 @@ export class Package implements GrpcMessage {
   private _description?: string;
   private _createTime?: string;
   private _categoryId?: string;
-  private _status?: string;
+  private _status?: Package.Status;
   private _authorId?: string;
   private _authorImageUrl?: string;
   private _imageUrls?: string[];
@@ -7611,10 +7611,10 @@ export class Package implements GrpcMessage {
   set categoryId(value: string | undefined) {
     this._categoryId = value;
   }
-  get status(): string | undefined {
+  get status(): Package.Status | undefined {
     return this._status;
   }
-  set status(value: string | undefined) {
+  set status(value: Package.Status | undefined) {
     this._status = value;
   }
   get authorId(): string | undefined {
@@ -7706,7 +7706,7 @@ export class Package implements GrpcMessage {
       description: this.description,
       createTime: this.createTime,
       categoryId: this.categoryId,
-      status: this.status,
+      status: Package.Status[this.status ?? 0],
       authorId: this.authorId,
       authorImageUrl: this.authorImageUrl,
       imageUrls: (this.imageUrls || []).slice(),
@@ -7726,7 +7726,7 @@ export module Package {
     description?: string;
     createTime?: string;
     categoryId?: string;
-    status?: string;
+    status?: Package.Status;
     authorId?: string;
     authorImageUrl?: string;
     imageUrls?: string[];
@@ -7751,6 +7751,14 @@ export module Package {
     downloadCount?: string;
     tags?: Tag.AsProtobufJSON[] | null;
     updateTime?: string;
+  }
+  export enum Status {
+    UNKNOWN = 0,
+    NORMAL = 1,
+    UNDER_REVIEW = 2,
+    HIDDEN = 3,
+    SCHEDULE_DELETE = 4,
+    DELETED = 5
   }
 }
 

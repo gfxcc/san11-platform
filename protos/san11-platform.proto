@@ -324,13 +324,22 @@ message Package {
     string description = 3;
     string create_time = 4;
     int64 category_id = 5;
-    string status = 6; // under_review, normal, hidden, deleted
+    Status status = 6;
     int64 author_id = 7;
     string author_image_url = 8;
     repeated string image_urls = 9;
     int64 download_count = 10;
     repeated Tag tags = 11;
     string update_time = 12;
+
+    enum Status {
+        UNKNOWN = 0;
+        NORMAL = 1; // publish accessable
+        UNDER_REVIEW = 2; // Only visiable to admin and author
+        HIDDEN = 3; // Only visiable to admin and author
+        SCHEDULE_DELETE = 4; // Only visiable to admin
+        DELETED = 5; // Only visiable to admin
+    }
 }
 
 message Binary {

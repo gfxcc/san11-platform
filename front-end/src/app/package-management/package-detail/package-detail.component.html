@@ -78,8 +78,9 @@
                     </div>
 
                     <div *ngIf="(isAdmin() || isAuthor())" class="package-controller top-border show-border-dev">
-                        <div class="admin-zone" *ngIf="adminZone">
-                            <button mat-button mat-raised-button color="accent" (click)="onApprove()">通过审核</button>
+                        <div class="admin-zone" *ngIf="isAdmin()">
+                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===2" (click)="onApprove()">通过审核</button>
+                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===1 || this.package.status===3" (click)="onFlipHide()">{{this.package.status===3 ? '取消隐藏' : '隐藏'}}</button>
                         </div>
 
                         <span [hidden]="!adminZone" class="example-spacer"></span>

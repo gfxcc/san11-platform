@@ -14,7 +14,7 @@ import * as Editor from "../../common/components/ckeditor/ckeditor";
 
 import { GalleryItem, ImageItem } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { CreateImageRequest, ListTagsRequest, Package, Tag, User } from "../../../proto/san11-platform.pb";
+import { CreateImageRequest, ListTagsRequest, Package, Status, Tag, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { NotificationService } from "../../common/notification.service";
@@ -400,7 +400,7 @@ export class PackageDetailComponent implements OnInit {
   }
 
   loadPage() {
-    if (this.isAdmin() && this.package.status === 'under_review') {
+    if (this.isAdmin() && this.package.status === Package.Status.UNDER_REVIEW) {
       this.adminZone = true;
     }
     if (this.isAdmin() || this.isAuthor()) {
@@ -441,7 +441,7 @@ export class PackageDetailComponent implements OnInit {
   onApprove() {
     this.san11pkService.updatePackage(new Package({
       packageId: this.package.packageId,
-      status: 'normal'
+      status: Package.Status.NORMAL
     })).subscribe(
       san11Package => {
         this.notificationService.success('审核通过')
@@ -457,6 +457,22 @@ export class PackageDetailComponent implements OnInit {
   }
 
 
+  onFlipHide() {
+    this.san11pkService.updatePackage(new Package({
+      packageId: this.package.packageId,
+      status: this.package.status === Package.Status.HIDDEN ? Package.Status.NORMAL : Package.Status.HIDDEN
+    })).subscribe(
+      san11Package => {
+        this.notificationService.success('操作成功')
+        this.router.navigate(['categories', this.package.categoryId]).then(() => {
+          window.location.reload();
+        });
+      },
+      error => {
+        this.notificationService.warn('操作失败');
+      }
+    );
+  }
 
   // author
   onDelete() {
@@ -477,7 +493,7 @@ export class PackageDetailComponent implements OnInit {
       } else {
         const updatedPakcage = new Package({
           packageId: this.package.packageId,
-          status: 'hidden'
+          status: Package.Status.SCHEDULE_DELETE
         });
         this.san11pkService.updatePackage(updatedPakcage).subscribe(
           san11Package => {

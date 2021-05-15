@@ -108,6 +108,10 @@ export class PackageCardComponent implements OnInit {
     // });
   }
 
+  getStatusName() {
+    return Package.Status[this.package.status];
+  }
+
 }
 
 export interface DialogData {

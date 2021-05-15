@@ -1,8 +1,9 @@
 from logging import Logger
+import logging
 import os, os.path
 import errno
 from abc import ABC, abstractclassmethod, abstractmethod, abstractproperty
-from typing import List, Any, Iterable
+from typing import List, Any, Iterable, Dict
 from .exception import NotFound, AlreadyExists
 
 from .db import get_db_fields_placeholder_str, get_db_fields_str, run_sql_with_param_and_fetch_one, \
@@ -133,9 +134,16 @@ class ResourceMixin(ABC):
             f'( COALESCE((SELECT MAX({self.db_fields()[0]}) FROM {self.db_table()})+1, 1), '\
             f'{get_db_fields_placeholder_str(self.db_fields()[1:])}) RETURNING {self.db_fields()[0]}'
         params_raw = ','.join(f"'{field}': self.{field}" for field in self.db_fields())
-        params = eval(f'{{ {params_raw} }}')
+        params = self._update_db_params(eval(f'{{ {params_raw} }}'))
         resource_id = run_sql_with_param_and_fetch_one(sql, params)[0]
         exec(f"self.{self.db_fields()[0]} = resource_id")
+    
+    def _update_db_params(self, params: Dict) -> Dict:
+        '''
+        Child class can override this function to patch value into `params` be 
+        used for DB operations.
+        '''
+        return params
     
     @abstractmethod
     def delete(self) -> None:

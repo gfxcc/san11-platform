@@ -3,7 +3,8 @@ import os
 import logging
 import json
 import shutil
-from typing import List, Any, Iterable
+from enum import Enum
+from typing import List, Any, Iterable, Dict
 from datetime import datetime, timezone
 
 from google.protobuf import descriptor
@@ -28,11 +29,20 @@ from .tag import Tag
 logger = logging.getLogger(os.path.basename(__file__))
 
 
+class Status(Enum):
+    UNKNOWN = 0
+    NORMAL = 1 # publish accessable
+    UNDER_REVIEW = 2 # Only visiable to admin and author
+    HIDDEN = 3 # Only visiable to admin and author
+    SCHEDULE_DELETE = 4 # Only visiable to admin
+    DELETED = 5 # Only visiable to admin
+
+
 class Package(ResourceMixin):
-    DEFAULT_STATUS_FOR_NEW_PACKAGE = 'normal'
+    DEFAULT_STATUS_FOR_NEW_PACKAGE = Status.UNDER_REVIEW
     def __init__(self, package_id: int, name: str, description: str,
                  create_time: datetime, category_id: int,
-                 status: str, author_id: int,
+                 status: int, author_id: int,
                  image_urls: List[str], download_count: int, 
                  tag_ids: List[int], update_time: datetime) -> None:
         self.package_id = package_id
@@ -76,6 +86,14 @@ class Package(ResourceMixin):
         except Exception as err:
             logger.error(
                 f'Failed to load author_image_url for user_id={author_id}: {err}')
+    
+    @property
+    def status(self) -> Status:
+        return self._status
+    
+    @status.setter
+    def status(self, status: int) -> None:
+        self._status = Status(status)
 
     def __str__(self):
         d = {
@@ -84,7 +102,7 @@ class Package(ResourceMixin):
             'description': self.description,
             'create_time': datetime_to_str(self.create_time),
             'category': Category.from_category_id(self.category_id).name,
-            'status': self.status,
+            'status': self.status.name,
             'author_id': self.author_id,
             'image_urls': self.image_urls,
             'download_count': self.download_count,
@@ -127,6 +145,10 @@ class Package(ResourceMixin):
         resp = run_sql_with_param_and_fetch_all(sql, {})
         return [Package(*item) for item in resp]
 
+    def _update_db_params(self, params: Dict) -> Dict:
+        params['status'] = self.status.value
+        return super()._update_db_params(params)
+
     def delete(self) -> None:
         for image_url in self.image_urls:
             try:
@@ -163,7 +185,7 @@ class Package(ResourceMixin):
             description=self.description,
             create_time=get_age(self.create_time),
             category_id=self.category_id,
-            status=self.status,
+            status=self.status.value,
             author_id=self.author_id,
             author_image_url=self.author_image_url,
             image_urls=self.image_urls,
@@ -196,8 +218,7 @@ class Package(ResourceMixin):
             ',tag_ids=%(tag_ids)s'\
             ',update_time=%(update_time)s'\
             f' WHERE {self.db_fields()[0]}=%(id)s'
-
-        run_sql_with_param(sql, {
+        params = {
             'name': self.name,
             'description': self.description,
             'status': self.status,
@@ -205,4 +226,6 @@ class Package(ResourceMixin):
             'tag_ids': self.tag_ids,
             'update_time': get_now(),
             'id': self.package_id
-        })
+        }
+        params = self._update_db_params(params)
+        run_sql_with_param(sql, params)

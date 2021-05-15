@@ -6,7 +6,7 @@ import logging
 
 from lib.protos import san11_platform_pb2
 from lib.auths import Authenticator
-from lib.package import Package
+from lib.package import Package, Status
 from lib.image import Image
 
 
@@ -56,8 +56,8 @@ class PackageHandler:
                                         category_id=request.category_id,
                                         author_id=request.author_id,
                                         tag_id=request.tag_id
-                                        ) if package.status == 'normal' or
-            (user and user.user_id == package.author_id and package.status != 'hidden') or
+                                        ) if package.status == Status.NORMAL or
+            (user and user.user_id == package.author_id and package.status in [Status.UNDER_REVIEW, Status.HIDDEN]) or
             (user and user.user_type == 'admin')
             # package's status is normal or user is admin or author of the package
         ])
