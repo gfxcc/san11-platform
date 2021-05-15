@@ -31,6 +31,7 @@ export interface UserData {
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
+  @ViewChild('userName') userNameElement: ElementRef
   @ViewChild('userGallery') galleryElement: GalleryComponent
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -68,6 +69,7 @@ export class UserDetailComponent implements OnInit {
     this.loadPage();
   }
 
+
   loadPage() {
     this.san11pkService.getUser(this.user.userId).subscribe(
       user => {
@@ -86,6 +88,9 @@ export class UserDetailComponent implements OnInit {
   ngAfterViewInit(): void {
     if (this.canSetupGallery()) {
       this.setUpUserImage(this.user.imageUrl === '' ? '' : getFullUrl(this.user.imageUrl));
+    }
+    if (this.iAmTheUser()) {
+      this.userNameElement.nativeElement.contentEditable = true;
     }
   }
 
@@ -187,6 +192,7 @@ export class UserDetailComponent implements OnInit {
   onUpdateUserForm(form) {
     let updatedUser = new User({
       userId: this.user.userId,
+      username: form.value.username,
       email: form.value.email,
       website: form.value.website
     });

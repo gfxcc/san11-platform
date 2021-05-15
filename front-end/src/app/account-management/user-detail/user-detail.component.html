@@ -5,16 +5,20 @@
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
         </div>
         <div class="col-right under-development">
-            <div class="heading under-development">
-                <p class="title" *ngIf="this.user != undefined"> {{this.user.username}} </p>
+            <!-- <div class="heading under-development">
+                <p class="title" #userName *ngIf="this.user != undefined"> {{this.user.username}} </p>
 
                 <span class="example-spacer"></span>
-            </div>
+            </div> -->
 
             <form class="form" #userForm='ngForm' (ngSubmit)="onUpdateUserForm(userForm)">
                 <mat-card-content>
+                    <mat-form-field class="form-field">
+                        <input matInput #userNameInput *ngIf="this.user != undefined" [(ngModel)]="this.user.username" [disabled]="!this.iAmTheUser()" (ngModelChange)="formUpdated()" placeholder="用户名" name="username" />
+                    </mat-form-field>
+
                     <mat-form-field class="form-field" *ngIf="this.iAmTheUser()">
-                        <input matInput #emailInput *ngIf="this.user != undefined" [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" (ngModelChange)="formUpdated()" placeholder="email" name="email" />
+                        <input matInput #emailInput *ngIf="this.user != undefined" [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" (ngModelChange)="formUpdated()" placeholder="邮箱" name="email" />
                     </mat-form-field>
 
                     <mat-form-field class="form-field">

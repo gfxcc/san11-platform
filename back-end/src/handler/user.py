@@ -78,6 +78,8 @@ class UserHandler:
                 logger.error(
                     f'Failed to delete image_url={user.image_url}: {err}')
             user.image_url = ''
+        if request.user.username:
+            user.username = request.user.username
 
         user.update()
         return user.to_pb()

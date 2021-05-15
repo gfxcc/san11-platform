@@ -145,11 +145,13 @@ class User(ResourceMixin):
     
     def update(self) -> None:
         sql = 'UPDATE users SET '\
+            'username=%(username)s, '\
             'email=%(email)s, '\
             'image_url=%(image_url)s, '\
             'website=%(website)s '\
             'WHERE user_id=%(user_id)s'
         run_sql_with_param(sql, {
+            'username': self.username,
             'email': self.email,
             'image_url': self.image_url,
             'website': self.website,
