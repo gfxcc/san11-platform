@@ -2,7 +2,6 @@ import sys, os
 # TODO: switch to a moduel based solution
 sys.path.insert(0, os.path.abspath('..'))
 import logging
-from hurry.filesize import size
 
 from lib.protos import san11_platform_pb2
 from lib.url import Url
@@ -13,6 +12,7 @@ from lib.statistic import Statistic
 from lib.exception import INVALID_ARGUMENT
 from lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
 from lib.resource import create_resource
+from lib.util.size_util import human_readable
 from lib import gcs
 
 
@@ -71,7 +71,7 @@ class BinaryHandler:
         # prepare resource
         if request.HasField('url'):
             binary_size = gcs.get_file_size(gcs.TMP_BUCKET, request.url)
-            binary.size = size(binary_size)
+            binary.size = human_readable(precision=2, byte=binary_size)
             expected_disk_usage = binary_size + gcs.disk_usage_under(request.parent)
             if  expected_disk_usage > gcs.PACKAGE_LIMIT_GB * 1024 * 1024 * 1024:
                 gcs.delete_file(gcs.TMP_BUCKET, request.url)

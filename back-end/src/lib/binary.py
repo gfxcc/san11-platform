@@ -5,7 +5,6 @@ import psycopg2
 import os
 import os.path
 import errno
-from hurry.filesize import size
 from typing import Any, Iterable, List, Union
 from datetime import datetime, timezone
 
@@ -16,6 +15,7 @@ from .version import Version
 from .resource import get_resource_path, get_binary_url, create_resource
 from .url import Url
 from .time_util import datetime_to_str, get_datetime_format, get_now, get_timezone
+from .util.size_util import human_readable
 from . import gcs
 
 
@@ -79,8 +79,8 @@ class Binary(ResourceMixin):
 
     def to_pb(self) -> san11_platform_pb2.Binary:
         # TODO: backfill size. Can be removed after couple weeks
-        if self.url and not self.size:
-            self.size = size(gcs.get_file_size(gcs.CANONICAL_BUCKET, self.url))
+        if self.url and (True or not self.size):
+            self.size = human_readable(precision=2 ,byte=gcs.get_file_size(gcs.CANONICAL_BUCKET, self.url))
             sql = f'UPDATE {self.db_table()} SET size=%(size)s WHERE {self.db_fields()[0]}=%(resource_id)s'
             run_sql_with_param(sql, {
                 'size': self.size,
