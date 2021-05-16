@@ -78,15 +78,6 @@ class Binary(ResourceMixin):
         logger.debug(f'{self} is deleted')
 
     def to_pb(self) -> san11_platform_pb2.Binary:
-        # TODO: backfill size. Can be removed after couple weeks
-        if self.url and (True or not self.size):
-            self.size = human_readable(precision=2 ,byte=gcs.get_file_size(gcs.CANONICAL_BUCKET, self.url))
-            sql = f'UPDATE {self.db_table()} SET size=%(size)s WHERE {self.db_fields()[0]}=%(resource_id)s'
-            run_sql_with_param(sql, {
-                'size': self.size,
-                'resource_id': self.binary_id
-            })
-            
         return san11_platform_pb2.Binary(
             binary_id=self.binary_id,
             url=self.url,
