@@ -74,7 +74,10 @@ class Binary(ResourceMixin):
     def delete(self) -> None:
         sql = f'DELETE FROM {self.db_table()} WHERE {self.db_fields()[0]}=%(resource_id)s'
         run_sql_with_param(sql, {'resource_id': self.binary_id})
-        self._remove_resource()
+        try:
+            self._remove_resource()
+        except Exception as err:
+            logger.error(f'Failed to delete binary resource {self.url}: {err}')
         logger.debug(f'{self} is deleted')
 
     def to_pb(self) -> san11_platform_pb2.Binary:
