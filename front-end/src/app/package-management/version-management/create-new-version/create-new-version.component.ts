@@ -18,6 +18,7 @@ import { NotificationService } from "../../../common/notification.service";
 import { UploadService } from "../../../service/upload.service";
 import { Upload } from '../../../service/upload';
 import { Subscription } from 'rxjs';
+import { NgForm } from '@angular/forms';
 
 
 export interface VersionData {
@@ -33,6 +34,7 @@ export interface VersionData {
   styleUrls: ['./create-new-version.component.css']
 })
 export class CreateNewVersionComponent implements OnInit {
+  @ViewChild('createVersionForm') createForm: NgForm;
   // inputs
   latestVersion: Version;
   acceptFileType: string;
@@ -67,6 +69,8 @@ export class CreateNewVersionComponent implements OnInit {
   bytesReceied: number = 0;
   oldbytes: number = 0;
   unit: string = "Mbps";
+
+  autoCreateChecked = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: VersionData,
@@ -142,6 +146,9 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onDescEditorChange(event) {
+    if (this.descEditor_element.getData() === '') {
+      this.autoCreateChecked = false;
+    }
   }
 
 
@@ -227,6 +234,10 @@ export class CreateNewVersionComponent implements OnInit {
 
       this.prevTime = this.currTime;
       this.oldbytes = this.bytesReceied;
+
+      if (upload.state === 'DONE' && this.autoCreateChecked) {
+        this.createForm.ngSubmit.emit();
+      }
     });
   }
 
@@ -266,9 +277,15 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onCancel() {
-    if (this.uploadSub && !this.uploadSub.closed) {
-      if (!confirm('上传尚未完成，确定要取消上传吗？')) {
-        return;
+    if (this.uploadSub) {
+      if (!this.uploadSub.closed) {
+        if (!confirm('上传尚未完成，确定要取消吗？')) {
+          return;
+        }
+      } else {
+        if (!confirm('创建尚未完成，确定要取消吗？')) {
+          return;
+        }
       }
       this.uploadSub.unsubscribe();
     }
@@ -337,6 +354,19 @@ export class CreateNewVersionComponent implements OnInit {
       return true;
     } else {
       return false;
+    }
+  }
+
+  onAutoCreateAfterUpload(event) {
+    this.autoCreateChecked = event.checked;
+    if (this.autoCreateChecked) {
+      console.log(this.descEditor_data);
+      if (this.descEditor_element.getData() === '') {
+        this.notificationService.warn('请输入 更新日志');
+        setTimeout(() => {
+          this.autoCreateChecked = false;
+        });
+      }
     }
   }
 }

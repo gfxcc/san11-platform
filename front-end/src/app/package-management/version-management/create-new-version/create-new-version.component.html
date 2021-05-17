@@ -47,10 +47,11 @@
             <button [disabled]="!(this.file != undefined && this.upload === undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()" style="display: inline-block; flex-shrink: 0;">
                 {{this.upload ? (this.upload.state != 'DONE' ? this.speed.toFixed(1) + this.unit: '已上传') : '上传'}}
             </button>
-        </div>
 
+        </div>
         <mat-progress-bar *ngIf="upload" [mode]="upload.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="upload.progress" style="margin-top: 3px; height: 2px;">
         </mat-progress-bar>
+        <mat-slide-toggle style="margin-top: 5px;" [checked]="this.autoCreateChecked" color='primary' (change)="onAutoCreateAfterUpload($event)">上传完成后自动创建</mat-slide-toggle>
     </div>
 
     <!-- <div *ngIf="this.categoryId===&quot;1&quot; && this.file != undefined">
