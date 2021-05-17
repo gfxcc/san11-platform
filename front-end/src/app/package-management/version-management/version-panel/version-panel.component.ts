@@ -129,6 +129,15 @@ export class VersionPanelComponent implements OnInit {
         this.binaries.forEach(binary => {
           this.tags.add(binary.tag);
         })
+        if (this.tags.size === 0) {
+          if (this.package.categoryId === '1') {
+            this.tags.add('SIRE 1');
+            this.tags.add('SIRE 2');
+          } else {
+            this.tags.add('默认');
+          }
+
+        }
         this.tabs = Array.from(this.tags).map(tag => { return { tag: tag }; });
         this.configDataSource();
       },
