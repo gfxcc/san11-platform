@@ -512,36 +512,6 @@ export class PackageDetailComponent implements OnInit {
     }
   }
 
-
-  onUpdateDescription() {
-    this.dialog.open(TextInputDialogComponent, {
-      data: {
-        title: "描述",
-        preSetText: this.package.description
-      }
-    }).afterClosed().subscribe(
-      data => {
-        if (data != undefined) {
-          const newDescription = data.data;
-          const newPackage = new Package({
-            packageId: this.package.packageId,
-            description: newDescription
-          });
-          this.san11pkService.updatePackage(newPackage).subscribe(
-            san11Package => {
-              this.package.description = newDescription;
-              this.notificationService.success("更新成功");
-            },
-            error => {
-              this.notificationService.warn("更新失败: " + error.statusMessage);
-            }
-          );
-        }
-      }
-    );
-
-  }
-
   onGalleryItemClick(imageIndex: number) {
     this.galleryElement = this.galleryElementCatched;
     if (!(this.isAdmin() || this.isAuthor())) {

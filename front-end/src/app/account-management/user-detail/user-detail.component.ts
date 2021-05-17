@@ -31,7 +31,6 @@ export interface UserData {
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
-  @ViewChild('userName') userNameElement: ElementRef
   @ViewChild('userGallery') galleryElement: GalleryComponent
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -88,9 +87,6 @@ export class UserDetailComponent implements OnInit {
   ngAfterViewInit(): void {
     if (this.canSetupGallery()) {
       this.setUpUserImage(this.user.imageUrl === '' ? '' : getFullUrl(this.user.imageUrl));
-    }
-    if (this.iAmTheUser()) {
-      this.userNameElement.nativeElement.contentEditable = true;
     }
   }
 
@@ -260,7 +256,7 @@ export class PasswordDialog implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: UserIdData,
-    public dialogRef: MatDialogRef<TextInputDialogComponent>,
+    public dialogRef: MatDialogRef<PasswordDialog>,
     private notificationService: NotificationService,
     private san11Service: San11PlatformServiceService
   ) {

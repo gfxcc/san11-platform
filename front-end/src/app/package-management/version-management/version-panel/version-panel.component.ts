@@ -20,6 +20,7 @@ import { GlobalConstants } from "../../../common/global-constants";
 import { saveAs } from 'file-saver'
 import { increment } from '../../../utils/number_util';
 import { isAdmin } from '../../../utils/user_util';
+import { map } from 'rxjs/operators';
 
 // export interface BinaryElement {
 //   version: string;
@@ -51,8 +52,9 @@ export class VersionPanelComponent implements OnInit {
 
   downloadProgress: Number;
   downloadProgressBar = false;
-  tabs;
+  tabs = [];
   tabSelectedIndex = 0;
+  tags: Set<string> = new Set<string>();
 
   updateElement;
 
@@ -76,23 +78,6 @@ export class VersionPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.package.categoryId === '1') {
-      this.tabs = [{
-        text: 'SIRE 2',
-        tag: 'sire2',
-        dataSource: undefined,
-      }, {
-        text: 'SIRE 1',
-        tag: 'sire1',
-        dataSource: undefined,
-      }];
-    } else {
-      this.tabs = [{
-        text: '默认',
-        tag: '',
-        dataSource: undefined,
-      }]
-    }
 
     this.fetchBinaries();
 
@@ -110,14 +95,20 @@ export class VersionPanelComponent implements OnInit {
 
   onUpdate() {
     const selectedTab = this.tabs[this.tabSelectedIndex];
+    let latestVersions = {};
+    this.tabs.forEach(tab => {
+      latestVersions[tab.tag] = tab.dataSource.data.length > 0 ? tab.dataSource.data[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" });
+    });
+    console.log(latestVersions);
     this.dialog.open(CreateNewVersionComponent, {
       disableClose: true,
       data: {
-        latestVersion: selectedTab.dataSource.data.length > 0 ? selectedTab.dataSource.data[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" }),
+        latestVersions: latestVersions,
         acceptFileType: getAcceptFileType(this.package.categoryId, selectedTab.tag),
         parent: getPackageUrl(this.package),
         categoryId: this.package.categoryId,
-        tag: this.package.categoryId === '1' ? selectedTab.tag : '',
+        tag: selectedTab.tag,
+        tags: Array.from(this.tags)
       }
     }).afterClosed().subscribe(
       data => {
@@ -134,6 +125,11 @@ export class VersionPanelComponent implements OnInit {
     this.binaryService.listBinaries(this.package.packageId).subscribe(
       resp => {
         this.binaries = resp.binaries;
+        this.tags.clear();
+        this.binaries.forEach(binary => {
+          this.tags.add(binary.tag);
+        })
+        this.tabs = Array.from(this.tags).map(tag => { return { tag: tag }; });
         this.configDataSource();
       },
       error => {
@@ -143,7 +139,6 @@ export class VersionPanelComponent implements OnInit {
   }
 
   configDataSource() {
-    this.dataSource = new MatTableDataSource(this.binaries);
     this.tabs.forEach(tab => {
       tab.dataSource = new MatTableDataSource(this.binaries.filter((binary: Binary) => binary.tag === tab.tag));
       // tab.dataSource.paginator = this.paginator;

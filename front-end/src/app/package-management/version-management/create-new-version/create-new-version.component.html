@@ -5,7 +5,18 @@
 
 <form class="form" #createVersionForm='ngForm' (ngSubmit)="onCreateBinary(createVersionForm)">
     <mat-card-content>
-        <mat-form-field class="form-field" appearance="fill">
+        <div style="margin-top: 10px;">
+            <mat-form-field style="width: 100%;">
+                <mat-label>分支</mat-label>
+                <mat-select required (selectionChange)="newTagSelected($event.value)" [(value)]="this.tag">
+                    <mat-option *ngFor="let tag of this.tags" [value]="tag">
+                        {{tag}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field class="form-field">
             <mat-label>更新类型</mat-label>
             <mat-select required name="updateType" (selectionChange)="onVersionSelectorUpdate($event.value)" [(value)]="this.updateType">
                 <mat-option value="major">major</mat-option>

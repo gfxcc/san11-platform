@@ -14,6 +14,7 @@ import { GlobalConstants } from "../../../common/global-constants";
 import { LoadingComponent } from "../../../common/components/loading/loading.component";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { NotificationService } from "../../../common/notification.service";
+import { TextData, TextInputDialogComponent } from "../../../common/components/text-input-dialog/text-input-dialog.component";
 
 import { UploadService } from "../../../service/upload.service";
 import { Upload } from '../../../service/upload';
@@ -22,11 +23,12 @@ import { NgForm } from '@angular/forms';
 
 
 export interface VersionData {
-  latestVersion: Version,
+  latestVersions,
   acceptFileType: string,
   parent: string,
   categoryId: string,
-  tag: string
+  tag: string,
+  tags: string[]
 }
 @Component({
   selector: 'app-create-new-version',
@@ -35,12 +37,15 @@ export interface VersionData {
 })
 export class CreateNewVersionComponent implements OnInit {
   @ViewChild('createVersionForm') createForm: NgForm;
+  NEW_TAG_STR = '**新分支**';
   // inputs
+  latestVersions: Version[];
   latestVersion: Version;
   acceptFileType: string;
   parent: string;
   categoryId: string;
   tag: string;
+  tags: string[];
 
   // locals
   newVersion: Version;
@@ -80,11 +85,16 @@ export class CreateNewVersionComponent implements OnInit {
     public dialogRef: MatDialogRef<CreateNewVersionComponent>,
     public uploadService: UploadService,
   ) {
-    this.latestVersion = data.latestVersion;
+    this.latestVersions = data.latestVersions;
     this.acceptFileType = data.acceptFileType;
     this.parent = data.parent;
     this.categoryId = data.categoryId;
     this.tag = data.tag;
+    this.tags = data.tags;
+    this.tags.push(this.NEW_TAG_STR);
+    this.latestVersion = this.latestVersions[this.tag];
+
+    console.log(this.tag);
 
     if (this.isFirstTimeUpload(this.latestVersion)) {
       this.updateType = 'custom';
@@ -246,7 +256,7 @@ export class CreateNewVersionComponent implements OnInit {
     const binary: Binary = new Binary({
       version: this.newVersion,
       description: createVersionForm.value.updateDesc,
-      tag: this.tag,
+      tag: createVersionForm.value.tag,
     });
 
     const request = new CreateBinaryRequest({
@@ -274,6 +284,34 @@ export class CreateNewVersionComponent implements OnInit {
         this.onClose();
       }
     );
+  }
+
+  newTagSelected(tag: string) {
+    if (tag === this.NEW_TAG_STR) {
+      this.dialog.open(TextInputDialogComponent, {
+        data: {
+          title: '创建新分支',
+          preSetText: ''
+        }
+      }).afterClosed().subscribe(
+        data => {
+          if (data != undefined) {
+            this.tags.splice(this.tags.length - 1, 1);
+            this.tags.push(data.data);
+            this.tag = this.tags[this.tags.length - 1];
+
+
+            this.latestVersions[this.tag] = new Version({ major: "1", minor: "-1", patch: "0" });
+
+            this.latestVersion = this.latestVersions[this.tag];
+            this.onVersionSelectorUpdate('custom');
+          }
+        }
+      );
+    } else {
+      this.latestVersion = this.latestVersions[this.tag];
+      this.onVersionSelectorUpdate('minor');
+    }
   }
 
   onCancel() {
