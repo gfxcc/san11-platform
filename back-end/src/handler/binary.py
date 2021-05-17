@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, uuid
 # TODO: switch to a moduel based solution
 sys.path.insert(0, os.path.abspath('..'))
 import logging
@@ -59,7 +59,7 @@ class BinaryHandler:
                 ext = category_to_ext[parent.category_id][binary.tag]
             else:
                 ext = category_to_ext[parent.category_id]
-            return f'{str(parent)}/binaries/{binary.version}{ext}'
+            return f'{str(parent)}/binaries/{binary.version}{uuid.uuid1()}{ext}'
 
         authenticate = Authenticator.from_context(context)
         parent = Url(request.parent)
