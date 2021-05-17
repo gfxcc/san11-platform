@@ -91,7 +91,9 @@ export class CreateNewVersionComponent implements OnInit {
     this.categoryId = data.categoryId;
     this.tag = data.tag;
     this.tags = data.tags;
-    this.tags.push(this.NEW_TAG_STR);
+    if (this.categoryId != '1') {
+      this.tags.push(this.NEW_TAG_STR);
+    }
     this.latestVersion = this.latestVersions[this.tag];
 
     console.log(this.tag);

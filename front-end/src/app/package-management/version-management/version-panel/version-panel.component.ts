@@ -136,7 +136,6 @@ export class VersionPanelComponent implements OnInit {
           } else {
             this.tags.add('默认');
           }
-
         }
         this.tabs = Array.from(this.tags).map(tag => { return { tag: tag }; });
         this.configDataSource();
