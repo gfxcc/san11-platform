@@ -144,6 +144,7 @@ class User(ResourceMixin):
         })
     
     def update(self) -> None:
+        # TODO: migrate default impl
         sql = 'UPDATE users SET '\
             'username=%(username)s, '\
             'email=%(email)s, '\

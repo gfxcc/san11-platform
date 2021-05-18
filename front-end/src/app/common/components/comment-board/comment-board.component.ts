@@ -27,6 +27,8 @@ export class CommentBoardComponent implements OnInit {
   comments: Comment[] = [];
   commentCount: string;
 
+  resourceOwnerId: string;
+
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
@@ -55,6 +57,9 @@ export class CommentBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.package) {
+      this.resourceOwnerId = this.package.authorId;
+    }
     this.loadComments();
   }
 

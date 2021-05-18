@@ -19,6 +19,7 @@ import { increment } from '../../../../utils/number_util';
 })
 export class ReplyCardComponent implements OnInit {
   @Input() reply: Reply;
+  @Input() resourceOwnerId: string;
   @Output() replyDeleteEvent = new EventEmitter();
   @Output() replyEvent = new EventEmitter();
 

@@ -7,6 +7,7 @@
         <div (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
             <div class="header">
                 <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
+                <span *ngIf="this.user?.userId === this.resourceOwnerId" style="margin-left: 5px; margin-right: 5px; color:#3f51b5">[作者]</span>
                 <span class="create-time">{{this.comment.createTime}}</span>
 
                 <span class="example-spacer"></span>
@@ -33,7 +34,7 @@
 
         <div *ngIf="this.comment.replies.length!=0" style="margin-top: 5px; margin-right: 50px;">
             <ng-container *ngFor="let reply of this.comment.replies">
-                <app-reply-card [reply]="reply" class="reply-card" (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply()"></app-reply-card>
+                <app-reply-card [reply]="reply" [resourceOwnerId]="this.resourceOwnerId" class="reply-card" (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply()"></app-reply-card>
             </ng-container>
         </div>
 

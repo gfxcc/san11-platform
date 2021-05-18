@@ -18,6 +18,7 @@ import { increment } from '../../../utils/number_util';
 })
 export class CommentCardComponent implements OnInit {
   @Input() comment: Comment;
+  @Input() resourceOwnerId: string;
   @Output() commentDeleteEvent = new EventEmitter();
   @Output() replyCreateEvent = new EventEmitter();
   @ViewChild('replyInput') replyInputElement: ElementRef;
@@ -25,7 +26,6 @@ export class CommentCardComponent implements OnInit {
   hideUserImage = true;
   userImage: string;
   user: User;
-
 
   hideAuthorImage = true;
   authorImage: string;

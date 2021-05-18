@@ -210,6 +210,7 @@ class Package(ResourceMixin):
         return self.download_count
 
     def update(self):
+        # TODO: migrate to default impl
         sql = f'UPDATE {self.db_table()} SET'\
             ' name=%(name)s'\
             ',description=%(description)s'\
