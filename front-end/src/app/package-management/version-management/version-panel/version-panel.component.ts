@@ -55,7 +55,7 @@ export class VersionPanelComponent implements OnInit {
   downloadProgressBar = false;
   tabs = [];
   tabSelectedIndex = 0;
-  tags: Set<string> = new Set<string>();
+  tags: string[];
 
   updateElement;
 
@@ -125,19 +125,21 @@ export class VersionPanelComponent implements OnInit {
     this.binaryService.listBinaries(this.package.packageId).subscribe(
       resp => {
         this.binaries = resp.binaries;
-        this.tags.clear();
+
+        let tags = new Set<string>();
         this.binaries.forEach(binary => {
-          this.tags.add(binary.tag);
-        })
-        if (this.tags.size === 0) {
-          if (this.package.categoryId === '1') {
-            this.tags.add('SIRE 1');
-            this.tags.add('SIRE 2');
-          } else {
-            this.tags.add('默认');
-          }
+          tags.add(binary.tag);
+        });
+        this.tags = Array.from(tags);
+
+        if (this.package.categoryId === '1') {
+          this.tags = ['SIRE 2', 'SIRE 1']
         }
-        this.tabs = Array.from(this.tags).map(tag => { return { tag: tag }; });
+        if (this.tags.length === 0) {
+          this.tags = ['默认'];
+        }
+
+        this.tabs = this.tags.map(tag => { return { tag: tag }; });
         this.configDataSource();
       },
       error => {
