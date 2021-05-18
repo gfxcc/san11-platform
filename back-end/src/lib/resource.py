@@ -6,11 +6,12 @@ from abc import ABC, abstractclassmethod, abstractmethod, abstractproperty
 from typing import List, Any, Iterable, Dict
 from .exception import NotFound, AlreadyExists
 
-from .db import get_db_fields_placeholder_str, get_db_fields_str, run_sql_with_param_and_fetch_one, \
-    run_sql_with_param, run_sql_with_param_and_fetch_all
+from .db import get_db_fields_placeholder_str, get_db_fields_str, get_db_fields_assignment_str, \
+    run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
 
 
 RESOURCE_PATH = '/data'
+logger = logging.getLogger(os.path.basename(__file__))
 
 
 def get_images_path(parent: str) -> str:
@@ -76,7 +77,7 @@ class ResourceMixin(ABC):
         ...
 
     @abstractclassmethod
-    def db_fields(cls) -> Iterable[str]:
+    def db_fields(cls) -> List[str]:
         '''
         Return a list for DB fields.
         The order of those fields should match its order is the constructor.
@@ -153,6 +154,14 @@ class ResourceMixin(ABC):
             NotFound: if the resource is not exists in DB.
         '''
         ...
+    
+    def update(self) -> None:
+        sql = f'UPDATE {self.db_table()} SET {get_db_fields_assignment_str(self.db_fields()[1:])} '\
+            f'WHERE {self.db_fields()[0]}=%({self.db_fields()[0]})s'
+        params_raw = ','.join(f"'{field}': self.{field}" for field in self.db_fields())
+        params = self._update_db_params(eval(f'{{ {params_raw} }}'))
+        logger.debug(f'update: sql={sql}, params={params}')
+        run_sql_with_param(sql, params)
 
     @abstractmethod
     def to_pb(self) -> Any:

@@ -223,6 +223,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateBinary
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Binary>>
+     */
+    updateBinary: (
+      requestData: thisProto.UpdateBinaryRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Binary>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateBinary',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateBinaryRequest,
+        responseClass: thisProto.Binary
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/GetBinary
      *
      * @param requestMessage Request message
@@ -919,6 +940,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Empty> {
     return this.$raw
       .deleteBinary(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateBinary
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Binary>
+   */
+  updateBinary(
+    requestData: thisProto.UpdateBinaryRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Binary> {
+    return this.$raw
+      .updateBinary(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

@@ -14,6 +14,7 @@ from lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
 from lib.resource import create_resource
 from lib.util.size_util import human_readable
 from lib import gcs
+from lib.field_mask import FieldMask, merge_resource
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -94,6 +95,14 @@ class BinaryHandler:
             context.abort(code=255, details='权限不足')
         binary.delete()
         return san11_platform_pb2.Empty()
+    
+    def update_binary(self, request, context):
+        logger.info(f'In update_binary: binary_id={request.binary.binary_id}')
+        binary = merge_resource(base_resource=Binary.from_id(request.binary.binary_id),
+                                update_request=Binary.from_pb(request.binary),
+                                field_mask=FieldMask.from_pb(request.update_mask))
+        binary.update()
+        return binary.to_pb()
 
     def get_binary(self, request, context):
         logger.info(f'In get_binary: binary_id={request.binary_id}')

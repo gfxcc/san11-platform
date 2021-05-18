@@ -297,7 +297,7 @@ export class CreateNewVersionComponent implements OnInit {
         }
       }).afterClosed().subscribe(
         data => {
-          if (data != undefined) {
+          if (data) {
             this.tags.splice(this.tags.length - 1, 1);
             this.tags.push(data.data);
             this.tag = this.tags[this.tags.length - 1];
@@ -307,6 +307,8 @@ export class CreateNewVersionComponent implements OnInit {
 
             this.latestVersion = this.latestVersions[this.tag];
             this.onVersionSelectorUpdate('custom');
+          } else {
+            this.tag = this.tags[0];
           }
         }
       );

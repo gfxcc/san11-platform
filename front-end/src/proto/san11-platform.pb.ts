@@ -2576,6 +2576,184 @@ export module DeleteBinaryRequest {
 }
 
 /**
+ * Message implementation for routeguide.UpdateBinaryRequest
+ */
+export class UpdateBinaryRequest implements GrpcMessage {
+  static id = 'routeguide.UpdateBinaryRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UpdateBinaryRequest();
+    UpdateBinaryRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UpdateBinaryRequest) {
+    _instance.binary = _instance.binary || undefined;
+    _instance.updateMask = _instance.updateMask || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UpdateBinaryRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.binary = new Binary();
+          _reader.readMessage(
+            _instance.binary,
+            Binary.deserializeBinaryFromReader
+          );
+          break;
+        case 2:
+          _instance.updateMask = new FieldMask();
+          _reader.readMessage(
+            _instance.updateMask,
+            FieldMask.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UpdateBinaryRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UpdateBinaryRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.binary) {
+      _writer.writeMessage(
+        1,
+        _instance.binary as any,
+        Binary.serializeBinaryToWriter
+      );
+    }
+    if (_instance.updateMask) {
+      _writer.writeMessage(
+        2,
+        _instance.updateMask as any,
+        FieldMask.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _binary?: Binary;
+  private _updateMask?: FieldMask;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UpdateBinaryRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UpdateBinaryRequest.AsObject>) {
+    _value = _value || {};
+    this.binary = _value.binary ? new Binary(_value.binary) : undefined;
+    this.updateMask = _value.updateMask
+      ? new FieldMask(_value.updateMask)
+      : undefined;
+    UpdateBinaryRequest.refineValues(this);
+  }
+  get binary(): Binary | undefined {
+    return this._binary;
+  }
+  set binary(value: Binary | undefined) {
+    this._binary = value;
+  }
+  get updateMask(): FieldMask | undefined {
+    return this._updateMask;
+  }
+  set updateMask(value: FieldMask | undefined) {
+    this._updateMask = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UpdateBinaryRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UpdateBinaryRequest.AsObject {
+    return {
+      binary: this.binary ? this.binary.toObject() : undefined,
+      updateMask: this.updateMask ? this.updateMask.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UpdateBinaryRequest.AsProtobufJSON {
+    return {
+      binary: this.binary ? this.binary.toProtobufJSON(options) : null,
+      updateMask: this.updateMask
+        ? this.updateMask.toProtobufJSON(options)
+        : null
+    };
+  }
+}
+export module UpdateBinaryRequest {
+  /**
+   * Standard JavaScript object representation for UpdateBinaryRequest
+   */
+  export interface AsObject {
+    binary?: Binary.AsObject;
+    updateMask?: FieldMask.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for UpdateBinaryRequest
+   */
+  export interface AsProtobufJSON {
+    binary?: Binary.AsProtobufJSON | null;
+    updateMask?: FieldMask.AsProtobufJSON | null;
+  }
+}
+
+/**
  * Message implementation for routeguide.ListBinariesRequest
  */
 export class ListBinariesRequest implements GrpcMessage {
@@ -9720,5 +9898,138 @@ export module Auth {
    */
   export interface AsProtobufJSON {
     oauth2Token?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.FieldMask
+ */
+export class FieldMask implements GrpcMessage {
+  static id = 'routeguide.FieldMask';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new FieldMask();
+    FieldMask.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: FieldMask) {
+    _instance.paths = _instance.paths || [];
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: FieldMask,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          (_instance.paths = _instance.paths || []).push(_reader.readString());
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    FieldMask.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(_instance: FieldMask, _writer: BinaryWriter) {
+    if (_instance.paths && _instance.paths.length) {
+      _writer.writeRepeatedString(1, _instance.paths);
+    }
+  }
+
+  private _paths?: string[];
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of FieldMask to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<FieldMask.AsObject>) {
+    _value = _value || {};
+    this.paths = (_value.paths || []).slice();
+    FieldMask.refineValues(this);
+  }
+  get paths(): string[] | undefined {
+    return this._paths;
+  }
+  set paths(value: string[] | undefined) {
+    this._paths = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    FieldMask.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): FieldMask.AsObject {
+    return {
+      paths: (this.paths || []).slice()
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): FieldMask.AsProtobufJSON {
+    return {
+      paths: (this.paths || []).slice()
+    };
+  }
+}
+export module FieldMask {
+  /**
+   * Standard JavaScript object representation for FieldMask
+   */
+  export interface AsObject {
+    paths?: string[];
+  }
+
+  /**
+   * Protobuf JSON representation for FieldMask
+   */
+  export interface AsProtobufJSON {
+    paths?: string[];
   }
 }

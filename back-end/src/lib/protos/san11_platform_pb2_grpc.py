@@ -60,6 +60,11 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.DeleteBinaryRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
+        self.UpdateBinary = channel.unary_unary(
+                '/routeguide.RouteGuide/UpdateBinary',
+                request_serializer=san11__platform__pb2.UpdateBinaryRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Binary.FromString,
+                )
         self.GetBinary = channel.unary_unary(
                 '/routeguide.RouteGuide/GetBinary',
                 request_serializer=san11__platform__pb2.GetBinaryRequest.SerializeToString,
@@ -247,6 +252,12 @@ class RouteGuideServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def DeleteBinary(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateBinary(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -462,6 +473,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.DeleteBinary,
                     request_deserializer=san11__platform__pb2.DeleteBinaryRequest.FromString,
                     response_serializer=san11__platform__pb2.Empty.SerializeToString,
+            ),
+            'UpdateBinary': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateBinary,
+                    request_deserializer=san11__platform__pb2.UpdateBinaryRequest.FromString,
+                    response_serializer=san11__platform__pb2.Binary.SerializeToString,
             ),
             'GetBinary': grpc.unary_unary_rpc_method_handler(
                     servicer.GetBinary,
@@ -754,6 +770,23 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteBinary',
             san11__platform__pb2.DeleteBinaryRequest.SerializeToString,
             san11__platform__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateBinary(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateBinary',
+            san11__platform__pb2.UpdateBinaryRequest.SerializeToString,
+            san11__platform__pb2.Binary.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

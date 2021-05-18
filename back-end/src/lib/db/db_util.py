@@ -73,7 +73,15 @@ def get_db_fields_placeholder_str(fields: List[str]) -> str:
     in sql.
     E.g. `%(field1)s, %(field2)s, %(field3)s`
     '''
-    return ','.join(f'%({field})s' for field in fields)
+    return ', '.join(f'%({field})s' for field in fields)
+
+
+def get_db_fields_assignment_str(fields: List[str]) -> str:
+    '''
+    Return a string which can be used for UPDATE sql.
+    E.g. `field1=%(field1)s, field2=%(field2)s, field3=%(field3)s`
+    '''
+    return ', '.join(f'{field}=%({field})s' for field in fields)
 
 
 def sanitize_str(input: str) -> str:

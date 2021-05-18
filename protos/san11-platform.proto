@@ -19,6 +19,7 @@ service RouteGuide {
   rpc UploadBinary(UploadBinaryRequest) returns (Status) {}
   rpc CreateBinary(CreateBinaryRequest) returns (Binary) {}
   rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
+  rpc UpdateBinary(UpdateBinaryRequest) returns (Binary) {}
   rpc GetBinary(GetBinaryRequest) returns (Binary) {}
   rpc BatchGetBinary(BatchGetBinaryRequest) returns (BatchGetBinaryResponse) {}
   rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {}
@@ -143,7 +144,6 @@ message BatchGetBinaryResponse {
     repeated Binary binaries = 1;
 }
 
-
 message DownloadBinaryRequest {
     string parent = 1; // categories/xxx/packages/xxx
     int64 binary_id = 2;
@@ -151,6 +151,11 @@ message DownloadBinaryRequest {
 
 message DeleteBinaryRequest {
     int64 binary_id = 1;
+}
+
+message UpdateBinaryRequest {
+    Binary binary = 1;
+    FieldMask update_mask = 2;
 }
 
 message ListBinariesRequest {
@@ -417,4 +422,9 @@ message AdminMessage {
 
 message Auth {
     string oauth2_token = 1;
+}
+
+// Utilities
+message FieldMask {
+    repeated string paths = 1;
 }

@@ -60,6 +60,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     
     def DeleteBinary(self, request, context):
         return self.binary_handler.delete_binary(request, context)
+    
+    def UpdateBinary(self, request, context):
+        return self.binary_handler.update_binary(request, context)
 
     def GetBinary(self, request, context):
         return self.binary_handler.get_binary(request, context)

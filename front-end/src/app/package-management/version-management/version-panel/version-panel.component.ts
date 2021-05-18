@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Binary, Package, User, Version as PbVersion } from "../../../../proto/san11-platform.pb";
+import { FieldMask, Binary, Package, User, Version as PbVersion } from "../../../../proto/san11-platform.pb";
+import { UpdateBinaryRequest } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -99,7 +100,6 @@ export class VersionPanelComponent implements OnInit {
     this.tabs.forEach(tab => {
       latestVersions[tab.tag] = tab.dataSource.data.length > 0 ? tab.dataSource.data[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" });
     });
-    console.log(latestVersions);
     this.dialog.open(CreateNewVersionComponent, {
       disableClose: true,
       data: {
@@ -141,7 +141,7 @@ export class VersionPanelComponent implements OnInit {
         this.configDataSource();
       },
       error => {
-        this.notificationService.warn('获取版本列表失败:' + error.statusMessage);
+        this.notificationService.warn(`获取版本列表失败: ${error.statusMessage}`);
       }
     );
   }
@@ -159,9 +159,34 @@ export class VersionPanelComponent implements OnInit {
     this.dialog.open(TextDialogComponent, {
       data: {
         title: "更新日志",
-        content: binary.description
+        content: binary.description,
+        editable: this.isAuthor(),
       }
-    });
+    }).afterClosed().subscribe(
+      data => {
+        if (this.isAuthor() && data && data.data != binary.description) {
+          const request = new UpdateBinaryRequest({
+            binary: new Binary({
+              binaryId: binary.binaryId,
+              description: data.data,
+            }),
+            updateMask: new FieldMask({
+              paths: ['description']
+            })
+          });
+
+          this.san11pkService.updateBinary(request).subscribe(
+            binary => {
+              this.notificationService.success('更新成功');
+              this.fetchBinaries();
+            },
+            error => {
+              this.notificationService.warn(`更新失败: ${error.statusMessage}`)
+            }
+          );
+        }
+      }
+    );
   }
 
   onDownload(binary: Binary) {

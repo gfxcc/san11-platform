@@ -79,7 +79,7 @@ class Binary(ResourceMixin):
         except Exception as err:
             logger.error(f'Failed to delete binary resource {self.url}: {err}')
         logger.debug(f'{self} is deleted')
-
+    
     def to_pb(self) -> san11_platform_pb2.Binary:
         return san11_platform_pb2.Binary(
             binary_id=self.binary_id,
