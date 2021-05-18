@@ -2,7 +2,7 @@ import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router';
 import { GalleryItem, ImageItem, GalleryComponent } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { CreateImageRequest, ListPackagesRequest, Package, User } from "../../../proto/san11-platform.pb";
+import { CreateImageRequest, FieldMask, ListPackagesRequest, Package, UpdateUserRequest, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { getUserUrl } from "../../utils/user_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
@@ -186,13 +186,18 @@ export class UserDetailComponent implements OnInit {
   }
 
   onUpdateUserForm(form) {
-    let updatedUser = new User({
-      userId: this.user.userId,
-      username: form.value.username,
-      email: form.value.email,
-      website: form.value.website
+    const request = new UpdateUserRequest({
+      user: new User({
+        userId: this.user.userId,
+        username: form.value.username,
+        email: form.value.email,
+        website: form.value.website
+      }),
+      updateMask: new FieldMask({
+        paths: ['username', 'email', 'website']
+      })
     });
-    this.san11pkService.updateUser(updatedUser).subscribe(
+    this.san11pkService.updateUser(request).subscribe(
       user => {
         this.notificationService.success('更新用户 成功');
         this.user = user;

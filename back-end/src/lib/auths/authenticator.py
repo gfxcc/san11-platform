@@ -67,6 +67,12 @@ class Authenticator:
         package = Package.from_id(binary.package_id)
         return user.user_id == package.author_id
 
+    def canUpdateBinary(self, binary: Binary) -> bool:
+        if self.isAdmin() or self._super_admin():
+            return True
+        user = self.session.user
+        package = Package.from_id(binary.package_id)
+        return user.user_id == package.author_id
     # Image
     def canUploadImage(self, parent: Url) -> bool:
         if self._super_admin():

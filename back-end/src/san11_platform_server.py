@@ -52,9 +52,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return self.package_handler.search_packages(request, context)
 
     # binaries
-    def UploadBinary(self, request, context):
-        return self.binary_handler.upload_binary(request, context)
-    
     def CreateBinary(self, request, context):
         return self.binary_handler.create_binary(request, context)
     

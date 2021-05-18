@@ -8,6 +8,8 @@ from lib.protos import san11_platform_pb2
 from lib.auths import Authenticator
 from lib.package import Package, Status
 from lib.image import Image
+from lib.exception import PermissionDenied
+from lib.field_mask import FieldMask, merge_resource
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -30,7 +32,7 @@ class PackageHandler:
 
         authenticator = Authenticator.from_context(context)
         if not authenticator.canDeletePackage(package):
-            context.abort(code=255, details='权限不足')
+            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
 
         package.delete()
         logger.info(f'Package is deleted: {package}')
@@ -73,32 +75,27 @@ class PackageHandler:
         logger.info(
             f'In UpdatePackage: package_id={request.package.package_id}')
         logger.debug(request.package.image_urls)
-        package = Package.from_id(request.package.package_id)
+        base_package = Package.from_id(request.package.package_id)
 
         authenticate = Authenticator.from_context(context)
-        if not authenticate.canUpdatePackage(package):
-            context.abort(code=255, details='权限不足')
+        if not authenticate.canUpdatePackage(base_package):
+            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
 
-        if request.package.name:
-            package.name = request.package.name
-        if request.package.description:
-            package.description = request.package.description
-        if request.package.status:
-            package.status = request.package.status
-        if request.package.image_urls or request.package.image_urls == ['empty']:
-            updated_image_urls = set() if request.package.image_urls == [
-                'empty'] else set(request.package.image_urls)
-            for image_to_remove in set(package.image_urls) - updated_image_urls:
-                try:
-                    image = Image.from_url(image_to_remove)
-                    image.delete()
-                    logger.info(f'Image is deleted: {image}')
-                except Exception as err:
-                    logger.error(f'Failed to delete image: {err}')
-            logger.debug(request.package.image_urls)
-            package.image_urls = list(updated_image_urls)
-        if request.package.tags:
-            package.tag_ids = [] if request.package.tags[0].tag_id == 0 else list(
-                set(tag.tag_id for tag in request.package.tags))
+        # patch update_mask as Package store tag_ids internal while tags is used
+        # for public protos
+        update_mask = FieldMask.from_pb(request.update_mask)
+        if 'tags' in update_mask.paths:
+            update_mask.paths.remove('tags')
+            update_mask.paths.append('tag_ids')
+        package = merge_resource(base_resource=base_package,
+                                 update_request=Package.from_pb(request.package),
+                                 field_mask=update_mask)
+        # Delete image resources
+        for image_url_to_delete in set(base_package.image_urls) - set(package.image_urls):
+            try:
+                image = Image.from_url(image_url_to_delete)
+                image.delete()
+            except Exception as err:
+                logger.error(f'Failed to delete {image_url_to_delete}: {err}')
         package.update()
         return package.to_pb()

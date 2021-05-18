@@ -52,8 +52,7 @@ export class San11PlatformServiceService {
     return this.severClient.deletePackage(request, this.getMetadata());
   }
 
-  updatePackage(san11Package: Package): Observable<Package> {
-    const request = new UpdatePackageRequest({ package: san11Package });
+  updatePackage(request: UpdatePackageRequest): Observable<Package> {
     return this.severClient.updatePackage(request, this.getMetadata());
   }
 
@@ -181,8 +180,7 @@ export class San11PlatformServiceService {
     return this.severClient.getUser(request, this.getMetadata());
   }
 
-  updateUser(user: User): Observable<User> {
-    const request = new UpdateUserRequest({ user: user });
+  updateUser(request: UpdateUserRequest): Observable<User> {
     return this.severClient.updateUser(request, this.getMetadata());
   }
 

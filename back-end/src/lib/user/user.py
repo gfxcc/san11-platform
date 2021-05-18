@@ -69,8 +69,6 @@ class User(ResourceMixin):
     
     @classmethod
     def from_pb(cls, pb_obj: san11_platform_pb2.User) -> User:
-        cls.validate_email(pb_obj.email)
-        cls.validate_username(pb_obj.username)
         return cls(
             user_id=pb_obj.user_id,
             username=pb_obj.username,
@@ -158,7 +156,6 @@ class User(ResourceMixin):
             'website': self.website,
             'user_id': self.user_id
         })
-
 
     @classmethod
     def from_name(cls, username: str):

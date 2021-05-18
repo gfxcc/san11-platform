@@ -9,7 +9,7 @@ from lib.auths import Authenticator
 from lib.package import Package
 from lib.binary import Binary
 from lib.statistic import Statistic
-from lib.exception import INVALID_ARGUMENT
+from lib.exception import InvalidArgument, PermissionDenied
 from lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
 from lib.resource import create_resource
 from lib.util.size_util import human_readable
@@ -21,29 +21,6 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class BinaryHandler:
-    def upload_binary(self, request, context):
-        logger.info(f'In UploadBinary: parent={request.parent}')
-        # authenticate = Authenticator.from_context(context)
-        # if not authenticate.canUploadBinary(parent=Url(request.parent)):
-        #     context.abort(code=255, details='权限不足')
-
-        # # If request.sire_version is not set, the default value is 0
-        # # suffix will evaluated as None in such case.
-        # suffix = SIRE_VERSION_TO_SUFFIX.get(request.sire_version, None)
-        # Binary.create_under_parent(
-        #     request.parent, request.binary, request.data, suffix)
-
-        # if request.sire_auto_convert:
-        #     sire_version, sire_plugin = request.sire_version, SirePlugin.from_sire_version(raw=request.data, main_version=request.sire_version)
-        #     converted_data = sire_plugin.to_sire_1() if sire_version == 2 else sire_plugin.to_sire_2()
-        #     converted_binary = request.binary
-        #     converted_binary.tag = 'sire1' if request.binary.tag == 'sire2' else 'sire2'
-        #     converted_suffix = SIRE_VERSION_TO_SUFFIX.get(1 if sire_version == 2 else 2, None)
-        #     Binary.create_under_parent(
-        #         request.parent, converted_binary, converted_data, converted_suffix)
-        
-        return san11_platform_pb2.Status(code=0, message='上传成功')
-
     def create_binary(self, request, context):
         logger.info(f'In create_binary') 
         def get_binary_url(parent: Url, binary: Binary):
@@ -65,7 +42,7 @@ class BinaryHandler:
         authenticate = Authenticator.from_context(context)
         parent = Url(request.parent)
         if not authenticate.canUploadBinary(parent=parent):
-            context.abort(code=255, details='权限不足')
+            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
         binary = Binary.from_pb(request.binary)
         binary.package_id = parent.package_id
         binary.url = get_binary_url(parent, binary)
@@ -81,7 +58,7 @@ class BinaryHandler:
             gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, binary.url)
             logger.info(f'{expected_disk_usage/(1024*1024*1024)}GB is used for {request.parent}')
         else:
-            raise INVALID_ARGUMENT('Invalid resource: it has to be one of [data, url, download_method]')
+            raise InvalidArgument('Invalid resource: it has to be one of [data, url, download_method]')
 
         # create db entry
         binary.create()
@@ -92,13 +69,17 @@ class BinaryHandler:
         binary = Binary.from_id(request.binary_id)
         authenticate = Authenticator.from_context(context)
         if not authenticate.canDeleteBinary(binary):
-            context.abort(code=255, details='权限不足')
+            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
         binary.delete()
         return san11_platform_pb2.Empty()
     
     def update_binary(self, request, context):
         logger.info(f'In update_binary: binary_id={request.binary.binary_id}')
-        binary = merge_resource(base_resource=Binary.from_id(request.binary.binary_id),
+        base_binary = Binary.from_id(request.binary.binary_id)
+        auth = Authenticator.from_context(context)
+        if not auth.canUpdateBinary(base_binary):
+            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
+        binary = merge_resource(base_resource=base_binary,
                                 update_request=Binary.from_pb(request.binary),
                                 field_mask=FieldMask.from_pb(request.update_mask))
         binary.update()

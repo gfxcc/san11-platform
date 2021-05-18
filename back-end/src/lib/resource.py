@@ -6,6 +6,7 @@ from abc import ABC, abstractclassmethod, abstractmethod, abstractproperty
 from typing import List, Any, Iterable, Dict
 from .exception import NotFound, AlreadyExists
 
+from .time_util import get_now
 from .db import get_db_fields_placeholder_str, get_db_fields_str, get_db_fields_assignment_str, \
     run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
 
@@ -159,7 +160,10 @@ class ResourceMixin(ABC):
         sql = f'UPDATE {self.db_table()} SET {get_db_fields_assignment_str(self.db_fields()[1:])} '\
             f'WHERE {self.db_fields()[0]}=%({self.db_fields()[0]})s'
         params_raw = ','.join(f"'{field}': self.{field}" for field in self.db_fields())
-        params = self._update_db_params(eval(f'{{ {params_raw} }}'))
+        params = eval(f'{{ {params_raw} }}')
+        if 'update_time' in params:
+            params['update_time'] = get_now()
+        params = self._update_db_params(params)
         logger.debug(f'update: sql={sql}, params={params}')
         run_sql_with_param(sql, params)
 

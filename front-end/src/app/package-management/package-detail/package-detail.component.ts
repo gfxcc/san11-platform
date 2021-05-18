@@ -14,7 +14,7 @@ import * as Editor from "../../common/components/ckeditor/ckeditor";
 
 import { GalleryItem, ImageItem } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { CreateImageRequest, ListTagsRequest, Package, Status, Tag, User } from "../../../proto/san11-platform.pb";
+import { CreateImageRequest, ListTagsRequest, FieldMask, Package, Status, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { NotificationService } from "../../common/notification.service";
@@ -303,10 +303,17 @@ export class PackageDetailComponent implements OnInit {
   onUpdateTitle() {
     const updatedPackageName = this.packageNameElement.nativeElement.innerHTML;
     const newPackage = new Package({
-      packageId: this.package.packageId,
-      name: updatedPackageName
     });
-    this.san11pkService.updatePackage(newPackage).subscribe(
+    const request = new UpdatePackageRequest({
+      package: new Package({
+        packageId: this.package.packageId,
+        name: updatedPackageName
+      }),
+      updateMask: new FieldMask({
+        paths: ['name']
+      })
+    });
+    this.san11pkService.updatePackage(request).subscribe(
       san11Package => {
         this.package.name = updatedPackageName;
         this.packageNameUpdated = false;
@@ -322,18 +329,23 @@ export class PackageDetailComponent implements OnInit {
     const newDesc = this.descEditor_element.getData();
 
     if (newDesc != undefined) {
-      const newPackage = new Package({
-        packageId: this.package.packageId,
-        description: newDesc
+      const request = new UpdatePackageRequest({
+        package: new Package({
+          packageId: this.package.packageId,
+          description: newDesc
+        }),
+        updateMask: new FieldMask({
+          paths: ['description']
+        })
       });
-      this.san11pkService.updatePackage(newPackage).subscribe(
+      this.san11pkService.updatePackage(request).subscribe(
         san11Package => {
           this.package.description = san11Package.description;
           this.descEditor_updated = false;
-          this.notificationService.success("更新成功");
+          this.notificationService.success('更新成功');
         },
         error => {
-          this.notificationService.warn("更新失败: " + error.statusMessage);
+          this.notificationService.warn(`更新失败: ${error.statusMessage}`);
         }
       );
     }
@@ -355,10 +367,17 @@ export class PackageDetailComponent implements OnInit {
     }
     let updateTags = this.package.tags.map(x => new Tag({ tagId: x.tagId }));
     updateTags.push(new Tag({ tagId: tagId }));
-    this.san11pkService.updatePackage(new Package({
-      packageId: this.package.packageId,
-      tags: updateTags
-    })).subscribe(
+
+    const request = new UpdatePackageRequest({
+      package: new Package({
+        packageId: this.package.packageId,
+        tags: updateTags
+      }),
+      updateMask: new FieldMask({
+        paths: ['tags']
+      })
+    });
+    this.san11pkService.updatePackage(request).subscribe(
       resp => {
         this.package.tags = resp.tags;
         this.notificationService.success('添加标签成功');
@@ -371,13 +390,17 @@ export class PackageDetailComponent implements OnInit {
 
   removeTag(tagToRemove: Tag) {
     let updateTags = this.package.tags.filter((tag: Tag) => tag.tagId != tagToRemove.tagId);
-    if (updateTags.length === 0) {
-      updateTags = [new Tag({ tagId: '0' })];
-    }
-    this.san11pkService.updatePackage(new Package({
-      packageId: this.package.packageId,
-      tags: updateTags
-    })).subscribe(
+
+    const request = new UpdatePackageRequest({
+      package: new Package({
+        packageId: this.package.packageId,
+        tags: updateTags
+      }),
+      updateMask: new FieldMask({
+        paths: ['tags']
+      })
+    });
+    this.san11pkService.updatePackage(request).subscribe(
       resp => {
         this.package.tags = resp.tags;
         this.notificationService.success('删除标签成功');
@@ -439,10 +462,17 @@ export class PackageDetailComponent implements OnInit {
 
   // admin
   onApprove() {
-    this.san11pkService.updatePackage(new Package({
-      packageId: this.package.packageId,
-      status: Package.Status.NORMAL
-    })).subscribe(
+
+    const request = new UpdatePackageRequest({
+      package: new Package({
+        packageId: this.package.packageId,
+        status: Package.Status.NORMAL
+      }),
+      updateMask: new FieldMask({
+        paths: ['status']
+      })
+    });
+    this.san11pkService.updatePackage(request).subscribe(
       san11Package => {
         this.notificationService.success('审核通过')
 
@@ -458,10 +488,16 @@ export class PackageDetailComponent implements OnInit {
 
 
   onFlipHide() {
-    this.san11pkService.updatePackage(new Package({
-      packageId: this.package.packageId,
-      status: this.package.status === Package.Status.HIDDEN ? Package.Status.NORMAL : Package.Status.HIDDEN
-    })).subscribe(
+    const request = new UpdatePackageRequest({
+      package: new Package({
+        packageId: this.package.packageId,
+        status: this.package.status === Package.Status.HIDDEN ? Package.Status.NORMAL : Package.Status.HIDDEN
+      }),
+      updateMask: new FieldMask({
+        paths: ['status']
+      })
+    });
+    this.san11pkService.updatePackage(request).subscribe(
       san11Package => {
         this.notificationService.success('操作成功')
         this.router.navigate(['categories', this.package.categoryId]).then(() => {
@@ -491,11 +527,16 @@ export class PackageDetailComponent implements OnInit {
           }
         );
       } else {
-        const updatedPakcage = new Package({
-          packageId: this.package.packageId,
-          status: Package.Status.SCHEDULE_DELETE
+        const request = new UpdatePackageRequest({
+          package: new Package({
+            packageId: this.package.packageId,
+            status: Package.Status.SCHEDULE_DELETE
+          }),
+          updateMask: new FieldMask({
+            paths: ['status']
+          })
         });
-        this.san11pkService.updatePackage(updatedPakcage).subscribe(
+        this.san11pkService.updatePackage(request).subscribe(
           san11Package => {
             this.notificationService.success('成功删除');
 
@@ -530,10 +571,17 @@ export class PackageDetailComponent implements OnInit {
           return;
         }
         this.package.imageUrls.splice(imageIndex, 1);
-        this.san11pkService.updatePackage(new Package({
-          packageId: this.package.packageId,
-          imageUrls: this.package.imageUrls.length > 0 ? this.package.imageUrls : ['empty']
-        })).subscribe(
+
+        const request = new UpdatePackageRequest({
+          package: new Package({
+            packageId: this.package.packageId,
+            imageUrls: this.package.imageUrls
+          }),
+          updateMask: new FieldMask({
+            paths: ['image_urls']
+          })
+        });
+        this.san11pkService.updatePackage(request).subscribe(
           san11Package => {
             this.images.splice(imageIndex, 1);
             this.notificationService.success("删除成功");

@@ -35,7 +35,6 @@ service RouteGuide {
   rpc DeleteComment(DeleteCommentRequest) returns (Empty) {}
   rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
   rpc ListComments(ListCommentsRequest) returns (ListCommentsResponse) {}
-//   rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
   rpc CreateReply(CreateReplyRequest) returns (Reply) {}
   rpc DeleteReply(DeleteReplyRequest) returns (Empty) {}
   rpc UpdateReply(UpdateReplyRequest) returns (Reply) {}
@@ -61,7 +60,6 @@ service RouteGuide {
 
   // Auth
   rpc GetAuth(GetAuthRequest) returns (Auth) {}
-
 }
 
 // package related
@@ -72,6 +70,7 @@ message CreatePackageRequest {
 
 message UpdatePackageRequest {
     Package package = 1;
+    FieldMask update_mask = 2;
 }
 
 message DeletePackageRequest {
@@ -193,6 +192,7 @@ message DeleteCommentRequest {
 
 message UpdateCommentRequest {
     Comment comment = 1;
+    FieldMask update_mask = 2;
 }
 
 message ListCommentsRequest {
@@ -219,6 +219,7 @@ message DeleteReplyRequest {
 
 message UpdateReplyRequest{
     Reply reply = 1;
+    FieldMask update_mask = 2;
 }
 
 // user
@@ -257,6 +258,7 @@ message SignUpResponse {
 
 message UpdateUserRequest {
     User user = 1;
+    FieldMask update_mask = 2;
 }
 
 message UpdatePasswordRequest {

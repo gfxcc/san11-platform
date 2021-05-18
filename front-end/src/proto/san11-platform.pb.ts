@@ -183,6 +183,7 @@ export class UpdatePackageRequest implements GrpcMessage {
    */
   static refineValues(_instance: UpdatePackageRequest) {
     _instance.package = _instance.package || undefined;
+    _instance.updateMask = _instance.updateMask || undefined;
   }
 
   /**
@@ -203,6 +204,13 @@ export class UpdatePackageRequest implements GrpcMessage {
           _reader.readMessage(
             _instance.package,
             Package.deserializeBinaryFromReader
+          );
+          break;
+        case 2:
+          _instance.updateMask = new FieldMask();
+          _reader.readMessage(
+            _instance.updateMask,
+            FieldMask.deserializeBinaryFromReader
           );
           break;
         default:
@@ -229,9 +237,17 @@ export class UpdatePackageRequest implements GrpcMessage {
         Package.serializeBinaryToWriter
       );
     }
+    if (_instance.updateMask) {
+      _writer.writeMessage(
+        2,
+        _instance.updateMask as any,
+        FieldMask.serializeBinaryToWriter
+      );
+    }
   }
 
   private _package?: Package;
+  private _updateMask?: FieldMask;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -240,6 +256,9 @@ export class UpdatePackageRequest implements GrpcMessage {
   constructor(_value?: RecursivePartial<UpdatePackageRequest.AsObject>) {
     _value = _value || {};
     this.package = _value.package ? new Package(_value.package) : undefined;
+    this.updateMask = _value.updateMask
+      ? new FieldMask(_value.updateMask)
+      : undefined;
     UpdatePackageRequest.refineValues(this);
   }
   get package(): Package | undefined {
@@ -247,6 +266,12 @@ export class UpdatePackageRequest implements GrpcMessage {
   }
   set package(value: Package | undefined) {
     this._package = value;
+  }
+  get updateMask(): FieldMask | undefined {
+    return this._updateMask;
+  }
+  set updateMask(value: FieldMask | undefined) {
+    this._updateMask = value;
   }
 
   /**
@@ -264,7 +289,8 @@ export class UpdatePackageRequest implements GrpcMessage {
    */
   toObject(): UpdatePackageRequest.AsObject {
     return {
-      package: this.package ? this.package.toObject() : undefined
+      package: this.package ? this.package.toObject() : undefined,
+      updateMask: this.updateMask ? this.updateMask.toObject() : undefined
     };
   }
 
@@ -285,7 +311,10 @@ export class UpdatePackageRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): UpdatePackageRequest.AsProtobufJSON {
     return {
-      package: this.package ? this.package.toProtobufJSON(options) : null
+      package: this.package ? this.package.toProtobufJSON(options) : null,
+      updateMask: this.updateMask
+        ? this.updateMask.toProtobufJSON(options)
+        : null
     };
   }
 }
@@ -295,6 +324,7 @@ export module UpdatePackageRequest {
    */
   export interface AsObject {
     package?: Package.AsObject;
+    updateMask?: FieldMask.AsObject;
   }
 
   /**
@@ -302,6 +332,7 @@ export module UpdatePackageRequest {
    */
   export interface AsProtobufJSON {
     package?: Package.AsProtobufJSON | null;
+    updateMask?: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -3707,6 +3738,7 @@ export class UpdateCommentRequest implements GrpcMessage {
    */
   static refineValues(_instance: UpdateCommentRequest) {
     _instance.comment = _instance.comment || undefined;
+    _instance.updateMask = _instance.updateMask || undefined;
   }
 
   /**
@@ -3727,6 +3759,13 @@ export class UpdateCommentRequest implements GrpcMessage {
           _reader.readMessage(
             _instance.comment,
             Comment.deserializeBinaryFromReader
+          );
+          break;
+        case 2:
+          _instance.updateMask = new FieldMask();
+          _reader.readMessage(
+            _instance.updateMask,
+            FieldMask.deserializeBinaryFromReader
           );
           break;
         default:
@@ -3753,9 +3792,17 @@ export class UpdateCommentRequest implements GrpcMessage {
         Comment.serializeBinaryToWriter
       );
     }
+    if (_instance.updateMask) {
+      _writer.writeMessage(
+        2,
+        _instance.updateMask as any,
+        FieldMask.serializeBinaryToWriter
+      );
+    }
   }
 
   private _comment?: Comment;
+  private _updateMask?: FieldMask;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3764,6 +3811,9 @@ export class UpdateCommentRequest implements GrpcMessage {
   constructor(_value?: RecursivePartial<UpdateCommentRequest.AsObject>) {
     _value = _value || {};
     this.comment = _value.comment ? new Comment(_value.comment) : undefined;
+    this.updateMask = _value.updateMask
+      ? new FieldMask(_value.updateMask)
+      : undefined;
     UpdateCommentRequest.refineValues(this);
   }
   get comment(): Comment | undefined {
@@ -3771,6 +3821,12 @@ export class UpdateCommentRequest implements GrpcMessage {
   }
   set comment(value: Comment | undefined) {
     this._comment = value;
+  }
+  get updateMask(): FieldMask | undefined {
+    return this._updateMask;
+  }
+  set updateMask(value: FieldMask | undefined) {
+    this._updateMask = value;
   }
 
   /**
@@ -3788,7 +3844,8 @@ export class UpdateCommentRequest implements GrpcMessage {
    */
   toObject(): UpdateCommentRequest.AsObject {
     return {
-      comment: this.comment ? this.comment.toObject() : undefined
+      comment: this.comment ? this.comment.toObject() : undefined,
+      updateMask: this.updateMask ? this.updateMask.toObject() : undefined
     };
   }
 
@@ -3809,7 +3866,10 @@ export class UpdateCommentRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): UpdateCommentRequest.AsProtobufJSON {
     return {
-      comment: this.comment ? this.comment.toProtobufJSON(options) : null
+      comment: this.comment ? this.comment.toProtobufJSON(options) : null,
+      updateMask: this.updateMask
+        ? this.updateMask.toProtobufJSON(options)
+        : null
     };
   }
 }
@@ -3819,6 +3879,7 @@ export module UpdateCommentRequest {
    */
   export interface AsObject {
     comment?: Comment.AsObject;
+    updateMask?: FieldMask.AsObject;
   }
 
   /**
@@ -3826,6 +3887,7 @@ export module UpdateCommentRequest {
    */
   export interface AsProtobufJSON {
     comment?: Comment.AsProtobufJSON | null;
+    updateMask?: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -4486,6 +4548,7 @@ export class UpdateReplyRequest implements GrpcMessage {
    */
   static refineValues(_instance: UpdateReplyRequest) {
     _instance.reply = _instance.reply || undefined;
+    _instance.updateMask = _instance.updateMask || undefined;
   }
 
   /**
@@ -4506,6 +4569,13 @@ export class UpdateReplyRequest implements GrpcMessage {
           _reader.readMessage(
             _instance.reply,
             Reply.deserializeBinaryFromReader
+          );
+          break;
+        case 2:
+          _instance.updateMask = new FieldMask();
+          _reader.readMessage(
+            _instance.updateMask,
+            FieldMask.deserializeBinaryFromReader
           );
           break;
         default:
@@ -4532,9 +4602,17 @@ export class UpdateReplyRequest implements GrpcMessage {
         Reply.serializeBinaryToWriter
       );
     }
+    if (_instance.updateMask) {
+      _writer.writeMessage(
+        2,
+        _instance.updateMask as any,
+        FieldMask.serializeBinaryToWriter
+      );
+    }
   }
 
   private _reply?: Reply;
+  private _updateMask?: FieldMask;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4543,6 +4621,9 @@ export class UpdateReplyRequest implements GrpcMessage {
   constructor(_value?: RecursivePartial<UpdateReplyRequest.AsObject>) {
     _value = _value || {};
     this.reply = _value.reply ? new Reply(_value.reply) : undefined;
+    this.updateMask = _value.updateMask
+      ? new FieldMask(_value.updateMask)
+      : undefined;
     UpdateReplyRequest.refineValues(this);
   }
   get reply(): Reply | undefined {
@@ -4550,6 +4631,12 @@ export class UpdateReplyRequest implements GrpcMessage {
   }
   set reply(value: Reply | undefined) {
     this._reply = value;
+  }
+  get updateMask(): FieldMask | undefined {
+    return this._updateMask;
+  }
+  set updateMask(value: FieldMask | undefined) {
+    this._updateMask = value;
   }
 
   /**
@@ -4567,7 +4654,8 @@ export class UpdateReplyRequest implements GrpcMessage {
    */
   toObject(): UpdateReplyRequest.AsObject {
     return {
-      reply: this.reply ? this.reply.toObject() : undefined
+      reply: this.reply ? this.reply.toObject() : undefined,
+      updateMask: this.updateMask ? this.updateMask.toObject() : undefined
     };
   }
 
@@ -4588,7 +4676,10 @@ export class UpdateReplyRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): UpdateReplyRequest.AsProtobufJSON {
     return {
-      reply: this.reply ? this.reply.toProtobufJSON(options) : null
+      reply: this.reply ? this.reply.toProtobufJSON(options) : null,
+      updateMask: this.updateMask
+        ? this.updateMask.toProtobufJSON(options)
+        : null
     };
   }
 }
@@ -4598,6 +4689,7 @@ export module UpdateReplyRequest {
    */
   export interface AsObject {
     reply?: Reply.AsObject;
+    updateMask?: FieldMask.AsObject;
   }
 
   /**
@@ -4605,6 +4697,7 @@ export module UpdateReplyRequest {
    */
   export interface AsProtobufJSON {
     reply?: Reply.AsProtobufJSON | null;
+    updateMask?: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -5702,6 +5795,7 @@ export class UpdateUserRequest implements GrpcMessage {
    */
   static refineValues(_instance: UpdateUserRequest) {
     _instance.user = _instance.user || undefined;
+    _instance.updateMask = _instance.updateMask || undefined;
   }
 
   /**
@@ -5720,6 +5814,13 @@ export class UpdateUserRequest implements GrpcMessage {
         case 1:
           _instance.user = new User();
           _reader.readMessage(_instance.user, User.deserializeBinaryFromReader);
+          break;
+        case 2:
+          _instance.updateMask = new FieldMask();
+          _reader.readMessage(
+            _instance.updateMask,
+            FieldMask.deserializeBinaryFromReader
+          );
           break;
         default:
           _reader.skipField();
@@ -5745,9 +5846,17 @@ export class UpdateUserRequest implements GrpcMessage {
         User.serializeBinaryToWriter
       );
     }
+    if (_instance.updateMask) {
+      _writer.writeMessage(
+        2,
+        _instance.updateMask as any,
+        FieldMask.serializeBinaryToWriter
+      );
+    }
   }
 
   private _user?: User;
+  private _updateMask?: FieldMask;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -5756,6 +5865,9 @@ export class UpdateUserRequest implements GrpcMessage {
   constructor(_value?: RecursivePartial<UpdateUserRequest.AsObject>) {
     _value = _value || {};
     this.user = _value.user ? new User(_value.user) : undefined;
+    this.updateMask = _value.updateMask
+      ? new FieldMask(_value.updateMask)
+      : undefined;
     UpdateUserRequest.refineValues(this);
   }
   get user(): User | undefined {
@@ -5763,6 +5875,12 @@ export class UpdateUserRequest implements GrpcMessage {
   }
   set user(value: User | undefined) {
     this._user = value;
+  }
+  get updateMask(): FieldMask | undefined {
+    return this._updateMask;
+  }
+  set updateMask(value: FieldMask | undefined) {
+    this._updateMask = value;
   }
 
   /**
@@ -5780,7 +5898,8 @@ export class UpdateUserRequest implements GrpcMessage {
    */
   toObject(): UpdateUserRequest.AsObject {
     return {
-      user: this.user ? this.user.toObject() : undefined
+      user: this.user ? this.user.toObject() : undefined,
+      updateMask: this.updateMask ? this.updateMask.toObject() : undefined
     };
   }
 
@@ -5801,7 +5920,10 @@ export class UpdateUserRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): UpdateUserRequest.AsProtobufJSON {
     return {
-      user: this.user ? this.user.toProtobufJSON(options) : null
+      user: this.user ? this.user.toProtobufJSON(options) : null,
+      updateMask: this.updateMask
+        ? this.updateMask.toProtobufJSON(options)
+        : null
     };
   }
 }
@@ -5811,6 +5933,7 @@ export module UpdateUserRequest {
    */
   export interface AsObject {
     user?: User.AsObject;
+    updateMask?: FieldMask.AsObject;
   }
 
   /**
@@ -5818,6 +5941,7 @@ export module UpdateUserRequest {
    */
   export interface AsProtobufJSON {
     user?: User.AsProtobufJSON | null;
+    updateMask?: FieldMask.AsProtobufJSON | null;
   }
 }
 

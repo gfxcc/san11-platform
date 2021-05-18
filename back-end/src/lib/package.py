@@ -131,7 +131,7 @@ class Package(ResourceMixin):
             category_id=pb_obj.category_id,
             status=pb_obj.status or cls.DEFAULT_STATUS_FOR_NEW_PACKAGE,
             author_id=pb_obj.author_id,
-            image_urls=pb_obj.image_urls,
+            image_urls=list(pb_obj.image_urls),
             download_count=pb_obj.download_count,
             tag_ids=[tag.tag_id for tag in pb_obj.tags],
             update_time=pb_obj.update_time or get_now()
@@ -196,9 +196,9 @@ class Package(ResourceMixin):
 
     def append_image(self, image: Image) -> None:
         self.image_urls.append(image.url)
-        sql = f'UPDATE {self.db_table()} SET image_urls=%(image_urls)s WHERE {self.db_fields()[0]}=%(id)s'
+        sql = f'UPDATE {self.db_table()} SET image_urls=%(image_urls)s WHERE {self.db_fields()[0]}=%({self.db_fields()[0]})s'
         run_sql_with_param(
-            sql, {'image_urls': self.image_urls, 'id': self.package_id})
+            sql, {'image_urls': self.image_urls, self.db_fields()[0]: self.package_id})
 
     def increment_download(self, delta: int = 1) -> int:
         self.download_count += 1
@@ -208,25 +208,3 @@ class Package(ResourceMixin):
             'id': self.package_id
         })
         return self.download_count
-
-    def update(self):
-        # TODO: migrate to default impl
-        sql = f'UPDATE {self.db_table()} SET'\
-            ' name=%(name)s'\
-            ',description=%(description)s'\
-            ',status=%(status)s'\
-            ',image_urls=%(image_urls)s'\
-            ',tag_ids=%(tag_ids)s'\
-            ',update_time=%(update_time)s'\
-            f' WHERE {self.db_fields()[0]}=%(id)s'
-        params = {
-            'name': self.name,
-            'description': self.description,
-            'status': self.status,
-            'image_urls': self.image_urls,
-            'tag_ids': self.tag_ids,
-            'update_time': get_now(),
-            'id': self.package_id
-        }
-        params = self._update_db_params(params)
-        run_sql_with_param(sql, params)
