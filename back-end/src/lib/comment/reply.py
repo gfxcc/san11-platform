@@ -15,6 +15,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class Reply:
+    # TODO: adopt ResourceMixin
     def __init__(self, comment_id: int, reply_id: int, create_time: datetime,
                  update_time: datetime, text: str, author_id: int,
                  upvote_count: int) -> None:

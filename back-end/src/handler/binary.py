@@ -26,8 +26,8 @@ class BinaryHandler:
         def get_binary_url(parent: Url, binary: Binary):
             category_to_ext = {
                 1: {
-                    'sire1': '.sirecm',
-                    'sire2': '.scp'
+                    'SIRE 1': '.sirecm',
+                    'SIRE 2': '.scp'
                 },  # SIRE plugin
                 2: '.zip',  # Player tools
                 3: '.zip'  # Mods
