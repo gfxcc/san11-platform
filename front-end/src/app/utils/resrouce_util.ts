@@ -9,9 +9,9 @@ export function getFullUrl(url: string): string {
 
 export function getAcceptFileType(categoryId: string, tag: string): string {
     if (categoryId === '1') {
-        if (tag === 'sire2') {
+        if (tag === 'SIRE 1') {
             return '.scp, .scp-en';
-        } else if (tag === 'sire1') {
+        } else if (tag === 'SIRE 2') {
             return '.sirecm';
         }
     } else {
