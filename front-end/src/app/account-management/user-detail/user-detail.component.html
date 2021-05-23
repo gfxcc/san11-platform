@@ -21,7 +21,7 @@
                         <input matInput #emailInput *ngIf="this.user != undefined" [(ngModel)]="this.user.email" [disabled]="!this.iAmTheUser()" (ngModelChange)="formUpdated()" placeholder="邮箱" name="email" />
                     </mat-form-field>
 
-                    <mat-form-field class="form-field">
+                    <mat-form-field class="form-field" *ngIf="this.iAmTheUser() || this.user.website">
                         <input matInput #websiteInput *ngIf="this.user != undefined" [hidden]="!this.iAmTheUser()" [(ngModel)]="this.user.website" [disabled]="!this.iAmTheUser()" (ngModelChange)="formUpdated()" placeholder="网站" name="website" />
                         <a *ngIf="!this.iAmTheUser()" [href]="'http://' + this.user.website" target="_blink"> {{this.user.website}} </a>
                     </mat-form-field>
