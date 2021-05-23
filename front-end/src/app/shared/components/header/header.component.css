@@ -78,3 +78,9 @@
     background: url('../../../../assets/images/help_icon.png');
     background-size: 20px 20px;
 }
+
+@media only screen and (max-width: 500px) {
+    #search-bar {
+        display: none;
+    }
+}

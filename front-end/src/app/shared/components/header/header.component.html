@@ -5,7 +5,7 @@
     <span class="website-title clickable" (click)="this.router.navigate([&quot;/&quot;]);">San11 分享平台</span>
     <span class="example-spacer"></span>
 
-    <div class="search-bar-container">
+    <div id="search-bar" class="search-bar-container">
         <div class="search-bar-input-wrapper">
             <input #searchInput [(ngModel)]="this.searchQuery" type="text" spellcheck="false" autocomplete="off" placeholder="搜索 ..." (ngModelChange)="this.searchChanged()" class="search-input">
             <span matTooltip="支持 工具名" class="help-icon"></span>
@@ -17,10 +17,10 @@
     <span class="example-spacer"></span>
     <span class="example-spacer"></span>
 
-    <div *ngIf="this.isAdmin()" style="display: inline-flex;">
+    <!-- <div id="admin-data" *ngIf="this.isAdmin()" style="display: inline-flex;">
         <span [matBadge]="this.today_visit_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日访问</span>
         <span [matBadge]="this.today_download_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日下载</span>
-    </div>
+    </div> -->
 
     <span class="example-spacer"></span>
 
