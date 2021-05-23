@@ -12,7 +12,7 @@
     <button *ngIf="updateElement" class="button" style="margin-top: 5px;" mat-button mat-raised-button color="primary" (click)="onUpdate()">更新</button>
 </div>
 
-<mat-tab-group dynamicHeight [(selectedIndex)]="this.tabSelectedIndex" style="margin-top: -44px;">
+<mat-tab-group dynamicHeight [(selectedIndex)]="this.tabSelectedIndex" class="version-groups" style="margin-top: -44px; ">
     <div *ngFor="let tab of tabs">
         <mat-tab [label]="tab.tag">
             <div>
@@ -26,9 +26,9 @@
                         <td mat-cell *matCellDef="let binary">
                             <div style="display: flex;">
                                 <button mat-button (click)="onDescription(binary)" matTooltip="更新日志">
-                    {{this.getVersionStr(binary)}}
-                    <mat-icon>subject</mat-icon>
-                </button>
+                                    {{this.getVersionStr(binary)}}
+                                <mat-icon>subject</mat-icon>
+                            </button>
                             </div>
                         </td>
                     </ng-container>
