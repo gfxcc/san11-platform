@@ -21,7 +21,6 @@ import { clearUser, loadUser, signedIn, isAdmin } from './utils/user_util';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChild('categoryNav') categoryNav;
   @ViewChild('searchInput') searchInput;
 
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
@@ -73,25 +72,6 @@ export class AppComponent {
   }
 
   ngAfterViewInit(): void {
-  }
-
-  onClickTag(tag: Tag) {
-    this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.tagId } });
-  }
-
-  removeTag(tag: Tag) {
-    if (!confirm(`删除标签【${tag.name}】?`)) {
-      return;
-    }
-    this.san11pkService.deleteTag(new DeleteTagRequest({ tagId: tag.tagId })).subscribe(
-      resp => {
-        this.notificationService.success('删除标签 成功');
-        this.loadTags();
-      },
-      error => {
-        this.notificationService.warn(`无法删除标签【${tag.name}】: ${error.statusMessage}`)
-      }
-    );
   }
 
   createTag(event) {
@@ -170,37 +150,12 @@ export class AppComponent {
 
   }
 
-  onCategoryLabelClick(category) {
-    this.router.navigate(category.link);
-    this.loadTags();
-  }
-
-  onAdminLabelClick(adminModule) {
-    this.router.navigate(adminModule.link);
-  }
-
-  compareWith(o1, o2) {
-    return false;
-  }
-
   onSignInClick() {
     this.router.navigate(['signin']);
-    this.categoryNav.deselectAll();
   }
 
   onSignUpClick() {
     this.router.navigate(['register']);
-    this.categoryNav.deselectAll();
-  }
-
-
-  onClickCreateTool() {
-    if (!signedIn()) {
-      this.notificationService.warn('上传工具需要登陆');
-    } else {
-      this.uploadTool();
-      this.categoryNav.deselectAll();
-    }
   }
 
   onActivate(elementRef) {

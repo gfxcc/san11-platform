@@ -38,6 +38,7 @@ import { ReplyCardComponent } from './common/components/comment-card/reply-card/
 import { MessageBoardComponent } from './dashboards/message-board/message-board.component';
 import { UserCardComponent } from './common/components/user-card/user-card.component';
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
     HttpClientModule,
     GalleryModule,
     CKEditorModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
