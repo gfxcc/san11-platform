@@ -71,7 +71,7 @@
                     </div>
                 </mat-list-option>
 
-                <mat-divider></mat-divider>
+                <mat-divider class="side-bar-divier"></mat-divider>
 
                 <mat-list-option *ngFor="let webModule of webModules" [value]="webModule" [selected]="webModule.value===this.selectedCategory" (click)="onCategoryLabelClick(webModule)">
                     <div class="nav-link">
@@ -80,7 +80,7 @@
                     </div>
                 </mat-list-option>
 
-                <mat-divider></mat-divider>
+                <mat-divider class="side-bar-divier"></mat-divider>
 
 
                 <div *ngIf="this.isAdmin()">

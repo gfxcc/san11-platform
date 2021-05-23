@@ -221,3 +221,8 @@ mat-chip {
     /* height: 10px; */
     font-size: 12px;
 }
+
+.side-bar-divier {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
