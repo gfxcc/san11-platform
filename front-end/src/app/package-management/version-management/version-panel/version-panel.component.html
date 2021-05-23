@@ -12,7 +12,7 @@
     <button *ngIf="updateElement" class="button" style="margin-top: 5px;" mat-button mat-raised-button color="primary" (click)="onUpdate()">更新</button>
 </div>
 
-<mat-tab-group dynamicHeight [(selectedIndex)]="this.tabSelectedIndex" class="version-groups" style="margin-top: -44px; ">
+<mat-tab-group dynamicHeight [(selectedIndex)]="this.tabSelectedIndex" class="shadow-border" style="margin-top: -44px; ">
     <div *ngFor="let tab of tabs">
         <mat-tab [label]="tab.tag">
             <div>
