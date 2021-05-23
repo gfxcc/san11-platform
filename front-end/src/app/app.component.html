@@ -1,54 +1,12 @@
-<header class="head-bar">
-    <mat-toolbar color="primary">
-        <span class="website-title clickable" (click)="this.router.navigate([&quot;/&quot;]);">San11 分享平台</span>
-        <span class="example-spacer"></span>
+<app-header (toggleSideBarForMe)="sideBarToggler($event)"></app-header>
 
-        <div class="search-bar-container">
-            <div class="search-bar-input-wrapper">
-                <input #searchInput [(ngModel)]="this.searchQuery" type="text" spellcheck="false" autocomplete="off" placeholder="搜索 ..." (ngModelChange)="this.searchChanged()" class="search-input">
-                <span matTooltip="支持 工具名" class="help-icon"></span>
-            </div>
-        </div>
-
-        <span class="example-spacer"></span>
-        <span class="example-spacer"></span>
-        <span class="example-spacer"></span>
-        <span class="example-spacer"></span>
-
-        <div *ngIf="this.isAdmin()" style="display: inline-flex;">
-            <span [matBadge]="this.today_visit_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日访问</span>
-            <span [matBadge]="this.today_download_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日下载</span>
-        </div>
-
-        <span class="example-spacer"></span>
-
-        <div *ngIf="this.user === undefined">
-            <a mat-button (click)="onSignInClick()">登陆</a>
-            <a mat-button mat-raised-button (click)="onSignUpClick()">注册</a>
-        </div>
-        <div *ngIf="this.user != undefined" style="height: 100%; display: inline-flex; align-items: center;">
-
-            <!-- <button mat-icon-button [matMenuTriggerFor]="menu" style="margin-right: 10px;">
-                    <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
-            </button> -->
-
-            <button mat-button [matMenuTriggerFor]="menu" style="padding:0;">
-                <app-user-card [user]="this.user"> </app-user-card>
-            </button>
-
-            <mat-menu #menu="matMenu" xPosition="before">
-                <button mat-menu-item (click)="onUserDetail()">账户详情</button>
-                <button mat-menu-item (click)="onSignOut()">登出</button>
-            </mat-menu>
-        </div>
-    </mat-toolbar>
-</header>
-
-<div class="main">
-
-    <app-sidebar></app-sidebar>
-
-    <div class="content-section">
+<mat-drawer-container>
+    <mat-drawer mode="side" [opened]="sideBarOpen">
+        <app-sidebar></app-sidebar>
+    </mat-drawer>
+    <mat-drawer-content>
+        <!-- <div class="content-section"> -->
         <router-outlet (activate)="onActivate($event)"></router-outlet>
-    </div>
-</div>
+        <!-- </div> -->
+    </mat-drawer-content>
+</mat-drawer-container>

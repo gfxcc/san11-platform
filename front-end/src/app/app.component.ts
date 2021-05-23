@@ -21,17 +21,16 @@ import { clearUser, loadUser, signedIn, isAdmin } from './utils/user_util';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChild('searchInput') searchInput;
 
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   categories = GlobalConstants.categories;
   webModules = GlobalConstants.webModules;
   adminModules = GlobalConstants.adminModules;
 
+  sideBarOpen = true;
+
   title = 'san11-platform';
 
-  today_visit_count: number = 1;
-  today_download_count: number = 2;
   selectedCategory = '1';
 
   user: User;
@@ -40,7 +39,6 @@ export class AppComponent {
 
   tagGroups = [];
 
-  searchQuery: string = '';
   // tagGroups = [{
   //   groupName: 'SIRE 版本',
   //   tags: ['SIRE 2', 'SIRE 1']
@@ -55,16 +53,6 @@ export class AppComponent {
     private dialog: MatDialog,
     private _eventEmiter: EventEmiterService,
     public router: Router) {
-    this.san11pkService.getStatistic().subscribe(
-      statistic => {
-        this.today_visit_count = Number(statistic.visitCount);
-        this.today_download_count = Number(statistic.downloadCount);
-      }
-    );
-
-    if (signedIn()) {
-      this.user = loadUser();
-    }
   }
 
   ngOnInit(): void {
@@ -72,6 +60,10 @@ export class AppComponent {
   }
 
   ngAfterViewInit(): void {
+  }
+
+  sideBarToggler(event) {
+    this.sideBarOpen = !this.sideBarOpen;
   }
 
   createTag(event) {
@@ -109,12 +101,6 @@ export class AppComponent {
     );
   }
 
-  searchChanged() {
-
-    this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
-
-    // console.log(this.searchQuery);
-  }
 
   username() {
     return localStorage.getItem('username');
@@ -126,37 +112,6 @@ export class AppComponent {
     return isAdmin();
   }
 
-  onUserDetail() {
-    const userId = localStorage.getItem('userId');
-    this.router.navigate(['users', userId]);
-  }
-
-  onSignOut() {
-    this.san11pkService.signOut(localStorage.getItem('userId')).subscribe(
-    );
-
-    clearUser();
-
-    this.user = undefined;
-    this.router.navigate(['/']);
-    this.notificationService.success('已登出')
-  }
-
-  uploadTool() {
-    this.router.navigate(['app-create-package']);
-  }
-
-  myTools() {
-
-  }
-
-  onSignInClick() {
-    this.router.navigate(['signin']);
-  }
-
-  onSignUpClick() {
-    this.router.navigate(['register']);
-  }
 
   onActivate(elementRef) {
     this._eventEmiter.dataStr.subscribe((data: ComponentMessage) => {

@@ -41,7 +41,6 @@ export class SidebarComponent implements OnInit {
         if (resp.tags.length === 0) {
           this.tags = [];
         } else {
-          console.log(resp);
           this.tags = resp.tags;
         }
       },
