@@ -2,27 +2,8 @@
     /* border: 2px solid red; */
 }
 
-.head-bar {
-    position: fixed;
-    /* width: 100%; */
-    top: 0;
-    left: 0;
-    right: 0;
-    display: block;
-    z-index: 100;
-}
-
-.website-title {
-    font-size: 30;
-    color: white;
-}
-
 .example-spacer {
     flex: 1 1 auto;
-}
-
-.vertical-spacer {
-    flex: 1 1 1 1;
 }
 
 .category-button {
@@ -32,72 +13,6 @@
     line-height: 36px;
     text-align: center;
     padding: 0 20px;
-}
-
-.statistic {
-    font-size: medium;
-    margin-right: 20px;
-}
-
-.search-bar-container {
-    /* background: #fff;
-    display: flex;
-    border: 1px solid transparent;
-    box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
-    height: 39px;
-    width: 400px;
-    border-radius: 24px;
-    z-index: 3;
-    height: 44px;
-    margin: 0 auto; */
-    flex: 1 1 auto;
-    /* width: 400px; */
-    min-width: 300px;
-    max-width: 600px;
-}
-
-.search-bar-input-wrapper {
-    position: relative;
-}
-
-.search-bar-input-wrapper::before {
-    content: '';
-    display: block;
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    top: 11px;
-    left: 11px;
-    background: url('../assets/images/search_icon.png');
-    background-size: 24px 24px;
-}
-
-.search-input {
-    background: white;
-    width: 100%;
-    height: 44px;
-    border-radius: 4px;
-    border: none;
-    outline: none;
-    padding: 8px 162px 8px 40px;
-    -webkit-box-sizing: border-box;
-    font-size: 18px;
-}
-
-.search-input:focus {
-    border: 1px solid grey;
-    box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
-}
-
-.help-icon {
-    position: absolute;
-    top: 13px;
-    right: 14px;
-    height: 20px;
-    width: 20px;
-    display: block;
-    background: url('../assets/images/help_icon.png');
-    background-size: 20px 20px;
 }
 
 .main {
@@ -112,8 +27,8 @@
     height: 100%;
     /* background: #e2e2e2; */
     /* background-color: white; */
-    margin-left: 256px;
-    margin-top: 64px;
+    /* margin-left: 256px; */
+    /* margin-top: 44px; */
     width: 100%;
     height: calc(100% - 64px);
     /* display: flex; */
@@ -121,95 +36,11 @@
     /* align-items: flex-start; */
 }
 
-.side-section {
-    width: 256px;
-    height: calc(100% - 60px);
-    flex: none;
-    background-color: #fff;
-    display: block;
-    position: fixed;
-    top: 64px;
-}
-
-.create-button {
-    border-radius: 24px;
-    height: 48px;
-    width: 200px;
-    margin-top: 20px;
-    margin-left: 20px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    /* box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%); */
-    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
-}
-
-.create-button:hover {
-    box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
-}
-
-.icon {
-    width: 36px;
-    height: 36px;
-    font-size: 36px;
-    margin-left: calc(12px - 24px);
-    margin-right: 12px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.create-button>.text {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .example-spacer {
     flex: 1 1 auto;
 }
 
-.category-section {
-    display: block;
-}
-
-.nav-section {}
-
-.nav-link {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 10px;
-    position: relative;
-    border-bottom-right-radius: 16px;
-    border-top-right-radius: 16px;
-    font-weight: 700;
-}
-
-.footer-section {
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: .3px;
-    line-height: 16px;
-    align-items: center;
-    border-top: 1px #ddd solid;
-    display: flex;
-    min-height: 24px;
-    padding: 8px 0px 8px 26px;
-    bottom: 0;
-    left: 0;
-    width: 230px;
-    position: absolute;
-}
-
-footer>a {
-    text-decoration: none;
-    color: inherit;
-}
-
 .author-image {
-    /* background-image: url('../../../assets/images/zhuge.jpg'); */
     background-size: cover;
     width: 40px;
     height: 40px;
@@ -217,12 +48,23 @@ footer>a {
 }
 
 mat-chip {
-    /* width: 20px; */
-    /* height: 10px; */
     font-size: 12px;
 }
 
-.side-bar-divier {
-    margin-top: 12px;
-    margin-bottom: 12px;
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+mat-drawer {
+    width: 256px
+}
+
+mat-drawer-container {
+    height: 100%;
+}
+
+mat-drawer-content {
+    padding: 5px;
 }

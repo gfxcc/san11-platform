@@ -1,0 +1,69 @@
+<div style="height: 80px;">
+    <button class="create-button under-development" mat-raised-button (click)="onClickCreateTool()">
+        <span class="icon under-development">
+        <svg width="36" height="36" viewBox="0 0 36 36"><path fill="#34A853" d="M16 16v14h4V20z"></path><path fill="#4285F4" d="M30 16H20l-4 4h14z"></path><path fill="#FBBC05" d="M6 16v4h10l4-4z"></path><path fill="#EA4335" d="M20 16V6h-4v14z"></path><path fill="none" d="M0 0h36v36H0z"></path></svg>
+        </span>
+        <span class="text">
+            上传工具
+        </span>
+    
+    </button>
+</div>
+
+<div class="category-section">
+
+    <mat-selection-list #categoryNav [multiple]="false">
+        <mat-list-option *ngFor="let category of categories" [value]="category" [selected]="category.value===this.selectedCategory" (click)="onCategoryLabelClick(category)">
+            <div class="nav-link">
+                <span style="margin-left: 10px;"> <mat-icon>{{category.icon}}</mat-icon>  </span>
+                <span style="margin-left: 10px;">{{category.text}}</span>
+            </div>
+        </mat-list-option>
+
+        <mat-divider class="side-bar-divier"></mat-divider>
+
+        <mat-list-option *ngFor="let webModule of webModules" [value]="webModule" [selected]="webModule.value===this.selectedCategory" (click)="onCategoryLabelClick(webModule)">
+            <div class="nav-link">
+                <span style="margin-left: 10px;"> <mat-icon>{{webModule.icon}}</mat-icon>  </span>
+                <span style="margin-left: 10px;">{{webModule.text}}</span>
+            </div>
+        </mat-list-option>
+
+        <mat-divider class="side-bar-divier"></mat-divider>
+
+
+        <div *ngIf="this.isAdmin()">
+            <mat-list-option *ngFor="let adminModule of adminModules" [value]="adminModule" (click)="onAdminLabelClick(adminModule)">
+                <div class="nav-link">
+                    <span style="margin-left: 10px;"> <mat-icon>{{adminModule.icon}}</mat-icon>  </span>
+                    <span style="margin-left: 10px;">{{adminModule.text}}</span>
+                </div>
+            </mat-list-option>
+        </div>
+    </mat-selection-list>
+
+    <div *ngIf="this.isAdmin() || this.tags.length > 0" style="margin-top: 10px; padding: 5px;">
+        <div class="round-border" style="margin-bottom: 5px;">
+            <mat-chip-list>
+                <mat-chip color="primary" *ngFor="let tag of this.tags" (click)="onClickTag(tag)" (removed)="removeTag(tag)">{{tag.name}}
+                    <mat-icon matChipRemove *ngIf="this.isAdmin()">cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+
+        <mat-form-field *ngIf="this.isAdmin()" style="width: 100%; margin-top: 10px; margin-bottom: -10px;">
+            <mat-label>新标签</mat-label>
+            <input #tagInput matInput autocomplete="off" (keyup.enter)="createTag($event); tagInput.value=&quot;&quot;">
+        </mat-form-field>
+
+    </div>
+
+</div>
+
+<div class="vertical-spacer"> </div>
+
+<footer class="footer-section">
+    <a href="https://github.com/gfxcc/san11-platform" target="_blink"> Github </a>
+    <span style="margin-left: 10px; margin-right: 10px;">•</span>
+    <a href="users/1">Contact Admin </a>
+</footer>
