@@ -144,7 +144,7 @@ export class PackageDetailComponent implements OnInit {
           'indent',
           'alignment',
           '|',
-          'imageUpload',
+          // 'imageUpload', // comment out this function as current implement will cause performance issue 
           'codeBlock',
           'insertTable',
           'undo',

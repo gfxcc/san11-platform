@@ -101,11 +101,6 @@ export class PackageCardComponent implements OnInit {
 
   onClick() {
     this.router.navigate(['categories', this.package.categoryId, 'packages', this.package.packageId]);
-    // this.dialog.open(PackageDetailComponent, {
-    //   data: {
-    //     package: this.package
-    //   }
-    // });
   }
 
   getStatusName() {
