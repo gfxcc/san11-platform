@@ -4,6 +4,7 @@ import { UploadService } from "./upload.service";
 import { v4 as uuid } from 'uuid'
 import { CreateImageRequest } from "../../proto/san11-platform.pb";
 import { Observable, Subscription } from "rxjs";
+import { getFullUrl } from "../utils/resrouce_util";
 
 export class MyUploadAdapter {
     uploadSubscription: Subscription;
@@ -16,7 +17,7 @@ export class MyUploadAdapter {
     }
 
     upload() {
-        const filename = `${this.parent}/images/desc/${uuid()}.jpeg`
+        const filename = `${this.parent}/images/${uuid()}.jpeg`
         return this.loader.file
             .then((file: File) => new Promise((resolve, reject) => {
                 this.uploadSubscription = this.uploadService.upload(file, GlobalConstants.tmpBucket, filename).subscribe(
@@ -31,7 +32,7 @@ export class MyUploadAdapter {
                             })).subscribe(
                                 url => {
                                     resolve({
-                                        default: url.url
+                                        default: getFullUrl(url.url)
                                     });
                                 },
                                 error => {
