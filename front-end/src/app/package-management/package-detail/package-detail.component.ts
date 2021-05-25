@@ -30,6 +30,7 @@ import { isAdmin, getUsernameFeeds, getUserUrl } from "../../utils/user_util";
 import { increment } from '../../utils/number_util';
 import { getPackageUrl } from "../../utils/package_util";
 import { UploadService } from '../../service/upload.service';
+import { MyUploadAdapter } from '../../service/cke-upload-adapter';
 
 
 export interface DialogData {
@@ -144,7 +145,7 @@ export class PackageDetailComponent implements OnInit {
           'indent',
           'alignment',
           '|',
-          // 'imageUpload', // comment out this function as current implement will cause performance issue 
+          'imageUpload', // comment out this function as current implement will cause performance issue 
           'codeBlock',
           'insertTable',
           'undo',
@@ -335,6 +336,9 @@ export class PackageDetailComponent implements OnInit {
 
   onDescEditorReady(event) {
     this.descEditor_element = event;
+    event.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, getPackageUrl(this.package));
+    };
   }
 
   onDescEditorChange(event) {
