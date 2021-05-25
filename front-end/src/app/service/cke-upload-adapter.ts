@@ -28,7 +28,8 @@ export class MyUploadAdapter {
                         if (upload.state === 'DONE') {
                             this.san11pkService.createImage(new CreateImageRequest({
                                 parent: this.parent,
-                                url: filename
+                                url: filename,
+                                inDescription: true
                             })).subscribe(
                                 url => {
                                     resolve({

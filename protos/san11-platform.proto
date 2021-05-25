@@ -178,6 +178,7 @@ message UploadImageRequest {
 message CreateImageRequest {
     string parent = 1;
     string url = 2;
+    bool in_description = 3;
 }
 
 

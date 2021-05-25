@@ -3295,6 +3295,7 @@ export class CreateImageRequest implements GrpcMessage {
   static refineValues(_instance: CreateImageRequest) {
     _instance.parent = _instance.parent || '';
     _instance.url = _instance.url || '';
+    _instance.inDescription = _instance.inDescription || false;
   }
 
   /**
@@ -3315,6 +3316,9 @@ export class CreateImageRequest implements GrpcMessage {
           break;
         case 2:
           _instance.url = _reader.readString();
+          break;
+        case 3:
+          _instance.inDescription = _reader.readBool();
           break;
         default:
           _reader.skipField();
@@ -3339,10 +3343,14 @@ export class CreateImageRequest implements GrpcMessage {
     if (_instance.url) {
       _writer.writeString(2, _instance.url);
     }
+    if (_instance.inDescription) {
+      _writer.writeBool(3, _instance.inDescription);
+    }
   }
 
   private _parent?: string;
   private _url?: string;
+  private _inDescription?: boolean;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3352,6 +3360,7 @@ export class CreateImageRequest implements GrpcMessage {
     _value = _value || {};
     this.parent = _value.parent;
     this.url = _value.url;
+    this.inDescription = _value.inDescription;
     CreateImageRequest.refineValues(this);
   }
   get parent(): string | undefined {
@@ -3365,6 +3374,12 @@ export class CreateImageRequest implements GrpcMessage {
   }
   set url(value: string | undefined) {
     this._url = value;
+  }
+  get inDescription(): boolean | undefined {
+    return this._inDescription;
+  }
+  set inDescription(value: boolean | undefined) {
+    this._inDescription = value;
   }
 
   /**
@@ -3383,7 +3398,8 @@ export class CreateImageRequest implements GrpcMessage {
   toObject(): CreateImageRequest.AsObject {
     return {
       parent: this.parent,
-      url: this.url
+      url: this.url,
+      inDescription: this.inDescription
     };
   }
 
@@ -3405,7 +3421,8 @@ export class CreateImageRequest implements GrpcMessage {
   ): CreateImageRequest.AsProtobufJSON {
     return {
       parent: this.parent,
-      url: this.url
+      url: this.url,
+      inDescription: this.inDescription
     };
   }
 }
@@ -3416,6 +3433,7 @@ export module CreateImageRequest {
   export interface AsObject {
     parent?: string;
     url?: string;
+    inDescription?: boolean;
   }
 
   /**
@@ -3424,6 +3442,7 @@ export module CreateImageRequest {
   export interface AsProtobufJSON {
     parent?: string;
     url?: string;
+    inDescription?: boolean;
   }
 }
 

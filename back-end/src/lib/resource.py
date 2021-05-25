@@ -23,8 +23,9 @@ def get_binaries_path(parent: str) -> str:
     return f'{RESOURCE_PATH}/{parent}/binaries'
 
 
-def get_image_url(parent: str, filename: str) -> str:
-    return f'{parent}/images/{filename}'
+def get_image_url(parent: str, filename: str, in_description: bool) -> str:
+    sub_path = 'images' if not in_description else 'images/desc'
+    return f'{parent}/{sub_path}/{filename}'
 
 
 def get_binary_url(parent: str, filename: str) -> str:

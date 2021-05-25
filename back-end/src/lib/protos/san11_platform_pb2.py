@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x14san11-platform.proto\x12\nrouteguide\"<\n\x14\x43reatePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"h\n\x14UpdatePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\"<\n\x14\x44\x65letePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"\'\n\x11GetPackageRequest\x12\x12\n\npackage_id\x18\x01 \x01(\x03\"t\n\x13ListPackagesRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x03 \x01(\x03\x12\x11\n\tauthor_id\x18\x04 \x01(\x03\x12\x0e\n\x06tag_id\x18\x05 \x01(\x03\"V\n\x14ListPackagesResponse\x12%\n\x08packages\x18\x01 \x03(\x0b\x32\x13.routeguide.Package\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"M\n\x15SearchPackagesRequest\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"X\n\x16SearchPackagesResponse\x12%\n\x08packages\x18\x01 \x03(\x0b\x32\x13.routeguide.Package\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"%\n\x10GetBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\"\xc0\x01\n\x13UploadBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\"\n\x06\x62inary\x18\x02 \x01(\x0b\x32\x12.routeguide.Binary\x12\x0e\n\x04\x64\x61ta\x18\x03 \x01(\x0cH\x00\x12\x19\n\x0f\x64ownload_method\x18\x04 \x01(\tH\x00\x12\r\n\x03url\x18\x07 \x01(\tH\x00\x12\x14\n\x0csire_version\x18\x05 \x01(\x03\x12\x19\n\x11sire_auto_convert\x18\x06 \x01(\x08\x42\n\n\x08resource\"\x8f\x01\n\x13\x43reateBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\"\n\x06\x62inary\x18\x02 \x01(\x0b\x32\x12.routeguide.Binary\x12\r\n\x03url\x18\x03 \x01(\tH\x00\x12\x0e\n\x04\x64\x61ta\x18\x04 \x01(\x0cH\x00\x12\x19\n\x0f\x64ownload_method\x18\x05 \x01(\tH\x00\x42\n\n\x08resource\"*\n\x15\x42\x61tchGetBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x03(\x03\">\n\x16\x42\x61tchGetBinaryResponse\x12$\n\x08\x62inaries\x18\x01 \x03(\x0b\x32\x12.routeguide.Binary\":\n\x15\x44ownloadBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tbinary_id\x18\x02 \x01(\x03\"(\n\x13\x44\x65leteBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\"e\n\x13UpdateBinaryRequest\x12\"\n\x06\x62inary\x18\x01 \x01(\x0b\x32\x12.routeguide.Binary\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\"P\n\x13ListBinariesRequest\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"<\n\x14ListBinariesResponse\x12$\n\x08\x62inaries\x18\x01 \x03(\x0b\x32\x12.routeguide.Binary\"3\n\x12UploadImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\r\n\x05image\x18\x02 \x01(\x0c\"1\n\x12\x43reateImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\"<\n\x14\x43reateCommentRequest\x12$\n\x07\x63omment\x18\x01 \x01(\x0b\x32\x13.routeguide.Comment\"*\n\x14\x44\x65leteCommentRequest\x12\x12\n\ncomment_id\x18\x01 \x01(\x03\"h\n\x14UpdateCommentRequest\x12$\n\x07\x63omment\x18\x01 \x01(\x0b\x32\x13.routeguide.Comment\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\"L\n\x13ListCommentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"Q\n\x14ListCommentsResponse\x12%\n\x08\x63omments\x18\x01 \x03(\x0b\x32\x13.routeguide.Comment\x12\x12\n\npage_token\x18\x02 \x01(\t\"6\n\x12\x43reateReplyRequest\x12 \n\x05reply\x18\x01 \x01(\x0b\x32\x11.routeguide.Reply\"&\n\x12\x44\x65leteReplyRequest\x12\x10\n\x08reply_id\x18\x01 \x01(\x03\"b\n\x12UpdateReplyRequest\x12 \n\x05reply\x18\x01 \x01(\x0b\x32\x11.routeguide.Reply\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\"!\n\x0eGetUserRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"1\n\x0fGetUserResponse\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\"3\n\rSignInRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"=\n\x0eSignInResponse\x12\x1e\n\x04user\x18\x02 \x01(\x0b\x32\x10.routeguide.User\x12\x0b\n\x03sid\x18\x03 \x01(\t\"!\n\x0eSignOutRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"A\n\rSignUpRequest\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\x12\x10\n\x08password\x18\x03 \x01(\t\"=\n\x0eSignUpResponse\x12\x1e\n\x04user\x18\x02 \x01(\x0b\x32\x10.routeguide.User\x12\x0b\n\x03sid\x18\x03 \x01(\t\"_\n\x11UpdateUserRequest\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\":\n\x15UpdatePasswordRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\x10\n\x08password\x18\x02 \x01(\t\"9\n\x10ListUsersRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x12\n\npage_token\x18\x02 \x01(\t\"H\n\x11ListUsersResponse\x12\x1f\n\x05users\x18\x01 \x03(\x0b\x32\x10.routeguide.User\x12\x12\n\npage_token\x18\x02 \x01(\t\"0\n\x10\x43reateTagRequest\x12\x1c\n\x03tag\x18\x01 \x01(\x0b\x32\x0f.routeguide.Tag\"M\n\x0fListTagsRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x03 \x01(\x03\"E\n\x10ListTagsResponse\x12\x1d\n\x04tags\x18\x01 \x03(\x0b\x32\x0f.routeguide.Tag\x12\x12\n\npage_token\x18\x02 \x01(\t\"\"\n\x10\x44\x65leteTagRequest\x12\x0e\n\x06tag_id\x18\x01 \x01(\x03\"#\n\x13GetStatisticRequest\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\"\x18\n\x16GetAdminMessageRequest\"n\n\x0eGetAuthRequest\x12\x31\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32!.routeguide.GetAuthRequest.Action\")\n\x06\x41\x63tion\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\x0e\n\nUPLOAD_MOD\x10\x01\"\x07\n\x05\x45mpty\"\'\n\x06Status\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x86\x03\n\x07Package\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x13\n\x0b\x63reate_time\x18\x04 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x05 \x01(\x03\x12*\n\x06status\x18\x06 \x01(\x0e\x32\x1a.routeguide.Package.Status\x12\x11\n\tauthor_id\x18\x07 \x01(\x03\x12\x18\n\x10\x61uthor_image_url\x18\x08 \x01(\t\x12\x12\n\nimage_urls\x18\t \x03(\t\x12\x16\n\x0e\x64ownload_count\x18\n \x01(\x03\x12\x1d\n\x04tags\x18\x0b \x03(\x0b\x32\x0f.routeguide.Tag\x12\x13\n\x0bupdate_time\x18\x0c \x01(\t\"a\n\x06Status\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06NORMAL\x10\x01\x12\x10\n\x0cUNDER_REVIEW\x10\x02\x12\n\n\x06HIDDEN\x10\x03\x12\x13\n\x0fSCHEDULE_DELETE\x10\x04\x12\x0b\n\x07\x44\x45LETED\x10\x05\"\xd8\x01\n\x06\x42inary\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\x12\x12\n\npackage_id\x18\x02 \x01(\x03\x12\x0b\n\x03url\x18\x03 \x01(\t\x12\x16\n\x0e\x64ownload_count\x18\x04 \x01(\x03\x12$\n\x07version\x18\x05 \x01(\x0b\x32\x13.routeguide.Version\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x13\n\x0b\x63reate_time\x18\x07 \x01(\t\x12\x0b\n\x03tag\x18\x08 \x01(\t\x12\x17\n\x0f\x64ownload_method\x18\t \x01(\t\x12\x0c\n\x04size\x18\n \x01(\t\"o\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x11\n\tuser_type\x18\x04 \x01(\t\x12\x11\n\timage_url\x18\x05 \x01(\t\x12\x0f\n\x07website\x18\x06 \x01(\t\"6\n\x07Version\x12\r\n\x05major\x18\x01 \x01(\x03\x12\r\n\x05minor\x18\x02 \x01(\x03\x12\r\n\x05patch\x18\x03 \x01(\x03\"8\n\tStatistic\x12\x13\n\x0bvisit_count\x18\x01 \x01(\x03\x12\x16\n\x0e\x64ownload_count\x18\x02 \x01(\x03\"\x12\n\x03Url\x12\x0b\n\x03url\x18\x01 \x01(\t\"\xb2\x01\n\x07\x43omment\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ncomment_id\x18\x02 \x01(\x03\x12\x13\n\x0b\x63reate_time\x18\x03 \x01(\t\x12\x13\n\x0bupdate_time\x18\x04 \x01(\t\x12\x0c\n\x04text\x18\x05 \x01(\t\x12\x11\n\tauthor_id\x18\x06 \x01(\x03\x12\x14\n\x0cupvote_count\x18\x07 \x01(\x03\x12\"\n\x07replies\x18\x08 \x03(\x0b\x32\x11.routeguide.Reply\"\x8e\x01\n\x05Reply\x12\x12\n\ncomment_id\x18\x01 \x01(\x03\x12\x10\n\x08reply_id\x18\x02 \x01(\x03\x12\x13\n\x0b\x63reate_time\x18\x03 \x01(\t\x12\x13\n\x0bupdate_time\x18\x04 \x01(\t\x12\x0c\n\x04text\x18\x05 \x01(\t\x12\x11\n\tauthor_id\x18\x06 \x01(\x03\x12\x14\n\x0cupvote_count\x18\x07 \x01(\x03\"I\n\x03Tag\x12\x0e\n\x06tag_id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x03 \x01(\x03\x12\x0f\n\x07mutable\x18\x04 \x01(\x08\"\x1f\n\x0c\x41\x64minMessage\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x1c\n\x04\x41uth\x12\x14\n\x0coauth2_token\x18\x01 \x01(\t\"\x1a\n\tFieldMask\x12\r\n\x05paths\x18\x01 \x03(\t2\xa8\x14\n\nRouteGuide\x12H\n\rCreatePackage\x12 .routeguide.CreatePackageRequest\x1a\x13.routeguide.Package\"\x00\x12\x46\n\rDeletePackage\x12 .routeguide.DeletePackageRequest\x1a\x11.routeguide.Empty\"\x00\x12H\n\rUpdatePackage\x12 .routeguide.UpdatePackageRequest\x1a\x13.routeguide.Package\"\x00\x12\x42\n\nGetPackage\x12\x1d.routeguide.GetPackageRequest\x1a\x13.routeguide.Package\"\x00\x12S\n\x0cListPackages\x12\x1f.routeguide.ListPackagesRequest\x1a .routeguide.ListPackagesResponse\"\x00\x12Y\n\x0eSearchPackages\x12!.routeguide.SearchPackagesRequest\x1a\".routeguide.SearchPackagesResponse\"\x00\x12\x45\n\x0cUploadBinary\x12\x1f.routeguide.UploadBinaryRequest\x1a\x12.routeguide.Status\"\x00\x12\x45\n\x0c\x43reateBinary\x12\x1f.routeguide.CreateBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12\x44\n\x0c\x44\x65leteBinary\x12\x1f.routeguide.DeleteBinaryRequest\x1a\x11.routeguide.Empty\"\x00\x12\x45\n\x0cUpdateBinary\x12\x1f.routeguide.UpdateBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12?\n\tGetBinary\x12\x1c.routeguide.GetBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12Y\n\x0e\x42\x61tchGetBinary\x12!.routeguide.BatchGetBinaryRequest\x1a\".routeguide.BatchGetBinaryResponse\"\x00\x12S\n\x0cListBinaries\x12\x1f.routeguide.ListBinariesRequest\x1a .routeguide.ListBinariesResponse\"\x00\x12I\n\x0e\x44ownloadBinary\x12!.routeguide.DownloadBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12@\n\x0bUploadImage\x12\x1e.routeguide.UploadImageRequest\x1a\x0f.routeguide.Url\"\x00\x12@\n\x0b\x43reateImage\x12\x1e.routeguide.CreateImageRequest\x1a\x0f.routeguide.Url\"\x00\x12H\n\rCreateComment\x12 .routeguide.CreateCommentRequest\x1a\x13.routeguide.Comment\"\x00\x12\x46\n\rDeleteComment\x12 .routeguide.DeleteCommentRequest\x1a\x11.routeguide.Empty\"\x00\x12H\n\rUpdateComment\x12 .routeguide.UpdateCommentRequest\x1a\x13.routeguide.Comment\"\x00\x12S\n\x0cListComments\x12\x1f.routeguide.ListCommentsRequest\x1a .routeguide.ListCommentsResponse\"\x00\x12\x42\n\x0b\x43reateReply\x12\x1e.routeguide.CreateReplyRequest\x1a\x11.routeguide.Reply\"\x00\x12\x42\n\x0b\x44\x65leteReply\x12\x1e.routeguide.DeleteReplyRequest\x1a\x11.routeguide.Empty\"\x00\x12\x42\n\x0bUpdateReply\x12\x1e.routeguide.UpdateReplyRequest\x1a\x11.routeguide.Reply\"\x00\x12\x41\n\x06SignUp\x12\x19.routeguide.SignUpRequest\x1a\x1a.routeguide.SignUpResponse\"\x00\x12\x41\n\x06SignIn\x12\x19.routeguide.SignInRequest\x1a\x1a.routeguide.SignInResponse\"\x00\x12;\n\x07SignOut\x12\x1a.routeguide.SignOutRequest\x1a\x12.routeguide.Status\"\x00\x12\x39\n\x07GetUser\x12\x1a.routeguide.GetUserRequest\x1a\x10.routeguide.User\"\x00\x12J\n\tlistUsers\x12\x1c.routeguide.ListUsersRequest\x1a\x1d.routeguide.ListUsersResponse\"\x00\x12?\n\nUpdateUser\x12\x1d.routeguide.UpdateUserRequest\x1a\x10.routeguide.User\"\x00\x12H\n\x0eUpdatePassword\x12!.routeguide.UpdatePasswordRequest\x1a\x11.routeguide.Empty\"\x00\x12<\n\tCreateTag\x12\x1c.routeguide.CreateTagRequest\x1a\x0f.routeguide.Tag\"\x00\x12>\n\tDeleteTag\x12\x1c.routeguide.DeleteTagRequest\x1a\x11.routeguide.Empty\"\x00\x12G\n\x08ListTags\x12\x1b.routeguide.ListTagsRequest\x1a\x1c.routeguide.ListTagsResponse\"\x00\x12H\n\x0cGetStatistic\x12\x1f.routeguide.GetStatisticRequest\x1a\x15.routeguide.Statistic\"\x00\x12Q\n\x0fGetAdminMessage\x12\".routeguide.GetAdminMessageRequest\x1a\x18.routeguide.AdminMessage\"\x00\x12\x39\n\x07GetAuth\x12\x1a.routeguide.GetAuthRequest\x1a\x10.routeguide.Auth\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x14san11-platform.proto\x12\nrouteguide\"<\n\x14\x43reatePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"h\n\x14UpdatePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\"<\n\x14\x44\x65letePackageRequest\x12$\n\x07package\x18\x01 \x01(\x0b\x32\x13.routeguide.Package\"\'\n\x11GetPackageRequest\x12\x12\n\npackage_id\x18\x01 \x01(\x03\"t\n\x13ListPackagesRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x03 \x01(\x03\x12\x11\n\tauthor_id\x18\x04 \x01(\x03\x12\x0e\n\x06tag_id\x18\x05 \x01(\x03\"V\n\x14ListPackagesResponse\x12%\n\x08packages\x18\x01 \x03(\x0b\x32\x13.routeguide.Package\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"M\n\x15SearchPackagesRequest\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"X\n\x16SearchPackagesResponse\x12%\n\x08packages\x18\x01 \x03(\x0b\x32\x13.routeguide.Package\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"%\n\x10GetBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\"\xc0\x01\n\x13UploadBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\"\n\x06\x62inary\x18\x02 \x01(\x0b\x32\x12.routeguide.Binary\x12\x0e\n\x04\x64\x61ta\x18\x03 \x01(\x0cH\x00\x12\x19\n\x0f\x64ownload_method\x18\x04 \x01(\tH\x00\x12\r\n\x03url\x18\x07 \x01(\tH\x00\x12\x14\n\x0csire_version\x18\x05 \x01(\x03\x12\x19\n\x11sire_auto_convert\x18\x06 \x01(\x08\x42\n\n\x08resource\"\x8f\x01\n\x13\x43reateBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\"\n\x06\x62inary\x18\x02 \x01(\x0b\x32\x12.routeguide.Binary\x12\r\n\x03url\x18\x03 \x01(\tH\x00\x12\x0e\n\x04\x64\x61ta\x18\x04 \x01(\x0cH\x00\x12\x19\n\x0f\x64ownload_method\x18\x05 \x01(\tH\x00\x42\n\n\x08resource\"*\n\x15\x42\x61tchGetBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x03(\x03\">\n\x16\x42\x61tchGetBinaryResponse\x12$\n\x08\x62inaries\x18\x01 \x03(\x0b\x32\x12.routeguide.Binary\":\n\x15\x44ownloadBinaryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tbinary_id\x18\x02 \x01(\x03\"(\n\x13\x44\x65leteBinaryRequest\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\"e\n\x13UpdateBinaryRequest\x12\"\n\x06\x62inary\x18\x01 \x01(\x0b\x32\x12.routeguide.Binary\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\"P\n\x13ListBinariesRequest\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"<\n\x14ListBinariesResponse\x12$\n\x08\x62inaries\x18\x01 \x03(\x0b\x32\x12.routeguide.Binary\"3\n\x12UploadImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\r\n\x05image\x18\x02 \x01(\x0c\"I\n\x12\x43reateImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x16\n\x0ein_description\x18\x03 \x01(\x08\"<\n\x14\x43reateCommentRequest\x12$\n\x07\x63omment\x18\x01 \x01(\x0b\x32\x13.routeguide.Comment\"*\n\x14\x44\x65leteCommentRequest\x12\x12\n\ncomment_id\x18\x01 \x01(\x03\"h\n\x14UpdateCommentRequest\x12$\n\x07\x63omment\x18\x01 \x01(\x0b\x32\x13.routeguide.Comment\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\"L\n\x13ListCommentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x12\n\npage_token\x18\x03 \x01(\t\"Q\n\x14ListCommentsResponse\x12%\n\x08\x63omments\x18\x01 \x03(\x0b\x32\x13.routeguide.Comment\x12\x12\n\npage_token\x18\x02 \x01(\t\"6\n\x12\x43reateReplyRequest\x12 \n\x05reply\x18\x01 \x01(\x0b\x32\x11.routeguide.Reply\"&\n\x12\x44\x65leteReplyRequest\x12\x10\n\x08reply_id\x18\x01 \x01(\x03\"b\n\x12UpdateReplyRequest\x12 \n\x05reply\x18\x01 \x01(\x0b\x32\x11.routeguide.Reply\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\"!\n\x0eGetUserRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"1\n\x0fGetUserResponse\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\"3\n\rSignInRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"=\n\x0eSignInResponse\x12\x1e\n\x04user\x18\x02 \x01(\x0b\x32\x10.routeguide.User\x12\x0b\n\x03sid\x18\x03 \x01(\t\"!\n\x0eSignOutRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"A\n\rSignUpRequest\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\x12\x10\n\x08password\x18\x03 \x01(\t\"=\n\x0eSignUpResponse\x12\x1e\n\x04user\x18\x02 \x01(\x0b\x32\x10.routeguide.User\x12\x0b\n\x03sid\x18\x03 \x01(\t\"_\n\x11UpdateUserRequest\x12\x1e\n\x04user\x18\x01 \x01(\x0b\x32\x10.routeguide.User\x12*\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x15.routeguide.FieldMask\":\n\x15UpdatePasswordRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\x10\n\x08password\x18\x02 \x01(\t\"9\n\x10ListUsersRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x12\n\npage_token\x18\x02 \x01(\t\"H\n\x11ListUsersResponse\x12\x1f\n\x05users\x18\x01 \x03(\x0b\x32\x10.routeguide.User\x12\x12\n\npage_token\x18\x02 \x01(\t\"0\n\x10\x43reateTagRequest\x12\x1c\n\x03tag\x18\x01 \x01(\x0b\x32\x0f.routeguide.Tag\"M\n\x0fListTagsRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x03 \x01(\x03\"E\n\x10ListTagsResponse\x12\x1d\n\x04tags\x18\x01 \x03(\x0b\x32\x0f.routeguide.Tag\x12\x12\n\npage_token\x18\x02 \x01(\t\"\"\n\x10\x44\x65leteTagRequest\x12\x0e\n\x06tag_id\x18\x01 \x01(\x03\"#\n\x13GetStatisticRequest\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\"\x18\n\x16GetAdminMessageRequest\"n\n\x0eGetAuthRequest\x12\x31\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32!.routeguide.GetAuthRequest.Action\")\n\x06\x41\x63tion\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\x0e\n\nUPLOAD_MOD\x10\x01\"\x07\n\x05\x45mpty\"\'\n\x06Status\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x86\x03\n\x07Package\x12\x12\n\npackage_id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x13\n\x0b\x63reate_time\x18\x04 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x05 \x01(\x03\x12*\n\x06status\x18\x06 \x01(\x0e\x32\x1a.routeguide.Package.Status\x12\x11\n\tauthor_id\x18\x07 \x01(\x03\x12\x18\n\x10\x61uthor_image_url\x18\x08 \x01(\t\x12\x12\n\nimage_urls\x18\t \x03(\t\x12\x16\n\x0e\x64ownload_count\x18\n \x01(\x03\x12\x1d\n\x04tags\x18\x0b \x03(\x0b\x32\x0f.routeguide.Tag\x12\x13\n\x0bupdate_time\x18\x0c \x01(\t\"a\n\x06Status\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06NORMAL\x10\x01\x12\x10\n\x0cUNDER_REVIEW\x10\x02\x12\n\n\x06HIDDEN\x10\x03\x12\x13\n\x0fSCHEDULE_DELETE\x10\x04\x12\x0b\n\x07\x44\x45LETED\x10\x05\"\xd8\x01\n\x06\x42inary\x12\x11\n\tbinary_id\x18\x01 \x01(\x03\x12\x12\n\npackage_id\x18\x02 \x01(\x03\x12\x0b\n\x03url\x18\x03 \x01(\t\x12\x16\n\x0e\x64ownload_count\x18\x04 \x01(\x03\x12$\n\x07version\x18\x05 \x01(\x0b\x32\x13.routeguide.Version\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x13\n\x0b\x63reate_time\x18\x07 \x01(\t\x12\x0b\n\x03tag\x18\x08 \x01(\t\x12\x17\n\x0f\x64ownload_method\x18\t \x01(\t\x12\x0c\n\x04size\x18\n \x01(\t\"o\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x11\n\tuser_type\x18\x04 \x01(\t\x12\x11\n\timage_url\x18\x05 \x01(\t\x12\x0f\n\x07website\x18\x06 \x01(\t\"6\n\x07Version\x12\r\n\x05major\x18\x01 \x01(\x03\x12\r\n\x05minor\x18\x02 \x01(\x03\x12\r\n\x05patch\x18\x03 \x01(\x03\"8\n\tStatistic\x12\x13\n\x0bvisit_count\x18\x01 \x01(\x03\x12\x16\n\x0e\x64ownload_count\x18\x02 \x01(\x03\"\x12\n\x03Url\x12\x0b\n\x03url\x18\x01 \x01(\t\"\xb2\x01\n\x07\x43omment\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ncomment_id\x18\x02 \x01(\x03\x12\x13\n\x0b\x63reate_time\x18\x03 \x01(\t\x12\x13\n\x0bupdate_time\x18\x04 \x01(\t\x12\x0c\n\x04text\x18\x05 \x01(\t\x12\x11\n\tauthor_id\x18\x06 \x01(\x03\x12\x14\n\x0cupvote_count\x18\x07 \x01(\x03\x12\"\n\x07replies\x18\x08 \x03(\x0b\x32\x11.routeguide.Reply\"\x8e\x01\n\x05Reply\x12\x12\n\ncomment_id\x18\x01 \x01(\x03\x12\x10\n\x08reply_id\x18\x02 \x01(\x03\x12\x13\n\x0b\x63reate_time\x18\x03 \x01(\t\x12\x13\n\x0bupdate_time\x18\x04 \x01(\t\x12\x0c\n\x04text\x18\x05 \x01(\t\x12\x11\n\tauthor_id\x18\x06 \x01(\x03\x12\x14\n\x0cupvote_count\x18\x07 \x01(\x03\"I\n\x03Tag\x12\x0e\n\x06tag_id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x63\x61tegory_id\x18\x03 \x01(\x03\x12\x0f\n\x07mutable\x18\x04 \x01(\x08\"\x1f\n\x0c\x41\x64minMessage\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x1c\n\x04\x41uth\x12\x14\n\x0coauth2_token\x18\x01 \x01(\t\"\x1a\n\tFieldMask\x12\r\n\x05paths\x18\x01 \x03(\t2\xa8\x14\n\nRouteGuide\x12H\n\rCreatePackage\x12 .routeguide.CreatePackageRequest\x1a\x13.routeguide.Package\"\x00\x12\x46\n\rDeletePackage\x12 .routeguide.DeletePackageRequest\x1a\x11.routeguide.Empty\"\x00\x12H\n\rUpdatePackage\x12 .routeguide.UpdatePackageRequest\x1a\x13.routeguide.Package\"\x00\x12\x42\n\nGetPackage\x12\x1d.routeguide.GetPackageRequest\x1a\x13.routeguide.Package\"\x00\x12S\n\x0cListPackages\x12\x1f.routeguide.ListPackagesRequest\x1a .routeguide.ListPackagesResponse\"\x00\x12Y\n\x0eSearchPackages\x12!.routeguide.SearchPackagesRequest\x1a\".routeguide.SearchPackagesResponse\"\x00\x12\x45\n\x0cUploadBinary\x12\x1f.routeguide.UploadBinaryRequest\x1a\x12.routeguide.Status\"\x00\x12\x45\n\x0c\x43reateBinary\x12\x1f.routeguide.CreateBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12\x44\n\x0c\x44\x65leteBinary\x12\x1f.routeguide.DeleteBinaryRequest\x1a\x11.routeguide.Empty\"\x00\x12\x45\n\x0cUpdateBinary\x12\x1f.routeguide.UpdateBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12?\n\tGetBinary\x12\x1c.routeguide.GetBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12Y\n\x0e\x42\x61tchGetBinary\x12!.routeguide.BatchGetBinaryRequest\x1a\".routeguide.BatchGetBinaryResponse\"\x00\x12S\n\x0cListBinaries\x12\x1f.routeguide.ListBinariesRequest\x1a .routeguide.ListBinariesResponse\"\x00\x12I\n\x0e\x44ownloadBinary\x12!.routeguide.DownloadBinaryRequest\x1a\x12.routeguide.Binary\"\x00\x12@\n\x0bUploadImage\x12\x1e.routeguide.UploadImageRequest\x1a\x0f.routeguide.Url\"\x00\x12@\n\x0b\x43reateImage\x12\x1e.routeguide.CreateImageRequest\x1a\x0f.routeguide.Url\"\x00\x12H\n\rCreateComment\x12 .routeguide.CreateCommentRequest\x1a\x13.routeguide.Comment\"\x00\x12\x46\n\rDeleteComment\x12 .routeguide.DeleteCommentRequest\x1a\x11.routeguide.Empty\"\x00\x12H\n\rUpdateComment\x12 .routeguide.UpdateCommentRequest\x1a\x13.routeguide.Comment\"\x00\x12S\n\x0cListComments\x12\x1f.routeguide.ListCommentsRequest\x1a .routeguide.ListCommentsResponse\"\x00\x12\x42\n\x0b\x43reateReply\x12\x1e.routeguide.CreateReplyRequest\x1a\x11.routeguide.Reply\"\x00\x12\x42\n\x0b\x44\x65leteReply\x12\x1e.routeguide.DeleteReplyRequest\x1a\x11.routeguide.Empty\"\x00\x12\x42\n\x0bUpdateReply\x12\x1e.routeguide.UpdateReplyRequest\x1a\x11.routeguide.Reply\"\x00\x12\x41\n\x06SignUp\x12\x19.routeguide.SignUpRequest\x1a\x1a.routeguide.SignUpResponse\"\x00\x12\x41\n\x06SignIn\x12\x19.routeguide.SignInRequest\x1a\x1a.routeguide.SignInResponse\"\x00\x12;\n\x07SignOut\x12\x1a.routeguide.SignOutRequest\x1a\x12.routeguide.Status\"\x00\x12\x39\n\x07GetUser\x12\x1a.routeguide.GetUserRequest\x1a\x10.routeguide.User\"\x00\x12J\n\tlistUsers\x12\x1c.routeguide.ListUsersRequest\x1a\x1d.routeguide.ListUsersResponse\"\x00\x12?\n\nUpdateUser\x12\x1d.routeguide.UpdateUserRequest\x1a\x10.routeguide.User\"\x00\x12H\n\x0eUpdatePassword\x12!.routeguide.UpdatePasswordRequest\x1a\x11.routeguide.Empty\"\x00\x12<\n\tCreateTag\x12\x1c.routeguide.CreateTagRequest\x1a\x0f.routeguide.Tag\"\x00\x12>\n\tDeleteTag\x12\x1c.routeguide.DeleteTagRequest\x1a\x11.routeguide.Empty\"\x00\x12G\n\x08ListTags\x12\x1b.routeguide.ListTagsRequest\x1a\x1c.routeguide.ListTagsResponse\"\x00\x12H\n\x0cGetStatistic\x12\x1f.routeguide.GetStatisticRequest\x1a\x15.routeguide.Statistic\"\x00\x12Q\n\x0fGetAdminMessage\x12\".routeguide.GetAdminMessageRequest\x1a\x18.routeguide.AdminMessage\"\x00\x12\x39\n\x07GetAuth\x12\x1a.routeguide.GetAuthRequest\x1a\x10.routeguide.Auth\"\x00\x62\x06proto3'
 )
 
 
@@ -44,8 +44,8 @@ _GETAUTHREQUEST_ACTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3217,
-  serialized_end=3258,
+  serialized_start=3241,
+  serialized_end=3282,
 )
 _sym_db.RegisterEnumDescriptor(_GETAUTHREQUEST_ACTION)
 
@@ -89,8 +89,8 @@ _PACKAGE_STATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3604,
-  serialized_end=3701,
+  serialized_start=3628,
+  serialized_end=3725,
 )
 _sym_db.RegisterEnumDescriptor(_PACKAGE_STATUS)
 
@@ -903,6 +903,13 @@ _CREATEIMAGEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='in_description', full_name='routeguide.CreateImageRequest.in_description', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -916,7 +923,7 @@ _CREATEIMAGEREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1572,
-  serialized_end=1621,
+  serialized_end=1645,
 )
 
 
@@ -947,8 +954,8 @@ _CREATECOMMENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1623,
-  serialized_end=1683,
+  serialized_start=1647,
+  serialized_end=1707,
 )
 
 
@@ -979,8 +986,8 @@ _DELETECOMMENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1685,
-  serialized_end=1727,
+  serialized_start=1709,
+  serialized_end=1751,
 )
 
 
@@ -1018,8 +1025,8 @@ _UPDATECOMMENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1729,
-  serialized_end=1833,
+  serialized_start=1753,
+  serialized_end=1857,
 )
 
 
@@ -1064,8 +1071,8 @@ _LISTCOMMENTSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1835,
-  serialized_end=1911,
+  serialized_start=1859,
+  serialized_end=1935,
 )
 
 
@@ -1103,8 +1110,8 @@ _LISTCOMMENTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1913,
-  serialized_end=1994,
+  serialized_start=1937,
+  serialized_end=2018,
 )
 
 
@@ -1135,8 +1142,8 @@ _CREATEREPLYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1996,
-  serialized_end=2050,
+  serialized_start=2020,
+  serialized_end=2074,
 )
 
 
@@ -1167,8 +1174,8 @@ _DELETEREPLYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2052,
-  serialized_end=2090,
+  serialized_start=2076,
+  serialized_end=2114,
 )
 
 
@@ -1206,8 +1213,8 @@ _UPDATEREPLYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2092,
-  serialized_end=2190,
+  serialized_start=2116,
+  serialized_end=2214,
 )
 
 
@@ -1238,8 +1245,8 @@ _GETUSERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2192,
-  serialized_end=2225,
+  serialized_start=2216,
+  serialized_end=2249,
 )
 
 
@@ -1270,8 +1277,8 @@ _GETUSERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2227,
-  serialized_end=2276,
+  serialized_start=2251,
+  serialized_end=2300,
 )
 
 
@@ -1309,8 +1316,8 @@ _SIGNINREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2278,
-  serialized_end=2329,
+  serialized_start=2302,
+  serialized_end=2353,
 )
 
 
@@ -1348,8 +1355,8 @@ _SIGNINRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2331,
-  serialized_end=2392,
+  serialized_start=2355,
+  serialized_end=2416,
 )
 
 
@@ -1380,8 +1387,8 @@ _SIGNOUTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2394,
-  serialized_end=2427,
+  serialized_start=2418,
+  serialized_end=2451,
 )
 
 
@@ -1419,8 +1426,8 @@ _SIGNUPREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2429,
-  serialized_end=2494,
+  serialized_start=2453,
+  serialized_end=2518,
 )
 
 
@@ -1458,8 +1465,8 @@ _SIGNUPRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2496,
-  serialized_end=2557,
+  serialized_start=2520,
+  serialized_end=2581,
 )
 
 
@@ -1497,8 +1504,8 @@ _UPDATEUSERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2559,
-  serialized_end=2654,
+  serialized_start=2583,
+  serialized_end=2678,
 )
 
 
@@ -1536,8 +1543,8 @@ _UPDATEPASSWORDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2656,
-  serialized_end=2714,
+  serialized_start=2680,
+  serialized_end=2738,
 )
 
 
@@ -1575,8 +1582,8 @@ _LISTUSERSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2716,
-  serialized_end=2773,
+  serialized_start=2740,
+  serialized_end=2797,
 )
 
 
@@ -1614,8 +1621,8 @@ _LISTUSERSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2775,
-  serialized_end=2847,
+  serialized_start=2799,
+  serialized_end=2871,
 )
 
 
@@ -1646,8 +1653,8 @@ _CREATETAGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2849,
-  serialized_end=2897,
+  serialized_start=2873,
+  serialized_end=2921,
 )
 
 
@@ -1692,8 +1699,8 @@ _LISTTAGSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2899,
-  serialized_end=2976,
+  serialized_start=2923,
+  serialized_end=3000,
 )
 
 
@@ -1731,8 +1738,8 @@ _LISTTAGSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2978,
-  serialized_end=3047,
+  serialized_start=3002,
+  serialized_end=3071,
 )
 
 
@@ -1763,8 +1770,8 @@ _DELETETAGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3049,
-  serialized_end=3083,
+  serialized_start=3073,
+  serialized_end=3107,
 )
 
 
@@ -1795,8 +1802,8 @@ _GETSTATISTICREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3085,
-  serialized_end=3120,
+  serialized_start=3109,
+  serialized_end=3144,
 )
 
 
@@ -1820,8 +1827,8 @@ _GETADMINMESSAGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3122,
-  serialized_end=3146,
+  serialized_start=3146,
+  serialized_end=3170,
 )
 
 
@@ -1853,8 +1860,8 @@ _GETAUTHREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3148,
-  serialized_end=3258,
+  serialized_start=3172,
+  serialized_end=3282,
 )
 
 
@@ -1878,8 +1885,8 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3260,
-  serialized_end=3267,
+  serialized_start=3284,
+  serialized_end=3291,
 )
 
 
@@ -1917,8 +1924,8 @@ _STATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3269,
-  serialized_end=3308,
+  serialized_start=3293,
+  serialized_end=3332,
 )
 
 
@@ -2027,8 +2034,8 @@ _PACKAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3311,
-  serialized_end=3701,
+  serialized_start=3335,
+  serialized_end=3725,
 )
 
 
@@ -2122,8 +2129,8 @@ _BINARY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3704,
-  serialized_end=3920,
+  serialized_start=3728,
+  serialized_end=3944,
 )
 
 
@@ -2189,8 +2196,8 @@ _USER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3922,
-  serialized_end=4033,
+  serialized_start=3946,
+  serialized_end=4057,
 )
 
 
@@ -2235,8 +2242,8 @@ _VERSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4035,
-  serialized_end=4089,
+  serialized_start=4059,
+  serialized_end=4113,
 )
 
 
@@ -2274,8 +2281,8 @@ _STATISTIC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4091,
-  serialized_end=4147,
+  serialized_start=4115,
+  serialized_end=4171,
 )
 
 
@@ -2306,8 +2313,8 @@ _URL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4149,
-  serialized_end=4167,
+  serialized_start=4173,
+  serialized_end=4191,
 )
 
 
@@ -2387,8 +2394,8 @@ _COMMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4170,
-  serialized_end=4348,
+  serialized_start=4194,
+  serialized_end=4372,
 )
 
 
@@ -2461,8 +2468,8 @@ _REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4351,
-  serialized_end=4493,
+  serialized_start=4375,
+  serialized_end=4517,
 )
 
 
@@ -2514,8 +2521,8 @@ _TAG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4495,
-  serialized_end=4568,
+  serialized_start=4519,
+  serialized_end=4592,
 )
 
 
@@ -2546,8 +2553,8 @@ _ADMINMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4570,
-  serialized_end=4601,
+  serialized_start=4594,
+  serialized_end=4625,
 )
 
 
@@ -2578,8 +2585,8 @@ _AUTH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4603,
-  serialized_end=4631,
+  serialized_start=4627,
+  serialized_end=4655,
 )
 
 
@@ -2610,8 +2617,8 @@ _FIELDMASK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4633,
-  serialized_end=4659,
+  serialized_start=4657,
+  serialized_end=4683,
 )
 
 _CREATEPACKAGEREQUEST.fields_by_name['package'].message_type = _PACKAGE
@@ -3158,8 +3165,8 @@ _ROUTEGUIDE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=4662,
-  serialized_end=7262,
+  serialized_start=4686,
+  serialized_end=7286,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreatePackage',
