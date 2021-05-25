@@ -138,6 +138,16 @@ class Package(ResourceMixin):
         )
 
     @classmethod
+    def list(cls, page_size: int, page_token: str, **kwargs) -> List[Any]:
+        ret =  super().list(page_size=page_size, page_token=page_token, **kwargs)
+        # discard description as it might be too large, which will slow down the service
+        for item in ret:
+            item.description = ''
+        return ret
+
+    
+
+    @classmethod
     def search(cls, page_size: int, page_token: str, query: str) -> List[Package]:
         sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()} '\
             f"WHERE name LIKE '%%{sanitize_str(query)}%%' ORDER BY create_time DESC"
