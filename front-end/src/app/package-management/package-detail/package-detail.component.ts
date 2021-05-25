@@ -45,10 +45,6 @@ export class PackageDetailComponent implements OnInit {
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild('gallery') galleryElementCatched: ElementRef
 
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
-
   images: ImageItem[] = [];
   packageId: string;
   package: Package;
@@ -92,7 +88,7 @@ export class PackageDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(
-      (data: { package: Package }) => {
+      (data) => {
         this.package = data.package;
         this._eventEmiter.sendMessage({ categoryId: this.package.categoryId });
       }
@@ -106,17 +102,7 @@ export class PackageDetailComponent implements OnInit {
       this.preloadUserFeeds();
     }
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
     this.tagCanEdit = this.isAuthor() || this.isAdmin();
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
   ngAfterViewInit(): void {
@@ -133,11 +119,8 @@ export class PackageDetailComponent implements OnInit {
   }
 
   configDescEditor() {
-
-
     this.descEditor_data = this.package.description;
     this.descEditor_disabled = !this.isAuthor();
-    // this.descEditor_config = "{ toolbar: [ 'heading', '|', 'bold', 'italic', 'link' , 'numberedList', 'bulletedList', '|', 'decreaseIndent', 'increaseIndent', '|', 'insertImage', 'insertTable', '|', 'undo', 'redo'] }";
     this.descEditor_config = {
       placeholder: '请添加描述...',
       toolbar: {
@@ -161,6 +144,7 @@ export class PackageDetailComponent implements OnInit {
           'indent',
           'alignment',
           '|',
+          'imageUpload',
           'codeBlock',
           'insertTable',
           'undo',
@@ -170,10 +154,8 @@ export class PackageDetailComponent implements OnInit {
       language: 'zh-cn',
       image: {
         toolbar: [
-          'imageTextAlternative',
           'imageStyle:full',
           'imageStyle:side',
-          'linkImage'
         ]
       },
       table: {
