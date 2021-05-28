@@ -94,7 +94,7 @@ class UserHandler:
         return san11_platform_pb2.Empty()
     
     def get_user(self, request, context):
-        logger.info(f'In get_user: user_id={request.user_id}')
+        # logger.info(f'In get_user: user_id={request.user_id}')
         try:
             user = User.from_id(request.user_id)
         except LookupError:
