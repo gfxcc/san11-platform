@@ -79,6 +79,8 @@ class BinaryHandler:
         auth = Authenticator.from_context(context)
         if not auth.canUpdateBinary(base_binary):
             context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
+        if 'url' in request.update_mask and request.binary.url == '':
+            base_binary.remove_resource()
         binary = merge_resource(base_resource=base_binary,
                                 update_request=Binary.from_pb(request.binary),
                                 field_mask=FieldMask.from_pb(request.update_mask))

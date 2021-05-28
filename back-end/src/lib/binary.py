@@ -75,7 +75,7 @@ class Binary(ResourceMixin):
         sql = f'DELETE FROM {self.db_table()} WHERE {self.db_fields()[0]}=%(resource_id)s'
         run_sql_with_param(sql, {'resource_id': self.binary_id})
         try:
-            self._remove_resource()
+            self.remove_resource()
         except Exception as err:
             logger.error(f'Failed to delete binary resource {self.url}: {err}')
         logger.debug(f'{self} is deleted')
@@ -100,8 +100,9 @@ class Binary(ResourceMixin):
         self._increment_download_count()
         return self.to_pb()
 
-    def _remove_resource(self) -> None:
-        gcs.delete_canonical_resource(self.url)
+    def remove_resource(self) -> None:
+        if self.url:
+            gcs.delete_canonical_resource(self.url)
 
 
     def _increment_download_count(self):

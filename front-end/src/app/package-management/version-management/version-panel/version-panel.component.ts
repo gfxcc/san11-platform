@@ -261,6 +261,30 @@ export class VersionPanelComponent implements OnInit {
     this.san11pkService.downloadBinary(getPackageUrl(this.package), binary.binaryId).subscribe();
   }
 
+  onOffload(binary: Binary) {
+    if (!confirm('确定要 ' + version2str(binary.version) + ' 的文件资源吗? (只清除资源，版本将会保留)')) {
+      return;
+    }
+    this.san11pkService.updateBinary(new UpdateBinaryRequest({
+      binary: new Binary({
+        binaryId: binary.binaryId,
+        url: '',
+        size: ''
+      }),
+      updateMask: new FieldMask({
+        paths: ['url', 'size']
+      })
+    })).subscribe(
+      resp => {
+        this.notificationService.success('卸载成功');
+        this.fetchBinaries();
+      },
+      error => {
+        this.notificationService.warn('卸载失败:' + error.statusMessage);
+      }
+    );
+  }
+
   onDelete(binary: Binary) {
     if (!confirm('确定要删除 ' + version2str(binary.version) + ' 吗?')) {
       return;

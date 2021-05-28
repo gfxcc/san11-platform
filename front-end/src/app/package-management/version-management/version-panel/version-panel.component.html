@@ -58,14 +58,17 @@
                         <td mat-cell *matCellDef="let binary" class="align-right">
                             <div class="actions-sections">
                                 <span class="example-spacer"></span>
+
                                 <div [hidden]="! (isAdmin() || isAuthor())">
                                     <button mat-button mat-stroked-button color="warn" (click)="onDelete(binary)">删除</button>
+                                    <button mat-button mat-stroked-button *ngIf="binary.size != &quot;&quot;" color="warn" (click)="onOffload(binary)" style="margin-left: 5px;">卸载</button>
                                 </div>
+
                                 <div [hidden]="binary.url === &quot;&quot;">
                                     <button mat-button mat-stroked-button color="primary" (click)="onDownload(binary)" style="margin-left: 5px;">下载</button>
                                 </div>
 
-                                <div [hidden]="binary.url != &quot;&quot;">
+                                <div [hidden]="binary.downloadMethod === &quot;&quot;">
                                     <button mat-button mat-stroked-button color="primary" (click)="onDownloadMethod(binary)" style="margin-left: 5px;">下载方式</button>
                                 </div>
                             </div>
