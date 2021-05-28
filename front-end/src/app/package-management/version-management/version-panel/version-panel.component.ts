@@ -269,10 +269,9 @@ export class VersionPanelComponent implements OnInit {
       binary: new Binary({
         binaryId: binary.binaryId,
         url: '',
-        size: ''
       }),
       updateMask: new FieldMask({
-        paths: ['url', 'size']
+        paths: ['url']
       })
     })).subscribe(
       resp => {

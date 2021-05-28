@@ -76,14 +76,18 @@ class BinaryHandler:
     def update_binary(self, request, context):
         logger.info(f'In update_binary: binary_id={request.binary.binary_id}')
         base_binary = Binary.from_id(request.binary.binary_id)
+
         auth = Authenticator.from_context(context)
         if not auth.canUpdateBinary(base_binary):
             context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
-        if 'url' in request.update_mask and request.binary.url == '':
+
+        update_binary = Binary.from_pb(request.binary)
+        update_mask = FieldMask.from_pb(request.update_mask)
+        if update_mask.has('url') and update_binary.url == '':
             base_binary.remove_resource()
         binary = merge_resource(base_resource=base_binary,
-                                update_request=Binary.from_pb(request.binary),
-                                field_mask=FieldMask.from_pb(request.update_mask))
+                                update_request=update_binary,
+                                field_mask=update_mask)
         binary.update()
         return binary.to_pb()
 

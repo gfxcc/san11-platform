@@ -20,3 +20,6 @@ class FieldMask:
     @classmethod
     def from_pb(cls, pb_obj: san11_platform_pb2.FieldMask):
         return cls(paths=list(pb_obj.paths))
+
+    def has(self, field: str) -> bool:
+        return field in self.paths
