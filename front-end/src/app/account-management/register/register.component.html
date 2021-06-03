@@ -9,18 +9,18 @@
             <form class="example-form" #registerForm='ngForm' (ngSubmit)="onRegister(registerForm)">
                 <mat-card-content>
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="用户名" required ngModel name="username">
+                        <input matInput placeholder="用户名" autocomplete="username" required ngModel name="username">
                     </mat-form-field>
 
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="邮箱" required ngModel name="email">
+                        <input matInput type="email" placeholder="邮箱" required ngModel name="email" email>
                     </mat-form-field>
 
                     <mat-form-field class="example-full-width">
-                        <input matInput type="password" placeholder="密码" required ngModel name="password">
+                        <input matInput type="password" placeholder="密码" autocomplete="current-password" required ngModel name="password">
                     </mat-form-field>
                 </mat-card-content>
-                <button [disabled]="!registerForm.valid" type="submit" mat-stroked-button color="accent" class="btn-block">注册</button>
+                <button [disabled]="!registerForm.valid" type="submit" mat-stroked-button color="primary" class="btn-block">注册</button>
             </form>
 
 

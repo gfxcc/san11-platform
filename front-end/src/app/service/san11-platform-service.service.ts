@@ -111,7 +111,6 @@ export class San11PlatformServiceService {
     return this.severClient.createImage(request, this.getMetadata());
   }
 
-
   // comments
   createComment(comment: Comment): Observable<Comment> {
     const request = new CreateCommentRequest({ comment: comment });
