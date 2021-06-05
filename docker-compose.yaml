@@ -40,10 +40,12 @@ services:
     volumes:
       - ./front-end:/app
     command: bash -c "npm install && ng serve
-                      --prod --host 0.0.0.0 --disable-host-check
+                      --configuration production
+                      --host 0.0.0.0 --disable-host-check
                       --ssl true
-                      --ssl-cert '/home/ycao181/credentials/generated-csr.txt'
-                      --ssl-key '/home/ycao181/credentials/generated-private-key.txt'"
+                      --ssl-cert \"/home/ycao181/credentials/generated-csr.txt\"
+                      --ssl-key \"/home/ycao181/credentials/generated-private-key.txt\"
+                      "
     depends_on: 
       - back-end
     ports:
