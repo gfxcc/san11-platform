@@ -40,13 +40,16 @@ services:
     volumes:
       - ./front-end:/app
       - ../credentials:/credentials
+    environment:
+      SSL_CERT: /credentials/san11pk.pem
+      SSL_KEY: /credentials/generated-private-key.key
     command: bash -c "npm install && ng serve
                       --configuration production
                       --host 0.0.0.0 --disable-host-check
                       --ssl true
-                      --ssl-cert \"/credentials/generated-csr.txt\"
-                      --ssl-key \"/credentials/generated-private-key.txt\"
-                      "
+                      --ssl-cert ${SSL_CERT}
+                      --ssl-key ${SSL_KEY}
+                     "
     depends_on: 
       - back-end
     ports:
