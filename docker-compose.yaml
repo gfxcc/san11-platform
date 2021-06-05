@@ -39,12 +39,13 @@ services:
     working_dir: /app
     volumes:
       - ./front-end:/app
+      - ../credentials:/credentials
     command: bash -c "npm install && ng serve
                       --configuration production
                       --host 0.0.0.0 --disable-host-check
                       --ssl true
-                      --ssl-cert \"/home/ycao181/credentials/generated-csr.txt\"
-                      --ssl-key \"/home/ycao181/credentials/generated-private-key.txt\"
+                      --ssl-cert \"/credentials/generated-csr.txt\"
+                      --ssl-key \"/credentials/generated-private-key.txt\"
                       "
     depends_on: 
       - back-end
