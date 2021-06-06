@@ -54,7 +54,10 @@ static_resources:
                       domains: ["*"]
                       routes:
                         - match: { prefix: "/" }
-                          direct_response: {status: 403, body: { inline_string: "Please visit https://san11pk.org"} }
+                          # direct_response: {status: 403, body: { inline_string: "Please visit https://san11pk.org"} }
+                          redirect:
+                            port_redirect: 443
+                            https_redirect: true
                 http_filters:
                   - name: envoy.router
   clusters:
@@ -64,10 +67,3 @@ static_resources:
       http2_protocol_options: {}
       lb_policy: round_robin
       hosts: [{ socket_address: { address: back-end, port_value: 50051 } }]
-
-    # - name: front-end
-    #   connect_timeout: 0.25s
-    #   type: logical_dns
-    #   http2_protocol_options: {}
-    #   lb_policy: round_robin
-    #   hosts: [{ socket_address: { address: front-end, port_value: 443 } }] 
