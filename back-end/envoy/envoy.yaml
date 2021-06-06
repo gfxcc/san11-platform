@@ -38,6 +38,25 @@ static_resources:
                 tls_certificates:
                   certificate_chain: {filename: "/credentials/san11pk.crt"}
                   private_key: {filename: "/credentials/san11pk-private-key.key"}
+    - name: listener_1
+      address:
+        socket_address: { address: 0.0.0.0, port_value: 80 }
+      filter_chains:
+        - filters:
+            - name: envoy.http_connection_manager
+              config:
+                codec_type: auto
+                stat_prefix: ingress_http
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                    - name: local_service
+                      domains: ["*"]
+                      routes:
+                        - match: { prefix: "/" }
+                          direct_response: {status: 403, body: { inline_string: "Please visit https://san11pk.org"} }
+                http_filters:
+                  - name: envoy.router
   clusters:
     - name: echo_service
       connect_timeout: 0.25s
@@ -45,3 +64,10 @@ static_resources:
       http2_protocol_options: {}
       lb_policy: round_robin
       hosts: [{ socket_address: { address: back-end, port_value: 50051 } }]
+
+    # - name: front-end
+    #   connect_timeout: 0.25s
+    #   type: logical_dns
+    #   http2_protocol_options: {}
+    #   lb_policy: round_robin
+    #   hosts: [{ socket_address: { address: front-end, port_value: 443 } }] 

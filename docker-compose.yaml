@@ -20,9 +20,10 @@ services:
     volumes:
       - ./back-end/envoy:/etc/envoy
       - ../credentials:/credentials
-    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
     ports:
       - "8090:8090"
+      - "80:80"
 
   db:
     build: ./database
