@@ -36,7 +36,7 @@ static_resources:
               "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
               common_tls_context:
                 tls_certificates:
-                  certificate_chain: {filename: "/credentials/san11pk.pem"}
+                  certificate_chain: {filename: "/credentials/san11pk.crt"}
                   private_key: {filename: "/credentials/san11pk-private-key.key"}
   clusters:
     - name: echo_service

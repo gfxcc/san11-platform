@@ -42,7 +42,7 @@ services:
       - ./front-end:/app
       - ../credentials:/credentials
     environment:
-      SSL_CERT: /credentials/san11pk.pem
+      SSL_CERT: /credentials/san11pk.crt
       SSL_KEY: /credentials/san11pk-private-key.key
     command: bash -c "npm install && ng serve
                       --configuration production
