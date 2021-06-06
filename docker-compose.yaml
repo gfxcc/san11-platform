@@ -47,11 +47,8 @@ services:
     command: bash -c "npm install && ng serve
                       --configuration production
                       --host 0.0.0.0 --disable-host-check
-                      # --ssl true
-                      # --ssl-cert ${SSL_CERT}
-                      # --ssl-key ${SSL_KEY}
                      "
     depends_on: 
       - back-end
     ports:
-      - "80:4200"
+      - "443:4200"
