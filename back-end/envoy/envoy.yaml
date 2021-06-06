@@ -30,6 +30,14 @@ static_resources:
                   - name: envoy.grpc_web
                   - name: envoy.cors
                   - name: envoy.router
+          transport_socket:
+            name: envoy.transport_sockets.tls
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+              common_tls_context:
+                tls_certificates:
+                  certificate_chain: {filename: "/credentials/san11pk.pem"}
+                  private_key: {filename: "/credentials/san11pk-private-key.key"}
   clusters:
     - name: echo_service
       connect_timeout: 0.25s
@@ -37,4 +45,3 @@ static_resources:
       http2_protocol_options: {}
       lb_policy: round_robin
       hosts: [{ socket_address: { address: back-end, port_value: 50051 } }]
-

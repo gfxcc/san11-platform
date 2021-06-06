@@ -8,7 +8,7 @@ services:
     volumes:
       - ./back-end/src:/app
       - ./back-end/utils:/utils
-      - ./resources:/data
+      # - ./resources:/data
     command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py"]
     depends_on:
       - db
@@ -19,7 +19,8 @@ services:
     restart: always
     volumes:
       - ./back-end/envoy:/etc/envoy
-    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace --log-path /tmp/envoy_info.log
+      - ../credentials:/credentials
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace
     ports:
       - "8090:8090"
 
@@ -42,13 +43,13 @@ services:
       - ../credentials:/credentials
     environment:
       SSL_CERT: /credentials/san11pk.pem
-      SSL_KEY: /credentials/generated-private-key.key
+      SSL_KEY: /credentials/san11pk-private-key.key
     command: bash -c "npm install && ng serve
                       --configuration production
                       --host 0.0.0.0 --disable-host-check
-                      # --ssl true
-                      # --ssl-cert ${SSL_CERT}
-                      # --ssl-key ${SSL_KEY}
+                      --ssl true
+                      --ssl-cert ${SSL_CERT}
+                      --ssl-key ${SSL_KEY}
                      "
     depends_on: 
       - back-end
