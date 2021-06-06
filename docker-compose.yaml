@@ -51,4 +51,4 @@ services:
     depends_on: 
       - back-end
     ports:
-      - "443:4200"
+      - "80:4200"
