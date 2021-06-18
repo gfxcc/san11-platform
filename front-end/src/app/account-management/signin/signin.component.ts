@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { NotificationService } from "../../common/notification.service";
 import { saveUser } from '../../utils/user_util';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class SigninComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private san11PlatformServiceService: San11PlatformServiceService,
+    private dialog: MatDialog,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -40,8 +42,9 @@ export class SigninComponent implements OnInit {
         this.notificationService.warn(error.statusMessage);
       }
     );
-
-
   }
 
+  onForgetPasswordClick() {
+    confirm('忘记密码了？ 用 注册邮箱 给站主发个邮件吧 yong_stevens@outlook.com')
+  }
 }

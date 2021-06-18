@@ -1,5 +1,5 @@
 export class GlobalConstants {
-    public static serverIp: string = "https://0.0.0.0";
+    public static serverIp: string = "http://0.0.0.0";
     public static domain: string = 'san11pk';
     public static san11ServerUrl: string = GlobalConstants.serverIp + ':8090';
     public static fileServerUrl: string = 'https://storage.googleapis.com/san11-resources';

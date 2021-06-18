@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  back-end:
+    build: ./back-end
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./back-end/src:/app
+      - ./back-end/utils:/utils
+      # - ./resources:/data
+    command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py"]
+    depends_on:
+      - db
+      - envoy
+
+  envoy:
+    image: envoyproxy/envoy-alpine:v1.13.0
+    restart: always
+    volumes:
+      - ./back-end/envoy:/etc/envoy
+      - ../credentials:/credentials
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy_dev.yaml
+    ports:
+      - "8090:8090"
+      - "80:80"
+
+  db:
+    build: ./database
+    restart: always
+    volumes: 
+      - ./database/postgres-data:/var/lib/postgresql/data
+      - ./database/backup:/backup
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+
+  front-end:
+    build: ./front-end
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./front-end:/app
+      - ../credentials:/credentials
+    command: bash -c "npm install && ng serve
+                      --configuration production
+                      --host 0.0.0.0 --disable-host-check
+                     "
+    depends_on: 
+      - back-end
+    ports:
+      - "443:4200"
