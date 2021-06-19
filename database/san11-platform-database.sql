@@ -111,4 +111,11 @@ CREATE TABLE tags (
     PRIMARY KEY (name, category_id)
 );
 
+CREATE TABLE verification_codes (
+    email TEXT NOT NULL,
+    code TEXT NOT NULL,
+
+    PRIMARY KEY (email)
+);
+
 \dt;

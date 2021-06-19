@@ -1,7 +1,6 @@
-import sys, os
+import sys, os, uuid, logging
 # TODO: switch to a moduel based solution
 sys.path.insert(0, os.path.abspath('..'))
-import logging
 
 
 from lib.protos import san11_platform_pb2
@@ -9,9 +8,11 @@ from lib.url import Url
 from lib.auths import Authenticator, Session
 from lib.image import Image
 from lib.package import Package
-from lib.user import User 
+from lib.user import User, generate_verification_code
 from lib.exception import Unauthenticated, PermissionDenied, InvalidArgument
 from lib.field_mask import FieldMask, merge_resource
+from lib.notifier import Notifier
+from lib.db.db_util import run_sql_with_param
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -108,3 +109,14 @@ class UserHandler:
         return san11_platform_pb2.ListUsersResponse(users=[
             user.to_pb() for user in User.list(0, '')
         ])
+    
+    def send_verification_code(self, request, context):
+        logger.info('In send_verfication_code')
+        email = request.email
+        verification_code = generate_verification_code(email)
+        Notifier().send_email(email, '新注册用户的验证码', verification_code)
+        return san11_platform_pb2.Empty()
+
+    def verify_email(self, request, context):
+        ...
+    

@@ -45,6 +45,8 @@ service RouteGuide {
   rpc SignOut(SignOutRequest) returns (Status) {}
   rpc GetUser(GetUserRequest) returns (User) {}
   rpc listUsers(ListUsersRequest) returns (ListUsersResponse) {}
+  rpc sendVerificationCode(SendVerificationCodeRequest) returns (Empty) {}
+  rpc verifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
 
   rpc UpdateUser(UpdateUserRequest) returns (User) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
@@ -249,7 +251,8 @@ message SignOutRequest {
 
 message SignUpRequest {
     User user = 1;
-    string password = 3;
+    string password = 2;
+    string verification_code = 3;
 }
 
 message SignUpResponse {
@@ -275,6 +278,19 @@ message ListUsersRequest {
 message ListUsersResponse {
     repeated User users = 1;
     string page_token = 2;
+}
+
+message SendVerificationCodeRequest {
+    string email = 1;
+}
+
+message VerifyEmailRequest {
+    string email = 1;
+    string verification_code = 2;
+}
+
+message VerifyEmailResponse {
+    bool ok = 1;
 }
 
 // tag related

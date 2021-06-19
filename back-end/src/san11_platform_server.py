@@ -121,6 +121,12 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def listUsers(self, request, context):
         return self.user_handler.list_users(request, context)
 
+    def sendVerificationCode(self, request, context):
+        return self.user_handler.send_verification_code(request, context)
+
+    def verifyEmail(self, request, context):
+        return self.user_handler.verify_email(request, context)
+
     # general
     def GetStatistic(self, request, context):
         return self.general_handler.get_statistic(request, context)

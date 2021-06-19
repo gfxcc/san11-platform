@@ -13,17 +13,17 @@
                     </mat-form-field>
 
                     <mat-form-field class="example-full-width">
-                        <input matInput type="email" placeholder="邮箱" required ngModel name="email" email>
+                        <input matInput type="password" placeholder="密码" autocomplete="current-password" required ngModel name="password">
                     </mat-form-field>
 
                     <mat-form-field class="example-full-width">
-                        <input matInput type="password" placeholder="密码" autocomplete="current-password" required ngModel name="password">
+                        <input matInput type="email" placeholder="邮箱" required ngModel name="email" email>
                     </mat-form-field>
                 </mat-card-content>
 
                 <div style="display:flex;">
                     <span class="example-spacer"></span>
-                    <button mat-raised-button [disabled]="!registerForm.valid" type="submit" color="primary">注册</button>
+                    <button mat-raised-button type="submit" color="primary">验证邮箱</button>
                 </div>
             </form>
 

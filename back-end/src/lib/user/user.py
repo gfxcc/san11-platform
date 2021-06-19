@@ -1,5 +1,5 @@
 from __future__ import annotations
-import os
+import os, uuid
 import re
 import json
 import logging
@@ -205,3 +205,22 @@ class User(ResourceMixin):
     @staticmethod
     def validate_website(website: str) -> None:
         pass
+
+
+def generate_verification_code(email: str) -> str:
+    '''
+    Generate a verification_code and persist it into DB.
+    '''
+    TABLE = 'verification_codes'
+    sql = f'DELETE FROM {TABLE} WHERE email=%(email)s'
+    run_sql_with_param(sql, {
+        'email': email
+    })
+
+    verification_code = str(uuid.uuid1())
+    sql = f'INSERT INTO {TABLE} (email, code) VALUES (%(email)s, %(code)s)'
+    run_sql_with_param(sql, {
+        'email': email,
+        'code': verification_code
+    })
+    return verification_code

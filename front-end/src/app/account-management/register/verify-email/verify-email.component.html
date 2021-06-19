@@ -1,0 +1,14 @@
+<p>
+    我们发送了一封邮件到 {{email}}, 请输入其中的 验证码
+</p>
+<form #verifyForm='ngForm' (ngSubmit)="onVerifyEmail(verifyForm)">
+    <mat-form-field appearance="standard" style="width: 100%;">
+        <mat-label>验证码</mat-label>
+        <input matInput autocomplete="off">
+    </mat-form-field>
+
+    <div style="display: flex;">
+        <span class="example-spacer"></span>
+        <button mat-raised-button type="submit" color="primary">验证邮箱</button>
+    </div>
+</form>
