@@ -174,11 +174,40 @@ class User(ResourceMixin):
 
         return cls(resp[0], username, 'password_placeholder', resp[1], resp[2], resp[3], resp[4])
     
+    @classmethod
+    def from_email(cls, email: str):
+        '''
+        Raise:
+            LookupError: ...
+        '''
+        sql = 'SELECT user_id, username, email, user_type, image_url, website FROM users WHERE email=%(email)s'
+        try:
+            resp = run_sql_with_param_and_fetch_all(
+                sql, {'email': email})[0]
+        except Exception:
+            raise LookupError(f'email: {email} is not being used by any account')
+        return cls(resp[0], resp[1], 'password_placeholder', resp[2], resp[3], resp[4], resp[5])
+    
     @staticmethod
     def validate_email(email: str) -> None:
+        '''
+        Raise if
+            1. Invalid format
+            2. email is already used by an accout
+        '''
+        ADMIN_EMAIL = 'ycao181@gmail.com'
         if re.fullmatch(r'[^@]+@[^@]+\.[^@]+', email) is None:
             logger.error(f'Invalid email: {email}')
             raise ValueError('无效的邮箱地址')
+        try:
+            # Allow admin to reuse email for new account for testing.
+            if email == ADMIN_EMAIL:
+                return
+            User.from_email(email)
+        except LookupError:
+            return  # OK, username is not being used
+        else:
+            raise ValueError("邮箱已被使用")
 
     @staticmethod
     def validate_password(password: str) -> None:

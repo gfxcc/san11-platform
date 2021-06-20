@@ -45,6 +45,8 @@ service RouteGuide {
   rpc SignOut(SignOutRequest) returns (Status) {}
   rpc GetUser(GetUserRequest) returns (User) {}
   rpc listUsers(ListUsersRequest) returns (ListUsersResponse) {}
+
+  // User related utilities
   rpc sendVerificationCode(SendVerificationCodeRequest) returns (Empty) {}
   rpc verifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
 
