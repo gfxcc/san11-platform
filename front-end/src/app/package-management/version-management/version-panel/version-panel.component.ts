@@ -196,7 +196,7 @@ export class VersionPanelComponent implements OnInit {
   }
 
   onDownload(binary: Binary) {
-    if (!signedIn()) {
+    if (!signedIn() && this.package.categoryId === '3') {
       this.notificationService.warn('请登录');
       return;
     }
