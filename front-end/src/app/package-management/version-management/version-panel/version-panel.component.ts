@@ -22,6 +22,7 @@ import { saveAs } from 'file-saver'
 import { increment } from '../../../utils/number_util';
 import { isAdmin } from '../../../utils/user_util';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 // export interface BinaryElement {
 //   version: string;
@@ -58,6 +59,9 @@ export class VersionPanelComponent implements OnInit {
   tags: string[];
 
   updateElement;
+
+
+  downloadSub: Subscription;
 
   startTime: any;
   endTime: any;
@@ -192,6 +196,10 @@ export class VersionPanelComponent implements OnInit {
   }
 
   onDownload(binary: Binary) {
+    if (this.downloadSub != undefined) {
+      this.notificationService.warn(`下载中 ${this.downloadProgress}%... `);
+      return;
+    }
     this.downloadProgress = 0;
     this.downloadProgressBar = true;
     this.binaryOnDownload = binary;
@@ -203,9 +211,8 @@ export class VersionPanelComponent implements OnInit {
         this.prevTime = new Date().getTime();
         this.oldbytes = 0;
 
-        this.downloads.download(fileUrl, filename).subscribe(
+        this.downloadSub = this.downloads.download(fileUrl, filename).subscribe(
           result => {
-
             if (result.type === HttpEventType.DownloadProgress) {
               const percentDone = Math.round(100 * result.loaded / result.total);
               this.downloadProgress = percentDone;
@@ -229,6 +236,8 @@ export class VersionPanelComponent implements OnInit {
 
             }
             if (result.type === HttpEventType.Response) {
+              this.downloadSub = undefined;
+
               saveAs(result.body, filename);
               this.downloadEvent.emit();
               this.binaryOnDownload.downloadCount = increment(this.binaryOnDownload.downloadCount);
@@ -239,6 +248,7 @@ export class VersionPanelComponent implements OnInit {
             }
           },
           error => {
+            this.downloadSub = undefined;
             this.notificationService.warn('下载失败: ' + error.name);
           }
         );
