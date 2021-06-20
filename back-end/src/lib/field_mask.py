@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List
+from typing import List, Iterable
 from copy import deepcopy
 
 from .protos import san11_platform_pb2
@@ -14,8 +14,8 @@ def merge_resource(base_resource: ResourceMixin, update_request: ResourceMixin, 
 
 
 class FieldMask:
-    def __init__(self, paths: List[str]) -> None:
-        self.paths = paths
+    def __init__(self, paths: Iterable[str]) -> None:
+        self.paths = set(paths)
     
     @classmethod
     def from_pb(cls, pb_obj: san11_platform_pb2.FieldMask):
@@ -23,3 +23,6 @@ class FieldMask:
 
     def has(self, field: str) -> bool:
         return field in self.paths
+    
+    def discard(self, field: str) -> None:
+        self.paths.discard(field)

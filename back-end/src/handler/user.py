@@ -71,9 +71,13 @@ class UserHandler:
         if not authenticate.canUpdateUser(user=base_user):
             context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
 
+
+        update_mask = FieldMask.from_pb(request.update_mask)
+        # Update user.email is temporary banned.
+        update_mask.discard('email')
         user = merge_resource(base_resource=base_user,
                                 update_request=User.from_pb(request.user),
-                                field_mask=FieldMask.from_pb(request.update_mask))
+                                field_mask=update_mask)
         if not user.image_url and base_user.image_url:
             try:
                 Image.from_url(base_user.image_url).delete()

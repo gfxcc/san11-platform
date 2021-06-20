@@ -195,7 +195,7 @@ export class UserDetailComponent implements OnInit {
         website: form.value.website
       }),
       updateMask: new FieldMask({
-        paths: ['username', 'email', 'website']
+        paths: ['username', 'website']
       })
     });
     this.san11pkService.updateUser(request).subscribe(
