@@ -10,6 +10,7 @@ import * as FileSaver from 'file-saver';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
+import { GetUserRequest } from "../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { NotificationService } from "../../common/notification.service";
 import { Binary, Version } from '../../../proto/san11-platform.pb'
@@ -63,7 +64,7 @@ export class PackageCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.san11PlatformServiceService.getUser(this.package.authorId).subscribe(
+    this.san11PlatformServiceService.getUser(new GetUserRequest({ userId: this.package.authorId })).subscribe(
       user => {
         this.authorName = user.username;
       }

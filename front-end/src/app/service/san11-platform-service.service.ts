@@ -25,6 +25,7 @@ import { UpdateReplyRequest, CreateReplyRequest, DeleteReplyRequest } from "../.
 import { CreateTagRequest, ListTagsRequest, ListTagsResponse, DeleteTagRequest } from "../../proto/san11-platform.pb";
 import { UpdateBinaryRequest } from "../../proto/san11-platform.pb";
 import { SendVerificationCodeRequest } from "../../proto/san11-platform.pb";
+import { VerifyEmailRequest, VerifyEmailResponse } from "../../proto/san11-platform.pb";
 
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
@@ -166,9 +167,8 @@ export class San11PlatformServiceService {
   }
 
   @Cacheable()
-  getUser(userId): Observable<User> {
+  getUser(request: GetUserRequest): Observable<User> {
     // TODO: add a cache layer
-    const request = new GetUserRequest({ userId: userId });
     return this.severClient.getUser(request, this.getMetadata());
   }
 
@@ -176,8 +176,7 @@ export class San11PlatformServiceService {
     return this.severClient.updateUser(request, this.getMetadata());
   }
 
-  updatePassword(userId: string, password: string): Observable<Empty> {
-    const request = new UpdatePasswordRequest({ userId: userId, password: password });
+  updatePassword(request: UpdatePasswordRequest): Observable<Empty> {
     return this.severClient.updatePassword(request, this.getMetadata());
   }
 
@@ -198,6 +197,10 @@ export class San11PlatformServiceService {
 
   sendVerificationCode(request: SendVerificationCodeRequest): Observable<Empty> {
     return this.severClient.sendVerificationCode(request, this.getMetadata());
+  }
+
+  verifyEmail(request: VerifyEmailRequest): Observable<VerifyEmailResponse> {
+    return this.severClient.verifyEmail(request, this.getMetadata());
   }
 
   // tags

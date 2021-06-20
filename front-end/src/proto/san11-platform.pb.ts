@@ -4743,9 +4743,7 @@ export class GetUserRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: GetUserRequest) {
-    _instance.userId = _instance.userId || '0';
-  }
+  static refineValues(_instance: GetUserRequest) {}
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -4762,6 +4760,9 @@ export class GetUserRequest implements GrpcMessage {
       switch (_reader.getFieldNumber()) {
         case 1:
           _instance.userId = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.username = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -4780,12 +4781,19 @@ export class GetUserRequest implements GrpcMessage {
     _instance: GetUserRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.userId) {
+    if (_instance.userId || _instance.userId === '0') {
       _writer.writeInt64String(1, _instance.userId);
+    }
+    if (_instance.username || _instance.username === '') {
+      _writer.writeString(2, _instance.username);
     }
   }
 
   private _userId?: string;
+  private _username?: string;
+
+  private _identify: GetUserRequest.IdentifyCase =
+    GetUserRequest.IdentifyCase.none;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4794,13 +4802,31 @@ export class GetUserRequest implements GrpcMessage {
   constructor(_value?: RecursivePartial<GetUserRequest.AsObject>) {
     _value = _value || {};
     this.userId = _value.userId;
+    this.username = _value.username;
     GetUserRequest.refineValues(this);
   }
   get userId(): string | undefined {
     return this._userId;
   }
   set userId(value: string | undefined) {
+    if (value !== undefined && value !== null) {
+      this._username = undefined;
+      this._identify = GetUserRequest.IdentifyCase.userId;
+    }
     this._userId = value;
+  }
+  get username(): string | undefined {
+    return this._username;
+  }
+  set username(value: string | undefined) {
+    if (value !== undefined && value !== null) {
+      this._userId = undefined;
+      this._identify = GetUserRequest.IdentifyCase.username;
+    }
+    this._username = value;
+  }
+  get identify() {
+    return this._identify;
   }
 
   /**
@@ -4818,7 +4844,8 @@ export class GetUserRequest implements GrpcMessage {
    */
   toObject(): GetUserRequest.AsObject {
     return {
-      userId: this.userId
+      userId: this.userId,
+      username: this.username
     };
   }
 
@@ -4839,7 +4866,8 @@ export class GetUserRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): GetUserRequest.AsProtobufJSON {
     return {
-      userId: this.userId
+      userId: this.userId ?? null,
+      username: this.username ?? null
     };
   }
 }
@@ -4849,13 +4877,20 @@ export module GetUserRequest {
    */
   export interface AsObject {
     userId?: string;
+    username?: string;
   }
 
   /**
    * Protobuf JSON representation for GetUserRequest
    */
   export interface AsProtobufJSON {
-    userId?: string;
+    userId?: string | null;
+    username?: string | null;
+  }
+  export enum IdentifyCase {
+    none = 0,
+    userId = 1,
+    username = 2
   }
 }
 
@@ -6009,6 +6044,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
   static refineValues(_instance: UpdatePasswordRequest) {
     _instance.userId = _instance.userId || '0';
     _instance.password = _instance.password || '';
+    _instance.verificationCode = _instance.verificationCode || '';
   }
 
   /**
@@ -6029,6 +6065,9 @@ export class UpdatePasswordRequest implements GrpcMessage {
           break;
         case 2:
           _instance.password = _reader.readString();
+          break;
+        case 3:
+          _instance.verificationCode = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -6053,10 +6092,14 @@ export class UpdatePasswordRequest implements GrpcMessage {
     if (_instance.password) {
       _writer.writeString(2, _instance.password);
     }
+    if (_instance.verificationCode) {
+      _writer.writeString(3, _instance.verificationCode);
+    }
   }
 
   private _userId?: string;
   private _password?: string;
+  private _verificationCode?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -6066,6 +6109,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
     _value = _value || {};
     this.userId = _value.userId;
     this.password = _value.password;
+    this.verificationCode = _value.verificationCode;
     UpdatePasswordRequest.refineValues(this);
   }
   get userId(): string | undefined {
@@ -6079,6 +6123,12 @@ export class UpdatePasswordRequest implements GrpcMessage {
   }
   set password(value: string | undefined) {
     this._password = value;
+  }
+  get verificationCode(): string | undefined {
+    return this._verificationCode;
+  }
+  set verificationCode(value: string | undefined) {
+    this._verificationCode = value;
   }
 
   /**
@@ -6097,7 +6147,8 @@ export class UpdatePasswordRequest implements GrpcMessage {
   toObject(): UpdatePasswordRequest.AsObject {
     return {
       userId: this.userId,
-      password: this.password
+      password: this.password,
+      verificationCode: this.verificationCode
     };
   }
 
@@ -6119,7 +6170,8 @@ export class UpdatePasswordRequest implements GrpcMessage {
   ): UpdatePasswordRequest.AsProtobufJSON {
     return {
       userId: this.userId,
-      password: this.password
+      password: this.password,
+      verificationCode: this.verificationCode
     };
   }
 }
@@ -6130,6 +6182,7 @@ export module UpdatePasswordRequest {
   export interface AsObject {
     userId?: string;
     password?: string;
+    verificationCode?: string;
   }
 
   /**
@@ -6138,6 +6191,7 @@ export module UpdatePasswordRequest {
   export interface AsProtobufJSON {
     userId?: string;
     password?: string;
+    verificationCode?: string;
   }
 }
 

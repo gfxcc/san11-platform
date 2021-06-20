@@ -38,7 +38,6 @@ import { ReplyCardComponent } from './common/components/comment-card/reply-card/
 import { MessageBoardComponent } from './dashboards/message-board/message-board.component';
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
 import { SharedModule } from './shared/shared.module';
-import { VerifyEmailComponent } from './account-management/register/verify-email/verify-email.component';
 
 
 @NgModule({
@@ -64,7 +63,6 @@ import { VerifyEmailComponent } from './account-management/register/verify-email
     ReplyCardComponent,
     MessageBoardComponent,
     AdminMessageBoardComponent,
-    VerifyEmailComponent,
   ],
   imports: [
     GrpcCoreModule.forRoot(),

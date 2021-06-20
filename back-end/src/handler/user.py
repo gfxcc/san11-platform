@@ -8,7 +8,7 @@ from lib.url import Url
 from lib.auths import Authenticator, Session
 from lib.image import Image
 from lib.package import Package
-from lib.user import User, generate_verification_code
+from lib.user import User, generate_verification_code, verify_code
 from lib.exception import Unauthenticated, PermissionDenied, InvalidArgument
 from lib.field_mask import FieldMask, merge_resource
 from lib.notifier import Notifier
@@ -23,6 +23,7 @@ class UserHandler:
         logger.info(f'In sign_up')
         try:
             user = User.from_pb(request.user)
+            assert verify_code(user.email, request.verification_code), '邮箱未经验证'
             user.create(request.password)
         except ValueError as err:
             context.abort(code=255, details=str(err))
@@ -87,17 +88,24 @@ class UserHandler:
         logger.info(f'In update_password: user_id={request.user_id}')
         user = User.from_id(request.user_id)
 
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUpdateUser(user=user):
-            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
+        if request.verification_code:
+            if not verify_code(user.email, request.verification_code):
+                context.abort(code=PermissionDenied.code, details='验证码不正确')
+        else:
+            authenticate = Authenticator.from_context(context)
+            if not authenticate.canUpdateUser(user=user):
+                context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
 
         user.set_password(request.password)
         return san11_platform_pb2.Empty()
-    
+
     def get_user(self, request, context):
         # logger.info(f'In get_user: user_id={request.user_id}')
         try:
-            user = User.from_id(request.user_id)
+            if request.HasField('user_id'):
+                user = User.from_id(request.user_id)
+            elif request.HasField('username'):
+                user = User.from_name(request.username)
         except LookupError:
             logger.info(f'GetUser: user_id={request.user_id} does not exist')
             context.abort(code=InvalidArgument.code, details=f'{InvalidArgument.message}: 用户不存在')
@@ -109,7 +117,7 @@ class UserHandler:
         return san11_platform_pb2.ListUsersResponse(users=[
             user.to_pb() for user in User.list(0, '')
         ])
-    
+
     def send_verification_code(self, request, context):
         logger.info('In send_verfication_code')
         email = request.email
@@ -118,5 +126,7 @@ class UserHandler:
         return san11_platform_pb2.Empty()
 
     def verify_email(self, request, context):
-        ...
-    
+        logger.info('In verify_email')
+        email, code = request.email, request.verification_code
+        return san11_platform_pb2.VerifyEmailResponse(ok=verify_code(email, code))
+        

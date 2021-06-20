@@ -1,2 +1,2 @@
-from .user import User, generate_verification_code
+from .user import *
 from .activity import Activity, Action

@@ -2,6 +2,7 @@ import { Output, EventEmitter, Component, OnInit, Input, Inject, ElementRef, Vie
 import { Router } from '@angular/router';
 import { Comment, User } from "../../../../../proto/san11-platform.pb";
 
+import { GetUserRequest } from "../../../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../../../../service/san11-platform-service.service";
 import { NotificationService } from "../../../../common/notification.service";
 import { getFullUrl } from '../../../../utils/resrouce_util';
@@ -39,7 +40,7 @@ export class ReplyCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.san11pkService.getUser(this.reply.authorId).subscribe(
+    this.san11pkService.getUser(new GetUserRequest({ userId: this.reply.authorId })).subscribe(
       user => {
         this.user = user;
         this.userImage = getFullUrl(this.user.imageUrl);
