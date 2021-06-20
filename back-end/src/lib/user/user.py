@@ -82,7 +82,7 @@ class User(ResourceMixin):
 
     def create(self, password: str):
         '''
-        Override default implementation as `User` require specific handling on `password`
+        Override default implementation as `User` require special handling on `password`
         '''
         self.validate_password(password)
         sql = f'INSERT INTO {self.db_table()} '\

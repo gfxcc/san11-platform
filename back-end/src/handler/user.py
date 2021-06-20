@@ -24,6 +24,7 @@ class UserHandler:
         try:
             user = User.from_pb(request.user)
             assert verify_code(user.email, request.verification_code), '邮箱未经验证'
+            User.validate_username(user.username)
             user.create(request.password)
         except ValueError as err:
             context.abort(code=255, details=str(err))
