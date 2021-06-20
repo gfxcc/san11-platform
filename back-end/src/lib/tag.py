@@ -50,7 +50,7 @@ class Tag(ResourceMixin):
             'name': self.name,
             'category_id': self.category_id,
             'mutable': True
-        })
+        }, transaction=True)
         self.tag_id = resp[0]
     
     def delete(self) -> None:

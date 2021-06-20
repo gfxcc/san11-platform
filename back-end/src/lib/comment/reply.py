@@ -98,7 +98,7 @@ class Reply:
             'text': self.text,
             'author_id': self.author_id,
             'upvote_count': self.upvote_count
-        })
+        }, transaction=True)
         self.reply_id = resp[0]
 
     def delete(self) -> None:
