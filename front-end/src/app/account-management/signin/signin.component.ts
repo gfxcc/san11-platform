@@ -8,13 +8,17 @@ import { NotificationService } from "../../common/notification.service";
 import { saveUser } from '../../utils/user_util';
 import { MatDialog } from '@angular/material/dialog';
 import { User, GetUserRequest, SendVerificationCodeRequest, VerifyEmailRequest, VerifyEmailResponse, UpdatePasswordRequest } from "../../../proto/san11-platform.pb";
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [{
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false }
+  }]
 })
 export class SigninComponent implements OnInit {
   @ViewChild('tagGroup') galleryElementCatched: ElementRef

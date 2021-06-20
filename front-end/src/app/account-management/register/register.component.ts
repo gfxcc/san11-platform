@@ -10,12 +10,16 @@ import { SignUpRequest, User } from '../../../proto/san11-platform.pb';
 import { SendVerificationCodeRequest } from "../../../proto/san11-platform.pb";
 import { VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  providers: [{
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false }
+  }]
 })
 export class RegisterComponent implements OnInit {
 

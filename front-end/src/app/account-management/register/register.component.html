@@ -35,7 +35,7 @@
             <mat-card-title>注册</mat-card-title>
         </mat-card-header>
         <mat-vertical-stepper linear #stepper>
-            <mat-step [stepControl]="basicInfoForm">
+            <mat-step [stepControl]="basicInfoForm" state="badge">
                 <ng-template matStepLabel>1. 基本信息</ng-template>
                 <ng-template matStepContent>
 
@@ -79,7 +79,7 @@
 
                 </ng-template>
             </mat-step>
-            <mat-step [stepControl]="emailVerificationForm">
+            <mat-step [stepControl]="emailVerificationForm" state="email">
                 <ng-template matStepLabel>2. 验证邮箱</ng-template>
                 <ng-template matStepContent>
                     <div class="example-form">
@@ -101,11 +101,22 @@
                     </div>
                 </ng-template>
             </mat-step>
-            <mat-step>
+            <mat-step state="check">
                 <ng-template matStepLabel>3. 完成注册</ng-template>
                 <button mat-button matStepperPrevious>上一步</button>
                 <button mat-raised-button color="primary" (click)="onRegister()">注册</button>
             </mat-step>
+
+            <!-- Icon overrides. -->
+            <ng-template matStepperIcon="account_box">
+                <mat-icon>account_box</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="email">
+                <mat-icon>email</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="check">
+                <mat-icon>how_to_reg</mat-icon>
+            </ng-template>
         </mat-vertical-stepper>
 
     </mat-card>
