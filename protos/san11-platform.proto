@@ -49,6 +49,7 @@ service RouteGuide {
   // User related utilities
   rpc sendVerificationCode(SendVerificationCodeRequest) returns (Empty) {}
   rpc verifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
+  rpc verifyNewUser(VerifyNewUserRequest) returns(Status) {}
 
   rpc UpdateUser(UpdateUserRequest) returns (User) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
@@ -297,6 +298,19 @@ message VerifyEmailRequest {
 
 message VerifyEmailResponse {
     bool ok = 1;
+}
+
+message VerifyNewUserRequest {
+    oneof field {
+        string username = 1;
+        string password = 2;
+        string email = 3;
+    }
+}
+
+message VerifyNewUserResponse {
+    bool ok = 1;
+    string message = 2;
 }
 
 // tag related

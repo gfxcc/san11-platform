@@ -9,7 +9,7 @@ from lib.auths import Authenticator, Session
 from lib.image import Image
 from lib.package import Package
 from lib.user import User, generate_verification_code, verify_code
-from lib.exception import Unauthenticated, PermissionDenied, InvalidArgument
+from lib.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists
 from lib.field_mask import FieldMask, merge_resource
 from lib.notifier import Notifier
 from lib.db.db_util import run_sql_with_param
@@ -136,3 +136,20 @@ class UserHandler:
         email, code = request.email, request.verification_code
         return san11_platform_pb2.VerifyEmailResponse(ok=verify_code(email, code))
         
+    def verify_new_user(self, request, context):
+        logger.info('In verify_new_user')
+        if request.HasField('username'):
+            try:
+                User.validate_username(request.username)
+            except AlreadyExists as err:
+                return san11_platform_pb2.Status(code=err.code, message='已被使用')
+        elif request.HasField('password'):
+            ...
+        elif request.HasField('email'):
+            try:
+                User.validate_email(request.email)
+            except ValueError:
+                return san11_platform_pb2.Status(code=InvalidArgument.code, message='格式不正确')
+            except AlreadyExists as err:
+                return san11_platform_pb2.Status(code=err.code, message='已被使用')
+        return san11_platform_pb2.Status(code=0, message = '')

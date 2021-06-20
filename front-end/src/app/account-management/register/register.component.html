@@ -52,6 +52,9 @@
                                 <mat-error *ngIf="username.errors?.pattern && username.touched" align="end">
                                     不能使用 空格
                                 </mat-error>
+                                <mat-error *ngIf="username.errors?.invalidNewUser && username.touched" align="end">
+                                    {{username.errors.invalidNewUser}}
+                                </mat-error>
                             </mat-form-field>
 
                             <mat-form-field class="input-field">
@@ -71,6 +74,9 @@
                                 <input matInput type="email" autocomplete="email" placeholder="邮箱" formControlName="email">
                                 <mat-error *ngIf="email.errors?.email && email.touched" align="end">
                                     格式不正确
+                                </mat-error>
+                                <mat-error *ngIf="email.errors?.invalidNewUser && email.touched" align="end">
+                                    {{email.errors.invalidNewUser}}
                                 </mat-error>
                             </mat-form-field>
                         </mat-card-content>

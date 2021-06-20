@@ -12,7 +12,7 @@ from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_
 from ..time_util import get_now
 from ..image import Image
 from ..time_util import get_timezone
-from ..exception import Unauthenticated
+from ..exception import Unauthenticated, AlreadyExists
 from ..resource import ResourceMixin
 
 
@@ -169,7 +169,6 @@ class User(ResourceMixin):
             resp = run_sql_with_param_and_fetch_all(
                 sql, {'username': username})[0]
         except Exception:
-            logger.info(f'user: {username} does not exist. ')
             raise LookupError(f'user: {username} does not exist')
 
         return cls(resp[0], username, 'password_placeholder', resp[1], resp[2], resp[3], resp[4])
@@ -192,12 +191,11 @@ class User(ResourceMixin):
     def validate_email(email: str) -> None:
         '''
         Raise if
-            1. Invalid format
-            2. email is already used by an accout
+            ValueError: if Invalid format
+            AlreadyExists: if email is already used by an accout
         '''
         ADMIN_EMAIL = 'ycao181@gmail.com'
         if re.fullmatch(r'[^@]+@[^@]+\.[^@]+', email) is None:
-            logger.error(f'Invalid email: {email}')
             raise ValueError('无效的邮箱地址')
         try:
             # Allow admin to reuse email for new account for testing.
@@ -207,7 +205,7 @@ class User(ResourceMixin):
         except LookupError:
             return  # OK, username is not being used
         else:
-            raise ValueError("邮箱已被使用")
+            raise AlreadyExists("邮箱已被使用")
 
     @staticmethod
     def validate_password(password: str) -> None:
@@ -217,9 +215,9 @@ class User(ResourceMixin):
     @staticmethod
     def validate_username(username: str) -> None:
         '''
-        Raise if
-            1. username is illegal
-            2. username is already used in db
+        Raise:
+            ValueError: if username is illegal
+            AlreadyExists: if username is already used in db
         '''
         # if re.fullmatch(r'[0-9a-zA-Z\-_]{4,32}', username) is None:
         if not (len(username) <= 32 and ' ' not in username):
@@ -230,7 +228,7 @@ class User(ResourceMixin):
         except LookupError:
             return  # OK, username is not being used
         else:
-            raise ValueError("用户名已被使用")
+            raise AlreadyExists("用户名已被使用")
     
     @staticmethod
     def validate_website(website: str) -> None:

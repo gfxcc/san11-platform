@@ -26,6 +26,7 @@ import { CreateTagRequest, ListTagsRequest, ListTagsResponse, DeleteTagRequest }
 import { UpdateBinaryRequest } from "../../proto/san11-platform.pb";
 import { SendVerificationCodeRequest } from "../../proto/san11-platform.pb";
 import { VerifyEmailRequest, VerifyEmailResponse } from "../../proto/san11-platform.pb";
+import { VerifyNewUserRequest, VerifyNewUserResponse } from "../../proto/san11-platform.pb";
 
 
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
@@ -201,6 +202,10 @@ export class San11PlatformServiceService {
 
   verifyEmail(request: VerifyEmailRequest): Observable<VerifyEmailResponse> {
     return this.severClient.verifyEmail(request, this.getMetadata());
+  }
+
+  verifyNewUser(request: VerifyNewUserRequest): Observable<Status> {
+    return this.severClient.verifyNewUser(request, this.getMetadata());
   }
 
   // tags

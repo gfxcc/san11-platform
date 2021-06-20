@@ -7,10 +7,11 @@ import { NotificationService } from "../../common/notification.service";
 import { saveUser } from "../../utils/user_util";
 import { MatDialog } from '@angular/material/dialog';
 import { SignUpRequest, User } from '../../../proto/san11-platform.pb';
-import { SendVerificationCodeRequest } from "../../../proto/san11-platform.pb";
+import { SendVerificationCodeRequest, VerifyNewUserRequest } from "../../../proto/san11-platform.pb";
 import { VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { NewUserValidators } from "../common/new-user-validator";
 
 
 @Component({
@@ -31,27 +32,36 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private san11PlatformServiceService: San11PlatformServiceService,
+    private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private router: Router) { }
 
   ngOnInit(): void {
     this.basicInfoForm = this.formBuilder.group({
-      username: ['', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(32),
-        Validators.pattern(/^[^\s]*$/)]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(32),
-        Validators.pattern(/^[0-9a-zA-Z\-_]*$/)
-      ]],
-      email: ['', [
-        Validators.required, Validators.email
-      ]],
+      username: ['',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(32),
+          Validators.pattern(/^[^\s]*$/)],
+        [
+          NewUserValidators.username(this.san11pkService),
+        ]],
+      password: ['',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(32),
+          Validators.pattern(/^[0-9a-zA-Z\-_]*$/),
+        ]],
+      email: ['',
+        [
+          Validators.required, Validators.email,
+        ],
+        [
+          NewUserValidators.email(this.san11pkService),
+        ]],
     });
 
     this.emailVerificationForm = this.formBuilder.group({
@@ -96,7 +106,7 @@ export class RegisterComponent implements OnInit {
       verificationCode: this.verificationCode.value
     });
 
-    this.san11PlatformServiceService.signUp(request).subscribe(
+    this.san11pkService.signUp(request).subscribe(
       resp => {
         this.notificationService.success('注册成功');
 
@@ -123,7 +133,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.san11PlatformServiceService.sendVerificationCode(new SendVerificationCodeRequest({
+    this.san11pkService.sendVerificationCode(new SendVerificationCodeRequest({
       email: this.email.value
     })).subscribe();
 
@@ -145,7 +155,7 @@ export class RegisterComponent implements OnInit {
       verificationCode: this.verificationCode.value
     });
     console.log(request);
-    this.san11PlatformServiceService.verifyEmail(request).subscribe(
+    this.san11pkService.verifyEmail(request).subscribe(
       (resp: VerifyEmailResponse) => {
         if (resp.ok) {
           stepper.next();
