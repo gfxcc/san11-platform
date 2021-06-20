@@ -118,6 +118,7 @@ export class SigninComponent implements OnInit {
       (user: User) => {
         this.user = user;
         if (user.email != this.email.value) {
+          console.log(user);
           this.notificationService.warn('邮箱与用户名不符');
         } else {
           if (this.timeToResend === undefined) {
