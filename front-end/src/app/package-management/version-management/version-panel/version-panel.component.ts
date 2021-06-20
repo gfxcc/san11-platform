@@ -20,7 +20,7 @@ import { TextDialogComponent, TextData } from "../../../common/components/text-d
 import { GlobalConstants } from "../../../common/global-constants";
 import { saveAs } from 'file-saver'
 import { increment } from '../../../utils/number_util';
-import { isAdmin } from '../../../utils/user_util';
+import { isAdmin, signedIn } from '../../../utils/user_util';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
@@ -196,6 +196,11 @@ export class VersionPanelComponent implements OnInit {
   }
 
   onDownload(binary: Binary) {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+      return;
+    }
+
     if (this.downloadSub != undefined) {
       this.notificationService.warn(`下载中 ${this.downloadProgress}%... `);
       return;
