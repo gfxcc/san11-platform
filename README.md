@@ -1,4 +1,4 @@
-# [san11-platform](http://san11-platform.com)
+# [san11-platform](https://san11pk.org)
 A web platform to share San11 related tools
 
 # Usage

@@ -8,7 +8,9 @@ services:
     volumes:
       - ./back-end/src:/app
       - ./back-end/utils:/utils
-      # - ./resources:/data
+      - ../credentials:/credentials
+    environment:
+      NOTIFIER_SERVICE_ACCOUNT_FILE: '/credentials/san11-platform-notifier.json'
     command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py"]
     depends_on:
       - db

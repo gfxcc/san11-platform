@@ -1,3 +1,7 @@
 .login-wrapper {
     height: 70%;
 }
+
+.header-less-tabs .mat-tab-header {
+    display: none;
+}

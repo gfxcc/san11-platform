@@ -622,6 +622,48 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/sendVerificationCode
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     */
+    sendVerificationCode: (
+      requestData: thisProto.SendVerificationCodeRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Empty>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/sendVerificationCode',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.SendVerificationCodeRequest,
+        responseClass: thisProto.Empty
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/verifyEmail
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.VerifyEmailResponse>>
+     */
+    verifyEmail: (
+      requestData: thisProto.VerifyEmailRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.VerifyEmailResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/verifyEmail',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.VerifyEmailRequest,
+        responseClass: thisProto.VerifyEmailResponse
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/UpdateUser
      *
      * @param requestMessage Request message
@@ -1244,6 +1286,38 @@ export class RouteGuideClient {
   ): Observable<thisProto.ListUsersResponse> {
     return this.$raw
       .listUsers(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/sendVerificationCode
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Empty>
+   */
+  sendVerificationCode(
+    requestData: thisProto.SendVerificationCodeRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Empty> {
+    return this.$raw
+      .sendVerificationCode(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/verifyEmail
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.VerifyEmailResponse>
+   */
+  verifyEmail(
+    requestData: thisProto.VerifyEmailRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.VerifyEmailResponse> {
+    return this.$raw
+      .verifyEmail(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

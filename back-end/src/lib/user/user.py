@@ -1,5 +1,5 @@
 from __future__ import annotations
-import os
+import os, uuid
 import re
 import json
 import logging
@@ -17,6 +17,7 @@ from ..resource import ResourceMixin
 
 
 logger = logging.getLogger(os.path.basename(__file__))
+VERIFICATION_CODES_TABLE = 'verification_codes'
 
 
 class User(ResourceMixin):
@@ -205,3 +206,29 @@ class User(ResourceMixin):
     @staticmethod
     def validate_website(website: str) -> None:
         pass
+
+
+def generate_verification_code(email: str) -> str:
+    '''
+    Generate a verification_code and persist it into DB.
+    '''
+    sql = f'DELETE FROM {VERIFICATION_CODES_TABLE} WHERE email=%(email)s'
+    run_sql_with_param(sql, {
+        'email': email
+    })
+
+    verification_code = str(uuid.uuid1())
+    sql = f'INSERT INTO {VERIFICATION_CODES_TABLE} (email, code) VALUES (%(email)s, %(code)s)'
+    run_sql_with_param(sql, {
+        'email': email,
+        'code': verification_code
+    })
+    return verification_code
+
+def verify_code(email: str, code: str) -> bool:
+    sql = f'SELECT * FROM {VERIFICATION_CODES_TABLE} WHERE email=%(email)s AND code=%(code)s'
+    resp = run_sql_with_param_and_fetch_one(sql, {
+        'email': email,
+        'code': code
+    })
+    return resp != None
