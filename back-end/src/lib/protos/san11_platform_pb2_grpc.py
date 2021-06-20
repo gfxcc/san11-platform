@@ -155,6 +155,16 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.ListUsersRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.ListUsersResponse.FromString,
                 )
+        self.sendVerificationCode = channel.unary_unary(
+                '/routeguide.RouteGuide/sendVerificationCode',
+                request_serializer=san11__platform__pb2.SendVerificationCodeRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Empty.FromString,
+                )
+        self.verifyEmail = channel.unary_unary(
+                '/routeguide.RouteGuide/verifyEmail',
+                request_serializer=san11__platform__pb2.VerifyEmailRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.VerifyEmailResponse.FromString,
+                )
         self.UpdateUser = channel.unary_unary(
                 '/routeguide.RouteGuide/UpdateUser',
                 request_serializer=san11__platform__pb2.UpdateUserRequest.SerializeToString,
@@ -374,6 +384,18 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def sendVerificationCode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def verifyEmail(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def UpdateUser(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -567,6 +589,16 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.listUsers,
                     request_deserializer=san11__platform__pb2.ListUsersRequest.FromString,
                     response_serializer=san11__platform__pb2.ListUsersResponse.SerializeToString,
+            ),
+            'sendVerificationCode': grpc.unary_unary_rpc_method_handler(
+                    servicer.sendVerificationCode,
+                    request_deserializer=san11__platform__pb2.SendVerificationCodeRequest.FromString,
+                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
+            ),
+            'verifyEmail': grpc.unary_unary_rpc_method_handler(
+                    servicer.verifyEmail,
+                    request_deserializer=san11__platform__pb2.VerifyEmailRequest.FromString,
+                    response_serializer=san11__platform__pb2.VerifyEmailResponse.SerializeToString,
             ),
             'UpdateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateUser,
@@ -1092,6 +1124,40 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/listUsers',
             san11__platform__pb2.ListUsersRequest.SerializeToString,
             san11__platform__pb2.ListUsersResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def sendVerificationCode(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/sendVerificationCode',
+            san11__platform__pb2.SendVerificationCodeRequest.SerializeToString,
+            san11__platform__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def verifyEmail(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/verifyEmail',
+            san11__platform__pb2.VerifyEmailRequest.SerializeToString,
+            san11__platform__pb2.VerifyEmailResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

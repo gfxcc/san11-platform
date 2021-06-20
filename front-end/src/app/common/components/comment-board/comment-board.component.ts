@@ -1,6 +1,7 @@
 import { ViewChild, ElementRef, Input, Component, OnInit } from '@angular/core';
 import { Package, Comment, Reply } from "../../../../proto/san11-platform.pb";
 
+import { GetUserRequest } from "../../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { NotificationService } from "../../../common/notification.service";
 import { getFullUrl } from "../../../utils/resrouce_util";
@@ -38,7 +39,7 @@ export class CommentBoardComponent implements OnInit {
     if (this.authorId != null) {
       const localAuthorImage = localStorage.getItem('userImageUrl');
       if (localAuthorImage === null) {
-        this.san11pkService.getUser(this.authorId).subscribe(
+        this.san11pkService.getUser(new GetUserRequest({ userId: this.authorId })).subscribe(
           user => {
             this.authorImage = getFullUrl(user.imageUrl);
           },

@@ -2,7 +2,7 @@ import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router';
 import { GalleryItem, ImageItem, GalleryComponent } from 'ng-gallery';
 import { GlobalConstants } from '../../common/global-constants'
-import { CreateImageRequest, FieldMask, ListPackagesRequest, Package, UpdateUserRequest, User } from "../../../proto/san11-platform.pb";
+import { CreateImageRequest, FieldMask, ListPackagesRequest, Package, UpdatePasswordRequest, UpdateUserRequest, User } from "../../../proto/san11-platform.pb";
 import { getFullUrl } from "../../utils/resrouce_util";
 import { getUserUrl } from "../../utils/user_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
@@ -10,6 +10,7 @@ import { NotificationService } from "../../common/notification.service";
 import { TextInputDialogComponent, TextData } from "../../common/components/text-input-dialog/text-input-dialog.component";
 import { LoadingComponent } from '../../common/components/loading/loading.component'
 
+import { GetUserRequest } from "../../../proto/san11-platform.pb";
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -70,7 +71,7 @@ export class UserDetailComponent implements OnInit {
 
 
   loadPage() {
-    this.san11pkService.getUser(this.user.userId).subscribe(
+    this.san11pkService.getUser(new GetUserRequest({ userId: this.user.userId })).subscribe(
       user => {
         this.user = user;
         this.loadPackageList(user);
@@ -274,7 +275,10 @@ export class PasswordDialog implements OnInit {
 
   onUpdatePasswordForm(form) {
     const password = form.value.password;
-    this.san11Service.updatePassword(this.userId, password).subscribe(
+    this.san11Service.updatePassword(new UpdatePasswordRequest({
+      userId: this.userId,
+      password: password
+    })).subscribe(
       empty => {
         this.notificationService.success('更新密码 成功');
       },

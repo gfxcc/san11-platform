@@ -21,6 +21,7 @@ import { NotificationService } from "../../common/notification.service";
 import { TextInputDialogComponent, TextData } from "../../common/components/text-input-dialog/text-input-dialog.component";
 import { LoadingComponent } from '../../common/components/loading/loading.component'
 import { EventEmiterService } from "../../service/event-emiter.service";
+import { GetUserRequest } from "../../../proto/san11-platform.pb";
 
 import { UserDetailComponent } from "../../account-management/user-detail/user-detail.component";
 
@@ -79,8 +80,8 @@ export class PackageDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public san11pkService: San11PlatformServiceService,
-    private dialog: MatDialog,
     private notificationService: NotificationService,
+    private dialog: MatDialog,
     private _eventEmiter: EventEmiterService,
     private cd: ChangeDetectorRef,
     private uploadService: UploadService,
@@ -431,7 +432,7 @@ export class PackageDetailComponent implements OnInit {
       this.images.push(new ImageItem({ src: '../../../assets/images/upload.jpg', thumb: '../../../assets/images/upload.jpg' }));
     }
 
-    this.san11pkService.getUser(this.package.authorId).subscribe(
+    this.san11pkService.getUser(new GetUserRequest({ userId: this.package.authorId })).subscribe(
       user => {
         this.author = user;
         this.authorImageUrl = getFullUrl(this.author.imageUrl);

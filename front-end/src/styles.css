@@ -127,11 +127,12 @@ body {
     padding: 40px 40px 50px;
 }
 
-.login-wrapper .mat-stroked-button {
+
+/* .login-wrapper .mat-stroked-button {
     border: 1px solid currentColor;
     line-height: 54px;
     background: #FFF7FA;
-}
+} */
 
 .login-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
     padding: 0.8375em 0;
@@ -184,4 +185,17 @@ body {
 
 .shadow-border {
     box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.input-field {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.input:valid {
+    color: black;
+}
+
+.input:invalid {
+    color: orangered;
 }

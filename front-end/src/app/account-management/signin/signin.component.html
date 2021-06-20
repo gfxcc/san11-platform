@@ -1,26 +1,127 @@
 <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
 
+
+
     <mat-card class="box">
-        <mat-card-header>
-            <mat-card-title>登陆</mat-card-title>
-        </mat-card-header>
 
-        <form class="example-form" #signInForm='ngForm' (ngSubmit)="onSignIn(signInForm)">
-            <mat-card-content>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="用户名" autocomplete="username" required ngModel name="username">
-                </mat-form-field>
+        <mat-tab-group #tagGroup [(selectedIndex)]="selectedTabIndex" class="header-less-tabs">
+            <mat-tab label="login">
+                <mat-card-header>
+                    <mat-card-title>登陆</mat-card-title>
+                </mat-card-header>
 
-                <mat-form-field class="example-full-width">
-                    <input matInput type="password" placeholder="密码" autocomplete="current-password" required ngModel name="password">
-                </mat-form-field>
-            </mat-card-content>
-            <div style="display:flex;">
-                <button mat-button type="button" color="primary" (click)="onForgetPasswordClick()">忘记密码?</button>
-                <span class="example-spacer"></span>
-                <button mat-raised-button type="submit" color="primary">登陆</button>
-            </div>
-        </form>
+                <form class="example-form" #signInForm='ngForm' (ngSubmit)="onSignIn(signInForm)">
+                    <mat-card-content>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="用户名" autocomplete="username" required ngModel name="username">
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="password" placeholder="密码" autocomplete="current-password" required ngModel name="password">
+                        </mat-form-field>
+                    </mat-card-content>
+                    <div style="display:flex;">
+                        <button mat-button type="button" color="primary" (click)="onForgetPasswordClick()">忘记密码?</button>
+                        <span class="example-spacer"></span>
+                        <button mat-raised-button type="submit" color="primary">登陆</button>
+                    </div>
+                </form>
+            </mat-tab>
+            <mat-tab label="forget-password">
+                <mat-card-header>
+                    <mat-card-title>找回账号</mat-card-title>
+                </mat-card-header>
+
+                <mat-vertical-stepper linear #stepper>
+                    <mat-step [stepControl]="basicInfoForm" state="account_box">
+                        <ng-template matStepLabel>1. 基本信息</ng-template>
+                        <ng-template matStepContent>
+
+                            <form class="example-form" [formGroup]="basicInfoForm" (ngSubmit)="onBasicInfoNext(stepper)">
+                                <mat-card-content>
+                                    <mat-form-field class="input-field">
+                                        <input matInput autocomplete="username" placeholder="用户名" autocomplete="off" formControlName="username">
+                                        <mat-error *ngIf="username.errors?.minlength && username.touched" align="end">
+                                            至少需要6个字符
+                                        </mat-error>
+                                        <mat-error *ngIf="username.errors?.maxlength && username.touched" align="end">
+                                            不得超过32个字符
+                                        </mat-error>
+                                        <mat-error *ngIf="username.errors?.pattern && username.touched" align="end">
+                                            不能使用 空格
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="input-field">
+                                        <input matInput type="email" autocomplete="email" placeholder="邮箱" formControlName="email">
+                                        <mat-error *ngIf="email.errors?.email && email.touched" align="end">
+                                            格式不正确
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-card-content>
+                                <button mat-button [disabled]="!basicInfoForm.valid" type="submit">下一步</button>
+                            </form>
+
+                        </ng-template>
+                    </mat-step>
+                    <mat-step [stepControl]="emailVerificationForm" state="email">
+                        <ng-template matStepLabel>2. 验证邮箱</ng-template>
+                        <ng-template matStepContent>
+                            <div class="example-form">
+                                <p>
+                                    我们发送了一封邮件到 {{email.value}}, 请输入其中的 验证码
+                                </p>
+                                <form class="example-form" [formGroup]="emailVerificationForm" (ngSubmit)="onVerifyEmail(verifyForm)">
+                                    <mat-form-field appearance="standard" style="width: 100%;">
+                                        <mat-label>验证码</mat-label>
+                                        <input matInput autocomplete="off" formControlName="verificationCode">
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                            <div style="display: flex;">
+                                <button mat-button matStepperPrevious>上一步</button>
+                                <button mat-button [disabled]="!this.emailVerificationForm.valid" (click)="onValidateEmail(stepper)">下一步</button>
+                                <span class="example-spacer"></span>
+                                <button mat-stroked-button [disabled]="this.timeToResend > 0" color="primary" (click)="onResendVerificationCodeClick()">重新发送 {{timeToResendText}}</button>
+                            </div>
+                        </ng-template>
+                    </mat-step>
+                    <mat-step state="password">
+                        <ng-template matStepLabel>3. 修改密码</ng-template>
+                        <ng-template matStepContent>
+                            <form class="example-form" [formGroup]="resetPasswordForm" (ngSubmit)="onVerifyEmail()">
+                                <mat-form-field appearance="standard" style="width: 100%;">
+                                    <mat-label>新密码</mat-label>
+                                    <input matInput [type]="hidePassword ? 'password' : 'text'" autocomplete="off" formControlName="password">
+
+                                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+
+                                </mat-form-field>
+                            </form>
+                            <button mat-button matStepperPrevious>上一步</button>
+                            <button mat-raised-button color="primary" (click)="onUpdatePassword()">修改密码</button>
+                        </ng-template>
+                    </mat-step>
+
+                    <!-- Icon overrides. -->
+                    <ng-template matStepperIcon="account_box">
+                        <mat-icon>account_box</mat-icon>
+                    </ng-template>
+                    <ng-template matStepperIcon="email">
+                        <mat-icon>email</mat-icon>
+                    </ng-template>
+                    <ng-template matStepperIcon="password">
+                        <mat-icon>password</mat-icon>
+                    </ng-template>
+                </mat-vertical-stepper>
+
+                <button mat-button (click)="selectedTabIndex=0">取消</button>
+
+            </mat-tab>
+        </mat-tab-group>
+
     </mat-card>
 
 </div>
