@@ -24,9 +24,9 @@ DB_CONN = DbConnect()
 @retry(Exception, tries=2)
 def run_sql_with_param(sql: str, param: Dict) -> List[Tuple]:
     try:
-        with DB_CONN.get_conn() as db_conn:
-            with db_conn.cursor() as cursor:
-                cursor.execute(sql, param)
+        db_conn = DB_CONN.get_conn()
+        with db_conn.cursor() as cursor:
+            cursor.execute(sql, param)
     except psycopg2.InterfaceError:
         DB_CONN.reconnect()
         raise
@@ -35,10 +35,10 @@ def run_sql_with_param(sql: str, param: Dict) -> List[Tuple]:
 @retry(Exception, tries=2)
 def run_sql_with_param_and_fetch_all(sql: str, param: Dict) -> List[Tuple]:
     try:
-        with DB_CONN.get_conn() as db_conn:
-            with db_conn.cursor() as cursor:
-                cursor.execute(sql, param)
-                resp = cursor.fetchall()
+        db_conn = DB_CONN.get_conn()
+        with db_conn.cursor() as cursor:
+            cursor.execute(sql, param)
+            resp = cursor.fetchall()
         return resp
     except psycopg2.InterfaceError:
         DB_CONN.reconnect()
@@ -48,10 +48,10 @@ def run_sql_with_param_and_fetch_all(sql: str, param: Dict) -> List[Tuple]:
 @retry(Exception, tries=2)
 def run_sql_with_param_and_fetch_one(sql: str, param: Dict) -> List[Tuple]:
     try:
-        with DB_CONN.get_conn() as db_conn:
-            with db_conn.cursor() as cursor:
-                cursor.execute(sql, param)
-                resp = cursor.fetchone()
+        db_conn = DB_CONN.get_conn()
+        with db_conn.cursor() as cursor:
+            cursor.execute(sql, param)
+            resp = cursor.fetchone()
         return resp
     except psycopg2.InterfaceError:
         DB_CONN.reconnect()
