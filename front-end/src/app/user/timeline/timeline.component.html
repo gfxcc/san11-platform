@@ -9,7 +9,7 @@
         <ng-template pTemplate="content" let-event>
             <p-card [header]="event.displayName" [subheader]="event.createTime">
                 <img *ngIf="event.image" [src]="event.image" width="200" class="p-shadow-2" />
-                <p>{{event.description}}</p>
+                <p *ngIf="event.description">{{event.description}}</p>
                 <!-- <button pButton label="Read more" class="p-button-text"></button> -->
             </p-card>
         </ng-template>
