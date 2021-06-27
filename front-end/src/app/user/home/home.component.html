@@ -1,0 +1,23 @@
+<div class="top">
+    <div class="info-group">
+        <div class="basic-info">
+            <button mat-button (click)="onAvatarClick()" class="author-image">
+                <img [src]="userImageUrl" class="author-image">
+            </button>
+            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadUserAvatar(imageInput)">
+            <div style="display: flex; flex-direction: column; justify-content: center; height: 80px;">
+                <div class="title">{{user.username}}</div>
+                <div>{{user.email}}</div>
+            </div>
+
+            <span class="example-spacer"></span>
+        </div>
+
+    </div>
+    <mat-tab-group class="tab-groups" mat-align-tabs="center" (selectedTabChange)="selectedTabChange($event)">
+        <mat-tab *ngFor="let tab of tabs" [label]="tab.label" [disabled]="tab.disabled"></mat-tab>
+    </mat-tab-group>
+</div>
+<div class="bottom">
+    <router-outlet></router-outlet>
+</div>

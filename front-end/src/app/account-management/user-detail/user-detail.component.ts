@@ -69,6 +69,10 @@ export class UserDetailComponent implements OnInit {
     this.loadPage();
   }
 
+  get userImageUrl() {
+    return getFullUrl(this.user.imageUrl);
+  }
+
 
   loadPage() {
     this.san11pkService.getUser(new GetUserRequest({ userId: this.user.userId })).subscribe(
@@ -131,24 +135,6 @@ export class UserDetailComponent implements OnInit {
     if (confirm('要更换头像吗?')) {
       this.imageInputElement.nativeElement.click();
     } else {
-      // if (!confirm('确定要删除头像吗?')) {
-      //   return;
-      // }
-
-      // const updatedUser = new User({
-      //   userId: this.user.userId,
-      //   imageUrl: 'empty'
-      // });
-      // this.san11pkService.updateUser(updatedUser).subscribe(
-      //   user => {
-      //     this.setUpUserImage('');
-      //     this.user = user;
-      //     this.notificationService.success('删除头像 成功');
-      //   },
-      //   error => {
-      //     this.notificationService.warn('删除头像 失败:' + error.statusMessage);
-      //   }
-      // );
 
     }
   }

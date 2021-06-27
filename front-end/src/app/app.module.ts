@@ -38,6 +38,8 @@ import { ReplyCardComponent } from './common/components/comment-card/reply-card/
 import { MessageBoardComponent } from './dashboards/message-board/message-board.component';
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
 import { SharedModule } from './shared/shared.module';
+import { BasicInfoComponent } from './account-management/user-detail/basic-info/basic-info.component';
+import { UserModule } from "./user/user.module";
 
 
 @NgModule({
@@ -63,6 +65,7 @@ import { SharedModule } from './shared/shared.module';
     ReplyCardComponent,
     MessageBoardComponent,
     AdminMessageBoardComponent,
+    BasicInfoComponent,
   ],
   imports: [
     GrpcCoreModule.forRoot(),
@@ -79,7 +82,8 @@ import { SharedModule } from './shared/shared.module';
     HttpClientModule,
     GalleryModule,
     CKEditorModule,
-    SharedModule
+    SharedModule,
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

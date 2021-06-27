@@ -44,15 +44,18 @@ service RouteGuide {
   rpc SignIn(SignInRequest) returns (SignInResponse) {}
   rpc SignOut(SignOutRequest) returns (Status) {}
   rpc GetUser(GetUserRequest) returns (User) {}
-  rpc listUsers(ListUsersRequest) returns (ListUsersResponse) {}
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
 
   // User related utilities
-  rpc sendVerificationCode(SendVerificationCodeRequest) returns (Empty) {}
-  rpc verifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
-  rpc verifyNewUser(VerifyNewUserRequest) returns(Status) {}
+  rpc SendVerificationCode(SendVerificationCodeRequest) returns (Empty) {}
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
+  rpc VerifyNewUser(VerifyNewUserRequest) returns(Status) {}
 
   rpc UpdateUser(UpdateUserRequest) returns (User) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
+
+  // Activities reltead
+  rpc ListActivities(ListActivitiesRequest) returns (ListActivitiesResponse) {}
 
   // Tag related
   rpc CreateTag(CreateTagRequest) returns (Tag) {}
@@ -64,7 +67,7 @@ service RouteGuide {
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
 
   // Auth
-  rpc GetAuth(GetAuthRequest) returns (Auth) {}
+//   rpc GetAuth(GetAuthRequest) returns (Auth) {}
 }
 
 // package related
@@ -313,6 +316,20 @@ message VerifyNewUserResponse {
     string message = 2;
 }
 
+// activities related
+message ListActivitiesRequest {
+    int64 page_size = 1;
+    string page_token = 2;
+
+    int64 user_id = 3;
+}
+
+message ListActivitiesResponse {
+    string next_page_token = 1;
+
+    repeated Activity activities = 2;
+}
+
 // tag related
 message CreateTagRequest {
     Tag tag = 1;
@@ -340,15 +357,6 @@ message GetStatisticRequest {
 
 message GetAdminMessageRequest {
 
-}
-
-message GetAuthRequest {
-    Action action = 1;
-
-    enum Action {
-        UNSPECIFIED = 0;
-        UPLOAD_MOD = 1;
-    }
 }
 
 
@@ -463,7 +471,56 @@ message Auth {
     string oauth2_token = 1;
 }
 
+message Activity {
+    int64 activity_id = 1;
+    int64 user_id = 2;
+    string create_time = 3;
+    Action action = 4;
+    ResourceView resource_view = 5;
+}
+
+message ResourceView {
+    string name = 1;
+    string display_name = 2;
+    string description = 3;
+    string image_url = 4;
+}
+
 // Utilities
 message FieldMask {
     repeated string paths = 1;
 }
+
+// enum RESOURCE {
+//     UNDEFINED_RESOURCE_TYPE = 0;
+
+//     // first class resources
+//     PACKAGE = 1;
+//     BINARY = 2;
+
+//     // comment system
+//     COMMENT = 11;
+//     REPLY = 12;
+
+//     // account
+//     USER = 21;
+// }
+
+enum Action {
+    UNDEFINED_ACTION = 0;
+
+    CREATE = 1;
+    DELETE = 2;
+    UPDATE = 3;
+    SELECT = 4;
+
+    // social
+    LIKE = 11;
+    UPVOTE = 12;
+    SUBSCRIBE = 13;
+
+    // misc
+    DOWNLOAD = 21;
+
+}
+

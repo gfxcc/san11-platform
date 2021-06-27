@@ -1,8 +1,4 @@
-import os
-import time
-import logging
-import sys
-import re
+import os, sys, logging, time, re
 import grpc
 
 from typing import List
@@ -13,8 +9,8 @@ from lib.protos import san11_platform_pb2_grpc
 
 from handler import PackageHandler, BinaryHandler, ImageHandler, \
                     CommentHandler, ReplyHandler, UserHandler, \
-                    GeneralHandler, TagHandler, AdminHandler, \
-                    AuthHandler
+                    ActivityHandler, GeneralHandler, TagHandler, \
+                    AdminHandler, AuthHandler
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -28,6 +24,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.comment_handler = CommentHandler()
         self.reply_handler = ReplyHandler()
         self.user_handler = UserHandler()
+        self.activity_handler = ActivityHandler()
         self.general_handler = GeneralHandler()
         self.tag_handler = TagHandler()
         self.admin_handler = AdminHandler()
@@ -118,17 +115,21 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def GetUser(self, request, context):
         return self.user_handler.get_user(request, context)
 
-    def listUsers(self, request, context):
+    def ListUsers(self, request, context):
         return self.user_handler.list_users(request, context)
 
-    def sendVerificationCode(self, request, context):
+    def SendVerificationCode(self, request, context):
         return self.user_handler.send_verification_code(request, context)
 
-    def verifyEmail(self, request, context):
+    def VerifyEmail(self, request, context):
         return self.user_handler.verify_email(request, context)
     
-    def verifyNewUser(self, request, context):
+    def VerifyNewUser(self, request, context):
         return self.user_handler.verify_new_user(request, context)
+
+    # activities
+    def ListActivities(self, request, context):
+        return self.activity_handler.list_activities(request, context)
 
     # general
     def GetStatistic(self, request, context):

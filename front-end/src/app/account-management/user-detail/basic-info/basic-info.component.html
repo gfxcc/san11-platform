@@ -1,0 +1,43 @@
+<!-- <form [formGroup]="basicInfoForm" (ngSubmit)="onUpdateBasicInfo()">
+    <mat-card-content>
+        <mat-form-field class="input-field">
+            <input matInput placeholder="用户名" autocomplete="off" formControlName="username">
+            <mat-error *ngIf="username.errors?.minlength && username.touched" align="end">
+                至少需要6个字符
+            </mat-error>
+            <mat-error *ngIf="username.errors?.maxlength && username.touched" align="end">
+                不得超过32个字符
+            </mat-error>
+            <mat-error *ngIf="username.errors?.pattern && username.touched" align="end">
+                不能使用 空格
+            </mat-error>
+            <mat-error *ngIf="username.errors?.invalidNewUser && username.touched" align="end">
+                {{username.errors.invalidNewUser}}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="input-field">
+            <input matInput type="password" placeholder="密码" autocomplete="off" formControlName="password">
+            <mat-error *ngIf="password.errors?.minlength && password.touched" align="end">
+                至少需要6个字符
+            </mat-error>
+            <mat-error *ngIf="password.errors?.maxlength && password.touched" align="end">
+                不得超过32个字符
+            </mat-error>
+            <mat-error *ngIf="password.errors?.pattern && password.touched" align="end">
+                只能包含 英文字母大小写 数字 - _
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="input-field">
+            <input matInput type="email" autocomplete="email" placeholder="邮箱" formControlName="email">
+            <mat-error *ngIf="email.errors?.email && email.touched" align="end">
+                格式不正确
+            </mat-error>
+            <mat-error *ngIf="email.errors?.invalidNewUser && email.touched" align="end">
+                {{email.errors.invalidNewUser}}
+            </mat-error>
+        </mat-form-field>
+    </mat-card-content>
+    <button mat-button [disabled]="!basicInfoForm.valid" type="submit">更新</button>
+</form> -->

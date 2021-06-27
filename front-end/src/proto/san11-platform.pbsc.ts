@@ -601,7 +601,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/listUsers
+     * Unary RPC for /routeguide.RouteGuide/ListUsers
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -614,7 +614,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/listUsers',
+        path: '/routeguide.RouteGuide/ListUsers',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListUsersRequest,
@@ -622,7 +622,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/sendVerificationCode
+     * Unary RPC for /routeguide.RouteGuide/SendVerificationCode
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -635,7 +635,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/sendVerificationCode',
+        path: '/routeguide.RouteGuide/SendVerificationCode',
         requestData,
         requestMetadata,
         requestClass: thisProto.SendVerificationCodeRequest,
@@ -643,7 +643,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/verifyEmail
+     * Unary RPC for /routeguide.RouteGuide/VerifyEmail
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -656,7 +656,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/verifyEmail',
+        path: '/routeguide.RouteGuide/VerifyEmail',
         requestData,
         requestMetadata,
         requestClass: thisProto.VerifyEmailRequest,
@@ -664,7 +664,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/verifyNewUser
+     * Unary RPC for /routeguide.RouteGuide/VerifyNewUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -677,7 +677,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/verifyNewUser',
+        path: '/routeguide.RouteGuide/VerifyNewUser',
         requestData,
         requestMetadata,
         requestClass: thisProto.VerifyNewUserRequest,
@@ -724,6 +724,27 @@ export class RouteGuideClient {
         requestMetadata,
         requestClass: thisProto.UpdatePasswordRequest,
         responseClass: thisProto.Empty
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/ListActivities
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListActivitiesResponse>>
+     */
+    listActivities: (
+      requestData: thisProto.ListActivitiesRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListActivitiesResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ListActivities',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListActivitiesRequest,
+        responseClass: thisProto.ListActivitiesResponse
       });
     },
     /**
@@ -829,27 +850,6 @@ export class RouteGuideClient {
         requestMetadata,
         requestClass: thisProto.GetAdminMessageRequest,
         responseClass: thisProto.AdminMessage
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/GetAuth
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Auth>>
-     */
-    getAuth: (
-      requestData: thisProto.GetAuthRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Auth>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/GetAuth',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.GetAuthRequest,
-        responseClass: thisProto.Auth
       });
     }
   };
@@ -1295,7 +1295,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/listUsers
+   * Unary RPC for /routeguide.RouteGuide/ListUsers
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1311,7 +1311,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/sendVerificationCode
+   * Unary RPC for /routeguide.RouteGuide/SendVerificationCode
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1327,7 +1327,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/verifyEmail
+   * Unary RPC for /routeguide.RouteGuide/VerifyEmail
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1343,7 +1343,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/verifyNewUser
+   * Unary RPC for /routeguide.RouteGuide/VerifyNewUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1387,6 +1387,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Empty> {
     return this.$raw
       .updatePassword(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/ListActivities
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListActivitiesResponse>
+   */
+  listActivities(
+    requestData: thisProto.ListActivitiesRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListActivitiesResponse> {
+    return this.$raw
+      .listActivities(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -1467,22 +1483,6 @@ export class RouteGuideClient {
   ): Observable<thisProto.AdminMessage> {
     return this.$raw
       .getAdminMessage(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/GetAuth
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Auth>
-   */
-  getAuth(
-    requestData: thisProto.GetAuthRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Auth> {
-    return this.$raw
-      .getAuth(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

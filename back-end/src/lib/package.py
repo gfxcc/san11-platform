@@ -1,5 +1,5 @@
 from __future__ import annotations
-import os
+import os, re
 import logging
 import json
 import shutil
@@ -18,12 +18,13 @@ from .category import Category
 from .binary import Binary
 from .time_util import get_datetime_format, get_timezone, get_now, datetime_to_str, \
                         get_age
-from .resource import get_resource_path
 from .query import Query
 from .url import Url
 from .comment.comment import Comment
 from .resource import ResourceMixin
 from .tag import Tag
+from .resource import get_resource_path, ResourceView
+from .activity import TrackLifecycle
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -38,15 +39,15 @@ class Status(Enum):
     DELETED = 5 # Only visiable to admin
 
 
-class Package(ResourceMixin):
+class Package(ResourceMixin, TrackLifecycle):
     DEFAULT_STATUS_FOR_NEW_PACKAGE = Status.UNDER_REVIEW
-    def __init__(self, package_id: int, name: str, description: str,
+    def __init__(self, package_id: int, package_name: str, description: str,
                  create_time: datetime, category_id: int,
                  status: int, author_id: int,
                  image_urls: List[str], download_count: int, 
                  tag_ids: List[int], update_time: datetime) -> None:
         self.package_id = package_id
-        self.name = name
+        self.package_name = package_name
         self.description = description
         self.create_time = create_time.replace(tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
         self.category_id = category_id
@@ -59,7 +60,28 @@ class Package(ResourceMixin):
     
     @property
     def url(self):
+        '''
+        [DEPRECATED]
+        Please use `name`.
+        '''
         return f'categories/{self.category_id}/packages/{self.package_id}'
+
+    @property
+    def name(self):
+        return f'categories/{self.category_id}/packages/{self.package_id}'
+
+    @property
+    def id(self) -> int:
+        return self.package_id
+    
+    @property
+    def view(self) -> ResourceView:
+        return ResourceView(
+            name=self.name,
+            display_name=self.package_name,
+            description=self.description,
+            image_url=self.image_urls[0] if self.image_urls else None
+        )
 
     @property
     def image_urls(self):
@@ -98,7 +120,7 @@ class Package(ResourceMixin):
     def __str__(self):
         d = {
             'package_id': self.package_id,
-            'name': self.name,
+            'package_name': self.package_name,
             'description': self.description,
             'create_time': datetime_to_str(self.create_time),
             'category': Category.from_category_id(self.category_id).name,
@@ -120,12 +142,16 @@ class Package(ResourceMixin):
         return ['package_id', 'name', 'description', 'create_time',
                 'category_id', 'status', 'author_id', 'image_urls',
                 'download_count', 'tag_ids', 'update_time']
+            
+    @classmethod
+    def name_pattern(cls) -> str:
+        return r'categories/[0-9]+/packages/[0-9]+'
 
     @classmethod
     def from_pb(cls, pb_obj: san11_platform_pb2.Package):
         return cls(
             package_id=pb_obj.package_id,
-            name=pb_obj.name,
+            package_name=pb_obj.name,
             description=pb_obj.description,
             create_time=pb_obj.create_time or get_now(),
             category_id=pb_obj.category_id,
@@ -145,8 +171,6 @@ class Package(ResourceMixin):
             item.description = ''
         return ret
 
-    
-
     @classmethod
     def search(cls, page_size: int, page_token: str, query: str) -> List[Package]:
         sql = f'SELECT {get_db_fields_str(cls.db_fields())} FROM {cls.db_table()} '\
@@ -157,9 +181,11 @@ class Package(ResourceMixin):
 
     def _update_db_params(self, params: Dict) -> Dict:
         params['status'] = self.status.value
+        # TODO: rename db field name to package_name
+        params['name'] = self.package_name
         return super()._update_db_params(params)
 
-    def delete(self) -> None:
+    def delete(self, user_id: int) -> None:
         for image_url in self.image_urls:
             try:
                 Image.from_url(image_url).delete()
@@ -168,19 +194,18 @@ class Package(ResourceMixin):
 
         for binary in Binary.list(0, '', package_id=self.package_id):
             try:
-                binary.delete()
+                binary.delete(user_id=user_id)
             except Exception as err:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
 
-        for comment in Comment.list_comment(self.url):
+        for comment in Comment.list(0, '', parent=self.name):
             try:
-                comment.delete()
+                comment.delete(user_id=user_id)
             except Exception as err:
                 logger.error(f'Failed to delete {comment} under {self}: {err}')
 
-        sql = f'DELETE FROM {self.db_table()} WHERE package_id=%(package_id)s'
-        run_sql_with_param(sql, {'package_id': self.package_id})
+        super().delete(user_id=user_id)
 
         try:
             # To remove the entire dir
@@ -191,7 +216,7 @@ class Package(ResourceMixin):
     def to_pb(self) -> san11_platform_pb2.Package:
         return san11_platform_pb2.Package(
             package_id=self.package_id,
-            name=self.name,
+            name=self.package_name,
             description=self.description,
             create_time=get_age(self.create_time),
             category_id=self.category_id,

@@ -6,16 +6,17 @@ from retry import retry
 from typing import List, Tuple, Dict
 
 
-
 class DbConnect:
     def __init__(self):
         self.conn = psycopg2.connect(host="db", database=os.environ['DB_NAME'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'])
+        self.conn.autocommit = True
 
     def get_conn(self):
         return self.conn    
     
     def reconnect(self):
         self.conn = psycopg2.connect(host="db", database=os.environ['DB_NAME'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'])
+        self.conn.autocommit = True
     
 
 DB_CONN = DbConnect()

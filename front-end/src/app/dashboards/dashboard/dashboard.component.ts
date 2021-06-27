@@ -37,26 +37,40 @@ export class DashboardComponent implements OnInit {
     //   }
     // );
 
-    var obsComb = combineLatest(this.route.params, this.route.queryParams,
-      (params, qparams) => ({ params, qparams }));
+
+    // this.route.parent.params.subscribe(params => {
+    //   this.userId = params.userId;
+    //   this.loadPackageList(this.userId);
+    // });
+
+    var obsComb = combineLatest(this.route.params, this.route.queryParams, this.route.parent.params,
+      (params, qparams, parentParams) => ({ params, qparams, parentParams }));
 
     obsComb.subscribe(ap => {
       const categoryId = ap.params['categoryId'];
       const tagId = ap.qparams['tagId'];
       const query = ap.qparams['query']
+      const userId = ap.parentParams.userId;
 
       if (query != undefined) {
         this.searchPackages(query);
-      } else {
-        this.loadPackages(ap.params['categoryId'], ap.qparams['tagId']);
+      } else if (categoryId != undefined) {
+        this.loadPackages(new ListPackagesRequest({
+          categoryId: ap.params['categoryId'],
+          tagId: ap.qparams['tagId']
+        }));
+      } else if (userId != undefined) {
+        this.loadPackages(new ListPackagesRequest({
+          authorId: userId
+        }));
       }
     });
   }
 
-  loadPackages(categoryId: string, tagId: string): void {
-    this._eventEmiter.sendMessage({ categoryId: categoryId });
+  loadPackages(request: ListPackagesRequest): void {
+    this._eventEmiter.sendMessage({ categoryId: request.categoryId });
 
-    this.san11pkService.listPackages(new ListPackagesRequest({ categoryId: categoryId, tagId: tagId })).subscribe(
+    this.san11pkService.listPackages(request).subscribe(
       resp => {
         this.packages = resp.packages
       },

@@ -12,27 +12,33 @@ INSERT INTO categories VALUES (DEFAULT, 'Mod Maker tool');
 
 
 CREATE TABLE binaries (
-    binary_id SERIAL PRIMARY KEY,
+    binary_id INT NOT NULL,
     package_id INT NOT NULL,
-    url TEXT,
+    url TEXT, /*DEPRECATED*/
     download_count INT DEFAULT 0,
     version TEXT NOT NULL,
     description TEXT NOT NULL,
-    create_timestamp TIMESTAMP,
+    create_time TIMESTAMP,
     tag TEXT,
     download_method TEXT,
-    size TEXT
+    size TEXT,
+    name TEXT,
+
+    PRIMARY KEY (binary_id, package_id, create_time)
 );
 
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     username TEXT NOT NULL,
     password TEXT NOT NULL,
     email TEXT NOT NULL,
     user_type TEXT NOT NULL,
-    create_time TIMESTAMP,
+    create_timestamp TIMESTAMP,
     image_url TEXT,
-    website TEXT
+    website TEXT,
+    name TEXT,
+
+    PRIMARY KEY (user_id, create_timestamp)
 );
 INSERT INTO users VALUES (DEFAULT, 'admin', 'admin', 'a@a.com', 'admin', current_timestamp, NULL, NULL);
 INSERT INTO users VALUES (DEFAULT, 'yong', 'yong', 'a@a.com', 'regular', current_timestamp, NULL, NULL);
@@ -44,8 +50,8 @@ CREATE TABLE sessions (
 );
 
 CREATE TABLE packages (
-    package_id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
+    package_id INT NOT NULL,
+    package_name TEXT NOT NULL,
     description TEXT NOT NULL,
     create_time TIMESTAMP,
     category_id INT NOT NULL REFERENCES categories(category_id),
@@ -54,19 +60,24 @@ CREATE TABLE packages (
     image_urls TEXT[],
     download_count INT DEFAULT 0,
     tag_ids INT[],
-    update_time TIMESTAMP
+    update_time TIMESTAMP,
+    name TEXT,
+
+    PRIMARY KEY (category_id, package_id, create_time)
 );
-INSERT INTO packages VALUES (DEFAULT, '【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
-INSERT INTO packages VALUES (DEFAULT, '【测试】战法连携', '战法可以互相触发。顺序 枪 戟 弩', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
-INSERT INTO packages VALUES (DEFAULT, '【测试】功绩解锁特解', '随着功绩提升可以解锁新的特级 功绩等级 10000， 20000， 30000', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
-INSERT INTO packages VALUES (DEFAULT, '【测试】AI不攻击关港', 'n/a', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
-INSERT INTO packages VALUES (DEFAULT, '【测试】小兵系统', '自动拔擢小兵成为武将', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
-INSERT INTO packages VALUES (DEFAULT, '【测试】UI现实粮草', '', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
+-- INSERT INTO packages VALUES (DEFAULT, '【测试】战争迷雾', '提供战争迷雾。城市，关港5格范围内提供视野。城塞2格范围内提供视野', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
+-- INSERT INTO packages VALUES (DEFAULT, '【测试】战法连携', '战法可以互相触发。顺序 枪 戟 弩', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
+-- INSERT INTO packages VALUES (DEFAULT, '【测试】功绩解锁特解', '随着功绩提升可以解锁新的特级 功绩等级 10000， 20000， 30000', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
+-- INSERT INTO packages VALUES (DEFAULT, '【测试】AI不攻击关港', 'n/a', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
+-- INSERT INTO packages VALUES (DEFAULT, '【测试】小兵系统', '自动拔擢小兵成为武将', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
+-- INSERT INTO packages VALUES (DEFAULT, '【测试】UI现实粮草', '', current_timestamp, 1, 1, 1, NULL, 0, NULL, current_timestamp);
 
 CREATE TABLE statistics (
-    date DATE PRIMARY KEY,
+    date DATE NOT NULL,
     visit_count INT DEFAULT 0,
-    download_count INT DEFAULT 0
+    download_count INT DEFAULT 0,
+
+    PRIMARY KEY (date)
 );
 
 CREATE TABLE comments (
@@ -77,8 +88,9 @@ CREATE TABLE comments (
     text TEXT NOT NULL,
     author_id INT NOT NULL,
     upvote_count INT DEFAULT 0,
+    name TEXT,
 
-    PRIMARY KEY (parent, comment_id)
+    PRIMARY KEY (comment_id)
 );
 
 CREATE TABLE replies (
@@ -89,24 +101,27 @@ CREATE TABLE replies (
     text TEXT NOT NULL,
     author_id INT NOT NULL,
     upvote_count INT DEFAULT 0,
+    name TEXT,
 
     PRIMARY KEY (comment_id, reply_id)
 );
 
 CREATE TABLE activities (
+    activity_id INT NOT NULL,
     user_id INT NOT NULL,
-    resource TEXT NOT NULL,
-    action TEXT NOT NULL,
     create_time TIMESTAMP,
+    action INT NOT NULL,
+    resource_name TEXT NOT NULL,
 
-    PRIMARY KEY (user_id, resource, action)
+    PRIMARY KEY (activity_id, user_id, create_time, resource_name)
 );
 
 CREATE TABLE tags (
     tag_id INT NOT NULL,
-    name TEXT NOT NULL,
+    tag_name TEXT NOT NULL,
     category_id INT NOT NULL,
     mutable BOOLEAN NOT NULL,
+    name TEXT, 
 
     PRIMARY KEY (name, category_id)
 );

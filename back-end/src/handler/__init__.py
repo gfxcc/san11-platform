@@ -4,6 +4,7 @@ from .image import ImageHandler
 from .comment import CommentHandler
 from .reply import ReplyHandler
 from .user import UserHandler
+from .activity import ActivityHandler
 from .general import GeneralHandler
 from .tag import TagHandler
 from .admin import AdminHandler

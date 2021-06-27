@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
     private notificationService: NotificationService,
     private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
-    public router: Router,
+    private router: Router,
     private _eventEmiter: EventEmiterService,
   ) { }
 
