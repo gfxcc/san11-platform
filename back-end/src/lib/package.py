@@ -79,7 +79,8 @@ class Package(ResourceMixin, TrackLifecycle):
         return ResourceView(
             name=self.name,
             display_name=self.package_name,
-            description=self.description,
+            # TODO: improve description
+            description=None,
             image_url=self.image_urls[0] if self.image_urls else None
         )
 

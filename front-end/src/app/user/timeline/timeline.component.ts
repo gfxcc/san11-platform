@@ -28,33 +28,7 @@ export class TimelineComponent implements OnInit {
       this.load_activities();
     });
 
-    this.events = [
-      {
-        status: "Ordered",
-        date: "15/10/2020 10:30",
-        icon: PrimeIcons.SHOPPING_CART,
-        color: "#9C27B0",
-        image: "game-controller.jpg"
-      },
-      {
-        status: "Processing",
-        date: "15/10/2020 14:00",
-        icon: PrimeIcons.COG,
-        color: "#673AB7"
-      },
-      {
-        status: "Shipped",
-        date: "15/10/2020 16:15",
-        icon: PrimeIcons.ENVELOPE,
-        color: "#FF9800"
-      },
-      {
-        status: "Delivered",
-        date: "16/10/2020 10:00",
-        icon: PrimeIcons.CHECK,
-        color: "#607D8B"
-      }
-    ];
+    this.events = [];
   }
 
   load_activities() {
@@ -62,11 +36,9 @@ export class TimelineComponent implements OnInit {
       userId: this.userId
     })).subscribe(
       (resp: ListActivitiesResponse) => {
-        console.log(resp.activities);
         this.events = resp.activities.map((activity: Activity) => {
           return this.activityToEvent(activity);
         });
-        console.log(this.events);
       }, 
       error => {
         this.notificationService.warn(`获取时间线失败: ${error.statusMessage}`)
