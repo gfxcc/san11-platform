@@ -1,6 +1,6 @@
 # Dump the database
 ```
-pg_dump -Fc san11-platform-db > /backup/db.dump
+pg_dump -U postgres -Fc san11-platform-db > /backup/db.dump
 ```
 
 ## Dump to text
