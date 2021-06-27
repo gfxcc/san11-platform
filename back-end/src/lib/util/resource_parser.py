@@ -17,6 +17,7 @@ def parse_resource_name(name: str) -> ResourceMixin:
         'tags': 'Tag',
         'comments': 'Comment',
         'replies': 'Reply',
+        'users': 'User'
     }
     NAME_PATTERN = r'(.+/)?(?P<collection>[a-zA-Z0-9]+)/(?P<resource_id>[0-9]+)'
     match = re.fullmatch(NAME_PATTERN, name)
