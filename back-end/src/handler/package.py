@@ -18,11 +18,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 class PackageHandler:
     def create_package(self, request, context):
         logger.info('In CreatePackage')
-        authenticator = Authenticator.from_context(context)
+        auth = Authenticator.from_context(context)
         package = Package.from_pb(request.package)
-        package.author_id = authenticator.session.user.user_id
-        logger.debug(package.create_time)
-        package.create()
+        package.author_id = auth.session.user.user_id
+        package.create(user_id=auth.session.user.user_id)
         return package.to_pb()
 
     def delete_package(self, request, context):
@@ -30,11 +29,11 @@ class PackageHandler:
             f'In DeletePackage: package_id={request.package.package_id}')
         package = Package.from_id(request.package.package_id)
 
-        authenticator = Authenticator.from_context(context)
-        if not authenticator.canDeletePackage(package):
+        auth = Authenticator.from_context(context)
+        if not auth.canDeletePackage(package):
             context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
 
-        package.delete()
+        package.delete(user_id=auth.session.user.user_id)
         logger.info(f'Package is deleted: {package}')
 
         return san11_platform_pb2.Empty()
@@ -77,8 +76,8 @@ class PackageHandler:
         logger.debug(request.package.image_urls)
         base_package = Package.from_id(request.package.package_id)
 
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUpdatePackage(base_package):
+        auth = Authenticator.from_context(context)
+        if not auth.canUpdatePackage(base_package):
             context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
 
         # patch update_mask as Package store tag_ids internal while tags is used
@@ -97,5 +96,5 @@ class PackageHandler:
                 image.delete()
             except Exception as err:
                 logger.error(f'Failed to delete {image_url_to_delete}: {err}')
-        package.update()
+        package.update(user_id=auth.session.user.user_id)
         return package.to_pb()

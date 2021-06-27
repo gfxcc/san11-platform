@@ -1,0 +1,30 @@
+<table mat-table [dataSource]="dataSource" class="table ">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- name Column -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> 工具 </th>
+        <!-- <td mat-cell *matCellDef="let package" class="package-name clickable" [routerLink]="this.getLinkForPackage(package)"> -->
+        <td mat-cell *matCellDef="let package" class="package-name clickable" (click)="onPackageClick(package)">
+            {{package.name}}
+        </td>
+    </ng-container>
+
+    <!-- createTime Column -->
+    <ng-container matColumnDef="createTime">
+        <th mat-header-cell *matHeaderCellDef> 创建于 </th>
+        <td mat-cell *matCellDef="let package"> {{package.createTime}} </td>
+    </ng-container>
+
+    <!-- downloadCount Column -->
+    <ng-container matColumnDef="downloadCount">
+        <th mat-header-cell *matHeaderCellDef> 下载量 </th>
+        <td mat-cell *matCellDef="let package"> {{package.downloadCount}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[10]"></mat-paginator>

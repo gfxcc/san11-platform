@@ -67,10 +67,9 @@ class UserHandler:
         logger.info(f'In update_user: user_id={request.user.user_id}')
         base_user = User.from_id(request.user.user_id)
 
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUpdateUser(user=base_user):
+        auth = Authenticator.from_context(context)
+        if not auth.canUpdateUser(user=base_user):
             context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
-
 
         update_mask = FieldMask.from_pb(request.update_mask)
         # Update user.email is temporary banned.
@@ -87,7 +86,7 @@ class UserHandler:
             User.validate_username(user.username)
         if user.email != base_user.email:
             User.validate_email(user.email)
-        user.update()
+        user.update(user_id=auth.session.user.user_id)
         return user.to_pb()
 
     def update_password(self, request, context):

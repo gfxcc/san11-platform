@@ -16,15 +16,17 @@ logger = logging.getLogger(os.path.basename(__file__))
 class TagHandler:
     def create_tag(self, request, context):
         logger.info(f'In CreateTag: {request.tag.name}')
-        assert Authenticator.from_context(context=context).isAdmin()
+        auth = Authenticator.from_context(context=context)
+        assert auth.isAdmin()
         tag = Tag.from_pb(request.tag)
-        tag.create()
+        tag.create(user_id=auth.session.user.user_id)
         return tag.to_pb()
     
     def delete_tag(self, request, context):
         logger.info('In DeleteTag')
-        assert Authenticator.from_context(context=context).isAdmin()
-        Tag.from_id(request.tag_id).delete()
+        auth = Authenticator.from_context(context=context)
+        assert auth.isAdmin()
+        Tag.from_id(request.tag_id).delete(user_id=auth.session.user.user_id)
         return san11_platform_pb2.Empty()
 
     def list_tags(self, request, context):

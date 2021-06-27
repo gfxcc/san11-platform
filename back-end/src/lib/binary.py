@@ -9,7 +9,8 @@ from typing import Any, Iterable, List, Union
 from datetime import datetime, timezone
 
 from .protos import san11_platform_pb2
-from .resource import ResourceMixin
+from .resource import ResourceMixin, ResourceView
+from .activity import TrackLifecycle
 from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
 from .version import Version
 from .resource import get_resource_path, get_binary_url, create_resource
@@ -22,10 +23,12 @@ from . import gcs
 logger = logging.getLogger(os.path.basename(__file__))
 
 
-class Binary(ResourceMixin):
+class Binary(ResourceMixin, TrackLifecycle):
+    # TODO: replace `package_id` with `parent` in presentation layer.
+    #       Should continually keep `package_id` in DB as a primary key.
     def __init__(self, binary_id: int, package_id: int, url: str, download_count: int,
                  version: str, description: str,
-                 create_time: datetime, tag: str, download_method: str, size: str):
+                 create_time: datetime, tag: str, download_method: str, size: str, name: str):
         self.binary_id = binary_id
         self.package_id = package_id
         self.url = url
@@ -36,13 +39,48 @@ class Binary(ResourceMixin):
         self.tag = tag
         self.download_method = download_method
         self.size = size
+        self._name = name
 
     def __str__(self):
         return f'{{binary_id: {self.binary_id}, url: {self.url}, download_method: {self.download_method}}}'
     
     @property
     def url(self) -> str:
+        '''
+        [DEPRECATED]
+        Please use `name`.
+        '''
         return self._url
+    
+    @property
+    def name(self) -> str:
+        return self._name
+    
+    @name.setter
+    def name(self, name: str) -> None:
+        '''
+        TODO: Only for backfill. Should be removed once it is done.
+        '''
+        sql = f'UPDATE {self.db_table()} SET name=%(name)s WHERE binary_id=%(binary_id)s'
+        run_sql_with_param(sql, {
+            'name': name,
+            'binary_id': self.id
+        })
+        self._name = name
+    
+    @property
+    def id(self) -> int:
+        return self.binary_id
+    
+    @property
+    def view(self) -> ResourceView:
+        return ResourceView(
+            name=self.name,
+            # TODO: provide a more readable display_name
+            display_name=self.name,
+            description=None,
+            image_url=None
+        )
     
     @url.setter
     def url(self, url: str) -> None:
@@ -55,7 +93,11 @@ class Binary(ResourceMixin):
     @classmethod
     def db_fields(cls) -> Iterable[str]:
         return ['binary_id', 'package_id', 'url', 'download_count', 'version', 
-                'description', 'create_time', 'tag', 'download_method', 'size']
+                'description', 'create_time', 'tag', 'download_method', 'size', 'name']
+    
+    @classmethod
+    def name_pattern(cls) -> str:
+        return r'categories/[0-9]+/packages/[0-9]+/binaries/[0-9]+'
 
     @classmethod
     def from_pb(cls, obj: san11_platform_pb2.Binary):

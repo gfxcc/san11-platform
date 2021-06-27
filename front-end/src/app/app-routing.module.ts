@@ -37,12 +37,6 @@ const routes: Routes = [
   },
 
   {
-    path: 'users/:userId',
-    component: UserDetailComponent,
-    resolve: { user: UserResolverService }
-  },
-
-  {
     path: 'message-board',
     component: MessageBoardComponent
   },

@@ -1,7 +1,15 @@
-.login-wrapper {
+/* .login-wrapper {
     height: 70%;
 }
 
+*/
+
 .header-less-tabs .mat-tab-header {
     display: none;
+}
+
+.card-wrapper {}
+
+.card {
+    max-width: 400px;
 }

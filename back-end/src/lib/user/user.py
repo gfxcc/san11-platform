@@ -13,14 +13,15 @@ from ..time_util import get_now
 from ..image import Image
 from ..time_util import get_timezone
 from ..exception import Unauthenticated, AlreadyExists
-from ..resource import ResourceMixin
+from ..resource import ResourceMixin, ResourceView
+from ..activity import TrackLifecycle
 
 
 logger = logging.getLogger(os.path.basename(__file__))
 VERIFICATION_CODES_TABLE = 'verification_codes'
 
 
-class User(ResourceMixin):
+class User(ResourceMixin, TrackLifecycle):
     DEFAULT_USER_TYPE = 'regular'
     DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
@@ -37,7 +38,28 @@ class User(ResourceMixin):
     
     @property
     def url(self) -> str:
+        '''
+        [DEPRECATED]
+        Please use `name`.
+        '''
         return f'users/{self.user_id}'
+
+    @property
+    def name(self) -> str:
+        return f'users/{self.user_id}'
+    
+    @property
+    def id(self) -> int:
+        return self.user_id
+    
+    @property
+    def view(self) -> ResourceView:
+        return ResourceView(
+            name=self.name,
+            display_name='用户',
+            description=None,
+            image_url=self.image_url
+        )
 
     @classmethod
     def db_table(cls) -> str:
@@ -46,6 +68,10 @@ class User(ResourceMixin):
     @classmethod
     def db_fields(cls) -> List[str]:
         return ['user_id', 'username', 'password', 'email', 'user_type', 'image_url', 'website']
+
+    @classmethod
+    def name_pattern(cls) -> str:
+        return r'users/[0-9]+'
 
     @property
     def email(self) -> str:
