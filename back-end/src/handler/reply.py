@@ -61,5 +61,5 @@ class ReplyHandler:
                 activity.delete()
                 reply.upvote_count -= 1
 
-        reply.update(user_id=auth.session.user.user_id)
+        reply.update(user_id=auth.session.user.user_id, track=False)
         return reply.to_pb()

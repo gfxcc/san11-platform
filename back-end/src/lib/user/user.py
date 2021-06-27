@@ -14,7 +14,7 @@ from ..image import Image
 from ..time_util import get_timezone
 from ..exception import Unauthenticated, AlreadyExists
 from ..resource import ResourceMixin, ResourceView
-from ..activity import TrackLifecycle
+from ..activity import TrackLifecycle, Activity, Action
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -125,6 +125,8 @@ class User(ResourceMixin, TrackLifecycle):
         }, transaction=True)
         self.user_id = resp[0]
         self.user_type = self.DEFAULT_USER_TYPE
+        Activity(activity_id=None, user_id=self.user_id, create_time=get_now(),
+                 action=Action.CREATE, resource_name=self.name).create()
     
     def delete(self):
         raise NotImplementedError()

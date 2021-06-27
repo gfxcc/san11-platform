@@ -209,7 +209,7 @@ class ResourceMixin(ABC):
         return [cls(*item) for item in resp]
 
     # Methods
-    def create(self, user_id: int) -> None:
+    def create(self, user_id: int, track: bool=True) -> None:
         '''
         Persist the resource to DB.
         Raise:
@@ -225,7 +225,7 @@ class ResourceMixin(ABC):
             sql, params, transaction=True)[0]
         exec(f"self.{self.db_fields()[0]} = resource_id")
 
-        if isinstance(self, TrackLifecycle):
+        if isinstance(self, TrackLifecycle) and track:
             Activity(activity_id=None, user_id=user_id, create_time=get_now(),
                      action=Action.CREATE, resource_name=self.name).create()
 
@@ -236,18 +236,18 @@ class ResourceMixin(ABC):
         '''
         return params
 
-    def delete(self, user_id: int)-> None:
+    def delete(self, user_id: int, track: bool=True)-> None:
         '''
         Delete the resource from DB.
         '''
         sql = f'DELETE FROM {self.db_table()} WHERE {self.db_fields()[0]}=%(resource_id)s'
         run_sql_with_param(sql, {'resource_id': self.id})
         logger.info(f'DELETED: {self.name}')
-        if isinstance(self, TrackLifecycle):
+        if isinstance(self, TrackLifecycle) and track:
             Activity(activity_id=None, user_id=user_id, create_time=get_now(),
                      action=Action.DELETE, resource_name=self.name).create()
 
-    def update(self, user_id: int) -> None:
+    def update(self, user_id: int, track: bool=True) -> None:
         sql = f'UPDATE {self.db_table()} SET {get_db_fields_assignment_str(self.db_fields()[1:])} '\
             f'WHERE {self.db_fields()[0]}=%({self.db_fields()[0]})s'
         params_raw = ','.join(
@@ -257,7 +257,7 @@ class ResourceMixin(ABC):
             params['update_time'] = get_now()
         params = self._update_db_params(params)
         run_sql_with_param(sql, params)
-        if isinstance(self, TrackLifecycle):
+        if isinstance(self, TrackLifecycle) and track:
             Activity(activity_id=None, user_id=user_id, create_time=get_now(),
                      action=Action.UPDATE, resource_name=self.name).create()
 

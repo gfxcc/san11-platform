@@ -62,7 +62,7 @@ class CommentHandler:
                 activity.delete()
                 comment.upvote_count -= 1
 
-        comment.update(user_id=auth.session.user.user_id)
+        comment.update(user_id=auth.session.user.user_id, track=False)
         return comment.to_pb()
 
     def list_comments(self, request, context):
