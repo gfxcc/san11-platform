@@ -25,7 +25,7 @@ class ActivityHandler:
         for activity in activities:
             try:
                 resource_view = parse_resource_name(activity.resource_name).view
-            except NotFound:
+            except NotFound as err:
                 resource_view = None
             
             activities_pb.append(san11_platform_pb2.Activity(

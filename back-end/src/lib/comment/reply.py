@@ -49,7 +49,7 @@ class Reply(ResourceMixin, TrackLifecycle):
     
     @property
     def view(self) -> ResourceView:
-        ResourceView(
+        return ResourceView(
             name=self.name,
             display_name='回复',
             description=self.text,
