@@ -2,7 +2,7 @@ import os
 import logging
 
 from typing import List, Dict, Any, Union
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 from .protos import san11_platform_pb2
@@ -51,7 +51,7 @@ class Activity:
         '''
         self.activity_id = activity_id
         self.user_id = user_id
-        self.create_time = create_time
+        self.create_time = create_time.replace(tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
         self.action = Action(action) if isinstance(action, int) else action
         self.resource_name = resource_name
 
