@@ -124,15 +124,6 @@ class Activity:
         sql = f'DELETE FROM {self.db_table()} WHERE {self.db_fields()[0]}=%(resource_id)s'
         run_sql_with_param(sql, {'resource_id': self.activity_id})
 
-    def to_pb(self):
-        return san11_platform_pb2.Activity(
-            activity_id=self.activity_id,
-            user_id=self.user_id,
-            create_time=get_age(self.create_time),
-            action=self.action.to_pb(),
-            resource_view=None
-        )
-
     def isExist(self) -> bool:
         sql = f'SELECT count(*) FROM {self.db_table()} WHERE '\
             'user_id=%(user_id)s AND resource_name=%(resource_name)s AND action=%(action)s'

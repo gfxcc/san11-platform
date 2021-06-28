@@ -11,7 +11,7 @@ from lib.notifier import Notifier
 from lib.db.db_util import run_sql_with_param
 from lib.activity import Activity
 from lib.util.resource_parser import parse_resource_name
-from lib.time_util import datetime_to_str
+from lib.time_util import datetime_to_str, get_age
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -32,7 +32,7 @@ class ActivityHandler:
                 activity_id=activity.activity_id,
                 user_id=activity.user_id,
                 action=activity.action.value,
-                create_time=datetime_to_str(activity.create_time),
+                create_time=get_age(activity.create_time),
                 resource_view=resource_view.to_pb() if resource_view else None
             ))
         return san11_platform_pb2.ListActivitiesResponse(
