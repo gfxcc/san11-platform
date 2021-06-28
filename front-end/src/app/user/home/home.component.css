@@ -13,10 +13,12 @@
 .info-group {
     margin-top: 10px;
     /* width: 60%; */
-    min-width: 300px;
-    max-width: 1400px;
+    /* min-width: 300px;
+    max-width: 1400px; */
+    width: 100%;
     display: flex;
     justify-content: center;
+    align-content: center;
 }
 
 .basic-info {
