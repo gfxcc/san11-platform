@@ -72,8 +72,6 @@ class UserHandler:
             context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
 
         update_mask = FieldMask.from_pb(request.update_mask)
-        # Update user.email is temporary banned.
-        update_mask.discard('email')
         user = merge_resource(base_resource=base_user,
                                 update_request=User.from_pb(request.user),
                                 field_mask=update_mask)

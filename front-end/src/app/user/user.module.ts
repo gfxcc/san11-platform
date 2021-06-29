@@ -7,7 +7,7 @@ import { AngularMaterialModule } from '../angular-material.module';
 import { AccountInfoComponent } from './account-info/account-info.component';
 import { PublishedPackagesComponent } from './published-packages/published-packages.component';
 import { AboutComponent } from './about/about.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimelineComponent } from './timeline/timeline.component';
 import { TimelineModule } from "primeng/timeline";
 import { CardModule } from "primeng/card";
@@ -28,6 +28,7 @@ import { CardModule } from "primeng/card";
     FormsModule,
     TimelineModule,
     CardModule,
+    ReactiveFormsModule,
   ]
 })
 export class UserModule { }

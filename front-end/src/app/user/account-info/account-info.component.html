@@ -1,9 +1,9 @@
 <div class="card-wrapper">
     <mat-card class="card">
         <mat-card-header>
-            <mat-card-title>更新</mat-card-title>
+            <mat-card-title>更新资料</mat-card-title>
         </mat-card-header>
-        <mat-vertical-stepper linear #stepper>
+        <mat-vertical-stepper #stepper>
             <mat-step [stepControl]="basicInfoForm" state="badge">
                 <ng-template matStepLabel>1. 基本信息</ng-template>
                 <ng-template matStepContent>
@@ -25,8 +25,8 @@
                                     {{username.errors.invalidNewUser}}
                                 </mat-error>
                             </mat-form-field>
-                            <!-- 
-                            <mat-form-field class="input-field">
+
+                            <mat-form-field class="input-field" *ngIf="this.iAmTheUser()">
                                 <input matInput type="password" placeholder="密码" autocomplete="off" formControlName="password">
                                 <mat-error *ngIf="password.errors?.minlength && password.touched" align="end">
                                     至少需要6个字符
@@ -47,14 +47,14 @@
                                 <mat-error *ngIf="email.errors?.invalidNewUser && email.touched" align="end">
                                     {{email.errors.invalidNewUser}}
                                 </mat-error>
-                            </mat-form-field> -->
+                            </mat-form-field>
                         </mat-card-content>
                         <button mat-button matStepperNext [disabled]="!basicInfoForm.valid" type="submit">下一步</button>
                     </form>
 
                 </ng-template>
             </mat-step>
-            <!-- <mat-step [stepControl]="emailVerificationForm" state="email">
+            <mat-step [stepControl]="emailVerificationForm" state="email" *ngIf="iAmTheUser()">
                 <ng-template matStepLabel>2. 验证邮箱</ng-template>
                 <ng-template matStepContent>
                     <div class="example-form">
@@ -76,11 +76,16 @@
                     </div>
                 </ng-template>
             </mat-step>
-            <mat-step state="check">
+            <mat-step state="check" *ngIf="iAmTheUser()">
                 <ng-template matStepLabel>3. 完成更新</ng-template>
+
+                <p *ngIf="this.updatedUser.username">新用户名: {{this.updatedUser.username}}</p>
+                <p *ngIf="this.updatedUser.email">新邮箱: {{this.updatedUser.email}}</p>
+                <p *ngIf="password.value != this.PASSWORD_PLACEHOLDER">更新密码</p>
+
                 <button mat-button matStepperPrevious>上一步</button>
-                <button mat-raised-button color="primary" (click)="onUpdate()">更新</button>
-            </mat-step> -->
+                <button mat-raised-button color="primary" (click)="onUpdateUser()">更新</button>
+            </mat-step>
 
             <!-- Icon overrides. -->
             <ng-template matStepperIcon="account_box">

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UpdateUserRequest, User, FieldMask, VerifyEmailRequest, VerifyEmailResponse, SendVerificationCodeRequest } from '../../../proto/san11-platform.pb';
+import { UpdateUserRequest, User, FieldMask, VerifyEmailRequest, VerifyEmailResponse, SendVerificationCodeRequest, UpdatePasswordRequest } from '../../../proto/san11-platform.pb';
 import { PasswordDialog } from '../../account-management/user-detail/user-detail.component';
 import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
@@ -15,7 +15,9 @@ import { MatStepper } from '@angular/material/stepper';
   styleUrls: ['./account-info.component.css']
 })
 export class AccountInfoComponent implements OnInit {
-  user: User;
+  PASSWORD_PLACEHOLDER = 'password-placeholder';
+  user = new User();
+  updatedUser = new User();
   basicInfoForm: FormGroup;
   emailVerificationForm: FormGroup;
 
@@ -36,43 +38,45 @@ export class AccountInfoComponent implements OnInit {
 
     this.route.data.subscribe(
       (data) => {
+
         if (data.user) {
           this.user = data.user;
+
+          this.basicInfoForm = this.formBuilder.group({
+            username: [{ value: this.user.username, disabled: !this.iAmTheUser() },
+            [
+              Validators.required,
+              Validators.minLength(4),
+              Validators.maxLength(32),
+              Validators.pattern(/^[^\s]*$/)],
+            [
+              NewUserValidators.username(this.san11pkService, this.user.username),
+            ]],
+            email: [{ value: this.user.email, disabled: !this.iAmTheUser() },
+            [
+              Validators.required, Validators.email,
+            ],
+            [
+              NewUserValidators.email(this.san11pkService, this.user.email),
+            ]],
+            password: [{ value: this.PASSWORD_PLACEHOLDER, disabled: !this.iAmTheUser() },
+            [
+              Validators.required,
+              Validators.minLength(6),
+              Validators.maxLength(32),
+              Validators.pattern(/^[0-9a-zA-Z\-_]*$/),
+            ]],
+          });
+
+          this.emailVerificationForm = this.formBuilder.group({
+            verificationCode: ['', [
+              Validators.required
+            ]]
+          });
+
         }
       }
     );
-
-    this.basicInfoForm = this.formBuilder.group({
-      username: ['',
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(32),
-          Validators.pattern(/^[^\s]*$/)],
-        [
-          // NewUserValidators.username(this.san11pkService),
-        ]],
-      password: ['',
-        [
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(32),
-          Validators.pattern(/^[0-9a-zA-Z\-_]*$/),
-        ]],
-      email: ['',
-        [
-          Validators.required, Validators.email,
-        ],
-        [
-          NewUserValidators.email(this.san11pkService),
-        ]],
-    });
-
-    this.emailVerificationForm = this.formBuilder.group({
-      verificationCode: ['', [
-        Validators.required
-      ]]
-    });
   }
 
   //
@@ -100,6 +104,9 @@ export class AccountInfoComponent implements OnInit {
 
   }
 
+  populateBasicInfoForm() {
+  }
+
   onValidateEmail(stepper: MatStepper) {
     const request = new VerifyEmailRequest({
       email: this.email.value,
@@ -109,6 +116,7 @@ export class AccountInfoComponent implements OnInit {
     this.san11pkService.verifyEmail(request).subscribe(
       (resp: VerifyEmailResponse) => {
         if (resp.ok) {
+          this.prepareUpdateUser();
           stepper.next();
         } else {
           this.notificationService.warn('验证码不正确');
@@ -144,4 +152,53 @@ export class AccountInfoComponent implements OnInit {
       this.onResendVerificationCodeClick();
     }
   }
+  
+  prepareUpdateUser() {
+    this.updatedUser.userId = this.user.userId;
+    this.updatedUser.username = this.user.username != this.username.value ? this.username.value : undefined;
+    this.updatedUser.email = this.user.email != this.email.value ? this.email.value : undefined;
+  }
+
+  onUpdateUser() {
+    let paths = [];
+    if (this.updatedUser.username) {
+      paths.push('username');
+    }
+    if (this.updatedUser.email) {
+      paths.push('email');
+    }
+
+    if (paths.length) {
+      this.san11pkService.updateUser(new UpdateUserRequest({
+        user: this.updatedUser,
+        updateMask: new FieldMask({
+          paths: paths
+        })
+      })).subscribe(
+        (resp: User) => {
+          this.notificationService.success('更新成功');
+          this.router.navigate(['categories/1']);
+        },
+        error => {
+          this.notificationService.warn(`更新失败: ${error.statusMessage}`);
+        }
+      );
+    }
+    if (this.password.value != this.PASSWORD_PLACEHOLDER) {
+      this.san11pkService.updatePassword(new UpdatePasswordRequest({
+        userId: this.user.userId,
+        password: this.password.value
+      })).subscribe(
+        empty => {
+          this.notificationService.success('更新密码 成功');
+          this.router.navigate(['categories/1']);
+        },
+        error => {
+          this.notificationService.warn('更新密码 失败:' + error.statusMessage);
+        }
+      );
+    }
+
+  }
+
 }

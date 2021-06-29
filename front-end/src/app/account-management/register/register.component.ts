@@ -123,9 +123,6 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  setupEmailValidation() {
-
-  }
 
   onResendVerificationCodeClick() {
     if (this.timeToResend != undefined && this.timeToResend > 0) {

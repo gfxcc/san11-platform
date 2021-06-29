@@ -90,7 +90,7 @@ class User(ResourceMixin, TrackLifecycle):
         self.validate_website(website)
         self._website = website
 
-    def __str___(self):
+    def __str__(self):
         return f'{{ user_id: {self.user_id}, username: {self.username}, '\
                f'email: {self.email}, image_url: {self.image_url}, website: {self.website} }}'
     
@@ -170,8 +170,9 @@ class User(ResourceMixin, TrackLifecycle):
             'user_id': self.user_id
         })
     
-    def update(self) -> None:
+    def update(self, user_id: int) -> None:
         # TODO: migrate default impl
+        logger.debug(f'will update {self}')
         sql = 'UPDATE users SET '\
             'username=%(username)s, '\
             'email=%(email)s, '\
@@ -185,6 +186,10 @@ class User(ResourceMixin, TrackLifecycle):
             'website': self.website,
             'user_id': self.user_id
         })
+        if isinstance(self, TrackLifecycle):
+            Activity(activity_id=None, user_id=user_id, create_time=get_now(),
+                     action=Action.UPDATE, resource_name=self.name).create()
+
 
     @classmethod
     def from_name(cls, username: str):

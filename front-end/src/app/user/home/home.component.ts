@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
     {
       label: '账户信息',
       link: ['accountInfo'],
-      disabled: true
+      disabled: false
     },
     // {
     //   label: '关于',
