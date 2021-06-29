@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
 
   loading: MatDialogRef<LoadingComponent>;
   user: User;
+  selectedIndex = 0;
 
   tabs = [
     {
@@ -58,10 +59,22 @@ export class HomeComponent implements OnInit {
       (data) => {
         if (data.user) {
           this.user = data.user;
-          this.selectedTabChange({ index: 0 });
+          // this.selectedTabChange({ index: 0 });
         }
       }
     );
+
+    const patterns = this.router.url.split('/');
+    console.log(patterns);
+    switch (patterns[patterns.length - 1]) {
+      case 'timeline':
+        console.log('in');
+        this.selectedIndex = 1;
+        break;
+      case 'accountInfo':
+        this.selectedIndex = 2;
+        break;
+    }
   }
 
   // getter

@@ -14,12 +14,7 @@ const routes: Routes = [
     component: HomeComponent,
     resolve: { user: UserResolver },
     children: [
-      // { path: '', redirectTo: 'publishedPackages', pathMatch: 'prefix' },
-      {
-        path: 'accountInfo',
-        component: AccountInfoComponent,
-        resolve: { user: UserResolver },
-      },
+      { path: '', redirectTo: 'publishedPackages', pathMatch: 'prefix' },
       {
         path: 'publishedPackages',
         component: DashboardComponent
@@ -28,7 +23,11 @@ const routes: Routes = [
         path: 'timeline',
         component: TimelineComponent
       },
-
+      {
+        path: 'accountInfo',
+        component: AccountInfoComponent,
+        resolve: { user: UserResolver },
+      },
     ]
   },
 ];

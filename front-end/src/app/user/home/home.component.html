@@ -14,7 +14,7 @@
         </div>
 
     </div>
-    <mat-tab-group class="tab-groups" mat-align-tabs="center" (selectedTabChange)="selectedTabChange($event)">
+    <mat-tab-group class="tab-groups" mat-align-tabs="center" (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedIndex">
         <mat-tab *ngFor="let tab of tabs" [label]="tab.label" [disabled]="tab.disabled"></mat-tab>
     </mat-tab-group>
 </div>
