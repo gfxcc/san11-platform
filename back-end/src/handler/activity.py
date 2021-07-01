@@ -33,6 +33,7 @@ class ActivityHandler:
                     ...
                     package = Package.from_id(resource.package_id)
                     resource_view = package.view
+                    resource_view.display_name = f'{resource_view.display_name}-{resource.version}'
                 else:
                     resource_view = resource.view
             except NotFound as err:
