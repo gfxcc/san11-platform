@@ -34,7 +34,7 @@ class Tag(ResourceMixin, TrackLifecycle):
     @property
     def view(self) -> ResourceView:
         return ResourceView(
-            name=self.name,
+            name='',
             display_name=self.tag_name,
             description=None,
             image_url=None

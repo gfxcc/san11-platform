@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PrimeIcons } from 'primeng/api';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
@@ -19,6 +19,7 @@ export class TimelineComponent implements OnInit {
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private router: Router,
     private route: ActivatedRoute,
   ) { }
 
@@ -98,8 +99,13 @@ export class TimelineComponent implements OnInit {
       'createTime': activity.createTime,
       'icon': icon,
       'image': (activity.resourceView && activity.resourceView.imageUrl) ? getFullUrl(activity.resourceView.imageUrl) : undefined,
-      'color': color
+      'color': color,
+      'link': (activity.resourceView?.name) ? activity.resourceView.name : undefined,
     }
+  }
+
+  onDetailClick(event) {
+    this.router.navigate([event.link]);
   }
 
 }

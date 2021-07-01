@@ -66,13 +66,17 @@ export class HomeComponent implements OnInit {
 
     const patterns = this.router.url.split('/');
     switch (patterns[patterns.length - 1]) {
+      case 'publishedPackages':
+        this.selectedIndex = 0;
+        break;
       case 'timeline':
-        console.log('in');
         this.selectedIndex = 1;
         break;
       case 'accountInfo':
         this.selectedIndex = 2;
         break;
+      default:
+        this.selectedIndex = 0;
     }
   }
 

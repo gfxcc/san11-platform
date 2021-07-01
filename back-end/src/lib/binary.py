@@ -75,7 +75,7 @@ class Binary(ResourceMixin, TrackLifecycle):
     @property
     def view(self) -> ResourceView:
         return ResourceView(
-            name=self.name,
+            name='/'.join(self.name.split('/')[:-2]),  # link of package
             # TODO: provide a more readable display_name
             display_name=self.name,
             description=None,

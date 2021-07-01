@@ -39,7 +39,7 @@ class Comment(ResourceMixin, TrackLifecycle):
     @property
     def view(self) -> ResourceView:
         return ResourceView(
-            name=self.name,
+            name='',
             display_name='评论',
             description=self.text,
             image_url=None
