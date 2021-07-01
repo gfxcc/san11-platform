@@ -172,7 +172,6 @@ class User(ResourceMixin, TrackLifecycle):
     
     def update(self, user_id: int) -> None:
         # TODO: migrate default impl
-        logger.debug(f'will update {self}')
         sql = 'UPDATE users SET '\
             'username=%(username)s, '\
             'email=%(email)s, '\

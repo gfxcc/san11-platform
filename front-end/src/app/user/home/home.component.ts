@@ -65,7 +65,6 @@ export class HomeComponent implements OnInit {
     );
 
     const patterns = this.router.url.split('/');
-    console.log(patterns);
     switch (patterns[patterns.length - 1]) {
       case 'timeline':
         console.log('in');
