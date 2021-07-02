@@ -20,11 +20,6 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.CreatePackageRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Package.FromString,
                 )
-        self.DeletePackage = channel.unary_unary(
-                '/routeguide.RouteGuide/DeletePackage',
-                request_serializer=san11__platform__pb2.DeletePackageRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Empty.FromString,
-                )
         self.UpdatePackage = channel.unary_unary(
                 '/routeguide.RouteGuide/UpdatePackage',
                 request_serializer=san11__platform__pb2.UpdatePackageRequest.SerializeToString,
@@ -45,20 +40,15 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.SearchPackagesRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.SearchPackagesResponse.FromString,
                 )
-        self.UploadBinary = channel.unary_unary(
-                '/routeguide.RouteGuide/UploadBinary',
-                request_serializer=san11__platform__pb2.UploadBinaryRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Status.FromString,
+        self.DeletePackage = channel.unary_unary(
+                '/routeguide.RouteGuide/DeletePackage',
+                request_serializer=san11__platform__pb2.DeletePackageRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
         self.CreateBinary = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateBinary',
                 request_serializer=san11__platform__pb2.CreateBinaryRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Binary.FromString,
-                )
-        self.DeleteBinary = channel.unary_unary(
-                '/routeguide.RouteGuide/DeleteBinary',
-                request_serializer=san11__platform__pb2.DeleteBinaryRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
         self.UpdateBinary = channel.unary_unary(
                 '/routeguide.RouteGuide/UpdateBinary',
@@ -80,30 +70,30 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.ListBinariesRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.ListBinariesResponse.FromString,
                 )
+        self.DeleteBinary = channel.unary_unary(
+                '/routeguide.RouteGuide/DeleteBinary',
+                request_serializer=san11__platform__pb2.DeleteBinaryRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Empty.FromString,
+                )
         self.DownloadBinary = channel.unary_unary(
                 '/routeguide.RouteGuide/DownloadBinary',
                 request_serializer=san11__platform__pb2.DownloadBinaryRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Binary.FromString,
-                )
-        self.UploadImage = channel.unary_unary(
-                '/routeguide.RouteGuide/UploadImage',
-                request_serializer=san11__platform__pb2.UploadImageRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Url.FromString,
                 )
         self.CreateImage = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateImage',
                 request_serializer=san11__platform__pb2.CreateImageRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Url.FromString,
                 )
+        self.UploadImage = channel.unary_unary(
+                '/routeguide.RouteGuide/UploadImage',
+                request_serializer=san11__platform__pb2.UploadImageRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Url.FromString,
+                )
         self.CreateComment = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateComment',
                 request_serializer=san11__platform__pb2.CreateCommentRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Comment.FromString,
-                )
-        self.DeleteComment = channel.unary_unary(
-                '/routeguide.RouteGuide/DeleteComment',
-                request_serializer=san11__platform__pb2.DeleteCommentRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
         self.UpdateComment = channel.unary_unary(
                 '/routeguide.RouteGuide/UpdateComment',
@@ -115,20 +105,25 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.ListCommentsRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.ListCommentsResponse.FromString,
                 )
+        self.DeleteComment = channel.unary_unary(
+                '/routeguide.RouteGuide/DeleteComment',
+                request_serializer=san11__platform__pb2.DeleteCommentRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Empty.FromString,
+                )
         self.CreateReply = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateReply',
                 request_serializer=san11__platform__pb2.CreateReplyRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Reply.FromString,
+                )
+        self.UpdateReply = channel.unary_unary(
+                '/routeguide.RouteGuide/UpdateReply',
+                request_serializer=san11__platform__pb2.UpdateReplyRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Reply.FromString,
                 )
         self.DeleteReply = channel.unary_unary(
                 '/routeguide.RouteGuide/DeleteReply',
                 request_serializer=san11__platform__pb2.DeleteReplyRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Empty.FromString,
-                )
-        self.UpdateReply = channel.unary_unary(
-                '/routeguide.RouteGuide/UpdateReply',
-                request_serializer=san11__platform__pb2.UpdateReplyRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Reply.FromString,
                 )
         self.SignUp = channel.unary_unary(
                 '/routeguide.RouteGuide/SignUp',
@@ -190,15 +185,15 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.CreateTagRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Tag.FromString,
                 )
-        self.DeleteTag = channel.unary_unary(
-                '/routeguide.RouteGuide/DeleteTag',
-                request_serializer=san11__platform__pb2.DeleteTagRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Empty.FromString,
-                )
         self.ListTags = channel.unary_unary(
                 '/routeguide.RouteGuide/ListTags',
                 request_serializer=san11__platform__pb2.ListTagsRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.ListTagsResponse.FromString,
+                )
+        self.DeleteTag = channel.unary_unary(
+                '/routeguide.RouteGuide/DeleteTag',
+                request_serializer=san11__platform__pb2.DeleteTagRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Empty.FromString,
                 )
         self.GetStatistic = channel.unary_unary(
                 '/routeguide.RouteGuide/GetStatistic',
@@ -219,12 +214,6 @@ class RouteGuideServicer(object):
     def CreatePackage(self, request, context):
         """package related
         """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeletePackage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -253,21 +242,15 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UploadBinary(self, request, context):
-        """Binary related 
-        """
+    def DeletePackage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CreateBinary(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeleteBinary(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Binary related 
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -296,20 +279,26 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DeleteBinary(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def DownloadBinary(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UploadImage(self, request, context):
+    def CreateImage(self, request, context):
         """Image related
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateImage(self, request, context):
+    def UploadImage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -318,12 +307,6 @@ class RouteGuideServicer(object):
     def CreateComment(self, request, context):
         """comment related
         """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeleteComment(self, request, context):
-        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -340,19 +323,25 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DeleteComment(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def CreateReply(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeleteReply(self, request, context):
+    def UpdateReply(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateReply(self, request, context):
+    def DeleteReply(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -434,13 +423,13 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeleteTag(self, request, context):
+    def ListTags(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListTags(self, request, context):
+    def DeleteTag(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -467,11 +456,6 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.CreatePackageRequest.FromString,
                     response_serializer=san11__platform__pb2.Package.SerializeToString,
             ),
-            'DeletePackage': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeletePackage,
-                    request_deserializer=san11__platform__pb2.DeletePackageRequest.FromString,
-                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
-            ),
             'UpdatePackage': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdatePackage,
                     request_deserializer=san11__platform__pb2.UpdatePackageRequest.FromString,
@@ -492,20 +476,15 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.SearchPackagesRequest.FromString,
                     response_serializer=san11__platform__pb2.SearchPackagesResponse.SerializeToString,
             ),
-            'UploadBinary': grpc.unary_unary_rpc_method_handler(
-                    servicer.UploadBinary,
-                    request_deserializer=san11__platform__pb2.UploadBinaryRequest.FromString,
-                    response_serializer=san11__platform__pb2.Status.SerializeToString,
+            'DeletePackage': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeletePackage,
+                    request_deserializer=san11__platform__pb2.DeletePackageRequest.FromString,
+                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
             ),
             'CreateBinary': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateBinary,
                     request_deserializer=san11__platform__pb2.CreateBinaryRequest.FromString,
                     response_serializer=san11__platform__pb2.Binary.SerializeToString,
-            ),
-            'DeleteBinary': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteBinary,
-                    request_deserializer=san11__platform__pb2.DeleteBinaryRequest.FromString,
-                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
             ),
             'UpdateBinary': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateBinary,
@@ -527,30 +506,30 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.ListBinariesRequest.FromString,
                     response_serializer=san11__platform__pb2.ListBinariesResponse.SerializeToString,
             ),
+            'DeleteBinary': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteBinary,
+                    request_deserializer=san11__platform__pb2.DeleteBinaryRequest.FromString,
+                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
+            ),
             'DownloadBinary': grpc.unary_unary_rpc_method_handler(
                     servicer.DownloadBinary,
                     request_deserializer=san11__platform__pb2.DownloadBinaryRequest.FromString,
                     response_serializer=san11__platform__pb2.Binary.SerializeToString,
-            ),
-            'UploadImage': grpc.unary_unary_rpc_method_handler(
-                    servicer.UploadImage,
-                    request_deserializer=san11__platform__pb2.UploadImageRequest.FromString,
-                    response_serializer=san11__platform__pb2.Url.SerializeToString,
             ),
             'CreateImage': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateImage,
                     request_deserializer=san11__platform__pb2.CreateImageRequest.FromString,
                     response_serializer=san11__platform__pb2.Url.SerializeToString,
             ),
+            'UploadImage': grpc.unary_unary_rpc_method_handler(
+                    servicer.UploadImage,
+                    request_deserializer=san11__platform__pb2.UploadImageRequest.FromString,
+                    response_serializer=san11__platform__pb2.Url.SerializeToString,
+            ),
             'CreateComment': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateComment,
                     request_deserializer=san11__platform__pb2.CreateCommentRequest.FromString,
                     response_serializer=san11__platform__pb2.Comment.SerializeToString,
-            ),
-            'DeleteComment': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteComment,
-                    request_deserializer=san11__platform__pb2.DeleteCommentRequest.FromString,
-                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
             ),
             'UpdateComment': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateComment,
@@ -562,20 +541,25 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.ListCommentsRequest.FromString,
                     response_serializer=san11__platform__pb2.ListCommentsResponse.SerializeToString,
             ),
+            'DeleteComment': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteComment,
+                    request_deserializer=san11__platform__pb2.DeleteCommentRequest.FromString,
+                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
+            ),
             'CreateReply': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateReply,
                     request_deserializer=san11__platform__pb2.CreateReplyRequest.FromString,
+                    response_serializer=san11__platform__pb2.Reply.SerializeToString,
+            ),
+            'UpdateReply': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateReply,
+                    request_deserializer=san11__platform__pb2.UpdateReplyRequest.FromString,
                     response_serializer=san11__platform__pb2.Reply.SerializeToString,
             ),
             'DeleteReply': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteReply,
                     request_deserializer=san11__platform__pb2.DeleteReplyRequest.FromString,
                     response_serializer=san11__platform__pb2.Empty.SerializeToString,
-            ),
-            'UpdateReply': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateReply,
-                    request_deserializer=san11__platform__pb2.UpdateReplyRequest.FromString,
-                    response_serializer=san11__platform__pb2.Reply.SerializeToString,
             ),
             'SignUp': grpc.unary_unary_rpc_method_handler(
                     servicer.SignUp,
@@ -637,15 +621,15 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.CreateTagRequest.FromString,
                     response_serializer=san11__platform__pb2.Tag.SerializeToString,
             ),
-            'DeleteTag': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteTag,
-                    request_deserializer=san11__platform__pb2.DeleteTagRequest.FromString,
-                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
-            ),
             'ListTags': grpc.unary_unary_rpc_method_handler(
                     servicer.ListTags,
                     request_deserializer=san11__platform__pb2.ListTagsRequest.FromString,
                     response_serializer=san11__platform__pb2.ListTagsResponse.SerializeToString,
+            ),
+            'DeleteTag': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTag,
+                    request_deserializer=san11__platform__pb2.DeleteTagRequest.FromString,
+                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
             ),
             'GetStatistic': grpc.unary_unary_rpc_method_handler(
                     servicer.GetStatistic,
@@ -682,23 +666,6 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreatePackage',
             san11__platform__pb2.CreatePackageRequest.SerializeToString,
             san11__platform__pb2.Package.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def DeletePackage(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeletePackage',
-            san11__platform__pb2.DeletePackageRequest.SerializeToString,
-            san11__platform__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -771,7 +738,7 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def UploadBinary(request,
+    def DeletePackage(request,
             target,
             options=(),
             channel_credentials=None,
@@ -781,9 +748,9 @@ class RouteGuide(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UploadBinary',
-            san11__platform__pb2.UploadBinaryRequest.SerializeToString,
-            san11__platform__pb2.Status.FromString,
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeletePackage',
+            san11__platform__pb2.DeletePackageRequest.SerializeToString,
+            san11__platform__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -801,23 +768,6 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateBinary',
             san11__platform__pb2.CreateBinaryRequest.SerializeToString,
             san11__platform__pb2.Binary.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def DeleteBinary(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteBinary',
-            san11__platform__pb2.DeleteBinaryRequest.SerializeToString,
-            san11__platform__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -890,6 +840,23 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def DeleteBinary(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteBinary',
+            san11__platform__pb2.DeleteBinaryRequest.SerializeToString,
+            san11__platform__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def DownloadBinary(request,
             target,
             options=(),
@@ -903,23 +870,6 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DownloadBinary',
             san11__platform__pb2.DownloadBinaryRequest.SerializeToString,
             san11__platform__pb2.Binary.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UploadImage(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UploadImage',
-            san11__platform__pb2.UploadImageRequest.SerializeToString,
-            san11__platform__pb2.Url.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -941,6 +891,23 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def UploadImage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UploadImage',
+            san11__platform__pb2.UploadImageRequest.SerializeToString,
+            san11__platform__pb2.Url.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def CreateComment(request,
             target,
             options=(),
@@ -954,23 +921,6 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateComment',
             san11__platform__pb2.CreateCommentRequest.SerializeToString,
             san11__platform__pb2.Comment.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def DeleteComment(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteComment',
-            san11__platform__pb2.DeleteCommentRequest.SerializeToString,
-            san11__platform__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -1009,6 +959,23 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def DeleteComment(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteComment',
+            san11__platform__pb2.DeleteCommentRequest.SerializeToString,
+            san11__platform__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def CreateReply(request,
             target,
             options=(),
@@ -1021,6 +988,23 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateReply',
             san11__platform__pb2.CreateReplyRequest.SerializeToString,
+            san11__platform__pb2.Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateReply(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateReply',
+            san11__platform__pb2.UpdateReplyRequest.SerializeToString,
             san11__platform__pb2.Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -1039,23 +1023,6 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteReply',
             san11__platform__pb2.DeleteReplyRequest.SerializeToString,
             san11__platform__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UpdateReply(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateReply',
-            san11__platform__pb2.UpdateReplyRequest.SerializeToString,
-            san11__platform__pb2.Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -1264,23 +1231,6 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def DeleteTag(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteTag',
-            san11__platform__pb2.DeleteTagRequest.SerializeToString,
-            san11__platform__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def ListTags(request,
             target,
             options=(),
@@ -1294,6 +1244,23 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListTags',
             san11__platform__pb2.ListTagsRequest.SerializeToString,
             san11__platform__pb2.ListTagsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DeleteTag(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteTag',
+            san11__platform__pb2.DeleteTagRequest.SerializeToString,
+            san11__platform__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

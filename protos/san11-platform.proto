@@ -7,37 +7,37 @@ package routeguide;
 service RouteGuide {
   // package related
   rpc CreatePackage(CreatePackageRequest) returns (Package) {}
-  rpc DeletePackage(DeletePackageRequest) returns (Empty) {}
   rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
-
   rpc GetPackage(GetPackageRequest) returns (Package) {}
   rpc ListPackages(ListPackagesRequest) returns (ListPackagesResponse) {}
   rpc SearchPackages(SearchPackagesRequest) returns (SearchPackagesResponse) {}
+  rpc DeletePackage(DeletePackageRequest) returns (Empty) {}
 
 
   // Binary related 
-  rpc UploadBinary(UploadBinaryRequest) returns (Status) {}
   rpc CreateBinary(CreateBinaryRequest) returns (Binary) {}
-  rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
   rpc UpdateBinary(UpdateBinaryRequest) returns (Binary) {}
   rpc GetBinary(GetBinaryRequest) returns (Binary) {}
   rpc BatchGetBinary(BatchGetBinaryRequest) returns (BatchGetBinaryResponse) {}
   rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {}
+  rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
+
   rpc DownloadBinary(DownloadBinaryRequest) returns (Binary) {}
 
 
   // Image related
-  rpc UploadImage(UploadImageRequest) returns (Url) {}
   rpc CreateImage(CreateImageRequest) returns (Url) {}
+  rpc UploadImage(UploadImageRequest) returns (Url) {}
 
   // comment related
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}
-  rpc DeleteComment(DeleteCommentRequest) returns (Empty) {}
   rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
   rpc ListComments(ListCommentsRequest) returns (ListCommentsResponse) {}
+  rpc DeleteComment(DeleteCommentRequest) returns (Empty) {}
+
   rpc CreateReply(CreateReplyRequest) returns (Reply) {}
-  rpc DeleteReply(DeleteReplyRequest) returns (Empty) {}
   rpc UpdateReply(UpdateReplyRequest) returns (Reply) {}
+  rpc DeleteReply(DeleteReplyRequest) returns (Empty) {}
 
   // User related
   rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
@@ -59,8 +59,8 @@ service RouteGuide {
 
   // Tag related
   rpc CreateTag(CreateTagRequest) returns (Tag) {}
-  rpc DeleteTag(DeleteTagRequest) returns (Empty) {}
   rpc ListTags(ListTagsRequest) returns (ListTagsResponse) {}
+  rpc DeleteTag(DeleteTagRequest) returns (Empty) {}
 
   // Generic
   rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}

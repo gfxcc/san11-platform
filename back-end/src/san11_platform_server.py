@@ -31,9 +31,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def CreatePackage(self, request, context):
         return self.package_handler.create_package(request, context)
     
-    def DeletePackage(self, request, context):
-        return self.package_handler.delete_package(request, context)
-    
     def UpdatePackage(self, request, context):
         return self.package_handler.update_package(request, context)
     
@@ -42,6 +39,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def ListPackages(self, request, context):
         return self.package_handler.list_packages(request, context)
+
+    def DeletePackage(self, request, context):
+        return self.package_handler.delete_package(request, context)
     
     def SearchPackages(self, request, context):
         return self.package_handler.search_packages(request, context)
@@ -49,9 +49,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # binaries
     def CreateBinary(self, request, context):
         return self.binary_handler.create_binary(request, context)
-    
-    def DeleteBinary(self, request, context):
-        return self.binary_handler.delete_binary(request, context)
     
     def UpdateBinary(self, request, context):
         return self.binary_handler.update_binary(request, context)
@@ -62,6 +59,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def ListBinaries(self, request, context):
         return self.binary_handler.list_binaries(request, context)
 
+    def DeleteBinary(self, request, context):
+        return self.binary_handler.delete_binary(request, context)
+    
     def DownloadBinary(self, request, context):
         return self.binary_handler.download_binary(request, context)
 
@@ -76,23 +76,23 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def CreateComment(self, request, context):
         return self.comment_handler.create_comment(request, context)
 
-    def DeleteComment(self, request, context):
-        return self.comment_handler.delete_comment(request, context)
-
     def UpdateComment(self, request, context):
         return self.comment_handler.update_comment(request, context)
 
     def ListComments(self, request, context):
         return self.comment_handler.list_comments(request, context)
 
+    def DeleteComment(self, request, context):
+        return self.comment_handler.delete_comment(request, context)
+
     def CreateReply(self, request, context):
         return self.reply_handler.create_reply(request, context)
 
-    def DeleteReply(self, request, context):
-        return self.reply_handler.delete_reply(request, context)
-
     def UpdateReply(self, request, context):
         return self.reply_handler.update_reply(request, context)
+
+    def DeleteReply(self, request, context):
+        return self.reply_handler.delete_reply(request, context)
 
     # users
     def SignUp(self, request, context):
