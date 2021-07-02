@@ -76,7 +76,7 @@ class Comment(ResourceMixin, TrackLifecycle):
                 reply.delete(user_id=user_id)
             except Exception as err:
                 logger.error(f'Failed to delete reply={reply} under comment={self}: {err}')
-        super().delete()
+        super().delete(user_id=user_id)
     
     def to_pb(self) -> san11_platform_pb2.Comment:
         self._load_replies()
