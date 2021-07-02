@@ -165,7 +165,7 @@ class ResourceMixin(ABC):
         resp = run_sql_with_param_and_fetch_one(
             sql, {'resource_id': resource_id})
         if not resp:
-            raise NotFound()
+            raise NotFound(f'resource_id={resource_id} can not be found in table={cls.db_table()}')
         return cls(*resp)
 
     @classmethod

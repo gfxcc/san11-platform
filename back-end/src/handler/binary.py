@@ -1,24 +1,23 @@
-from lib.activity import Activity, Action
-from lib.field_mask import FieldMask, merge_resource
-from lib import gcs
-from lib.util.size_util import human_readable
-from lib.resource import create_resource
-from lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
-from lib.exception import InvalidArgument, PermissionDenied
-from lib.statistic import Statistic
-from lib.binary import Binary
-from lib.package import Package
-from lib.auths import Authenticator
-from lib.url import Url
-from lib.protos import san11_platform_pb2
-from lib.time_util import get_now
 import logging
 import sys
 import os
 import uuid
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
 
+
+from .lib.activity import Activity, Action
+from .lib.field_mask import FieldMask, merge_resource
+from .lib import gcs
+from .lib.util.size_util import human_readable
+from .lib.resource import create_resource
+from .lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
+from .lib.exception import InvalidArgument, PermissionDenied
+from .lib.statistic import Statistic
+from .lib.binary import Binary
+from .lib.package import Package
+from .lib.auths import Authenticator
+from .lib.url import Url
+from .lib.protos import san11_platform_pb2
+from .lib.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -48,7 +47,7 @@ class BinaryHandler:
         if not auth.canUploadBinary(parent=parent):
             context.abort(code=PermissionDenied.code,
                           details=PermissionDenied.message)
-        binary = Binary.from_pb(request.binary)
+        binary = Binary.from_pb(request.binary, parent=request.parent)
         binary.package_id = parent.package_id
         binary.url = get_binary_url(parent, binary)
         # prepare resource
@@ -93,7 +92,7 @@ class BinaryHandler:
             context.abort(code=PermissionDenied.code,
                           details=PermissionDenied.message)
 
-        update_binary = Binary.from_pb(request.binary)
+        update_binary = Binary.from_pb(request.binary, parent=None)
         update_mask = FieldMask.from_pb(request.update_mask)
         if update_mask.has('url') and update_binary.url == '':
             base_binary.remove_resource()
@@ -113,8 +112,8 @@ class BinaryHandler:
         binaries = Binary.list(0, '', package_id=request.package_id)
         package = Package.from_id(request.package_id)
         for binary in binaries:
-            if not binary.name:
-                binary.name = f'{package.name}/binaries/{binary.id}'
+            if not binary.parent:
+                binary.parent = package.name
         return san11_platform_pb2.ListBinariesResponse(binaries=[
             binary.to_pb() for binary in binaries
         ])

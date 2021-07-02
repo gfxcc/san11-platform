@@ -1,15 +1,13 @@
 import sys, os
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
 import logging
 import json
 
 
-from lib.protos import san11_platform_pb2
-from lib.auths import Authenticator
-from lib.statistic import Statistic
-from lib.package import Package
-from lib.db import run_sql_with_param_and_fetch_all
+from .lib.protos import san11_platform_pb2
+from .lib.auths import Authenticator
+from .lib.statistic import Statistic
+from .lib.package import Package
+from .lib.db import run_sql_with_param_and_fetch_all
 
 
 logger = logging.getLogger(os.path.basename(__file__))

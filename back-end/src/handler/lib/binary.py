@@ -28,7 +28,7 @@ class Binary(ResourceMixin, TrackLifecycle):
     #       Should continually keep `package_id` in DB as a primary key.
     def __init__(self, binary_id: int, package_id: int, url: str, download_count: int,
                  version: str, description: str,
-                 create_time: datetime, tag: str, download_method: str, size: str, name: str):
+                 create_time: datetime, tag: str, download_method: str, size: str, parent: str):
         self.binary_id = binary_id
         self.package_id = package_id
         self.url = url
@@ -39,7 +39,7 @@ class Binary(ResourceMixin, TrackLifecycle):
         self.tag = tag
         self.download_method = download_method
         self.size = size
-        self._name = name
+        self._parent = parent
 
     def __str__(self):
         return f'{{binary_id: {self.binary_id}, url: {self.url}, download_method: {self.download_method}}}'
@@ -54,7 +54,23 @@ class Binary(ResourceMixin, TrackLifecycle):
     
     @property
     def name(self) -> str:
-        return self._name
+        if not self.id:
+            raise ValueError('Binary is not ready/created. self.id is not available.')
+        return f'{self.parent}/binaries/{self.id}'
+    
+    # TODO: remove backfill logic
+    @property
+    def parent(self) -> str:
+        return self._parent
+    
+    @parent.setter
+    def parent(self, parent: str) -> None:
+        sql = f'UPDATE {self.db_table()} SET parent=%(parent)s WHERE binary_id=%(resource_id)s'
+        run_sql_with_param(sql, {
+            'parent': parent,
+            'resource_id': self.id
+        })
+    # TODO: END
     
     @name.setter
     def name(self, name: str) -> None:
@@ -93,14 +109,14 @@ class Binary(ResourceMixin, TrackLifecycle):
     @classmethod
     def db_fields(cls) -> Iterable[str]:
         return ['binary_id', 'package_id', 'url', 'download_count', 'version', 
-                'description', 'create_time', 'tag', 'download_method', 'size', 'name']
+                'description', 'create_time', 'tag', 'download_method', 'size', 'parent']
     
     @classmethod
     def name_pattern(cls) -> str:
         return r'categories/[0-9]+/packages/[0-9]+/binaries/[0-9]+'
 
     @classmethod
-    def from_pb(cls, obj: san11_platform_pb2.Binary):
+    def from_pb(cls, obj: san11_platform_pb2.Binary, parent: str):
         return cls(binary_id=obj.binary_id,
                    package_id=obj.package_id,
                    url=obj.url,
@@ -110,7 +126,8 @@ class Binary(ResourceMixin, TrackLifecycle):
                    create_time=get_now(),
                    tag=obj.tag,
                    download_method=obj.download_method,
-                   size=obj.size
+                   size=obj.size,
+                   parent=parent
                    )
 
     def delete(self) -> None:

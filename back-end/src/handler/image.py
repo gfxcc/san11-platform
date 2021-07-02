@@ -1,17 +1,15 @@
 import sys, os, uuid
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
 import logging
 
 
-from lib.protos import san11_platform_pb2
-from lib.url import Url
-from lib.auths import Authenticator
-from lib.image import Image
-from lib.package import Package
-from lib.user import User
-from lib.image import get_image_url
-from lib import gcs
+from .lib.protos import san11_platform_pb2
+from .lib.url import Url
+from .lib.auths import Authenticator
+from .lib.image import Image
+from .lib.package import Package
+from .lib.user import User
+from .lib.image import get_image_url
+from .lib import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))

@@ -1,15 +1,13 @@
 import sys, os
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
 import logging
 
 
-from lib.protos import san11_platform_pb2
-from lib.auths import Authenticator
-from lib.package import Package, Status
-from lib.image import Image
-from lib.exception import PermissionDenied
-from lib.field_mask import FieldMask, merge_resource
+from .lib.protos import san11_platform_pb2
+from .lib.auths import Authenticator
+from .lib.package import Package, Status
+from .lib.image import Image
+from .lib.exception import PermissionDenied
+from .lib.field_mask import FieldMask, merge_resource
 
 
 logger = logging.getLogger(os.path.basename(__file__))

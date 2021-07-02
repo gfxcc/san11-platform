@@ -4,9 +4,7 @@ import grpc
 from typing import List
 from concurrent import futures
 
-from lib.protos import san11_platform_pb2_grpc
-
-
+from handler.lib.protos import san11_platform_pb2_grpc
 from handler import PackageHandler, BinaryHandler, ImageHandler, \
                     CommentHandler, ReplyHandler, UserHandler, \
                     ActivityHandler, GeneralHandler, TagHandler, \

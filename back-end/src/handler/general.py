@@ -1,13 +1,11 @@
 import sys, os
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
 import logging
 
 
-from lib.protos import san11_platform_pb2
-from lib.auths import Authenticator, Session
-from lib.statistic import Statistic
-from lib.exception import Unauthenticated
+from .lib.protos import san11_platform_pb2
+from .lib.auths import Authenticator, Session
+from .lib.statistic import Statistic
+from .lib.exception import Unauthenticated
 
 
 logger = logging.getLogger(os.path.basename(__file__))

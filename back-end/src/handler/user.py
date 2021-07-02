@@ -1,18 +1,15 @@
 import sys, os, uuid, logging
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
 
-
-from lib.protos import san11_platform_pb2
-from lib.url import Url
-from lib.auths import Authenticator, Session
-from lib.image import Image
-from lib.package import Package
-from lib.user import User, generate_verification_code, verify_code
-from lib.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists
-from lib.field_mask import FieldMask, merge_resource
-from lib.notifier import Notifier
-from lib.db.db_util import run_sql_with_param
+from .lib.protos import san11_platform_pb2
+from .lib.url import Url
+from .lib.auths import Authenticator, Session
+from .lib.image import Image
+from .lib.package import Package
+from .lib.user import User, generate_verification_code, verify_code
+from .lib.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists
+from .lib.field_mask import FieldMask, merge_resource
+from .lib.notifier import Notifier
+from .lib.db.db_util import run_sql_with_param
 
 
 logger = logging.getLogger(os.path.basename(__file__))

@@ -1,16 +1,14 @@
 import sys, os
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
 import logging
 
 
-from lib.protos import san11_platform_pb2
-from lib.url import Url
-from lib.auths import Authenticator
-from lib.package import Package
-from lib.binary import Binary
-from lib.statistic import Statistic
-from lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
+from .lib.protos import san11_platform_pb2
+from .lib.url import Url
+from .lib.auths import Authenticator
+from .lib.package import Package
+from .lib.binary import Binary
+from .lib.statistic import Statistic
+from .lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
 
 
 logger = logging.getLogger(os.path.basename(__file__))

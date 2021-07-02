@@ -2,7 +2,7 @@
 
 PROTO_PATH:=../protos
 PROTO_FILES:=$(PROTO_PATH)/*.proto
-OUTPUT_PATH:=./src/lib/protos
+OUTPUT_PATH:=./handler/src/lib/protos
 
 
 regen:

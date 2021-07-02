@@ -1,17 +1,15 @@
 from datetime import datetime
 import sys, os
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
 import logging
 
 
-from lib.protos import san11_platform_pb2
-from lib.auths import Authenticator
-from lib.user import User
-from lib.activity import Activity, Action
-from lib.comment import Reply
-from lib.exception import Unauthenticated, NotFound
-from lib.time_util import get_now
+from .lib.protos import san11_platform_pb2
+from .lib.auths import Authenticator
+from .lib.user import User
+from .lib.activity import Activity, Action
+from .lib.comment import Reply
+from .lib.exception import Unauthenticated, NotFound
+from .lib.time_util import get_now
 
 
 logger = logging.getLogger(os.path.basename(__file__))

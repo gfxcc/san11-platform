@@ -1,17 +1,16 @@
-from lib.time_util import get_now
-from lib.exception import Unauthenticated, NotFound
-from lib.comment import Comment
-from lib.user import User
-from lib.activity import Activity, Action
-from lib.auths import Authenticator
-from lib.url import Url
-from lib.protos import san11_platform_pb2
-from datetime import datetime
 import logging
 import sys
 import os
-# TODO: switch to a moduel based solution
-sys.path.insert(0, os.path.abspath('..'))
+
+from .lib.time_util import get_now
+from .lib.exception import Unauthenticated, NotFound
+from .lib.comment import Comment
+from .lib.user import User
+from .lib.activity import Activity, Action
+from .lib.auths import Authenticator
+from .lib.url import Url
+from .lib.protos import san11_platform_pb2
+from datetime import datetime
 
 
 logger = logging.getLogger(os.path.basename(__file__))
