@@ -92,4 +92,8 @@ class Comment(ResourceMixin, TrackLifecycle):
         )
     
     def _load_replies(self) -> None:
-        self.replies = Reply.list(0, '', comment_id=self.comment_id)
+        self.replies = Reply.list(0, '', comment_id=self.comment_id)[::-1]  # reversed order
+        # TODO: remove backfill once it is done
+        for reply in self.replies:
+            if not reply.parent:
+                reply.parent = self.name

@@ -39,7 +39,7 @@ class Binary(ResourceMixin, TrackLifecycle):
         self.tag = tag
         self.download_method = download_method
         self.size = size
-        self._parent = parent
+        self.parent = parent
 
     def __str__(self):
         return f'{{binary_id: {self.binary_id}, url: {self.url}, download_method: {self.download_method}}}'
@@ -70,6 +70,7 @@ class Binary(ResourceMixin, TrackLifecycle):
             'parent': parent,
             'resource_id': self.id
         })
+        self._parent = parent
     # TODO: END
     
     @name.setter

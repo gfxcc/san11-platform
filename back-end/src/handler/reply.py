@@ -7,7 +7,7 @@ from .lib.protos import san11_platform_pb2
 from .lib.auths import Authenticator
 from .lib.user import User
 from .lib.activity import Activity, Action
-from .lib.comment import Reply
+from .lib.comment import Reply, Comment
 from .lib.exception import Unauthenticated, NotFound
 from .lib.time_util import get_now
 
@@ -22,9 +22,9 @@ class ReplyHandler:
         auth = Authenticator.from_context(context)
         assert request.reply.author_id == auth.session.user.user_id
 
-        reply = Reply.from_pb(request.reply)
+        comment = Comment.from_id(request.reply.comment_id)
+        reply = Reply.from_pb(request.reply, parent=comment.name)
         reply.create(user_id=auth.session.user.user_id)
-
         return reply.to_pb()
     
     def delete_reply(self, request, context):
