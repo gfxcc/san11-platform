@@ -83,7 +83,7 @@ class PackageHandler:
         update_mask = FieldMask.from_pb(request.update_mask)
         if 'tags' in update_mask.paths:
             update_mask.paths.remove('tags')
-            update_mask.paths.append('tag_ids')
+            update_mask.paths.add('tag_ids')
         package = merge_resource(base_resource=base_package,
                                  update_request=Package.from_pb(request.package),
                                  field_mask=update_mask)
