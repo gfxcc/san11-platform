@@ -18,7 +18,7 @@ services:
   test_db:
     build: ./database
     volumes: 
-      - ${TMP_DB_DATA}:/var/lib/postgresql/data
+      - ${TMP_DB_DATA}/:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
