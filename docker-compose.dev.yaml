@@ -13,6 +13,8 @@ services:
     environment:
       NOTIFIER_SERVICE_ACCOUNT_FILE: '../credentials/san11-platform-notifier.json'
     command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py"]
+    environment:
+      DB_HOST: db
     depends_on:
       - db
       - envoy

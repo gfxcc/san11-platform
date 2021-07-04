@@ -2,20 +2,21 @@ version: "3"
 
 services:
   sut:
-    build: ./back-end
+    build: ./back-end/Dockerfile.test
     working_dir: /app
     volumes:
       - ./back-end:/app
       - ./back-end/utils:/utils
-    command: ["/utils/wait-for-postgres.sh", "db", "make", "test"]
+    command: ["/utils/wait-for-postgres.sh", "test_db", "make", "test"]
+    environment:
+      DB_HOST: test_db
     depends_on:
-      - db
+      - test_db
   
-  db:
+  test_db:
     build: ./database
     volumes: 
-      - ${TMP_DIR}:/var/lib/postgresql/data
+      - ${TMP_DB_DATA}:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
-

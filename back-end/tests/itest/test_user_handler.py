@@ -2,10 +2,10 @@ import unittest
 from unittest.mock import Mock
 
 from .context import *
-from ...src.handler.lib.protos.san11_platform_pb2 import User
+from ...src.handler.lib.protos import san11_platform_pb2 as pb
 from ...src.handler.lib.protos.san11_platform_pb2 import SignUpRequest, SendVerificationCodeRequest
 from ...src.handler import UserHandler
-from ...src.handler.lib.user import generate_verification_code
+from ...src.handler.lib.user import generate_verification_code, User
 
 
 TEST_USERNAME = 'a-simple-username'
@@ -26,7 +26,7 @@ class TestUserHandler(unittest.TestCase):
     def test_sign_up(self):
         # GIVEN
         request = SignUpRequest(
-            user=User(
+            user=pb.User(
                 username=TEST_USERNAME,
                 email=TEST_EMAIL,
             ),
@@ -35,7 +35,8 @@ class TestUserHandler(unittest.TestCase):
         )
 
         # WHEN
-        self.handler.sign_up(request=request, context=self.mock_context)
+        resp : pb.SignUpResponse= self.handler.sign_up(request=request, context=self.mock_context)
 
         # THEN
-        self.assertEqual(1, 1)
+        self.assertTrue(isinstance(resp, pb.SignUpResponse))
+        self.assertEqual(resp.user.username, TEST_USERNAME)
