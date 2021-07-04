@@ -2,7 +2,9 @@ version: "3"
 
 services:
   sut:
-    build: ./back-end/Dockerfile.test
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile.test
     working_dir: /app
     volumes:
       - ./back-end:/app
