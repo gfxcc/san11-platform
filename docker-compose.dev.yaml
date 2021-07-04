@@ -1,3 +1,4 @@
+# Remove https related setup for testing purpose.
 version: "3"
 
 services:

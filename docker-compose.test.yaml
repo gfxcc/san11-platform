@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  sut:
+    build: ./back-end
+    working_dir: /app
+    volumes:
+      - ./back-end:/app
+      - ./back-end/utils:/utils
+    command: ["/utils/wait-for-postgres.sh", "db", "make", "test"]
+    depends_on:
+      - db
+  
+  db:
+    build: ./database
+    volumes: 
+      - ${TMP_DIR}:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+

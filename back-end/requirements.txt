@@ -2,6 +2,7 @@
 #grpcio
 #grpcio-tools
 psycopg2
+pytest
 retry
 pytz
 google-cloud-storage

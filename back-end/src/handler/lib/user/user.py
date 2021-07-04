@@ -4,7 +4,7 @@ import re
 import json
 import logging
 from datetime import datetime, timezone
-from typing import List
+from typing import List, Tuple
 
 from ..protos import san11_platform_pb2
 from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
@@ -12,7 +12,7 @@ from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_
 from ..time_util import get_now
 from ..image import Image
 from ..time_util import get_timezone
-from ..exception import Unauthenticated, AlreadyExists
+from ..exception import NotFound, Unauthenticated, AlreadyExists, FailedPrecondition
 from ..resource import ResourceMixin, ResourceView
 from ..activity import TrackLifecycle, Activity, Action
 
@@ -112,7 +112,7 @@ class User(ResourceMixin, TrackLifecycle):
         '''
         self.validate_password(password)
         sql = f'INSERT INTO {self.db_table()} '\
-              ' VALUES ((SELECT MAX(user_id) FROM users)+1, %(username)s, %(password)s, '\
+              f' VALUES ( COALESCE((SELECT MAX({self.db_fields()[0]}) FROM {self.db_table()})+1, 1), %(username)s, %(password)s, '\
               '%(email)s, %(user_type)s, %(create_timestamp)s, %(image_url)s, %(website)s) RETURNING user_id'
         resp = run_sql_with_param_and_fetch_one(sql, {
             'username': self.username,
@@ -284,10 +284,23 @@ def generate_verification_code(email: str) -> str:
     })
     return verification_code
 
-def verify_code(email: str, code: str) -> bool:
-    sql = f'SELECT * FROM {VERIFICATION_CODES_TABLE} WHERE email=%(email)s AND code=%(code)s'
+def get_code(email: str) -> str:
+    sql = f'SELECT code FROM {VERIFICATION_CODES_TABLE} WHERE email=%(email)s'
     resp = run_sql_with_param_and_fetch_one(sql, {
         'email': email,
-        'code': code
     })
-    return resp != None
+    if not resp:
+        raise NotFound(f'Verification code for email {email} is not found.')
+    return str(resp[0])
+
+def verify_code(email: str, code: str) -> bool:
+    '''
+    Return:
+        True: if email and code match to existing record.
+        False: anything else. 
+    '''
+    try:
+        code_in_system = get_code(email)
+    except NotFound:
+        return False
+    return code_in_system == code

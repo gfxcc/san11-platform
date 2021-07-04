@@ -23,3 +23,7 @@ class NotFound(Exception):
 class InvalidArgument(Exception):
     code = 3
     message = '不合法的参数'
+
+class FailedPrecondition(Exception):
+    code = 9
+    message = '条件不满足'
