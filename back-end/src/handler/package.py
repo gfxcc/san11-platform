@@ -2,14 +2,14 @@ import sys, os
 import logging
 
 
-from .lib.protos import san11_platform_pb2
-from .lib.auths import Authenticator
-from .lib.package import Package, Status
-from .lib.binary import Binary
-from .lib.comment import Comment
-from .lib.image import Image
-from .lib.exception import PermissionDenied
-from .lib.field_mask import FieldMask, merge_resource
+from .protos import san11_platform_pb2
+from .auths import Authenticator
+from .model.package import Package, Status
+from .model.binary import Binary
+from .model.comment import Comment
+from .model.image import Image
+from .model.exception import PermissionDenied
+from .model.field_mask import FieldMask, merge_resource
 
 
 logger = logging.getLogger(os.path.basename(__file__))

@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import List, Iterable
 from copy import deepcopy
 
-from .protos import san11_platform_pb2
+from ..protos import san11_platform_pb2
 from .resource import ResourceMixin
 
 

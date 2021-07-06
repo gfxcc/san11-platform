@@ -8,8 +8,8 @@ from abc import ABC, abstractclassmethod, abstractmethod, abstractproperty
 from typing import List, Any, Iterable, Dict
 from .exception import NotFound, AlreadyExists
 
-from .time_util import get_now
-from .protos import san11_platform_pb2
+from ..util.time_util import get_now
+from ..protos import san11_platform_pb2
 from .db import get_db_fields_placeholder_str, get_db_fields_str, get_db_fields_assignment_str, \
     run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
 from .activity import Action, Activity, TrackLifecycle

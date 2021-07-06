@@ -2,14 +2,14 @@ import logging
 import sys
 import os
 
-from .lib.time_util import get_now
-from .lib.exception import Unauthenticated, NotFound
-from .lib.comment import Comment
-from .lib.user import User
-from .lib.activity import Activity, Action
-from .lib.auths import Authenticator
-from .lib.url import Url
-from .lib.protos import san11_platform_pb2
+from .util.time_util import get_now
+from .model.exception import Unauthenticated, NotFound
+from .model.comment import Comment
+from .model.user import User
+from .model.activity import Activity, Action
+from .auths import Authenticator
+from .model.url import Url
+from .protos import san11_platform_pb2
 from datetime import datetime
 
 

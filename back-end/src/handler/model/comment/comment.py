@@ -5,9 +5,9 @@ from typing import Iterable, List
 
 
 from .reply import Reply
-from ..protos import san11_platform_pb2
+from ...protos import san11_platform_pb2
 from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all
-from ..time_util import get_now, datetime_to_str, get_timezone, get_age
+from ...util.time_util import get_now, datetime_to_str, get_timezone, get_age
 from ..url import Url
 from ..resource import ResourceMixin, ResourceView
 from ..activity  import TrackLifecycle

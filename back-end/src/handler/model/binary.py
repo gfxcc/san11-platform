@@ -8,14 +8,14 @@ import errno
 from typing import Any, Iterable, List, Union
 from datetime import datetime, timezone
 
-from .protos import san11_platform_pb2
+from ..protos import san11_platform_pb2
 from .resource import ResourceMixin, ResourceView
 from .activity import TrackLifecycle
 from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
 from .version import Version
 from .url import Url
-from .time_util import datetime_to_str, get_datetime_format, get_now, get_timezone
-from .util.size_util import human_readable
+from ..util.time_util import datetime_to_str, get_datetime_format, get_now, get_timezone
+from ..util.size_util import human_readable
 from . import gcs
 
 

@@ -4,19 +4,18 @@ import os
 import uuid
 
 
-from .lib.activity import Activity, Action
-from .lib.field_mask import FieldMask, merge_resource
-from .lib import gcs
-from .lib.util.size_util import human_readable
-from .lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
-from .lib.exception import InvalidArgument, PermissionDenied
-from .lib.statistic import Statistic
-from .lib.binary import Binary
-from .lib.package import Package
-from .lib.auths import Authenticator
-from .lib.url import Url
-from .lib.protos import san11_platform_pb2
-from .lib.time_util import get_now
+from .model.activity import Activity, Action
+from .model.field_mask import FieldMask, merge_resource
+from .model import gcs
+from .util.size_util import human_readable
+from .model.exception import InvalidArgument, PermissionDenied
+from .model.statistic import Statistic
+from .model.binary import Binary
+from .model.package import Package
+from .auths import Authenticator
+from .model.url import Url
+from .protos import san11_platform_pb2
+from .util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))
 

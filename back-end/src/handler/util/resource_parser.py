@@ -2,11 +2,11 @@ from os import stat
 import re
 import logging
 
-from ..resource import ResourceMixin
+from ..model.resource import ResourceMixin
 from ..package import Package
 from ..binary import Binary
 from ..tag import Tag
-from ..comment import Comment, Reply
+from ..comment import Comment
 from ..user import User
 
 

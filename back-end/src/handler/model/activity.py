@@ -5,10 +5,10 @@ from typing import List, Dict, Any, Union
 from datetime import datetime, timezone
 from enum import Enum
 
-from .protos import san11_platform_pb2
+from ..protos import san11_platform_pb2
 from .db import run_sql_with_param_and_fetch_one, run_sql_with_param,\
     get_db_fields_placeholder_str, get_db_fields_str, run_sql_with_param_and_fetch_all
-from .time_util import get_now, datetime_to_str, get_age
+from ..util.time_util import get_now, datetime_to_str, get_age
 from .exception import NotFound
 
 

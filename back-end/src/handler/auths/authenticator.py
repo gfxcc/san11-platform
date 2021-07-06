@@ -3,14 +3,14 @@ import logging
 from typing import Union
 
 from ..protos import san11_platform_pb2
-from ..package import Package
-from ..binary import Binary
-from ..url import Url
-from ..user.user import User
-from ..comment.comment import Comment
-from ..comment.reply import Reply
+from ..model.package import Package
+from ..model.binary import Binary
+from ..model.url import Url
+from ..model.user.user import User
+from ..model.comment.comment import Comment
+from ..model.comment.reply import Reply
 from .session import Session
-from ..exception import Unauthenticated, PermissionDenied
+from ..model.exception import Unauthenticated, PermissionDenied
 
 
 logger = logging.getLogger(os.path.basename(__file__))

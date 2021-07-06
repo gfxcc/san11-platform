@@ -4,11 +4,11 @@ import grpc
 from typing import List
 from concurrent import futures
 
-from handler.lib.protos import san11_platform_pb2_grpc
+from handler.protos import san11_platform_pb2_grpc
 from handler import PackageHandler, BinaryHandler, ImageHandler, \
                     CommentHandler, ReplyHandler, UserHandler, \
                     ActivityHandler, GeneralHandler, TagHandler, \
-                    AdminHandler, AuthHandler
+                    AdminHandler
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -26,7 +26,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.general_handler = GeneralHandler()
         self.tag_handler = TagHandler()
         self.admin_handler = AdminHandler()
-        self.auth_handler = AuthHandler()
 
     def CreatePackage(self, request, context):
         return self.package_handler.create_package(request, context)
@@ -133,9 +132,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def GetAdminMessage(self, request, context):
         return self.admin_handler.get_admin_message(request, context)
     
-    def GetAuth(self, request, context):
-        return self.auth_handler.get_auth(request, context)
-
     # Tags
     def CreateTag(self, request, context):
         return self.tag_handler.create_tag(request, context)

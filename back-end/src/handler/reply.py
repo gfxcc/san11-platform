@@ -3,13 +3,13 @@ import sys, os
 import logging
 
 
-from .lib.protos import san11_platform_pb2
-from .lib.auths import Authenticator
-from .lib.user import User
-from .lib.activity import Activity, Action
-from .lib.comment import Reply, Comment
-from .lib.exception import Unauthenticated, NotFound
-from .lib.time_util import get_now
+from .protos import san11_platform_pb2
+from .auths import Authenticator
+from .model.user import User
+from .model.activity import Activity, Action
+from .model.comment import Reply, Comment
+from .model.exception import Unauthenticated, NotFound
+from .util.time_util import get_now
 
 
 logger = logging.getLogger(os.path.basename(__file__))

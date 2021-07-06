@@ -1,15 +1,15 @@
 import sys, os, uuid, logging
 
-from .lib.protos import san11_platform_pb2
-from .lib.url import Url
-from .lib.auths import Authenticator, Session
-from .lib.image import Image
-from .lib.package import Package
-from .lib.user import User, generate_verification_code, verify_code
-from .lib.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists
-from .lib.field_mask import FieldMask, merge_resource
-from .lib.notifier import Notifier
-from .lib.db.db_util import run_sql_with_param
+from .protos import san11_platform_pb2
+from .model.url import Url
+from .auths import Authenticator, Session
+from .model.image import Image
+from .model.package import Package
+from .model.user import User, generate_verification_code, verify_code
+from .model.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists
+from .model.field_mask import FieldMask, merge_resource
+from .model.notifier import Notifier
+from .model.db.db_util import run_sql_with_param
 
 
 logger = logging.getLogger(os.path.basename(__file__))
