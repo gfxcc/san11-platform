@@ -15,7 +15,6 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 class PackageHandler:
     def create_package(self, request, context):
-        logger.info('In CreatePackage')
         auth = Authenticator.from_context(context)
         package = Package.from_pb(request.package)
         package.author_id = auth.session.user.user_id
@@ -23,8 +22,6 @@ class PackageHandler:
         return package.to_pb()
 
     def delete_package(self, request, context):
-        logger.info(
-            f'In DeletePackage: package_id={request.package.package_id}')
         package = Package.from_id(request.package.package_id)
 
         auth = Authenticator.from_context(context)
@@ -37,11 +34,9 @@ class PackageHandler:
         return san11_platform_pb2.Empty()
 
     def get_package(self, request, context):
-        logger.info(f'In GetPackage: package_id={request.package_id}')
         return Package.from_id(request.package_id).to_pb()
 
     def list_packages(self, request, context):
-        logger.info(f'In ListPackages: category_id={request.category_id}')
         try:
             user = Authenticator.from_context(context=context).session.user
         except Exception:
@@ -69,8 +64,6 @@ class PackageHandler:
                                                                     request.query)])
 
     def update_package(self, request, context):
-        logger.info(
-            f'In UpdatePackage: package_id={request.package.package_id}')
         logger.debug(request.package.image_urls)
         base_package = Package.from_id(request.package.package_id)
 

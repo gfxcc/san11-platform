@@ -24,8 +24,6 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 class BinaryHandler:
     def create_binary(self, request, context):
-        logger.info(f'In create_binary')
-
         def get_binary_url(parent: Url, binary: Binary):
             category_to_ext = {
                 1: {
@@ -74,7 +72,6 @@ class BinaryHandler:
         return binary.to_pb()
 
     def delete_binary(self, request, context):
-        logger.info(f'In delete_binary: binary_id={request.binary_id}')
         binary = Binary.from_id(request.binary_id)
         auth = Authenticator.from_context(context)
         if not auth.canDeleteBinary(binary):
@@ -84,7 +81,6 @@ class BinaryHandler:
         return san11_platform_pb2.Empty()
 
     def update_binary(self, request, context):
-        logger.info(f'In update_binary: binary_id={request.binary.binary_id}')
         base_binary = Binary.from_id(request.binary.binary_id)
 
         auth = Authenticator.from_context(context)
@@ -103,12 +99,10 @@ class BinaryHandler:
         return binary.to_pb()
 
     def get_binary(self, request, context):
-        logger.info(f'In get_binary: binary_id={request.binary_id}')
         binary = Binary.from_id(request.binary_id)
         return binary.to_pb()
 
     def list_binaries(self, request, context):
-        logger.info(f'In list_binaries: package_id: {request.package_id}')
         binaries = Binary.list(0, '', package_id=request.package_id)
         package = Package.from_id(request.package_id)
         for binary in binaries:

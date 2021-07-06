@@ -17,7 +17,6 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 class UserHandler:
     def sign_up(self, request, context):
-        logger.info(f'In sign_up')
         try:
             user = User.from_pb(request.user)
             assert verify_code(user.email, request.verification_code), '邮箱未经验证'
@@ -35,8 +34,6 @@ class UserHandler:
         return resp
 
     def sign_in(self, request, context):
-        logger.info('In sign_in')
-
         try:
             user = User.from_name(request.username)
             user.validate(request.password)
@@ -57,11 +54,9 @@ class UserHandler:
                                                  sid=session.sid)
                                                 
     def sign_out(self, request, context):
-        logger.info(f'In sign_out: user_id={request.user_id}')
         return san11_platform_pb2.Status(code=0, message="登出成功")
     
     def update_user(self, request, context):
-        logger.info(f'In update_user: user_id={request.user.user_id}')
         base_user = User.from_id(request.user.user_id)
 
         auth = Authenticator.from_context(context)
@@ -85,7 +80,6 @@ class UserHandler:
         return user.to_pb()
 
     def update_password(self, request, context):
-        logger.info(f'In update_password: user_id={request.user_id}')
         user = User.from_id(request.user_id)
 
         if request.verification_code:
@@ -100,7 +94,6 @@ class UserHandler:
         return san11_platform_pb2.Empty()
 
     def get_user(self, request, context):
-        # logger.info(f'In get_user: user_id={request.user_id}')
         try:
             if request.HasField('user_id'):
                 user = User.from_id(request.user_id)
@@ -112,7 +105,6 @@ class UserHandler:
         return user.to_pb()
 
     def list_users(self, request, context):
-        logger.info(f'In list_users')
         Authenticator.from_context(context)
         return san11_platform_pb2.ListUsersResponse(users=[
             user.to_pb() for user in User.list(0, '')
@@ -126,12 +118,10 @@ class UserHandler:
         return san11_platform_pb2.Empty()
 
     def verify_email(self, request, context):
-        logger.info('In verify_email')
         email, code = request.email, request.verification_code
         return san11_platform_pb2.VerifyEmailResponse(ok=verify_code(email, code))
         
     def verify_new_user(self, request, context):
-        logger.info('In verify_new_user')
         if request.HasField('username'):
             try:
                 User.validate_username(request.username)
