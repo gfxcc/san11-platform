@@ -4,7 +4,7 @@ import logging
 
 from .protos import san11_platform_pb2
 from .auths import Authenticator, Session
-from .model.exception import Unauthenticated
+from .common.exception import Unauthenticated
 from .model.tag import Tag
 
 

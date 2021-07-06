@@ -2,10 +2,10 @@ import unittest
 from unittest.mock import Mock
 
 from .context import *
-from ...src.handler.lib.protos import san11_platform_pb2 as pb
-from ...src.handler.lib.protos.san11_platform_pb2 import SignUpRequest, SendVerificationCodeRequest
+from ...src.handler.protos import san11_platform_pb2 as pb
+from ...src.handler.protos.san11_platform_pb2 import SignUpRequest, SendVerificationCodeRequest
 from ...src.handler import UserHandler
-from ...src.handler.lib.user import generate_verification_code, User
+from ...src.handler.model.user import generate_verification_code
 
 
 TEST_USERNAME = 'a-simple-username'

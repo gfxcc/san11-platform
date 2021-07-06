@@ -3,9 +3,9 @@ from typing import Iterable, List, Any
 from ..protos import san11_platform_pb2
 from .resource import ResourceMixin, ResourceView
 from .activity import TrackLifecycle
-from .db.db_util import get_db_fields_str, get_db_fields_placeholder_str, run_sql_with_param,\
+from ..db.db_util import get_db_fields_str, get_db_fields_placeholder_str, run_sql_with_param,\
                         run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all
-from .exception import PermissionDenied
+from ..common.exception import PermissionDenied
 
 
 class Tag(ResourceMixin, TrackLifecycle):

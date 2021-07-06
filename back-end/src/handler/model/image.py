@@ -1,14 +1,10 @@
 from __future__ import annotations
-from pathlib import Path
 import logging
 import os, os.path
-import errno
 import uuid
 
-from ..protos import san11_platform_pb2
-from .db import run_sql_with_param_and_fetch_one, run_sql_with_param
 from .resource import get_image_url
-from . import gcs
+from ..util import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))

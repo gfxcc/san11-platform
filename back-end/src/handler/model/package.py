@@ -6,7 +6,7 @@ from typing import List, Any, Iterable, Dict
 from datetime import datetime, timezone
 
 from ..protos import san11_platform_pb2
-from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, \
+from ..db import run_sql_with_param_and_fetch_one, run_sql_with_param, \
     run_sql_with_param_and_fetch_all, get_db_fields_str, \
     sanitize_str
 from .image import Image

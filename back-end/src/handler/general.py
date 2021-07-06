@@ -5,7 +5,7 @@ import logging
 from .protos import san11_platform_pb2
 from .auths import Authenticator, Session
 from .model.statistic import Statistic
-from .model.exception import Unauthenticated
+from .common.exception import Unauthenticated
 
 
 logger = logging.getLogger(os.path.basename(__file__))

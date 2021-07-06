@@ -8,8 +8,8 @@ from .model.package import Package, Status
 from .model.binary import Binary
 from .model.comment import Comment
 from .model.image import Image
-from .model.exception import PermissionDenied
-from .model.field_mask import FieldMask, merge_resource
+from .common.exception import PermissionDenied
+from .common.field_mask import FieldMask, merge_resource
 
 
 logger = logging.getLogger(os.path.basename(__file__))

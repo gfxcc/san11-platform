@@ -3,7 +3,7 @@ from typing import List, Iterable
 from copy import deepcopy
 
 from ..protos import san11_platform_pb2
-from .resource import ResourceMixin
+from ..model.resource import ResourceMixin
 
 
 def merge_resource(base_resource: ResourceMixin, update_request: ResourceMixin, field_mask: FieldMask) -> ResourceMixin:

@@ -9,7 +9,7 @@ from .model.image import Image
 from .model.package import Package
 from .model.user import User
 from .model.image import get_image_url
-from .model import gcs
+from .util import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))

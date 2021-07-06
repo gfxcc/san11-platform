@@ -2,12 +2,7 @@ import sys, os, uuid, logging
 
 
 from .protos import san11_platform_pb2
-from .model.url import Url
-from .auths import Authenticator, Session
-from .model.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists, NotFound
-from .model.notifier import Notifier
-from .model.db.db_util import run_sql_with_param
-from .model.resource import ResourceView
+from .common.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists, NotFound
 from .model.activity import Activity
 from .util.resource_parser import parse_resource_name
 from .util.time_util import datetime_to_str, get_age

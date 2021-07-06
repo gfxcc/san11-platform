@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import abstractproperty, abstractclassmethod
 
-from .db import run_sql_with_param_and_fetch_one
+from ..db import run_sql_with_param_and_fetch_one
 
 class Category:
     def __init__(self, category_id: int, name: str) -> None:

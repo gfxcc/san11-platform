@@ -5,10 +5,10 @@ import uuid
 
 
 from .model.activity import Activity, Action
-from .model.field_mask import FieldMask, merge_resource
-from .model import gcs
+from .common.field_mask import FieldMask, merge_resource
+from .util import gcs
 from .util.size_util import human_readable
-from .model.exception import InvalidArgument, PermissionDenied
+from .common.exception import InvalidArgument, PermissionDenied
 from .model.statistic import Statistic
 from .model.binary import Binary
 from .model.package import Package

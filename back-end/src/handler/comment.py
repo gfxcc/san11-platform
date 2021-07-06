@@ -3,7 +3,7 @@ import sys
 import os
 
 from .util.time_util import get_now
-from .model.exception import Unauthenticated, NotFound
+from .common.exception import Unauthenticated, NotFound
 from .model.comment import Comment
 from .model.user import User
 from .model.activity import Activity, Action

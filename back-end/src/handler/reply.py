@@ -8,7 +8,7 @@ from .auths import Authenticator
 from .model.user import User
 from .model.activity import Activity, Action
 from .model.comment import Reply, Comment
-from .model.exception import Unauthenticated, NotFound
+from .common.exception import Unauthenticated, NotFound
 from .util.time_util import get_now
 
 

@@ -6,11 +6,11 @@ from ..protos import san11_platform_pb2
 from ..model.package import Package
 from ..model.binary import Binary
 from ..model.url import Url
-from ..model.user.user import User
-from ..model.comment.comment import Comment
-from ..model.comment.reply import Reply
+from ..model.user import User
+from ..model.comment import Comment
+from ..model.reply import Reply
 from .session import Session
-from ..model.exception import Unauthenticated, PermissionDenied
+from ..common.exception import Unauthenticated
 
 
 logger = logging.getLogger(os.path.basename(__file__))

@@ -23,7 +23,7 @@ DB_CONN = DbConnect()
 
 
 @retry(Exception, tries=2)
-def run_sql_with_param(sql: str, param: Dict) -> List[Tuple]:
+def run_sql_with_param(sql: str, param: Dict) -> None:
     try:
         with DB_CONN.get_conn() as db_conn:
             with db_conn.cursor() as cursor:

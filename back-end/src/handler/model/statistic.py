@@ -3,7 +3,7 @@ import logging
 from datetime import date
 
 from ..protos import san11_platform_pb2
-from .db import run_sql_with_param_and_fetch_one, run_sql_with_param
+from ..db import run_sql_with_param_and_fetch_one, run_sql_with_param
 from ..util.time_util import get_today
 
 

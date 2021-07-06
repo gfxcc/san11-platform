@@ -3,8 +3,8 @@ import time
 import logging
 import uuid
 
-from ..model.db import run_sql_with_param, run_sql_with_param_and_fetch_one
-from ..model.user.user import User
+from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one
+from ..model.user import User
 
 
 logger = logging.getLogger(os.path.basename(__file__))
