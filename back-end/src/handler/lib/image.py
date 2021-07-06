@@ -7,7 +7,7 @@ import uuid
 
 from .protos import san11_platform_pb2
 from .db import run_sql_with_param_and_fetch_one, run_sql_with_param
-from .resource import get_images_path, get_resource_path, get_image_url, create_resource
+from .resource import get_image_url
 from . import gcs
 
 
@@ -25,11 +25,6 @@ class Image:
         gcs.delete_file(gcs.CANONICAL_BUCKET, self.url)
         logger.info(f'{self} is deleted')
 
-    @classmethod
-    def create(cls, url: str, data: bytes) -> Image:
-        create_resource(url, data)
-        return cls(url)
-    
     @classmethod
     def create_without_filename(cls, parent: str, data: bytes) -> Image:
         def get_file_count(path: str) -> int:

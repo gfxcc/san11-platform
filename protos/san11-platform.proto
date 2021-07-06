@@ -27,7 +27,6 @@ service RouteGuide {
 
   // Image related
   rpc CreateImage(CreateImageRequest) returns (Url) {}
-  rpc UploadImage(UploadImageRequest) returns (Url) {}
 
   // comment related
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}

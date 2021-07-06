@@ -8,7 +8,6 @@ from .lib.activity import Activity, Action
 from .lib.field_mask import FieldMask, merge_resource
 from .lib import gcs
 from .lib.util.size_util import human_readable
-from .lib.resource import create_resource
 from .lib.sire_plugin import SirePlugin, SIRE_VERSION_TO_SUFFIX
 from .lib.exception import InvalidArgument, PermissionDenied
 from .lib.statistic import Statistic

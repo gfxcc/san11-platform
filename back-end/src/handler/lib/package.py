@@ -1,29 +1,19 @@
 from __future__ import annotations
-import os, re
+import os
 import logging
-import json
-import shutil
 from enum import Enum
 from typing import List, Any, Iterable, Dict
 from datetime import datetime, timezone
 
-from google.protobuf import descriptor
-
 from .protos import san11_platform_pb2
 from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, \
-    run_sql_with_param_and_fetch_all, get_db_fields_str, get_db_fields_placeholder_str, \
+    run_sql_with_param_and_fetch_all, get_db_fields_str, \
     sanitize_str
 from .image import Image
-from .category import Category
-from .binary import Binary
-from .time_util import get_datetime_format, get_timezone, get_now, datetime_to_str, \
-                        get_age
-from .query import Query
-from .url import Url
-from .comment.comment import Comment
+from .time_util import get_now, get_age
 from .resource import ResourceMixin
 from .tag import Tag
-from .resource import get_resource_path, ResourceView
+from .resource import ResourceView
 from .activity import TrackLifecycle
 
 
@@ -80,8 +70,8 @@ class Package(ResourceMixin, TrackLifecycle):
             name=self.name,
             display_name=self.package_name,
             # TODO: improve description
-            description=None,
-            image_url=self.image_urls[0] if self.image_urls else None
+            description='',
+            image_url=self.image_urls[0] if self.image_urls else ''
         )
 
     @property
@@ -117,22 +107,6 @@ class Package(ResourceMixin, TrackLifecycle):
     @status.setter
     def status(self, status: int) -> None:
         self._status = Status(status)
-
-    def __str__(self):
-        d = {
-            'package_id': self.package_id,
-            'package_name': self.package_name,
-            'description': self.description,
-            'create_time': datetime_to_str(self.create_time),
-            'category': Category.from_category_id(self.category_id).name,
-            'status': self.status.name,
-            'author_id': self.author_id,
-            'image_urls': self.image_urls,
-            'download_count': self.download_count,
-            'update_time': datetime_to_str(self.update_time),
-            'tag_ids': self.tag_ids
-        }
-        return json.dumps(d, indent=2)
 
     @classmethod
     def db_table(cls) -> str:
@@ -185,34 +159,6 @@ class Package(ResourceMixin, TrackLifecycle):
         # TODO: rename db field name to package_name
         params['name'] = self.package_name
         return super()._update_db_params(params)
-
-    def delete(self, user_id: int) -> None:
-        for image_url in self.image_urls:
-            try:
-                Image.from_url(image_url).delete()
-            except Exception:
-                logger.error(f'Failed to delete image: image_url={image_url}')
-
-        for binary in Binary.list(0, '', package_id=self.package_id):
-            try:
-                binary.delete(user_id=user_id)
-            except Exception as err:
-                logger.error(
-                    f'Failed to delete binary: binary={binary} err={err}')
-
-        for comment in Comment.list(0, '', parent=self.name):
-            try:
-                comment.delete(user_id=user_id)
-            except Exception as err:
-                logger.error(f'Failed to delete {comment} under {self}: {err}')
-
-        super().delete(user_id=user_id)
-
-        try:
-            # To remove the entire dir
-            shutil.rmtree(get_resource_path(self.url))
-        except Exception as err:
-            logger.error(f'Failed remove {self.url}: {err}')
 
     def to_pb(self) -> san11_platform_pb2.Package:
         return san11_platform_pb2.Package(

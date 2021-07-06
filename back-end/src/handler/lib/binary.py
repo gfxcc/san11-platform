@@ -13,7 +13,6 @@ from .resource import ResourceMixin, ResourceView
 from .activity import TrackLifecycle
 from .db import run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
 from .version import Version
-from .resource import get_resource_path, get_binary_url, create_resource
 from .url import Url
 from .time_util import datetime_to_str, get_datetime_format, get_now, get_timezone
 from .util.size_util import human_readable
@@ -131,14 +130,9 @@ class Binary(ResourceMixin, TrackLifecycle):
                    parent=parent
                    )
 
-    def delete(self) -> None:
-        sql = f'DELETE FROM {self.db_table()} WHERE {self.db_fields()[0]}=%(resource_id)s'
-        run_sql_with_param(sql, {'resource_id': self.binary_id})
-        try:
-            self.remove_resource()
-        except Exception as err:
-            logger.error(f'Failed to delete binary resource {self.url}: {err}')
-        logger.debug(f'{self} is deleted')
+    def delete(self, user_id: int) -> None:
+        self.remove_resource()
+        super().delete(user_id=user_id)
     
     def to_pb(self) -> san11_platform_pb2.Binary:
         return san11_platform_pb2.Binary(
@@ -164,7 +158,6 @@ class Binary(ResourceMixin, TrackLifecycle):
         if self.url:
             gcs.delete_canonical_resource(self.url)
             self.size = ''
-
 
     def _increment_download_count(self):
         sql = f'UPDATE {self.db_table()} SET download_count=download_count+1 WHERE binary_id=%(binary_id)s'

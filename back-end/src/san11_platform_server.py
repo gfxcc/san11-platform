@@ -66,9 +66,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return self.binary_handler.download_binary(request, context)
 
     # image
-    def UploadImage(self, request, context):
-        return self.image_handler.upload_image(request, context)
-    
     def CreateImage(self, request, context):
         return self.image_handler.create_image(request, context)
 
@@ -150,18 +147,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return self.tag_handler.list_tags(request, context)
 
 
-def get_credentials():
-    '''
-    Return private_key and certificate as a tuple.
-    '''
-    SSL_KEY, SSL_CERT = os.environ.get('SSL_KEY'), os.environ.get('SSL_CERT')
-    with open(SSL_KEY, 'rb') as f:
-        private_key = f.read()
-    with open(SSL_CERT, 'rb') as f:
-        cert = f.read()
-    return private_key, cert
-
-
 def serve():
     options = [('grpc.max_receive_message_length', 30 * 1024 * 1024)]  # 30 MB
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10),
@@ -169,9 +154,6 @@ def serve():
     san11_platform_pb2_grpc.add_RouteGuideServicer_to_server(
         RouteGuideServicer(), server)
     server.add_insecure_port('[::]:50051')
-    # private_key, certificate_chain = get_credentials()
-    # server_credentials = grpc.ssl_server_credentials(((private_key, certificate_chain,),))
-    # server.add_secure_port('[::]:50051', server_credentials)
     server.start()
     logging.info('Server started...')
     server.wait_for_termination()

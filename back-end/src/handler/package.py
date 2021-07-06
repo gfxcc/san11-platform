@@ -5,6 +5,8 @@ import logging
 from .lib.protos import san11_platform_pb2
 from .lib.auths import Authenticator
 from .lib.package import Package, Status
+from .lib.binary import Binary
+from .lib.comment import Comment
 from .lib.image import Image
 from .lib.exception import PermissionDenied
 from .lib.field_mask import FieldMask, merge_resource
@@ -27,6 +29,25 @@ class PackageHandler:
         auth = Authenticator.from_context(context)
         if not auth.canDeletePackage(package):
             context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
+
+        for image_url in package.image_urls:
+            try:
+                Image.from_url(image_url).delete()
+            except Exception:
+                logger.error(f'Failed to delete image: image_url={image_url}')
+
+        for binary in Binary.list(0, '', package_id=package.package_id):
+            try:
+                binary.delete(user_id=auth.session.user.user_id)
+            except Exception as err:
+                logger.error(
+                    f'Failed to delete binary: binary={binary} err={err}')
+
+        for comment in Comment.list(0, '', parent=package.name):
+            try:
+                comment.delete(user_id=auth.session.user.user_id)
+            except Exception as err:
+                logger.error(f'Failed to delete {comment} under {self}: {err}')
 
         package.delete(user_id=auth.session.user.user_id)
         logger.info(f'Package is deleted: {package}')
