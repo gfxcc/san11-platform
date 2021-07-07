@@ -4,7 +4,7 @@ import re
 import json
 import logging
 from datetime import datetime, timezone
-from typing import List, Tuple
+from typing import Iterable, List, Tuple
 
 from ..protos import san11_platform_pb2
 from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \

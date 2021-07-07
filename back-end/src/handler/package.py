@@ -7,9 +7,11 @@ from .auths import Authenticator
 from .model.package import Package, Status
 from .model.binary import Binary
 from .model.comment import Comment
+from .model.user import User
 from .common.image import Image
 from .common.exception import PermissionDenied
 from .common.field_mask import FieldMask, merge_resource
+from .util.notifier import Notifier
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -19,8 +21,15 @@ class PackageHandler:
     def create_package(self, request, context):
         auth = Authenticator.from_context(context)
         package = Package.from_pb(request.package)
-        package.author_id = auth.session.user.user_id
-        package.create(user_id=auth.session.user.user_id)
+        user = auth.session.user
+        package.author_id = user.user_id
+        package.create(user_id=user.user_id)
+        try:
+            notifer = Notifier()
+            for admin in User.list(0, '', user_type='admin'):
+                notifer.send_email(admin.email, '新工具待审核', f'[{package.package_name}] 已被 {user.username} 创建。请审核。')
+        except Exception as err:
+            logger.error(f'Failed to notify admin: {err}')
         return package.to_pb()
 
     def delete_package(self, request, context):
