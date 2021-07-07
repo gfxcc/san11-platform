@@ -22,3 +22,10 @@ $ cd san11-platform
 $ docker-compose build
 $ docker-compose up
 ```
+
+# Development
+
+## Tests
+```
+$ make test
+```
