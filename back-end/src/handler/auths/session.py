@@ -4,7 +4,7 @@ import logging
 import uuid
 
 from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one
-from ..user.user import User
+from ..model.user import User
 
 
 logger = logging.getLogger(os.path.basename(__file__))

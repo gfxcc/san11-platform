@@ -4,12 +4,11 @@ from typing import Iterable, List
 from datetime import datetime, timezone
 from typing import Iterable
 
-from ..db import run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all, \
-    get_db_fields_placeholder_str, get_db_fields_str, run_sql_with_param
+from ..db import run_sql_with_param
 from ..protos import san11_platform_pb2
-from ..time_util import get_now, datetime_to_str, get_age
-from ..resource import ResourceMixin, ResourceView
-from ..activity import TrackLifecycle
+from ..util.time_util import get_now, get_age
+from .resource import ResourceMixin, ResourceView
+from .activity import TrackLifecycle
 
 
 logger = logging.getLogger(os.path.basename(__file__))

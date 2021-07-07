@@ -2,14 +2,14 @@ import sys, os, uuid
 import logging
 
 
-from .lib.protos import san11_platform_pb2
-from .lib.url import Url
-from .lib.auths import Authenticator
-from .lib.image import Image
-from .lib.package import Package
-from .lib.user import User
-from .lib.image import get_image_url
-from .lib import gcs
+from .protos import san11_platform_pb2
+from .common.url import Url
+from .auths import Authenticator
+from .common.image import Image
+from .model.package import Package
+from .model.user import User
+from .model.resource import get_image_url
+from .util import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))

@@ -8,13 +8,13 @@ from typing import List, Tuple
 
 from ..protos import san11_platform_pb2
 from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
-                     run_sql_with_param, get_db_fields_str
-from ..time_util import get_now
-from ..image import Image
-from ..time_util import get_timezone
-from ..exception import NotFound, Unauthenticated, AlreadyExists, FailedPrecondition
-from ..resource import ResourceMixin, ResourceView
-from ..activity import TrackLifecycle, Activity, Action
+                    run_sql_with_param, get_db_fields_str
+from ..util.time_util import get_now
+from ..common.image import Image
+from ..util.time_util import get_timezone
+from ..common.exception import NotFound, Unauthenticated, AlreadyExists
+from .resource import ResourceMixin, ResourceView
+from .activity import TrackLifecycle, Activity, Action
 
 
 logger = logging.getLogger(os.path.basename(__file__))

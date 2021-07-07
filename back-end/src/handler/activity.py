@@ -1,18 +1,13 @@
 import sys, os, uuid, logging
 
 
-from .lib.protos import san11_platform_pb2
-from .lib.url import Url
-from .lib.auths import Authenticator, Session
-from .lib.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists, NotFound
-from .lib.notifier import Notifier
-from .lib.db.db_util import run_sql_with_param
-from .lib.resource import ResourceView
-from .lib.activity import Activity
-from .lib.util.resource_parser import parse_resource_name
-from .lib.time_util import datetime_to_str, get_age
-from .lib.binary import Binary
-from .lib.package import Package
+from .protos import san11_platform_pb2
+from .common.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists, NotFound
+from .model.activity import Activity
+from .util.resource_parser import parse_resource_name
+from .util.time_util import datetime_to_str, get_age
+from .model.binary import Binary
+from .model.package import Package
 
 
 logger = logging.getLogger(os.path.basename(__file__))

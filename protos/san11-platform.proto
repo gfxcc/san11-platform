@@ -65,8 +65,6 @@ service RouteGuide {
   rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
 
-  // Auth
-//   rpc GetAuth(GetAuthRequest) returns (Auth) {}
 }
 
 // package related

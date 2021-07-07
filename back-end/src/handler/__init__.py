@@ -8,4 +8,3 @@ from .activity import ActivityHandler
 from .general import GeneralHandler
 from .tag import TagHandler
 from .admin import AdminHandler
-from .auth import AuthHandler

@@ -3,11 +3,10 @@ import logging
 import json
 
 
-from .lib.protos import san11_platform_pb2
-from .lib.auths import Authenticator
-from .lib.statistic import Statistic
-from .lib.package import Package
-from .lib.db import run_sql_with_param_and_fetch_all
+from .protos import san11_platform_pb2
+from .auths import Authenticator
+from .model.statistic import Statistic
+from .model.package import Package
 
 
 logger = logging.getLogger(os.path.basename(__file__))

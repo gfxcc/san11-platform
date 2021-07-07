@@ -2,12 +2,12 @@ from os import stat
 import re
 import logging
 
-from ..resource import ResourceMixin
-from ..package import Package
-from ..binary import Binary
-from ..tag import Tag
-from ..comment import Comment, Reply
-from ..user import User
+from ..model.resource import ResourceMixin
+from ..model.package import Package
+from ..model.binary import Binary
+from ..model.tag import Tag
+from ..model.comment import Comment
+from ..model.user import User
 
 
 def parse_resource_name(name: str) -> ResourceMixin:

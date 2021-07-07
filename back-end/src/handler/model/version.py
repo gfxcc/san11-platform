@@ -1,6 +1,6 @@
 import logging
 
-from .protos import san11_platform_pb2
+from ..protos import san11_platform_pb2
 
 class Version:
     def __init__(self, major: int, minor: int, patch: int) -> None:

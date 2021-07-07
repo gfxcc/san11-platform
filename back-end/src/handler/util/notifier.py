@@ -1,15 +1,11 @@
 import logging
 import os
-from re import sub
 from typing import Dict
 from googleapiclient.discovery import build
 from apiclient import errors
-from httplib2 import Http
 from email.mime.text import MIMEText
 import base64
 from google.oauth2 import service_account
-
-from .user import User
 
 
 logger = logging.getLogger(os.path.basename(__file__))
