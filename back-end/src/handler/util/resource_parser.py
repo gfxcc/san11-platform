@@ -8,6 +8,7 @@ from ..model.binary import Binary
 from ..model.tag import Tag
 from ..model.comment import Comment
 from ..model.user import User
+from ..model.reply import Reply
 
 
 def parse_resource_name(name: str) -> ResourceMixin:
