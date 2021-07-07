@@ -7,6 +7,7 @@ from .protos import san11_platform_pb2
 from .auths import Authenticator
 from .model.statistic import Statistic
 from .model.package import Package
+from .db.db_util import run_sql_with_param_and_fetch_all
 
 
 logger = logging.getLogger(os.path.basename(__file__))
