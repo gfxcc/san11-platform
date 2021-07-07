@@ -12,13 +12,39 @@ from ..protos import san11_platform_pb2
 from .resource import ResourceMixin, ResourceView
 from .activity import TrackLifecycle
 from ..db import run_sql_with_param
-from .version import Version
 from ..util.time_util import datetime_to_str, get_datetime_format, get_now, get_timezone
 from ..util.size_util import human_readable
 from ..util import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))
+
+
+class Version:
+    def __init__(self, major: int, minor: int, patch: int) -> None:
+        self.major = major
+        self.minor = minor
+        self.patch = patch
+    
+    def __str__(self) -> str:
+        return f'v{self.major}.{self.minor}.{self.patch}'
+    
+    def to_pb(self) -> san11_platform_pb2.Version:
+        return san11_platform_pb2.Version(
+            major=self.major,
+            minor=self.minor,
+            patch=self.patch
+        )
+    
+    @classmethod
+    def from_pb(cls, obj: san11_platform_pb2.Version):
+        return cls(major=obj.major,
+                   minor=obj.minor,
+                   patch=obj.patch)
+                
+    @classmethod
+    def from_str(cls, obj: str):
+        return cls(*list(map(int, obj[1:].split('.'))))
 
 
 class Binary(ResourceMixin, TrackLifecycle):
