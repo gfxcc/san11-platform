@@ -85,11 +85,6 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.CreateImageRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Url.FromString,
                 )
-        self.UploadImage = channel.unary_unary(
-                '/routeguide.RouteGuide/UploadImage',
-                request_serializer=san11__platform__pb2.UploadImageRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Url.FromString,
-                )
         self.CreateComment = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateComment',
                 request_serializer=san11__platform__pb2.CreateCommentRequest.SerializeToString,
@@ -294,12 +289,6 @@ class RouteGuideServicer(object):
     def CreateImage(self, request, context):
         """Image related
         """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UploadImage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -519,11 +508,6 @@ def add_RouteGuideServicer_to_server(servicer, server):
             'CreateImage': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateImage,
                     request_deserializer=san11__platform__pb2.CreateImageRequest.FromString,
-                    response_serializer=san11__platform__pb2.Url.SerializeToString,
-            ),
-            'UploadImage': grpc.unary_unary_rpc_method_handler(
-                    servicer.UploadImage,
-                    request_deserializer=san11__platform__pb2.UploadImageRequest.FromString,
                     response_serializer=san11__platform__pb2.Url.SerializeToString,
             ),
             'CreateComment': grpc.unary_unary_rpc_method_handler(
@@ -886,23 +870,6 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateImage',
             san11__platform__pb2.CreateImageRequest.SerializeToString,
-            san11__platform__pb2.Url.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UploadImage(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UploadImage',
-            san11__platform__pb2.UploadImageRequest.SerializeToString,
             san11__platform__pb2.Url.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

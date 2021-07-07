@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from .context import *
+from .context import setup_context
 from ...src.handler.protos import san11_platform_pb2 as pb
 from ...src.handler.protos.san11_platform_pb2 import SignUpRequest, SendVerificationCodeRequest
 from ...src.handler import UserHandler
@@ -16,12 +16,8 @@ TEST_EMAIL = 'a-simple-email@san11pk.org'
 class TestUserHandler(unittest.TestCase):
     def setUp(self) -> None:
         self.handler = UserHandler()
-        self.mock_context = self._setup_context()
+        self.mock_context = setup_context()
         return super().setUp()
-
-    def _setup_context(self) -> Mock:
-        mock_context = Mock()
-        return mock_context
 
     def test_sign_up(self):
         # GIVEN
