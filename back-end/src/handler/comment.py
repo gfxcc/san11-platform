@@ -8,7 +8,6 @@ from .model.comment import Comment
 from .model.user import User
 from .model.activity import Activity, Action
 from .auths import Authenticator
-from .model.url import Url
 from .protos import san11_platform_pb2
 from datetime import datetime
 

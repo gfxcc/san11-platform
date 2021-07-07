@@ -13,7 +13,7 @@ from .model.statistic import Statistic
 from .model.binary import Binary
 from .model.package import Package
 from .auths import Authenticator
-from .model.url import Url
+from .common.url import Url
 from .protos import san11_platform_pb2
 from .util.time_util import get_now
 

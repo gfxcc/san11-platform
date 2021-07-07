@@ -7,7 +7,6 @@ from typing import Iterable, List
 from .reply import Reply
 from ..protos import san11_platform_pb2
 from ..util.time_util import get_now, get_age
-from .url import Url
 from .resource import ResourceMixin, ResourceView
 from .activity  import TrackLifecycle
 

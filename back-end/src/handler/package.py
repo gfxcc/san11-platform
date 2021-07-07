@@ -7,7 +7,7 @@ from .auths import Authenticator
 from .model.package import Package, Status
 from .model.binary import Binary
 from .model.comment import Comment
-from .model.image import Image
+from .common.image import Image
 from .common.exception import PermissionDenied
 from .common.field_mask import FieldMask, merge_resource
 

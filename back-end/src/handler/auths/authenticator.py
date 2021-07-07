@@ -5,7 +5,7 @@ from typing import Union
 from ..protos import san11_platform_pb2
 from ..model.package import Package
 from ..model.binary import Binary
-from ..model.url import Url
+from ..common.url import Url
 from ..model.user import User
 from ..model.comment import Comment
 from ..model.reply import Reply

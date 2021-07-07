@@ -3,12 +3,12 @@ import logging
 
 
 from .protos import san11_platform_pb2
-from .model.url import Url
+from .common.url import Url
 from .auths import Authenticator
-from .model.image import Image
+from .common.image import Image
 from .model.package import Package
 from .model.user import User
-from .model.image import get_image_url
+from .model.resource import get_image_url
 from .util import gcs
 
 

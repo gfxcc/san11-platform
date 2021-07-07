@@ -4,8 +4,7 @@ from .protos import san11_platform_pb2
 from .common.field_mask import FieldMask, merge_resource
 from .auths import Authenticator, Session
 from .util.notifier import Notifier
-from .model.url import Url
-from .model.image import Image
+from .common.image import Image
 from .model.package import Package
 from .model.user import User, generate_verification_code, verify_code
 from .common.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists

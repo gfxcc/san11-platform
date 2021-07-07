@@ -13,7 +13,6 @@ from .resource import ResourceMixin, ResourceView
 from .activity import TrackLifecycle
 from ..db import run_sql_with_param
 from .version import Version
-from .url import Url
 from ..util.time_util import datetime_to_str, get_datetime_format, get_now, get_timezone
 from ..util.size_util import human_readable
 from ..util import gcs

@@ -9,7 +9,7 @@ from ..protos import san11_platform_pb2
 from ..db import run_sql_with_param_and_fetch_one, run_sql_with_param, \
     run_sql_with_param_and_fetch_all, get_db_fields_str, \
     sanitize_str
-from .image import Image
+from ..common.image import Image
 from ..util.time_util import get_now, get_age
 from .resource import ResourceMixin
 from .tag import Tag
