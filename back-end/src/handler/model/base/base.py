@@ -19,10 +19,9 @@ class MyModel(ModelBase):
     )
     ...
 '''
-from handler.model import base
-import attr
+import attr, datetime
 from abc import ABC
-from typing import Any, Callable, Dict, Optional, TypeVar
+from typing import Any, Callable, Dict, Optional, TypeVar, List
 
 from . import base_proto
 from . import base_core
@@ -66,14 +65,6 @@ def Attrib(
     if type is None:
         raise ValueError(f'`type` must be specified')
     metadata = metadata or {}
-    metadata[base_core.IS_PROTO_FIELD] = is_proto_field
-    metadata[base_core.PROTO_PATH] = proto_path
-    metadata[base_core.PROTO_CONVERTER] = proto_converter
-    metadata[base_core.IS_DB_FIELD] = is_db_field
-    metadata[base_core.DB_PATH] = db_path
-    metadata[base_core.DB_CONVERTER] = db_converter
-
-    metadata[base_core.REPEATED] = repeated
 
     passthrough_types = [int, str, bool]
     if type in passthrough_types:
@@ -81,8 +72,26 @@ def Attrib(
             proto_converter = base_proto.PassThroughConverter()
         if is_db_field and db_converter is None:
             db_converter = base_db.PassThroughConverter()
+    elif type is datetime.datetime:
+        if is_proto_field and proto_converter is None:
+            proto_converter = base_proto.DatetimeProtoConverter()
+        if is_db_field and db_converter is None:
+            db_converter = base_db.DatetimeDbConverter()
 
-    return attr.ib(metadata=metadata, **kwargs)
+    metadata[base_core.IS_PROTO_FIELD] = is_proto_field
+    if is_proto_field:
+        metadata[base_core.PROTO_PATH] = proto_path
+        metadata[base_core.PROTO_CONVERTER] = proto_converter
+
+    metadata[base_core.IS_DB_FIELD] = is_db_field
+    if is_db_field:
+        metadata[base_core.DB_PATH] = db_path
+        metadata[base_core.DB_CONVERTER] = db_converter
+
+    metadata[base_core.REPEATED] = repeated
+    if repeated:
+        type = List[type]
+    return attr.ib(metadata=metadata, type=type, **kwargs)
 
 
 # TODO: integrate TrackLifecycle

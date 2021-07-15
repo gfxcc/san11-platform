@@ -1,4 +1,12 @@
-import os, sys, logging, time, re
+from __future__ import annotations
+from handler.model.article import Article
+from handler.model.user import User
+import os
+import sys
+import logging
+import time
+import re
+import attr
 import grpc
 
 from typing import List
@@ -6,12 +14,34 @@ from concurrent import futures
 
 from handler.protos import san11_platform_pb2_grpc
 from handler import PackageHandler, BinaryHandler, ImageHandler, \
-                    CommentHandler, ReplyHandler, UserHandler, \
-                    ActivityHandler, GeneralHandler, TagHandler, \
-                    AdminHandler, ArticleHandler
+    CommentHandler, ReplyHandler, UserHandler, \
+    ActivityHandler, GeneralHandler, TagHandler, \
+    AdminHandler, ArticleHandler
+from handler.auths import Authenticator, Session
+from handler.common.exception import *
 
 
 logger = logging.getLogger(os.path.basename(__file__))
+
+
+@attr.s(auto_attribs=True)
+class HandlerContext:
+    user: User
+
+    @classmethod
+    def from_service_context(cls, service_context: grpc.ServicerContext) -> HandlerContext:
+        session = None
+        sid = dict(service_context.invocation_metadata()).get('sid', None)
+        if not sid:
+            raise Unauthenticated('请登录')
+        try:
+            session = Session.from_sid(sid)
+        except LookupError as err:
+            raise Unauthenticated('请重新登录')
+        except Exception as err:
+            logger.error(f'Failed to load session: {err}')
+            raise
+        return cls(user=session.user)
 
 
 class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
@@ -28,12 +58,38 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.admin_handler = AdminHandler()
         self.article_handler = ArticleHandler()
 
+    # New model
+
+    # Article
+    def CreateArticle(self, request, context):
+        parent, article = request.parent, Article.from_pb(request.article)
+        handler_context = HandlerContext.from_service_context(context)
+        # TODO: Add authentication
+        created_article = self.article_handler.create_article(parent=parent, article=article, service_context=handler_context)
+        return created_article.to_pb()
+
+    def GetArticle(self, request, context):
+        name = request.name
+        handler_context = HandlerContext.from_service_context(context)
+        return self.article_handler.get_article(name, handler_context)
+
+    def ListArticle(self, request, context):
+        return self.article_handler.list_article(request, context)
+
+    def UpdateArticle(self, request, context):
+        return self.article_handler.update_article(request, context)
+
+    def DeleteArticle(self, request, context):
+        return self.article_handler.delete_article(request, context)
+
+    # Old model
+
     def CreatePackage(self, request, context):
         return self.package_handler.create_package(request, context)
-    
+
     def UpdatePackage(self, request, context):
         return self.package_handler.update_package(request, context)
-    
+
     def GetPackage(self, request, context):
         return self.package_handler.get_package(request, context)
 
@@ -42,14 +98,14 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def DeletePackage(self, request, context):
         return self.package_handler.delete_package(request, context)
-    
+
     def SearchPackages(self, request, context):
         return self.package_handler.search_packages(request, context)
 
     # binaries
     def CreateBinary(self, request, context):
         return self.binary_handler.create_binary(request, context)
-    
+
     def UpdateBinary(self, request, context):
         return self.binary_handler.update_binary(request, context)
 
@@ -61,7 +117,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def DeleteBinary(self, request, context):
         return self.binary_handler.delete_binary(request, context)
-    
+
     def DownloadBinary(self, request, context):
         return self.binary_handler.download_binary(request, context)
 
@@ -91,22 +147,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def DeleteReply(self, request, context):
         return self.reply_handler.delete_reply(request, context)
 
-    # Article
-    def CreateArticle(self, request, context):
-        return self.article_handler.create_article(request, context)
-    
-    def GetArticle(self, request, context):
-        return self.article_handler.get_article(request, context)
-    
-    def ListArticle(self, request, context):
-        return self.article_handler.list_article(request, context)
-    
-    def UpdateArticle(self, request, context):
-        return self.article_handler.update_article(request, context)
-    
-    def DeleteArticle(self, request, context):
-        return self.article_handler.delete_article(request, context)
-
     # users
     def SignUp(self, request, context):
         return self.user_handler.sign_up(request, context)
@@ -134,7 +174,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def VerifyEmail(self, request, context):
         return self.user_handler.verify_email(request, context)
-    
+
     def VerifyNewUser(self, request, context):
         return self.user_handler.verify_new_user(request, context)
 
@@ -145,10 +185,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # general
     def GetStatistic(self, request, context):
         return self.general_handler.get_statistic(request, context)
-    
+
     def GetAdminMessage(self, request, context):
         return self.admin_handler.get_admin_message(request, context)
-    
+
     # Tags
     def CreateTag(self, request, context):
         return self.tag_handler.create_tag(request, context)

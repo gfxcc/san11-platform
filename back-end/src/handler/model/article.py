@@ -4,7 +4,9 @@ import datetime
 from typing import List
 
 from .base import ModelBase, Attrib, InitModel
+from .base import DatetimeProtoConverter
 from ..protos import san11_platform_pb2 as pb
+from ..util.time_util import get_now
 
 
 @InitModel(
@@ -17,8 +19,6 @@ class Article(ModelBase):
     # E.g. `articles/12345`
     name = Attrib(
         type=str,
-        is_db_field=False,
-        init=False,
     )
     subject = Attrib(
         type=str,
@@ -29,17 +29,11 @@ class Article(ModelBase):
     author_id = Attrib(
         type=int,
     )
-    create_time = Attrib(
-        type=datetime.datetime,
-    )
-    update_time = Attrib(
-        type=datetime.datetime,
-    )
     state = Attrib(
         type=int,
     )
     tags = Attrib(
-        type=List[str],
+        type=str,
         repeated=True,
     )
     view_count = Attrib(
@@ -48,5 +42,12 @@ class Article(ModelBase):
     like_count = Attrib(
         type=int,
     )
-
+    create_time = Attrib(
+        type=datetime.datetime,
+        default=get_now(),
+    )
+    update_time = Attrib(
+        type=datetime.datetime,
+        default=get_now(),
+    )
 

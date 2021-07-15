@@ -1,11 +1,11 @@
 from __future__ import annotations
 import datetime
-from handler import model
-from handler.model.base import base_core
 import attr
 from abc import ABC
 from typing import Any, Generic, Iterable, TypeVar
-from google.protobuf import timestamp_pb2, message
+from google.protobuf import timestamp_pb2, message, descriptor
+
+from . import base_core
 
 
 _MODEL_T = TypeVar('_MODEL_T')
@@ -31,14 +31,15 @@ class PassThroughConverter(ProtoConverter[Any, Any]):
 
 
 class DatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Timestamp]):
-    def from_proto(self, proto_value: timestamp_pb2.Timestamp) -> datetime.datetime:
+    def to_model(self, proto_value: timestamp_pb2.Timestamp) -> datetime.datetime:
+        if proto_value == timestamp_pb2.Timestamp():
+            return datetime.datetime.now()
         return proto_value.ToDatetime()
 
-    def to_proto(self, value: datetime.datetime) -> timestamp_pb2.Timestamp:
+    def from_model(self, value: datetime.datetime) -> timestamp_pb2.Timestamp:
         proto_value = timestamp_pb2.Timestamp()
         proto_value.FromDatetime(value)
         return proto_value
-
 
 
 @attr.s(auto_attribs=True)
@@ -58,10 +59,10 @@ class ProtoModelBase(ABC):
         for attribute in attr.fields(cls):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
                 continue
-            path = attribute.metadata[base_core.PROTO_PATH]
+            path = _get_proto_path(attribute)
             converter: ProtoConverter = attribute.metadata[base_core.PROTO_CONVERTER]
             proto_value = getattr(proto_model, path)
-            properties[attribute.name] = converter.from_proto(proto_value)
+            properties[attribute.name] = converter.to_model(proto_value)
         return cls(**properties)
 
     def to_pb(self) -> message.Message:
@@ -70,13 +71,17 @@ class ProtoModelBase(ABC):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
                 continue
             model_value = getattr(self, attribute.name)
-            path = attribute.metadata[base_core.PROTO_PATH]
+            path = _get_proto_path(attribute)
             proto_value = _attribute_to_proto(attribute, model_value)
 
+            field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
             if attribute.metadata[base_core.REPEATED]:
                 getattr(proto_model, path)[:] = proto_value
             else:
-                setattr(proto_model, path, proto_value)
+                if field_descriptor.type == descriptor.FieldDescriptor.TYPE_MESSAGE:
+                    getattr(proto_model, path).CopyFrom(proto_value)
+                else:
+                    setattr(proto_model, path, proto_value)
 
         return proto_model
 
@@ -103,3 +108,6 @@ def _get_by_path(proto: message.Message, path: str) -> Any:
 
 def _set_by_path(proto: message.Message, path: str, proto_value: Any) -> None:
     pass
+
+def _get_proto_path(attribute: attr.Attribute) -> str:
+    return attribute.metadata[base_core.PROTO_PATH] or attribute.name

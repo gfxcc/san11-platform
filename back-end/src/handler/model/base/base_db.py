@@ -1,7 +1,10 @@
 from __future__ import annotations
-import enum, re
-from handler.model.base import base_core
+import enum
+import re
+import json
+from . import base_core
 import attr
+import datetime
 from typing import Any, Dict, Generic, Iterator, Optional, Tuple, TypeVar
 from typing import Iterable
 from abc import ABC, abstractclassmethod
@@ -32,6 +35,14 @@ class PassThroughConverter(DbConverter[Any, Any]):
         return value
 
 
+class DatetimeDbConverter(DbConverter[datetime.datetime, datetime.datetime]):
+    def to_model(self, db_value: datetime.datetime) -> datetime.datetime:
+        return db_value.replace(tzinfo=datetime.timezone.utc)
+
+    def from_model(self, value: datetime.datetime) -> datetime.datetime:
+        return value
+
+
 @attr.s(auto_attribs=True)
 class DbField:
     name: str
@@ -58,7 +69,7 @@ class DbModelBase(ABC):
             segments = [collection_name, resource_id]
             if parent:
                 segments.insert(0, parent)
-            return '/'.join(segments)
+            return '/'.join(map(str, segments))
 
         db_table = self._DB_TABLE
         resource_id = get_next_resource_id(parent)
@@ -70,7 +81,7 @@ class DbModelBase(ABC):
         params = {
             'parent': parent,
             'resource_id': resource_id,
-            data: data
+            'data': json.dumps(data, default=str)
         }
         run_sql_with_param(sql, params)
 
@@ -80,23 +91,49 @@ class DbModelBase(ABC):
         NAME_PATTERN = r'((?P<parent>.+)/)?(?P<collection>[a-zA-Z0-9]+)/(?P<resource_id>[0-9]+)'
         match = re.fullmatch(NAME_PATTERN, name)
         if not match or match['collection'] != cls._DB_TABLE:
-            raise ValueError(f'{name} is not a valid resource name in {cls._DB_TABLE}')
+            raise ValueError(
+                f'{name} is not a valid resource name in {cls._DB_TABLE}')
         parent, resource_id = match['parent'], match['resource_id']
+        predicate = ' AND '.join(
+            [f'{field}=%({field})s' for field in ['parent', 'resource_id']])
         sql = f'SELECT data FROM {db_table} '\
-            f"WHERE {get_db_fields_assignment_str(['parent', 'resource_id'])}"
+            f"WHERE {predicate}"
         params = {'parent': parent, 'resource_id': resource_id}
         data: Dict = run_sql_with_param_and_fetch_one(
             sql, params)[0]
-        if not resp:
+        if not data:
             raise NotFound(f'{params} can not be found in table={db_table}')
-        obj_args = {}
-        for field in cls._DB_DATA_FIELDS:
-            obj_args[field.model_path] = data[field.name]
-        return cls(**obj_args)
+        return cls.from_data(data)
 
     @classmethod
-    def list(cls) -> Iterable[DbModelBase]:
-        ...
+    def list(cls, parent: str, offset: int = 0, limit: int = 9999, order_by_field: Optional[str] = None, **kwargs) -> Iterable[DbModelBase]:
+        db_table = cls._DB_TABLE
+        predicate_statement = 'WHERE parent=%(parent)s'
+        if kwargs:
+            wheres = []
+            for key in kwargs:
+                att = attr.fields_dict(cls)[key]
+                db_path = _get_db_path(att)
+                if att.metadata[base_core.REPEATED]:
+                    wheres.append(f"data->>%(db_path)s=ANY({db_path})")
+                else:
+                    wheres.append(f"data->>{db_path}=%(db_path)s")
+            predicate_statement += ' ' + 'AND'.join(wheres)
+
+        order_statement = f"ORDER BY data->>'{_get_db_path(attr.fields_dict(cls)[order_by_field])}'" if order_by_field else ''
+        size_statement = f'LIMIT {limit} OFFSET {offset}'
+        sql = f"SELECT data FROM {db_table} {predicate_statement} {order_statement} {size_statement}"
+        params = kwargs.copy()
+        params['parent'] = parent
+        resp = run_sql_with_param_and_fetch_all(sql, params)
+        return [cls.from_data(data[0]) for data in resp]
+
+    @classmethod
+    def from_data(cls, data: Dict):
+        obj_args = {}
+        for field in cls._DB_FIELDS:
+            obj_args[field.model_path] = data[field.name]
+        return cls(**obj_args)
 
     def update(self) -> None:
         ...
@@ -106,7 +143,7 @@ class DbModelBase(ABC):
 
     def _prepare_data(self) -> Dict:
         data = {}
-        for field in self._DB_DATA_FIELDS:
+        for field in self._DB_FIELDS:
             data[field.name] = field.converter.from_model(
                 getattr(self, field.model_path))
         return data
@@ -121,9 +158,14 @@ def init_db_model(cls: type, db_table: str) -> None:
             continue
         converter: DbConverter = attribute.metadata[base_core.DB_CONVERTER]
         field = DbField(
-            name=attribute.metadata[base_core.DB_PATH],
+            name=_get_db_path(attribute),
             converter=converter,
             model_path=attribute.name
         )
         db_fields.append(field)
     cls._DB_FIELDS = db_fields
+
+
+def _get_db_path(attribute: attr.Attribute) -> str:
+    return attribute.metadata[base_core.DB_PATH] or attribute.name
+

@@ -194,7 +194,7 @@ CREATE TABLE public.verification_codes (
 );
 
 
-CREATE TABLE articles (
+CREATE TABLE public.articles (
     parent text NOT NULL,
     resource_id int NOT NULL,
 
@@ -211,6 +211,7 @@ CREATE TABLE articles (
 
     PRIMARY KEY (parent, resource_id)
 );
+ALTER TABLE public.articles OWNER TO postgres;
 
 
 ALTER TABLE public.verification_codes OWNER TO postgres;
