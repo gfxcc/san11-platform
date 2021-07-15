@@ -19,6 +19,7 @@ import {
 } from '@ngx-grpc/core';
 import { Observable } from 'rxjs';
 import * as thisProto from './san11-platform.pb';
+import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
 import { GRPC_ROUTE_GUIDE_CLIENT_SETTINGS } from './san11-platform.pbconf';
 /**
  * Service client implementation for routeguide.RouteGuide
@@ -51,48 +52,6 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.CreatePackageRequest,
-        responseClass: thisProto.Package
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/DeletePackage
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
-     */
-    deletePackage: (
-      requestData: thisProto.DeletePackageRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/DeletePackage',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.DeletePackageRequest,
-        responseClass: thisProto.Empty
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/UpdatePackage
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Package>>
-     */
-    updatePackage: (
-      requestData: thisProto.UpdatePackageRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Package>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/UpdatePackage',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.UpdatePackageRequest,
         responseClass: thisProto.Package
       });
     },
@@ -139,6 +98,48 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/UpdatePackage
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Package>>
+     */
+    updatePackage: (
+      requestData: thisProto.UpdatePackageRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Package>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdatePackage',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdatePackageRequest,
+        responseClass: thisProto.Package
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DeletePackage
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     */
+    deletePackage: (
+      requestData: thisProto.DeletePackageRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Empty>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DeletePackage',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DeletePackageRequest,
+        responseClass: thisProto.Empty
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/SearchPackages
      *
      * @param requestMessage Request message
@@ -160,27 +161,6 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UploadBinary
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Status>>
-     */
-    uploadBinary: (
-      requestData: thisProto.UploadBinaryRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Status>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/UploadBinary',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.UploadBinaryRequest,
-        responseClass: thisProto.Status
-      });
-    },
-    /**
      * Unary RPC for /routeguide.RouteGuide/CreateBinary
      *
      * @param requestMessage Request message
@@ -198,48 +178,6 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateBinaryRequest,
-        responseClass: thisProto.Binary
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteBinary
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
-     */
-    deleteBinary: (
-      requestData: thisProto.DeleteBinaryRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/DeleteBinary',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.DeleteBinaryRequest,
-        responseClass: thisProto.Empty
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateBinary
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Binary>>
-     */
-    updateBinary: (
-      requestData: thisProto.UpdateBinaryRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Binary>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/UpdateBinary',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.UpdateBinaryRequest,
         responseClass: thisProto.Binary
       });
     },
@@ -307,6 +245,48 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateBinary
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Binary>>
+     */
+    updateBinary: (
+      requestData: thisProto.UpdateBinaryRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Binary>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateBinary',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateBinaryRequest,
+        responseClass: thisProto.Binary
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DeleteBinary
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     */
+    deleteBinary: (
+      requestData: thisProto.DeleteBinaryRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Empty>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DeleteBinary',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DeleteBinaryRequest,
+        responseClass: thisProto.Empty
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/DownloadBinary
      *
      * @param requestMessage Request message
@@ -325,27 +305,6 @@ export class RouteGuideClient {
         requestMetadata,
         requestClass: thisProto.DownloadBinaryRequest,
         responseClass: thisProto.Binary
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/UploadImage
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Url>>
-     */
-    uploadImage: (
-      requestData: thisProto.UploadImageRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Url>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/UploadImage',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.UploadImageRequest,
-        responseClass: thisProto.Url
       });
     },
     /**
@@ -391,24 +350,24 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteComment
+     * Unary RPC for /routeguide.RouteGuide/ListComments
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     * @returns Observable<GrpcEvent<thisProto.ListCommentsResponse>>
      */
-    deleteComment: (
-      requestData: thisProto.DeleteCommentRequest,
+    listComments: (
+      requestData: thisProto.ListCommentsRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
+    ): Observable<GrpcEvent<thisProto.ListCommentsResponse>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeleteComment',
+        path: '/routeguide.RouteGuide/ListComments',
         requestData,
         requestMetadata,
-        requestClass: thisProto.DeleteCommentRequest,
-        responseClass: thisProto.Empty
+        requestClass: thisProto.ListCommentsRequest,
+        responseClass: thisProto.ListCommentsResponse
       });
     },
     /**
@@ -433,24 +392,24 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListComments
+     * Unary RPC for /routeguide.RouteGuide/DeleteComment
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.ListCommentsResponse>>
+     * @returns Observable<GrpcEvent<thisProto.Empty>>
      */
-    listComments: (
-      requestData: thisProto.ListCommentsRequest,
+    deleteComment: (
+      requestData: thisProto.DeleteCommentRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.ListCommentsResponse>> => {
+    ): Observable<GrpcEvent<thisProto.Empty>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListComments',
+        path: '/routeguide.RouteGuide/DeleteComment',
         requestData,
         requestMetadata,
-        requestClass: thisProto.ListCommentsRequest,
-        responseClass: thisProto.ListCommentsResponse
+        requestClass: thisProto.DeleteCommentRequest,
+        responseClass: thisProto.Empty
       });
     },
     /**
@@ -471,6 +430,27 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateReplyRequest,
+        responseClass: thisProto.Reply
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateReply
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Reply>>
+     */
+    updateReply: (
+      requestData: thisProto.UpdateReplyRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Reply>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateReply',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateReplyRequest,
         responseClass: thisProto.Reply
       });
     },
@@ -496,24 +476,108 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateReply
+     * Unary RPC for /routeguide.RouteGuide/CreateArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Reply>>
+     * @returns Observable<GrpcEvent<thisProto.Article>>
      */
-    updateReply: (
-      requestData: thisProto.UpdateReplyRequest,
+    createArticle: (
+      requestData: thisProto.CreateArticleRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Reply>> => {
+    ): Observable<GrpcEvent<thisProto.Article>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateReply',
+        path: '/routeguide.RouteGuide/CreateArticle',
         requestData,
         requestMetadata,
-        requestClass: thisProto.UpdateReplyRequest,
-        responseClass: thisProto.Reply
+        requestClass: thisProto.CreateArticleRequest,
+        responseClass: thisProto.Article
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/GetArticle
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Article>>
+     */
+    getArticle: (
+      requestData: thisProto.GetArticleRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Article>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/GetArticle',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.GetArticleRequest,
+        responseClass: thisProto.Article
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/ListArticles
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListArticlesResponse>>
+     */
+    listArticles: (
+      requestData: thisProto.ListArticlesRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListArticlesResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ListArticles',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListArticlesRequest,
+        responseClass: thisProto.ListArticlesResponse
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateArticle
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Article>>
+     */
+    updateArticle: (
+      requestData: thisProto.UpdateArticleRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Article>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateArticle',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateArticleRequest,
+        responseClass: thisProto.Article
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DeleteArticle
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Article>>
+     */
+    deleteArticle: (
+      requestData: thisProto.DeleteArticleRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Article>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DeleteArticle',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DeleteArticleRequest,
+        responseClass: thisProto.Article
       });
     },
     /**
@@ -769,27 +833,6 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteTag
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
-     */
-    deleteTag: (
-      requestData: thisProto.DeleteTagRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/DeleteTag',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.DeleteTagRequest,
-        responseClass: thisProto.Empty
-      });
-    },
-    /**
      * Unary RPC for /routeguide.RouteGuide/ListTags
      *
      * @param requestMessage Request message
@@ -808,6 +851,27 @@ export class RouteGuideClient {
         requestMetadata,
         requestClass: thisProto.ListTagsRequest,
         responseClass: thisProto.ListTagsResponse
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DeleteTag
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     */
+    deleteTag: (
+      requestData: thisProto.DeleteTagRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Empty>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DeleteTag',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DeleteTagRequest,
+        responseClass: thisProto.Empty
       });
     },
     /**
@@ -879,38 +943,6 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeletePackage
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
-   */
-  deletePackage(
-    requestData: thisProto.DeletePackageRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
-    return this.$raw
-      .deletePackage(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/UpdatePackage
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Package>
-   */
-  updatePackage(
-    requestData: thisProto.UpdatePackageRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Package> {
-    return this.$raw
-      .updatePackage(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
    * Unary RPC for /routeguide.RouteGuide/GetPackage
    *
    * @param requestMessage Request message
@@ -943,6 +975,38 @@ export class RouteGuideClient {
   }
 
   /**
+   * Unary RPC for /routeguide.RouteGuide/UpdatePackage
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Package>
+   */
+  updatePackage(
+    requestData: thisProto.UpdatePackageRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Package> {
+    return this.$raw
+      .updatePackage(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DeletePackage
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Empty>
+   */
+  deletePackage(
+    requestData: thisProto.DeletePackageRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Empty> {
+    return this.$raw
+      .deletePackage(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
    * Unary RPC for /routeguide.RouteGuide/SearchPackages
    *
    * @param requestMessage Request message
@@ -959,22 +1023,6 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UploadBinary
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Status>
-   */
-  uploadBinary(
-    requestData: thisProto.UploadBinaryRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Status> {
-    return this.$raw
-      .uploadBinary(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
    * Unary RPC for /routeguide.RouteGuide/CreateBinary
    *
    * @param requestMessage Request message
@@ -987,38 +1035,6 @@ export class RouteGuideClient {
   ): Observable<thisProto.Binary> {
     return this.$raw
       .createBinary(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteBinary
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
-   */
-  deleteBinary(
-    requestData: thisProto.DeleteBinaryRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
-    return this.$raw
-      .deleteBinary(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateBinary
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Binary>
-   */
-  updateBinary(
-    requestData: thisProto.UpdateBinaryRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Binary> {
-    return this.$raw
-      .updateBinary(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -1071,6 +1087,38 @@ export class RouteGuideClient {
   }
 
   /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateBinary
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Binary>
+   */
+  updateBinary(
+    requestData: thisProto.UpdateBinaryRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Binary> {
+    return this.$raw
+      .updateBinary(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DeleteBinary
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Empty>
+   */
+  deleteBinary(
+    requestData: thisProto.DeleteBinaryRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Empty> {
+    return this.$raw
+      .deleteBinary(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
    * Unary RPC for /routeguide.RouteGuide/DownloadBinary
    *
    * @param requestMessage Request message
@@ -1083,22 +1131,6 @@ export class RouteGuideClient {
   ): Observable<thisProto.Binary> {
     return this.$raw
       .downloadBinary(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/UploadImage
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Url>
-   */
-  uploadImage(
-    requestData: thisProto.UploadImageRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Url> {
-    return this.$raw
-      .uploadImage(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -1135,18 +1167,18 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteComment
+   * Unary RPC for /routeguide.RouteGuide/ListComments
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
+   * @returns Observable<thisProto.ListCommentsResponse>
    */
-  deleteComment(
-    requestData: thisProto.DeleteCommentRequest,
+  listComments(
+    requestData: thisProto.ListCommentsRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
+  ): Observable<thisProto.ListCommentsResponse> {
     return this.$raw
-      .deleteComment(requestData, requestMetadata)
+      .listComments(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -1167,18 +1199,18 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListComments
+   * Unary RPC for /routeguide.RouteGuide/DeleteComment
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.ListCommentsResponse>
+   * @returns Observable<thisProto.Empty>
    */
-  listComments(
-    requestData: thisProto.ListCommentsRequest,
+  deleteComment(
+    requestData: thisProto.DeleteCommentRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.ListCommentsResponse> {
+  ): Observable<thisProto.Empty> {
     return this.$raw
-      .listComments(requestData, requestMetadata)
+      .deleteComment(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -1199,6 +1231,22 @@ export class RouteGuideClient {
   }
 
   /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateReply
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Reply>
+   */
+  updateReply(
+    requestData: thisProto.UpdateReplyRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Reply> {
+    return this.$raw
+      .updateReply(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
    * Unary RPC for /routeguide.RouteGuide/DeleteReply
    *
    * @param requestMessage Request message
@@ -1215,18 +1263,82 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateReply
+   * Unary RPC for /routeguide.RouteGuide/CreateArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Reply>
+   * @returns Observable<thisProto.Article>
    */
-  updateReply(
-    requestData: thisProto.UpdateReplyRequest,
+  createArticle(
+    requestData: thisProto.CreateArticleRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Reply> {
+  ): Observable<thisProto.Article> {
     return this.$raw
-      .updateReply(requestData, requestMetadata)
+      .createArticle(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/GetArticle
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Article>
+   */
+  getArticle(
+    requestData: thisProto.GetArticleRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Article> {
+    return this.$raw
+      .getArticle(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/ListArticles
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListArticlesResponse>
+   */
+  listArticles(
+    requestData: thisProto.ListArticlesRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListArticlesResponse> {
+    return this.$raw
+      .listArticles(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateArticle
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Article>
+   */
+  updateArticle(
+    requestData: thisProto.UpdateArticleRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Article> {
+    return this.$raw
+      .updateArticle(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DeleteArticle
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Article>
+   */
+  deleteArticle(
+    requestData: thisProto.DeleteArticleRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Article> {
+    return this.$raw
+      .deleteArticle(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -1423,22 +1535,6 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteTag
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
-   */
-  deleteTag(
-    requestData: thisProto.DeleteTagRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
-    return this.$raw
-      .deleteTag(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
    * Unary RPC for /routeguide.RouteGuide/ListTags
    *
    * @param requestMessage Request message
@@ -1451,6 +1547,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.ListTagsResponse> {
     return this.$raw
       .listTags(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DeleteTag
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Empty>
+   */
+  deleteTag(
+    requestData: thisProto.DeleteTagRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Empty> {
+    return this.$raw
+      .deleteTag(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

@@ -3,7 +3,7 @@ import psycopg2
 from retry import retry
 
 
-from typing import List, Tuple, Dict
+from typing import Iterable, List, Tuple, Dict
 
 
 class DbConnect:
@@ -89,7 +89,7 @@ def get_db_fields_placeholder_str(fields: List[str]) -> str:
     return ', '.join(f'%({field})s' for field in fields)
 
 
-def get_db_fields_assignment_str(fields: List[str]) -> str:
+def get_db_fields_assignment_str(fields: Iterable[str]) -> str:
     '''
     Return a string which can be used for UPDATE sql.
     E.g. `field1=%(field1)s, field2=%(field2)s, field3=%(field3)s`

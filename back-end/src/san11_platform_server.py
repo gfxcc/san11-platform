@@ -8,7 +8,7 @@ from handler.protos import san11_platform_pb2_grpc
 from handler import PackageHandler, BinaryHandler, ImageHandler, \
                     CommentHandler, ReplyHandler, UserHandler, \
                     ActivityHandler, GeneralHandler, TagHandler, \
-                    AdminHandler
+                    AdminHandler, ArticleHandler
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -26,6 +26,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.general_handler = GeneralHandler()
         self.tag_handler = TagHandler()
         self.admin_handler = AdminHandler()
+        self.article_handler = ArticleHandler()
 
     def CreatePackage(self, request, context):
         return self.package_handler.create_package(request, context)
@@ -89,6 +90,22 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def DeleteReply(self, request, context):
         return self.reply_handler.delete_reply(request, context)
+
+    # Article
+    def CreateArticle(self, request, context):
+        return self.article_handler.create_article(request, context)
+    
+    def GetArticle(self, request, context):
+        return self.article_handler.get_article(request, context)
+    
+    def ListArticle(self, request, context):
+        return self.article_handler.list_article(request, context)
+    
+    def UpdateArticle(self, request, context):
+        return self.article_handler.update_article(request, context)
+    
+    def DeleteArticle(self, request, context):
+        return self.article_handler.delete_article(request, context)
 
     # users
     def SignUp(self, request, context):

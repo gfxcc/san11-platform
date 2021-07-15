@@ -194,6 +194,25 @@ CREATE TABLE public.verification_codes (
 );
 
 
+CREATE TABLE articles (
+    parent text NOT NULL,
+    resource_id int NOT NULL,
+
+    data json,
+    -- subject text NOT NULL,
+    -- content text,
+    -- author_id integer NOT NULL,
+    -- create_time timestamp NOT NULL,
+    -- update_time timestamp NOT NULL,
+    -- state integer NOT NULL,
+    -- tags text[],
+    -- view_count integer,
+    -- like_count integer,
+
+    PRIMARY KEY (parent, resource_id)
+);
+
+
 ALTER TABLE public.verification_codes OWNER TO postgres;
 
 --

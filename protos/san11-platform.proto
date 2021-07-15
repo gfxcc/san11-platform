@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package routeguide;
 
 
@@ -7,36 +9,43 @@ package routeguide;
 service RouteGuide {
   // package related
   rpc CreatePackage(CreatePackageRequest) returns (Package) {}
-  rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
   rpc GetPackage(GetPackageRequest) returns (Package) {}
   rpc ListPackages(ListPackagesRequest) returns (ListPackagesResponse) {}
-  rpc SearchPackages(SearchPackagesRequest) returns (SearchPackagesResponse) {}
+  rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
   rpc DeletePackage(DeletePackageRequest) returns (Empty) {}
+
+  rpc SearchPackages(SearchPackagesRequest) returns (SearchPackagesResponse) {}
 
 
   // Binary related 
   rpc CreateBinary(CreateBinaryRequest) returns (Binary) {}
-  rpc UpdateBinary(UpdateBinaryRequest) returns (Binary) {}
   rpc GetBinary(GetBinaryRequest) returns (Binary) {}
   rpc BatchGetBinary(BatchGetBinaryRequest) returns (BatchGetBinaryResponse) {}
   rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {}
+  rpc UpdateBinary(UpdateBinaryRequest) returns (Binary) {}
   rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
 
   rpc DownloadBinary(DownloadBinaryRequest) returns (Binary) {}
-
 
   // Image related
   rpc CreateImage(CreateImageRequest) returns (Url) {}
 
   // comment related
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}
-  rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
   rpc ListComments(ListCommentsRequest) returns (ListCommentsResponse) {}
+  rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
   rpc DeleteComment(DeleteCommentRequest) returns (Empty) {}
 
   rpc CreateReply(CreateReplyRequest) returns (Reply) {}
   rpc UpdateReply(UpdateReplyRequest) returns (Reply) {}
   rpc DeleteReply(DeleteReplyRequest) returns (Empty) {}
+
+  // articles related
+  rpc CreateArticle(CreateArticleRequest) returns (Article) {}
+  rpc GetArticle(GetArticleRequest) returns (Article) {}
+  rpc ListArticles(ListArticlesRequest) returns (ListArticlesResponse) {}
+  rpc UpdateArticle(UpdateArticleRequest) returns (Article) {}
+  rpc DeleteArticle(DeleteArticleRequest) returns (Article) {}
 
   // User related
   rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
@@ -64,7 +73,6 @@ service RouteGuide {
   // Generic
   rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
-
 }
 
 // package related
@@ -226,6 +234,41 @@ message DeleteReplyRequest {
 message UpdateReplyRequest{
     Reply reply = 1;
     FieldMask update_mask = 2;
+}
+
+// Article
+message CreateArticleRequest {
+    // Only support article at website level.
+    // Expected value is ``.
+    string parent = 1;
+    Article article = 2;
+}
+
+message GetArticleRequest {
+    // The name of Articile. E.g. `articles/12345`
+    string name = 1;
+}
+
+message ListArticlesRequest {
+    // E.g. `` which is for website wide articles.
+    string parent = 1;
+    int64 page_size = 2;
+    string page_token = 3;
+}
+
+message ListArticlesResponse {
+    string next_page_token = 1;
+    repeated Article articles = 2;
+}
+
+message UpdateArticleRequest {
+    Article article = 1;
+    FieldMask update_mask = 2;
+}
+
+message DeleteArticleRequest {
+    // Article name. E.g. `articles/12345`
+    string name = 1;
 }
 
 // user
@@ -452,8 +495,7 @@ message Reply {
 
 message Tag {
     int64 tag_id = 1;
-    // A string not longer than 8
-    string name = 2;
+    string name = 2;  // A string not longer than 8.
     int64 category_id = 3;
     // Whether a user can update (assign or remove) this tag.
     // A immutable tag can only be updated by backend. E.g. `SIRE 1`, `SIRE 2`
@@ -518,6 +560,28 @@ enum Action {
 
     // misc
     DOWNLOAD = 21;
-
 }
 
+message Article {
+    string name = 1;  // Resource name. E.g. 'articles/12345'
+    string subject = 2;
+    string content = 3;
+    int64 author_id = 4;
+    google.protobuf.Timestamp create_time = 5;  // OUTPUT_ONLY
+    google.protobuf.Timestamp update_time = 6;  // OUTPUT_ONLY
+    ResourceState state = 7;
+    repeated string tags = 8;
+
+    int64 view_count = 21;
+    int64 like_count = 22;
+}
+
+enum ResourceState {
+    UNDEFINE_STATE = 0;
+
+    NORMAL = 1;  // publish accessable
+    UNDER_REVIEW = 2;  // Only visiable to admin and author
+    HIDDEN = 3;  // Only visiable to admin and author
+    SCHEDULED_DELETE = 4;  // Only visiable to admin
+    DELETED = 5;  // Only visiable to admin
+}
