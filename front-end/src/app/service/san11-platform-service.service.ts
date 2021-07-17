@@ -73,18 +73,6 @@ export class San11PlatformServiceService {
     return this.severClient.searchPackages(request, this.getMetadata());
   }
 
-  // getPlayerPackages(): Package[] {
-  //   return PLAYER_PACKAGES;
-  // }
-
-  // getModMakerPackages(): Package[] {
-  //   return MOD_MAKER_PACKAGES;
-  // }
-
-  uploadBinary(request: UploadBinaryRequest): Observable<Status> {
-    return this.severClient.uploadBinary(request, this.getMetadata());
-  }
-
   createBinary(request: CreateBinaryRequest): Observable<Binary> {
     return this.severClient.createBinary(request, this.getMetadata());
   }
@@ -104,11 +92,6 @@ export class San11PlatformServiceService {
   }
 
   // images
-
-  uploadImage(parent: string, image: Uint8Array): Observable<Url> {
-    const requst = new UploadImageRequest({ parent: parent, image: image });
-    return this.severClient.uploadImage(requst, this.getMetadata());
-  }
 
   createImage(request: CreateImageRequest): Observable<Url> {
     return this.severClient.createImage(request, this.getMetadata());

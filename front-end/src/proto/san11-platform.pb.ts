@@ -12668,7 +12668,7 @@ export class Article implements GrpcMessage {
   static refineValues(_instance: Article) {
     _instance.name = _instance.name || '';
     _instance.subject = _instance.subject || '';
-    _instance.context = _instance.context || '';
+    _instance.content = _instance.content || '';
     _instance.authorId = _instance.authorId || '0';
     _instance.createTime = _instance.createTime || undefined;
     _instance.updateTime = _instance.updateTime || undefined;
@@ -12698,7 +12698,7 @@ export class Article implements GrpcMessage {
           _instance.subject = _reader.readString();
           break;
         case 3:
-          _instance.context = _reader.readString();
+          _instance.content = _reader.readString();
           break;
         case 4:
           _instance.authorId = _reader.readInt64String();
@@ -12749,8 +12749,8 @@ export class Article implements GrpcMessage {
     if (_instance.subject) {
       _writer.writeString(2, _instance.subject);
     }
-    if (_instance.context) {
-      _writer.writeString(3, _instance.context);
+    if (_instance.content) {
+      _writer.writeString(3, _instance.content);
     }
     if (_instance.authorId) {
       _writer.writeInt64String(4, _instance.authorId);
@@ -12785,7 +12785,7 @@ export class Article implements GrpcMessage {
 
   private _name?: string;
   private _subject?: string;
-  private _context?: string;
+  private _content?: string;
   private _authorId?: string;
   private _createTime?: googleProtobuf000.Timestamp;
   private _updateTime?: googleProtobuf000.Timestamp;
@@ -12802,7 +12802,7 @@ export class Article implements GrpcMessage {
     _value = _value || {};
     this.name = _value.name;
     this.subject = _value.subject;
-    this.context = _value.context;
+    this.content = _value.content;
     this.authorId = _value.authorId;
     this.createTime = _value.createTime
       ? new googleProtobuf000.Timestamp(_value.createTime)
@@ -12828,11 +12828,11 @@ export class Article implements GrpcMessage {
   set subject(value: string | undefined) {
     this._subject = value;
   }
-  get context(): string | undefined {
-    return this._context;
+  get content(): string | undefined {
+    return this._content;
   }
-  set context(value: string | undefined) {
-    this._context = value;
+  set content(value: string | undefined) {
+    this._content = value;
   }
   get authorId(): string | undefined {
     return this._authorId;
@@ -12894,7 +12894,7 @@ export class Article implements GrpcMessage {
     return {
       name: this.name,
       subject: this.subject,
-      context: this.context,
+      content: this.content,
       authorId: this.authorId,
       createTime: this.createTime ? this.createTime.toObject() : undefined,
       updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
@@ -12924,7 +12924,7 @@ export class Article implements GrpcMessage {
     return {
       name: this.name,
       subject: this.subject,
-      context: this.context,
+      content: this.content,
       authorId: this.authorId,
       createTime: this.createTime
         ? this.createTime.toProtobufJSON(options)
@@ -12946,7 +12946,7 @@ export module Article {
   export interface AsObject {
     name?: string;
     subject?: string;
-    context?: string;
+    content?: string;
     authorId?: string;
     createTime?: googleProtobuf000.Timestamp.AsObject;
     updateTime?: googleProtobuf000.Timestamp.AsObject;
@@ -12962,7 +12962,7 @@ export module Article {
   export interface AsProtobufJSON {
     name?: string;
     subject?: string;
-    context?: string;
+    content?: string;
     authorId?: string;
     createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
     updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
