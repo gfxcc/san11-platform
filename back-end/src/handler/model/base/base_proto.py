@@ -88,7 +88,9 @@ class ProtoModelBase(ABC):
 
 def init_proto_model(cls: type, proto_class) -> None:
     cls._PROTO_CLASS = proto_class
-
+    for attribute in attr.fields(cls):
+        if not attribute.metadata[base_core.IS_PROTO_FIELD]:
+            continue
 
 def _attribute_to_proto(attribute: attr.Attribute, model_value: Any) -> Any:
     converter: ProtoConverter = attribute.metadata.get(

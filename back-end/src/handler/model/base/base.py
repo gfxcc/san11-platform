@@ -28,6 +28,10 @@ from . import base_core
 from . import base_db
 
 
+
+MODEL_T = TypeVar('MODEL_T', bound='ModelBase')
+
+
 def Attrib(
         # proto section
         is_proto_field: bool = True,

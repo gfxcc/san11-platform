@@ -1,20 +1,27 @@
 from __future__ import annotations
+import os
 import enum
 import re
 import json
-from . import base_core
+import logging
 import attr
 import datetime
 from typing import Any, Dict, Generic, Iterator, Optional, Tuple, TypeVar
 from typing import Iterable
 from abc import ABC, abstractclassmethod
 
+from . import base_core
+from ...util.time_util import get_now
 from ...common.exception import NotFound
 from ...db.db_util import get_db_fields_assignment_str, get_db_fields_str, get_db_fields_placeholder_str
 from ...db.db_util import run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all, run_sql_with_param
 
+
+logger = logging.getLogger(os.path.basename(__file__))
+
 _MODEL_T = TypeVar('_MODEL_T')
 _DB_MODEL_T = TypeVar('_DB_MODEL_T')
+_SUB_DB_MODEL_T = TypeVar('_SUB_DB_MODEL_T', bound='DbModelBase')
 
 
 class DbConverter(Generic[_MODEL_T, _DB_MODEL_T]):
@@ -35,9 +42,9 @@ class PassThroughConverter(DbConverter[Any, Any]):
         return value
 
 
-class DatetimeDbConverter(DbConverter[datetime.datetime, datetime.datetime]):
-    def to_model(self, db_value: datetime.datetime) -> datetime.datetime:
-        return db_value.replace(tzinfo=datetime.timezone.utc)
+class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
+    def to_model(self, db_value: str) -> datetime.datetime:
+        return datetime.datetime.fromisoformat(db_value).replace(tzinfo=datetime.timezone.utc)
 
     def from_model(self, value: datetime.datetime) -> datetime.datetime:
         return value
@@ -84,29 +91,25 @@ class DbModelBase(ABC):
             'data': json.dumps(data, default=str)
         }
         run_sql_with_param(sql, params)
+        logger.info(f'CREATED: {self}')
 
     @classmethod
-    def from_name(cls, name: str) -> DbModelBase:
+    def from_name(cls, name: str) -> _SUB_DB_MODEL_T:
         db_table = cls._DB_TABLE
-        NAME_PATTERN = r'((?P<parent>.+)/)?(?P<collection>[a-zA-Z0-9]+)/(?P<resource_id>[0-9]+)'
-        match = re.fullmatch(NAME_PATTERN, name)
-        if not match or match['collection'] != cls._DB_TABLE:
-            raise ValueError(
-                f'{name} is not a valid resource name in {cls._DB_TABLE}')
-        parent, resource_id = match['parent'], match['resource_id']
+        parent, resource_id = cls._parse_name(name)
         predicate = ' AND '.join(
             [f'{field}=%({field})s' for field in ['parent', 'resource_id']])
         sql = f'SELECT data FROM {db_table} '\
             f"WHERE {predicate}"
         params = {'parent': parent, 'resource_id': resource_id}
-        data: Dict = run_sql_with_param_and_fetch_one(
-            sql, params)[0]
-        if not data:
+        resp = run_sql_with_param_and_fetch_one(
+            sql, params)
+        if not resp:
             raise NotFound(f'{params} can not be found in table={db_table}')
-        return cls.from_data(data)
+        return cls.from_data(resp[0])
 
     @classmethod
-    def list(cls, parent: str, offset: int = 0, limit: int = 9999, order_by_field: Optional[str] = None, **kwargs) -> Iterable[DbModelBase]:
+    def list(cls, parent: str, offset: int = 0, limit: int = 9999, order_by_field: Optional[str] = None, **kwargs) -> Iterable[_SUB_DB_MODEL_T]:
         db_table = cls._DB_TABLE
         predicate_statement = 'WHERE parent=%(parent)s'
         if kwargs:
@@ -132,14 +135,34 @@ class DbModelBase(ABC):
     def from_data(cls, data: Dict):
         obj_args = {}
         for field in cls._DB_FIELDS:
-            obj_args[field.model_path] = data[field.name]
+            obj_args[field.model_path] = field.converter.to_model(data[field.name])
         return cls(**obj_args)
 
     def update(self) -> None:
-        ...
+        self.update_time = get_now()
+
+        db_table = self._DB_TABLE
+        data = self._prepare_data()
+        db_fields_name = ['parent', 'resource_id', 'data']
+        parent, resource_id = self._parse_name(self.name)
+        sql = f"UPDATE {db_table} SET data=%(data)s WHERE parent=%(parent)s AND resource_id=%(resource_id)s"
+        params = {
+            'parent': parent,
+            'resource_id': resource_id,
+            'data': json.dumps(data, default=str)
+        }
+        run_sql_with_param(sql, params)
+        logger.info(f'UPDATED: {self}')
 
     def delete(self) -> None:
-        ...
+        parent, resource_id = self._parse_name(self.name)
+        sql = f'DELETE FROM {self._DB_TABLE} WHERE parent=%(parent)s AND resource_id=%(resource_id)s'
+        params = {
+            'parent': parent,
+            'resource_id': resource_id,
+        }
+        run_sql_with_param(sql, params)
+        logger.info(f'DELETED: {self}')
 
     def _prepare_data(self) -> Dict:
         data = {}
@@ -147,6 +170,15 @@ class DbModelBase(ABC):
             data[field.name] = field.converter.from_model(
                 getattr(self, field.model_path))
         return data
+
+    @classmethod
+    def _parse_name(cls, name: str) -> Tuple[str, int]:
+        NAME_PATTERN = r'((?P<parent>.+)/)?(?P<collection>[a-zA-Z0-9]+)/(?P<resource_id>[0-9]+)'
+        match = re.fullmatch(NAME_PATTERN, name)
+        if not match or match['collection'] != cls._DB_TABLE:
+            raise ValueError(
+                f'{name} is not a valid resource name in {cls._DB_TABLE}')
+        return match['parent'] or '', int(match['resource_id'])
 
 
 def init_db_model(cls: type, db_table: str) -> None:
@@ -168,4 +200,3 @@ def init_db_model(cls: type, db_table: str) -> None:
 
 def _get_db_path(attribute: attr.Attribute) -> str:
     return attribute.metadata[base_core.DB_PATH] or attribute.name
-
