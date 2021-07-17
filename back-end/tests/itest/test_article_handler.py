@@ -37,7 +37,7 @@ def create_article(**kwargs):
     })
 
 
-def clean_articles():
+def purge_articles():
     '''Purge table articles'''
     sql = 'DELETE FROM articles'
     run_sql_with_param(sql, {})
@@ -50,7 +50,7 @@ class TestArticleHandler(unittest.TestCase):
         return super().setUp()
 
     def tearDown(self) -> None:
-        clean_articles()
+        purge_articles()
 
     def test_create_article(self):
         # GIVEN
