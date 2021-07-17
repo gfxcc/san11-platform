@@ -294,7 +294,7 @@ export class PackageDetailComponent implements OnInit {
         name: updatedPackageName
       }),
       updateMask: new FieldMask({
-        paths: ['name']
+        paths: ['package_name']
       })
     });
     this.san11pkService.updatePackage(request).subscribe(

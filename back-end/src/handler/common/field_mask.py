@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging, os
 from typing import List, Iterable
 from copy import deepcopy
 
@@ -6,10 +7,13 @@ from ..protos import san11_platform_pb2
 from ..model.resource import ResourceMixin
 
 
+logger = logging.getLogger(os.path.basename(__file__))
+
+
 def merge_resource(base_resource: ResourceMixin, update_request: ResourceMixin, field_mask: FieldMask) -> ResourceMixin:
     updated_resource = deepcopy(base_resource)
     for path in field_mask.paths:
-        exec(f'updated_resource.{path} = update_request.{path}')
+        setattr(updated_resource, path, getattr(update_request, path))
     return updated_resource
 
 
