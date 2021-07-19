@@ -18,18 +18,30 @@ class ArticleHandler:
         return article
 
     def get_article(self, name: str, handler_context) -> Article:
-        return Article.from_name(name)
+        logger.debug(f'In get_article: {name}')
+        article = Article.from_name(name)
+        article.view_count += 1
+        article.update(update_update_time=False)
+        return article
 
-    def list_article(self, page_size: int, page_token: str, parent: str, handler_context) -> Iterable[Article]:
-        return Article.list(parent=parent, order_by_field='create_time')
+    def list_articles(self, page_size: int, page_token: str, parent: str, handler_context) -> Iterable[Article]:
+        articles = Article.list(parent=parent, order_by_field='create_time')
+        public_articles = []
+        for article in articles:
+            if article.state == pb.ResourceState.Value('NORMAL') or \
+                (handler_context.user and handler_context.user.user_id == article.author_id) or \
+                    (handler_context.user and handler_context.user.user_type == 'admin'):
+                public_articles.append(article)
+        return public_articles
 
     def update_article(self, update_article: Article, update_mask: FieldMask, handler_context) -> Article:
         article_original = Article.from_name(update_article.name)
-        article: Article = merge_resource(article_original, update_article, update_mask)
+        article: Article = merge_resource(
+            article_original, update_article, update_mask)
         article.update()
         return article
 
     def delete_article(self, name: str, handler_context) -> Article:
         article = Article.from_name(name)
         article.delete()
-
+        return article

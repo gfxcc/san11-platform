@@ -1,4 +1,6 @@
 from __future__ import annotations
+from handler.common.field_mask import FieldMask
+import handler
 from handler.model.article import Article
 from handler.model.user import User
 import os
@@ -9,10 +11,11 @@ import re
 import attr
 import grpc
 
-from typing import List
+from typing import List, Optional
 from concurrent import futures
 
 from handler.protos import san11_platform_pb2_grpc
+from handler.protos import san11_platform_pb2 as pb
 from handler import PackageHandler, BinaryHandler, ImageHandler, \
     CommentHandler, ReplyHandler, UserHandler, \
     ActivityHandler, GeneralHandler, TagHandler, \
@@ -26,14 +29,14 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 @attr.s(auto_attribs=True)
 class HandlerContext:
-    user: User
+    user: Optional[User]
 
     @classmethod
     def from_service_context(cls, service_context: grpc.ServicerContext) -> HandlerContext:
         session = None
         sid = dict(service_context.invocation_metadata()).get('sid', None)
         if not sid:
-            raise Unauthenticated('请登录')
+            return cls(user=None)
         try:
             session = Session.from_sid(sid)
         except LookupError as err:
@@ -65,22 +68,34 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         parent, article = request.parent, Article.from_pb(request.article)
         handler_context = HandlerContext.from_service_context(context)
         # TODO: Add authentication
-        created_article = self.article_handler.create_article(parent=parent, article=article, service_context=handler_context)
+        created_article = self.article_handler.create_article(
+            parent, article, handler_context)
         return created_article.to_pb()
 
     def GetArticle(self, request, context):
         name = request.name
         handler_context = HandlerContext.from_service_context(context)
-        return self.article_handler.get_article(name, handler_context)
+        return self.article_handler.get_article(name, handler_context).to_pb()
 
-    def ListArticle(self, request, context):
-        return self.article_handler.list_article(request, context)
+    def ListArticles(self, request, context):
+        parent, page_size, page_token = request.parent, request.page_size, request.page_token
+        handler_context = HandlerContext.from_service_context(context)
+        articles = self.article_handler.list_articles(
+            page_size, page_token, parent, handler_context)
+        return pb.ListArticlesResponse(
+            next_page_token='',
+            articles=[article.to_pb() for article in articles]
+        )
 
     def UpdateArticle(self, request, context):
-        return self.article_handler.update_article(request, context)
+        article, update_mask = Article.from_pb(request.article), FieldMask.from_pb(request.update_mask)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.article_handler.update_article(article, update_mask, handler_context).to_pb()
 
     def DeleteArticle(self, request, context):
-        return self.article_handler.delete_article(request, context)
+        name = request.name
+        handler_context = HandlerContext.from_service_context(context)
+        return self.article_handler.delete_article(name, handler_context).to_pb()
 
     # Old model
 

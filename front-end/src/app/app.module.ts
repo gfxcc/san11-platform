@@ -40,6 +40,7 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
 import { SharedModule } from './shared/shared.module';
 import { BasicInfoComponent } from './account-management/user-detail/basic-info/basic-info.component';
 import { UserModule } from "./user/user.module";
+import { ForumModule } from './forum/forum.module';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { UserModule } from "./user/user.module";
     GalleryModule,
     CKEditorModule,
     SharedModule,
-    UserModule
+    UserModule,
+    ForumModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -47,7 +47,7 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
         return datetime.datetime.fromisoformat(db_value).replace(tzinfo=datetime.timezone.utc)
 
     def from_model(self, value: datetime.datetime) -> datetime.datetime:
-        return value
+        return value.astimezone(datetime.timezone.utc)
 
 
 @attr.s(auto_attribs=True)
@@ -123,7 +123,7 @@ class DbModelBase(ABC):
                     wheres.append(f"data->>{db_path}=%(db_path)s")
             predicate_statement += ' ' + 'AND'.join(wheres)
 
-        order_statement = f"ORDER BY data->>'{_get_db_path(attr.fields_dict(cls)[order_by_field])}'" if order_by_field else ''
+        order_statement = f"ORDER BY data->>'{_get_db_path(attr.fields_dict(cls)[order_by_field])}' DESC" if order_by_field else ''
         size_statement = f'LIMIT {limit} OFFSET {offset}'
         sql = f"SELECT data FROM {db_table} {predicate_statement} {order_statement} {size_statement}"
         params = kwargs.copy()
@@ -135,11 +135,14 @@ class DbModelBase(ABC):
     def from_data(cls, data: Dict):
         obj_args = {}
         for field in cls._DB_FIELDS:
-            obj_args[field.model_path] = field.converter.to_model(data[field.name])
+            obj_args[field.model_path] = field.converter.to_model(
+                data[field.name])
         return cls(**obj_args)
 
-    def update(self) -> None:
-        self.update_time = get_now()
+    def update(self, update_update_time: bool = True) -> None:
+        if update_update_time:
+            self.update_time = get_now()
+            logger.debug(self.update_time)
 
         db_table = self._DB_TABLE
         data = self._prepare_data()

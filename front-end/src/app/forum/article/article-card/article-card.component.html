@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="entry-area inner-border">
+        <div class="entry-image">
+            <img class="entry-image" [src]="getCoverImage()">
+        </div>
+
+        <div class="entry-content">
+            <header>
+                <h5 class="entry-subject">
+                    <a href="{{article.name}}">{{article.subject}}</a>
+                </h5>
+                <div class="entry-meta">
+                    <span class="entry-avatar">
+                        <img src="{{getUserAvatar()}}" class="avatar-img" width="36" height="36" >
+                        <span class="entry-author-link">
+                            <a href="users/{{user?.userId}}">{{user?.username}}</a>
+                        </span>
+                    </span>
+                    <span class="entry-post-date">{{getArticleAge()}}</span>
+                </div>
+            </header>
+            <div class="article-content">
+                {{getContentReview()}}
+            </div>
+            <footer class="entry-footer">
+                <hr class="card-footer-divider">
+                <mat-icon [matBadge]="article.viewCount" matBadgeColor="">auto_stories</mat-icon>
+                <!-- <mat-icon [matBadge]="article.likeCount" matBadgeColor="">favorite_border</mat-icon> -->
+            </footer>
+
+        </div>
+    </div>
+</div>

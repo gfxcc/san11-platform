@@ -1,5 +1,6 @@
 from __future__ import annotations
 import datetime
+from handler.util.time_util import get_now
 import attr
 from abc import ABC
 from typing import Any, Generic, Iterable, TypeVar
@@ -33,7 +34,7 @@ class PassThroughConverter(ProtoConverter[Any, Any]):
 class DatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Timestamp]):
     def to_model(self, proto_value: timestamp_pb2.Timestamp) -> datetime.datetime:
         if proto_value == timestamp_pb2.Timestamp():
-            return datetime.datetime.now()
+            return get_now()
         return proto_value.ToDatetime()
 
     def from_model(self, value: datetime.datetime) -> timestamp_pb2.Timestamp:

@@ -1,0 +1,114 @@
+.container {
+    width: 1140px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+.inner-border {
+    box-shadow: 2px 2px 8px rgb(0 0 0 / 10%);
+    border-radius: 4px;
+}
+
+.entry-area {
+    display: flex;
+    background-color: #fff;
+    padding: 30px;
+}
+
+.entry-content {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.article-content {
+    height: 110px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow-y: hidden;
+    margin: 0%;
+}
+
+.entry-image {
+    width: 320px;
+    height: 200px;
+}
+
+.entry-avatar {
+    padding-right: 10px;
+}
+
+.avatar-img {
+    border-radius: 100px;
+    vertical-align: middle;
+    border-style: none;
+    width: 36px;
+    height: 36px;
+}
+
+.entry-author-link {
+    padding-left: 10px;
+}
+
+.entry-post-date {
+    display: inline;
+}
+
+hr.card-footer-divider {
+    border-top: 2px solid rgba(0, 0, 0, .1);
+}
+
+a {
+    color: #005da6;
+    text-decoration: underline;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+
+h5.entry-subject a {
+    display: inline-block;
+    line-height: 26px;
+    overflow: visible;
+    white-space: normal;
+    text-decoration: none;
+}
+
+h5 {
+    font-size: 1.25rem;
+    display: block;
+    margin-block-start: 1.67em;
+    margin-block-end: 1.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    margin-top: 0px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font: 1.0625rem/1.5 Segoe UI, "Segoe UI Web Regular", "Segoe UI Regular WestEuropean", "Segoe UI", Tahoma, Arial, Roboto, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body {
+    margin: 0;
+    font: 1.0625rem/1.5 Segoe UI, "Segoe UI Web Regular", "Segoe UI Regular WestEuropean", "Segoe UI", Tahoma, Arial, Roboto, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color: #333;
+    text-align: left;
+    background-color: #fff;
+}
+
+hr {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+mat-icon {
+    margin-right: 30px;
+}

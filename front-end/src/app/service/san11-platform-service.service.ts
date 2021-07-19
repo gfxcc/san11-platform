@@ -5,7 +5,7 @@ import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-pa
 
 import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
-import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
+import { Article, CreateArticleRequest, CreatePackageRequest, DeleteArticleRequest, DeletePackageRequest, GetArticleRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListPackagesResponse, UpdateArticleRequest, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
 import { CreateBinaryRequest, CreateImageRequest } from '../../proto/san11-platform.pb'
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
@@ -44,6 +44,29 @@ export class San11PlatformServiceService {
   constructor(private severClient: RouteGuideClient) {
 
   }
+
+  // articles
+
+  createArticle(request: CreateArticleRequest): Observable<Article> {
+    return this.severClient.createArticle(request, this.getMetadata());
+  }
+
+  getArticle(request: GetArticleRequest): Observable<Article> {
+    return this.severClient.getArticle(request, this.getMetadata());
+  }
+
+  listArticles(request: ListArticlesRequest): Observable<ListArticlesResponse> {
+    return this.severClient.listArticles(request, this.getMetadata());
+  }
+
+  updateArticle(request: UpdateArticleRequest): Observable<Article> {
+    return this.severClient.updateArticle(request, this.getMetadata());
+  }
+
+  deleteArticle(request: DeleteArticleRequest): Observable<Article> {
+    return this.severClient.deleteArticle(request, this.getMetadata());
+  }
+  // packages
 
   createPackage(san11Package: Package): Observable<Package> {
     const request = new CreatePackageRequest({ package: san11Package });
