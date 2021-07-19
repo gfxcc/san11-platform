@@ -5,7 +5,7 @@ from abc import ABC
 from typing import Any, Generic, Iterable, TypeVar
 from google.protobuf import timestamp_pb2, message, descriptor
 
-from ....handler.util.time_util import get_now
+from ...util.time_util import get_now
 from . import base_core
 
 
