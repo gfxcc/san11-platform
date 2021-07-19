@@ -32,9 +32,6 @@ import { CreateNewVersionComponent } from "./package-management/version-manageme
 import { TextDialogComponent } from './common/components/text-dialog/text-dialog.component';
 import { TextInputDialogComponent } from './common/components/text-input-dialog/text-input-dialog.component';
 import { UserDetailComponent, PasswordDialog } from './account-management/user-detail/user-detail.component';
-import { CommentCardComponent } from './common/components/comment-card/comment-card.component';
-import { CommentBoardComponent } from './common/components/comment-board/comment-board.component';
-import { ReplyCardComponent } from './common/components/comment-card/reply-card/reply-card.component';
 import { MessageBoardComponent } from './dashboards/message-board/message-board.component';
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
 import { SharedModule } from './shared/shared.module';
@@ -61,9 +58,6 @@ import { ForumModule } from './forum/forum.module';
     TextInputDialogComponent,
     UserDetailComponent,
     PasswordDialog,
-    CommentCardComponent,
-    CommentBoardComponent,
-    ReplyCardComponent,
     MessageBoardComponent,
     AdminMessageBoardComponent,
     BasicInfoComponent,

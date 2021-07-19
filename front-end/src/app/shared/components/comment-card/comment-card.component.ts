@@ -73,6 +73,8 @@ export class CommentCardComponent implements OnInit {
         this.userImage = '../../../../assets/images/zhuge.jpg';
       }
     );
+
+    console.log(this.comment);
   }
 
   onUserClick() {
