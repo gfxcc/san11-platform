@@ -5,7 +5,7 @@ import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-pa
 
 import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
-import { CreatePackageRequest, DeletePackageRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListPackagesResponse, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
+import { Article, CreateArticleRequest, CreatePackageRequest, DeleteArticleRequest, DeletePackageRequest, GetArticleRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListPackagesResponse, UpdateArticleRequest, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
 import { CreateBinaryRequest, CreateImageRequest } from '../../proto/san11-platform.pb'
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
@@ -45,6 +45,29 @@ export class San11PlatformServiceService {
 
   }
 
+  // articles
+
+  createArticle(request: CreateArticleRequest): Observable<Article> {
+    return this.severClient.createArticle(request, this.getMetadata());
+  }
+
+  getArticle(request: GetArticleRequest): Observable<Article> {
+    return this.severClient.getArticle(request, this.getMetadata());
+  }
+
+  listArticles(request: ListArticlesRequest): Observable<ListArticlesResponse> {
+    return this.severClient.listArticles(request, this.getMetadata());
+  }
+
+  updateArticle(request: UpdateArticleRequest): Observable<Article> {
+    return this.severClient.updateArticle(request, this.getMetadata());
+  }
+
+  deleteArticle(request: DeleteArticleRequest): Observable<Article> {
+    return this.severClient.deleteArticle(request, this.getMetadata());
+  }
+  // packages
+
   createPackage(san11Package: Package): Observable<Package> {
     const request = new CreatePackageRequest({ package: san11Package });
     return this.severClient.createPackage(request, this.getMetadata());
@@ -73,18 +96,6 @@ export class San11PlatformServiceService {
     return this.severClient.searchPackages(request, this.getMetadata());
   }
 
-  // getPlayerPackages(): Package[] {
-  //   return PLAYER_PACKAGES;
-  // }
-
-  // getModMakerPackages(): Package[] {
-  //   return MOD_MAKER_PACKAGES;
-  // }
-
-  uploadBinary(request: UploadBinaryRequest): Observable<Status> {
-    return this.severClient.uploadBinary(request, this.getMetadata());
-  }
-
   createBinary(request: CreateBinaryRequest): Observable<Binary> {
     return this.severClient.createBinary(request, this.getMetadata());
   }
@@ -104,11 +115,6 @@ export class San11PlatformServiceService {
   }
 
   // images
-
-  uploadImage(parent: string, image: Uint8Array): Observable<Url> {
-    const requst = new UploadImageRequest({ parent: parent, image: image });
-    return this.severClient.uploadImage(requst, this.getMetadata());
-  }
 
   createImage(request: CreateImageRequest): Observable<Url> {
     return this.severClient.createImage(request, this.getMetadata());

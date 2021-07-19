@@ -1,0 +1,39 @@
+<div class="wrapper">
+    <div class="container">
+        <div class="content-area shadow-border round-border">
+
+            <div class="postcontent">
+                <h1 #articleSubjectElement (focus)="this.descEditor_updated=true;" class="entry-title">{{article.subject}}</h1>
+                <div class="row justify-content-center">
+                    <div style="margin-bottom: 10px; text-align:center;">
+                        <img src="{{getUserAvatar()}}" width="58" height="58" class="avatar">
+                        <p style="font-size:20px; margin-bottom: 0px;">{{user?.username}}</p>
+                    </div>
+                </div>
+                <div>
+                    <p class="entry-time">{{getArticleCreateTime()}}</p>
+                </div>
+
+                <div>
+                    <ckeditor class="editor" [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
+                </div>
+
+                <!-- <div class="interactions">
+
+                </div> -->
+            </div>
+
+            <footer class="cattagsarea">
+
+                <div *ngIf="(isAdmin() || isAuthor())" class="control row">
+                    <button class="button" mat-raised-button color="warn" (click)="onDelete()">删除</button>
+                    <button class="button" mat-stroked-button color="warn" (click)="onFlipState()">{{article.state===3? '发布' : '隐藏'}}</button>
+
+                    <span class="example-spacer"></span>
+
+                    <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdate()">更新</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

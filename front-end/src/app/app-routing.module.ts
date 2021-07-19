@@ -1,19 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { SigninComponent } from './account-management/signin/signin.component'
 import { RegisterComponent } from './account-management/register/register.component'
-import { PackageCardComponent } from './package-management/package-card/package-card.component';
 import { CreatePackageComponent } from './package-management/create-package/create-package.component'
 
 import { MessageBoardComponent } from "./dashboards/message-board/message-board.component";
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component'
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 import { PackageResolverService } from "./package-management/package-detail/package-resolver.service";
-import { UserDetailComponent } from './account-management/user-detail/user-detail.component';
-import { UserResolverService } from "./account-management/user-detail/user-resolver.service";
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
+import { CreateNewComponent } from './shared/components/create-new/create-new.component';
 
 
 
@@ -25,7 +22,7 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent },
   { path: 'register', component: RegisterComponent },
 
-  { path: 'app-create-package', component: CreatePackageComponent },
+  { path: 'createNew', component: CreateNewComponent },
   {
     path: 'categories/:categoryId/packages/:packageId',
     component: PackageDetailComponent,

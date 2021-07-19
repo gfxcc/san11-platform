@@ -10,10 +10,10 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class PackageResolverService implements Resolve<Package> {
   constructor(
-    private san11Service: San11PlatformServiceService,
+    private san11pkService: San11PlatformServiceService,
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Package> | Promise<Package> | Package {
-    return this.san11Service.getPackage(route.params['packageId']);
+    return this.san11pkService.getPackage(route.params['packageId']);
   }
 }

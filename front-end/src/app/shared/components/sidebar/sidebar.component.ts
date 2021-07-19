@@ -6,7 +6,7 @@ import { GlobalConstants } from '../../../common/global-constants';
 import { NotificationService } from '../../../common/notification.service';
 import { ComponentMessage, EventEmiterService } from '../../../service/event-emiter.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
-import { isAdmin, signedIn } from '../../../utils/user_util';
+import { isAdmin, loadUser, signedIn } from '../../../utils/user_util';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,7 +20,7 @@ export class SidebarComponent implements OnInit {
   webModules = GlobalConstants.webModules;
   adminModules = GlobalConstants.adminModules;
 
-  selectedCategory = '1';
+  selectedCategory = undefined;
   tags: Tag[] = [];
 
   constructor(
@@ -29,7 +29,13 @@ export class SidebarComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private _eventEmiter: EventEmiterService,
-  ) { }
+  ) { 
+    const userId = loadUser().userId;
+    console.log(userId);
+    if (userId != '1' && userId != '9') {
+      this.webModules.splice(0, 1);
+    }
+  }
 
   ngOnInit(): void {
     this.loadTags();
@@ -107,7 +113,7 @@ export class SidebarComponent implements OnInit {
 
 
   uploadTool() {
-    this.router.navigate(['app-create-package']);
+    this.router.navigate(['createNew']);
   }
 
   // To receive global messages

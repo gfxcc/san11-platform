@@ -9,11 +9,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AngularMaterialModule } from '../angular-material.module';
 import { HeaderComponent } from './components/header/header.component';
 import { FormsModule } from '@angular/forms';
+import { CreateNewComponent } from './components/create-new/create-new.component';
 
 
 
 @NgModule({
-  declarations: [SidebarComponent, HeaderComponent, UserCardComponent],
+  declarations: [SidebarComponent, HeaderComponent, UserCardComponent, CreateNewComponent],
   imports: [
     CommonModule,
     MatListModule,

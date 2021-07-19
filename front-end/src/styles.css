@@ -167,7 +167,7 @@ body {
 .round-border {
     border-radius: 4px;
     border: solid 1px #ebebeb;
-    padding: 5px;
+    /* padding: 5px; */
 }
 
 .help-icon {

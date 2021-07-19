@@ -45,17 +45,6 @@ export class CreatePackageComponent implements OnInit {
 
   createPackage(createPackageForm) {
 
-    // console.log(this.selectedFile);
-    // if (this.selectedImage === undefined) {
-    //   this.notificationService.warn('请选择截图');
-    //   return;
-    // }
-
-    // if (this.selectedFile === undefined) {
-    //   this.notificationService.warn('请选择文件');
-    //   return;
-    // }
-
     let dialogRef = this.dialog.open(AuthorDialog);
     const sub = dialogRef.componentInstance.onAdd.subscribe(() => {
 

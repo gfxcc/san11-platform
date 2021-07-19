@@ -1,0 +1,41 @@
+<div class="card-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>创建</mat-card-title>
+        </mat-card-header>
+
+        <form class="example-form">
+
+            <form class="example-form" #createForm='ngForm' (ngSubmit)='onCreate(createForm)'>
+                <mat-card-content>
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="名称" required ngModel name="name">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="example-full-width">
+                        <mat-label>类别</mat-label>
+                        <mat-select [(ngModel)]="selectedCategory" required name="resourceType">
+                            <!-- <mat-option *ngFor="let category of categories" [value]="category.value" [disabled]="category.disabled">
+                                {{category.text}}
+                            </mat-option> -->
+
+                            <mat-optgroup *ngFor="let group of resourceGroups" [label]="group.name" [disabled]="group.disabled">
+                                <mat-option *ngFor="let resourceType of group.resourceTypes" [value]="resourceType">
+                                    {{resourceType.text}}
+                                </mat-option>
+                            </mat-optgroup>
+                        </mat-select>
+                        <mat-hint></mat-hint>
+                    </mat-form-field>
+
+                </mat-card-content>
+                <p></p>
+
+                <button [disabled]="!createForm.valid" type="submit" mat-stroked-button color="accent" class="btn-block">创建</button>
+            </form>
+
+
+        </form>
+    </mat-card>
+
+</div>

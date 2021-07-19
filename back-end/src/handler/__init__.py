@@ -8,3 +8,4 @@ from .activity_handler import ActivityHandler
 from .general_handler import GeneralHandler
 from .tag_handler import TagHandler
 from .admin_handler import AdminHandler
+from .article_handler import ArticleHandler
