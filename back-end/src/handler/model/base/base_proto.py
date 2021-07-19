@@ -1,11 +1,11 @@
 from __future__ import annotations
 import datetime
-from handler.util.time_util import get_now
 import attr
 from abc import ABC
 from typing import Any, Generic, Iterable, TypeVar
 from google.protobuf import timestamp_pb2, message, descriptor
 
+from ....handler.util.time_util import get_now
 from . import base_core
 
 
@@ -93,6 +93,7 @@ def init_proto_model(cls: type, proto_class) -> None:
         if not attribute.metadata[base_core.IS_PROTO_FIELD]:
             continue
 
+
 def _attribute_to_proto(attribute: attr.Attribute, model_value: Any) -> Any:
     converter: ProtoConverter = attribute.metadata.get(
         base_core.PROTO_CONVERTER, PassThroughConverter())
@@ -111,6 +112,7 @@ def _get_by_path(proto: message.Message, path: str) -> Any:
 
 def _set_by_path(proto: message.Message, path: str, proto_value: Any) -> None:
     pass
+
 
 def _get_proto_path(attribute: attr.Attribute) -> str:
     return attribute.metadata[base_core.PROTO_PATH] or attribute.name

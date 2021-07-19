@@ -98,7 +98,7 @@ class TestArticleHandler(unittest.TestCase):
             parent=''
         )
         # WHEN
-        articles = self.handler.list_article(
+        articles = self.handler.list_articles(
             100, '', request.parent, self.mock_handler_context)
         # THEN
         self.assertSetEqual(set(article.name for article in articles), {name, name2})
@@ -134,7 +134,7 @@ class TestArticleHandler(unittest.TestCase):
         )
         # WHEN
         article = self.handler.delete_article(
-            request.name, self.mock_handler_context)
+            Article.from_name(request.name), self.mock_handler_context)
         # THEN
         self.assertRaises(NotFound, self.handler.get_article,
                           request.name, self.mock_handler_context)
