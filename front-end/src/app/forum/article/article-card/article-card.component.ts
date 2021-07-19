@@ -47,10 +47,9 @@ export class ArticleCardComponent implements OnInit {
   }
 
   getCoverImage(): string {
-    let regexImageSrc = /<img src="(?<imageSrc>[a-zA-Z0-9/:\.]+)">/;
+    let regexImageSrc = /<img src="(?<imageSrc>[a-zA-Z0-9\/\-_:\.]+)">/;
     let match = regexImageSrc.exec(this.article.content);
     if (match) {
-      console.log(match.groups?.imageSrc);
       return match.groups.imageSrc;
     } else {
       return 'https://storage.googleapis.com/san11-resources/static/san11-cover.jpeg';
