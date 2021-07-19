@@ -155,7 +155,6 @@ class DbModelBase(ABC):
             'data': json.dumps(data, default=str)
         }
         run_sql_with_param(sql, params)
-        logger.info(f'UPDATED: {self}')
 
     def delete(self) -> None:
         parent, resource_id = self._parse_name(self.name)
