@@ -3,7 +3,8 @@ import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
-import { Article, GetUserRequest, Package, User } from 'src/proto/san11-platform.pb';
+import { loadUser } from 'src/app/utils/user_util';
+import { Article, GetUserRequest, Package, ResourceState, User } from 'src/proto/san11-platform.pb';
 
 @Component({
   selector: 'app-article-card',
@@ -77,4 +78,18 @@ export class ArticleCardComponent implements OnInit {
 
     return  resultStr.replace( /<[^<|>]+?>/gi,'' );
 }
+
+
+isAdmin() {
+  return loadUser().userType === 'admin';
+}
+
+isAuthor() {
+  return loadUser().userId === this.article.authorId;
+}
+
+getStatusName() {
+  return ResourceState[this.article.state];
+}
+
 }

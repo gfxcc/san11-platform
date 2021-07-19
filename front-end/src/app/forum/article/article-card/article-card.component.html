@@ -6,9 +6,16 @@
 
         <div class="entry-content">
             <header>
-                <h5 class="entry-subject">
-                    <a href="{{article.name}}">{{article.subject}}</a>
-                </h5>
+                <div style="display: flex;">
+                    <h5 class="entry-subject">
+                        <a href="{{article.name}}">{{article.subject}}</a>
+                    </h5>
+
+                    <span class="example-spacer"></span>
+                    <div [hidden]="! ((isAdmin() || isAuthor()) && article.state!=1)">
+                        <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
+                    </div>
+                </div>
                 <div class="entry-meta">
                     <span class="entry-avatar">
                         <img src="{{getUserAvatar()}}" class="avatar-img" width="36" height="36" >
