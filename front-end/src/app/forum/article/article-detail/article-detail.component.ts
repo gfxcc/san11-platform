@@ -8,7 +8,7 @@ import { UploadService } from 'src/app/service/upload.service';
 import { getPackageUrl } from 'src/app/utils/package_util';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
-import { loadUser } from 'src/app/utils/user_util';
+import { isAdmin, loadUser } from 'src/app/utils/user_util';
 import { Article, DeleteArticleRequest, GetUserRequest, ResourceState, UpdateArticleRequest, User } from 'src/proto/san11-platform.pb';
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 
@@ -141,9 +141,6 @@ export class ArticleDetailComponent implements OnInit {
     this.descEditor_updated = true;
   }
 
-  isAuthor() {
-    return this.article.authorId === loadUser().userId;
-  }
   
   loadUser() {
     this.san11pkService.getUser(new GetUserRequest({
@@ -231,4 +228,15 @@ export class ArticleDetailComponent implements OnInit {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return this.article.createTime.toDate().toLocaleString("en-US", {timeZone: tz});
   }
+
+  
+  // utils
+  isAdmin() {
+    return isAdmin();
+  }
+
+  isAuthor() {
+    return this.article.authorId === loadUser().userId;
+  }
 }
+

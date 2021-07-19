@@ -41,7 +41,6 @@ class ArticleHandler:
         article.update()
         return article
 
-    def delete_article(self, name: str, handler_context) -> Article:
-        article = Article.from_name(name)
+    def delete_article(self, article: Article, handler_context) -> Article:
         article.delete()
         return article

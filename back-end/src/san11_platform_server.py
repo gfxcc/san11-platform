@@ -67,6 +67,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def CreateArticle(self, request, context):
         parent, article = request.parent, Article.from_pb(request.article)
         handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
         # TODO: Add authentication
         created_article = self.article_handler.create_article(
             parent, article, handler_context)
@@ -90,12 +91,16 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def UpdateArticle(self, request, context):
         article, update_mask = Article.from_pb(request.article), FieldMask.from_pb(request.update_mask)
         handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == article.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.article_handler.update_article(article, update_mask, handler_context).to_pb()
 
     def DeleteArticle(self, request, context):
-        name = request.name
+        article = Article.from_name(request.name)
         handler_context = HandlerContext.from_service_context(context)
-        return self.article_handler.delete_article(name, handler_context).to_pb()
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == article.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.article_handler.delete_article(article, handler_context).to_pb()
 
     # Old model
 
