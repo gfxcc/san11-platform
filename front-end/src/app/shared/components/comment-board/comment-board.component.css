@@ -22,3 +22,14 @@
 .contents {
     margin-top: 30px;
 }
+
+h5 {
+    font-size: 1.25rem;
+    display: block;
+    margin-block-start: 1.67em;
+    margin-block-end: 1.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    margin-top: 0px;
+    margin-bottom: 8px;
+}

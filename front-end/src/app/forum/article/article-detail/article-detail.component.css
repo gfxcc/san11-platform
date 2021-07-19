@@ -85,7 +85,13 @@ img.avatar {
     background-color: #fff;
     padding: 1rem;
     border-radius: 0 0 4px 4px;
-    padding-left: 40px;
+    border-top: 2px solid rgba(0, 0, 0, .1);
+    border-bottom: 2px solid rgba(0, 0, 0, .1);
+    /* padding-left: 40px; */
+}
+
+.control {
+    padding-left: 20px;
 }
 
 p {

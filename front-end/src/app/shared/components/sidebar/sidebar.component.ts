@@ -31,10 +31,6 @@ export class SidebarComponent implements OnInit {
     private _eventEmiter: EventEmiterService,
   ) { 
     const userId = loadUser().userId;
-    console.log(userId);
-    if (userId != '1' && userId != '9') {
-      this.webModules.splice(0, 1);
-    }
   }
 
   ngOnInit(): void {

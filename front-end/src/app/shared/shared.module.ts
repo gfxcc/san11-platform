@@ -10,23 +10,30 @@ import { AngularMaterialModule } from '../angular-material.module';
 import { HeaderComponent } from './components/header/header.component';
 import { FormsModule } from '@angular/forms';
 import { CreateNewComponent } from './components/create-new/create-new.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CommentBoardComponent } from './components/comment-board/comment-board.component';
+import { CommentCardComponent } from './components/comment-card/comment-card.component';
+import { ReplyCardComponent } from './components/comment-card/reply-card/reply-card.component';
 
 
 
 @NgModule({
-  declarations: [SidebarComponent, HeaderComponent, UserCardComponent, CreateNewComponent],
+  declarations: [SidebarComponent, HeaderComponent, UserCardComponent, CommentBoardComponent, CommentCardComponent, ReplyCardComponent, CreateNewComponent],
   imports: [
     CommonModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
     MatDividerModule,
+    MatTabsModule,
     AngularMaterialModule,
     FormsModule,
   ],
   exports: [
     SidebarComponent,
     HeaderComponent,
+    CommentBoardComponent,
+    CommentCardComponent,
   ]
 })
 export class SharedModule { }
