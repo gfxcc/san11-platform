@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { UserResolver } from "./home/user.resolver";
 import { TimelineComponent } from "./timeline/timeline.component";
 import { PublishedPackagesComponent } from './published-packages/published-packages.component';
+import { ArticleListComponent } from '../forum/article/article-list/article-list.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
       {
         path: 'publishedPackages',
         component: DashboardComponent
+      },
+      {
+        path: 'articles',
+        component: ArticleListComponent,
       },
       {
         path: 'timeline',

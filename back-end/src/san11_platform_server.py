@@ -82,14 +82,21 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         parent, page_size, page_token = request.parent, request.page_size, request.page_token
         handler_context = HandlerContext.from_service_context(context)
         articles = self.article_handler.list_articles(
-            page_size, page_token, parent, handler_context)
+            parent=parent,
+            page_size=page_size,
+            page_token=page_token,
+            sort_by=None,
+            filter=request.filter,
+            handler_context=handler_context,
+        )
         return pb.ListArticlesResponse(
             next_page_token='',
             articles=[article.to_pb() for article in articles]
         )
 
     def UpdateArticle(self, request, context):
-        article, update_mask = Article.from_pb(request.article), FieldMask.from_pb(request.update_mask)
+        article, update_mask = Article.from_pb(
+            request.article), FieldMask.from_pb(request.update_mask)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
         assert handler_context.user.user_id == article.author_id or handler_context.user.user_type == 'admin', '权限验证失败'

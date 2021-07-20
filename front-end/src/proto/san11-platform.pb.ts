@@ -5071,6 +5071,8 @@ export class ListArticlesRequest implements GrpcMessage {
     _instance.parent = _instance.parent || '';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
+    _instance.orderBy = _instance.orderBy || '';
+    _instance.filter = _instance.filter || '';
   }
 
   /**
@@ -5094,6 +5096,12 @@ export class ListArticlesRequest implements GrpcMessage {
           break;
         case 3:
           _instance.pageToken = _reader.readString();
+          break;
+        case 4:
+          _instance.orderBy = _reader.readString();
+          break;
+        case 5:
+          _instance.filter = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -5121,11 +5129,19 @@ export class ListArticlesRequest implements GrpcMessage {
     if (_instance.pageToken) {
       _writer.writeString(3, _instance.pageToken);
     }
+    if (_instance.orderBy) {
+      _writer.writeString(4, _instance.orderBy);
+    }
+    if (_instance.filter) {
+      _writer.writeString(5, _instance.filter);
+    }
   }
 
   private _parent?: string;
   private _pageSize?: string;
   private _pageToken?: string;
+  private _orderBy?: string;
+  private _filter?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -5136,6 +5152,8 @@ export class ListArticlesRequest implements GrpcMessage {
     this.parent = _value.parent;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
+    this.orderBy = _value.orderBy;
+    this.filter = _value.filter;
     ListArticlesRequest.refineValues(this);
   }
   get parent(): string | undefined {
@@ -5156,6 +5174,18 @@ export class ListArticlesRequest implements GrpcMessage {
   set pageToken(value: string | undefined) {
     this._pageToken = value;
   }
+  get orderBy(): string | undefined {
+    return this._orderBy;
+  }
+  set orderBy(value: string | undefined) {
+    this._orderBy = value;
+  }
+  get filter(): string | undefined {
+    return this._filter;
+  }
+  set filter(value: string | undefined) {
+    this._filter = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -5174,7 +5204,9 @@ export class ListArticlesRequest implements GrpcMessage {
     return {
       parent: this.parent,
       pageSize: this.pageSize,
-      pageToken: this.pageToken
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 
@@ -5197,7 +5229,9 @@ export class ListArticlesRequest implements GrpcMessage {
     return {
       parent: this.parent,
       pageSize: this.pageSize,
-      pageToken: this.pageToken
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 }
@@ -5209,6 +5243,8 @@ export module ListArticlesRequest {
     parent?: string;
     pageSize?: string;
     pageToken?: string;
+    orderBy?: string;
+    filter?: string;
   }
 
   /**
@@ -5218,6 +5254,8 @@ export module ListArticlesRequest {
     parent?: string;
     pageSize?: string;
     pageToken?: string;
+    orderBy?: string;
+    filter?: string;
   }
 }
 
@@ -5245,8 +5283,8 @@ export class ListArticlesResponse implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: ListArticlesResponse) {
-    _instance.nextPageToken = _instance.nextPageToken || '';
     _instance.articles = _instance.articles || [];
+    _instance.nextPageToken = _instance.nextPageToken || '';
   }
 
   /**
@@ -5263,17 +5301,17 @@ export class ListArticlesResponse implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.nextPageToken = _reader.readString();
-          break;
-        case 2:
-          const messageInitializer2 = new Article();
+          const messageInitializer1 = new Article();
           _reader.readMessage(
-            messageInitializer2,
+            messageInitializer1,
             Article.deserializeBinaryFromReader
           );
           (_instance.articles = _instance.articles || []).push(
-            messageInitializer2
+            messageInitializer1
           );
+          break;
+        case 2:
+          _instance.nextPageToken = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -5292,20 +5330,20 @@ export class ListArticlesResponse implements GrpcMessage {
     _instance: ListArticlesResponse,
     _writer: BinaryWriter
   ) {
-    if (_instance.nextPageToken) {
-      _writer.writeString(1, _instance.nextPageToken);
-    }
     if (_instance.articles && _instance.articles.length) {
       _writer.writeRepeatedMessage(
-        2,
+        1,
         _instance.articles as any,
         Article.serializeBinaryToWriter
       );
     }
+    if (_instance.nextPageToken) {
+      _writer.writeString(2, _instance.nextPageToken);
+    }
   }
 
-  private _nextPageToken?: string;
   private _articles?: Article[];
+  private _nextPageToken?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -5313,21 +5351,21 @@ export class ListArticlesResponse implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListArticlesResponse.AsObject>) {
     _value = _value || {};
-    this.nextPageToken = _value.nextPageToken;
     this.articles = (_value.articles || []).map(m => new Article(m));
+    this.nextPageToken = _value.nextPageToken;
     ListArticlesResponse.refineValues(this);
-  }
-  get nextPageToken(): string | undefined {
-    return this._nextPageToken;
-  }
-  set nextPageToken(value: string | undefined) {
-    this._nextPageToken = value;
   }
   get articles(): Article[] | undefined {
     return this._articles;
   }
   set articles(value: Article[] | undefined) {
     this._articles = value;
+  }
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
+  }
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
   }
 
   /**
@@ -5345,8 +5383,8 @@ export class ListArticlesResponse implements GrpcMessage {
    */
   toObject(): ListArticlesResponse.AsObject {
     return {
-      nextPageToken: this.nextPageToken,
-      articles: (this.articles || []).map(m => m.toObject())
+      articles: (this.articles || []).map(m => m.toObject()),
+      nextPageToken: this.nextPageToken
     };
   }
 
@@ -5367,8 +5405,8 @@ export class ListArticlesResponse implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListArticlesResponse.AsProtobufJSON {
     return {
-      nextPageToken: this.nextPageToken,
-      articles: (this.articles || []).map(m => m.toProtobufJSON(options))
+      articles: (this.articles || []).map(m => m.toProtobufJSON(options)),
+      nextPageToken: this.nextPageToken
     };
   }
 }
@@ -5377,16 +5415,16 @@ export module ListArticlesResponse {
    * Standard JavaScript object representation for ListArticlesResponse
    */
   export interface AsObject {
-    nextPageToken?: string;
     articles?: Article.AsObject[];
+    nextPageToken?: string;
   }
 
   /**
    * Protobuf JSON representation for ListArticlesResponse
    */
   export interface AsProtobufJSON {
-    nextPageToken?: string;
     articles?: Article.AsProtobufJSON[] | null;
+    nextPageToken?: string;
   }
 }
 

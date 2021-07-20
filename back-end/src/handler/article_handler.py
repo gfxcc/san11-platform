@@ -1,6 +1,6 @@
-import os
+import os, attr
 import logging
-from typing import Iterable
+from typing import Iterable, Optional
 
 from .common.field_mask import FieldMask, merge_resource
 from .protos import san11_platform_pb2 as pb
@@ -24,8 +24,13 @@ class ArticleHandler:
         article.update(update_update_time=False)
         return article
 
-    def list_articles(self, page_size: int, page_token: str, parent: str, handler_context) -> Iterable[Article]:
-        articles = Article.list(parent=parent, order_by_field='create_time')
+    def list_articles(self, parent: str, page_size: int, page_token: str, sort_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[Article]:
+        list_kwargs = {}
+        if filter:
+            k, v = map(str.strip, filter.strip().split('='))
+            list_kwargs[k] = v
+
+        articles = Article.list(parent=parent, order_by_field='create_time', **list_kwargs)
         public_articles = []
         for article in articles:
             if article.state == pb.ResourceState.Value('NORMAL') or \

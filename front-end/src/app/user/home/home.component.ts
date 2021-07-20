@@ -29,6 +29,11 @@ export class HomeComponent implements OnInit {
       disabled: false,
     },
     {
+      label: '文章',
+      link: ['articles'],
+      disabled: false,
+    },
+    {
       label: '时间线',
       link: ['timeline'],
       disabled: false

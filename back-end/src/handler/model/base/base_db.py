@@ -120,8 +120,8 @@ class DbModelBase(ABC):
                 if att.metadata[base_core.REPEATED]:
                     wheres.append(f"data->>%(db_path)s=ANY({db_path})")
                 else:
-                    wheres.append(f"data->>{db_path}=%(db_path)s")
-            predicate_statement += ' ' + 'AND'.join(wheres)
+                    wheres.append(f"data->>'{db_path}'=%({db_path})s")
+            predicate_statement += ' AND ' + 'AND'.join(wheres)
 
         order_statement = f"ORDER BY data->>'{_get_db_path(attr.fields_dict(cls)[order_by_field])}' DESC" if order_by_field else ''
         size_statement = f'LIMIT {limit} OFFSET {offset}'
