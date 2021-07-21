@@ -26,6 +26,8 @@ class TagHandler:
         return san11_platform_pb2.Empty()
 
     def list_tags(self, request, context):
+        if not request.category_id:
+            return san11_platform_pb2.ListTagsResponse()
         return san11_platform_pb2.ListTagsResponse(
             tags=[tag.to_pb() for tag in Tag.list(page_size=0,
                                                   page_token='',

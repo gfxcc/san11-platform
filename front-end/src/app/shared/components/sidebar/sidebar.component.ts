@@ -115,6 +115,7 @@ export class SidebarComponent implements OnInit {
   // To receive global messages
   onActivate(elementRef) {
     this._eventEmiter.dataStr.subscribe((data: ComponentMessage) => {
+
       if (data.categoryId != undefined) {
         setTimeout(() => {
           if (this.selectedCategory === data.categoryId) {
