@@ -22,7 +22,7 @@ class TagHandler:
     def delete_tag(self, request, context):
         auth = Authenticator.from_context(context=context)
         assert auth.isAdmin()
-        Tag.from_id(request.tag_id).delete(user_id=auth.session.user.user_id)
+        Tag.from_id(request.tag_id).delete()
         return san11_platform_pb2.Empty()
 
     def list_tags(self, request, context):
