@@ -25,7 +25,9 @@ class Tag(ResourceMixin, TrackLifecycle):
     
     @property
     def name(self) -> str:
-        return f'categories/{self.category_id}/tags/{self.tag_id}'
+        # TODO: this is not compliant to ResourceMixin.
+        # This issue will be addressed during ModelBase migration
+        return self.tag_name
     
     @property
     def id(self) -> int:
@@ -64,7 +66,7 @@ class Tag(ResourceMixin, TrackLifecycle):
     @classmethod
     def from_pb(cls, pb_obj: san11_platform_pb2.Tag):
         return cls(tag_id=pb_obj.tag_id,
-                   name=pb_obj.tag_name,
+                   tag_name=pb_obj.name,
                    category_id=pb_obj.category_id,
                    mutable=pb_obj.mutable)
 

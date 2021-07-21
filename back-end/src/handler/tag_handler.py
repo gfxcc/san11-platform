@@ -16,7 +16,7 @@ class TagHandler:
         auth = Authenticator.from_context(context=context)
         assert auth.isAdmin()
         tag = Tag.from_pb(request.tag)
-        tag.create(user_id=auth.session.user.user_id)
+        tag.create()
         return tag.to_pb()
     
     def delete_tag(self, request, context):

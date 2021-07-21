@@ -1,3 +1,4 @@
+from handler.common.api import parse_filter
 import os, attr
 import logging
 from typing import Iterable, Optional
@@ -27,8 +28,7 @@ class ArticleHandler:
     def list_articles(self, parent: str, page_size: int, page_token: str, sort_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[Article]:
         list_kwargs = {}
         if filter:
-            k, v = map(str.strip, filter.strip().split('='))
-            list_kwargs[k] = v
+            list_kwargs = parse_filter(Article, filter)
 
         articles = Article.list(parent=parent, order_by_field='create_time', **list_kwargs)
         public_articles = []
