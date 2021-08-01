@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { FieldMask, Binary, Package, User, Version as PbVersion, DownloadBinaryRequest, DeleteBinaryRequest } from "../../../../proto/san11-platform.pb";
+import { FieldMask, Binary, Package, User, Version as PbVersion, DownloadBinaryRequest, DeleteBinaryRequest, ListBinariesRequest } from "../../../../proto/san11-platform.pb";
 import { UpdateBinaryRequest } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 
@@ -126,7 +126,9 @@ export class VersionPanelComponent implements OnInit {
   }
 
   fetchBinaries() {
-    this.binaryService.listBinaries(this.package.packageId).subscribe(
+    this.binaryService.listBinaries(new ListBinariesRequest({
+      parent: this.package.name
+    })).subscribe(
       resp => {
         this.binaries = resp.binaries;
 

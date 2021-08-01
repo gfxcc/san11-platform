@@ -36,8 +36,6 @@ class CommentHandler:
         return san11_platform_pb2.Empty()
 
     def update_comment(self, request, context):
-        logger.info(
-            f'In UpdateComment: comment_id={request.comment.comment_id}')
         comment = Comment.from_id(request.comment.comment_id)
         try:
             auth = Authenticator.from_context(context)
@@ -64,7 +62,6 @@ class CommentHandler:
         return comment.to_pb()
 
     def list_comments(self, request, context):
-        logger.info(f'In ListComments: parent={request.parent}')
         comments = Comment.list(0, '', parent=request.parent)
         return san11_platform_pb2.ListCommentsResponse(
             comments=[comment.to_pb() for comment in comments]

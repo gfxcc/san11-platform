@@ -52,7 +52,7 @@ export class CreatePackageComponent implements OnInit {
 
       this.san11PlatformServiceService.createPackage(new Package({
         packageId: '0',
-        name: createPackageForm.value.name,
+        packageName: createPackageForm.value.name,
         description: '',
         categoryId: createPackageForm.value.category, // hardcoded to SIRE Plugin
         authorId: '0',

@@ -1,5 +1,7 @@
+from __future__ import annotations
 from handler.model.model_binary import ModelBinary
 from os import stat
+import attr
 import os
 import re
 import logging
@@ -40,3 +42,15 @@ def parse_resource_name(name: str) -> ResourceMixin:
     logger.debug(statement)
     resource = resource_class.from_name(name)
     return resource
+
+
+@attr.s(auto_attribs=True)
+class ResourceName:
+    parent : str
+    collection : str
+    resource_id : int
+
+    @classmethod
+    def from_str(cls, s: str) -> ResourceName:
+        parent, collection, resource_id = parse_name(s)
+        return cls(parent=parent, collection=collection, resource_id=resource_id)

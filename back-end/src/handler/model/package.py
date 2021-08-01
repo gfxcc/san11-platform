@@ -126,7 +126,7 @@ class Package(ResourceMixin, TrackLifecycle):
     def from_pb(cls, pb_obj: san11_platform_pb2.Package):
         return cls(
             package_id=pb_obj.package_id,
-            package_name=pb_obj.name,
+            package_name=pb_obj.package_name,
             description=pb_obj.description,
             create_time=pb_obj.create_time or get_now(),
             category_id=pb_obj.category_id,
@@ -163,7 +163,7 @@ class Package(ResourceMixin, TrackLifecycle):
     def to_pb(self) -> san11_platform_pb2.Package:
         return san11_platform_pb2.Package(
             package_id=self.package_id,
-            name=self.package_name,
+            package_name=self.package_name,
             description=self.description,
             create_time=get_age(self.create_time),
             category_id=self.category_id,
@@ -173,7 +173,8 @@ class Package(ResourceMixin, TrackLifecycle):
             image_urls=self.image_urls,
             download_count=self.download_count,
             tags=[Tag.from_id(tag_id).to_pb() for tag_id in self.tag_ids],
-            update_time=get_age(self.update_time or self.create_time)
+            update_time=get_age(self.update_time or self.create_time),
+            name=self.name,
         )
 
     def append_image(self, image: Image) -> None:

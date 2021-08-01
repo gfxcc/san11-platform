@@ -1,4 +1,5 @@
-from handler.util.resource_parser import parse_name
+from typing import Iterable, Optional
+from handler.util.resource_parser import ResourceName, parse_name
 from handler.model.model_binary import File, ModelBinary
 import logging
 import sys
@@ -18,6 +19,7 @@ from .auths import Authenticator
 from .common.url import Url
 from .protos import san11_platform_pb2
 from .util.time_util import get_now
+from .common.api import parse_filter
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -37,6 +39,7 @@ def check_per_package_size(target_location: str, tmp_file: str):
         return False
     return True
 
+
 def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
     return f'{parent}/binaries/{binary.version}-{uuid.uuid1()}{binary.file.ext}'
 
@@ -47,9 +50,11 @@ class BinaryHandler:
             file: File = binary.file
             if not check_per_package_size(parent, file.uri):
                 gcs.delete_file(gcs.TMP_BUCKET, file.uri)
-                raise ResourceExhausted(message=f'工具存储空间 {gcs.PACKAGE_LIMIT_GB}GB 已用完，请考虑删除历史版本.')
+                raise ResourceExhausted(
+                    message=f'工具存储空间 {gcs.PACKAGE_LIMIT_GB}GB 已用完，请考虑删除历史版本.')
 
-            binary.size = human_readable(precision=2, byte=gcs.get_file_size(gcs.TMP_BUCKET, file.uri))
+            binary.size = human_readable(
+                precision=2, byte=gcs.get_file_size(gcs.TMP_BUCKET, file.uri))
             canonical_uri = generate_binary_canonical_uri(parent, binary)
             # move resource from tmp location to canonical bucket
             gcs.move_file(gcs.TMP_BUCKET, file.uri,
@@ -63,52 +68,32 @@ class BinaryHandler:
         binary.create(parent=parent, user_id=handler_context.user.user_id)
         return binary
 
-    def delete_binary(self, request, context):
-        binary = ModelBinary.from_name(request.name)
-        auth = Authenticator.from_context(context)
-        if not auth.canDeleteBinary(binary):
-            context.abort(code=PermissionDenied.code,
-                          details=PermissionDenied.message)
-        binary.delete(user_id=auth.session.user.user_id)
-        return san11_platform_pb2.Empty()
-
-    def update_binary(self, request, context):
-        base_binary = ModelBinary.from_name(request.binary.name)
-
-        auth = Authenticator.from_context(context)
-        if not auth.canUpdateBinary(base_binary):
-            context.abort(code=PermissionDenied.code,
-                          details=PermissionDenied.message)
-
-        update_binary = ModelBinary.from_pb(request.binary)
-        update_mask = FieldMask.from_pb(request.update_mask)
+    def update_binary(self, binary: ModelBinary, update_mask: FieldMask, handler_context) -> ModelBinary:
+        base_binary = ModelBinary.from_name(binary.name)
+        update_binary = binary
         if update_mask.has('file') and update_binary.file is None:
             base_binary.remove_resource()
         binary = merge_resource(base_resource=base_binary,
                                 update_request=update_binary,
                                 field_mask=update_mask)
-        binary.update(user_id=auth.session.user.user_id)
-        return binary.to_pb()
+        binary.update(user_id=handler_context.user.user_id)
+        return binary
 
-    def get_binary(self, request, context):
-        binary = ModelBinary.from_name(request.name)
-        return binary.to_pb()
-
-    def list_binaries(self, request, context):
-        package = Package.from_id(request.package_id)
+    def list_binaries(self, parent: str, page_size: int, page_token: str, sort_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[ModelBinary]:
         # # TODO: remove migration hack
         # binaries = Binary.list(0, '')
         # for binary in binaries:
         #     model_binary = ModelBinary.from_legacy(binary)
         #     if not model_binary.is_exist():
         #         model_binary.create(binary.parent, binary.id)
+        list_kwargs = {}
+        if filter:
+            list_kwargs = parse_filter(ModelBinary, filter)
 
-        return san11_platform_pb2.ListBinariesResponse(binaries=[
-            binary.to_pb() for binary in ModelBinary.list(parent=package.name)
-        ])
+        logger.debug(f'in list_binary: {parent}')
+        return ModelBinary.list(parent=parent, order_by_field='create_time', **list_kwargs)
 
-    def download_binary(self, request, context):
-        binary = ModelBinary.from_name(request.name)
+    def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
         binary.download_count += 1
         binary.update()
         logger.debug(f'{binary} is downloaded')
@@ -116,11 +101,14 @@ class BinaryHandler:
         Statistic.load_today().increment_download()
         # Package statistic
         parent, _, _ = parse_name(binary.name)
-        Package.from_id(parse_name(parent)[2]).increment_download()
+        Package.from_name(ResourceName.from_str(binary.name).parent).increment_download()
         try:
-            auth = Authenticator.from_context(context)
-            Activity(activity_id=None, user_id=auth.session.user.user_id, create_time=get_now(
+            Activity(activity_id=None, user_id=handler_context.user.user_id, create_time=get_now(
             ), action=Action.DOWNLOAD, resource_name=binary.name).create()
         except Exception:
             pass
-        return binary.to_pb()
+        return binary
+
+    def delete_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
+        binary.delete(user_id=handler_context.user.user_id)
+        return binary

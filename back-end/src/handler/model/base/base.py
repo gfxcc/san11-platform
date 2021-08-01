@@ -33,6 +33,7 @@ E.g.
     uri = Attrib(...)
     id = Attrib()
 '''
+from handler.util.time_util import get_now
 import attr
 import datetime
 from abc import ABC
@@ -41,6 +42,7 @@ from typing import Any, Callable, Dict, Optional, TypeVar, List
 from . import base_proto
 from . import base_core
 from . import base_db
+from ..activity import Action, Activity, TrackLifecycle
 
 
 MODEL_T = TypeVar('MODEL_T', bound='ModelBase')
@@ -58,6 +60,7 @@ def Attrib(
         # general section
         type: type = None,
         repeated: bool = False,
+        deprecated: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
         **kwargs) -> attr.Attribute:
     '''
@@ -79,6 +82,7 @@ def Attrib(
             The data model of a table should be: (pkey1, pkey2, ..., data_in_json)
 
         # General section
+        deprecated: The field will be excluded from proto and db layer.
     '''
     if type is None:
         raise ValueError(f'`type` must be specified')
@@ -109,21 +113,32 @@ def Attrib(
     metadata[base_core.REPEATED] = repeated
     if repeated:
         type = List[type]
+    
+    if deprecated:
+        kwargs['default'] = None
     return attr.ib(metadata=metadata, type=type, **kwargs)
 
 
 # TODO: integrate TrackLifecycle
 class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
-    ...
 
     def create(self, parent: str, resource_id: Optional[int] = None, user_id: Optional[int] = None) -> None:
         base_db.DbModelBase.create(self, parent, resource_id)
+        if isinstance(self, TrackLifecycle) and user_id:
+            Activity(activity_id=None, user_id=user_id, create_time=get_now(),
+                     action=Action.CREATE, resource_name=self.name).create()
 
     def update(self, update_update_time: bool = True, user_id: Optional[int] = None) -> None:
         base_db.DbModelBase.update(self, update_update_time=update_update_time)
+        if isinstance(self, TrackLifecycle) and user_id:
+            Activity(activity_id=None, user_id=user_id, create_time=get_now(),
+                     action=Action.UPDATE, resource_name=self.name).create()
 
     def delete(self, user_id: Optional[int] = None) -> None:
         base_db.DbModelBase.delete(self)
+        if isinstance(self, TrackLifecycle) and user_id:
+            Activity(activity_id=None, user_id=user_id, create_time=get_now(),
+                     action=Action.DELETE, resource_name=self.name).create()
 
 
 MODELS = {}

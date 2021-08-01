@@ -291,7 +291,7 @@ export class PackageDetailComponent implements OnInit {
     const request = new UpdatePackageRequest({
       package: new Package({
         packageId: this.package.packageId,
-        name: updatedPackageName
+        packageName: updatedPackageName
       }),
       updateMask: new FieldMask({
         paths: ['package_name']
@@ -299,7 +299,7 @@ export class PackageDetailComponent implements OnInit {
     });
     this.san11pkService.updatePackage(request).subscribe(
       san11Package => {
-        this.package.name = updatedPackageName;
+        this.package.packageName = updatedPackageName;
         this.packageNameUpdated = false;
         this.notificationService.success("更新成功");
       },
@@ -499,7 +499,7 @@ export class PackageDetailComponent implements OnInit {
 
   // author
   onDelete() {
-    if (confirm('确认要删除 ' + this.package.name + ' 吗？')) {
+    if (confirm('确认要删除 ' + this.package.packageName + ' 吗？')) {
       if (this.isAdmin()) {
         this.san11pkService.deletePackage(this.package).subscribe(
           status => {

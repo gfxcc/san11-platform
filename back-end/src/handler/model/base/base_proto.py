@@ -131,6 +131,7 @@ def _attribute_to_proto(attribute: attr.Attribute, model_value: Any) -> Any:
 
 
 def _get_by_path(proto: message.Message, path: str, descriptor: descriptor.FieldDescriptor) -> Any:
+    # TODO: Following logic needs to be updated if optional keyword is used.
     if oneof_desc := descriptor.containing_oneof:
         if not proto.HasField(path):
          return None

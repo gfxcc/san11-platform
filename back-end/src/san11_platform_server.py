@@ -1,4 +1,6 @@
 from __future__ import annotations
+from handler.util.resource_parser import ResourceName
+from handler.model.package import Package
 from handler.model.model_binary import ModelBinary
 from handler.common.field_mask import FieldMask
 import handler
@@ -69,7 +71,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         parent, article = request.parent, Article.from_pb(request.article)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
-        # TODO: Add authentication
         created_article = self.article_handler.create_article(
             parent, article, handler_context)
         return created_article.to_pb()
@@ -91,8 +92,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             handler_context=handler_context,
         )
         return pb.ListArticlesResponse(
+            articles=[article.to_pb() for article in articles],
             next_page_token='',
-            articles=[article.to_pb() for article in articles]
         )
 
     def UpdateArticle(self, request, context):
@@ -115,25 +116,46 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         parent, binary = request.parent, ModelBinary.from_pb(request.binary)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
-        # TODO: Add authentication
+        assert handler_context.user.user_id == binary.author_id, '权限验证失败'
         created_binary = self.binary_handler.create_binary(
             parent, binary, handler_context)
         return created_binary.to_pb()
 
     def UpdateBinary(self, request, context):
-        return self.binary_handler.update_binary(request, context)
-
-    def GetBinary(self, request, context):
-        return self.binary_handler.get_binary(request, context)
+        binary, update_mask = ModelBinary.from_pb(request.binary), FieldMask.from_pb(request.update_mask)
+        package = Package.from_name(ResourceName.from_str(binary.name).parent)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.binary_handler.update_binary(binary, update_mask, handler_context).to_pb()
 
     def ListBinaries(self, request, context):
-        return self.binary_handler.list_binaries(request, context)
+        parent, page_size, page_token = request.parent, request.page_size, request.page_token
+        handler_context = HandlerContext.from_service_context(context)
+        binaries = self.binary_handler.list_binaries(
+            parent=parent,
+            page_size=page_size,
+            page_token=page_token,
+            sort_by=None,
+            filter=request.filter,
+            handler_context=handler_context,
+        )
+        return pb.ListBinariesResponse(
+            binaries=[binary.to_pb() for binary in binaries],
+            next_page_token='',
+        )
 
     def DeleteBinary(self, request, context):
-        return self.binary_handler.delete_binary(request, context)
+        binary = ModelBinary.from_name(request.name)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == binary.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.binary_handler.delete_binary(binary, handler_context).to_pb()
 
     def DownloadBinary(self, request, context):
-        return self.binary_handler.download_binary(request, context)
+        binary = ModelBinary.from_name(request.name)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.binary_handler.download_binary(binary, handler_context).to_pb()
 
     #############
     # Old model #

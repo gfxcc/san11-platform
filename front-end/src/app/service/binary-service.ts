@@ -19,8 +19,7 @@ export class BinaryService {
 
     }
 
-    listBinaries(packageId: string) : Observable<ListBinariesResponse> {
-        const request = new ListBinariesRequest({packageId: packageId});
+    listBinaries(request: ListBinariesRequest) : Observable<ListBinariesResponse> {
         return this.severClient.listBinaries(request, this.getMetadata());
     }
 
