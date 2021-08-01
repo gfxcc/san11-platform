@@ -45,7 +45,7 @@ class Comment(ResourceMixin, TrackLifecycle):
 
     @classmethod
     def db_table(cls) -> str:
-        return 'comments'
+        return 'comments_legacy'
 
     @classmethod
     def db_fields(clS) -> List[str]:

@@ -155,7 +155,6 @@ class DbModelBase(ABC):
     def update(self, update_update_time: bool = True) -> None:
         if update_update_time:
             self.update_time = get_now()
-            logger.debug(self.update_time)
 
         db_table = self._DB_TABLE
         data = self._prepare_data()

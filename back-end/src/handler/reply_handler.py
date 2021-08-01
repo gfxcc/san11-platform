@@ -1,4 +1,6 @@
 from datetime import datetime
+from handler.common.field_mask import FieldMask, merge_resource
+from handler.model.model_reply import ModelReply
 import sys, os
 import logging
 
@@ -16,41 +18,27 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class ReplyHandler:
-    def create_reply(self, request, context):
-        logger.info(
-            f'In CreateReply: {request.reply.author_id}-> {request.reply.text}')
-        auth = Authenticator.from_context(context)
-        assert request.reply.author_id == auth.session.user.user_id
-
-        comment = Comment.from_id(request.reply.comment_id)
-        reply = Reply.from_pb(request.reply, parent=comment.name)
-        reply.create(user_id=auth.session.user.user_id)
-        return reply.to_pb()
+    def create_reply(self, parent: str, reply: ModelReply,
+                       handler_context) -> ModelReply:
+        user_id = handler_context.user.user_id
+        reply.author_id = user_id
+        reply.create(parent=parent, user_id=user_id)
+        return reply
     
-    def delete_reply(self, request, context):
-        logger.info(f'In DeleteReply: reply_id={request.reply_id}')
-        reply = Reply.from_id(request.reply_id)
-        auth = Authenticator.from_context(context)
-        if not auth.canDeleteReply(reply):
-            context.abort(code=255, details='权限不足')
-        reply.delete(user_id=auth.session.user.user_id)
-        return san11_platform_pb2.Empty()
-
-    def update_reply(self, request, context):
-        logger.info(f'In UpdateReply: reply_id={request.reply.reply_id}')
-        reply = Reply.from_id(request.reply.reply_id)
-        # TODO: fix authentication
-        try:
-            auth = Authenticator.from_context(context)
-        except Unauthenticated as err:
-            context.abort(code=err.code, details=str(err))
-
-        if request.reply.upvote_count:
+    def update_reply(self, reply: ModelReply, update_mask: FieldMask,
+                       handler_context) -> ModelReply:
+        base_reply = ModelReply.from_name(reply.name)
+        reply = merge_resource(base_resource=base_reply,
+                                 update_request=reply,
+                                 field_mask=update_mask)
+        reply.upvote_count = base_reply.upvote_count
+        user_id = handler_context.user.user_id
+        if update_mask.has('upvote_count'):
             try:
                 activity = Activity.from_detail(
-                    user_id=auth.session.user.user_id, action=Action.UPVOTE, resource_name=reply.name)
+                    user_id=user_id, action=Action.UPVOTE, resource_name=reply.name)
             except NotFound as err:
-                Activity(activity_id=0, user_id=auth.session.user.user_id,
+                Activity(activity_id=0, user_id=user_id,
                          create_time=get_now(),
                          action=Action.UPVOTE, resource_name=reply.name).create()
                 reply.upvote_count += 1
@@ -59,5 +47,10 @@ class ReplyHandler:
                 activity.delete()
                 reply.upvote_count -= 1
 
-        reply.update(user_id=auth.session.user.user_id, track=False)
-        return reply.to_pb()
+        reply.update(user_id=user_id)
+        return reply
+
+    def delete_reply(self, reply: ModelReply,
+                       handler_context) -> ModelReply:
+        reply.delete(user_id=handler_context.user.user_id)
+        return reply

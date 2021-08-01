@@ -23,7 +23,7 @@ service RouteGuide {
   rpc BatchGetBinary(BatchGetBinaryRequest) returns (BatchGetBinaryResponse) {}
   rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {}
   rpc UpdateBinary(UpdateBinaryRequest) returns (Binary) {}
-  rpc DeleteBinary(DeleteBinaryRequest) returns (Empty) {}
+  rpc DeleteBinary(DeleteBinaryRequest) returns (Binary) {}
 
   rpc DownloadBinary(DownloadBinaryRequest) returns (Binary) {}
 
@@ -34,11 +34,11 @@ service RouteGuide {
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}
   rpc ListComments(ListCommentsRequest) returns (ListCommentsResponse) {}
   rpc UpdateComment(UpdateCommentRequest) returns (Comment) {}
-  rpc DeleteComment(DeleteCommentRequest) returns (Empty) {}
+  rpc DeleteComment(DeleteCommentRequest) returns (Comment) {}
 
   rpc CreateReply(CreateReplyRequest) returns (Reply) {}
   rpc UpdateReply(UpdateReplyRequest) returns (Reply) {}
-  rpc DeleteReply(DeleteReplyRequest) returns (Empty) {}
+  rpc DeleteReply(DeleteReplyRequest) returns (Reply) {}
 
   // articles related
   rpc CreateArticle(CreateArticleRequest) returns (Article) {}
@@ -201,11 +201,14 @@ message CreateImageRequest {
 
 // Comments
 message CreateCommentRequest {
-    Comment comment = 1;
+    // E.g. ``, `categories/123/packages/456`
+    string parent = 1;
+    Comment comment = 2;
 }
 
 message DeleteCommentRequest {
-    int64 comment_id = 1;
+    // E.g. `comments/123`
+    string name = 1;
 }
 
 message UpdateCommentRequest {
@@ -220,19 +223,28 @@ message ListCommentsRequest {
     string parent = 1;
     int64 page_size = 2;
     string page_token = 3;
+
+    // Values should be a comma separated list of fields. For example: "foo,bar".
+    // The default sorting order is ascending. To specify descending order for a field, users append a " desc" suffix;
+    //   for example: "foo desc, bar".
+    string order_by = 4;
+
+    // Support syntax like `field_name = value`
+    string filter = 5;
 }
 
 message ListCommentsResponse {
     repeated Comment comments = 1;
-    string page_token = 2;
+    string next_page_token = 2;
 }
 
 message CreateReplyRequest {
-    Reply reply = 1;
+    string parent = 1;
+    Reply reply = 2;
 }
 
 message DeleteReplyRequest {
-    int64 reply_id = 1;
+    string name = 1;
 }
 
 message UpdateReplyRequest{
@@ -497,24 +509,24 @@ message Url {
 
 message Comment {
     // E.g. categories/xxx/pacakges/xxx, users/xxx, website, 
-    string parent = 1;
-    int64 comment_id = 2;
-    string create_time = 3;
-    string update_time = 4;
+    reserved 2;
+    string name = 1;
+    google.protobuf.Timestamp create_time = 3;
+    google.protobuf.Timestamp update_time = 4;
     string text = 5;
     int64 author_id = 6;
     int64 upvote_count = 7;
-    repeated Reply replies = 8;
+    //
+    repeated Reply replies = 8; // OUTPUT_ONLY
 }
 
 message Reply {
-    int64 comment_id = 1;
-    int64 reply_id = 2;
-    string create_time = 3;
-    string update_time = 4;
-    string text = 5;
-    int64 author_id = 6;
-    int64 upvote_count = 7;
+    string name = 1;
+    google.protobuf.Timestamp create_time = 2;
+    google.protobuf.Timestamp update_time = 3;
+    string text = 4;
+    int64 author_id = 5;
+    int64 upvote_count = 6;
 }
 
 message Tag {

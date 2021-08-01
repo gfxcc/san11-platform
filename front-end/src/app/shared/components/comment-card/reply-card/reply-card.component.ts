@@ -1,6 +1,6 @@
 import { Output, EventEmitter, Component, OnInit, Input, Inject, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Comment, User } from "../../../../../proto/san11-platform.pb";
+import { Comment, DeleteReplyRequest, FieldMask, UpdateReplyRequest, User } from "../../../../../proto/san11-platform.pb";
 
 import { GetUserRequest } from "../../../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../../../../service/san11-platform-service.service";
@@ -10,6 +10,7 @@ import { Reply } from "../../../../../proto/san11-platform.pb";
 import { isAdmin } from "../../../../utils/user_util";
 
 import { increment } from '../../../../utils/number_util';
+import { getAge } from 'src/app/utils/time_util';
 
 
 
@@ -56,10 +57,14 @@ export class ReplyCardComponent implements OnInit {
   onUpvote() {
 
     const reply = new Reply({
-      replyId: this.reply.replyId,
-      upvoteCount: '1'
+      name: this.reply.name,
     });
-    this.san11pkService.updateReply(reply).subscribe(
+    this.san11pkService.updateReply(new UpdateReplyRequest({
+      reply: reply,
+      updateMask: new FieldMask({
+        paths: ['upvote_count']
+      })
+    })).subscribe(
       reply => {
         this.reply.upvoteCount = reply.upvoteCount;
       },
@@ -74,7 +79,9 @@ export class ReplyCardComponent implements OnInit {
     if (!confirm('确定要删除评论 ' + this.reply.text + ' 吗?')) {
       return;
     }
-    this.san11pkService.deleteReply(this.reply.replyId).subscribe(
+    this.san11pkService.deleteReply(new DeleteReplyRequest({
+      name: this.reply.name,
+    })).subscribe(
       empty => {
         this.notificationService.success('回复删除成功');
         this.replyDeleteEvent.emit();
@@ -91,6 +98,10 @@ export class ReplyCardComponent implements OnInit {
 
   onReply() {
     this.replyEvent.emit();
+  }
+
+  getReplyAge() {
+    return getAge(this.reply.createTime);
   }
 
   mouseEnter() {
