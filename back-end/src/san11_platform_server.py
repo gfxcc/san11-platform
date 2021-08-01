@@ -148,9 +148,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def DeleteBinary(self, request, context):
         binary = ModelBinary.from_name(request.name)
+        package = Package.from_name(ResourceName.from_str(binary.name).parent)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == binary.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.binary_handler.delete_binary(binary, handler_context).to_pb()
 
     def DownloadBinary(self, request, context):
