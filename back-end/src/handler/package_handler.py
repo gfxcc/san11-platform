@@ -72,8 +72,6 @@ class PackageHandler:
             user = Authenticator.from_context(context=context).session.user
         except Exception:
             user = None
-        logger.debug(
-            f"ListPackage: user={user.username if user else 'visitor'}")
 
         return san11_platform_pb2.ListPackagesResponse(packages=[
             package.to_pb()

@@ -96,7 +96,6 @@ class BinaryHandler:
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
         binary.download_count += 1
         binary.update()
-        logger.debug(f'{binary} is downloaded')
         # website statistic
         Statistic.load_today().increment_download()
         # Package statistic
