@@ -287,10 +287,9 @@ export class VersionPanelComponent implements OnInit {
     this.san11pkService.updateBinary(new UpdateBinaryRequest({
       binary: new Binary({
         name: binary.name,
-        url: '',
       }),
       updateMask: new FieldMask({
-        paths: ['url']
+        paths: ['file']
       })
     })).subscribe(
       resp => {

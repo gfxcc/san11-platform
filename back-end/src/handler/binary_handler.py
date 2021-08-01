@@ -82,7 +82,7 @@ class BinaryHandler:
 
         update_binary = ModelBinary.from_pb(request.binary)
         update_mask = FieldMask.from_pb(request.update_mask)
-        if update_mask.has('url') and update_binary.url == '':
+        if update_mask.has('file') and update_binary.file is None:
             base_binary.remove_resource()
         binary = merge_resource(base_resource=base_binary,
                                 update_request=update_binary,

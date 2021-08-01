@@ -1,3 +1,4 @@
+from handler.util import gcs
 from operator import le
 from handler.model.binary import Binary
 from handler.model.base.base_db import DbConverter
@@ -155,6 +156,15 @@ class ModelBinary(ModelBase):
         proto_converter=LegacyDatetimeProtoConverter(),
         default=get_now(),
     )
+
+    def remove_resource(self) -> None:
+        if self.file:
+            gcs.delete_canonical_resource(self.file.uri)
+            self.size = ''
+    
+    def delete(self, **kwargs) -> None:
+        self.remove_resource()
+        super(ModelBinary, self).delete(**kwargs)
 
     @classmethod
     def from_legacy(cls, legacy_model: Binary):
