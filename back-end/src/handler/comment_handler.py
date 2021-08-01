@@ -58,17 +58,17 @@ class CommentHandler:
     def list_comments(self, parent: str, page_size: int, page_token: str,
                       sort_by: Optional[str], filter: Optional[str],
                       handler_context) -> Tuple[Iterable[ModelComment], str]:
-        # TODO: remove backfill logic
-        for reply in Reply.list(0, ''):
-            model = ModelReply.from_legacy(reply)
-            if not model.is_exist():
-                model.create(parent=reply.parent, resource_id=reply.id)
+        # # TODO: remove backfill logic
+        # for reply in Reply.list(0, ''):
+        #     model = ModelReply.from_legacy(reply)
+        #     if not model.is_exist():
+        #         model.create(parent=reply.parent, resource_id=reply.id)
 
-        for comment in Comment.list(0, ''):
-            model = ModelComment.from_legacy(comment)
-            if not model.is_exist():
-                model.create(parent=comment.parent, resource_id=comment.id)
-        # TODO: END
+        # for comment in Comment.list(0, ''):
+        #     model = ModelComment.from_legacy(comment)
+        #     if not model.is_exist():
+        #         model.create(parent=comment.parent, resource_id=comment.id)
+        # # TODO: END
 
         list_kwargs = {}
         if filter:
