@@ -1,3 +1,4 @@
+from handler.model.model_binary import ModelBinary
 import sys, os
 import logging
 
@@ -45,7 +46,7 @@ class PackageHandler:
             except Exception:
                 logger.error(f'Failed to delete image: image_url={image_url}')
 
-        for binary in Binary.list(0, '', package_id=package.package_id):
+        for binary in ModelBinary.list(parent=package.name):
             try:
                 binary.delete(user_id=auth.session.user.user_id)
             except Exception as err:

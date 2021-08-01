@@ -1,3 +1,4 @@
+import handler
 from handler.common.api import parse_filter
 import os, attr
 import logging
@@ -15,7 +16,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 class ArticleHandler:
     def create_article(self, parent: str, article: Article, handler_context) -> Article:
         article.author_id = handler_context.user.user_id
-        article.create(parent=parent)
+        article.create(parent=parent, user_id=handler_context.user.user_id)
         return article
 
     def get_article(self, name: str, handler_context) -> Article:
@@ -43,9 +44,9 @@ class ArticleHandler:
         article_original = Article.from_name(update_article.name)
         article: Article = merge_resource(
             article_original, update_article, update_mask)
-        article.update()
+        article.update(handler_context.user.user_id)
         return article
 
     def delete_article(self, article: Article, handler_context) -> Article:
-        article.delete()
+        article.delete(handler_context.user.user_id)
         return article

@@ -1,12 +1,18 @@
 from __future__ import annotations
 import datetime
+import logging
+import os
 import attr
 from abc import ABC
 from typing import Any, Generic, Iterable, TypeVar
+from google import protobuf
 from google.protobuf import timestamp_pb2, message, descriptor
 
-from ...util.time_util import get_now
+from ...util.time_util import datetime_to_str, get_now
 from . import base_core
+
+
+logger = logging.getLogger(os.path.basename(__file__))
 
 
 _MODEL_T = TypeVar('_MODEL_T')
@@ -43,6 +49,19 @@ class DatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Tim
         return proto_value
 
 
+class LegacyDatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Timestamp]):
+    '''
+    For legacy proto message which datetime field is represented as string.
+    '''
+
+    def to_model(self, proto_value: timestamp_pb2.Timestamp) -> datetime.datetime:
+        # Legacy datetime does not support to_model.
+        return get_now()
+
+    def from_model(self, value: datetime.datetime) -> str:
+        return datetime_to_str(value)
+
+
 @attr.s(auto_attribs=True)
 class ProtoField:
     name: str
@@ -62,7 +81,8 @@ class ProtoModelBase(ABC):
                 continue
             path = _get_proto_path(attribute)
             converter: ProtoConverter = attribute.metadata[base_core.PROTO_CONVERTER]
-            proto_value = getattr(proto_model, path)
+            field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
+            proto_value = _get_by_path(proto_model, path, field_descriptor)
             properties[attribute.name] = converter.to_model(proto_value)
         return cls(**properties)
 
@@ -73,9 +93,15 @@ class ProtoModelBase(ABC):
                 continue
             model_value = getattr(self, attribute.name)
             path = _get_proto_path(attribute)
+            field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
             proto_value = _attribute_to_proto(attribute, model_value)
 
-            field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
+            # Do not set proto field if value is Falsy.
+            #   - To be back compatible with legacy data model where None is stored in db fields.
+            #   - To prevent accidentally clear other oneof fields.
+            if not proto_value:
+                continue
+
             if attribute.metadata[base_core.REPEATED]:
                 getattr(proto_model, path)[:] = proto_value
             else:
@@ -98,12 +124,16 @@ def _attribute_to_proto(attribute: attr.Attribute, model_value: Any) -> Any:
     converter: ProtoConverter = attribute.metadata.get(
         base_core.PROTO_CONVERTER, PassThroughConverter())
     if attribute.metadata[base_core.REPEATED]:
-        return [converter.from_model(v) for v in model_value]
+        ret = [converter.from_model(v) for v in model_value]
     else:
-        return converter.from_model(model_value)
+        ret = converter.from_model(model_value)
+    return ret
 
 
-def _get_by_path(proto: message.Message, path: str) -> Any:
+def _get_by_path(proto: message.Message, path: str, descriptor: descriptor.FieldDescriptor) -> Any:
+    if oneof_desc := descriptor.containing_oneof:
+        if not proto.HasField(path):
+         return None
     value = proto
     for item in path.split('.'):
         value = getattr(value, item)

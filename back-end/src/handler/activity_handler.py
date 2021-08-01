@@ -1,10 +1,11 @@
+from handler.model.model_binary import ModelBinary
 import sys, os, uuid, logging
 
 
 from .protos import san11_platform_pb2
 from .common.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists, NotFound
 from .model.activity import Activity
-from .util.resource_parser import parse_resource_name
+from .util.resource_parser import parse_name, parse_resource_name
 from .util.time_util import datetime_to_str, get_age
 from .model.binary import Binary
 from .model.package import Package
@@ -22,14 +23,17 @@ class ActivityHandler:
         for activity in activities:
             try:
                 resource = parse_resource_name(activity.resource_name)
-                if isinstance(resource, Binary):
-                    ...
-                    package = Package.from_id(resource.package_id)
+                if isinstance(resource, ModelBinary):
+                    parent, _, _ = parse_name(resource.name)
+                    package = Package.from_name(parent)
                     resource_view = package.view
                     resource_view.display_name = f'{resource_view.display_name}-{resource.version}'
                 else:
                     resource_view = resource.view
             except NotFound as err:
+                resource_view = None
+            except Exception as err:
+                logger.exception(f'Failed to get resource: {activity.resource_name}')
                 resource_view = None
             
             activities_pb.append(san11_platform_pb2.Activity(

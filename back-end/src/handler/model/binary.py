@@ -129,7 +129,7 @@ class Binary(ResourceMixin, TrackLifecycle):
     
     @classmethod
     def db_table(cls) -> str:
-        return 'binaries'
+        return 'binaries_legacy'
     
     @classmethod
     def db_fields(cls) -> Iterable[str]:

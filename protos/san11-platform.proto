@@ -123,7 +123,7 @@ message SearchPackagesResponse {
 // binary
 
 message GetBinaryRequest {
-    int64 binary_id = 1;
+    string name = 1;
 }
 
 message UploadBinaryRequest {
@@ -141,11 +141,6 @@ message UploadBinaryRequest {
 message CreateBinaryRequest {
     string parent = 1;
     Binary binary = 2;
-    oneof resource {
-        string url = 3;
-        bytes data = 4;
-        string download_method = 5;
-    }
 }
 
 message BatchGetBinaryRequest {
@@ -157,12 +152,11 @@ message BatchGetBinaryResponse {
 }
 
 message DownloadBinaryRequest {
-    string parent = 1; // categories/xxx/packages/xxx
-    int64 binary_id = 2;
+    string name = 1;
 }
 
 message DeleteBinaryRequest {
-    int64 binary_id = 1;
+    string name = 1;
 }
 
 message UpdateBinaryRequest {
@@ -443,6 +437,8 @@ message Package {
 }
 
 message Binary {
+    reserved 9;
+
     int64 binary_id = 1;
     int64 package_id = 2;
     string url = 3; // OUTPUT_ONLY;
@@ -451,8 +447,16 @@ message Binary {
     string description = 6;
     string create_time = 7;
     string tag = 8;
-    string download_method= 9; // OUTPUT_ONLY;
-    string size = 10; // human readable size. E.g. 20M, 1.2G
+    // human readable size. E.g. 20M, 1.2G
+    string size = 10; 
+    // resource name like `categories/123/packages/456/binaries/789`
+    string name = 11; 
+    string update_time = 12;
+
+    oneof resource {
+        File file = 13;
+        string download_method = 14;
+    }
 }
 
 message User {
@@ -585,11 +589,22 @@ message Article {
 }
 
 enum ResourceState {
-    UNDEFINE_STATE = 0;
+    RESOURCE_STATE_UNDEFINE = 0;
 
     NORMAL = 1;  // publish accessable
     UNDER_REVIEW = 2;  // Only visiable to admin and author
     HIDDEN = 3;  // Only visiable to admin and author
     SCHEDULED_DELETE = 4;  // Only visiable to admin
     DELETED = 5;  // Only visiable to admin
+}
+
+message File {
+    // E.g. `血色衣冠-安装包`
+    string filename = 1;
+    // Please note `.` is considered part of the extension.
+    // E.g. `.txt`, `.png`, `.rar`, `.zip`
+    string ext = 2;
+    // Unique resource identifier
+    // E.g. categories/123/packages/456/binaries/eafsdfewasdfdfsaasdffda
+    string uri = 3;
 }

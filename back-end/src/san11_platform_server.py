@@ -1,4 +1,5 @@
 from __future__ import annotations
+from handler.model.model_binary import ModelBinary
 from handler.common.field_mask import FieldMask
 import handler
 from handler.model.article import Article
@@ -109,7 +110,34 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         assert handler_context.user.user_id == article.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.article_handler.delete_article(article, handler_context).to_pb()
 
-    # Old model
+    # binaries
+    def CreateBinary(self, request, context):
+        parent, article = request.parent, ModelBinary.from_pb(request.binary)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        # TODO: Add authentication
+        created_binary = self.binary_handler.create_binary(
+            parent, binary, handler_context)
+        return created_binary.to_pb()
+
+    def UpdateBinary(self, request, context):
+        return self.binary_handler.update_binary(request, context)
+
+    def GetBinary(self, request, context):
+        return self.binary_handler.get_binary(request, context)
+
+    def ListBinaries(self, request, context):
+        return self.binary_handler.list_binaries(request, context)
+
+    def DeleteBinary(self, request, context):
+        return self.binary_handler.delete_binary(request, context)
+
+    def DownloadBinary(self, request, context):
+        return self.binary_handler.download_binary(request, context)
+
+    #############
+    # Old model #
+    #############
 
     def CreatePackage(self, request, context):
         return self.package_handler.create_package(request, context)
@@ -128,25 +156,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def SearchPackages(self, request, context):
         return self.package_handler.search_packages(request, context)
-
-    # binaries
-    def CreateBinary(self, request, context):
-        return self.binary_handler.create_binary(request, context)
-
-    def UpdateBinary(self, request, context):
-        return self.binary_handler.update_binary(request, context)
-
-    def GetBinary(self, request, context):
-        return self.binary_handler.get_binary(request, context)
-
-    def ListBinaries(self, request, context):
-        return self.binary_handler.list_binaries(request, context)
-
-    def DeleteBinary(self, request, context):
-        return self.binary_handler.delete_binary(request, context)
-
-    def DownloadBinary(self, request, context):
-        return self.binary_handler.download_binary(request, context)
 
     # image
     def CreateImage(self, request, context):

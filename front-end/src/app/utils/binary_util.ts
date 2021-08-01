@@ -11,17 +11,19 @@ export function getBinaryFilename(san11Package: Package, binary: Binary): string
     const filenameBase = san11Package.name + '-' + version2str(binary.version);
 
     let extension: string;
-    if (san11Package.categoryId === '1') {
+    if (binary.file && binary.file.ext) {
+        extension = binary.file.ext;
+    } else if(san11Package.categoryId === '1') {
         if (binary.tag === 'sire2') {
-            extension = 'scp';
+            extension = '.scp';
         } else if (binary.tag === 'sire1') {
-            extension = 'sirecm';
+            extension = '.sirecm';
         } else {
             console.log('unknow tag for sire plugin');
-            extension = 'scp';
+            extension = '.scp';
         }
     } else {
-        extension = 'zip'
+        extension = '.zip'
     }
-    return filenameBase.replace('/\ /-', 'best') + '.' + extension;
+    return filenameBase.replace('/\ /-', 'best') + extension;
 }

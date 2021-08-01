@@ -18,6 +18,20 @@ class MyModel(ModelBase):
         ...
     )
     ...
+
+## OneOf field
+Fields in oneOf field should be listed in Model as a flat field.
+
+E.g. 
+    OneOf resource = {
+        string uri = 1;
+        int64 id = 2;
+    }
+    
+    =>>
+
+    uri = Attrib(...)
+    id = Attrib()
 '''
 import attr, datetime
 from abc import ABC
@@ -101,6 +115,15 @@ def Attrib(
 # TODO: integrate TrackLifecycle
 class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
     ...
+
+    def create(self, parent: str, resource_id: Optional[int] = None, user_id: Optional[int] = None) -> None:
+        base_db.DbModelBase.create(self, parent, resource_id)
+    
+    def update(self, user_id: Optional[int] = None) -> None:
+        base_db.DbModelBase.update(self)
+
+    def delete(self, user_id: Optional[int] = None) -> None:
+        base_db.DbModelBase.delete(self)
 
 
 MODELS = {}
