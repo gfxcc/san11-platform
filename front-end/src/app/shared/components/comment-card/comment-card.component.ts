@@ -1,6 +1,6 @@
 import { Output, EventEmitter, Component, OnInit, Input, Inject, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Comment, User } from "../../../../proto/san11-platform.pb";
+import { Comment, CreateReplyRequest, DeleteCommentRequest, FieldMask, UpdateCommentRequest, User } from "../../../../proto/san11-platform.pb";
 
 import { GetUserRequest } from "../../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
@@ -10,6 +10,7 @@ import { Reply } from "../../../../proto/san11-platform.pb";
 import { isAdmin } from '../../../utils/user_util'
 
 import { increment } from '../../../utils/number_util';
+import { getAge } from 'src/app/utils/time_util';
 
 
 @Component({
@@ -85,7 +86,9 @@ export class CommentCardComponent implements OnInit {
       return;
     }
 
-    this.san11pkService.deleteComment(this.comment.commentId).subscribe(
+    this.san11pkService.deleteComment(new DeleteCommentRequest({
+      name: this.comment.name,
+    })).subscribe(
       empty => {
         this.notificationService.success('删除评论 成功!');
         this.commentDeleteEvent.emit();
@@ -100,10 +103,15 @@ export class CommentCardComponent implements OnInit {
   onUpvote() {
 
     const comment = new Comment({
-      commentId: this.comment.commentId,
-      upvoteCount: '1'
+      // commentId: this.comment.commentId,
+      name: this.comment.name,
     });
-    this.san11pkService.updateComment(comment).subscribe(
+    this.san11pkService.updateComment(new UpdateCommentRequest({
+      comment: comment,
+      updateMask: new FieldMask({
+        paths: ['upvote_count'],
+      }),
+    })).subscribe(
       commentResp => {
         this.comment.upvoteCount = commentResp.upvoteCount;
       },
@@ -132,11 +140,12 @@ export class CommentCardComponent implements OnInit {
     }
     const text = value.input;
     const reply = new Reply({
-      commentId: this.comment.commentId,
-      authorId: this.authorId,
       text: text,
     });
-    this.san11pkService.createReply(reply).subscribe(
+    this.san11pkService.createReply(new CreateReplyRequest({
+      parent: this.comment.name,
+      reply: reply,
+    })).subscribe(
       reply => {
         this.notificationService.success('评论添加 成功!');
         this.hideReplyEnter = true;
@@ -147,6 +156,10 @@ export class CommentCardComponent implements OnInit {
         this.notificationService.warn('failed' + error.statusMessage);
       }
     );
+  }
+
+  getCommentAge() {
+    return getAge(this.comment.createTime);
   }
 
   textAreaAdjust(textArea) {

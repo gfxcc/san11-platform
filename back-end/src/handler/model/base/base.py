@@ -33,6 +33,7 @@ E.g.
     uri = Attrib(...)
     id = Attrib()
 '''
+from google.protobuf.message import Message
 from handler.util.time_util import get_now
 import attr
 import datetime

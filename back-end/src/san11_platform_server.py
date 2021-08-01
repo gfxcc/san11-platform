@@ -1,4 +1,6 @@
 from __future__ import annotations
+from handler.model.model_reply import ModelReply
+from handler.model.model_comment import ModelComment
 from handler.util.resource_parser import ResourceName
 from handler.model.package import Package
 from handler.model.model_binary import ModelBinary
@@ -122,14 +124,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             parent, binary, handler_context)
         return created_binary.to_pb()
 
-    def UpdateBinary(self, request, context):
-        binary, update_mask = ModelBinary.from_pb(request.binary), FieldMask.from_pb(request.update_mask)
-        package = Package.from_name(ResourceName.from_str(binary.name).parent)
-        handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
-        return self.binary_handler.update_binary(binary, update_mask, handler_context).to_pb()
-
     def ListBinaries(self, request, context):
         parent, page_size, page_token = request.parent, request.page_size, request.page_token
         handler_context = HandlerContext.from_service_context(context)
@@ -146,6 +140,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token='',
         )
 
+    def UpdateBinary(self, request, context):
+        binary, update_mask = ModelBinary.from_pb(
+            request.binary), FieldMask.from_pb(request.update_mask)
+        package = Package.from_name(ResourceName.from_str(binary.name).parent)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.binary_handler.update_binary(binary, update_mask, handler_context).to_pb()
+
     def DeleteBinary(self, request, context):
         binary = ModelBinary.from_name(request.name)
         package = Package.from_name(ResourceName.from_str(binary.name).parent)
@@ -158,6 +161,70 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         binary = ModelBinary.from_name(request.name)
         handler_context = HandlerContext.from_service_context(context)
         return self.binary_handler.download_binary(binary, handler_context).to_pb()
+
+    # Comments
+    def CreateComment(self, request, context):
+        parent, comment = request.parent, ModelComment.from_pb(request.comment)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        created_comment = self.comment_handler.create_comment(
+            parent, comment, handler_context)
+        return created_comment.to_pb()
+
+    def ListComments(self, request, context):
+        parent, page_size, page_token = request.parent, request.page_size, request.page_token
+        handler_context = HandlerContext.from_service_context(context)
+        comments, next_page_token = self.comment_handler.list_comments(
+            parent=parent,
+            page_size=page_size,
+            page_token=page_token,
+            sort_by=None,
+            filter=request.filter,
+            handler_context=handler_context,
+        )
+        return pb.ListCommentsResponse(
+            comments=[comment.to_pb() for comment in comments],
+            next_page_token=next_page_token,
+        )
+
+    def UpdateComment(self, request, context):
+        comment, update_mask = ModelComment.from_pb(request.comment), \
+            FieldMask.from_pb(request.update_mask)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == comment.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.comment_handler.update_comment(comment, update_mask, handler_context).to_pb()
+
+    def DeleteComment(self, request, context):
+        comment = ModelComment.from_name(request.name)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == comment.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.comment_handler.delete_comment(comment, handler_context).to_pb()
+
+    # Reply
+    def CreateReply(self, request, context):
+        parent, reply = request.parent, ModelReply.from_pb(request.reply)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        created_reply = self.reply_handler.create_reply(
+            parent, reply, handler_context)
+        return created_reply.to_pb()
+
+    def UpdateReply(self, request, context):
+        reply, update_mask = ModelReply.from_pb(request.reply), \
+            FieldMask.from_pb(request.update_mask)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.reply_handler.update_reply(reply, update_mask, handler_context).to_pb()
+
+    def DeleteReply(self, request, context):
+        reply = ModelReply.from_name(request.name)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.reply_handler.delete_reply(reply, handler_context).to_pb()
 
     #############
     # Old model #
@@ -184,28 +251,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # image
     def CreateImage(self, request, context):
         return self.image_handler.create_image(request, context)
-
-    # Comments
-    def CreateComment(self, request, context):
-        return self.comment_handler.create_comment(request, context)
-
-    def UpdateComment(self, request, context):
-        return self.comment_handler.update_comment(request, context)
-
-    def ListComments(self, request, context):
-        return self.comment_handler.list_comments(request, context)
-
-    def DeleteComment(self, request, context):
-        return self.comment_handler.delete_comment(request, context)
-
-    def CreateReply(self, request, context):
-        return self.reply_handler.create_reply(request, context)
-
-    def UpdateReply(self, request, context):
-        return self.reply_handler.update_reply(request, context)
-
-    def DeleteReply(self, request, context):
-        return self.reply_handler.delete_reply(request, context)
 
     # users
     def SignUp(self, request, context):

@@ -3449,6 +3449,7 @@ export class CreateCommentRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: CreateCommentRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.comment = _instance.comment || undefined;
   }
 
@@ -3466,6 +3467,9 @@ export class CreateCommentRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
           _instance.comment = new Comment();
           _reader.readMessage(
             _instance.comment,
@@ -3489,15 +3493,19 @@ export class CreateCommentRequest implements GrpcMessage {
     _instance: CreateCommentRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.comment) {
       _writer.writeMessage(
-        1,
+        2,
         _instance.comment as any,
         Comment.serializeBinaryToWriter
       );
     }
   }
 
+  private _parent?: string;
   private _comment?: Comment;
 
   /**
@@ -3506,8 +3514,15 @@ export class CreateCommentRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<CreateCommentRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.comment = _value.comment ? new Comment(_value.comment) : undefined;
     CreateCommentRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get comment(): Comment | undefined {
     return this._comment;
@@ -3531,6 +3546,7 @@ export class CreateCommentRequest implements GrpcMessage {
    */
   toObject(): CreateCommentRequest.AsObject {
     return {
+      parent: this.parent,
       comment: this.comment ? this.comment.toObject() : undefined
     };
   }
@@ -3552,6 +3568,7 @@ export class CreateCommentRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): CreateCommentRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       comment: this.comment ? this.comment.toProtobufJSON(options) : null
     };
   }
@@ -3561,6 +3578,7 @@ export module CreateCommentRequest {
    * Standard JavaScript object representation for CreateCommentRequest
    */
   export interface AsObject {
+    parent?: string;
     comment?: Comment.AsObject;
   }
 
@@ -3568,6 +3586,7 @@ export module CreateCommentRequest {
    * Protobuf JSON representation for CreateCommentRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     comment?: Comment.AsProtobufJSON | null;
   }
 }
@@ -3596,7 +3615,7 @@ export class DeleteCommentRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: DeleteCommentRequest) {
-    _instance.commentId = _instance.commentId || '0';
+    _instance.name = _instance.name || '';
   }
 
   /**
@@ -3613,7 +3632,7 @@ export class DeleteCommentRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.commentId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -3632,12 +3651,12 @@ export class DeleteCommentRequest implements GrpcMessage {
     _instance: DeleteCommentRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.commentId) {
-      _writer.writeInt64String(1, _instance.commentId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
   }
 
-  private _commentId?: string;
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3645,14 +3664,14 @@ export class DeleteCommentRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<DeleteCommentRequest.AsObject>) {
     _value = _value || {};
-    this.commentId = _value.commentId;
+    this.name = _value.name;
     DeleteCommentRequest.refineValues(this);
   }
-  get commentId(): string | undefined {
-    return this._commentId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set commentId(value: string | undefined) {
-    this._commentId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -3670,7 +3689,7 @@ export class DeleteCommentRequest implements GrpcMessage {
    */
   toObject(): DeleteCommentRequest.AsObject {
     return {
-      commentId: this.commentId
+      name: this.name
     };
   }
 
@@ -3691,7 +3710,7 @@ export class DeleteCommentRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): DeleteCommentRequest.AsProtobufJSON {
     return {
-      commentId: this.commentId
+      name: this.name
     };
   }
 }
@@ -3700,14 +3719,14 @@ export module DeleteCommentRequest {
    * Standard JavaScript object representation for DeleteCommentRequest
    */
   export interface AsObject {
-    commentId?: string;
+    name?: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteCommentRequest
    */
   export interface AsProtobufJSON {
-    commentId?: string;
+    name?: string;
   }
 }
 
@@ -3916,6 +3935,8 @@ export class ListCommentsRequest implements GrpcMessage {
     _instance.parent = _instance.parent || '';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
+    _instance.orderBy = _instance.orderBy || '';
+    _instance.filter = _instance.filter || '';
   }
 
   /**
@@ -3939,6 +3960,12 @@ export class ListCommentsRequest implements GrpcMessage {
           break;
         case 3:
           _instance.pageToken = _reader.readString();
+          break;
+        case 4:
+          _instance.orderBy = _reader.readString();
+          break;
+        case 5:
+          _instance.filter = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -3966,11 +3993,19 @@ export class ListCommentsRequest implements GrpcMessage {
     if (_instance.pageToken) {
       _writer.writeString(3, _instance.pageToken);
     }
+    if (_instance.orderBy) {
+      _writer.writeString(4, _instance.orderBy);
+    }
+    if (_instance.filter) {
+      _writer.writeString(5, _instance.filter);
+    }
   }
 
   private _parent?: string;
   private _pageSize?: string;
   private _pageToken?: string;
+  private _orderBy?: string;
+  private _filter?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3981,6 +4016,8 @@ export class ListCommentsRequest implements GrpcMessage {
     this.parent = _value.parent;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
+    this.orderBy = _value.orderBy;
+    this.filter = _value.filter;
     ListCommentsRequest.refineValues(this);
   }
   get parent(): string | undefined {
@@ -4001,6 +4038,18 @@ export class ListCommentsRequest implements GrpcMessage {
   set pageToken(value: string | undefined) {
     this._pageToken = value;
   }
+  get orderBy(): string | undefined {
+    return this._orderBy;
+  }
+  set orderBy(value: string | undefined) {
+    this._orderBy = value;
+  }
+  get filter(): string | undefined {
+    return this._filter;
+  }
+  set filter(value: string | undefined) {
+    this._filter = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -4019,7 +4068,9 @@ export class ListCommentsRequest implements GrpcMessage {
     return {
       parent: this.parent,
       pageSize: this.pageSize,
-      pageToken: this.pageToken
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 
@@ -4042,7 +4093,9 @@ export class ListCommentsRequest implements GrpcMessage {
     return {
       parent: this.parent,
       pageSize: this.pageSize,
-      pageToken: this.pageToken
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 }
@@ -4054,6 +4107,8 @@ export module ListCommentsRequest {
     parent?: string;
     pageSize?: string;
     pageToken?: string;
+    orderBy?: string;
+    filter?: string;
   }
 
   /**
@@ -4063,6 +4118,8 @@ export module ListCommentsRequest {
     parent?: string;
     pageSize?: string;
     pageToken?: string;
+    orderBy?: string;
+    filter?: string;
   }
 }
 
@@ -4091,7 +4148,7 @@ export class ListCommentsResponse implements GrpcMessage {
    */
   static refineValues(_instance: ListCommentsResponse) {
     _instance.comments = _instance.comments || [];
-    _instance.pageToken = _instance.pageToken || '';
+    _instance.nextPageToken = _instance.nextPageToken || '';
   }
 
   /**
@@ -4118,7 +4175,7 @@ export class ListCommentsResponse implements GrpcMessage {
           );
           break;
         case 2:
-          _instance.pageToken = _reader.readString();
+          _instance.nextPageToken = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -4144,13 +4201,13 @@ export class ListCommentsResponse implements GrpcMessage {
         Comment.serializeBinaryToWriter
       );
     }
-    if (_instance.pageToken) {
-      _writer.writeString(2, _instance.pageToken);
+    if (_instance.nextPageToken) {
+      _writer.writeString(2, _instance.nextPageToken);
     }
   }
 
   private _comments?: Comment[];
-  private _pageToken?: string;
+  private _nextPageToken?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4159,7 +4216,7 @@ export class ListCommentsResponse implements GrpcMessage {
   constructor(_value?: RecursivePartial<ListCommentsResponse.AsObject>) {
     _value = _value || {};
     this.comments = (_value.comments || []).map(m => new Comment(m));
-    this.pageToken = _value.pageToken;
+    this.nextPageToken = _value.nextPageToken;
     ListCommentsResponse.refineValues(this);
   }
   get comments(): Comment[] | undefined {
@@ -4168,11 +4225,11 @@ export class ListCommentsResponse implements GrpcMessage {
   set comments(value: Comment[] | undefined) {
     this._comments = value;
   }
-  get pageToken(): string | undefined {
-    return this._pageToken;
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
   }
-  set pageToken(value: string | undefined) {
-    this._pageToken = value;
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
   }
 
   /**
@@ -4191,7 +4248,7 @@ export class ListCommentsResponse implements GrpcMessage {
   toObject(): ListCommentsResponse.AsObject {
     return {
       comments: (this.comments || []).map(m => m.toObject()),
-      pageToken: this.pageToken
+      nextPageToken: this.nextPageToken
     };
   }
 
@@ -4213,7 +4270,7 @@ export class ListCommentsResponse implements GrpcMessage {
   ): ListCommentsResponse.AsProtobufJSON {
     return {
       comments: (this.comments || []).map(m => m.toProtobufJSON(options)),
-      pageToken: this.pageToken
+      nextPageToken: this.nextPageToken
     };
   }
 }
@@ -4223,7 +4280,7 @@ export module ListCommentsResponse {
    */
   export interface AsObject {
     comments?: Comment.AsObject[];
-    pageToken?: string;
+    nextPageToken?: string;
   }
 
   /**
@@ -4231,7 +4288,7 @@ export module ListCommentsResponse {
    */
   export interface AsProtobufJSON {
     comments?: Comment.AsProtobufJSON[] | null;
-    pageToken?: string;
+    nextPageToken?: string;
   }
 }
 
@@ -4259,6 +4316,7 @@ export class CreateReplyRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: CreateReplyRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.reply = _instance.reply || undefined;
   }
 
@@ -4276,6 +4334,9 @@ export class CreateReplyRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
           _instance.reply = new Reply();
           _reader.readMessage(
             _instance.reply,
@@ -4299,15 +4360,19 @@ export class CreateReplyRequest implements GrpcMessage {
     _instance: CreateReplyRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.reply) {
       _writer.writeMessage(
-        1,
+        2,
         _instance.reply as any,
         Reply.serializeBinaryToWriter
       );
     }
   }
 
+  private _parent?: string;
   private _reply?: Reply;
 
   /**
@@ -4316,8 +4381,15 @@ export class CreateReplyRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<CreateReplyRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.reply = _value.reply ? new Reply(_value.reply) : undefined;
     CreateReplyRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get reply(): Reply | undefined {
     return this._reply;
@@ -4341,6 +4413,7 @@ export class CreateReplyRequest implements GrpcMessage {
    */
   toObject(): CreateReplyRequest.AsObject {
     return {
+      parent: this.parent,
       reply: this.reply ? this.reply.toObject() : undefined
     };
   }
@@ -4362,6 +4435,7 @@ export class CreateReplyRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): CreateReplyRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       reply: this.reply ? this.reply.toProtobufJSON(options) : null
     };
   }
@@ -4371,6 +4445,7 @@ export module CreateReplyRequest {
    * Standard JavaScript object representation for CreateReplyRequest
    */
   export interface AsObject {
+    parent?: string;
     reply?: Reply.AsObject;
   }
 
@@ -4378,6 +4453,7 @@ export module CreateReplyRequest {
    * Protobuf JSON representation for CreateReplyRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     reply?: Reply.AsProtobufJSON | null;
   }
 }
@@ -4406,7 +4482,7 @@ export class DeleteReplyRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: DeleteReplyRequest) {
-    _instance.replyId = _instance.replyId || '0';
+    _instance.name = _instance.name || '';
   }
 
   /**
@@ -4423,7 +4499,7 @@ export class DeleteReplyRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.replyId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -4442,12 +4518,12 @@ export class DeleteReplyRequest implements GrpcMessage {
     _instance: DeleteReplyRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.replyId) {
-      _writer.writeInt64String(1, _instance.replyId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
   }
 
-  private _replyId?: string;
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4455,14 +4531,14 @@ export class DeleteReplyRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<DeleteReplyRequest.AsObject>) {
     _value = _value || {};
-    this.replyId = _value.replyId;
+    this.name = _value.name;
     DeleteReplyRequest.refineValues(this);
   }
-  get replyId(): string | undefined {
-    return this._replyId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set replyId(value: string | undefined) {
-    this._replyId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -4480,7 +4556,7 @@ export class DeleteReplyRequest implements GrpcMessage {
    */
   toObject(): DeleteReplyRequest.AsObject {
     return {
-      replyId: this.replyId
+      name: this.name
     };
   }
 
@@ -4501,7 +4577,7 @@ export class DeleteReplyRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): DeleteReplyRequest.AsProtobufJSON {
     return {
-      replyId: this.replyId
+      name: this.name
     };
   }
 }
@@ -4510,14 +4586,14 @@ export module DeleteReplyRequest {
    * Standard JavaScript object representation for DeleteReplyRequest
    */
   export interface AsObject {
-    replyId?: string;
+    name?: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteReplyRequest
    */
   export interface AsProtobufJSON {
-    replyId?: string;
+    name?: string;
   }
 }
 
@@ -11240,10 +11316,9 @@ export class Comment implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Comment) {
-    _instance.parent = _instance.parent || '';
-    _instance.commentId = _instance.commentId || '0';
-    _instance.createTime = _instance.createTime || '';
-    _instance.updateTime = _instance.updateTime || '';
+    _instance.name = _instance.name || '';
+    _instance.createTime = _instance.createTime || undefined;
+    _instance.updateTime = _instance.updateTime || undefined;
     _instance.text = _instance.text || '';
     _instance.authorId = _instance.authorId || '0';
     _instance.upvoteCount = _instance.upvoteCount || '0';
@@ -11264,16 +11339,21 @@ export class Comment implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.parent = _reader.readString();
-          break;
-        case 2:
-          _instance.commentId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         case 3:
-          _instance.createTime = _reader.readString();
+          _instance.createTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.createTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
           break;
         case 4:
-          _instance.updateTime = _reader.readString();
+          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.updateTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
           break;
         case 5:
           _instance.text = _reader.readString();
@@ -11308,17 +11388,22 @@ export class Comment implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: Comment, _writer: BinaryWriter) {
-    if (_instance.parent) {
-      _writer.writeString(1, _instance.parent);
-    }
-    if (_instance.commentId) {
-      _writer.writeInt64String(2, _instance.commentId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
     if (_instance.createTime) {
-      _writer.writeString(3, _instance.createTime);
+      _writer.writeMessage(
+        3,
+        _instance.createTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
     }
     if (_instance.updateTime) {
-      _writer.writeString(4, _instance.updateTime);
+      _writer.writeMessage(
+        4,
+        _instance.updateTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
     }
     if (_instance.text) {
       _writer.writeString(5, _instance.text);
@@ -11338,10 +11423,9 @@ export class Comment implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _commentId?: string;
-  private _createTime?: string;
-  private _updateTime?: string;
+  private _name?: string;
+  private _createTime?: googleProtobuf000.Timestamp;
+  private _updateTime?: googleProtobuf000.Timestamp;
   private _text?: string;
   private _authorId?: string;
   private _upvoteCount?: string;
@@ -11353,38 +11437,35 @@ export class Comment implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<Comment.AsObject>) {
     _value = _value || {};
-    this.parent = _value.parent;
-    this.commentId = _value.commentId;
-    this.createTime = _value.createTime;
-    this.updateTime = _value.updateTime;
+    this.name = _value.name;
+    this.createTime = _value.createTime
+      ? new googleProtobuf000.Timestamp(_value.createTime)
+      : undefined;
+    this.updateTime = _value.updateTime
+      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      : undefined;
     this.text = _value.text;
     this.authorId = _value.authorId;
     this.upvoteCount = _value.upvoteCount;
     this.replies = (_value.replies || []).map(m => new Reply(m));
     Comment.refineValues(this);
   }
-  get parent(): string | undefined {
-    return this._parent;
+  get name(): string | undefined {
+    return this._name;
   }
-  set parent(value: string | undefined) {
-    this._parent = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
-  get commentId(): string | undefined {
-    return this._commentId;
-  }
-  set commentId(value: string | undefined) {
-    this._commentId = value;
-  }
-  get createTime(): string | undefined {
+  get createTime(): googleProtobuf000.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: string | undefined) {
+  set createTime(value: googleProtobuf000.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): string | undefined {
+  get updateTime(): googleProtobuf000.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: string | undefined) {
+  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
     this._updateTime = value;
   }
   get text(): string | undefined {
@@ -11427,10 +11508,9 @@ export class Comment implements GrpcMessage {
    */
   toObject(): Comment.AsObject {
     return {
-      parent: this.parent,
-      commentId: this.commentId,
-      createTime: this.createTime,
-      updateTime: this.updateTime,
+      name: this.name,
+      createTime: this.createTime ? this.createTime.toObject() : undefined,
+      updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
       text: this.text,
       authorId: this.authorId,
       upvoteCount: this.upvoteCount,
@@ -11455,10 +11535,13 @@ export class Comment implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Comment.AsProtobufJSON {
     return {
-      parent: this.parent,
-      commentId: this.commentId,
-      createTime: this.createTime,
-      updateTime: this.updateTime,
+      name: this.name,
+      createTime: this.createTime
+        ? this.createTime.toProtobufJSON(options)
+        : null,
+      updateTime: this.updateTime
+        ? this.updateTime.toProtobufJSON(options)
+        : null,
       text: this.text,
       authorId: this.authorId,
       upvoteCount: this.upvoteCount,
@@ -11471,10 +11554,9 @@ export module Comment {
    * Standard JavaScript object representation for Comment
    */
   export interface AsObject {
-    parent?: string;
-    commentId?: string;
-    createTime?: string;
-    updateTime?: string;
+    name?: string;
+    createTime?: googleProtobuf000.Timestamp.AsObject;
+    updateTime?: googleProtobuf000.Timestamp.AsObject;
     text?: string;
     authorId?: string;
     upvoteCount?: string;
@@ -11485,10 +11567,9 @@ export module Comment {
    * Protobuf JSON representation for Comment
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    commentId?: string;
-    createTime?: string;
-    updateTime?: string;
+    name?: string;
+    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
     text?: string;
     authorId?: string;
     upvoteCount?: string;
@@ -11517,10 +11598,9 @@ export class Reply implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Reply) {
-    _instance.commentId = _instance.commentId || '0';
-    _instance.replyId = _instance.replyId || '0';
-    _instance.createTime = _instance.createTime || '';
-    _instance.updateTime = _instance.updateTime || '';
+    _instance.name = _instance.name || '';
+    _instance.createTime = _instance.createTime || undefined;
+    _instance.updateTime = _instance.updateTime || undefined;
     _instance.text = _instance.text || '';
     _instance.authorId = _instance.authorId || '0';
     _instance.upvoteCount = _instance.upvoteCount || '0';
@@ -11537,24 +11617,29 @@ export class Reply implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.commentId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         case 2:
-          _instance.replyId = _reader.readInt64String();
+          _instance.createTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.createTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
           break;
         case 3:
-          _instance.createTime = _reader.readString();
+          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.updateTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
           break;
         case 4:
-          _instance.updateTime = _reader.readString();
-          break;
-        case 5:
           _instance.text = _reader.readString();
           break;
-        case 6:
+        case 5:
           _instance.authorId = _reader.readInt64String();
           break;
-        case 7:
+        case 6:
           _instance.upvoteCount = _reader.readInt64String();
           break;
         default:
@@ -11571,33 +11656,37 @@ export class Reply implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: Reply, _writer: BinaryWriter) {
-    if (_instance.commentId) {
-      _writer.writeInt64String(1, _instance.commentId);
-    }
-    if (_instance.replyId) {
-      _writer.writeInt64String(2, _instance.replyId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
     if (_instance.createTime) {
-      _writer.writeString(3, _instance.createTime);
+      _writer.writeMessage(
+        2,
+        _instance.createTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
     }
     if (_instance.updateTime) {
-      _writer.writeString(4, _instance.updateTime);
+      _writer.writeMessage(
+        3,
+        _instance.updateTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
     }
     if (_instance.text) {
-      _writer.writeString(5, _instance.text);
+      _writer.writeString(4, _instance.text);
     }
     if (_instance.authorId) {
-      _writer.writeInt64String(6, _instance.authorId);
+      _writer.writeInt64String(5, _instance.authorId);
     }
     if (_instance.upvoteCount) {
-      _writer.writeInt64String(7, _instance.upvoteCount);
+      _writer.writeInt64String(6, _instance.upvoteCount);
     }
   }
 
-  private _commentId?: string;
-  private _replyId?: string;
-  private _createTime?: string;
-  private _updateTime?: string;
+  private _name?: string;
+  private _createTime?: googleProtobuf000.Timestamp;
+  private _updateTime?: googleProtobuf000.Timestamp;
   private _text?: string;
   private _authorId?: string;
   private _upvoteCount?: string;
@@ -11608,37 +11697,34 @@ export class Reply implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<Reply.AsObject>) {
     _value = _value || {};
-    this.commentId = _value.commentId;
-    this.replyId = _value.replyId;
-    this.createTime = _value.createTime;
-    this.updateTime = _value.updateTime;
+    this.name = _value.name;
+    this.createTime = _value.createTime
+      ? new googleProtobuf000.Timestamp(_value.createTime)
+      : undefined;
+    this.updateTime = _value.updateTime
+      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      : undefined;
     this.text = _value.text;
     this.authorId = _value.authorId;
     this.upvoteCount = _value.upvoteCount;
     Reply.refineValues(this);
   }
-  get commentId(): string | undefined {
-    return this._commentId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set commentId(value: string | undefined) {
-    this._commentId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
-  get replyId(): string | undefined {
-    return this._replyId;
-  }
-  set replyId(value: string | undefined) {
-    this._replyId = value;
-  }
-  get createTime(): string | undefined {
+  get createTime(): googleProtobuf000.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: string | undefined) {
+  set createTime(value: googleProtobuf000.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): string | undefined {
+  get updateTime(): googleProtobuf000.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: string | undefined) {
+  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
     this._updateTime = value;
   }
   get text(): string | undefined {
@@ -11675,10 +11761,9 @@ export class Reply implements GrpcMessage {
    */
   toObject(): Reply.AsObject {
     return {
-      commentId: this.commentId,
-      replyId: this.replyId,
-      createTime: this.createTime,
-      updateTime: this.updateTime,
+      name: this.name,
+      createTime: this.createTime ? this.createTime.toObject() : undefined,
+      updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
       text: this.text,
       authorId: this.authorId,
       upvoteCount: this.upvoteCount
@@ -11702,10 +11787,13 @@ export class Reply implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Reply.AsProtobufJSON {
     return {
-      commentId: this.commentId,
-      replyId: this.replyId,
-      createTime: this.createTime,
-      updateTime: this.updateTime,
+      name: this.name,
+      createTime: this.createTime
+        ? this.createTime.toProtobufJSON(options)
+        : null,
+      updateTime: this.updateTime
+        ? this.updateTime.toProtobufJSON(options)
+        : null,
       text: this.text,
       authorId: this.authorId,
       upvoteCount: this.upvoteCount
@@ -11717,10 +11805,9 @@ export module Reply {
    * Standard JavaScript object representation for Reply
    */
   export interface AsObject {
-    commentId?: string;
-    replyId?: string;
-    createTime?: string;
-    updateTime?: string;
+    name?: string;
+    createTime?: googleProtobuf000.Timestamp.AsObject;
+    updateTime?: googleProtobuf000.Timestamp.AsObject;
     text?: string;
     authorId?: string;
     upvoteCount?: string;
@@ -11730,10 +11817,9 @@ export module Reply {
    * Protobuf JSON representation for Reply
    */
   export interface AsProtobufJSON {
-    commentId?: string;
-    replyId?: string;
-    createTime?: string;
-    updateTime?: string;
+    name?: string;
+    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
     text?: string;
     authorId?: string;
     upvoteCount?: string;

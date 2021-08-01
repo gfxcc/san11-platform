@@ -270,12 +270,12 @@ export class RouteGuideClient {
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     * @returns Observable<GrpcEvent<thisProto.Binary>>
      */
     deleteBinary: (
       requestData: thisProto.DeleteBinaryRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
+    ): Observable<GrpcEvent<thisProto.Binary>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
@@ -283,7 +283,7 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteBinaryRequest,
-        responseClass: thisProto.Empty
+        responseClass: thisProto.Binary
       });
     },
     /**
@@ -396,12 +396,12 @@ export class RouteGuideClient {
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     * @returns Observable<GrpcEvent<thisProto.Comment>>
      */
     deleteComment: (
       requestData: thisProto.DeleteCommentRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
+    ): Observable<GrpcEvent<thisProto.Comment>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
@@ -409,7 +409,7 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteCommentRequest,
-        responseClass: thisProto.Empty
+        responseClass: thisProto.Comment
       });
     },
     /**
@@ -459,12 +459,12 @@ export class RouteGuideClient {
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     * @returns Observable<GrpcEvent<thisProto.Reply>>
      */
     deleteReply: (
       requestData: thisProto.DeleteReplyRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
+    ): Observable<GrpcEvent<thisProto.Reply>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
@@ -472,7 +472,7 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteReplyRequest,
-        responseClass: thisProto.Empty
+        responseClass: thisProto.Reply
       });
     },
     /**
@@ -1107,12 +1107,12 @@ export class RouteGuideClient {
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
+   * @returns Observable<thisProto.Binary>
    */
   deleteBinary(
     requestData: thisProto.DeleteBinaryRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
+  ): Observable<thisProto.Binary> {
     return this.$raw
       .deleteBinary(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
@@ -1203,12 +1203,12 @@ export class RouteGuideClient {
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
+   * @returns Observable<thisProto.Comment>
    */
   deleteComment(
     requestData: thisProto.DeleteCommentRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
+  ): Observable<thisProto.Comment> {
     return this.$raw
       .deleteComment(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
@@ -1251,12 +1251,12 @@ export class RouteGuideClient {
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
+   * @returns Observable<thisProto.Reply>
    */
   deleteReply(
     requestData: thisProto.DeleteReplyRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
+  ): Observable<thisProto.Reply> {
     return this.$raw
       .deleteReply(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());

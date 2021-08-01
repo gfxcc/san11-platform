@@ -108,7 +108,7 @@ export class San11PlatformServiceService {
     return this.severClient.updateBinary(request, this.getMetadata());
   }
 
-  deleteBinary(request: DeleteBinaryRequest): Observable<Empty> {
+  deleteBinary(request: DeleteBinaryRequest): Observable<Binary> {
     return this.severClient.deleteBinary(request, this.getMetadata());
   }
 
@@ -119,18 +119,15 @@ export class San11PlatformServiceService {
   }
 
   // comments
-  createComment(comment: Comment): Observable<Comment> {
-    const request = new CreateCommentRequest({ comment: comment });
+  createComment(request: CreateCommentRequest): Observable<Comment> {
     return this.severClient.createComment(request, this.getMetadata());
   }
 
-  deleteComment(commentId: string): Observable<Empty> {
-    const request = new DeleteCommentRequest({ commentId: commentId });
+  deleteComment(request: DeleteCommentRequest): Observable<Comment> {
     return this.severClient.deleteComment(request, this.getMetadata());
   }
 
-  updateComment(comment: Comment): Observable<Comment> {
-    const request = new UpdateCommentRequest({ comment: comment });
+  updateComment(request: UpdateCommentRequest): Observable<Comment> {
     return this.severClient.updateComment(request, this.getMetadata());
   }
 
@@ -139,18 +136,15 @@ export class San11PlatformServiceService {
     return this.severClient.listComments(request, this.getMetadata());
   }
 
-  createReply(reply: Reply): Observable<Reply> {
-    const request = new CreateReplyRequest({ reply: reply });
+  createReply(request: CreateReplyRequest): Observable<Reply> {
     return this.severClient.createReply(request, this.getMetadata());
   }
 
-  deleteReply(replyId: string): Observable<Empty> {
-    const request = new DeleteReplyRequest({ replyId: replyId });
+  deleteReply(request: DeleteReplyRequest): Observable<Reply> {
     return this.severClient.deleteReply(request, this.getMetadata());
   }
 
-  updateReply(reply: Reply): Observable<Reply> {
-    const request = new UpdateReplyRequest({ reply: reply });
+  updateReply(request: UpdateReplyRequest): Observable<Reply> {
     return this.severClient.updateReply(request, this.getMetadata());
   }
   // users

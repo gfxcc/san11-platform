@@ -63,7 +63,7 @@ class Reply(ResourceMixin, TrackLifecycle):
     
     @classmethod
     def db_table(cls) -> str:
-        return 'replies'
+        return 'replies_legacy'
 
     @classmethod
     def db_fields(cls) -> List[str]:

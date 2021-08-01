@@ -1,5 +1,5 @@
 import { ViewChild, ElementRef, Input, Component, OnInit } from '@angular/core';
-import { Package, Comment, Reply } from "../../../../proto/san11-platform.pb";
+import { Package, Comment, Reply, CreateCommentRequest } from "../../../../proto/san11-platform.pb";
 
 import { GetUserRequest } from "../../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
@@ -92,11 +92,12 @@ export class CommentBoardComponent implements OnInit {
     const text = value.input;
 
     const comment = new Comment({
-      parent: this.parent,
-      authorId: this.authorId,
       text: text,
     });
-    this.san11pkService.createComment(comment).subscribe(
+    this.san11pkService.createComment(new CreateCommentRequest({
+      parent: this.parent,
+      comment: comment,
+    })).subscribe(
       comment => {
         this.notificationService.success('评论添加 成功!');
         this.comments.splice(0, 0, comment);
