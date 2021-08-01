@@ -212,7 +212,7 @@ export class VersionPanelComponent implements OnInit {
       name: this.binaryOnDownload.name
     })).subscribe(
       binary => {
-        const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.url;
+        const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.file.uri;
         const filename = getBinaryFilename(this.package, binary);
 
         this.prevTime = new Date().getTime();

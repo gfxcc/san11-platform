@@ -64,7 +64,7 @@
                                     <button mat-button mat-stroked-button *ngIf="binary.size != &quot;&quot;" color="warn" (click)="onOffload(binary)" style="margin-left: 5px;">卸载</button>
                                 </div>
 
-                                <div [hidden]="binary.url === &quot;&quot;">
+                                <div [hidden]="!binary.file">
                                     <button mat-button mat-stroked-button color="primary" (click)="onDownload(binary)" style="margin-left: 5px;">下载</button>
                                 </div>
 
