@@ -34,12 +34,12 @@ export class HeaderComponent implements OnInit {
       this.user = loadUser();
     }
 
-    this.san11pkService.getStatistic().subscribe(
-      statistic => {
-        this.today_visit_count = Number(statistic.visitCount);
-        this.today_download_count = Number(statistic.downloadCount);
-      }
-    );
+    // this.san11pkService.getStatistic().subscribe(
+    //   statistic => {
+    //     this.today_visit_count = Number(statistic.visitCount);
+    //     this.today_download_count = Number(statistic.downloadCount);
+    //   }
+    // );
   }
 
   toggleSideBar() {
