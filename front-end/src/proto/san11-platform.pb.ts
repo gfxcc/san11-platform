@@ -23,7 +23,7 @@ export enum Action {
   DOWNLOAD = 21
 }
 export enum ResourceState {
-  UNDEFINE_STATE = 0,
+  RESOURCE_STATE_UNDEFINE = 0,
   NORMAL = 1,
   UNDER_REVIEW = 2,
   HIDDEN = 3,
@@ -1395,7 +1395,7 @@ export class GetBinaryRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: GetBinaryRequest) {
-    _instance.binaryId = _instance.binaryId || '0';
+    _instance.name = _instance.name || '';
   }
 
   /**
@@ -1412,7 +1412,7 @@ export class GetBinaryRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.binaryId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -1431,12 +1431,12 @@ export class GetBinaryRequest implements GrpcMessage {
     _instance: GetBinaryRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.binaryId) {
-      _writer.writeInt64String(1, _instance.binaryId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
   }
 
-  private _binaryId?: string;
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -1444,14 +1444,14 @@ export class GetBinaryRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<GetBinaryRequest.AsObject>) {
     _value = _value || {};
-    this.binaryId = _value.binaryId;
+    this.name = _value.name;
     GetBinaryRequest.refineValues(this);
   }
-  get binaryId(): string | undefined {
-    return this._binaryId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set binaryId(value: string | undefined) {
-    this._binaryId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -1469,7 +1469,7 @@ export class GetBinaryRequest implements GrpcMessage {
    */
   toObject(): GetBinaryRequest.AsObject {
     return {
-      binaryId: this.binaryId
+      name: this.name
     };
   }
 
@@ -1490,7 +1490,7 @@ export class GetBinaryRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): GetBinaryRequest.AsProtobufJSON {
     return {
-      binaryId: this.binaryId
+      name: this.name
     };
   }
 }
@@ -1499,14 +1499,14 @@ export module GetBinaryRequest {
    * Standard JavaScript object representation for GetBinaryRequest
    */
   export interface AsObject {
-    binaryId?: string;
+    name?: string;
   }
 
   /**
    * Protobuf JSON representation for GetBinaryRequest
    */
   export interface AsProtobufJSON {
-    binaryId?: string;
+    name?: string;
   }
 }
 
@@ -1844,15 +1844,6 @@ export class CreateBinaryRequest implements GrpcMessage {
             Binary.deserializeBinaryFromReader
           );
           break;
-        case 3:
-          _instance.url = _reader.readString();
-          break;
-        case 4:
-          _instance.data = _reader.readBytes();
-          break;
-        case 5:
-          _instance.downloadMethod = _reader.readString();
-          break;
         default:
           _reader.skipField();
       }
@@ -1880,25 +1871,10 @@ export class CreateBinaryRequest implements GrpcMessage {
         Binary.serializeBinaryToWriter
       );
     }
-    if (_instance.url || _instance.url === '') {
-      _writer.writeString(3, _instance.url);
-    }
-    if (_instance.data && _instance.data.length) {
-      _writer.writeBytes(4, _instance.data);
-    }
-    if (_instance.downloadMethod || _instance.downloadMethod === '') {
-      _writer.writeString(5, _instance.downloadMethod);
-    }
   }
 
   private _parent?: string;
   private _binary?: Binary;
-  private _url?: string;
-  private _data?: Uint8Array;
-  private _downloadMethod?: string;
-
-  private _resource: CreateBinaryRequest.ResourceCase =
-    CreateBinaryRequest.ResourceCase.none;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -1908,9 +1884,6 @@ export class CreateBinaryRequest implements GrpcMessage {
     _value = _value || {};
     this.parent = _value.parent;
     this.binary = _value.binary ? new Binary(_value.binary) : undefined;
-    this.url = _value.url;
-    this.data = _value.data;
-    this.downloadMethod = _value.downloadMethod;
     CreateBinaryRequest.refineValues(this);
   }
   get parent(): string | undefined {
@@ -1924,39 +1897,6 @@ export class CreateBinaryRequest implements GrpcMessage {
   }
   set binary(value: Binary | undefined) {
     this._binary = value;
-  }
-  get url(): string | undefined {
-    return this._url;
-  }
-  set url(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this._data = this._downloadMethod = undefined;
-      this._resource = CreateBinaryRequest.ResourceCase.url;
-    }
-    this._url = value;
-  }
-  get data(): Uint8Array | undefined {
-    return this._data;
-  }
-  set data(value: Uint8Array | undefined) {
-    if (value !== undefined && value !== null) {
-      this._url = this._downloadMethod = undefined;
-      this._resource = CreateBinaryRequest.ResourceCase.data;
-    }
-    this._data = value;
-  }
-  get downloadMethod(): string | undefined {
-    return this._downloadMethod;
-  }
-  set downloadMethod(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this._url = this._data = undefined;
-      this._resource = CreateBinaryRequest.ResourceCase.downloadMethod;
-    }
-    this._downloadMethod = value;
-  }
-  get resource() {
-    return this._resource;
   }
 
   /**
@@ -1975,10 +1915,7 @@ export class CreateBinaryRequest implements GrpcMessage {
   toObject(): CreateBinaryRequest.AsObject {
     return {
       parent: this.parent,
-      binary: this.binary ? this.binary.toObject() : undefined,
-      url: this.url,
-      data: this.data ? this.data.subarray(0) : new Uint8Array(),
-      downloadMethod: this.downloadMethod
+      binary: this.binary ? this.binary.toObject() : undefined
     };
   }
 
@@ -2000,10 +1937,7 @@ export class CreateBinaryRequest implements GrpcMessage {
   ): CreateBinaryRequest.AsProtobufJSON {
     return {
       parent: this.parent,
-      binary: this.binary ? this.binary.toProtobufJSON(options) : null,
-      url: this.url ?? null,
-      data: this.data ? uint8ArrayToBase64(this.data) : '',
-      downloadMethod: this.downloadMethod ?? null
+      binary: this.binary ? this.binary.toProtobufJSON(options) : null
     };
   }
 }
@@ -2014,9 +1948,6 @@ export module CreateBinaryRequest {
   export interface AsObject {
     parent?: string;
     binary?: Binary.AsObject;
-    url?: string;
-    data?: Uint8Array;
-    downloadMethod?: string;
   }
 
   /**
@@ -2025,15 +1956,6 @@ export module CreateBinaryRequest {
   export interface AsProtobufJSON {
     parent?: string;
     binary?: Binary.AsProtobufJSON | null;
-    url?: string | null;
-    data?: string;
-    downloadMethod?: string | null;
-  }
-  export enum ResourceCase {
-    none = 0,
-    url = 1,
-    data = 2,
-    downloadMethod = 3
   }
 }
 
@@ -2352,8 +2274,7 @@ export class DownloadBinaryRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: DownloadBinaryRequest) {
-    _instance.parent = _instance.parent || '';
-    _instance.binaryId = _instance.binaryId || '0';
+    _instance.name = _instance.name || '';
   }
 
   /**
@@ -2370,10 +2291,7 @@ export class DownloadBinaryRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.parent = _reader.readString();
-          break;
-        case 2:
-          _instance.binaryId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -2392,16 +2310,12 @@ export class DownloadBinaryRequest implements GrpcMessage {
     _instance: DownloadBinaryRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.parent) {
-      _writer.writeString(1, _instance.parent);
-    }
-    if (_instance.binaryId) {
-      _writer.writeInt64String(2, _instance.binaryId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
   }
 
-  private _parent?: string;
-  private _binaryId?: string;
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -2409,21 +2323,14 @@ export class DownloadBinaryRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<DownloadBinaryRequest.AsObject>) {
     _value = _value || {};
-    this.parent = _value.parent;
-    this.binaryId = _value.binaryId;
+    this.name = _value.name;
     DownloadBinaryRequest.refineValues(this);
   }
-  get parent(): string | undefined {
-    return this._parent;
+  get name(): string | undefined {
+    return this._name;
   }
-  set parent(value: string | undefined) {
-    this._parent = value;
-  }
-  get binaryId(): string | undefined {
-    return this._binaryId;
-  }
-  set binaryId(value: string | undefined) {
-    this._binaryId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -2441,8 +2348,7 @@ export class DownloadBinaryRequest implements GrpcMessage {
    */
   toObject(): DownloadBinaryRequest.AsObject {
     return {
-      parent: this.parent,
-      binaryId: this.binaryId
+      name: this.name
     };
   }
 
@@ -2463,8 +2369,7 @@ export class DownloadBinaryRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): DownloadBinaryRequest.AsProtobufJSON {
     return {
-      parent: this.parent,
-      binaryId: this.binaryId
+      name: this.name
     };
   }
 }
@@ -2473,16 +2378,14 @@ export module DownloadBinaryRequest {
    * Standard JavaScript object representation for DownloadBinaryRequest
    */
   export interface AsObject {
-    parent?: string;
-    binaryId?: string;
+    name?: string;
   }
 
   /**
    * Protobuf JSON representation for DownloadBinaryRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    binaryId?: string;
+    name?: string;
   }
 }
 
@@ -2510,7 +2413,7 @@ export class DeleteBinaryRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: DeleteBinaryRequest) {
-    _instance.binaryId = _instance.binaryId || '0';
+    _instance.name = _instance.name || '';
   }
 
   /**
@@ -2527,7 +2430,7 @@ export class DeleteBinaryRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.binaryId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -2546,12 +2449,12 @@ export class DeleteBinaryRequest implements GrpcMessage {
     _instance: DeleteBinaryRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.binaryId) {
-      _writer.writeInt64String(1, _instance.binaryId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
   }
 
-  private _binaryId?: string;
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -2559,14 +2462,14 @@ export class DeleteBinaryRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<DeleteBinaryRequest.AsObject>) {
     _value = _value || {};
-    this.binaryId = _value.binaryId;
+    this.name = _value.name;
     DeleteBinaryRequest.refineValues(this);
   }
-  get binaryId(): string | undefined {
-    return this._binaryId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set binaryId(value: string | undefined) {
-    this._binaryId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -2584,7 +2487,7 @@ export class DeleteBinaryRequest implements GrpcMessage {
    */
   toObject(): DeleteBinaryRequest.AsObject {
     return {
-      binaryId: this.binaryId
+      name: this.name
     };
   }
 
@@ -2605,7 +2508,7 @@ export class DeleteBinaryRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): DeleteBinaryRequest.AsProtobufJSON {
     return {
-      binaryId: this.binaryId
+      name: this.name
     };
   }
 }
@@ -2614,14 +2517,14 @@ export module DeleteBinaryRequest {
    * Standard JavaScript object representation for DeleteBinaryRequest
    */
   export interface AsObject {
-    binaryId?: string;
+    name?: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteBinaryRequest
    */
   export interface AsProtobufJSON {
-    binaryId?: string;
+    name?: string;
   }
 }
 
@@ -10204,8 +10107,9 @@ export class Binary implements GrpcMessage {
     _instance.description = _instance.description || '';
     _instance.createTime = _instance.createTime || '';
     _instance.tag = _instance.tag || '';
-    _instance.downloadMethod = _instance.downloadMethod || '';
     _instance.size = _instance.size || '';
+    _instance.name = _instance.name || '';
+    _instance.updateTime = _instance.updateTime || '';
   }
 
   /**
@@ -10246,11 +10150,21 @@ export class Binary implements GrpcMessage {
         case 8:
           _instance.tag = _reader.readString();
           break;
-        case 9:
-          _instance.downloadMethod = _reader.readString();
-          break;
         case 10:
           _instance.size = _reader.readString();
+          break;
+        case 11:
+          _instance.name = _reader.readString();
+          break;
+        case 12:
+          _instance.updateTime = _reader.readString();
+          break;
+        case 13:
+          _instance.file = new File();
+          _reader.readMessage(_instance.file, File.deserializeBinaryFromReader);
+          break;
+        case 14:
+          _instance.downloadMethod = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -10294,11 +10208,24 @@ export class Binary implements GrpcMessage {
     if (_instance.tag) {
       _writer.writeString(8, _instance.tag);
     }
-    if (_instance.downloadMethod) {
-      _writer.writeString(9, _instance.downloadMethod);
-    }
     if (_instance.size) {
       _writer.writeString(10, _instance.size);
+    }
+    if (_instance.name) {
+      _writer.writeString(11, _instance.name);
+    }
+    if (_instance.updateTime) {
+      _writer.writeString(12, _instance.updateTime);
+    }
+    if (_instance.file) {
+      _writer.writeMessage(
+        13,
+        _instance.file as any,
+        File.serializeBinaryToWriter
+      );
+    }
+    if (_instance.downloadMethod || _instance.downloadMethod === '') {
+      _writer.writeString(14, _instance.downloadMethod);
     }
   }
 
@@ -10310,8 +10237,13 @@ export class Binary implements GrpcMessage {
   private _description?: string;
   private _createTime?: string;
   private _tag?: string;
-  private _downloadMethod?: string;
   private _size?: string;
+  private _name?: string;
+  private _updateTime?: string;
+  private _file?: File;
+  private _downloadMethod?: string;
+
+  private _resource: Binary.ResourceCase = Binary.ResourceCase.none;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10327,8 +10259,11 @@ export class Binary implements GrpcMessage {
     this.description = _value.description;
     this.createTime = _value.createTime;
     this.tag = _value.tag;
-    this.downloadMethod = _value.downloadMethod;
     this.size = _value.size;
+    this.name = _value.name;
+    this.updateTime = _value.updateTime;
+    this.file = _value.file ? new File(_value.file) : undefined;
+    this.downloadMethod = _value.downloadMethod;
     Binary.refineValues(this);
   }
   get binaryId(): string | undefined {
@@ -10379,17 +10314,46 @@ export class Binary implements GrpcMessage {
   set tag(value: string | undefined) {
     this._tag = value;
   }
-  get downloadMethod(): string | undefined {
-    return this._downloadMethod;
-  }
-  set downloadMethod(value: string | undefined) {
-    this._downloadMethod = value;
-  }
   get size(): string | undefined {
     return this._size;
   }
   set size(value: string | undefined) {
     this._size = value;
+  }
+  get name(): string | undefined {
+    return this._name;
+  }
+  set name(value: string | undefined) {
+    this._name = value;
+  }
+  get updateTime(): string | undefined {
+    return this._updateTime;
+  }
+  set updateTime(value: string | undefined) {
+    this._updateTime = value;
+  }
+  get file(): File | undefined {
+    return this._file;
+  }
+  set file(value: File | undefined) {
+    if (value !== undefined && value !== null) {
+      this._downloadMethod = undefined;
+      this._resource = Binary.ResourceCase.file;
+    }
+    this._file = value;
+  }
+  get downloadMethod(): string | undefined {
+    return this._downloadMethod;
+  }
+  set downloadMethod(value: string | undefined) {
+    if (value !== undefined && value !== null) {
+      this._file = undefined;
+      this._resource = Binary.ResourceCase.downloadMethod;
+    }
+    this._downloadMethod = value;
+  }
+  get resource() {
+    return this._resource;
   }
 
   /**
@@ -10415,8 +10379,11 @@ export class Binary implements GrpcMessage {
       description: this.description,
       createTime: this.createTime,
       tag: this.tag,
-      downloadMethod: this.downloadMethod,
-      size: this.size
+      size: this.size,
+      name: this.name,
+      updateTime: this.updateTime,
+      file: this.file ? this.file.toObject() : undefined,
+      downloadMethod: this.downloadMethod
     };
   }
 
@@ -10445,8 +10412,11 @@ export class Binary implements GrpcMessage {
       description: this.description,
       createTime: this.createTime,
       tag: this.tag,
-      downloadMethod: this.downloadMethod,
-      size: this.size
+      size: this.size,
+      name: this.name,
+      updateTime: this.updateTime,
+      file: this.file ? this.file.toProtobufJSON(options) : null,
+      downloadMethod: this.downloadMethod ?? null
     };
   }
 }
@@ -10463,8 +10433,11 @@ export module Binary {
     description?: string;
     createTime?: string;
     tag?: string;
-    downloadMethod?: string;
     size?: string;
+    name?: string;
+    updateTime?: string;
+    file?: File.AsObject;
+    downloadMethod?: string;
   }
 
   /**
@@ -10479,8 +10452,16 @@ export module Binary {
     description?: string;
     createTime?: string;
     tag?: string;
-    downloadMethod?: string;
     size?: string;
+    name?: string;
+    updateTime?: string;
+    file?: File.AsProtobufJSON | null;
+    downloadMethod?: string | null;
+  }
+  export enum ResourceCase {
+    none = 0,
+    file = 1,
+    downloadMethod = 2
   }
 }
 
@@ -13008,5 +12989,173 @@ export module Article {
     tags?: string[];
     viewCount?: string;
     likeCount?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.File
+ */
+export class File implements GrpcMessage {
+  static id = 'routeguide.File';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new File();
+    File.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: File) {
+    _instance.filename = _instance.filename || '';
+    _instance.ext = _instance.ext || '';
+    _instance.uri = _instance.uri || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(_instance: File, _reader: BinaryReader) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.filename = _reader.readString();
+          break;
+        case 2:
+          _instance.ext = _reader.readString();
+          break;
+        case 3:
+          _instance.uri = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    File.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(_instance: File, _writer: BinaryWriter) {
+    if (_instance.filename) {
+      _writer.writeString(1, _instance.filename);
+    }
+    if (_instance.ext) {
+      _writer.writeString(2, _instance.ext);
+    }
+    if (_instance.uri) {
+      _writer.writeString(3, _instance.uri);
+    }
+  }
+
+  private _filename?: string;
+  private _ext?: string;
+  private _uri?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of File to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<File.AsObject>) {
+    _value = _value || {};
+    this.filename = _value.filename;
+    this.ext = _value.ext;
+    this.uri = _value.uri;
+    File.refineValues(this);
+  }
+  get filename(): string | undefined {
+    return this._filename;
+  }
+  set filename(value: string | undefined) {
+    this._filename = value;
+  }
+  get ext(): string | undefined {
+    return this._ext;
+  }
+  set ext(value: string | undefined) {
+    this._ext = value;
+  }
+  get uri(): string | undefined {
+    return this._uri;
+  }
+  set uri(value: string | undefined) {
+    this._uri = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    File.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): File.AsObject {
+    return {
+      filename: this.filename,
+      ext: this.ext,
+      uri: this.uri
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): File.AsProtobufJSON {
+    return {
+      filename: this.filename,
+      ext: this.ext,
+      uri: this.uri
+    };
+  }
+}
+export module File {
+  /**
+   * Standard JavaScript object representation for File
+   */
+  export interface AsObject {
+    filename?: string;
+    ext?: string;
+    uri?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for File
+   */
+  export interface AsProtobufJSON {
+    filename?: string;
+    ext?: string;
+    uri?: string;
   }
 }

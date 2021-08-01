@@ -62,7 +62,20 @@ class DbModelBase(ABC):
     _DB_FIELDS: Iterable[DbField] = []
     _SERIAL_ID: Optional[DbField] = None
 
-    def create(self, parent: str) -> None:
+    def is_exist(self):
+        '''
+        Returns:
+            True: if a DB resource with self.name exists.
+        '''
+        parent, resource_id = self._parse_name(self.name)
+        sql = f'SELECT count(*) FROM {self._DB_TABLE} WHERE parent=%(parent)s AND resource_id=%(resource_id)s'
+        resp = run_sql_with_param_and_fetch_one(sql, {
+            'parent': parent,
+            'resource_id': resource_id,
+        })
+        return resp[0] == 1
+
+    def create(self, parent: str, resource_id: Optional[int] = None) -> None:
         '''
         Persist the resource to DB.
         Raise:
@@ -79,7 +92,7 @@ class DbModelBase(ABC):
             return '/'.join(map(str, segments))
 
         db_table = self._DB_TABLE
-        resource_id = get_next_resource_id(parent)
+        resource_id = resource_id or get_next_resource_id(parent)
         self.name = get_name(parent, self._DB_TABLE, resource_id)
         data = self._prepare_data()
         db_fields_name = ['parent', 'resource_id', 'data']
@@ -107,9 +120,9 @@ class DbModelBase(ABC):
         if not resp:
             raise NotFound(f'{params} can not be found in table={db_table}')
         return cls.from_data(resp[0])
-
+    
     @classmethod
-    def list(cls, parent: str, offset: int = 0, limit: int = 9999, order_by_field: Optional[str] = None, **kwargs) -> Iterable[_SUB_DB_MODEL_T]:
+    def list(cls, parent: str, offset: int = 0, limit: int = 9999, order_by_field: str = 'create_time', **kwargs) -> Iterable[_SUB_DB_MODEL_T]:
         db_table = cls._DB_TABLE
         predicate_statement = 'WHERE parent=%(parent)s'
         if kwargs:
@@ -136,7 +149,7 @@ class DbModelBase(ABC):
         obj_args = {}
         for field in cls._DB_FIELDS:
             obj_args[field.model_path] = field.converter.to_model(
-                data[field.name])
+                data.get(field.name, None))
         return cls(**obj_args)
 
     def update(self, update_update_time: bool = True) -> None:

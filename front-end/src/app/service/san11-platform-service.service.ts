@@ -100,8 +100,7 @@ export class San11PlatformServiceService {
     return this.severClient.createBinary(request, this.getMetadata());
   }
 
-  downloadBinary(parent: string, binaryId: string): Observable<Binary> {
-    const request = new DownloadBinaryRequest({ parent: parent, binaryId: binaryId });
+  downloadBinary(request: DownloadBinaryRequest): Observable<Binary> {
     return this.severClient.downloadBinary(request, this.getMetadata());
   }
 
@@ -109,8 +108,7 @@ export class San11PlatformServiceService {
     return this.severClient.updateBinary(request, this.getMetadata());
   }
 
-  deleteBinary(binaryId: string): Observable<Empty> {
-    const request = new DeleteBinaryRequest({ binaryId: binaryId });
+  deleteBinary(request: DeleteBinaryRequest): Observable<Empty> {
     return this.severClient.deleteBinary(request, this.getMetadata());
   }
 

@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid'
 
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 
-import { CreateBinaryRequest, Version, Binary, UploadBinaryRequest } from "../../../../proto/san11-platform.pb";
+import { CreateBinaryRequest, Version, Binary, UploadBinaryRequest, File } from "../../../../proto/san11-platform.pb";
 import { version2str } from "../../../utils/binary_util";
 import { increment } from "../../../utils/number_util";
 import { GlobalConstants } from "../../../common/global-constants";
@@ -51,7 +51,7 @@ export class CreateNewVersionComponent implements OnInit {
   newVersion: Version;
   updateType: string = 'minor';
 
-  file: File;
+  file: globalThis.File;
   loadingDialog;
   tmpUrl: string = undefined;
 
@@ -255,16 +255,23 @@ export class CreateNewVersionComponent implements OnInit {
 
   onCreateBinary(createVersionForm) {
 
+    const re = /(?:(\.[^.]+))?$/;
+    const ext = re.exec(this.file.name)[1];
+
     const binary: Binary = new Binary({
       version: this.newVersion,
       description: createVersionForm.value.updateDesc,
       tag: this.tag,
+      file: new File({
+        // filename is OUTPUT_ONLY
+        ext: ext,
+        uri: this.tmpUrl,
+      }),
     });
 
     const request = new CreateBinaryRequest({
       parent: this.parent,
       binary: binary,
-      url: this.tmpUrl
     });
 
     this.loadingDialog = this.dialog.open(LoadingComponent);

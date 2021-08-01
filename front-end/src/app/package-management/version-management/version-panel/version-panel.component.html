@@ -68,7 +68,7 @@
                                     <button mat-button mat-stroked-button color="primary" (click)="onDownload(binary)" style="margin-left: 5px;">下载</button>
                                 </div>
 
-                                <div [hidden]="binary.downloadMethod === &quot;&quot;">
+                                <div [hidden]="!binary.downloadMethod">
                                     <button mat-button mat-stroked-button color="primary" (click)="onDownloadMethod(binary)" style="margin-left: 5px;">下载方式</button>
                                 </div>
                             </div>

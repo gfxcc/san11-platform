@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { FieldMask, Binary, Package, User, Version as PbVersion } from "../../../../proto/san11-platform.pb";
+import { FieldMask, Binary, Package, User, Version as PbVersion, DownloadBinaryRequest, DeleteBinaryRequest } from "../../../../proto/san11-platform.pb";
 import { UpdateBinaryRequest } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 
@@ -173,7 +173,7 @@ export class VersionPanelComponent implements OnInit {
         if (this.isAuthor() && data && data.data != binary.description) {
           const request = new UpdateBinaryRequest({
             binary: new Binary({
-              binaryId: binary.binaryId,
+              name: binary.name,
               description: data.data,
             }),
             updateMask: new FieldMask({
@@ -208,7 +208,9 @@ export class VersionPanelComponent implements OnInit {
     this.downloadProgress = 0;
     this.downloadProgressBar = true;
     this.binaryOnDownload = binary;
-    this.san11pkService.downloadBinary(getPackageUrl(this.package), binary.binaryId).subscribe(
+    this.san11pkService.downloadBinary(new DownloadBinaryRequest({
+      name: this.binaryOnDownload.name
+    })).subscribe(
       binary => {
         const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.url;
         const filename = getBinaryFilename(this.package, binary);
@@ -273,7 +275,9 @@ export class VersionPanelComponent implements OnInit {
     });
     binary.downloadCount = increment(binary.downloadCount);
     this.downloadEvent.emit();
-    this.san11pkService.downloadBinary(getPackageUrl(this.package), binary.binaryId).subscribe();
+    this.san11pkService.downloadBinary(new DownloadBinaryRequest({
+      name: binary.name
+    })).subscribe();
   }
 
   onOffload(binary: Binary) {
@@ -282,7 +286,7 @@ export class VersionPanelComponent implements OnInit {
     }
     this.san11pkService.updateBinary(new UpdateBinaryRequest({
       binary: new Binary({
-        binaryId: binary.binaryId,
+        name: binary.name,
         url: '',
       }),
       updateMask: new FieldMask({
@@ -303,7 +307,9 @@ export class VersionPanelComponent implements OnInit {
     if (!confirm('确定要删除 ' + version2str(binary.version) + ' 吗?')) {
       return;
     }
-    this.san11pkService.deleteBinary(binary.binaryId).subscribe(
+    this.san11pkService.deleteBinary(new DeleteBinaryRequest({
+      name: binary.name
+    })).subscribe(
       empty => {
         this.notificationService.success('成功删除');
         this.fetchBinaries();
