@@ -33,14 +33,14 @@ E.g.
     uri = Attrib(...)
     id = Attrib()
 '''
-import attr, datetime
+import attr
+import datetime
 from abc import ABC
 from typing import Any, Callable, Dict, Optional, TypeVar, List
 
 from . import base_proto
 from . import base_core
 from . import base_db
-
 
 
 MODEL_T = TypeVar('MODEL_T', bound='ModelBase')
@@ -118,9 +118,9 @@ class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
 
     def create(self, parent: str, resource_id: Optional[int] = None, user_id: Optional[int] = None) -> None:
         base_db.DbModelBase.create(self, parent, resource_id)
-    
-    def update(self, user_id: Optional[int] = None) -> None:
-        base_db.DbModelBase.update(self)
+
+    def update(self, update_update_time: bool = True, user_id: Optional[int] = None) -> None:
+        base_db.DbModelBase.update(self, update_update_time=update_update_time)
 
     def delete(self, user_id: Optional[int] = None) -> None:
         base_db.DbModelBase.delete(self)
