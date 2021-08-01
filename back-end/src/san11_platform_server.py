@@ -112,7 +112,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     # binaries
     def CreateBinary(self, request, context):
-        parent, article = request.parent, ModelBinary.from_pb(request.binary)
+        parent, binary = request.parent, ModelBinary.from_pb(request.binary)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
         # TODO: Add authentication
