@@ -114,9 +114,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # binaries
     def CreateBinary(self, request, context):
         parent, binary = request.parent, ModelBinary.from_pb(request.binary)
+        package = Package.from_name(parent)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == binary.author_id, '权限验证失败'
+        assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         created_binary = self.binary_handler.create_binary(
             parent, binary, handler_context)
         return created_binary.to_pb()
