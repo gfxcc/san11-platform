@@ -33,7 +33,7 @@ class UserHandler:
 
     def sign_in(self, request, context):
         try:
-            user = User.from_name(request.username)
+            user = User.from_username(request.username)
             user.validate(request.password)
         except LookupError:
             context.abort(code=InvalidArgument.code, details=f'{InvalidArgument.message}: 用户名不存在')
@@ -96,7 +96,7 @@ class UserHandler:
             if request.HasField('user_id'):
                 user = User.from_id(request.user_id)
             elif request.HasField('username'):
-                user = User.from_name(request.username)
+                user = User.from_username(request.username)
         except LookupError:
             logger.info(f'GetUser: user_id={request.user_id} does not exist')
             context.abort(code=InvalidArgument.code, details=f'{InvalidArgument.message}: 用户不存在')

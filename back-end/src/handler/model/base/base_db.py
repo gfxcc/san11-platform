@@ -118,7 +118,7 @@ class DbModelBase(ABC):
         resp = run_sql_with_param_and_fetch_one(
             sql, params)
         if not resp:
-            raise NotFound(f'{params} can not be found in table={db_table}')
+            raise NotFound(message=f'{params} can not be found in table={db_table}')
         return cls.from_data(resp[0])
     
     @classmethod

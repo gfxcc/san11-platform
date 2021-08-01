@@ -39,7 +39,6 @@ def parse_resource_name(name: str) -> ResourceMixin:
 
     resource_class = COLLECTION_TO_CLASS[collection]
     statement = f'{resource_class}.from_name(\'{name}\')'
-    logger.debug(statement)
     resource = resource_class.from_name(name)
     return resource
 

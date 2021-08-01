@@ -31,18 +31,17 @@ class ActivityHandler:
                 else:
                     resource_view = resource.view
             except NotFound as err:
-                resource_view = None
+                ...
             except Exception as err:
                 logger.exception(f'Failed to get resource: {activity.resource_name}')
-                resource_view = None
-            
-            activities_pb.append(san11_platform_pb2.Activity(
-                activity_id=activity.activity_id,
-                user_id=activity.user_id,
-                action=activity.action.value,
-                create_time=get_age(activity.create_time),
-                resource_view=resource_view.to_pb() if resource_view else None
-            ))
+            else:
+                activities_pb.append(san11_platform_pb2.Activity(
+                    activity_id=activity.activity_id,
+                    user_id=activity.user_id,
+                    action=activity.action.value,
+                    create_time=get_age(activity.create_time),
+                    resource_view=resource_view.to_pb() if resource_view else None
+                ))
         return san11_platform_pb2.ListActivitiesResponse(
             next_page_token='',
             activities=activities_pb

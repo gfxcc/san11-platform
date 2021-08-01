@@ -189,9 +189,8 @@ class User(ResourceMixin, TrackLifecycle):
             Activity(activity_id=None, user_id=user_id, create_time=get_now(),
                      action=Action.UPDATE, resource_name=self.name).create()
 
-
     @classmethod
-    def from_name(cls, username: str):
+    def from_username(cls, username: str):
         '''
         Raise:
             LookupError: ...
@@ -256,7 +255,7 @@ class User(ResourceMixin, TrackLifecycle):
             raise ValueError("用户名要求: [长度] 4-32 [字符] 不包含空格")
 
         try:
-            User.from_name(username)
+            User.from_username(username)
         except LookupError:
             return  # OK, username is not being used
         else:
