@@ -60,7 +60,7 @@ class BinaryHandler:
         else:
             raise InvalidArgument(
                 'Either `file` or `download_method` has be specified.')
-        binary.create(parent=parent, user_id=handler_context.user.user_d)
+        binary.create(parent=parent, user_id=handler_context.user.user_id)
         return binary
 
     def delete_binary(self, request, context):
