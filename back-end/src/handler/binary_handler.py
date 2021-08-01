@@ -96,12 +96,12 @@ class BinaryHandler:
 
     def list_binaries(self, request, context):
         package = Package.from_id(request.package_id)
-        # TODO: remove migration hack
-        binaries = Binary.list(0, '')
-        for binary in binaries:
-            model_binary = ModelBinary.from_legacy(binary)
-            if not model_binary.is_exist():
-                model_binary.create(binary.parent, binary.id)
+        # # TODO: remove migration hack
+        # binaries = Binary.list(0, '')
+        # for binary in binaries:
+        #     model_binary = ModelBinary.from_legacy(binary)
+        #     if not model_binary.is_exist():
+        #         model_binary.create(binary.parent, binary.id)
 
         return san11_platform_pb2.ListBinariesResponse(binaries=[
             binary.to_pb() for binary in ModelBinary.list(parent=package.name)
