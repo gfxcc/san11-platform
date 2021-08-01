@@ -6,7 +6,7 @@ import json
 import logging
 import attr
 import datetime
-from typing import Any, Dict, Generic, Iterator, Optional, Tuple, TypeVar
+from typing import Any, Dict, Generic, Iterator, List, Optional, Tuple, TypeVar
 from typing import Iterable
 from abc import ABC, abstractclassmethod
 
@@ -118,11 +118,18 @@ class DbModelBase(ABC):
         resp = run_sql_with_param_and_fetch_one(
             sql, params)
         if not resp:
-            raise NotFound(message=f'{params} can not be found in table={db_table}')
+            raise NotFound(
+                message=f'{params} can not be found in table={db_table}')
         return cls.from_data(resp[0])
-    
+
     @classmethod
-    def list(cls, parent: str, offset: int = 0, limit: int = 9999, order_by_field: str = 'create_time', **kwargs) -> Iterable[_SUB_DB_MODEL_T]:
+    def list(cls, parent: str, offset: int = 0, limit: int = 9999,
+             order_by_fields: Optional[Iterable[Tuple[str, str]]] = None, 
+             **kwargs) -> Iterable[_SUB_DB_MODEL_T]:
+        # prepare default value for mutable fields.
+        if order_by_fields is None:
+            order_by_fields = [('create_time', 'DESC')]
+
         db_table = cls._DB_TABLE
         predicate_statement = 'WHERE parent=%(parent)s'
         if kwargs:
@@ -136,7 +143,11 @@ class DbModelBase(ABC):
                     wheres.append(f"data->>'{db_path}'=%({db_path})s")
             predicate_statement += ' AND ' + 'AND'.join(wheres)
 
-        order_statement = f"ORDER BY data->>'{_get_db_path(attr.fields_dict(cls)[order_by_field])}' DESC" if order_by_field else ''
+        if order_by_fields:
+            order_statement = f'ORDER BY ' + ','.join(f"data->>'{field_name}' {order}" for field_name, order in order_by_fields) 
+        else:
+            order_statement = ''
+
         size_statement = f'LIMIT {limit} OFFSET {offset}'
         sql = f"SELECT data FROM {db_table} {predicate_statement} {order_statement} {size_statement}"
         params = kwargs.copy()

@@ -74,7 +74,7 @@ class CommentHandler:
         if filter:
             list_kwargs = parse_filter(ModelComment, filter)
 
-        return ModelComment.list(parent=parent, order_by_field='create_time', **list_kwargs), ''
+        return ModelComment.list(parent=parent, **list_kwargs), ''
 
     def delete_comment(self, comment: ModelComment,
                        handler_context) -> ModelComment:

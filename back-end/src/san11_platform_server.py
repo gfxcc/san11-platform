@@ -42,13 +42,7 @@ class HandlerContext:
         sid = dict(service_context.invocation_metadata()).get('sid', None)
         if not sid:
             return cls(user=None)
-        try:
-            session = Session.from_sid(sid)
-        except LookupError as err:
-            raise Unauthenticated('请重新登录')
-        except Exception as err:
-            logger.error(f'Failed to load session: {err}')
-            raise
+        session = Session.from_sid(sid)
         return cls(user=session.user)
 
 
@@ -65,9 +59,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.tag_handler = TagHandler()
         self.admin_handler = AdminHandler()
         self.article_handler = ArticleHandler()
-
-    # New model
-
+    #############
+    # New model #
+    #############
     # Article
     def CreateArticle(self, request, context):
         parent, article = request.parent, Article.from_pb(request.article)
@@ -89,7 +83,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             parent=parent,
             page_size=page_size,
             page_token=page_token,
-            sort_by=None,
+            order_by=None,
             filter=request.filter,
             handler_context=handler_context,
         )

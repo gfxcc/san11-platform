@@ -90,7 +90,7 @@ class BinaryHandler:
         if filter:
             list_kwargs = parse_filter(ModelBinary, filter)
 
-        return ModelBinary.list(parent=parent, order_by_field='create_time', **list_kwargs)
+        return ModelBinary.list(parent=parent, **list_kwargs)
 
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
         binary.download_count += 1

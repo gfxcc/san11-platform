@@ -1,3 +1,4 @@
+from handler.common.exception import NotFound, Unauthenticated
 import os
 import time
 import logging
@@ -44,17 +45,18 @@ class Session:
     def from_sid(cls, sid: str):
         '''
         Raise:
-            LookUpError
+            Unauthenticated: if session is expired.
+            NotFound: if sid does not exist. 
         '''
         sql = "SELECT user_id, expiration FROM sessions WHERE sid=%(sid)s"
         try:
             user_id, expiration = run_sql_with_param_and_fetch_one(sql, {'sid': sid})
-        except Exception:
-            raise LookupError(f'Failed to find session: sid={sid}')
+        except Exception as err:
+            raise NotFound(f'Failed to find session: sid={sid}') from err
         obj = cls(sid, user_id, expiration)
         if not obj.is_valid():
             logger.warn(f'{obj} is expired')
-            raise Exception('请重新登陆')
+            raise Unauthenticated('请重新登陆')
         return obj
 
     @classmethod

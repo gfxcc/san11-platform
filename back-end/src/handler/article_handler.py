@@ -26,12 +26,12 @@ class ArticleHandler:
         article.update(update_update_time=False)
         return article
 
-    def list_articles(self, parent: str, page_size: int, page_token: str, sort_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[Article]:
+    def list_articles(self, parent: str, page_size: int, page_token: str, order_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[Article]:
         list_kwargs = {}
         if filter:
             list_kwargs = parse_filter(Article, filter)
 
-        articles = Article.list(parent=parent, order_by_field='create_time', **list_kwargs)
+        articles = Article.list(parent=parent, **list_kwargs)
         public_articles = []
         for article in articles:
             if article.state == pb.ResourceState.Value('NORMAL') or \

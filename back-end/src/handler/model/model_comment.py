@@ -42,7 +42,7 @@ class ModelComment(ModelBase, TrackLifecycle):
 
     def to_pb(self) -> pb.Comment:
         proto = super(ModelComment, self).to_pb()
-        replies = ModelReply.list(parent=self.name)
+        replies = ModelReply.list(parent=self.name, order_by_fields=[('create_time', '')])
         getattr(proto, 'replies').extend([reply.to_pb() for reply in replies])
         return proto
 
