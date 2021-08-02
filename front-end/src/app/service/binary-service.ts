@@ -19,7 +19,7 @@ export class BinaryService {
 
     }
 
-    listBinaries(request: ListBinariesRequest) : Observable<ListBinariesResponse> {
+    listBinaries(request: ListBinariesRequest): Observable<ListBinariesResponse> {
         return this.severClient.listBinaries(request, this.getMetadata());
     }
 
@@ -27,6 +27,10 @@ export class BinaryService {
     // UTILS
 
     getMetadata() {
-        return new GrpcMetadata({ sid: localStorage.getItem('sid') });
+        let sid = localStorage.getItem('sid');
+        if (sid === null) {
+            sid = '';
+        }
+        return new GrpcMetadata({ sid: sid });
     }
 }

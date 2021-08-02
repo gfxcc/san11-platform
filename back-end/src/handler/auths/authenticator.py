@@ -24,7 +24,6 @@ class Authenticator:
     def from_context(cls, context):
         session = None
         sid = dict(context.invocation_metadata()).get('sid', None)
-        logger.debug(f'sid={sid}.')
         if not sid:
             raise Unauthenticated('请登录')
         try:
