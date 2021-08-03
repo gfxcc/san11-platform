@@ -199,8 +199,8 @@ class User(ResourceMixin, TrackLifecycle):
         try:
             resp = run_sql_with_param_and_fetch_all(
                 sql, {'username': username})[0]
-        except Exception:
-            raise LookupError(f'user: {username} does not exist')
+        except Exception as err:
+            raise LookupError(f'user: {username} does not exist') from err
 
         return cls(resp[0], username, 'password_placeholder', resp[1], resp[2], resp[3], resp[4])
     
