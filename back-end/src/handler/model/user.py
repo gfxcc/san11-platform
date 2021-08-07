@@ -12,7 +12,7 @@ from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_
 from ..util.time_util import get_now
 from ..common.image import Image
 from ..util.time_util import get_timezone
-from ..common.exception import NotFound, Unauthenticated, AlreadyExists
+from ..common.exception import InvalidArgument, NotFound, Unauthenticated, AlreadyExists
 from .resource import ResourceMixin, ResourceView
 from .activity import TrackLifecycle, Activity, Action
 
@@ -227,7 +227,7 @@ class User(ResourceMixin, TrackLifecycle):
         '''
         ADMIN_EMAIL = 'ycao181@gmail.com'
         if re.fullmatch(r'[^@]+@[^@]+\.[^@]+', email) is None:
-            raise ValueError('无效的邮箱地址')
+            raise InvalidArgument('无效的邮箱地址')
         try:
             # Allow admin to reuse email for new account for testing.
             if email == ADMIN_EMAIL:

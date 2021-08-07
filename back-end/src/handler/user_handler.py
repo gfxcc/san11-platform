@@ -131,8 +131,8 @@ class UserHandler:
         elif request.HasField('email'):
             try:
                 User.validate_email(request.email)
-            except ValueError:
-                return san11_platform_pb2.Status(code=InvalidArgument.code, message='格式不正确')
+            except InvalidArgument as e:
+                return san11_platform_pb2.Status(code=e.code, message=e.message)
             except AlreadyExists as err:
                 return san11_platform_pb2.Status(code=err.code, message='已被使用')
         return san11_platform_pb2.Status(code=0, message = '')
