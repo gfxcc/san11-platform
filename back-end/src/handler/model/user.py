@@ -196,11 +196,11 @@ class User(ResourceMixin, TrackLifecycle):
             LookupError: ...
         '''
         sql = 'SELECT user_id, email, user_type, image_url, website FROM users WHERE username=%(username)s'
-        try:
-            resp = run_sql_with_param_and_fetch_all(
-                sql, {'username': username})[0]
-        except Exception as err:
-            raise LookupError(f'user: {username} does not exist') from err
+        resp = run_sql_with_param_and_fetch_one(
+                sql, {'username': username})
+        
+        if not resp:
+            raise NotFound(f'{username} does not exist')
 
         return cls(resp[0], username, 'password_placeholder', resp[1], resp[2], resp[3], resp[4])
     

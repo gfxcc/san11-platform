@@ -4,47 +4,47 @@ import attr
 
 @attr.s(auto_attribs=True)
 class Unauthenticated(Exception):
-    code = 16
     message: str = '未验证的用户'
+    code: int = 16
 
 
 @attr.s(auto_attribs=True)
 class PermissionDenied(Exception):
-    code = 7
     message: str = '权限不足'
+    code: int = 7
 
 
 @attr.s(auto_attribs=True)
 class AlreadyExists(Exception):
-    code = 6
     message: str = '资源已存在'
+    code: int = 6
 
 
 @attr.s(auto_attribs=True)
 class NotFound(Exception):
-    code = 5
     message: str = '找不到资源'
+    code: int = 5
 
 
 @attr.s(auto_attribs=True)
 class InvalidArgument(Exception):
-    code = 3
     message: str = '不合法的参数'
+    code: int = 3
 
 
 @attr.s(auto_attribs=True)
 class FailedPrecondition(Exception):
-    code = 9
     message: str = '条件不满足'
+    code: int = 9
 
 
 @attr.s(auto_attribs=True)
 class ResourceExhausted(Exception):
-    code = 8
     message: str = '资源不足'
+    code: int = 8
 
 
 @attr.s(auto_attribs=True)
 class Unimplemented(Exception):
-    code = 12
     message: str = '尚未开放'
+    code: int = 12

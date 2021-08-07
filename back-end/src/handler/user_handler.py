@@ -1,4 +1,5 @@
 import sys, os, uuid, logging
+import grpc
 
 from .protos import san11_platform_pb2
 from .common.field_mask import FieldMask, merge_resource
@@ -7,7 +8,7 @@ from .util.notifier import Notifier
 from .common.image import Image
 from .model.package import Package
 from .model.user import User, generate_verification_code, verify_code
-from .common.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists
+from .common.exception import NotFound, Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -31,14 +32,14 @@ class UserHandler:
         logger.info(f'user is created: resp={resp}')
         return resp
 
-    def sign_in(self, request, context):
+    def sign_in(self, request, context: grpc.ServicerContext):
         try:
             user = User.from_username(request.username)
             user.validate(request.password)
-        except LookupError:
-            context.abort(code=InvalidArgument.code, details=f'{InvalidArgument.message}: 用户名不存在')
-        except Unauthenticated:
-            context.abort(code=InvalidArgument.code, details=f'{InvalidArgument.message}: 用户名,密码 不匹配')
+        except NotFound as e:
+            context.abort(code=e.code, details=f'用户名不存在: {request.username}')
+        except Unauthenticated as e:
+            context.abort(code=e.code, details=f'用户名,密码 不匹配')
 
         try:
             session = Session.from_user_id(user.user_id)
@@ -59,7 +60,7 @@ class UserHandler:
 
         auth = Authenticator.from_context(context)
         if not auth.canUpdateUser(user=base_user):
-            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
+            context.abort(code=PermissionDenied().code, details=PermissionDenied().message)
 
         update_mask = FieldMask.from_pb(request.update_mask)
         user = merge_resource(base_resource=base_user,
@@ -82,11 +83,11 @@ class UserHandler:
 
         if request.verification_code:
             if not verify_code(user.email, request.verification_code):
-                context.abort(code=PermissionDenied.code, details='验证码不正确')
+                context.abort(code=PermissionDenied().code, details='验证码不正确')
         else:
             authenticate = Authenticator.from_context(context)
             if not authenticate.canUpdateUser(user=user):
-                context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
+                context.abort(code=PermissionDenied().code, details=PermissionDenied().message)
 
         user.set_password(request.password)
         return san11_platform_pb2.Empty()
@@ -99,7 +100,7 @@ class UserHandler:
                 user = User.from_username(request.username)
         except LookupError:
             logger.info(f'GetUser: user_id={request.user_id} does not exist')
-            context.abort(code=InvalidArgument.code, details=f'{InvalidArgument.message}: 用户不存在')
+            context.abort(code=InvalidArgument().code, details=f'{InvalidArgument().message}: 用户不存在')
         return user.to_pb()
 
     def list_users(self, request, context):

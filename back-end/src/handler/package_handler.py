@@ -38,7 +38,7 @@ class PackageHandler:
 
         auth = Authenticator.from_context(context)
         if not auth.canDeletePackage(package):
-            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
+            context.abort(code=PermissionDenied().code, details=PermissionDenied().message)
 
         for image_url in package.image_urls:
             try:
@@ -98,7 +98,7 @@ class PackageHandler:
 
         auth = Authenticator.from_context(context)
         if not auth.canUpdatePackage(base_package):
-            context.abort(code=PermissionDenied.code, details=PermissionDenied.message)
+            context.abort(code=PermissionDenied().code, details=PermissionDenied().message)
 
         # patch update_mask as Package store tag_ids internal while tags is used
         # for public protos
