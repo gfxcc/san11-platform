@@ -193,7 +193,7 @@ class User(ResourceMixin, TrackLifecycle):
     def from_username(cls, username: str):
         '''
         Raise:
-            LookupError: ...
+            NotFound: ...
         '''
         sql = 'SELECT user_id, email, user_type, image_url, website FROM users WHERE username=%(username)s'
         resp = run_sql_with_param_and_fetch_one(
