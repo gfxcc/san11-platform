@@ -30,6 +30,13 @@ service RouteGuide {
   // Image related
   rpc CreateImage(CreateImageRequest) returns (Url) {}
 
+  // Thread related
+  rpc CreateThread(CreateThreadRequest) returns (Thread) {}
+  rpc GetThread(GetThreadRequest) returns (Thread) {}
+  rpc ListThread(ListThreadRequest) returns (ListThreadResponse) {}
+  rpc UpdateThread(UpdateThreadRequest) returns (Thread) {}
+  rpc DeleteThread(DeleteThreadRequest) returns (Thread) {}
+
   // comment related
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}
   rpc ListComments(ListCommentsRequest) returns (ListCommentsResponse) {}
@@ -631,4 +638,14 @@ message File {
     // Unique resource identifier
     // E.g. categories/123/packages/456/binaries/eafsdfewasdfdfsaasdffda
     string uri = 3;
+}
+
+message Thread {
+    // E.g. `categories/123/packages/456/threads/789`
+    string name = 1;
+    string subject = 2;
+    string content = 3;
+    int64 author_id = 4;
+    google.protobuf.Timestamp create_time = 5;  // OUTPUT_ONLY
+    google.protobuf.Timestamp update_time = 6;  // OUTPUT_ONLY
 }
