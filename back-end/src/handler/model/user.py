@@ -256,7 +256,7 @@ class User(ResourceMixin, TrackLifecycle):
 
         try:
             User.from_username(username)
-        except LookupError:
+        except NotFound:
             return  # OK, username is not being used
         else:
             raise AlreadyExists("用户名已被使用")
