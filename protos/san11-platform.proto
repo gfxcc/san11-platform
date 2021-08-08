@@ -613,42 +613,6 @@ message ResourceView {
     string image_url = 4;
 }
 
-// Utilities
-message FieldMask {
-    repeated string paths = 1;
-}
-
-// enum RESOURCE {
-//     UNDEFINED_RESOURCE_TYPE = 0;
-
-//     // first class resources
-//     PACKAGE = 1;
-//     BINARY = 2;
-
-//     // comment system
-//     COMMENT = 11;
-//     REPLY = 12;
-
-//     // account
-//     USER = 21;
-// }
-
-enum Action {
-    UNDEFINED_ACTION = 0;
-
-    CREATE = 1;
-    DELETE = 2;
-    UPDATE = 3;
-    SELECT = 4;
-
-    // social
-    LIKE = 11;
-    UPVOTE = 12;
-    SUBSCRIBE = 13;
-
-    // misc
-    DOWNLOAD = 21;
-}
 
 message Article {
     string name = 1;  // Resource name. E.g. 'articles/12345'
@@ -662,16 +626,6 @@ message Article {
 
     int64 view_count = 21;
     int64 like_count = 22;
-}
-
-enum ResourceState {
-    RESOURCE_STATE_UNDEFINE = 0;
-
-    NORMAL = 1;  // publish accessable
-    UNDER_REVIEW = 2;  // Only visiable to admin and author
-    HIDDEN = 3;  // Only visiable to admin and author
-    SCHEDULED_DELETE = 4;  // Only visiable to admin
-    DELETED = 5;  // Only visiable to admin
 }
 
 message File {
@@ -698,4 +652,47 @@ message Thread {
 
     int64 view_count = 21;
     int64 like_count = 22;
+}
+
+// Utilities
+
+message FieldMask {
+    repeated string paths = 1;
+}
+
+enum ResourceState {
+    RESOURCE_STATE_UNDEFINE = 0;
+
+    NORMAL = 1;  // publish accessable
+    UNDER_REVIEW = 2;  // Only visiable to admin and author
+    HIDDEN = 3;  // Only visiable to admin and author
+    SCHEDULED_DELETE = 4;  // Only visiable to admin
+    DELETED = 5;  // Only visiable to admin
+}
+
+enum Action {
+    UNDEFINED_ACTION = 0;
+
+    CREATE = 1;
+    DELETE = 2;
+    UPDATE = 3;
+    SELECT = 4;
+
+    // social
+    LIKE = 11;
+    UPVOTE = 12;
+    SUBSCRIBE = 13;
+
+    // misc
+    DOWNLOAD = 21;
+}
+
+
+// This is an internal utility message being used to generate page_token.
+message PaginationOption {
+    string parent = 1;
+    int64 page_size = 2;
+    int64 offset = 3;
+    string order_by = 4;
+    string filter = 5;
 }

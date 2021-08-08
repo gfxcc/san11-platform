@@ -51,6 +51,20 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
 
 
 @attr.s(auto_attribs=True)
+class ListOptions:
+    parent: str
+    page_size: int
+    page_token: int
+    order_by: str
+    filter: str
+
+    @classmethod
+    def from_str(cls):
+        ...
+
+
+
+@attr.s(auto_attribs=True)
 class DbField:
     name: str
     converter: DbConverter
@@ -124,7 +138,7 @@ class DbModelBase(ABC):
 
     @classmethod
     def list(cls, parent: str, offset: int = 0, limit: int = 9999,
-             order_by_fields: Optional[Iterable[Tuple[str, str]]] = None, 
+             order_by_fields: Optional[Iterable[Tuple[str, str]]] = None,
              **kwargs) -> Iterable[_SUB_DB_MODEL_T]:
         # prepare default value for mutable fields.
         if order_by_fields is None:
@@ -144,7 +158,9 @@ class DbModelBase(ABC):
             predicate_statement += ' AND ' + 'AND'.join(wheres)
 
         if order_by_fields:
-            order_statement = f'ORDER BY ' + ','.join(f"data->>'{field_name}' {order}" for field_name, order in order_by_fields) 
+            order_statement = f'ORDER BY ' + \
+                ','.join(
+                    f"data->>'{field_name}' {order}" for field_name, order in order_by_fields)
         else:
             order_statement = ''
 
