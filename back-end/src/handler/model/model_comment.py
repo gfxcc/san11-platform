@@ -1,5 +1,6 @@
 from __future__ import annotations
 import datetime
+import logging
 from handler.model.base.base_db import ListOptions
 from handler.model.model_reply import ModelReply
 from handler.model.reply import Reply
@@ -43,7 +44,7 @@ class ModelComment(ModelBase, TrackLifecycle):
 
     def to_pb(self) -> pb.Comment:
         proto = super(ModelComment, self).to_pb()
-        replies, _ = ModelReply.list(ListOptions(parent=self.name, page_size=0, watermark=0, order_by='', filter=''))
+        replies, _ = ModelReply.list(ListOptions(parent=self.name, order_by='create_time'))
         getattr(proto, 'replies').extend([reply.to_pb() for reply in replies])
         return proto
 

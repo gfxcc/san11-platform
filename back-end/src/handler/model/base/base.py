@@ -7,7 +7,14 @@ In most case, a resource could exists in 3 differnt layers.
     Logic/Handler layer | ModelBase         | handler/xxxx_handler.py
     Storage layer       | Db schema         | base_db.py
 
-Usage:
+# Dependency
+```
+base_db -> base_proto -> base_core
+   |                       ^
+   -------------------------
+```
+
+# Usage:
 
 @InitModel(
     ...

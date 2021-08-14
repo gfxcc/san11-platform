@@ -105,37 +105,44 @@ class ListOptions:
     '''
     Field name in `order_by`, `filter` is proto_name.
     '''
-    DEFAULT_PAGE_SIZE = 100
+    DEFAULT_PAGE_SIZE = 10000
 
     parent: str
-    page_size: int
-    watermark: Optional[str]
-    order_by: str
-    filter: str
+    page_size: int = 10000
+    watermark: str = attr.Factory(str)
+    order_by: str = attr.Factory(str)
+    filter: str = attr.Factory(str)
 
     @classmethod
-    def from_request(cls, parent: str, page_size: int, page_token: str, order_by: str, filter: str):
-        watermark = None
-        if page_token:
-            prev_option: pb.PaginationOption = pb.PaginationOption.ParseFromString(
-                page_token)
-            if prev_option.parent != parent or prev_option.filter != filter or prev_option.order_by != order_by:
-                raise InvalidArgument(f'Invalid page_token')
-            watermark = prev_option.watermark
-        return cls(parent=parent,
-                   page_size=page_size or cls.DEFAULT_PAGE_SIZE,
+    def from_request(cls, request):
+        def get_watermark(page_token: str) -> str:
+            if not page_token:
+                return ''
+            try:
+                prev_option: pb.PaginationOption = pb.PaginationOption.ParseFromString(
+                    page_token)
+                if prev_option.parent != parent or prev_option.filter != filter or prev_option.order_by != order_by:
+                    raise InvalidArgument(f'Invalid page_token')
+                return prev_option.watermark
+            except Exception:
+                j = json.loads(page_token)
+                return j['watermark']
+
+        watermark = get_watermark(request.page_token)
+        return cls(parent=request.parent,
+                   page_size=request.page_size or cls.DEFAULT_PAGE_SIZE,
                    watermark=watermark,
-                   order_by=order_by,
-                   filter=filter)
+                   order_by=request.order_by,
+                   filter=request.filter)
 
     def to_token(self) -> str:
-        return pb.PaginationOption(
+        return str(pb.PaginationOption(
             parent=self.parent,
             page_size=self.page_size,
             watermark=self.watermark,
             order_by=self.order_by,
             filter=self.filter,
-        ).SerializeToString()
+        ).SerializeToString())
 
 
 @attr.s(auto_attribs=True)
@@ -247,8 +254,6 @@ class DbModelBase(ABC):
         sql = f"SELECT data FROM {db_table} {predicate_statement} {order_statement} {size_statement}"
         params = kwargs.copy()
         params['parent'] = list_options.parent
-        logger.info(sql)
-        logger.info(params)
         resp = run_sql_with_param_and_fetch_all(sql, params)
 
         next_page_options = copy.copy(list_options)

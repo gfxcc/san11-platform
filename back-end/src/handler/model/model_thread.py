@@ -39,6 +39,9 @@ class Thread(ModelBase):
     like_count = Attrib(
         type=int,
     )
+    comment_count = Attrib(
+        type=int,
+    )
     create_time = Attrib(
         type=datetime.datetime,
         default=get_now(),

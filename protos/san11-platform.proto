@@ -652,6 +652,7 @@ message Thread {
 
     int64 view_count = 21;
     int64 like_count = 22;
+    int64 comment_count = 23;
 }
 
 // Utilities

@@ -2,7 +2,7 @@ from handler.model.base.base_db import ListOptions
 import handler
 import os, attr
 import logging
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Tuple
 
 from .common.field_mask import FieldMask, merge_resource
 from .protos import san11_platform_pb2 as pb
@@ -26,14 +26,8 @@ class ArticleHandler:
         article.update(update_update_time=False)
         return article
 
-    def list_articles(self, parent: str, page_size: int, page_token: str, order_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[Article]:
-        list_options = ListOptions.from_request(
-            parent=parent,
-            page_size=page_size,
-            page_token=page_token,
-            order_by=order_by,
-            filter=filter,
-        )
+    def list_articles(self, request, handler_context) -> Tuple[Iterable[Article], str]:
+        list_options = ListOptions.from_request(request)
         articles, next_page_token = Article.list(list_options)
         public_articles = []
         for article in articles:

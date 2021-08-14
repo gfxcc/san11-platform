@@ -1,4 +1,6 @@
 from __future__ import annotations
+from handler.model.model_thread import Thread
+from handler.thread_handler import ThreadHandler
 from handler.model.model_reply import ModelReply
 from handler.model.model_comment import ModelComment
 from handler.util.resource_parser import ResourceName
@@ -59,6 +61,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.tag_handler = TagHandler()
         self.admin_handler = AdminHandler()
         self.article_handler = ArticleHandler()
+        self.thread_handler = ThreadHandler()
     #############
     # New model #
     #############
@@ -77,14 +80,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return self.article_handler.get_article(name, handler_context).to_pb()
 
     def ListArticles(self, request, context):
-        parent, page_size, page_token = request.parent, request.page_size, request.page_token
         handler_context = HandlerContext.from_service_context(context)
         articles, next_page_token = self.article_handler.list_articles(
-            parent=parent,
-            page_size=page_size,
-            page_token=page_token,
-            order_by=request.order_by,
-            filter=request.filter,
+            request=request,
             handler_context=handler_context,
         )
         return pb.ListArticlesResponse(
@@ -119,14 +117,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return created_binary.to_pb()
 
     def ListBinaries(self, request, context):
-        parent, page_size, page_token = request.parent, request.page_size, request.page_token
         handler_context = HandlerContext.from_service_context(context)
         binaries, next_page_token = self.binary_handler.list_binaries(
-            parent=parent,
-            page_size=page_size,
-            page_token=page_token,
-            order_by=request.order_by,
-            filter=request.filter,
+            request=request,
             handler_context=handler_context,
         )
         return pb.ListBinariesResponse(
@@ -169,11 +162,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         parent, page_size, page_token = request.parent, request.page_size, request.page_token
         handler_context = HandlerContext.from_service_context(context)
         comments, next_page_token = self.comment_handler.list_comments(
-            parent=parent,
-            page_size=page_size,
-            page_token=page_token,
-            order_by=request.order_by,
-            filter=request.filter,
+            request=request,
             handler_context=handler_context,
         )
         return pb.ListCommentsResponse(
@@ -219,6 +208,33 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         assert handler_context.user, '请登录'
         assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.reply_handler.delete_reply(reply, handler_context).to_pb()
+    
+    # Thread
+    def CreateThread(self, request, context):
+        parent, thread = request.parent, Thread.from_pb(request.thread)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        created_thread = self.thread_handler.create_thread(
+            parent, thread, handler_context)
+        return created_thread.to_pb()
+
+    def ListThreads(self, request, context):
+        handler_context = HandlerContext.from_service_context(context)
+        threads, next_page_token = self.thread_handler.list_threads(
+            request=request,
+            handler_context=handler_context,
+        )
+        return pb.ListThreadsResponse(
+            threads=[thread.to_pb() for thread in threads],
+            next_page_token=next_page_token,
+        )
+
+    def DeleteThread(self, request, context):
+        thread = Thread.from_name(request.name)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == thread.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.thread_handler.delete_thread(thread, handler_context).to_pb()
 
     #############
     # Old model #

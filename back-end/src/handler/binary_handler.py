@@ -79,20 +79,14 @@ class BinaryHandler:
         binary.update(user_id=handler_context.user.user_id)
         return binary
 
-    def list_binaries(self, parent: str, page_size: int, page_token: str, order_by: str, filter: str, handler_context) -> Tuple[Iterable[ModelBinary], str]:
+    def list_binaries(self, request, handler_context) -> Tuple[Iterable[ModelBinary], str]:
         # # TODO: remove migration hack
         # binaries = Binary.list(0, '')
         # for binary in binaries:
         #     model_binary = ModelBinary.from_legacy(binary)
         #     if not model_binary.is_exist():
         #         model_binary.create(binary.parent, binary.id)
-        list_options = ListOptions.from_request(
-            parent=parent,
-            page_size=page_size,
-            page_token=page_token,
-            order_by=order_by,
-            filter=filter,
-        )
+        list_options = ListOptions.from_request(request)
         return ModelBinary.list(list_options)
 
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:

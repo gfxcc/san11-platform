@@ -55,8 +55,7 @@ class CommentHandler:
         comment.update(user_id=user_id)
         return comment
 
-    def list_comments(self, parent: str, page_size: int, page_token: str,
-                      order_by: str, filter: str,
+    def list_comments(self, request,
                       handler_context) -> Tuple[Iterable[ModelComment], str]:
         # # TODO: remove backfill logic
         # for reply in Reply.list(0, ''):
@@ -69,14 +68,7 @@ class CommentHandler:
         #     if not model.is_exist():
         #         model.create(parent=comment.parent, resource_id=comment.id)
         # # TODO: END
-        list_options = ListOptions.from_request(
-            parent=parent,
-            page_size=page_size,
-            page_token=page_token,
-            order_by=order_by,
-            filter=filter,
-        )
-
+        list_options = ListOptions.from_request(request)
         return ModelComment.list(list_options=list_options)
 
     def delete_comment(self, comment: ModelComment,

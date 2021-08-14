@@ -1,0 +1,51 @@
+<div class="card-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>新帖子</mat-card-title>
+        </mat-card-header>
+        <!-- 
+        <form class="example-form">
+            <form class="example-form" #createThreadForm='ngForm' (ngSubmit)="createThread(createThreadForm)">
+                <mat-card-content>
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="标题" required ngModel name="subject">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="内容" required ngModel name="content">
+                    </mat-form-field>
+
+
+                </mat-card-content>
+                <p></p>
+
+                <button [disabled]="!createThreadForm.valid" type="submit" mat-stroked-button color="accent" class="btn-block">创建</button>
+            </form>
+        </form> -->
+
+        <form class="example-form" [formGroup]="createThreadForm" (ngSubmit)="createThread()">
+            <mat-card-content>
+                <mat-form-field class="input-field">
+                    <input matInput placeholder="标题" autocomplete="off" formControlName="subject">
+                    <mat-error *ngIf="subject.errors?.minlength && subject.touched" align="end">
+                        至少需要2个字符
+                    </mat-error>
+                    <mat-error *ngIf="subject.errors?.maxlength && subject.touched" align="end">
+                        不得超过32个字符
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="input-field">
+                    <textarea matInput placeholder="内容" autocomplete="off" formControlName="content"></textarea>
+                    <!-- <mat-error *ngIf="password.errors?.minlength && password.touched" align="end">
+                        至少需要6个字符
+                    </mat-error>
+                    <mat-error *ngIf="password.errors?.maxlength && password.touched" align="end">
+                        不得超过32个字符
+                    </mat-error> -->
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-button [disabled]="!createThreadForm.valid" type="submit">下一步</button>
+        </form>
+    </mat-card>
+
+</div>
