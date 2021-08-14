@@ -79,17 +79,17 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def ListArticles(self, request, context):
         parent, page_size, page_token = request.parent, request.page_size, request.page_token
         handler_context = HandlerContext.from_service_context(context)
-        articles = self.article_handler.list_articles(
+        articles, next_page_token = self.article_handler.list_articles(
             parent=parent,
             page_size=page_size,
             page_token=page_token,
-            order_by=None,
+            order_by=request.order_by,
             filter=request.filter,
             handler_context=handler_context,
         )
         return pb.ListArticlesResponse(
             articles=[article.to_pb() for article in articles],
-            next_page_token='',
+            next_page_token=next_page_token,
         )
 
     def UpdateArticle(self, request, context):
@@ -121,17 +121,17 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def ListBinaries(self, request, context):
         parent, page_size, page_token = request.parent, request.page_size, request.page_token
         handler_context = HandlerContext.from_service_context(context)
-        binaries = self.binary_handler.list_binaries(
+        binaries, next_page_token = self.binary_handler.list_binaries(
             parent=parent,
             page_size=page_size,
             page_token=page_token,
-            sort_by=None,
+            order_by=request.order_by,
             filter=request.filter,
             handler_context=handler_context,
         )
         return pb.ListBinariesResponse(
             binaries=[binary.to_pb() for binary in binaries],
-            next_page_token='',
+            next_page_token=next_page_token,
         )
 
     def UpdateBinary(self, request, context):
@@ -172,7 +172,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             parent=parent,
             page_size=page_size,
             page_token=page_token,
-            sort_by=None,
+            order_by=request.order_by,
             filter=request.filter,
             handler_context=handler_context,
         )

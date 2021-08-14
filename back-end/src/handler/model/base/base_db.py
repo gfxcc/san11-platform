@@ -1,4 +1,6 @@
 from __future__ import annotations
+import copy
+from handler.model.base import base_proto
 import os
 import enum
 import re
@@ -11,8 +13,9 @@ from typing import Iterable
 from abc import ABC, abstractclassmethod
 
 from . import base_core
+from ...protos import san11_platform_pb2 as pb
 from ...util.time_util import get_now
-from ...common.exception import NotFound
+from ...common.exception import InvalidArgument, NotFound
 from ...db.db_util import get_db_fields_assignment_str, get_db_fields_str, get_db_fields_placeholder_str
 from ...db.db_util import run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all, run_sql_with_param
 
@@ -50,18 +53,89 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
         return value.astimezone(datetime.timezone.utc)
 
 
+def parse_filter(cls: type, filter: str) -> Dict:
+    '''
+    Input:
+        cls: class of resource class.
+        filter: E.g. "create_time > '2021-07-20 10:43:28.313033+08:00'"
+            "author_id = 123 AND state = 1"
+            ONLY SUPPORT AND OPERATION
+    Returns parsed key, value parse as a dictionary.
+    '''
+    proto2db = {}
+    for attribute in attr.fields(cls):
+        proto2db[base_proto._get_proto_path(attribute)] = _get_db_path(attribute)
+
+    kwargs = {}
+    segments = map(str.strip, re.split('AND | OR', filter))
+    for segment in segments:
+        if not segment:
+            continue
+        k, v = map(str.strip, segment.split('='))
+        kwargs[proto2db[k]] = v
+    return kwargs
+
+def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
+    '''
+    Input:
+        cls: class of resource class.
+        order_by: E.g. "create_time", "create_time desc, download_count"
+    Returns:
+        parsed_order_by: [[field_name, order], [field_name, order]].
+            E.g. [('create_time', 'desc'), ('download_count', '')]
+    '''
+    proto2db = {}
+    for attribute in attr.fields(cls):
+        proto2db[base_proto._get_proto_path(attribute)] = _get_db_path(attribute)
+
+    ret = []
+    for segment in order_by.split(','):
+        if not segment:
+            continue
+        segment = segment.strip().lower()
+        field_name = segment.split()[0]
+        order = 'DESC' if segment.endswith(' desc') else ''
+        ret.append((field_name, order))
+    
+    return ret
+
+
 @attr.s(auto_attribs=True)
 class ListOptions:
+    '''
+    Field name in `order_by`, `filter` is proto_name.
+    '''
+    DEFAULT_PAGE_SIZE = 100
+
     parent: str
     page_size: int
-    page_token: int
+    watermark: Optional[str]
     order_by: str
     filter: str
 
     @classmethod
-    def from_str(cls):
-        ...
+    def from_request(cls, parent: str, page_size: int, page_token: str, order_by: str, filter: str):
+        watermark = None
+        if page_token:
+            prev_option: pb.PaginationOption = pb.PaginationOption.ParseFromString(
+                page_token)
+            if prev_option.parent != parent or prev_option.filter != filter or prev_option.order_by != order_by:
+                raise InvalidArgument(f'Invalid page_token')
+            watermark = prev_option.watermark
+        return cls(parent=parent,
+                   page_size=page_size or cls.DEFAULT_PAGE_SIZE,
+                   watermark=watermark,
+                   order_by=order_by,
+                   filter=filter)
 
+    def to_token(self) -> str:
+        return pb.PaginationOption(
+            parent=self.parent,
+            page_size=self.page_size,
+            watermark=self.watermark,
+            order_by=self.order_by,
+            filter=self.filter,
+        ).SerializeToString()
 
 
 @attr.s(auto_attribs=True)
@@ -69,11 +143,12 @@ class DbField:
     name: str
     converter: DbConverter
     model_path: str
+    repeated: bool
 
 
 class DbModelBase(ABC):
     _DB_TABLE: str = ''
-    _DB_FIELDS: Iterable[DbField] = []
+    _DB_FIELDS_DICT: Dict[str, DbField]
     _SERIAL_ID: Optional[DbField] = None
 
     def is_exist(self):
@@ -137,22 +212,25 @@ class DbModelBase(ABC):
         return cls.from_data(resp[0])
 
     @classmethod
-    def list(cls, parent: str, offset: int = 0, limit: int = 9999,
-             order_by_fields: Optional[Iterable[Tuple[str, str]]] = None,
-             **kwargs) -> Iterable[_SUB_DB_MODEL_T]:
+    def list(cls, list_options: ListOptions) -> Tuple[Iterable[_SUB_DB_MODEL_T], str]:
         # prepare default value for mutable fields.
-        if order_by_fields is None:
+        if not list_options.order_by:
             order_by_fields = [('create_time', 'DESC')]
+        else:
+            order_by_fields = parse_order_by(cls, list_options.order_by)
+        
+        kwargs = parse_filter(cls, list_options.filter)
 
         db_table = cls._DB_TABLE
         predicate_statement = 'WHERE parent=%(parent)s'
         if kwargs:
             wheres = []
             for key in kwargs:
-                att = attr.fields_dict(cls)[key]
-                db_path = _get_db_path(att)
-                if att.metadata[base_core.REPEATED]:
-                    wheres.append(f"data->>%(db_path)s=ANY({db_path})")
+                db_field = cls._DB_FIELDS_DICT[key]
+                db_path = db_field.name
+                if db_field.repeated:
+                    # https://www.postgresql.org/docs/9.5/functions-json.html
+                    wheres.append(f"(data->'{db_path}')::jsonb ? %(db_path)s")
                 else:
                     wheres.append(f"data->>'{db_path}'=%({db_path})s")
             predicate_statement += ' AND ' + 'AND'.join(wheres)
@@ -164,17 +242,25 @@ class DbModelBase(ABC):
         else:
             order_statement = ''
 
+        limit, offset = list_options.page_size, int(list_options.watermark) if list_options.watermark else 0
         size_statement = f'LIMIT {limit} OFFSET {offset}'
         sql = f"SELECT data FROM {db_table} {predicate_statement} {order_statement} {size_statement}"
         params = kwargs.copy()
-        params['parent'] = parent
+        params['parent'] = list_options.parent
+        logger.info(sql)
+        logger.info(params)
         resp = run_sql_with_param_and_fetch_all(sql, params)
-        return [cls.from_data(data[0]) for data in resp]
+
+        next_page_options = copy.copy(list_options)
+        next_page_options.watermark = offset + len(resp)
+
+        return [cls.from_data(data[0]) for data in resp], next_page_options.to_token()
+
 
     @classmethod
     def from_data(cls, data: Dict):
         obj_args = {}
-        for field in cls._DB_FIELDS:
+        for field in cls._DB_FIELDS_DICT.values():
             obj_args[field.model_path] = field.converter.to_model(
                 data.get(field.name, None))
         return cls(**obj_args)
@@ -207,7 +293,7 @@ class DbModelBase(ABC):
 
     def _prepare_data(self) -> Dict:
         data = {}
-        for field in self._DB_FIELDS:
+        for field in self._DB_FIELDS_DICT.values():
             data[field.name] = field.converter.from_model(
                 getattr(self, field.model_path))
         return data
@@ -225,18 +311,20 @@ class DbModelBase(ABC):
 def init_db_model(cls: type, db_table: str) -> None:
     cls._DB_TABLE = db_table
     pkeys = []
-    db_fields = []
+    db_fields = {}
     for attribute in attr.fields(cls):
         if not attribute.metadata[base_core.IS_DB_FIELD]:
             continue
         converter: DbConverter = attribute.metadata[base_core.DB_CONVERTER]
+        db_path = _get_db_path(attribute)
         field = DbField(
-            name=_get_db_path(attribute),
+            name=db_path,
             converter=converter,
-            model_path=attribute.name
+            model_path=attribute.name,
+            repeated=base_core.is_repeated(attribute),
         )
-        db_fields.append(field)
-    cls._DB_FIELDS = db_fields
+        db_fields[db_path] = field
+    cls._DB_FIELDS_DICT = db_fields
 
 
 def _get_db_path(attribute: attr.Attribute) -> str:

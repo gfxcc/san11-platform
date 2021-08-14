@@ -1,3 +1,4 @@
+from handler.model.base.base_db import ListOptions
 from handler.model.reply import Reply
 from handler.model.model_reply import ModelReply
 from handler.common.field_mask import FieldMask, merge_resource
@@ -9,7 +10,6 @@ import os
 
 from .util.time_util import get_now
 from .common.exception import Unauthenticated, NotFound
-from .common.api import parse_filter
 from .model.comment import Comment
 from .model.user import User
 from .model.activity import Activity, Action
@@ -56,7 +56,7 @@ class CommentHandler:
         return comment
 
     def list_comments(self, parent: str, page_size: int, page_token: str,
-                      sort_by: Optional[str], filter: Optional[str],
+                      order_by: str, filter: str,
                       handler_context) -> Tuple[Iterable[ModelComment], str]:
         # # TODO: remove backfill logic
         # for reply in Reply.list(0, ''):
@@ -69,12 +69,15 @@ class CommentHandler:
         #     if not model.is_exist():
         #         model.create(parent=comment.parent, resource_id=comment.id)
         # # TODO: END
+        list_options = ListOptions.from_request(
+            parent=parent,
+            page_size=page_size,
+            page_token=page_token,
+            order_by=order_by,
+            filter=filter,
+        )
 
-        list_kwargs = {}
-        if filter:
-            list_kwargs = parse_filter(ModelComment, filter)
-
-        return ModelComment.list(parent=parent, **list_kwargs), ''
+        return ModelComment.list(list_options=list_options)
 
     def delete_comment(self, comment: ModelComment,
                        handler_context) -> ModelComment:

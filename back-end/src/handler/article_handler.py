@@ -1,5 +1,5 @@
+from handler.model.base.base_db import ListOptions
 import handler
-from handler.common.api import parse_filter
 import os, attr
 import logging
 from typing import Iterable, Optional
@@ -27,18 +27,21 @@ class ArticleHandler:
         return article
 
     def list_articles(self, parent: str, page_size: int, page_token: str, order_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[Article]:
-        list_kwargs = {}
-        if filter:
-            list_kwargs = parse_filter(Article, filter)
-
-        articles = Article.list(parent=parent, **list_kwargs)
+        list_options = ListOptions.from_request(
+            parent=parent,
+            page_size=page_size,
+            page_token=page_token,
+            order_by=order_by,
+            filter=filter,
+        )
+        articles, next_page_token = Article.list(list_options)
         public_articles = []
         for article in articles:
             if article.state == pb.ResourceState.Value('NORMAL') or \
                 (handler_context.user and handler_context.user.user_id == article.author_id) or \
                     (handler_context.user and handler_context.user.user_type == 'admin'):
                 public_articles.append(article)
-        return public_articles
+        return public_articles, next_page_token
 
     def update_article(self, update_article: Article, update_mask: FieldMask, handler_context) -> Article:
         article_original = Article.from_name(update_article.name)
