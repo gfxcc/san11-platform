@@ -21,16 +21,17 @@ export class DiscussionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.virtualThreads = Array.from({ length: 10000 });
-
+    this.virtualThreads = [];
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
-    this.san11pkService.listThreads(new ListThreadsRequest({
-      parent: 'general',
+    const request = new ListThreadsRequest({
+      parent: 'discussion',
       pageSize: event.rows.toString(),
       pageToken: `{ "watermark": "${event.first}" }`,
-    })).subscribe(
+    })
+    console.log(request);
+    this.san11pkService.listThreads(request).subscribe(
       (resp: ListThreadsResponse) => {
         Array.prototype.splice.apply(this.virtualThreads, [
           ...[event.first, event.rows],

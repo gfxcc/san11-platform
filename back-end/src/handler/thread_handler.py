@@ -17,6 +17,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 class ThreadHandler:
     def create_thread(self, parent: str, thread: Thread, handler_context) -> Thread:
         thread.author_id = handler_context.user.user_id
+        thread.state = pb.ResourceState.NORMAL
         thread.create(parent=parent, user_id=handler_context.user.user_id)
         return thread
 

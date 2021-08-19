@@ -177,9 +177,9 @@ class DbModelBase(ABC):
         Raise:
             AlreadyExists: if the resource is already exists in DB.
         '''
-        def get_next_resource_id(parent: str) -> int:
-            sql = f'SELECT COALESCE(MAX(resource_id)+1, 1) FROM {self._DB_TABLE} WHERE parent=%(parent)s'
-            return run_sql_with_param_and_fetch_one(sql, {'parent': parent})[0]
+        # def get_next_resource_id(parent: str) -> int:
+        #     sql = f'SELECT COALESCE(MAX(resource_id)+1, 1) FROM {self._DB_TABLE} WHERE parent=%(parent)s'
+        #     return run_sql_with_param_and_fetch_one(sql, {'parent': parent})[0]
 
         def get_name(parent: str, collection_name: str, resource_id: int) -> str:
             segments = [collection_name, resource_id]
@@ -188,18 +188,21 @@ class DbModelBase(ABC):
             return '/'.join(map(str, segments))
 
         db_table = self._DB_TABLE
-        resource_id = resource_id or get_next_resource_id(parent)
-        self.name = get_name(parent, self._DB_TABLE, resource_id)
+        # resource_id = resource_id or get_next_resource_id(parent)
+        # self.name = get_name(parent, self._DB_TABLE, resource_id)
         data = self._prepare_data()
         db_fields_name = ['parent', 'resource_id', 'data']
-        sql = f"INSERT INTO {db_table} ({get_db_fields_str(db_fields_name)}) VALUES "\
-            f"({get_db_fields_placeholder_str(db_fields_name)})"
+        sql = f"INSERT INTO {db_table} ({get_db_fields_str(db_fields_name)}) "\
+            f"(SELECT '{parent}', COALESCE(MAX(resource_id)+1, 1), NULL FROM {self._DB_TABLE} WHERE parent=%(parent)s) RETURNING resource_id"
         params = {
             'parent': parent,
             'resource_id': resource_id,
-            'data': json.dumps(data, default=str)
+            # 'data': json.dumps(data, default=str)
         }
-        run_sql_with_param(sql, params)
+        resp = run_sql_with_param_and_fetch_one(sql, params)
+        resource_id = resp[0]
+        self.name = get_name(parent, self._DB_TABLE, resource_id)
+        self.update(update_update_time=False)
         logger.info(f'CREATED: {self}')
 
     @classmethod

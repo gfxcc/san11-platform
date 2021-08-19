@@ -109,7 +109,7 @@ class Activity:
             f'{get_db_fields_placeholder_str(self.db_fields()[1:])}) RETURNING {self.db_fields()[0]}'
         params_raw = ','.join(f"'{field}': self.{field}" for field in self.db_fields())
         params = self._update_db_params(eval(f'{{ {params_raw} }}'))
-        resource_id = run_sql_with_param_and_fetch_one(sql, params, transaction=True)[0]
+        resource_id = run_sql_with_param_and_fetch_one(sql, params)[0]
         exec(f"self.{self.db_fields()[0]} = resource_id")
     
     def _update_db_params(self, params_raw) -> Dict:

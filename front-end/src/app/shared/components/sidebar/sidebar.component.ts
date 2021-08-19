@@ -109,11 +109,12 @@ export class SidebarComponent implements OnInit {
 
 
   navigateToCreate() {
-    const patterns = this.router.url.split('/');
+    const parent = this.router.url.substr(1);
+    const patterns = parent.split('/');
     console.log(patterns);
     switch (patterns[patterns.length - 1]) {
       case 'discussion':
-        this.router.navigate(['discussion', 'create'])
+        this.router.navigate(['discussion', 'create'], { queryParams: { parent: parent }});
         break;
       default:
         this.router.navigate(['createNew']);

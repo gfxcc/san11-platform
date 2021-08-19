@@ -122,7 +122,7 @@ class User(ResourceMixin, TrackLifecycle):
             'create_timestamp': get_now(),
             'image_url': self.image_url ,
             'website': self.website
-        }, transaction=True)
+        })
         self.user_id = resp[0]
         self.user_type = self.DEFAULT_USER_TYPE
         Activity(activity_id=None, user_id=self.user_id, create_time=get_now(),

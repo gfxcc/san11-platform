@@ -21,6 +21,7 @@ import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import { CreateThreadComponent } from './discussion/create-thread/create-thread.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
+import { ThreadCardComponent } from './discussion/thread-card/thread-card.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { MatInputModule } from '@angular/material/input';
     ArticleDetailComponent,
     ArticleCardComponent,
     DiscussionComponent,
-    CreateThreadComponent
+    CreateThreadComponent,
+    ThreadCardComponent
   ],
   imports: [
     CommonModule,

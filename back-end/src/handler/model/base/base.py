@@ -5,7 +5,7 @@ In most case, a resource could exists in 3 differnt layers.
     --------------------+-------------------+---------------
     Grpc layer          | protobuff message | san11_platform_pb2.py (generated)
     Logic/Handler layer | ModelBase         | handler/xxxx_handler.py
-    Storage layer       | Db schema         | base_db.py
+    Data layer          | Db schema         | base_db.py
 
 # Dependency
 ```

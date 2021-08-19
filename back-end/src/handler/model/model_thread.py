@@ -7,7 +7,7 @@ from ..util.time_util import get_now
 
 
 @InitModel(
-    db_table='threads',
+    db_table='threads_serial',
     proto_class=pb.Thread,
 )
 @attr.s

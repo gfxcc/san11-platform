@@ -1,10 +1,11 @@
 <p>discussion works!</p>
-<p-virtualScroller [value]="virtualThreads" scrollHeight="450px" [itemSize]="100" [rows]="100" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)">
+<p-virtualScroller [value]="virtualThreads" scrollHeight="900px" [itemSize]="280" [rows]="10" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)">
     <ng-template pTemplate="header">
         List of Threads
     </ng-template>
     <ng-template let-thread pTemplate="item" let-i="index">
-        {{thread.subject}}
+        <app-thread-card [thread]="thread" class="card-wrapper">
+        </app-thread-card>
     </ng-template>
     <ng-template let-product pTemplate="loadingItem">
 
