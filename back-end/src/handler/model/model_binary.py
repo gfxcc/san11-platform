@@ -161,29 +161,86 @@ class ModelBinary(ModelBase, TrackLifecycle):
     def delete(self, **kwargs) -> None:
         self.remove_resource()
         super(ModelBinary, self).delete(**kwargs)
-
+    
     @classmethod
-    def from_legacy(cls, legacy_model: Binary):
-        model = cls(
+    def from_v1(cls, legacy_model: Binary):
+        return cls(
             name=legacy_model.name,
             url=legacy_model.url,
             download_count=legacy_model.download_count,
             version=legacy_model.version,
             description=legacy_model.description,
             tag=legacy_model.tag,
-            file=None,
+            file=legacy_model.file,
             download_method=legacy_model.download_method,
             size=legacy_model.size,
             create_time=legacy_model.create_time,
             update_time=legacy_model.create_time,
         )
 
-        if legacy_model.url:
-            file = File(
-                filename=f'',
-                ext='',
-                uri=legacy_model.url,
-            )
-            setattr(model, 'file', file)
 
-        return model
+# TODO: remove type for data migration
+@InitModel(
+    db_table='binaries_model_v1',
+    proto_class=pb.Binary,
+)
+@attr.s
+class ModelBinaryV1(ModelBase, TrackLifecycle):
+    # Resource name. It is `{parent}/packages/{package_id}`
+    # E.g. `categories/1/packages/123/binaries/1`
+    name = Attrib(
+        type=str,
+    )
+    download_count = Attrib(
+        type=int,
+    )
+    version = Attrib(
+        type=Version,
+        proto_converter=VersionProtoConverter(),
+        db_converter=VersionDbConverter(),
+    )
+    description = Attrib(
+        type=str,
+    )
+    tag = Attrib(
+        type=str,
+    )
+    size = Attrib(
+        type=str,
+    )
+
+    # BEGINNING - OneOf field resource
+    file = Attrib(
+        type=File,
+        proto_converter=FileProtoConverter(),
+        db_converter=FileDbConverter(),
+    )
+    download_method = Attrib(
+        type=str,
+    )
+    # END
+
+    create_time = Attrib(
+        type=datetime.datetime,
+        proto_converter=LegacyDatetimeProtoConverter(),
+        default=get_now(),
+    )
+    update_time = Attrib(
+        type=datetime.datetime,
+        proto_converter=LegacyDatetimeProtoConverter(),
+        default=get_now(),
+    )
+    # DEPRECATED
+    url = Attrib(
+        type=str,
+        deprecated=True,
+    )
+
+    def remove_resource(self) -> None:
+        if self.file:
+            gcs.delete_canonical_resource(self.file.uri)
+            self.size = ''
+
+    def delete(self, **kwargs) -> None:
+        self.remove_resource()
+        super(ModelBinary, self).delete(**kwargs)

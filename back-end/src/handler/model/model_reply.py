@@ -40,8 +40,8 @@ class ModelReply(ModelBase, TrackLifecycle):
     )
 
     @classmethod
-    def from_legacy(cls, legacy_model: Reply) -> ModelRepl:
-        model = cls(
+    def from_v1(cls, legacy_model: Reply) -> ModelReply:
+        return cls(
             name=legacy_model.name,
             author_id=legacy_model.author_id,
             text=legacy_model.text,
@@ -49,4 +49,30 @@ class ModelReply(ModelBase, TrackLifecycle):
             update_time=legacy_model.update_time,
             upvote_count=legacy_model.upvote_count,
         )
-        return model
+
+@InitModel(
+    db_table='replies_model_v1',
+    proto_class=pb.Reply,
+)
+@attr.s
+class ModelReplyV1(ModelBase, TrackLifecycle):
+    # Resource name. It is `{parent}/replies/{resource_id}/`
+    # E.g. `categories/123/packages/456/comments/789/replies/234`
+    name = Attrib(
+        type=str,
+    )
+    author_id = Attrib(
+        type=int,
+    )
+    text = Attrib(
+        type=str,
+    )
+    create_time = Attrib(
+        type=datetime.datetime,
+    )
+    update_time = Attrib(
+        type=datetime.datetime,
+    )
+    upvote_count = Attrib(
+        type=int,
+    )

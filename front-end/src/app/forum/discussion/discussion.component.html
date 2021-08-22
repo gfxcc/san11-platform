@@ -1,7 +1,6 @@
-<p>discussion works!</p>
 <p-virtualScroller [value]="virtualThreads" scrollHeight="900px" [itemSize]="280" [rows]="10" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)">
     <ng-template pTemplate="header">
-        List of Threads
+        综合讨论区
     </ng-template>
     <ng-template let-thread pTemplate="item" let-i="index">
         <app-thread-card [thread]="thread" class="card-wrapper">

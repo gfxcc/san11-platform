@@ -1,7 +1,8 @@
+import attr
 from handler.model.base.base_db import ListOptions
 from typing import Iterable, Optional, Tuple
 from handler.util.resource_parser import ResourceName, parse_name
-from handler.model.model_binary import File, ModelBinary
+from handler.model.model_binary import File, ModelBinary, ModelBinaryV1
 import logging
 import sys
 import os
@@ -80,12 +81,14 @@ class BinaryHandler:
         return binary
 
     def list_binaries(self, request, handler_context) -> Tuple[Iterable[ModelBinary], str]:
-        # # TODO: remove migration hack
-        # binaries = Binary.list(0, '')
-        # for binary in binaries:
-        #     model_binary = ModelBinary.from_legacy(binary)
-        #     if not model_binary.is_exist():
-        #         model_binary.create(binary.parent, binary.id)
+        # TODO-BEGIN: remove migration hack
+        if not ModelBinary.list(ListOptions(parent=None))[0]:
+            binaries = ModelBinaryV1.list(ListOptions(parent=None))[0]
+            for binary in binaries:
+                model_binary = ModelBinary.from_v1(binary)
+                model_binary.create(parse_name(model_binary.name)[0])
+        # TODO-END
+
         list_options = ListOptions.from_request(request)
         return ModelBinary.list(list_options)
 

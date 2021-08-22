@@ -1,5 +1,5 @@
 from __future__ import annotations
-from handler.model.model_thread import Thread
+from handler.model.model_thread import ModelThread
 from handler.thread_handler import ThreadHandler
 from handler.model.model_reply import ModelReply
 from handler.model.model_comment import ModelComment
@@ -211,7 +211,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     
     # Thread
     def CreateThread(self, request, context):
-        parent, thread = request.parent, Thread.from_pb(request.thread)
+        parent, thread = request.parent, ModelThread.from_pb(request.thread)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
         created_thread = self.thread_handler.create_thread(
@@ -230,7 +230,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     def DeleteThread(self, request, context):
-        thread = Thread.from_name(request.name)
+        thread = ModelThread.from_name(request.name)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
         assert handler_context.user.user_id == thread.author_id or handler_context.user.user_type == 'admin', '权限验证失败'

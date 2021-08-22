@@ -22,6 +22,7 @@ import { CreateThreadComponent } from './discussion/create-thread/create-thread.
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { ThreadCardComponent } from './discussion/thread-card/thread-card.component';
+import { ThreadDetailComponent } from './discussion/thread-detail/thread-detail.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ThreadCardComponent } from './discussion/thread-card/thread-card.compon
     ArticleCardComponent,
     DiscussionComponent,
     CreateThreadComponent,
-    ThreadCardComponent
+    ThreadCardComponent,
+    ThreadDetailComponent
   ],
   imports: [
     CommonModule,

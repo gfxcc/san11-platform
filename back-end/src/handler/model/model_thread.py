@@ -7,11 +7,11 @@ from ..util.time_util import get_now
 
 
 @InitModel(
-    db_table='threads_serial',
+    db_table='threads',
     proto_class=pb.Thread,
 )
 @attr.s
-class Thread(ModelBase):
+class ModelThread(ModelBase):
     # Resource name. It is `{parent}/articles/{article_id}`
     # E.g. `articles/12345`
     name = Attrib(

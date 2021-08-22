@@ -171,7 +171,7 @@ class DbModelBase(ABC):
         })
         return resp[0] == 1
 
-    def create(self, parent: str, resource_id: Optional[int] = None) -> None:
+    def create(self, parent: str) -> None:
         '''
         Persist the resource to DB.
         Raise:
@@ -188,20 +188,16 @@ class DbModelBase(ABC):
             return '/'.join(map(str, segments))
 
         db_table = self._DB_TABLE
-        # resource_id = resource_id or get_next_resource_id(parent)
-        # self.name = get_name(parent, self._DB_TABLE, resource_id)
         data = self._prepare_data()
         db_fields_name = ['parent', 'resource_id', 'data']
-        sql = f"INSERT INTO {db_table} ({get_db_fields_str(db_fields_name)}) "\
-            f"(SELECT '{parent}', COALESCE(MAX(resource_id)+1, 1), NULL FROM {self._DB_TABLE} WHERE parent=%(parent)s) RETURNING resource_id"
+        sql = f"INSERT INTO {db_table} (parent, data) VALUES (%(parent)s, %(data)s) RETURNING resource_id"
         params = {
             'parent': parent,
-            'resource_id': resource_id,
-            # 'data': json.dumps(data, default=str)
+            'data': json.dumps(data, default=str)
         }
         resp = run_sql_with_param_and_fetch_one(sql, params)
-        resource_id = resp[0]
-        self.name = get_name(parent, self._DB_TABLE, resource_id)
+        self.resource_id = resp[0]
+        self.name = get_name(parent, self._DB_TABLE, self.resource_id)
         self.update(update_update_time=False)
         logger.info(f'CREATED: {self}')
 
@@ -232,18 +228,22 @@ class DbModelBase(ABC):
         kwargs = parse_filter(cls, list_options.filter)
 
         db_table = cls._DB_TABLE
-        predicate_statement = 'WHERE parent=%(parent)s'
-        if kwargs:
-            wheres = []
-            for key in kwargs:
-                db_field = cls._DB_FIELDS_DICT[key]
-                db_path = db_field.name
-                if db_field.repeated:
-                    # https://www.postgresql.org/docs/9.5/functions-json.html
-                    wheres.append(f"(data->'{db_path}')::jsonb ? %(db_path)s")
-                else:
-                    wheres.append(f"data->>'{db_path}'=%({db_path})s")
-            predicate_statement += ' AND ' + 'AND'.join(wheres)
+        # TODO: Remove special logic for data migration.
+        if list_options.parent is None:
+            predicate_statement = ' '
+        else:
+            predicate_statement = 'WHERE parent=%(parent)s'
+            if kwargs:
+                wheres = []
+                for key in kwargs:
+                    db_field = cls._DB_FIELDS_DICT[key]
+                    db_path = db_field.name
+                    if db_field.repeated:
+                        # https://www.postgresql.org/docs/9.5/functions-json.html
+                        wheres.append(f"(data->'{db_path}')::jsonb ? %(db_path)s")
+                    else:
+                        wheres.append(f"data->>'{db_path}'=%({db_path})s")
+                predicate_statement += ' AND ' + 'AND'.join(wheres)
 
         if order_by_fields:
             order_statement = f'ORDER BY ' + \
