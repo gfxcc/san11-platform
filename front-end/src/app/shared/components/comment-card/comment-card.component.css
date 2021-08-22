@@ -10,22 +10,21 @@
 }
 
 .main:hover {
-    /* background-color: rgba(0, 0, 0, 0.139); */
-    box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
-    /* cursor: pointer; */
+    /* box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%); */
 }
 
 .author-image {
     /* background-image: url('../../../assets/images/zhuge.jpg'); */
     background-size: cover;
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
 }
 
 .right {
+    margin-left: 10px;
+    padding: 10px;
     width: calc(100% - 40px);
-    padding-left: 10px;
 }
 
 .right .header {

@@ -5,7 +5,7 @@ import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-pa
 
 import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
-import { Article, CreateArticleRequest, CreatePackageRequest, CreateThreadRequest, DeleteArticleRequest, DeletePackageRequest, DeleteThreadRequest, GetArticleRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListPackagesResponse, ListThreadsRequest, ListThreadsResponse, Thread, UpdateArticleRequest, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
+import { Article, CreateArticleRequest, CreatePackageRequest, CreateThreadRequest, DeleteArticleRequest, DeletePackageRequest, DeleteThreadRequest, GetArticleRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListPackagesResponse, ListThreadsRequest, ListThreadsResponse, Thread, UpdateArticleRequest, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
 import { CreateBinaryRequest, CreateImageRequest } from '../../proto/san11-platform.pb'
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
@@ -45,6 +45,10 @@ export class San11PlatformServiceService {
 
   }
   // threads
+  getThread(request: GetThreadRequest): Observable<Thread> {
+    return this.severClient.getThread(request, this.getMetadata());
+  }
+
   listThreads(request: ListThreadsRequest): Observable<ListThreadsResponse> {
     return this.severClient.listThreads(request, this.getMetadata());
   }

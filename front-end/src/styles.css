@@ -194,3 +194,8 @@ body {
 .input:invalid {
     color: orangered;
 }
+
+.radius-border {
+    box-shadow: 2px 2px 8px rgb(0 0 0 / 10%);
+    border-radius: 4px;
+}

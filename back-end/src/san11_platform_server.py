@@ -1,4 +1,5 @@
 from __future__ import annotations
+from handler import thread_handler
 from handler.model.model_thread import ModelThread
 from handler.thread_handler import ThreadHandler
 from handler.model.model_reply import ModelReply
@@ -217,6 +218,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         created_thread = self.thread_handler.create_thread(
             parent, thread, handler_context)
         return created_thread.to_pb()
+
+    def GetThread(self, request, context):
+        handler_context = HandlerContext.from_service_context(context)
+        return self.thread_handler.get_thread(request.name, handler_context).to_pb()
 
     def ListThreads(self, request, context):
         handler_context = HandlerContext.from_service_context(context)
