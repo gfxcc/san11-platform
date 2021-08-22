@@ -12302,6 +12302,350 @@ export module Url {
 }
 
 /**
+ * Message implementation for routeguide.Thread
+ */
+export class Thread implements GrpcMessage {
+  static id = 'routeguide.Thread';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new Thread();
+    Thread.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: Thread) {
+    _instance.name = _instance.name || '';
+    _instance.subject = _instance.subject || '';
+    _instance.content = _instance.content || '';
+    _instance.authorId = _instance.authorId || '0';
+    _instance.createTime = _instance.createTime || undefined;
+    _instance.updateTime = _instance.updateTime || undefined;
+    _instance.state = _instance.state || 0;
+    _instance.tags = _instance.tags || [];
+    _instance.viewCount = _instance.viewCount || '0';
+    _instance.likeCount = _instance.likeCount || '0';
+    _instance.commentCount = _instance.commentCount || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(_instance: Thread, _reader: BinaryReader) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.name = _reader.readString();
+          break;
+        case 2:
+          _instance.subject = _reader.readString();
+          break;
+        case 3:
+          _instance.content = _reader.readString();
+          break;
+        case 4:
+          _instance.authorId = _reader.readInt64String();
+          break;
+        case 5:
+          _instance.createTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.createTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 6:
+          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.updateTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 7:
+          _instance.state = _reader.readEnum();
+          break;
+        case 8:
+          (_instance.tags = _instance.tags || []).push(_reader.readString());
+          break;
+        case 21:
+          _instance.viewCount = _reader.readInt64String();
+          break;
+        case 22:
+          _instance.likeCount = _reader.readInt64String();
+          break;
+        case 23:
+          _instance.commentCount = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    Thread.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(_instance: Thread, _writer: BinaryWriter) {
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
+    }
+    if (_instance.subject) {
+      _writer.writeString(2, _instance.subject);
+    }
+    if (_instance.content) {
+      _writer.writeString(3, _instance.content);
+    }
+    if (_instance.authorId) {
+      _writer.writeInt64String(4, _instance.authorId);
+    }
+    if (_instance.createTime) {
+      _writer.writeMessage(
+        5,
+        _instance.createTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
+    if (_instance.updateTime) {
+      _writer.writeMessage(
+        6,
+        _instance.updateTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
+    if (_instance.state) {
+      _writer.writeEnum(7, _instance.state);
+    }
+    if (_instance.tags && _instance.tags.length) {
+      _writer.writeRepeatedString(8, _instance.tags);
+    }
+    if (_instance.viewCount) {
+      _writer.writeInt64String(21, _instance.viewCount);
+    }
+    if (_instance.likeCount) {
+      _writer.writeInt64String(22, _instance.likeCount);
+    }
+    if (_instance.commentCount) {
+      _writer.writeInt64String(23, _instance.commentCount);
+    }
+  }
+
+  private _name?: string;
+  private _subject?: string;
+  private _content?: string;
+  private _authorId?: string;
+  private _createTime?: googleProtobuf000.Timestamp;
+  private _updateTime?: googleProtobuf000.Timestamp;
+  private _state?: ResourceState;
+  private _tags?: string[];
+  private _viewCount?: string;
+  private _likeCount?: string;
+  private _commentCount?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of Thread to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<Thread.AsObject>) {
+    _value = _value || {};
+    this.name = _value.name;
+    this.subject = _value.subject;
+    this.content = _value.content;
+    this.authorId = _value.authorId;
+    this.createTime = _value.createTime
+      ? new googleProtobuf000.Timestamp(_value.createTime)
+      : undefined;
+    this.updateTime = _value.updateTime
+      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      : undefined;
+    this.state = _value.state;
+    this.tags = (_value.tags || []).slice();
+    this.viewCount = _value.viewCount;
+    this.likeCount = _value.likeCount;
+    this.commentCount = _value.commentCount;
+    Thread.refineValues(this);
+  }
+  get name(): string | undefined {
+    return this._name;
+  }
+  set name(value: string | undefined) {
+    this._name = value;
+  }
+  get subject(): string | undefined {
+    return this._subject;
+  }
+  set subject(value: string | undefined) {
+    this._subject = value;
+  }
+  get content(): string | undefined {
+    return this._content;
+  }
+  set content(value: string | undefined) {
+    this._content = value;
+  }
+  get authorId(): string | undefined {
+    return this._authorId;
+  }
+  set authorId(value: string | undefined) {
+    this._authorId = value;
+  }
+  get createTime(): googleProtobuf000.Timestamp | undefined {
+    return this._createTime;
+  }
+  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._createTime = value;
+  }
+  get updateTime(): googleProtobuf000.Timestamp | undefined {
+    return this._updateTime;
+  }
+  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._updateTime = value;
+  }
+  get state(): ResourceState | undefined {
+    return this._state;
+  }
+  set state(value: ResourceState | undefined) {
+    this._state = value;
+  }
+  get tags(): string[] | undefined {
+    return this._tags;
+  }
+  set tags(value: string[] | undefined) {
+    this._tags = value;
+  }
+  get viewCount(): string | undefined {
+    return this._viewCount;
+  }
+  set viewCount(value: string | undefined) {
+    this._viewCount = value;
+  }
+  get likeCount(): string | undefined {
+    return this._likeCount;
+  }
+  set likeCount(value: string | undefined) {
+    this._likeCount = value;
+  }
+  get commentCount(): string | undefined {
+    return this._commentCount;
+  }
+  set commentCount(value: string | undefined) {
+    this._commentCount = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    Thread.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): Thread.AsObject {
+    return {
+      name: this.name,
+      subject: this.subject,
+      content: this.content,
+      authorId: this.authorId,
+      createTime: this.createTime ? this.createTime.toObject() : undefined,
+      updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
+      state: this.state,
+      tags: (this.tags || []).slice(),
+      viewCount: this.viewCount,
+      likeCount: this.likeCount,
+      commentCount: this.commentCount
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): Thread.AsProtobufJSON {
+    return {
+      name: this.name,
+      subject: this.subject,
+      content: this.content,
+      authorId: this.authorId,
+      createTime: this.createTime
+        ? this.createTime.toProtobufJSON(options)
+        : null,
+      updateTime: this.updateTime
+        ? this.updateTime.toProtobufJSON(options)
+        : null,
+      state: ResourceState[this.state ?? 0],
+      tags: (this.tags || []).slice(),
+      viewCount: this.viewCount,
+      likeCount: this.likeCount,
+      commentCount: this.commentCount
+    };
+  }
+}
+export module Thread {
+  /**
+   * Standard JavaScript object representation for Thread
+   */
+  export interface AsObject {
+    name?: string;
+    subject?: string;
+    content?: string;
+    authorId?: string;
+    createTime?: googleProtobuf000.Timestamp.AsObject;
+    updateTime?: googleProtobuf000.Timestamp.AsObject;
+    state?: ResourceState;
+    tags?: string[];
+    viewCount?: string;
+    likeCount?: string;
+    commentCount?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for Thread
+   */
+  export interface AsProtobufJSON {
+    name?: string;
+    subject?: string;
+    content?: string;
+    authorId?: string;
+    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    state?: string;
+    tags?: string[];
+    viewCount?: string;
+    likeCount?: string;
+    commentCount?: string;
+  }
+}
+
+/**
  * Message implementation for routeguide.Comment
  */
 export class Comment implements GrpcMessage {
@@ -12329,6 +12673,7 @@ export class Comment implements GrpcMessage {
     _instance.authorId = _instance.authorId || '0';
     _instance.upvoteCount = _instance.upvoteCount || '0';
     _instance.replies = _instance.replies || [];
+    _instance.index = _instance.index || '0';
   }
 
   /**
@@ -12380,6 +12725,9 @@ export class Comment implements GrpcMessage {
             messageInitializer8
           );
           break;
+        case 9:
+          _instance.index = _reader.readInt64String();
+          break;
         default:
           _reader.skipField();
       }
@@ -12427,6 +12775,9 @@ export class Comment implements GrpcMessage {
         Reply.serializeBinaryToWriter
       );
     }
+    if (_instance.index) {
+      _writer.writeInt64String(9, _instance.index);
+    }
   }
 
   private _name?: string;
@@ -12436,6 +12787,7 @@ export class Comment implements GrpcMessage {
   private _authorId?: string;
   private _upvoteCount?: string;
   private _replies?: Reply[];
+  private _index?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -12454,6 +12806,7 @@ export class Comment implements GrpcMessage {
     this.authorId = _value.authorId;
     this.upvoteCount = _value.upvoteCount;
     this.replies = (_value.replies || []).map(m => new Reply(m));
+    this.index = _value.index;
     Comment.refineValues(this);
   }
   get name(): string | undefined {
@@ -12498,6 +12851,12 @@ export class Comment implements GrpcMessage {
   set replies(value: Reply[] | undefined) {
     this._replies = value;
   }
+  get index(): string | undefined {
+    return this._index;
+  }
+  set index(value: string | undefined) {
+    this._index = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -12520,7 +12879,8 @@ export class Comment implements GrpcMessage {
       text: this.text,
       authorId: this.authorId,
       upvoteCount: this.upvoteCount,
-      replies: (this.replies || []).map(m => m.toObject())
+      replies: (this.replies || []).map(m => m.toObject()),
+      index: this.index
     };
   }
 
@@ -12551,7 +12911,8 @@ export class Comment implements GrpcMessage {
       text: this.text,
       authorId: this.authorId,
       upvoteCount: this.upvoteCount,
-      replies: (this.replies || []).map(m => m.toProtobufJSON(options))
+      replies: (this.replies || []).map(m => m.toProtobufJSON(options)),
+      index: this.index
     };
   }
 }
@@ -12567,6 +12928,7 @@ export module Comment {
     authorId?: string;
     upvoteCount?: string;
     replies?: Reply.AsObject[];
+    index?: string;
   }
 
   /**
@@ -12580,6 +12942,7 @@ export module Comment {
     authorId?: string;
     upvoteCount?: string;
     replies?: Reply.AsProtobufJSON[] | null;
+    index?: string;
   }
 }
 
@@ -14192,350 +14555,6 @@ export module File {
     filename?: string;
     ext?: string;
     uri?: string;
-  }
-}
-
-/**
- * Message implementation for routeguide.Thread
- */
-export class Thread implements GrpcMessage {
-  static id = 'routeguide.Thread';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new Thread();
-    Thread.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: Thread) {
-    _instance.name = _instance.name || '';
-    _instance.subject = _instance.subject || '';
-    _instance.content = _instance.content || '';
-    _instance.authorId = _instance.authorId || '0';
-    _instance.createTime = _instance.createTime || undefined;
-    _instance.updateTime = _instance.updateTime || undefined;
-    _instance.state = _instance.state || 0;
-    _instance.tags = _instance.tags || [];
-    _instance.viewCount = _instance.viewCount || '0';
-    _instance.likeCount = _instance.likeCount || '0';
-    _instance.commentCount = _instance.commentCount || '0';
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(_instance: Thread, _reader: BinaryReader) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.name = _reader.readString();
-          break;
-        case 2:
-          _instance.subject = _reader.readString();
-          break;
-        case 3:
-          _instance.content = _reader.readString();
-          break;
-        case 4:
-          _instance.authorId = _reader.readInt64String();
-          break;
-        case 5:
-          _instance.createTime = new googleProtobuf000.Timestamp();
-          _reader.readMessage(
-            _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
-          );
-          break;
-        case 6:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
-          _reader.readMessage(
-            _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
-          );
-          break;
-        case 7:
-          _instance.state = _reader.readEnum();
-          break;
-        case 8:
-          (_instance.tags = _instance.tags || []).push(_reader.readString());
-          break;
-        case 21:
-          _instance.viewCount = _reader.readInt64String();
-          break;
-        case 22:
-          _instance.likeCount = _reader.readInt64String();
-          break;
-        case 23:
-          _instance.commentCount = _reader.readInt64String();
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    Thread.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(_instance: Thread, _writer: BinaryWriter) {
-    if (_instance.name) {
-      _writer.writeString(1, _instance.name);
-    }
-    if (_instance.subject) {
-      _writer.writeString(2, _instance.subject);
-    }
-    if (_instance.content) {
-      _writer.writeString(3, _instance.content);
-    }
-    if (_instance.authorId) {
-      _writer.writeInt64String(4, _instance.authorId);
-    }
-    if (_instance.createTime) {
-      _writer.writeMessage(
-        5,
-        _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
-      );
-    }
-    if (_instance.updateTime) {
-      _writer.writeMessage(
-        6,
-        _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
-      );
-    }
-    if (_instance.state) {
-      _writer.writeEnum(7, _instance.state);
-    }
-    if (_instance.tags && _instance.tags.length) {
-      _writer.writeRepeatedString(8, _instance.tags);
-    }
-    if (_instance.viewCount) {
-      _writer.writeInt64String(21, _instance.viewCount);
-    }
-    if (_instance.likeCount) {
-      _writer.writeInt64String(22, _instance.likeCount);
-    }
-    if (_instance.commentCount) {
-      _writer.writeInt64String(23, _instance.commentCount);
-    }
-  }
-
-  private _name?: string;
-  private _subject?: string;
-  private _content?: string;
-  private _authorId?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
-  private _state?: ResourceState;
-  private _tags?: string[];
-  private _viewCount?: string;
-  private _likeCount?: string;
-  private _commentCount?: string;
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of Thread to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<Thread.AsObject>) {
-    _value = _value || {};
-    this.name = _value.name;
-    this.subject = _value.subject;
-    this.content = _value.content;
-    this.authorId = _value.authorId;
-    this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
-      : undefined;
-    this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
-      : undefined;
-    this.state = _value.state;
-    this.tags = (_value.tags || []).slice();
-    this.viewCount = _value.viewCount;
-    this.likeCount = _value.likeCount;
-    this.commentCount = _value.commentCount;
-    Thread.refineValues(this);
-  }
-  get name(): string | undefined {
-    return this._name;
-  }
-  set name(value: string | undefined) {
-    this._name = value;
-  }
-  get subject(): string | undefined {
-    return this._subject;
-  }
-  set subject(value: string | undefined) {
-    this._subject = value;
-  }
-  get content(): string | undefined {
-    return this._content;
-  }
-  set content(value: string | undefined) {
-    this._content = value;
-  }
-  get authorId(): string | undefined {
-    return this._authorId;
-  }
-  set authorId(value: string | undefined) {
-    this._authorId = value;
-  }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
-    return this._createTime;
-  }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
-    this._createTime = value;
-  }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
-    return this._updateTime;
-  }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
-    this._updateTime = value;
-  }
-  get state(): ResourceState | undefined {
-    return this._state;
-  }
-  set state(value: ResourceState | undefined) {
-    this._state = value;
-  }
-  get tags(): string[] | undefined {
-    return this._tags;
-  }
-  set tags(value: string[] | undefined) {
-    this._tags = value;
-  }
-  get viewCount(): string | undefined {
-    return this._viewCount;
-  }
-  set viewCount(value: string | undefined) {
-    this._viewCount = value;
-  }
-  get likeCount(): string | undefined {
-    return this._likeCount;
-  }
-  set likeCount(value: string | undefined) {
-    this._likeCount = value;
-  }
-  get commentCount(): string | undefined {
-    return this._commentCount;
-  }
-  set commentCount(value: string | undefined) {
-    this._commentCount = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    Thread.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): Thread.AsObject {
-    return {
-      name: this.name,
-      subject: this.subject,
-      content: this.content,
-      authorId: this.authorId,
-      createTime: this.createTime ? this.createTime.toObject() : undefined,
-      updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
-      state: this.state,
-      tags: (this.tags || []).slice(),
-      viewCount: this.viewCount,
-      likeCount: this.likeCount,
-      commentCount: this.commentCount
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): Thread.AsProtobufJSON {
-    return {
-      name: this.name,
-      subject: this.subject,
-      content: this.content,
-      authorId: this.authorId,
-      createTime: this.createTime
-        ? this.createTime.toProtobufJSON(options)
-        : null,
-      updateTime: this.updateTime
-        ? this.updateTime.toProtobufJSON(options)
-        : null,
-      state: ResourceState[this.state ?? 0],
-      tags: (this.tags || []).slice(),
-      viewCount: this.viewCount,
-      likeCount: this.likeCount,
-      commentCount: this.commentCount
-    };
-  }
-}
-export module Thread {
-  /**
-   * Standard JavaScript object representation for Thread
-   */
-  export interface AsObject {
-    name?: string;
-    subject?: string;
-    content?: string;
-    authorId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
-    state?: ResourceState;
-    tags?: string[];
-    viewCount?: string;
-    likeCount?: string;
-    commentCount?: string;
-  }
-
-  /**
-   * Protobuf JSON representation for Thread
-   */
-  export interface AsProtobufJSON {
-    name?: string;
-    subject?: string;
-    content?: string;
-    authorId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    state?: string;
-    tags?: string[];
-    viewCount?: string;
-    likeCount?: string;
-    commentCount?: string;
   }
 }
 

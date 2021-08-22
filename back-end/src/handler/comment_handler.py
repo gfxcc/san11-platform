@@ -1,4 +1,5 @@
-from handler.util.resource_parser import parse_name
+from handler.model.model_thread import ModelThread
+from handler.util.resource_parser import ResourceName, parse_name, parse_resource_name
 from handler.model.base.base_db import ListOptions
 from handler.model.reply import Reply
 from handler.model.model_reply import ModelReply, ModelReplyV1
@@ -10,7 +11,7 @@ import sys
 import os
 
 from .util.time_util import get_now
-from .common.exception import Unauthenticated, NotFound
+from .common.exception import InvalidArgument, Unauthenticated, NotFound
 from .model.comment import Comment
 from .model.user import User
 from .model.activity import Activity, Action
@@ -27,6 +28,16 @@ class CommentHandler:
                        handler_context) -> ModelComment:
         user_id = handler_context.user.user_id
         comment.author_id = user_id
+        try:
+            parent_obj = parse_resource_name(parent)
+            if isinstance(parent_obj, ModelThread):
+                thread = parent_obj
+                thread.comment_count += 1
+                thread.update()
+                comment.index = thread.comment_count
+        except InvalidArgument:
+            pass
+
         comment.create(parent=parent, user_id=user_id)
         return comment
 
@@ -76,7 +87,7 @@ class CommentHandler:
 
     def delete_comment(self, comment: ModelComment,
                        handler_context) -> ModelComment:
-        for reply in ModelReply.list(parent=comment.name):
+        for reply in ModelReply.list(ListOptions(parent=comment.name))[0]:
             reply.delete()
         comment.delete(user_id=handler_context.user.user_id)
         return comment

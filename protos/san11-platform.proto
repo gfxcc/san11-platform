@@ -559,6 +559,22 @@ message Url {
     string url=1;
 }
 
+message Thread {
+    // E.g. `categories/123/packages/456/threads/789`
+    string name = 1;
+    string subject = 2;
+    string content = 3;
+    int64 author_id = 4;
+    google.protobuf.Timestamp create_time = 5;  // OUTPUT_ONLY
+    google.protobuf.Timestamp update_time = 6;  // OUTPUT_ONLY
+    ResourceState state = 7;
+    repeated string tags = 8;
+
+    int64 view_count = 21;
+    int64 like_count = 22;
+    int64 comment_count = 23;
+}
+
 message Comment {
     // E.g. categories/xxx/pacakges/xxx, users/xxx, website, 
     reserved 2;
@@ -570,6 +586,8 @@ message Comment {
     int64 upvote_count = 7;
     //
     repeated Reply replies = 8; // OUTPUT_ONLY
+    // The index of the comment within its parent. The first index is 1.
+    int64 index = 9;
 }
 
 message Reply {
@@ -637,22 +655,6 @@ message File {
     // Unique resource identifier
     // E.g. categories/123/packages/456/binaries/eafsdfewasdfdfsaasdffda
     string uri = 3;
-}
-
-message Thread {
-    // E.g. `categories/123/packages/456/threads/789`
-    string name = 1;
-    string subject = 2;
-    string content = 3;
-    int64 author_id = 4;
-    google.protobuf.Timestamp create_time = 5;  // OUTPUT_ONLY
-    google.protobuf.Timestamp update_time = 6;  // OUTPUT_ONLY
-    ResourceState state = 7;
-    repeated string tags = 8;
-
-    int64 view_count = 21;
-    int64 like_count = 22;
-    int64 comment_count = 23;
 }
 
 // Utilities

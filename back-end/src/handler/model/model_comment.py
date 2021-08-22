@@ -41,6 +41,9 @@ class ModelComment(ModelBase, TrackLifecycle):
     upvote_count = Attrib(
         type=int,
     )
+    index = Attrib(
+        type=int,
+    )
 
     def to_pb(self) -> pb.Comment:
         proto = super(ModelComment, self).to_pb()

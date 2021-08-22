@@ -1,11 +1,16 @@
 from __future__ import annotations
+from handler.common.exception import InvalidArgument
+from handler.model.base.base import ModelBase
+from handler.model.model_thread import ModelThread
+from handler.model.model_reply import ModelReply
+from handler.model.model_comment import ModelComment
 from handler.model.model_binary import ModelBinary
 from os import stat
 import attr
 import os
 import re
 import logging
-from typing import Tuple
+from typing import Optional, Tuple
 
 from ..model.resource import ResourceMixin
 from ..model.package import Package
@@ -19,21 +24,27 @@ from ..model.reply import Reply
 logger = logging.getLogger(os.path.basename(__file__))
 
 
+
 def parse_name(name: str) -> Tuple[str, str, int]:
+    '''
+    Consider use `class ResourceName` rather than directly call this function.
+    '''
     NAME_PATTERN = r'((?P<parent>.+)/)?(?P<collection>[a-zA-Z0-9]+)/(?P<resource_id>[0-9]+)'
     match = re.fullmatch(NAME_PATTERN, name)
-    assert match, f'{name} is not a valid resource name'
+    if not match:
+        raise InvalidArgument(f'{name} is not a valid resource name')
     return match['parent'] or '', match['collection'], int(match['resource_id'])
 
 
-def parse_resource_name(name: str) -> ResourceMixin:
+def parse_resource_name(name: str) -> ModelBase:
     COLLECTION_TO_CLASS = {
         'packages': Package,
         'binaries': ModelBinary,
         'tags': Tag,
-        'comments': Comment,
-        'replies': Reply,
+        'comments': ModelComment,
+        'replies': ModelReply,
         'users': User,
+        'threads': ModelThread,
     }
     _, collection, resource_id = parse_name(name)
 
@@ -45,11 +56,16 @@ def parse_resource_name(name: str) -> ResourceMixin:
 
 @attr.s(auto_attribs=True)
 class ResourceName:
-    parent : str
+    parent : Optional[ResourceName]
     collection : str
     resource_id : int
+    _str : str
+
+    def __str__(self) -> str:
+        return self._str 
 
     @classmethod
     def from_str(cls, s: str) -> ResourceName:
-        parent, collection, resource_id = parse_name(s)
-        return cls(parent=parent, collection=collection, resource_id=resource_id)
+        parent_str, collection, resource_id = parse_name(s)
+        parent = ResourceName.from_str(parent_str) if parent_str else None
+        return cls(parent=parent, collection=collection, resource_id=resource_id, str=s)

@@ -137,8 +137,8 @@ body {
     flex: 1 1 auto;
 }
 
-.clickable {
-    /* box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%); */
+
+/* .clickable {
     color: #3f51b5;
     border-bottom: 1px solid #3f51b5;
 }
@@ -146,6 +146,21 @@ body {
 .clickable:hover {
     cursor: pointer;
     border-bottom: solid 1px grey;
+} */
+
+.clickable {
+    display: inline-block;
+    overflow: visible;
+    white-space: normal;
+    text-decoration: none;
+    text-decoration-line: none;
+    text-decoration-thickness: initial;
+    text-decoration-style: initial;
+    text-decoration-color: initial;
+}
+
+.clickable:hover {
+    text-decoration: underline;
 }
 
 .actions-section {
