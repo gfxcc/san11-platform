@@ -85,6 +85,31 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.CreateImageRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Url.FromString,
                 )
+        self.CreateThread = channel.unary_unary(
+                '/routeguide.RouteGuide/CreateThread',
+                request_serializer=san11__platform__pb2.CreateThreadRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Thread.FromString,
+                )
+        self.GetThread = channel.unary_unary(
+                '/routeguide.RouteGuide/GetThread',
+                request_serializer=san11__platform__pb2.GetThreadRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Thread.FromString,
+                )
+        self.ListThreads = channel.unary_unary(
+                '/routeguide.RouteGuide/ListThreads',
+                request_serializer=san11__platform__pb2.ListThreadsRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.ListThreadsResponse.FromString,
+                )
+        self.UpdateThread = channel.unary_unary(
+                '/routeguide.RouteGuide/UpdateThread',
+                request_serializer=san11__platform__pb2.UpdateThreadRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Thread.FromString,
+                )
+        self.DeleteThread = channel.unary_unary(
+                '/routeguide.RouteGuide/DeleteThread',
+                request_serializer=san11__platform__pb2.DeleteThreadRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Thread.FromString,
+                )
         self.CreateComment = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateComment',
                 request_serializer=san11__platform__pb2.CreateCommentRequest.SerializeToString,
@@ -314,6 +339,37 @@ class RouteGuideServicer(object):
     def CreateImage(self, request, context):
         """Image related
         """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateThread(self, request, context):
+        """Thread related
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetThread(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListThreads(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateThread(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteThread(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -565,6 +621,31 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.CreateImage,
                     request_deserializer=san11__platform__pb2.CreateImageRequest.FromString,
                     response_serializer=san11__platform__pb2.Url.SerializeToString,
+            ),
+            'CreateThread': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateThread,
+                    request_deserializer=san11__platform__pb2.CreateThreadRequest.FromString,
+                    response_serializer=san11__platform__pb2.Thread.SerializeToString,
+            ),
+            'GetThread': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetThread,
+                    request_deserializer=san11__platform__pb2.GetThreadRequest.FromString,
+                    response_serializer=san11__platform__pb2.Thread.SerializeToString,
+            ),
+            'ListThreads': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListThreads,
+                    request_deserializer=san11__platform__pb2.ListThreadsRequest.FromString,
+                    response_serializer=san11__platform__pb2.ListThreadsResponse.SerializeToString,
+            ),
+            'UpdateThread': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateThread,
+                    request_deserializer=san11__platform__pb2.UpdateThreadRequest.FromString,
+                    response_serializer=san11__platform__pb2.Thread.SerializeToString,
+            ),
+            'DeleteThread': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteThread,
+                    request_deserializer=san11__platform__pb2.DeleteThreadRequest.FromString,
+                    response_serializer=san11__platform__pb2.Thread.SerializeToString,
             ),
             'CreateComment': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateComment,
@@ -952,6 +1033,91 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateImage',
             san11__platform__pb2.CreateImageRequest.SerializeToString,
             san11__platform__pb2.Url.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CreateThread(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateThread',
+            san11__platform__pb2.CreateThreadRequest.SerializeToString,
+            san11__platform__pb2.Thread.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetThread(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/GetThread',
+            san11__platform__pb2.GetThreadRequest.SerializeToString,
+            san11__platform__pb2.Thread.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ListThreads(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListThreads',
+            san11__platform__pb2.ListThreadsRequest.SerializeToString,
+            san11__platform__pb2.ListThreadsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateThread(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateThread',
+            san11__platform__pb2.UpdateThreadRequest.SerializeToString,
+            san11__platform__pb2.Thread.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DeleteThread(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteThread',
+            san11__platform__pb2.DeleteThreadRequest.SerializeToString,
+            san11__platform__pb2.Thread.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

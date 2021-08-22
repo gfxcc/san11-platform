@@ -3,7 +3,7 @@
     <div mat-card-avatar class="author-image">
         <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
     </div>
-    <div class="right">
+    <div class="right radius-border">
         <div (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
             <div class="header">
                 <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>

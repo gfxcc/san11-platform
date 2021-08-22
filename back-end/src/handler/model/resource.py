@@ -181,7 +181,7 @@ class ResourceMixin(ABC):
             f"'{field}': self.{field}" for field in self.db_fields())
         params = self._update_db_params(eval(f'{{ {params_raw} }}'))
         resource_id = run_sql_with_param_and_fetch_one(
-            sql, params, transaction=True)[0]
+            sql, params)[0]
         exec(f"self.{self.db_fields()[0]} = resource_id")
 
         if isinstance(self, TrackLifecycle) and track:

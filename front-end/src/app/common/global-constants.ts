@@ -19,8 +19,9 @@ export class GlobalConstants {
     ];
 
     public static webModules = [
-        { value: '11', text: '专栏文章', link: ['/articles'], icon: 'sticky_note_2' },
-        { value: '12', text: '留言板', link: ['/message-board'], icon: 'sms' },
+        // { value: '11', text: '讨论区', link: ['/discussion'], icon: 'forum' },
+        { value: '12', text: '专栏文章', link: ['/articles'], icon: 'sticky_note_2' },
+        { value: '13', text: '留言板', link: ['/message-board'], icon: 'note_alt' },
     ]
 
     public static adminModules = [

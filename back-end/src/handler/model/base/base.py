@@ -5,9 +5,16 @@ In most case, a resource could exists in 3 differnt layers.
     --------------------+-------------------+---------------
     Grpc layer          | protobuff message | san11_platform_pb2.py (generated)
     Logic/Handler layer | ModelBase         | handler/xxxx_handler.py
-    Storage layer       | Db schema         | base_db.py
+    Data layer          | Db schema         | base_db.py
 
-Usage:
+# Dependency
+```
+base_db -> base_proto -> base_core
+   |                       ^
+   -------------------------
+```
+
+# Usage:
 
 @InitModel(
     ...
@@ -123,8 +130,8 @@ def Attrib(
 # TODO: integrate TrackLifecycle
 class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
 
-    def create(self, parent: str, resource_id: Optional[int] = None, user_id: Optional[int] = None) -> None:
-        base_db.DbModelBase.create(self, parent, resource_id)
+    def create(self, parent: str, user_id: Optional[int] = None) -> None:
+        base_db.DbModelBase.create(self, parent)
         if isinstance(self, TrackLifecycle) and user_id:
             Activity(activity_id=None, user_id=user_id, create_time=get_now(),
                      action=Action.CREATE, resource_name=self.name).create()

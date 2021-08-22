@@ -329,6 +329,111 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/CreateThread
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Thread>>
+     */
+    createThread: (
+      requestData: thisProto.CreateThreadRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Thread>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/CreateThread',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.CreateThreadRequest,
+        responseClass: thisProto.Thread
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/GetThread
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Thread>>
+     */
+    getThread: (
+      requestData: thisProto.GetThreadRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Thread>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/GetThread',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.GetThreadRequest,
+        responseClass: thisProto.Thread
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/ListThreads
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListThreadsResponse>>
+     */
+    listThreads: (
+      requestData: thisProto.ListThreadsRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListThreadsResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ListThreads',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListThreadsRequest,
+        responseClass: thisProto.ListThreadsResponse
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateThread
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Thread>>
+     */
+    updateThread: (
+      requestData: thisProto.UpdateThreadRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Thread>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateThread',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateThreadRequest,
+        responseClass: thisProto.Thread
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DeleteThread
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Thread>>
+     */
+    deleteThread: (
+      requestData: thisProto.DeleteThreadRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Thread>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DeleteThread',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DeleteThreadRequest,
+        responseClass: thisProto.Thread
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/CreateComment
      *
      * @param requestMessage Request message
@@ -1147,6 +1252,86 @@ export class RouteGuideClient {
   ): Observable<thisProto.Url> {
     return this.$raw
       .createImage(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/CreateThread
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Thread>
+   */
+  createThread(
+    requestData: thisProto.CreateThreadRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Thread> {
+    return this.$raw
+      .createThread(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/GetThread
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Thread>
+   */
+  getThread(
+    requestData: thisProto.GetThreadRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Thread> {
+    return this.$raw
+      .getThread(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/ListThreads
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListThreadsResponse>
+   */
+  listThreads(
+    requestData: thisProto.ListThreadsRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListThreadsResponse> {
+    return this.$raw
+      .listThreads(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateThread
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Thread>
+   */
+  updateThread(
+    requestData: thisProto.UpdateThreadRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Thread> {
+    return this.$raw
+      .updateThread(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DeleteThread
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Thread>
+   */
+  deleteThread(
+    requestData: thisProto.DeleteThreadRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Thread> {
+    return this.$raw
+      .deleteThread(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

@@ -1,8 +1,8 @@
+from handler.model.base.base_db import ListOptions
 import handler
-from handler.common.api import parse_filter
 import os, attr
 import logging
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Tuple
 
 from .common.field_mask import FieldMask, merge_resource
 from .protos import san11_platform_pb2 as pb
@@ -26,19 +26,16 @@ class ArticleHandler:
         article.update(update_update_time=False)
         return article
 
-    def list_articles(self, parent: str, page_size: int, page_token: str, order_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[Article]:
-        list_kwargs = {}
-        if filter:
-            list_kwargs = parse_filter(Article, filter)
-
-        articles = Article.list(parent=parent, **list_kwargs)
+    def list_articles(self, request, handler_context) -> Tuple[Iterable[Article], str]:
+        list_options = ListOptions.from_request(request)
+        articles, next_page_token = Article.list(list_options)
         public_articles = []
         for article in articles:
             if article.state == pb.ResourceState.Value('NORMAL') or \
                 (handler_context.user and handler_context.user.user_id == article.author_id) or \
                     (handler_context.user and handler_context.user.user_type == 'admin'):
                 public_articles.append(article)
-        return public_articles
+        return public_articles, next_page_token
 
     def update_article(self, update_article: Article, update_mask: FieldMask, handler_context) -> Article:
         article_original = Article.from_name(update_article.name)

@@ -1,6 +1,8 @@
-from typing import Iterable, Optional
+import attr
+from handler.model.base.base_db import ListOptions
+from typing import Iterable, Optional, Tuple
 from handler.util.resource_parser import ResourceName, parse_name
-from handler.model.model_binary import File, ModelBinary
+from handler.model.model_binary import File, ModelBinary, ModelBinaryV1
 import logging
 import sys
 import os
@@ -19,7 +21,6 @@ from .auths import Authenticator
 from .common.url import Url
 from .protos import san11_platform_pb2
 from .util.time_util import get_now
-from .common.api import parse_filter
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -79,18 +80,17 @@ class BinaryHandler:
         binary.update(user_id=handler_context.user.user_id)
         return binary
 
-    def list_binaries(self, parent: str, page_size: int, page_token: str, sort_by: Optional[str], filter: Optional[str], handler_context) -> Iterable[ModelBinary]:
-        # # TODO: remove migration hack
-        # binaries = Binary.list(0, '')
-        # for binary in binaries:
-        #     model_binary = ModelBinary.from_legacy(binary)
-        #     if not model_binary.is_exist():
-        #         model_binary.create(binary.parent, binary.id)
-        list_kwargs = {}
-        if filter:
-            list_kwargs = parse_filter(ModelBinary, filter)
+    def list_binaries(self, request, handler_context) -> Tuple[Iterable[ModelBinary], str]:
+        # TODO-BEGIN: remove migration hack
+        if not ModelBinary.list(ListOptions(parent=None))[0]:
+            binaries = ModelBinaryV1.list(ListOptions(parent=None))[0]
+            for binary in binaries:
+                model_binary = ModelBinary.from_v1(binary)
+                model_binary.create(parse_name(model_binary.name)[0])
+        # TODO-END
 
-        return ModelBinary.list(parent=parent, **list_kwargs)
+        list_options = ListOptions.from_request(request)
+        return ModelBinary.list(list_options)
 
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
         binary.download_count += 1
@@ -99,7 +99,8 @@ class BinaryHandler:
         Statistic.load_today().increment_download()
         # Package statistic
         parent, _, _ = parse_name(binary.name)
-        Package.from_name(ResourceName.from_str(binary.name).parent).increment_download()
+        Package.from_name(ResourceName.from_str(
+            binary.name).parent).increment_download()
         try:
             Activity(activity_id=None, user_id=handler_context.user.user_id, create_time=get_now(
             ), action=Action.DOWNLOAD, resource_name=binary.name).create()

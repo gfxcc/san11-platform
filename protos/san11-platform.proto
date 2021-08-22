@@ -30,6 +30,13 @@ service RouteGuide {
   // Image related
   rpc CreateImage(CreateImageRequest) returns (Url) {}
 
+  // Thread related
+  rpc CreateThread(CreateThreadRequest) returns (Thread) {}
+  rpc GetThread(GetThreadRequest) returns (Thread) {}
+  rpc ListThreads(ListThreadsRequest) returns (ListThreadsResponse) {}
+  rpc UpdateThread(UpdateThreadRequest) returns (Thread) {}
+  rpc DeleteThread(DeleteThreadRequest) returns (Thread) {}
+
   // comment related
   rpc CreateComment(CreateCommentRequest) returns (Comment) {}
   rpc ListComments(ListCommentsRequest) returns (ListCommentsResponse) {}
@@ -196,6 +203,51 @@ message CreateImageRequest {
     string parent = 1;
     string url = 2;
     bool in_description = 3;
+}
+
+// Threads
+
+message CreateThreadRequest {
+    // E.g. ``, `categories/123/packages/456`
+    string parent = 1;
+    Thread thread = 2;
+}
+
+message GetThreadRequest {
+    // E.g. ``, `categories/123/packages/456/threads/123`
+    string name = 1;
+}
+
+message ListThreadsRequest {
+    // Supported values:
+    // `categories/xxx/packages/xxx`
+    // `website`
+    string parent = 1;
+    int64 page_size = 2;
+    string page_token = 3;
+
+    // Values should be a comma separated list of fields. For example: "foo,bar".
+    // The default sorting order is ascending. To specify descending order for a field, users append a " desc" suffix;
+    //   for example: "foo desc, bar".
+    string order_by = 4;
+
+    // Support syntax like `field_name = value`
+    string filter = 5;
+}
+
+message ListThreadsResponse {
+    repeated Thread threads = 1;
+    string next_page_token = 2;
+}
+
+message UpdateThreadRequest {
+    Thread thread = 1;
+    FieldMask update_mask = 2;
+}
+
+message DeleteThreadRequest {
+    // E.g. ``, `categories/123/packages/456/threads/123`
+    string name = 1;
 }
 
 
@@ -561,25 +613,63 @@ message ResourceView {
     string image_url = 4;
 }
 
+
+message Article {
+    string name = 1;  // Resource name. E.g. 'articles/12345'
+    string subject = 2;
+    string content = 3;
+    int64 author_id = 4;
+    google.protobuf.Timestamp create_time = 5;  // OUTPUT_ONLY
+    google.protobuf.Timestamp update_time = 6;  // OUTPUT_ONLY
+    ResourceState state = 7;
+    repeated string tags = 8;
+
+    int64 view_count = 21;
+    int64 like_count = 22;
+}
+
+message File {
+    // E.g. `血色衣冠-安装包`
+    string filename = 1;
+    // Please note `.` is considered part of the extension.
+    // E.g. `.txt`, `.png`, `.rar`, `.zip`
+    string ext = 2;
+    // Unique resource identifier
+    // E.g. categories/123/packages/456/binaries/eafsdfewasdfdfsaasdffda
+    string uri = 3;
+}
+
+message Thread {
+    // E.g. `categories/123/packages/456/threads/789`
+    string name = 1;
+    string subject = 2;
+    string content = 3;
+    int64 author_id = 4;
+    google.protobuf.Timestamp create_time = 5;  // OUTPUT_ONLY
+    google.protobuf.Timestamp update_time = 6;  // OUTPUT_ONLY
+    ResourceState state = 7;
+    repeated string tags = 8;
+
+    int64 view_count = 21;
+    int64 like_count = 22;
+    int64 comment_count = 23;
+}
+
 // Utilities
+
 message FieldMask {
     repeated string paths = 1;
 }
 
-// enum RESOURCE {
-//     UNDEFINED_RESOURCE_TYPE = 0;
+enum ResourceState {
+    RESOURCE_STATE_UNDEFINE = 0;
 
-//     // first class resources
-//     PACKAGE = 1;
-//     BINARY = 2;
-
-//     // comment system
-//     COMMENT = 11;
-//     REPLY = 12;
-
-//     // account
-//     USER = 21;
-// }
+    NORMAL = 1;  // publish accessable
+    UNDER_REVIEW = 2;  // Only visiable to admin and author
+    HIDDEN = 3;  // Only visiable to admin and author
+    SCHEDULED_DELETE = 4;  // Only visiable to admin
+    DELETED = 5;  // Only visiable to admin
+}
 
 enum Action {
     UNDEFINED_ACTION = 0;
@@ -598,37 +688,13 @@ enum Action {
     DOWNLOAD = 21;
 }
 
-message Article {
-    string name = 1;  // Resource name. E.g. 'articles/12345'
-    string subject = 2;
-    string content = 3;
-    int64 author_id = 4;
-    google.protobuf.Timestamp create_time = 5;  // OUTPUT_ONLY
-    google.protobuf.Timestamp update_time = 6;  // OUTPUT_ONLY
-    ResourceState state = 7;
-    repeated string tags = 8;
 
-    int64 view_count = 21;
-    int64 like_count = 22;
-}
-
-enum ResourceState {
-    RESOURCE_STATE_UNDEFINE = 0;
-
-    NORMAL = 1;  // publish accessable
-    UNDER_REVIEW = 2;  // Only visiable to admin and author
-    HIDDEN = 3;  // Only visiable to admin and author
-    SCHEDULED_DELETE = 4;  // Only visiable to admin
-    DELETED = 5;  // Only visiable to admin
-}
-
-message File {
-    // E.g. `血色衣冠-安装包`
-    string filename = 1;
-    // Please note `.` is considered part of the extension.
-    // E.g. `.txt`, `.png`, `.rar`, `.zip`
-    string ext = 2;
-    // Unique resource identifier
-    // E.g. categories/123/packages/456/binaries/eafsdfewasdfdfsaasdffda
-    string uri = 3;
+// This is an internal utility message being used to generate page_token.
+message PaginationOption {
+    string parent = 1;
+    int64 page_size = 2;
+    // To indicate where were left from previous list. Could be offset other more sophisticated info.
+    int64 watermark = 3;
+    string order_by = 4;
+    string filter = 5;
 }

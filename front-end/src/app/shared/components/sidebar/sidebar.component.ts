@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private _eventEmiter: EventEmiterService,
-  ) { 
+  ) {
     const userId = loadUser().userId;
   }
 
@@ -102,14 +102,23 @@ export class SidebarComponent implements OnInit {
     if (!signedIn()) {
       this.notificationService.warn('上传工具需要登陆');
     } else {
-      this.uploadTool();
+      this.navigateToCreate();
       this.categoryNav.deselectAll();
     }
   }
 
 
-  uploadTool() {
-    this.router.navigate(['createNew']);
+  navigateToCreate() {
+    const parent = this.router.url.substr(1);
+    const patterns = parent.split('/');
+    console.log(patterns);
+    switch (patterns[patterns.length - 1]) {
+      case 'discussion':
+        this.router.navigate(['discussion', 'create'], { queryParams: { parent: parent }});
+        break;
+      default:
+        this.router.navigate(['createNew']);
+    }
   }
 
   // To receive global messages
