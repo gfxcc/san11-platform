@@ -99,8 +99,8 @@ class BinaryHandler:
         Statistic.load_today().increment_download()
         # Package statistic
         parent, _, _ = parse_name(binary.name)
-        Package.from_name(ResourceName.from_str(
-            binary.name).parent).increment_download()
+        Package.from_name(str(ResourceName.from_str(
+            binary.name).parent)).increment_download()
         try:
             Activity(activity_id=None, user_id=handler_context.user.user_id, create_time=get_now(
             ), action=Action.DOWNLOAD, resource_name=binary.name).create()
