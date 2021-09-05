@@ -233,6 +233,14 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             threads=[thread.to_pb() for thread in threads],
             next_page_token=next_page_token,
         )
+    
+    def UpdateThread(self, request, context):
+        thread, update_mask = ModelThread.from_pb(request.thread), \
+            FieldMask.from_pb(request.update_mask)
+        handler_context = HandlerContext.from_service_context(context)
+        assert handler_context.user, '请登录'
+        assert handler_context.user.user_id == thread.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        return self.thread_handler.update_thread(thread, update_mask, handler_context).to_pb()
 
     def DeleteThread(self, request, context):
         thread = ModelThread.from_name(request.name)

@@ -1,5 +1,5 @@
 import { ViewChild, ElementRef, Input, Component, OnInit } from '@angular/core';
-import { Package, Comment, Reply, CreateCommentRequest } from "../../../../proto/san11-platform.pb";
+import { Package, Comment, Reply, CreateCommentRequest, ListCommentsRequest } from "../../../../proto/san11-platform.pb";
 
 import { GetUserRequest } from "../../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
@@ -17,6 +17,7 @@ import { decrement, increment } from "../../../utils/number_util";
 export class CommentBoardComponent implements OnInit {
   @Input() package: Package;
   @Input() parent: string;
+  @Input() commentsOrder: string;
 
   @ViewChild('commentForm') commentFormElement: ElementRef
 
@@ -65,7 +66,10 @@ export class CommentBoardComponent implements OnInit {
   }
 
   loadComments() {
-    this.san11pkService.listComments(this.parent).subscribe(
+    this.san11pkService.listComments(new ListCommentsRequest({
+      parent: this.parent,
+      orderBy: this.commentsOrder ? this.commentsOrder : 'create_time desc',
+    })).subscribe(
       resp => {
         this.comments = resp.comments;
         this.commentCount = this.computeCommentCount(this.comments);

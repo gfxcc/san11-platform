@@ -5,7 +5,7 @@ import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-pa
 
 import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 
-import { Article, CreateArticleRequest, CreatePackageRequest, CreateThreadRequest, DeleteArticleRequest, DeletePackageRequest, DeleteThreadRequest, GetArticleRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListPackagesResponse, ListThreadsRequest, ListThreadsResponse, Thread, UpdateArticleRequest, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
+import { Article, CreateArticleRequest, CreatePackageRequest, CreateThreadRequest, DeleteArticleRequest, DeletePackageRequest, DeleteThreadRequest, GetArticleRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListPackagesResponse, ListThreadsRequest, ListThreadsResponse, Thread, UpdateArticleRequest, UpdateThreadRequest, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
 import { CreateBinaryRequest, CreateImageRequest } from '../../proto/san11-platform.pb'
 import { GetPackageRequest } from "../../proto/san11-platform.pb";
 import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
@@ -45,6 +45,10 @@ export class San11PlatformServiceService {
 
   }
   // threads
+  createThread(request: CreateThreadRequest): Observable<Thread> {
+    return this.severClient.createThread(request, this.getMetadata())
+  }
+
   getThread(request: GetThreadRequest): Observable<Thread> {
     return this.severClient.getThread(request, this.getMetadata());
   }
@@ -53,8 +57,8 @@ export class San11PlatformServiceService {
     return this.severClient.listThreads(request, this.getMetadata());
   }
 
-  createThread(request: CreateThreadRequest): Observable<Thread> {
-    return this.severClient.createThread(request, this.getMetadata())
+  updateThread(request: UpdateThreadRequest): Observable<Thread> {
+    return this.severClient.updateThread(request, this.getMetadata());
   }
 
   deleteThread(request: DeleteThreadRequest): Observable<Thread> {
@@ -147,8 +151,7 @@ export class San11PlatformServiceService {
     return this.severClient.updateComment(request, this.getMetadata());
   }
 
-  listComments(parent: string): Observable<ListCommentsResponse> {
-    const request = new ListCommentsRequest({ parent: parent });
+  listComments(request: ListCommentsRequest): Observable<ListCommentsResponse> {
     return this.severClient.listComments(request, this.getMetadata());
   }
 

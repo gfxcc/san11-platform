@@ -53,7 +53,7 @@ export class CreateThreadComponent implements OnInit {
   }
 
   createThread() {
-    for (let index = 0; index < 100; index++) {
+    for (let index = 0; index < 1; index++) {
 
     this.san11pkService.createThread(new CreateThreadRequest({
       parent: this.parent,

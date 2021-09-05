@@ -42,6 +42,10 @@ class ModelThread(ModelBase):
     comment_count = Attrib(
         type=int,
     )
+    pinned = Attrib(
+        type=bool,
+        default=False,
+    )
     create_time = Attrib(
         type=datetime.datetime,
         default=get_now(),

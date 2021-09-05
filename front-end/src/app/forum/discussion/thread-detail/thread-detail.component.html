@@ -1,2 +1,6 @@
-<p>
-    {{thread.content}}</p>
+<app-comment-card [comment]="rootComment" [resourceOwnerId]="this.thread.authorId" class="comment-card">
+</app-comment-card>
+<button pButton pRipple type="button" [icon]="'pi pi-lock-open'" (click)="togglePin()" class="p-button-sm p-button-text"></button>
+
+
+<app-comment-board [parent]="this.thread.name" commentsOrder="create_time"></app-comment-board>

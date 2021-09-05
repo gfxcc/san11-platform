@@ -194,7 +194,9 @@ body {
 }
 
 .shadow-border {
-    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+    /* box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%); */
+    /* box-shadow: 2px 20px 20px rgb(0 0 0 / 8%); */
+    box-shadow: 2px 2px 20px rgb(0 0 0 / 10%);
 }
 
 .input-field {
@@ -211,6 +213,12 @@ body {
 }
 
 .radius-border {
-    box-shadow: 2px 2px 8px rgb(0 0 0 / 10%);
+    /* box-shadow: 2px 2px 8px rgb(0 0 0 / 10%); */
     border-radius: 4px;
+}
+
+.center-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

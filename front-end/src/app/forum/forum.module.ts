@@ -17,7 +17,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from '../shared/shared.module';
 import { DiscussionComponent } from './discussion/discussion.component';
-import {VirtualScrollerModule} from 'primeng/virtualscroller';
+import { VirtualScrollerModule } from 'primeng/virtualscroller';
+import { TableModule } from 'primeng/table';
 import { CreateThreadComponent } from './discussion/create-thread/create-thread.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -52,6 +53,7 @@ import { ThreadDetailComponent } from './discussion/thread-detail/thread-detail.
     CKEditorModule,
     SharedModule,
     VirtualScrollerModule,
+    TableModule,
   ],
   providers: [ProductService]
 })

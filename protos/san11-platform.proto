@@ -569,6 +569,7 @@ message Thread {
     google.protobuf.Timestamp update_time = 6;  // OUTPUT_ONLY
     ResourceState state = 7;
     repeated string tags = 8;
+    bool pinned = 9;
 
     int64 view_count = 21;
     int64 like_count = 22;

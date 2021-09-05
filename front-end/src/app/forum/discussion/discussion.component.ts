@@ -13,6 +13,7 @@ import { ListThreadsRequest, ListThreadsResponse, Thread } from 'src/proto/san11
 export class DiscussionComponent implements OnInit {
 
   virtualThreads: Thread[];
+  cols = [];
 
   constructor(
     private router: Router,
@@ -21,6 +22,12 @@ export class DiscussionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.cols = [
+      {field: 'vin', header: 'Vin'},
+      {field: 'year', header: 'Year'},
+      {field: 'brand', header: 'Brand'},
+      {field: 'color', header: 'Color'}
+  ];
     this.virtualThreads = [];
   }
 

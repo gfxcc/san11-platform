@@ -1,4 +1,73 @@
 <div class="container">
+    <td style="text-align: center; vertical-align: middle; padding: 15px;">
+        <!-- <div style="height: 100%;"> -->
+        <img src="{{getUserAvatar()}}" class="avatar-img" width="36" height="36">
+        <!-- </div> -->
+    </td>
+
+    <td>
+        <div class="main-content">
+            <div class="structItem-title">
+                <a href="{{thread.name}}" target="_blink">{{thread.subject}}</a>
+            </div>
+
+            <div class="structItem-minor">
+
+                <ul class="structItem-parts">
+                    <li>
+                        <a href="users/{{user?.userId}}" target="_blink">{{user?.username}}</a>
+                    </li>
+                    <li class="structItem-createTime">
+                        {{getThreadAge()}}
+                    </li>
+                </ul>
+
+
+                <div style="width: 200px; display: flex;">
+                    <div *ngIf="thread.pinned" class="statistic-div" style="color: red;">
+                        <mat-icon width="24px " height="24px">
+                            push_pin
+                        </mat-icon>
+                    </div>
+                    <div class="statistic-div">
+                        <mat-icon width="24px " height="24px">
+                            drafts
+                        </mat-icon>
+
+                        <div style=" display: flex; ">
+                            <span style="display: flex; align-items: center; font-size: 14px; ">
+                                {{thread.viewCount}}
+                                </span>
+                        </div>
+                    </div>
+
+                    <div class="statistic-div">
+                        <svg width="24px " height="24px " viewBox="0 0 24 24 ">
+                            <g id="comment " class="icon_svg-stroke icon_svg-fill " stroke="#666 " stroke-width="1.5 " fill="none " fill-rule="evenodd ">
+                            <path d="M12.0711496,18.8605911 C16.1739904,18.8605911 19.5,15.7577921 19.5,11.9302955 C19.5,8.102799 16.1739904,5 12.0711496,5 C7.96830883,5 4.64229922,8.102799 4.64229922,11.9302955 C4.64229922,13.221057 5.02055525,14.429401
+                            5.67929998,15.4641215 C5.99817082,15.9649865 4.1279592,18.5219189 4.56718515,18.9310749 C5.02745574,19.3598348 7.80252458,17.6358115 8.37002246,17.9406001 C9.45969688,18.5258363 10.7235179,18.8605911 12.0711496,18.8605911 Z ">
+                            </path></g>
+                            </svg>
+                        <div style=" display: flex; ">
+                            <span style="display: flex; align-items: center; font-size: 14px; ">
+                                {{thread.commentCount}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </td>
+
+    <td>
+    </td>
+
+    <td>
+    </td>
+</div>
+
+<!-- <div class="container">
     <div class="entry-area inner-border">
         <div *ngIf="getCoverImage() != null" class="entry-image">
             <img class="entry-image" [src]="">
@@ -35,7 +104,6 @@
             </div>
             <footer class="entry-footer">
                 <hr class="card-footer-divider">
-                <!-- <mat-icon [matBadge]="thread.viewCount" matBadgeColor="">auto_stories</mat-icon> -->
 
                 <div style="display: flex;">
                     <div class="statistic-div">
@@ -50,10 +118,6 @@
                         </div>
                     </div>
                     <div class="statistic-div">
-                        <!-- <mat-icon width="24px " height="24px">
-                        chat_bubble_outline
-                        </mat-icon> -->
-
                         <svg width="24px " height="24px " viewBox="0 0 24 24 ">
                         <g id="comment " class="icon_svg-stroke icon_svg-fill " stroke="#666 " stroke-width="1.5 " fill="none " fill-rule="evenodd ">
                         <path d="M12.0711496,18.8605911 C16.1739904,18.8605911 19.5,15.7577921 19.5,11.9302955 C19.5,8.102799 16.1739904,5 12.0711496,5 C7.96830883,5 4.64229922,8.102799 4.64229922,11.9302955 C4.64229922,13.221057 5.02055525,14.429401
@@ -68,9 +132,8 @@
                     </div>
                 </div>
 
-                <!-- <mat-icon [matBadge]="thread.likeCount " matBadgeColor=" ">favorite_border</mat-icon> -->
             </footer>
 
         </div>
     </div>
-</div>
+</div> -->

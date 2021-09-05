@@ -11,13 +11,14 @@
             </div>
         </div>
     </div>
-    <div class="right radius-border">
+    <div class="right radius-border shadow-border">
         <div (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
             <div class="header">
                 <span class="create-time">{{getCommentAge()}}</span>
 
                 <span class="example-spacer"></span>
 
+                <span *ngIf="this.comment.index != &quot;0&quot;"> #{{this.comment.index}} </span>
                 <div *ngIf="!this.hideControl">
                     <button mat-icon-button class="icon-button" (click)="onDeleteComment()">
                     <mat-icon class="icon">delete</mat-icon>

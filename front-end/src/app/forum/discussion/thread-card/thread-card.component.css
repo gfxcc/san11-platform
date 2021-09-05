@@ -1,8 +1,58 @@
 .container {
+    /* width: 800px; */
+    /* margin-top: 20px; */
+    /* margin-bottom: 20px; */
+    /* background-color: #fff; */
+}
+
+.main-content {
+    /* width: 70%;
+    max-width: 700px;
+    min-width: 300px; */
+    display: table-cell;
     width: 800px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background-color: #fff;
+    padding: 15px 15px 15px 0px;
+}
+
+.structItem-title {
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0;
+    color: #58595b;
+    font-weight: 400;
+}
+
+.structItem-parts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: inline;
+    flex-grow: 1;
+}
+
+.structItem-minor {
+    display: flex;
+    align-items: center;
+    color: #9e9fa2;
+}
+
+.structItem-parts>li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.structItem-parts>li:nth-child(even) {
+    color: #58595b;
+}
+
+.structItem-parts>li:first-child:before {
+    content: "";
+    display: none;
+}
+
+.structItem-parts>li:before {
+    content: "\00B7\20";
 }
 
 .inner-border {
@@ -84,7 +134,8 @@ a {
     text-decoration-thickness: initial;
     text-decoration-style: initial;
     text-decoration-color: initial;
-    color: #005da6;
+    /* color: #005da6; */
+    color: inherit;
     /* text-decoration: underline; */
     /* background-color: transparent; */
 }

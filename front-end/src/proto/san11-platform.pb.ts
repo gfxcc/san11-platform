@@ -12330,6 +12330,7 @@ export class Thread implements GrpcMessage {
     _instance.updateTime = _instance.updateTime || undefined;
     _instance.state = _instance.state || 0;
     _instance.tags = _instance.tags || [];
+    _instance.pinned = _instance.pinned || false;
     _instance.viewCount = _instance.viewCount || '0';
     _instance.likeCount = _instance.likeCount || '0';
     _instance.commentCount = _instance.commentCount || '0';
@@ -12376,6 +12377,9 @@ export class Thread implements GrpcMessage {
           break;
         case 8:
           (_instance.tags = _instance.tags || []).push(_reader.readString());
+          break;
+        case 9:
+          _instance.pinned = _reader.readBool();
           break;
         case 21:
           _instance.viewCount = _reader.readInt64String();
@@ -12432,6 +12436,9 @@ export class Thread implements GrpcMessage {
     if (_instance.tags && _instance.tags.length) {
       _writer.writeRepeatedString(8, _instance.tags);
     }
+    if (_instance.pinned) {
+      _writer.writeBool(9, _instance.pinned);
+    }
     if (_instance.viewCount) {
       _writer.writeInt64String(21, _instance.viewCount);
     }
@@ -12451,6 +12458,7 @@ export class Thread implements GrpcMessage {
   private _updateTime?: googleProtobuf000.Timestamp;
   private _state?: ResourceState;
   private _tags?: string[];
+  private _pinned?: boolean;
   private _viewCount?: string;
   private _likeCount?: string;
   private _commentCount?: string;
@@ -12473,6 +12481,7 @@ export class Thread implements GrpcMessage {
       : undefined;
     this.state = _value.state;
     this.tags = (_value.tags || []).slice();
+    this.pinned = _value.pinned;
     this.viewCount = _value.viewCount;
     this.likeCount = _value.likeCount;
     this.commentCount = _value.commentCount;
@@ -12526,6 +12535,12 @@ export class Thread implements GrpcMessage {
   set tags(value: string[] | undefined) {
     this._tags = value;
   }
+  get pinned(): boolean | undefined {
+    return this._pinned;
+  }
+  set pinned(value: boolean | undefined) {
+    this._pinned = value;
+  }
   get viewCount(): string | undefined {
     return this._viewCount;
   }
@@ -12568,6 +12583,7 @@ export class Thread implements GrpcMessage {
       updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
       state: this.state,
       tags: (this.tags || []).slice(),
+      pinned: this.pinned,
       viewCount: this.viewCount,
       likeCount: this.likeCount,
       commentCount: this.commentCount
@@ -12603,6 +12619,7 @@ export class Thread implements GrpcMessage {
         : null,
       state: ResourceState[this.state ?? 0],
       tags: (this.tags || []).slice(),
+      pinned: this.pinned,
       viewCount: this.viewCount,
       likeCount: this.likeCount,
       commentCount: this.commentCount
@@ -12622,6 +12639,7 @@ export module Thread {
     updateTime?: googleProtobuf000.Timestamp.AsObject;
     state?: ResourceState;
     tags?: string[];
+    pinned?: boolean;
     viewCount?: string;
     likeCount?: string;
     commentCount?: string;
@@ -12639,6 +12657,7 @@ export module Thread {
     updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
     state?: string;
     tags?: string[];
+    pinned?: boolean;
     viewCount?: string;
     likeCount?: string;
     commentCount?: string;
