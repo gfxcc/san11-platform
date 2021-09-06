@@ -47,7 +47,11 @@ class PassThroughConverter(DbConverter[Any, Any]):
 
 class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
     def to_model(self, db_value: str) -> datetime.datetime:
-        return datetime.datetime.fromisoformat(db_value).replace(tzinfo=datetime.timezone.utc)
+        if db_value:
+            return datetime.datetime.fromisoformat(db_value).replace(tzinfo=datetime.timezone.utc)
+        else:
+            logger.warn(f'Invalid datetime field is encountered.')
+            return datetime.datetime.now().replace(tzinfo=datetime.timezone.utc)
 
     def from_model(self, value: datetime.datetime) -> datetime.datetime:
         return value.astimezone(datetime.timezone.utc)

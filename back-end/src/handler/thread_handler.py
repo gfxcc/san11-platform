@@ -31,6 +31,10 @@ class ThreadHandler:
         list_options = ListOptions.from_request(request)
         order_by = 'pinned desc, create_time desc' + (f', {list_options.order_by}' if list_options.order_by else '') 
         list_options.order_by = order_by
+        if handler_context.user and handler_context.user.is_admin():
+            list_options.filter = ''
+        else:
+            list_options.filter = 'state=1'
         return ModelThread.list(list_options)
 
     def update_thread(self, update_thread: ModelThread, update_mask: FieldMask, handler_context) -> ModelThread:

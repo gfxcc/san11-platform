@@ -570,10 +570,13 @@ message Thread {
     ResourceState state = 7;
     repeated string tags = 8;
     bool pinned = 9;
+    google.protobuf.Timestamp latest_commented_time = 10;  // OUTPUT_ONLY
+    int64 latest_commenter_id = 11; // OUTPUT_ONLY
 
     int64 view_count = 21;
     int64 like_count = 22;
     int64 comment_count = 23;
+    int64 reply_count = 24;
 }
 
 message Comment {

@@ -12331,9 +12331,12 @@ export class Thread implements GrpcMessage {
     _instance.state = _instance.state || 0;
     _instance.tags = _instance.tags || [];
     _instance.pinned = _instance.pinned || false;
+    _instance.latestCommentedTime = _instance.latestCommentedTime || undefined;
+    _instance.latestCommenterId = _instance.latestCommenterId || '0';
     _instance.viewCount = _instance.viewCount || '0';
     _instance.likeCount = _instance.likeCount || '0';
     _instance.commentCount = _instance.commentCount || '0';
+    _instance.replyCount = _instance.replyCount || '0';
   }
 
   /**
@@ -12381,6 +12384,16 @@ export class Thread implements GrpcMessage {
         case 9:
           _instance.pinned = _reader.readBool();
           break;
+        case 10:
+          _instance.latestCommentedTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.latestCommentedTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 11:
+          _instance.latestCommenterId = _reader.readInt64String();
+          break;
         case 21:
           _instance.viewCount = _reader.readInt64String();
           break;
@@ -12389,6 +12402,9 @@ export class Thread implements GrpcMessage {
           break;
         case 23:
           _instance.commentCount = _reader.readInt64String();
+          break;
+        case 24:
+          _instance.replyCount = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -12439,6 +12455,16 @@ export class Thread implements GrpcMessage {
     if (_instance.pinned) {
       _writer.writeBool(9, _instance.pinned);
     }
+    if (_instance.latestCommentedTime) {
+      _writer.writeMessage(
+        10,
+        _instance.latestCommentedTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
+    if (_instance.latestCommenterId) {
+      _writer.writeInt64String(11, _instance.latestCommenterId);
+    }
     if (_instance.viewCount) {
       _writer.writeInt64String(21, _instance.viewCount);
     }
@@ -12447,6 +12473,9 @@ export class Thread implements GrpcMessage {
     }
     if (_instance.commentCount) {
       _writer.writeInt64String(23, _instance.commentCount);
+    }
+    if (_instance.replyCount) {
+      _writer.writeInt64String(24, _instance.replyCount);
     }
   }
 
@@ -12459,9 +12488,12 @@ export class Thread implements GrpcMessage {
   private _state?: ResourceState;
   private _tags?: string[];
   private _pinned?: boolean;
+  private _latestCommentedTime?: googleProtobuf000.Timestamp;
+  private _latestCommenterId?: string;
   private _viewCount?: string;
   private _likeCount?: string;
   private _commentCount?: string;
+  private _replyCount?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -12482,9 +12514,14 @@ export class Thread implements GrpcMessage {
     this.state = _value.state;
     this.tags = (_value.tags || []).slice();
     this.pinned = _value.pinned;
+    this.latestCommentedTime = _value.latestCommentedTime
+      ? new googleProtobuf000.Timestamp(_value.latestCommentedTime)
+      : undefined;
+    this.latestCommenterId = _value.latestCommenterId;
     this.viewCount = _value.viewCount;
     this.likeCount = _value.likeCount;
     this.commentCount = _value.commentCount;
+    this.replyCount = _value.replyCount;
     Thread.refineValues(this);
   }
   get name(): string | undefined {
@@ -12541,6 +12578,18 @@ export class Thread implements GrpcMessage {
   set pinned(value: boolean | undefined) {
     this._pinned = value;
   }
+  get latestCommentedTime(): googleProtobuf000.Timestamp | undefined {
+    return this._latestCommentedTime;
+  }
+  set latestCommentedTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._latestCommentedTime = value;
+  }
+  get latestCommenterId(): string | undefined {
+    return this._latestCommenterId;
+  }
+  set latestCommenterId(value: string | undefined) {
+    this._latestCommenterId = value;
+  }
   get viewCount(): string | undefined {
     return this._viewCount;
   }
@@ -12558,6 +12607,12 @@ export class Thread implements GrpcMessage {
   }
   set commentCount(value: string | undefined) {
     this._commentCount = value;
+  }
+  get replyCount(): string | undefined {
+    return this._replyCount;
+  }
+  set replyCount(value: string | undefined) {
+    this._replyCount = value;
   }
 
   /**
@@ -12584,9 +12639,14 @@ export class Thread implements GrpcMessage {
       state: this.state,
       tags: (this.tags || []).slice(),
       pinned: this.pinned,
+      latestCommentedTime: this.latestCommentedTime
+        ? this.latestCommentedTime.toObject()
+        : undefined,
+      latestCommenterId: this.latestCommenterId,
       viewCount: this.viewCount,
       likeCount: this.likeCount,
-      commentCount: this.commentCount
+      commentCount: this.commentCount,
+      replyCount: this.replyCount
     };
   }
 
@@ -12620,9 +12680,14 @@ export class Thread implements GrpcMessage {
       state: ResourceState[this.state ?? 0],
       tags: (this.tags || []).slice(),
       pinned: this.pinned,
+      latestCommentedTime: this.latestCommentedTime
+        ? this.latestCommentedTime.toProtobufJSON(options)
+        : null,
+      latestCommenterId: this.latestCommenterId,
       viewCount: this.viewCount,
       likeCount: this.likeCount,
-      commentCount: this.commentCount
+      commentCount: this.commentCount,
+      replyCount: this.replyCount
     };
   }
 }
@@ -12640,9 +12705,12 @@ export module Thread {
     state?: ResourceState;
     tags?: string[];
     pinned?: boolean;
+    latestCommentedTime?: googleProtobuf000.Timestamp.AsObject;
+    latestCommenterId?: string;
     viewCount?: string;
     likeCount?: string;
     commentCount?: string;
+    replyCount?: string;
   }
 
   /**
@@ -12658,9 +12726,12 @@ export module Thread {
     state?: string;
     tags?: string[];
     pinned?: boolean;
+    latestCommentedTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    latestCommenterId?: string;
     viewCount?: string;
     likeCount?: string;
     commentCount?: string;
+    replyCount?: string;
   }
 }
 

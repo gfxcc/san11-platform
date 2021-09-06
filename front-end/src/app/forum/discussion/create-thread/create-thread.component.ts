@@ -61,7 +61,7 @@ export class CreateThreadComponent implements OnInit {
       })
     })).subscribe(
       (resp: Thread) => {
-        this.router.navigate(['discussion'])
+        this.router.navigate([resp.name])
       },
       error => {
         this.notificationService.warn(`创建失败: ${error.statusMessage}.`)

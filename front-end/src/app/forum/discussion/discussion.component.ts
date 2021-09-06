@@ -23,10 +23,10 @@ export class DiscussionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (!isAdmin()) {
-      this.notificationService.warn('尚未开放');
-      this.router.navigate(['']);
-    }
+    // if (!isAdmin()) {
+    //   this.notificationService.warn('尚未开放');
+    //   this.router.navigate(['']);
+    // }
     this.cols = [
       { field: 'vin', header: 'Vin' },
       { field: 'year', header: 'Year' },

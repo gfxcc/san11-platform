@@ -3,6 +3,7 @@
     /* margin-top: 20px; */
     /* margin-bottom: 20px; */
     /* background-color: #fff; */
+    height: 72px;
 }
 
 .main-content {
@@ -14,8 +15,21 @@
     padding: 15px 15px 15px 0px;
 }
 
+.structItem-cell {
+    /* display: table-cell;
+    vertical-align: top;
+    padding: 15px; */
+    font-size: 0.9rem;
+    color: #9e9fa2;
+}
+
+.structItem-cell.structItem-cell--latest {
+    width: 190px;
+    text-align: right;
+}
+
 .structItem-title {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     margin: 0;
     padding: 0;
     color: #58595b;
@@ -143,14 +157,6 @@ a {
 
 a:hover {
     text-decoration: underline;
-}
-
-body {
-    margin: 0;
-    font: 1.0625rem/1.5 Segoe UI, "Segoe UI Web Regular", "Segoe UI Regular WestEuropean", "Segoe UI", Tahoma, Arial, Roboto, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    color: #333;
-    text-align: left;
-    background-color: #fff;
 }
 
 hr {

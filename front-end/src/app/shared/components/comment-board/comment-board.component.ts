@@ -18,6 +18,8 @@ export class CommentBoardComponent implements OnInit {
   @Input() package: Package;
   @Input() parent: string;
   @Input() commentsOrder: string;
+  @Input() inputPlaceHolder = '输入评论';
+  @Input() disableInput = false;
 
   @ViewChild('commentForm') commentFormElement: ElementRef
 
@@ -59,6 +61,7 @@ export class CommentBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.inputPlaceHolder)
     if (this.package) {
       this.resourceOwnerId = this.package.authorId;
     }

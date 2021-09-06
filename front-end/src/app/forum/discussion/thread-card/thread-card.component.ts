@@ -16,6 +16,7 @@ export class ThreadCardComponent implements OnInit {
   @Input() thread: Thread;
   coverImage: string = null;
   user: User;
+  latestCommenter: User;
 
   constructor(
     private notificationService: NotificationService,
@@ -34,19 +35,33 @@ export class ThreadCardComponent implements OnInit {
         this.notificationService.warn(`获取用户数据失败: ${error.statusMessage}`);
       }
     );
+
+    if (this.thread.latestCommenterId != '0') {
+      this.san11pkService.getUser(new GetUserRequest({ userId: this.thread.latestCommenterId })).subscribe(
+        (resp: User) => {
+          this.latestCommenter = resp;
+        },
+        error => {
+          console.log(`Failed to get user info: ${error.statusMessage}`);
+        }
+      );
+    }
   }
 
   getThreadAge() {
-      return getAge(this.thread.createTime);
+    return getAge(this.thread.createTime);
+  }
+
+  getLatestCommentedAge() {
+    return getAge(this.thread.latestCommentedTime);
+  }
+
+  getLatestCommenterName() {
+
   }
 
   getUserAvatar(): string {
     return getFullUrl(this.user?.imageUrl);
-  }
-
-  getContentReview() {
-    let plainText = this.getPlainText(this.thread.content);
-    return plainText;
   }
 
   getCoverImage(): string {
@@ -62,28 +77,6 @@ export class ThreadCardComponent implements OnInit {
     return this.coverImage;
   }
 
-  getPlainText(strSrc: string): string {
-    var resultStr = "";
-
-    // Ignore the <p> tag if it is in very start of the text
-    if (strSrc.indexOf('<p>') == 0)
-      resultStr = strSrc.substring(3);
-    else
-      resultStr = strSrc;
-
-    // Replace <p> with two newlines
-    resultStr = resultStr.replace(/<p>/gi, "\r\n\r\n");
-    // Replace <br /> with one newline
-    resultStr = resultStr.replace(/<br \/>/gi, "\r\n");
-    resultStr = resultStr.replace(/<br>/gi, "\r\n");
-
-    //-+-+-+-+-+-+-+-+-+-+-+
-    // Strip off other HTML tags.
-    //-+-+-+-+-+-+-+-+-+-+-+
-
-    return resultStr.replace(/<[^<|>]+?>/gi, '');
-  }
-
 
   isAdmin() {
     return loadUser().userType === 'admin';
@@ -96,4 +89,5 @@ export class ThreadCardComponent implements OnInit {
   getStatusName() {
     return ResourceState[this.thread.state];
   }
+
 }

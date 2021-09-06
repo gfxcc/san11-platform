@@ -1,7 +1,7 @@
 <div class="card-wrapper" fxLayout="row" fxLayoutAlign="center center">
     <mat-card class="box">
         <mat-card-header>
-            <mat-card-title>创建</mat-card-title>
+            <mat-card-title>创建 {{this.isCreateArticle ? '文章' : ''}}</mat-card-title>
         </mat-card-header>
 
         <form class="example-form">
@@ -12,7 +12,7 @@
                         <input matInput placeholder="名称" required ngModel name="name">
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-form-field *ngIf="isCreateArticle === false" appearance="fill" class="example-full-width">
                         <mat-label>类别</mat-label>
                         <mat-select [(ngModel)]="selectedCategory" required name="resourceType">
                             <!-- <mat-option *ngFor="let category of categories" [value]="category.value" [disabled]="category.disabled">

@@ -92,12 +92,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     def UpdateArticle(self, request, context):
-        article, update_mask = Article.from_pb(
+        update_article, update_mask = Article.from_pb(
             request.article), FieldMask.from_pb(request.update_mask)
+        article = Article.from_name(request.article.name)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
         assert handler_context.user.user_id == article.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
-        return self.article_handler.update_article(article, update_mask, handler_context).to_pb()
+        return self.article_handler.update_article(update_article, update_mask, handler_context).to_pb()
 
     def DeleteArticle(self, request, context):
         article = Article.from_name(request.name)
@@ -172,12 +173,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     def UpdateComment(self, request, context):
-        comment, update_mask = ModelComment.from_pb(request.comment), \
+        update_comment, update_mask = ModelComment.from_pb(request.comment), \
             FieldMask.from_pb(request.update_mask)
+        comment = ModelComment.from_name(request.comment.name)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
         assert handler_context.user.user_id == comment.author_id or handler_context.user.user_type == 'admin' or update_mask.paths == {'upvote_count'}, '权限验证失败'
-        return self.comment_handler.update_comment(comment, update_mask, handler_context).to_pb()
+        return self.comment_handler.update_comment(update_comment, update_mask, handler_context).to_pb()
 
     def DeleteComment(self, request, context):
         comment = ModelComment.from_name(request.name)
@@ -196,12 +198,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return created_reply.to_pb()
 
     def UpdateReply(self, request, context):
-        reply, update_mask = ModelReply.from_pb(request.reply), \
+        update_reply, update_mask = ModelReply.from_pb(request.reply), \
             FieldMask.from_pb(request.update_mask)
+        reply = ModelReply.from_name(request.reply.name)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
         assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin' or update_mask.paths == {'upvote_count'}, '权限验证失败'
-        return self.reply_handler.update_reply(reply, update_mask, handler_context).to_pb()
+        return self.reply_handler.update_reply(update_reply, update_mask, handler_context).to_pb()
 
     def DeleteReply(self, request, context):
         reply = ModelReply.from_name(request.name)
@@ -235,12 +238,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
     
     def UpdateThread(self, request, context):
-        thread, update_mask = ModelThread.from_pb(request.thread), \
+        update_thread, update_mask = ModelThread.from_pb(request.thread), \
             FieldMask.from_pb(request.update_mask)
+        thread = ModelThread.from_name(request.thread.name)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
         assert handler_context.user.user_id == thread.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
-        return self.thread_handler.update_thread(thread, update_mask, handler_context).to_pb()
+        return self.thread_handler.update_thread(update_thread, update_mask, handler_context).to_pb()
 
     def DeleteThread(self, request, context):
         thread = ModelThread.from_name(request.name)

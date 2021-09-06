@@ -22,8 +22,10 @@
 
             <ng-template pTemplate="body" let-thread let-columns="columns">
                 <tr style="height:72px">
-                    <app-thread-card [thread]="thread" class="card-wrapper">
-                    </app-thread-card>
+                    <td style="padding: 0;">
+                        <app-thread-card [thread]="thread">
+                        </app-thread-card>
+                    </td>
                 </tr>
             </ng-template>
 

@@ -1,4 +1,6 @@
 from datetime import datetime
+from handler.model.model_thread import ModelThread
+from handler.util.resource_parser import ResourceName, parse_resource_name
 from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.model_reply import ModelReply
 import sys, os
@@ -10,7 +12,7 @@ from .auths import Authenticator
 from .model.user import User
 from .model.activity import Activity, Action
 from .model.comment import Reply, Comment
-from .common.exception import Unauthenticated, NotFound
+from .common.exception import InvalidArgument, Unauthenticated, NotFound
 from .util.time_util import get_now
 
 
@@ -22,6 +24,20 @@ class ReplyHandler:
                        handler_context) -> ModelReply:
         user_id = handler_context.user.user_id
         reply.author_id = user_id
+
+        try:
+            parent_name = ResourceName.from_str(parent)
+            if parent_name.parent and parent_name.parent.collection == 'threads':
+                thread: ModelThread = parse_resource_name(
+                    str(parent_name.parent))
+                thread.reply_count += 1
+                thread.latest_commented_time = reply.create_time
+                thread.latest_commenter_id = user_id
+                thread.update(update_update_time=False)
+        except InvalidArgument as e:
+            logger.error(f'Failed to update thread during a reply creation: {e}')
+            pass
+
         reply.create(parent=parent, user_id=user_id)
         return reply
     

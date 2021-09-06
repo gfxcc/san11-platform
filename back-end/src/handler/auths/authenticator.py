@@ -36,7 +36,7 @@ class Authenticator:
         return cls(session)
 
     def isAdmin(self) -> bool:
-        return self.session.user.isAdmin()
+        return self.session.user.is_admin()
     
     # Package
     def canDeletePackage(self, package: Package) -> bool:

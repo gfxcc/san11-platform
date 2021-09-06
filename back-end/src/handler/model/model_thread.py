@@ -42,16 +42,21 @@ class ModelThread(ModelBase):
     comment_count = Attrib(
         type=int,
     )
+    reply_count = Attrib(
+        type=int,
+    )
+    latest_commented_time = Attrib(
+        type=datetime.datetime,
+    )
+    latest_commenter_id = Attrib(
+        type=int,
+    )
     pinned = Attrib(
         type=bool,
-        default=False,
     )
     create_time = Attrib(
         type=datetime.datetime,
-        default=get_now(),
     )
     update_time = Attrib(
         type=datetime.datetime,
-        default=get_now(),
     )
-

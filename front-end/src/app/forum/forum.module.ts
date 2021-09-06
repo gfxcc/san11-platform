@@ -36,7 +36,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     DiscussionComponent,
     CreateThreadComponent,
     ThreadCardComponent,
-    ThreadDetailComponent
+    ThreadDetailComponent,
   ],
   imports: [
     CommonModule,

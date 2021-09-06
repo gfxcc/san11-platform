@@ -33,9 +33,12 @@ class CommentHandler:
             if isinstance(parent_obj, ModelThread):
                 thread = parent_obj
                 thread.comment_count += 1
-                thread.update()
+                thread.latest_commented_time = comment.create_time
+                thread.latest_commenter_id = user_id
+                thread.update(update_update_time=False)
                 comment.index = thread.comment_count
-        except InvalidArgument:
+        except InvalidArgument as e:
+            logger.error(f'Failed to update thread during a comment creation: {e}')
             pass
 
         comment.create(parent=parent, user_id=user_id)

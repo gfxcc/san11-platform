@@ -152,7 +152,7 @@ class User(ResourceMixin, TrackLifecycle):
         if not resp:
             raise Unauthenticated()
     
-    def isAdmin(self) -> bool:
+    def is_admin(self) -> bool:
         return self.user_type == 'admin'
 
     def set_image(self, image: Image):

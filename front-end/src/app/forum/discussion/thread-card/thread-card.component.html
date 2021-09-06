@@ -14,7 +14,7 @@
             <div class="structItem-minor">
 
                 <ul class="structItem-parts">
-                    <li>
+                    <li style="margin-right: 3px;">
                         <a href="users/{{user?.userId}}" target="_blink">{{user?.username}}</a>
                     </li>
                     <li class="structItem-createTime">
@@ -50,20 +50,30 @@
                             </svg>
                         <div style=" display: flex; ">
                             <span style="display: flex; align-items: center;">
-                                {{thread.commentCount}}
+                                {{+thread.commentCount + +thread.replyCount}}
                             </span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </td>
 
     <td>
+        <div *ngIf="this.thread.latestCommenterId != &quot;0&quot;" class="structItem-cell structItem-cell--latest">
+            <div class="">{{getLatestCommentedAge()}}</div>
+            <div class="">
+                <a href="users/{{latestCommenter?.userId}}" target="_blink">{{latestCommenter?.username}}</a>
+            </div>
+
+
+        </div>
     </td>
 
     <td>
+        <div [hidden]="! (isAdmin() && thread.state!=1)">
+            <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
+        </div>
     </td>
 </div>
 

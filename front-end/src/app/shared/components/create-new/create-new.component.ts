@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
@@ -47,21 +47,39 @@ export class CreateNewComponent implements OnInit {
   ];
 
   loading;
+  isCreateArticle = false;
 
   constructor(
     private dialog: MatDialog,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    this.route
+    .queryParams
+    .subscribe((params: Params) => {
+      switch(params.selected) {
+        case '11':
+          this.isCreateArticle = true;
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   onCreate(createForm) {
     const name: string = createForm.value.name;
     const resourceType:ResourceType = createForm.value.resourceType;
-    console.log(resourceType);
+
+    if (this.isCreateArticle) {
+        this.createArticle(name);
+        return;
+    }
+
     switch (resourceType.type) {
       case 'packages':
         this.createPackage(name, resourceType.value);
@@ -79,7 +97,7 @@ export class CreateNewComponent implements OnInit {
 
     this.san11pkService.createPackage(new Package({
       packageId: '0',
-      name: packageName,
+      packageName: packageName,
       description: '',
       categoryId: categoryId, // hardcoded to SIRE Plugin
       authorId: '0',

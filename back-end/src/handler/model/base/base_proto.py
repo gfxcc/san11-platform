@@ -45,6 +45,8 @@ class DatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Tim
 
     def from_model(self, value: datetime.datetime) -> timestamp_pb2.Timestamp:
         proto_value = timestamp_pb2.Timestamp()
+        if not value:
+            return proto_value
         proto_value.FromDatetime(value)
         return proto_value
 

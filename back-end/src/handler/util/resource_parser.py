@@ -10,7 +10,7 @@ import attr
 import os
 import re
 import logging
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
 from ..model.resource import ResourceMixin
 from ..model.package import Package
@@ -56,16 +56,22 @@ def parse_resource_name(name: str) -> ModelBase:
 
 @attr.s(auto_attribs=True)
 class ResourceName:
-    parent : Optional[ResourceName]
+    parent : Union[ResourceName | str]
     collection : str
     resource_id : int
-    _str : str
 
     def __str__(self) -> str:
-        return self._str 
+        cur = f'{self.collection}/{self.resource_id}'
+        if not self.parent:
+            return cur
+        return f'{self.parent}/{cur}'
 
     @classmethod
     def from_str(cls, s: str) -> ResourceName:
         parent_str, collection, resource_id = parse_name(s)
-        parent = ResourceName.from_str(parent_str) if parent_str else None
-        return cls(parent=parent, collection=collection, resource_id=resource_id, str=s)
+        try:
+            parent = ResourceName.from_str(parent_str)
+        except InvalidArgument:
+            parent = parent_str
+        return cls(parent=parent, collection=collection, resource_id=resource_id)
+    
