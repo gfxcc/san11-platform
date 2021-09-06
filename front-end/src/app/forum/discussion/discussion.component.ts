@@ -33,7 +33,7 @@ export class DiscussionComponent implements OnInit {
       { field: 'brand', header: 'Brand' },
       { field: 'color', header: 'Color' }
     ];
-    this.virtualThreads = [];
+    this.virtualThreads = Array.from({ length: 300 });
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
@@ -45,13 +45,24 @@ export class DiscussionComponent implements OnInit {
     console.log(request);
     this.san11pkService.listThreads(request).subscribe(
       (resp: ListThreadsResponse) => {
-        Array.prototype.splice.apply(this.virtualThreads, [
-          ...[event.first, event.rows],
-          ...resp.threads
-        ]);
+        if (resp.threads.length === 0) {
+          this.virtualThreads.slice(event.first);
+        } else {
+          Array.prototype.splice.apply(this.virtualThreads, [
+            ...[event.first, event.rows],
+            ...resp.threads
+          ]);
 
-        //trigger change detection
-        this.virtualThreads = [...this.virtualThreads];
+          if (event.first + event.rows === this.virtualThreads.length) {
+            Array.prototype.splice.apply(this.virtualThreads, [
+              ...[event.first + event.rows, 100],
+              ...Array.from({length: 100})
+            ]);
+          }
+
+          //trigger change detection
+          this.virtualThreads = [...this.virtualThreads];
+        }
       },
       error => {
         this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`)

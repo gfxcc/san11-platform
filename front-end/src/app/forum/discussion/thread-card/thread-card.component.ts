@@ -37,7 +37,7 @@ export class ThreadCardComponent implements OnInit {
   }
 
   getThreadAge() {
-    return getAge(this.thread.createTime);
+      return getAge(this.thread.createTime);
   }
 
   getUserAvatar(): string {

@@ -53,8 +53,6 @@ export class CreateThreadComponent implements OnInit {
   }
 
   createThread() {
-    for (let index = 0; index < 1000; index++) {
-
     this.san11pkService.createThread(new CreateThreadRequest({
       parent: this.parent,
       thread: new Thread({
@@ -64,13 +62,11 @@ export class CreateThreadComponent implements OnInit {
     })).subscribe(
       (resp: Thread) => {
         this.router.navigate(['discussion'])
-      }, 
+      },
       error => {
         this.notificationService.warn(`创建失败: ${error.statusMessage}.`)
       }
     );
-      
-    }
   }
 
 }

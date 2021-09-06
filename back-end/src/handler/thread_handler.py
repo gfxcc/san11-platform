@@ -28,7 +28,6 @@ class ThreadHandler:
         return thread
 
     def list_threads(self, request, handler_context) -> Tuple[Iterable[ModelThread], str]:
-        time.sleep(5)
         list_options = ListOptions.from_request(request)
         order_by = 'pinned desc, create_time desc' + (f', {list_options.order_by}' if list_options.order_by else '') 
         list_options.order_by = order_by
