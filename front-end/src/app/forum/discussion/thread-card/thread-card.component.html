@@ -24,8 +24,8 @@
 
 
                 <div style="width: 200px; display: flex;">
-                    <div *ngIf="thread.pinned" class="statistic-div" style="color: red;">
-                        <mat-icon width="24px " height="24px">
+                    <div class="statistic-div" style="color: red; width: 30px;">
+                        <mat-icon *ngIf="thread.pinned" width="24px " height="24px">
                             push_pin
                         </mat-icon>
                     </div>
@@ -35,9 +35,9 @@
                         </mat-icon>
 
                         <div style=" display: flex; ">
-                            <span style="display: flex; align-items: center; font-size: 14px; ">
+                            <span style="display: flex; align-items: center;">
                                 {{thread.viewCount}}
-                                </span>
+                            </span>
                         </div>
                     </div>
 
@@ -49,7 +49,7 @@
                             </path></g>
                             </svg>
                         <div style=" display: flex; ">
-                            <span style="display: flex; align-items: center; font-size: 14px; ">
+                            <span style="display: flex; align-items: center;">
                                 {{thread.commentCount}}
                             </span>
                         </div>

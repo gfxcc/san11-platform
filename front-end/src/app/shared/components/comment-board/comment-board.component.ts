@@ -104,7 +104,11 @@ export class CommentBoardComponent implements OnInit {
     })).subscribe(
       comment => {
         this.notificationService.success('评论添加 成功!');
-        this.comments.splice(0, 0, comment);
+        if (this.commentsOrder) {
+          this.comments.push(comment);
+        } else {
+          this.comments.splice(0, 0, comment);
+        }
         this.commentCount = increment(this.commentCount);
       },
       error => {

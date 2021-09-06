@@ -176,7 +176,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             FieldMask.from_pb(request.update_mask)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == comment.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        assert handler_context.user.user_id == comment.author_id or handler_context.user.user_type == 'admin' or update_mask.paths == {'upvote_count'}, '权限验证失败'
         return self.comment_handler.update_comment(comment, update_mask, handler_context).to_pb()
 
     def DeleteComment(self, request, context):
@@ -200,7 +200,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             FieldMask.from_pb(request.update_mask)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
+        assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin' or update_mask.paths == {'upvote_count'}, '权限验证失败'
         return self.reply_handler.update_reply(reply, update_mask, handler_context).to_pb()
 
     def DeleteReply(self, request, context):

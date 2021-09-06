@@ -28,6 +28,7 @@
     padding: 0;
     display: inline;
     flex-grow: 1;
+    font-size: 0.9rem;
 }
 
 .structItem-minor {
@@ -174,4 +175,6 @@ mat-icon {
 .statistic-div {
     display: flex;
     margin-right: 10px;
+    width: 60px;
+    font-size: 0.9rem;
 }

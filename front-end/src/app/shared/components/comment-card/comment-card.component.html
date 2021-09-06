@@ -18,28 +18,29 @@
 
                 <span class="example-spacer"></span>
 
-                <span *ngIf="this.comment.index != &quot;0&quot;"> #{{this.comment.index}} </span>
-                <div *ngIf="!this.hideControl">
+
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                    </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item disabled>
+                    <mat-icon>push_pin</mat-icon>
+                    <span>置顶</span>
+                    </button>
+
+                    <button mat-menu-item (click)="onDeleteComment()">
+                    <mat-icon>delete</mat-icon>
+                    <span>删除</span>
+                    </button>
+                </mat-menu>
+
+                <span *ngIf="this.comment.index != &quot;0&quot;" style="display: inline-flex;
+                align-items: center;"> #{{this.comment.index}} </span>
+                <!-- <div *ngIf="!this.hideControl">
                     <button mat-icon-button class="icon-button" (click)="onDeleteComment()">
                     <mat-icon class="icon">delete</mat-icon>
-                </button>
-
-
-                    <!-- <button mat-icon-button [matMenuTriggerFor]="menu"> -->
-                    <!-- <mat-icon>more_vert</mat-icon> -->
-                    <!-- </button> -->
-                    <!-- <mat-menu #menu="matMenu"> -->
-                    <!-- <button mat-menu-item disabled> -->
-                    <!-- <mat-icon>push_pin</mat-icon> -->
-                    <!-- <span>置顶</span> -->
-                    <!-- </button> -->
-                    <!--  -->
-                    <!-- <button mat-menu-item (click)="onDeleteComment()"> -->
-                    <!-- <mat-icon>delete</mat-icon> -->
-                    <!-- <span>删除</span> -->
-                    <!-- </button> -->
-                    <!-- </mat-menu> -->
-                </div>
+                </button> -->
+                <!-- </div> -->
 
             </div>
             <div class="content">

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
+import { isAdmin } from 'src/app/utils/user_util';
 import { ListThreadsRequest, ListThreadsResponse, Thread } from 'src/proto/san11-platform.pb';
 
 @Component({
@@ -19,15 +20,19 @@ export class DiscussionComponent implements OnInit {
     private router: Router,
     public san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
-  ) {}
+  ) { }
 
   ngOnInit() {
+    if (!isAdmin()) {
+      this.notificationService.warn('尚未开放');
+      this.router.navigate(['']);
+    }
     this.cols = [
-      {field: 'vin', header: 'Vin'},
-      {field: 'year', header: 'Year'},
-      {field: 'brand', header: 'Brand'},
-      {field: 'color', header: 'Color'}
-  ];
+      { field: 'vin', header: 'Vin' },
+      { field: 'year', header: 'Year' },
+      { field: 'brand', header: 'Brand' },
+      { field: 'color', header: 'Color' }
+    ];
     this.virtualThreads = [];
   }
 
@@ -47,7 +52,7 @@ export class DiscussionComponent implements OnInit {
 
         //trigger change detection
         this.virtualThreads = [...this.virtualThreads];
-      }, 
+      },
       error => {
         this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`)
       }

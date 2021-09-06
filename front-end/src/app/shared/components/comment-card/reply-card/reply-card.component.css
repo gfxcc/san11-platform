@@ -23,12 +23,12 @@
 }
 
 .right>.header>.user-name {
-    color: black;
+    color: #9e9fa2;
 }
 
 .right>.header>.create-time {
     margin-left: 10px;
-    color: #5f6368;
+    color: #9e9fa2;
 }
 
 .right>.bottom {
@@ -36,14 +36,14 @@
 }
 
 .icon {
-    color: #5f6368;
+    color: #9e9fa2;
     font-size: 16px;
 }
 
 .right>.bottom>.button {
     margin-left: 5px;
     height: 32px;
-    color: #5f6368;
+    color: #9e9fa2;
 }
 
 .reply-section {

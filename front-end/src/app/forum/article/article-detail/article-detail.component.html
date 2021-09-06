@@ -24,7 +24,6 @@
             </div>
 
             <footer class="cattagsarea">
-
                 <div *ngIf="(isAdmin() || isAuthor())" class="control row">
                     <button class="button" mat-raised-button color="warn" (click)="onDelete()">删除</button>
                     <button class="button" mat-stroked-button color="warn" (click)="onFlipState()">{{article.state===3? '发布' : '隐藏'}}</button>

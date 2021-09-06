@@ -1,129 +1,131 @@
-<div class="main">
+<div class="page-wrapper">
+    <div class="page-content">
 
-    <div class="heading show-border-dev">
-        <div class="back-btn-div">
-            <button mat-button (click)="onBack()" class="back-btn">
+        <div class="heading show-border-dev">
+            <div class="back-btn-div">
+                <button mat-button (click)="onBack()" class="back-btn">
                 <span class="material-icons back-btn-span">
                     arrow_back
                 </span>
             </button>
+            </div>
+            <div #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;"> {{this.package.packageName}} </div>
+
+            <span class="example-spacer"></span>
+
+            <button mat-stroked-button color="primary" *ngIf="this.packageNameUpdated" (click)="onUpdateTitle()" style="height: 36px;">更新</button>
+
         </div>
-        <div #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;"> {{this.package.packageName}} </div>
+        <div class="top-section">
+            <div class="image-gallery">
+                <gallery style="width: 100%; height: 100%; background-color: transparent;" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free" [counter]="false" slidingDirection="vertical" [nav]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="false"
+                    [playerInterval]="5000" #gallery></gallery>
 
-        <span class="example-spacer"></span>
+                <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
+            </div>
+            <div class="col-right">
+                <div class="info-section show-border-dev">
 
-        <button mat-stroked-button color="primary" *ngIf="this.packageNameUpdated" (click)="onUpdateTitle()" style="height: 36px;">更新</button>
+                    <div class="author-info show-border-dev">
+                        <div class="heading-1">作者</div>
+                        <div class="author-card show-border-dev" style="display: flex;" (click)="onAuthorClick()">
+                            <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage = false;" class="author-image">
 
-    </div>
-    <div class="top-section">
-        <div class="image-gallery">
-            <gallery style="width: 100%; height: 100%; background-color: transparent;" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free" [counter]="false" slidingDirection="vertical" [nav]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="false"
-                [playerInterval]="5000" #gallery></gallery>
-
-            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
-        </div>
-        <div class="col-right">
-            <div class="info-section show-border-dev">
-
-                <div class="author-info show-border-dev">
-                    <div class="heading-1">作者</div>
-                    <div class="author-card show-border-dev" style="display: flex;" (click)="onAuthorClick()">
-                        <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage = false;" class="author-image">
-
-                        <span style="display: inline-flex;  align-items: center;">
+                            <span style="display: inline-flex;  align-items: center;">
                         {{this.author.username}}
                         </span>
-                    </div>
-                </div>
-
-
-                <div style="margin-bottom: 10px">
-                    <div class="heading-1">创建日期</div>
-                    <div class="content">{{this.package.createTime}}</div>
-                </div>
-
-                <div style="margin-bottom: 10px">
-                    <div class="heading-1">最近更新</div>
-                    <div class="content">{{this.package.updateTime}}</div>
-                </div>
-
-                <div style="margin-bottom: 10px">
-                    <div class="heading-1">下载量</div>
-                    <div class="content">{{this.package.downloadCount}}</div>
-                </div>
-                <!-- <mat-icon class="icon" matTooltip="总下载量" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon> -->
-
-                <div *ngIf="true">
-                    <div style="margin-bottom: 5px;">
-                        <div class="heading-1">标签</div>
-                        <mat-chip-list #chipList>
-                            <mat-chip *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
-                                {{tag.name}}
-                                <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
+                        </div>
                     </div>
 
-                    <div *ngIf="tagCanEdit">
-                        <mat-form-field style="width: 100%;">
-                            <mat-label>新标签...</mat-label>
-                            <mat-select required (selectionChange)="newTagSelected($event.value)">
-                                <mat-option *ngFor="let tag of this.allTags" [value]="tag.tagId">
+
+                    <div style="margin-bottom: 10px">
+                        <div class="heading-1">创建日期</div>
+                        <div class="content">{{this.package.createTime}}</div>
+                    </div>
+
+                    <div style="margin-bottom: 10px">
+                        <div class="heading-1">最近更新</div>
+                        <div class="content">{{this.package.updateTime}}</div>
+                    </div>
+
+                    <div style="margin-bottom: 10px">
+                        <div class="heading-1">下载量</div>
+                        <div class="content">{{this.package.downloadCount}}</div>
+                    </div>
+                    <!-- <mat-icon class="icon" matTooltip="总下载量" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon> -->
+
+                    <div *ngIf="true">
+                        <div style="margin-bottom: 5px;">
+                            <div class="heading-1">标签</div>
+                            <mat-chip-list #chipList>
+                                <mat-chip *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
                                     {{tag.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div class="right-bottom">
-                    <div class="icon-section">
-                        <span class="example-spacer"></span>
-                        <!-- <mat-icon class="icon" matTooltip="总下载量" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon> -->
-                    </div>
-
-                    <div *ngIf="(isAdmin() || isAuthor())" class="package-controller top-border show-border-dev">
-                        <div class="admin-zone" *ngIf="isAdmin()">
-                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===2" (click)="onApprove()">通过审核</button>
-                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===1 || this.package.status===3" (click)="onFlipHide()">{{this.package.status===3 ? '取消隐藏' : '隐藏'}}</button>
+                                    <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
+                                </mat-chip>
+                            </mat-chip-list>
                         </div>
 
-                        <span [hidden]="!adminZone" class="example-spacer"></span>
+                        <div *ngIf="tagCanEdit">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>新标签...</mat-label>
+                                <mat-select required (selectionChange)="newTagSelected($event.value)">
+                                    <mat-option *ngFor="let tag of this.allTags" [value]="tag.tagId">
+                                        {{tag.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
 
-                        <span class="example-spacer"></span>
-                        <div class="author-zone" *ngIf="authorZone">
-
+                    <div class="right-bottom">
+                        <div class="icon-section">
                             <span class="example-spacer"></span>
-                            <!-- dangerous zone -->
-                            <div class="">
-                                <button class="button" mat-stroked-button color="warn" (click)="onDelete()">删除</button>
+                            <!-- <mat-icon class="icon" matTooltip="总下载量" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon> -->
+                        </div>
+
+                        <div *ngIf="(isAdmin() || isAuthor())" class="package-controller top-border show-border-dev">
+                            <div class="admin-zone" *ngIf="isAdmin()">
+                                <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===2" (click)="onApprove()">通过审核</button>
+                                <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===1 || this.package.status===3" (click)="onFlipHide()">{{this.package.status===3 ? '取消隐藏' : '隐藏'}}</button>
                             </div>
 
+                            <span [hidden]="!adminZone" class="example-spacer"></span>
+
+                            <span class="example-spacer"></span>
+                            <div class="author-zone" *ngIf="authorZone">
+
+                                <span class="example-spacer"></span>
+                                <!-- dangerous zone -->
+                                <div class="">
+                                    <button class="button" mat-stroked-button color="warn" (click)="onDelete()">删除</button>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="top-border">
-        <div class="heading-1" style="display: flex; height: 36px;">
-            <span class="">描述</span>
+        <div class="top-border">
+            <div class="heading-1" style="display: flex; height: 36px;">
+                <span class="">描述</span>
 
-            <!-- <button *ngIf="this.isAuthor()" mat-icon-button (click)="onDownloadDesc()">
+                <!-- <button *ngIf="this.isAuthor()" mat-icon-button (click)="onDownloadDesc()">
                 <mat-icon class="icon">download</mat-icon>
             </button> -->
-            <span class="example-spacer"></span>
-            <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()">更新</button>
+                <span class="example-spacer"></span>
+                <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()">更新</button>
+            </div>
+            <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
         </div>
-        <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
+
+        <div class="version-info top-border show-border-dev ">
+            <app-version-panel [package]="this.package " (downloadEvent)="onChildDownload($event) "> </app-version-panel>
+        </div>
+
+        <app-comment-board [parent]="this.getPackageUrl()" [package]="this.package" class="comment-section"></app-comment-board>
+
     </div>
-
-    <div class="version-info top-border show-border-dev ">
-        <app-version-panel [package]="this.package " (downloadEvent)="onChildDownload($event) "> </app-version-panel>
-    </div>
-
-    <app-comment-board [parent]="this.getPackageUrl()" [package]="this.package" class="comment-section"></app-comment-board>
-
 </div>

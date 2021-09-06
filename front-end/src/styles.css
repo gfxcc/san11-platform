@@ -222,3 +222,13 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.page-wrapper {}
+
+.page-content {
+    max-width: 1200px;
+    min-width: 700px;
+    flex-grow: 1;
+    margin-left: auto;
+    margin-right: auto;
+}
