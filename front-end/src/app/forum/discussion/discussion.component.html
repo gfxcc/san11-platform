@@ -15,18 +15,10 @@
 <div class="main-container">
     <!-- <h5>Virtual Scroll with Lazy Loading from a Remote Datasource (10000 Rows)</h5> -->
     <div class="table-wrapper radius-border shadow-border">
-        <p-table [columns]="cols" selectionMode="single" [value]="virtualThreads" [scrollable]="true" [rows]="200" scrollHeight="flex" [virtualScroll]="true" [virtualRowHeight]="34" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)" styleClass="p-datatable-striped">
+        <p-table [columns]="cols" selectionMode="single" [value]="virtualThreads" [scrollable]="true" [rows]="100" scrollHeight="flex" [virtualScroll]="true" [virtualRowHeight]="72" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)" styleClass="p-datatable-striped">
             <ng-template pTemplate="caption">
                 综合讨论区
             </ng-template>
-
-            <!-- <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th *ngFor="let col of columns">
-                    {{col.header}}
-                </th>
-            </tr>
-        </ng-template> -->
 
             <ng-template pTemplate="body" let-thread let-columns="columns">
                 <tr style="height:72px">
@@ -36,8 +28,8 @@
             </ng-template>
 
             <ng-template pTemplate="loadingbody" let-columns="columns">
-                <tr style="height:34px">
-                    <td *ngFor="let col of columns">
+                <tr style="height:72px">
+                    <td>
                         <p-skeleton [ngStyle]="{'width': '100%'}"></p-skeleton>
                     </td>
                 </tr>

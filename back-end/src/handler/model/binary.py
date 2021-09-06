@@ -181,7 +181,7 @@ class Binary(ResourceMixin, TrackLifecycle):
 
     def remove_resource(self) -> None:
         if self.url:
-            gcs.delete_canonical_resource(self.url)
+            gcs.delete_resource(self.url)
             self.size = ''
 
     def _increment_download_count(self):

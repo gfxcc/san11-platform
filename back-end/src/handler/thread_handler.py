@@ -1,6 +1,6 @@
 from handler.model.base.base_db import ListOptions
 import handler
-import os, attr
+import os, attr, time
 import logging
 from typing import Iterable, Optional, Tuple
 
@@ -8,6 +8,7 @@ from .common.field_mask import FieldMask, merge_resource
 from .model.model_thread import ModelThread
 from .protos import san11_platform_pb2 as pb
 from .auths import Authenticator
+from .util import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -27,6 +28,7 @@ class ThreadHandler:
         return thread
 
     def list_threads(self, request, handler_context) -> Tuple[Iterable[ModelThread], str]:
+        time.sleep(5)
         list_options = ListOptions.from_request(request)
         order_by = 'pinned desc, create_time desc' + (f', {list_options.order_by}' if list_options.order_by else '') 
         list_options.order_by = order_by
@@ -40,5 +42,6 @@ class ThreadHandler:
         return thread
 
     def delete_thread(self, thread: ModelThread, handler_context) -> ModelThread:
+        gcs.delete_folder(thread.name)        
         thread.delete(handler_context.user.user_id)
         return thread

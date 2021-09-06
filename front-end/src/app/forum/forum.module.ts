@@ -24,6 +24,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { ThreadCardComponent } from './discussion/thread-card/thread-card.component';
 import { ThreadDetailComponent } from './discussion/thread-detail/thread-detail.component';
+import { SkeletonModule } from 'primeng/skeleton';
+
 
 
 @NgModule({
@@ -54,6 +56,7 @@ import { ThreadDetailComponent } from './discussion/thread-detail/thread-detail.
     SharedModule,
     VirtualScrollerModule,
     TableModule,
+    SkeletonModule,
   ],
   providers: [ProductService]
 })

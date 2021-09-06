@@ -27,11 +27,19 @@ def move_file(src_bucket_name: str, src_filename: str, dest_bucket_name: str, de
     logger.debug(f'({src_filename}) is deleted from bucket {src_bucket_name}')
 
 
-def delete_file(bucket_name: str, filename: str) -> None:
+def _delete_file(bucket_name: str, filename: str) -> None:
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     bucket.blob(filename).delete()
     logger.debug(f'({filename}) is deleted from bucket {bucket_name}')
+
+def _delete_folder(bucket_name: str, folder_path: str) -> None:
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    blobs = bucket.list_blobs(prefix=folder_path)
+    for blob in blobs:
+        blob.delete()
+        logger.debug(f'({blob}) is deleted from bucket {bucket_name}')
 
 
 def disk_usage_under(prefix: str) -> int:
@@ -50,5 +58,13 @@ def get_file_size(bucket_name: str, filename: str) -> int:
     return blob.size
 
 
-def delete_canonical_resource(url: str) -> None:
-    delete_file(CANONICAL_BUCKET, url)
+def delete_resource(filename: str) -> None:
+    _delete_file(CANONICAL_BUCKET, filename)
+
+
+def delete_tmp_resource(filename: str) -> None:
+    _delete_file(TMP_BUCKET, filename)
+
+
+def delete_folder(folder_path: str) -> None:
+    _delete_folder(CANONICAL_BUCKET, folder_path)

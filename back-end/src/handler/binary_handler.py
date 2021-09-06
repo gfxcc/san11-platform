@@ -50,7 +50,7 @@ class BinaryHandler:
         if binary.file:
             file: File = binary.file
             if not check_per_package_size(parent, file.uri):
-                gcs.delete_file(gcs.TMP_BUCKET, file.uri)
+                gcs.delete_tmp_resource(file.uri)
                 raise ResourceExhausted(
                     message=f'工具存储空间 {gcs.PACKAGE_LIMIT_GB}GB 已用完，请考虑删除历史版本.')
 

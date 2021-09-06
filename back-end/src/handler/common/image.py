@@ -18,7 +18,7 @@ class Image:
         return self.url
     
     def delete(self):
-        gcs.delete_file(gcs.CANONICAL_BUCKET, self.url)
+        gcs.delete_resource(self.url)
         logger.info(f'{self} is deleted')
 
     @classmethod

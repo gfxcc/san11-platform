@@ -155,7 +155,7 @@ class ModelBinary(ModelBase, TrackLifecycle):
 
     def remove_resource(self) -> None:
         if self.file:
-            gcs.delete_canonical_resource(self.file.uri)
+            gcs.delete_resource(self.file.uri)
             self.size = ''
 
     def delete(self, **kwargs) -> None:
@@ -238,7 +238,7 @@ class ModelBinaryV1(ModelBase, TrackLifecycle):
 
     def remove_resource(self) -> None:
         if self.file:
-            gcs.delete_canonical_resource(self.file.uri)
+            gcs.delete_resource(self.file.uri)
             self.size = ''
 
     def delete(self, **kwargs) -> None:
