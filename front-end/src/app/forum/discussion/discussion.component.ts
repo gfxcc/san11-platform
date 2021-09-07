@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
+import { min } from 'rxjs-compat/operator/min';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { isAdmin } from 'src/app/utils/user_util';
@@ -42,27 +43,23 @@ export class DiscussionComponent implements OnInit {
       pageSize: event.rows.toString(),
       pageToken: `{ "watermark": "${event.first}" }`,
     })
-    console.log(request);
     this.san11pkService.listThreads(request).subscribe(
       (resp: ListThreadsResponse) => {
-        if (resp.threads.length === 0) {
-          this.virtualThreads.slice(event.first);
+        Array.prototype.splice.apply(this.virtualThreads, [
+          ...[event.first, resp.threads.length],
+          ...resp.threads
+        ]);
+
+        if (resp.threads.length < event.rows) {
+          this.virtualThreads.splice(event.first + resp.threads.length);
         } else {
           Array.prototype.splice.apply(this.virtualThreads, [
-            ...[event.first, event.rows],
-            ...resp.threads
+            ...[event.first + event.rows, 100],
+            ...Array.from({ length: 100 })
           ]);
-
-          if (event.first + event.rows === this.virtualThreads.length) {
-            Array.prototype.splice.apply(this.virtualThreads, [
-              ...[event.first + event.rows, 100],
-              ...Array.from({length: 100})
-            ]);
-          }
-
-          //trigger change detection
-          this.virtualThreads = [...this.virtualThreads];
         }
+        //trigger change detection
+        this.virtualThreads = [...this.virtualThreads];
       },
       error => {
         this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`)
