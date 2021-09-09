@@ -82,12 +82,10 @@ export class CommentBoardComponent implements OnInit {
   }
 
   configDescEditor() {
-    this.descEditor_data = '';
-    this.descEditor_disabled = false;
+    this.descEditor_data = this.disableInput ? this.inputPlaceHolder : '';
+    this.descEditor_disabled = this.disableInput;
     this.descEditor_config = {
-      placeholder: `
-      ...新评论
-      `,
+      placeholder: this.inputPlaceHolder,
       toolbar: {
         items: [
           'heading',
