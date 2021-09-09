@@ -75,10 +75,7 @@ export class ThreadDetailComponent implements OnInit {
     this.descEditor_disabled = !this.isAuthor();
     this.descEditor_config = {
       placeholder: `
-      ...起
-      ...承
-      ...转
-      ...合
+      ...编辑帖子
       `,
       toolbar: {
         items: [

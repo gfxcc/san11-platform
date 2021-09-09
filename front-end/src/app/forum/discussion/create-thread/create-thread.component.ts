@@ -37,11 +37,6 @@ export class CreateThreadComponent implements OnInit {
           Validators.minLength(2),
           Validators.maxLength(32)
         ]],
-      content: ['',
-        [
-          Validators.required,
-          Validators.minLength(1),
-        ]],
     });
   }
 
@@ -57,7 +52,6 @@ export class CreateThreadComponent implements OnInit {
       parent: this.parent,
       thread: new Thread({
         subject: this.subject.value,
-        content: this.content.value,
       })
     })).subscribe(
       (resp: Thread) => {

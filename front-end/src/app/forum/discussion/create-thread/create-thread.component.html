@@ -16,15 +16,12 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field class="input-field">
+                <!-- <mat-form-field class="input-field">
                     <textarea matInput rows="5" placeholder="内容" autocomplete="off" formControlName="content"></textarea>
                     <mat-error *ngIf="content.errors?.minlength && content.touched" align="end">
                         至少需要1个字符
                     </mat-error>
-                    <!-- <mat-error *ngIf="password.errors?.maxlength && password.touched" align="end">
-                        不得超过32个字符
-                    </mat-error> -->
-                </mat-form-field>
+                </mat-form-field> -->
             </mat-card-content>
             <button mat-stroked-button color="accent" class="btn-block" [disabled]="!createThreadForm.valid" type="submit">创建</button>
         </form>
