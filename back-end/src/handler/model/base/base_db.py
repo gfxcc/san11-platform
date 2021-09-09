@@ -261,6 +261,8 @@ class DbModelBase(ABC):
         sql = f"SELECT data FROM {db_table} {predicate_statement} {order_statement} {size_statement}"
         params = kwargs.copy()
         params['parent'] = list_options.parent
+        logger.debug(f'list sql: {sql}')
+        logger.debug(f'list params: {params}')
         resp = run_sql_with_param_and_fetch_all(sql, params)
 
         next_page_options = copy.copy(list_options)
