@@ -74,9 +74,9 @@ export class CommentBoardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.inputPlaceHolder)
-    if (this.package) {
-      this.resourceOwnerId = this.package.authorId;
-    }
+      if (this.package) {
+        this.resourceOwnerId = this.package.authorId;
+      }
     this.loadComments();
     this.configDescEditor();
   }
@@ -156,7 +156,7 @@ export class CommentBoardComponent implements OnInit {
     this.descEditor_updated = true;
   }
 
-  
+
   loadComments() {
     this.san11pkService.listComments(new ListCommentsRequest({
       parent: this.parent,
@@ -202,6 +202,7 @@ export class CommentBoardComponent implements OnInit {
           this.comments.splice(0, 0, comment);
         }
         this.commentCount = increment(this.commentCount);
+        this.descEditor_element.setData('');
       },
       error => {
         this.notificationService.warn('failed' + error.statusMessage);

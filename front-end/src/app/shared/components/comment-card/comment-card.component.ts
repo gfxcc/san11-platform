@@ -80,6 +80,7 @@ export class CommentCardComponent implements OnInit {
       }
     );
 
+    console.log(this.comment.text);
   }
 
 

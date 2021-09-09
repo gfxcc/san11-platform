@@ -43,9 +43,12 @@
                 <!-- </div> -->
 
             </div>
-            <div class="content" [innerHtml]="this.comment.text">
-                <!-- {{this.comment.text}} -->
-                <!-- <ckeditor class="editor" [data]="this.comment.text" [editor]="descEditor" [disabled]="true"></ckeditor> -->
+            <div>
+                <!-- <style scoped>
+                    @import "ckeditor/contents.css";
+                </style> -->
+                <div class="ck-content" [innerHtml]="this.comment.text">
+                </div>
             </div>
             <div class="bottom">
                 <button mat-icon-button (click)="onUpvote()">

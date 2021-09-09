@@ -51,8 +51,8 @@
 }
 
 .content {
-    white-space: pre-wrap;
     padding-right: 30px;
+    display: initial;
 }
 
 .icon {
