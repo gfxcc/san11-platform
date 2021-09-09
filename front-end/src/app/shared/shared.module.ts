@@ -14,6 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CommentBoardComponent } from './components/comment-board/comment-board.component';
 import { CommentCardComponent } from './components/comment-card/comment-card.component';
 import { ReplyCardComponent } from './components/comment-card/reply-card/reply-card.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 
@@ -28,6 +29,7 @@ import { ReplyCardComponent } from './components/comment-card/reply-card/reply-c
     MatTabsModule,
     AngularMaterialModule,
     FormsModule,
+    CKEditorModule,
   ],
   exports: [
     SidebarComponent,

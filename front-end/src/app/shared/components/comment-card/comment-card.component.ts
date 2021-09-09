@@ -12,6 +12,9 @@ import { isAdmin } from '../../../utils/user_util'
 import { increment } from '../../../utils/number_util';
 import { getAge } from 'src/app/utils/time_util';
 
+import * as Editor from "../../../common/components/ckeditor/ckeditor";
+import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
+
 
 @Component({
   selector: 'app-comment-card',
@@ -36,6 +39,8 @@ export class CommentCardComponent implements OnInit {
   hideControl = true;
   hideReplies = true;
   hideReplyEnter = true;
+
+  descEditor = Editor;
 
   constructor(
     private router: Router,
@@ -76,6 +81,7 @@ export class CommentCardComponent implements OnInit {
     );
 
   }
+
 
   onUserClick() {
     this.router.navigate(['users', this.comment.authorId]);
@@ -160,11 +166,6 @@ export class CommentCardComponent implements OnInit {
 
   getCommentAge() {
     return getAge(this.comment.createTime);
-  }
-
-  textAreaAdjust(textArea) {
-    textArea.target.style.height = "0px";
-    textArea.target.style.height = (textArea.target.scrollHeight + 25) + "px";
   }
 
   onReplyDelete(event) {

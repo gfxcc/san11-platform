@@ -8,6 +8,10 @@ import { getFullUrl } from "../../../utils/resrouce_util";
 import { getPackageUrl } from '../../../utils/package_util';
 import { decrement, increment } from "../../../utils/number_util";
 
+import * as Editor from "../../../common/components/ckeditor/ckeditor";
+import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
+import { UploadService } from 'src/app/service/upload.service';
+
 
 @Component({
   selector: 'app-comment-board',
@@ -33,9 +37,17 @@ export class CommentBoardComponent implements OnInit {
 
   resourceOwnerId: string;
 
+  descEditor = Editor;
+  descEditor_data: string;
+  descEditor_element;
+  descEditor_updated = false;
+  descEditor_disabled = true;
+  descEditor_config;
+
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private uploadService: UploadService,
   ) {
 
     this.authorId = localStorage.getItem('userId');
@@ -66,8 +78,85 @@ export class CommentBoardComponent implements OnInit {
       this.resourceOwnerId = this.package.authorId;
     }
     this.loadComments();
+    this.configDescEditor();
   }
 
+  configDescEditor() {
+    this.descEditor_data = '';
+    this.descEditor_disabled = false;
+    this.descEditor_config = {
+      placeholder: `
+      ...新评论
+      `,
+      toolbar: {
+        items: [
+          'heading',
+          '|',
+          'fontColor',
+          'bold',
+          'italic',
+          'underline',
+          'blockQuote',
+          'code',
+          'link',
+          '|',
+          'bulletedList',
+          'numberedList',
+          'todoList',
+          'horizontalLine',
+          '|',
+          'outdent',
+          'indent',
+          'alignment',
+          '|',
+          'imageUpload', // comment out this function as current implement will cause performance issue 
+          'codeBlock',
+          'insertTable',
+          'undo',
+          'redo'
+        ]
+      },
+      language: 'zh-cn',
+      image: {
+        toolbar: [
+          'imageStyle:full',
+          'imageStyle:side',
+        ]
+      },
+      table: {
+        contentToolbar: [
+          'tableColumn',
+          'tableRow',
+          'mergeTableCells',
+          'tableCellProperties',
+          'tableProperties'
+        ]
+      },
+      // mention: {
+      //   feeds: [
+      //     {
+      //       marker: '@',
+      //       feed: this.getUsernameFeedItems.bind(this),
+      //       minimumCharacters: 1,
+      //     }
+      //   ]
+      // },
+      licenseKey: '',
+    };
+  }
+  onDescEditorReady(event) {
+    this.descEditor_element = event;
+    event.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.parent);
+    };
+  }
+
+
+  onDescEditorChange(event) {
+    this.descEditor_updated = true;
+  }
+
+  
   loadComments() {
     this.san11pkService.listComments(new ListCommentsRequest({
       parent: this.parent,
@@ -91,12 +180,12 @@ export class CommentBoardComponent implements OnInit {
     return cnt.toString();
   }
 
-  onCreateComment(value) {
+  onCreateComment() {
     if (this.authorId === null) {
       this.notificationService.warn('请登录');
       return;
     }
-    const text = value.input;
+    const text = this.descEditor_element.getData();
 
     const comment = new Comment({
       text: text,
@@ -120,10 +209,8 @@ export class CommentBoardComponent implements OnInit {
     );
   }
 
-
-  textAreaAdjust(textArea) {
-    textArea.target.style.height = "0px";
-    textArea.target.style.height = (textArea.target.scrollHeight + 25) + "px";
+  onCancel() {
+    this.descEditor_element.setData('');
   }
 
   onCommentDelete(event) {

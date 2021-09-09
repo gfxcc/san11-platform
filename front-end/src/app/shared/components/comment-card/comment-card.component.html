@@ -43,8 +43,9 @@
                 <!-- </div> -->
 
             </div>
-            <div class="content">
-                {{this.comment.text}}
+            <div class="content" [innerHtml]="this.comment.text">
+                <!-- {{this.comment.text}} -->
+                <!-- <ckeditor class="editor" [data]="this.comment.text" [editor]="descEditor" [disabled]="true"></ckeditor> -->
             </div>
             <div class="bottom">
                 <button mat-icon-button (click)="onUpvote()">
