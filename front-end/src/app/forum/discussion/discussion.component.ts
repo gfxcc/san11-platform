@@ -62,7 +62,7 @@ export class DiscussionComponent implements OnInit {
         this.virtualThreads = [...this.virtualThreads];
       },
       error => {
-        this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`)
+        console.log(`获取讨论列表失败: ${error.statusMessage}.`);
       }
     );
     // // simulate remote connection with a timeout

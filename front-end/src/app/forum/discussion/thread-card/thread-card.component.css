@@ -3,7 +3,7 @@
     /* margin-top: 20px; */
     /* margin-bottom: 20px; */
     /* background-color: #fff; */
-    height: 72px;
+    /* height: 72px; */
 }
 
 .main-content {
@@ -12,7 +12,7 @@
     min-width: 300px; */
     display: table-cell;
     width: 800px;
-    padding: 15px 15px 15px 0px;
+    padding: 10px 15px 10px 0px;
 }
 
 .structItem-cell {
