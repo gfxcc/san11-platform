@@ -1,0 +1,16 @@
+.form-field {
+    width: 100%;
+}
+
+.form {
+    max-width: 400px;
+}
+
+.actions {
+    display: flex;
+    width: 100%;
+}
+
+.button {
+    float: right;
+}

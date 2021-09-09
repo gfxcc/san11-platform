@@ -1,0 +1,22 @@
+<div style="width: 400px;">
+    <mat-card-header style="display: flex; justify-content: center;">
+        <mat-card-title style="margin-bottom: 30px;">{{this.title}}</mat-card-title>
+    </mat-card-header>
+    <form class="form" #form='ngForm' (ngSubmit)="onSubmit(form)">
+
+        <mat-card-content>
+
+            <mat-form-field class="form-field form-text-input">
+                <mat-label>{{this.inputTitle}}</mat-label>
+                <input matInput required [(ngModel)]="this.preSetText" name="input">
+            </mat-form-field>
+
+        </mat-card-content>
+
+        <div class="actions">
+            <span class="example-spacer"></span>
+            <button class="button" [disabled]="!form.valid" type="submit" mat-stroked-button color="primary">确定</button>
+        </div>
+    </form>
+
+</div>

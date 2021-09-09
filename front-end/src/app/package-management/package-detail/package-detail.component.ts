@@ -18,12 +18,10 @@ import { CreateImageRequest, ListTagsRequest, FieldMask, Package, Status, Tag, U
 import { getFullUrl } from "../../utils/resrouce_util";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { NotificationService } from "../../common/notification.service";
-import { TextInputDialogComponent, TextData } from "../../common/components/text-input-dialog/text-input-dialog.component";
 import { LoadingComponent } from '../../common/components/loading/loading.component'
 import { EventEmiterService } from "../../service/event-emiter.service";
 import { GetUserRequest } from "../../../proto/san11-platform.pb";
 
-import { UserDetailComponent } from "../../account-management/user-detail/user-detail.component";
 
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 

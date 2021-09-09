@@ -1,12 +1,13 @@
 import { ViewChild, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CreateTagRequest, DeleteTagRequest, ListTagsRequest, Tag } from '../../../../proto/san11-platform.pb';
+import { CreateTagRequest, CreateThreadRequest, DeleteTagRequest, ListTagsRequest, Tag, Thread } from '../../../../proto/san11-platform.pb';
 import { GlobalConstants } from '../../../common/global-constants';
 import { NotificationService } from '../../../common/notification.service';
 import { ComponentMessage, EventEmiterService } from '../../../service/event-emiter.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { isAdmin, loadUser, signedIn } from '../../../utils/user_util';
+import { TextInputDialogComponent } from '../text-input-dialog/text-input-dialog.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -113,7 +114,8 @@ export class SidebarComponent implements OnInit {
     console.log(patterns);
     switch (patterns[0]) {
       case 'discussion':
-        this.router.navigate(['discussion', 'create'], { queryParams: { parent: parent } });
+        this.triggerCreateThreadWorkflow(parent);
+        // this.router.navigate(['discussion', 'create'], { queryParams: { parent: parent } });
         break;
       case 'articles':
         this.router.navigate(['createNew'], { queryParams: { selected: '11' } });
@@ -121,6 +123,39 @@ export class SidebarComponent implements OnInit {
       default:
         this.router.navigate(['createNew'], { queryParams: { selected: patterns[patterns.length - 1] } });
     }
+  }
+
+  triggerCreateThreadWorkflow(parent: string) {
+    this.dialog.open(TextInputDialogComponent, {
+      data: {
+        title: '新帖子',
+        inputTitle: '标题',
+        preSetText: ''
+      }
+    }).afterClosed().subscribe(
+      data => {
+        if (data) {
+          const subject = data.data;
+          this.createThread(parent, subject);
+        }
+      }
+    );
+  }
+
+  createThread(parent: string, subject: string) {
+    this.san11pkService.createThread(new CreateThreadRequest({
+      parent: parent,
+      thread: new Thread({
+        subject: subject,
+      })
+    })).subscribe(
+      (resp: Thread) => {
+        this.router.navigate([resp.name])
+      },
+      error => {
+        this.notificationService.warn(`创建失败: ${error.statusMessage}.`)
+      }
+    );
   }
 
   // To receive global messages

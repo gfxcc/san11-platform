@@ -15,11 +15,12 @@ import { CommentBoardComponent } from './components/comment-board/comment-board.
 import { CommentCardComponent } from './components/comment-card/comment-card.component';
 import { ReplyCardComponent } from './components/comment-card/reply-card/reply-card.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
 
 
 
 @NgModule({
-  declarations: [SidebarComponent, HeaderComponent, UserCardComponent, CommentBoardComponent, CommentCardComponent, ReplyCardComponent, CreateNewComponent],
+  declarations: [SidebarComponent, HeaderComponent, UserCardComponent, CommentBoardComponent, CommentCardComponent, ReplyCardComponent, CreateNewComponent, TextInputDialogComponent],
   imports: [
     CommonModule,
     MatListModule,
