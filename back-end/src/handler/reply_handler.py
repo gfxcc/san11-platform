@@ -1,6 +1,6 @@
 from datetime import datetime
 from handler.model.model_thread import ModelThread
-from handler.util.resource_parser import ResourceName, parse_resource_name
+from handler.util.resource_parser import ResourceName, find_resource, parse_resource_name
 from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.model_reply import ModelReply
 import sys, os
@@ -24,20 +24,13 @@ class ReplyHandler:
                        handler_context) -> ModelReply:
         user_id = handler_context.user.user_id
         reply.author_id = user_id
-
-        try:
-            parent_name = ResourceName.from_str(parent)
-            if parent_name.parent and parent_name.parent.collection == 'threads':
-                thread: ModelThread = parse_resource_name(
-                    str(parent_name.parent))
-                thread.reply_count += 1
-                thread.latest_commented_time = reply.create_time
-                thread.latest_commenter_id = user_id
-                thread.update(update_update_time=False)
-        except InvalidArgument as e:
-            logger.error(f'Failed to update thread during a reply creation: {e}')
-            pass
-
+        grand_parent = find_resource(ResourceName.from_str(parent).parent)
+        if isinstance(grand_parent, ModelThread):
+            thread = grand_parent
+            thread.reply_count += 1
+            thread.latest_commented_time = reply.create_time
+            thread.latest_commenter_id = user_id
+            thread.update(update_update_time=False)
         reply.create(parent=parent, user_id=user_id)
         return reply
     
@@ -68,5 +61,9 @@ class ReplyHandler:
 
     def delete_reply(self, reply: ModelReply,
                        handler_context) -> ModelReply:
+        grandparent = find_resource(ResourceName.from_str(reply.name).parent.parent)
         reply.delete(user_id=handler_context.user.user_id)
+        if isinstance(grandparent, ModelThread):
+            grandparent.reply_count -= 1
+            grandparent.update(update_update_time=False)
         return reply

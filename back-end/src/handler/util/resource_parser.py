@@ -75,3 +75,11 @@ class ResourceName:
             parent = parent_str
         return cls(parent=parent, collection=collection, resource_id=resource_id)
     
+
+def find_resource(name: Union[str | ResourceName]) -> ModelBase:
+    if isinstance(name, str):
+        return parse_resource_name(name)
+    elif isinstance(name, ResourceName):
+        return parse_resource_name(str(name))
+    else:
+        raise ValueError(f'name must be an instance of str or ResourceName: {name}')

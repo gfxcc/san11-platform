@@ -1,5 +1,5 @@
 from handler.model.model_thread import ModelThread
-from handler.util.resource_parser import ResourceName, parse_name, parse_resource_name
+from handler.util.resource_parser import ResourceName, find_resource, parse_name, parse_resource_name
 from handler.model.base.base_db import ListOptions
 from handler.model.reply import Reply
 from handler.model.model_reply import ModelReply, ModelReplyV1
@@ -28,19 +28,14 @@ class CommentHandler:
                        handler_context) -> ModelComment:
         user_id = handler_context.user.user_id
         comment.author_id = user_id
-        try:
-            parent_obj = parse_resource_name(parent)
-            if isinstance(parent_obj, ModelThread):
-                thread = parent_obj
-                thread.comment_count += 1
-                thread.latest_commented_time = comment.create_time
-                thread.latest_commenter_id = user_id
-                thread.update(update_update_time=False)
-                comment.index = thread.comment_count
-        except InvalidArgument as e:
-            logger.error(f'Failed to update thread during a comment creation: {e}')
-            pass
-
+        parent_obj = find_resource(parent)
+        if isinstance(parent_obj, ModelThread):
+            thread = parent_obj
+            thread.comment_count += 1
+            thread.latest_commented_time = comment.create_time
+            thread.latest_commenter_id = user_id
+            thread.update(update_update_time=False)
+            comment.index = thread.comment_count
         comment.create(parent=parent, user_id=user_id)
         return comment
 
@@ -90,7 +85,14 @@ class CommentHandler:
 
     def delete_comment(self, comment: ModelComment,
                        handler_context) -> ModelComment:
-        for reply in ModelReply.list(ListOptions(parent=comment.name))[0]:
+        replies = ModelReply.list(ListOptions(parent=comment.name))[0]
+        for reply in replies:
             reply.delete()
         comment.delete(user_id=handler_context.user.user_id)
+        parent = find_resource(ResourceName.from_str(comment.name).parent)
+        if isinstance(parent, ModelThread):
+            thread = parent
+            thread.comment_count -= 1
+            thread.reply_count -= len(replies)
+            thread.update(update_update_time=False)
         return comment
