@@ -1,3 +1,5 @@
+from handler.model.model_reply import ModelReply
+from handler.model.model_comment import ModelComment
 from handler.model.base.base_db import ListOptions
 import handler
 import os, attr, time
@@ -45,6 +47,10 @@ class ThreadHandler:
         return thread
 
     def delete_thread(self, thread: ModelThread, handler_context) -> ModelThread:
-        gcs.delete_folder(thread.name)        
+        # gcs.delete_folder(thread.name)        
+        for comment in ModelComment.list(ListOptions(parent=thread.name))[0]:
+            for reply in ModelReply.list(ListOptions(parent=comment.name))[0]:
+                reply.delete()
+            comment.delete()
         thread.delete(handler_context.user.user_id)
         return thread

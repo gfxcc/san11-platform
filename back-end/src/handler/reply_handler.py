@@ -62,8 +62,8 @@ class ReplyHandler:
     def delete_reply(self, reply: ModelReply,
                        handler_context) -> ModelReply:
         grandparent = find_resource(ResourceName.from_str(reply.name).parent.parent)
-        reply.delete(user_id=handler_context.user.user_id)
         if isinstance(grandparent, ModelThread):
             grandparent.reply_count -= 1
             grandparent.update(update_update_time=False)
+        reply.delete(user_id=handler_context.user.user_id)
         return reply

@@ -68,17 +68,17 @@ class CommentHandler:
     def list_comments(self, request,
                       handler_context) -> Tuple[Iterable[ModelComment], str]:
         # TODO: remove backfill logic
-        if not ModelComment.list(ListOptions(parent=None))[0]:
-            comment_dict = {}
-            for comment in ModelCommentV1.list(ListOptions(parent=None))[0]:
-                model = ModelComment.from_v1(comment)
-                model.create(parent=parse_name(model.name)[0])
-                comment_dict[comment.name] = model.name
+        # if not ModelComment.list(ListOptions(parent=None))[0]:
+        #     comment_dict = {}
+        #     for comment in ModelCommentV1.list(ListOptions(parent=None))[0]:
+        #         model = ModelComment.from_v1(comment)
+        #         model.create(parent=parse_name(model.name)[0])
+        #         comment_dict[comment.name] = model.name
 
-            for reply in ModelReplyV1.list(ListOptions(parent=None))[0]:
-                model = ModelReply.from_v1(reply)
-                parent, _, _ = parse_name(model.name)
-                model.create(parent=comment_dict[parent])
+        #     for reply in ModelReplyV1.list(ListOptions(parent=None))[0]:
+        #         model = ModelReply.from_v1(reply)
+        #         parent, _, _ = parse_name(model.name)
+        #         model.create(parent=comment_dict[parent])
         # # TODO: END
         list_options = ListOptions.from_request(request)
         return ModelComment.list(list_options=list_options)
@@ -88,11 +88,11 @@ class CommentHandler:
         replies = ModelReply.list(ListOptions(parent=comment.name))[0]
         for reply in replies:
             reply.delete()
-        comment.delete(user_id=handler_context.user.user_id)
         parent = find_resource(ResourceName.from_str(comment.name).parent)
         if isinstance(parent, ModelThread):
             thread = parent
             thread.comment_count -= 1
             thread.reply_count -= len(replies)
             thread.update(update_update_time=False)
+        comment.delete(user_id=handler_context.user.user_id)
         return comment
