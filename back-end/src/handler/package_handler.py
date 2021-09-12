@@ -1,3 +1,4 @@
+from handler.model.model_comment import ModelComment
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import ModelBinary
 import sys, os
@@ -8,7 +9,6 @@ from .protos import san11_platform_pb2
 from .auths import Authenticator
 from .model.package import Package, Status
 from .model.binary import Binary
-from .model.comment import Comment
 from .model.user import User
 from .common.image import Image
 from .common.exception import PermissionDenied
@@ -54,7 +54,7 @@ class PackageHandler:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
 
-        for comment in Comment.list(0, '', parent=package.name):
+        for comment in ModelComment.list(ListOptions(parent=this.name)):
             try:
                 comment.delete(user_id=auth.session.user.user_id)
             except Exception as err:

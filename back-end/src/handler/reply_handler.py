@@ -3,7 +3,8 @@ from handler.model.model_thread import ModelThread
 from handler.util.resource_parser import ResourceName, find_resource, parse_resource_name
 from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.model_reply import ModelReply
-import sys, os
+import sys
+import os
 import logging
 
 
@@ -11,7 +12,6 @@ from .protos import san11_platform_pb2
 from .auths import Authenticator
 from .model.user import User
 from .model.activity import Activity, Action
-from .model.comment import Reply, Comment
 from .common.exception import InvalidArgument, Unauthenticated, NotFound
 from .util.time_util import get_now
 
@@ -21,7 +21,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 class ReplyHandler:
     def create_reply(self, parent: str, reply: ModelReply,
-                       handler_context) -> ModelReply:
+                     handler_context) -> ModelReply:
         user_id = handler_context.user.user_id
         reply.author_id = user_id
         grand_parent = find_resource(ResourceName.from_str(parent).parent)
@@ -33,14 +33,19 @@ class ReplyHandler:
             thread.update(update_update_time=False)
         reply.create(parent=parent, user_id=user_id)
         return reply
-    
-    def update_reply(self, reply: ModelReply, update_mask: FieldMask,
-                       handler_context) -> ModelReply:
-        base_reply = ModelReply.from_name(reply.name)
+
+    def update_reply(self, base_reply: ModelReply, update_reply: ModelReply, update_mask: FieldMask,
+                     handler_context) -> ModelReply:
+        # Value of update_count.upvote_count is 1 if upvote event is emitted.
+        # Using 1 rather than precomputed count from client side to avoid race condition
+        #   where multiple upvote event is emiited at the same time.
+        # Remove `upvote_count` from update_mask here and handle the count update
+        #   explicitly later.
+        sanitized_update_mask = FieldMask(
+            set(update_mask.paths) - {'upvote_count'})
         reply = merge_resource(base_resource=base_reply,
-                                 update_request=reply,
-                                 field_mask=update_mask)
-        reply.upvote_count = base_reply.upvote_count
+                               update_request=update_reply,
+                               field_mask=sanitized_update_mask)
         user_id = handler_context.user.user_id
         if update_mask.has('upvote_count'):
             try:
@@ -60,8 +65,9 @@ class ReplyHandler:
         return reply
 
     def delete_reply(self, reply: ModelReply,
-                       handler_context) -> ModelReply:
-        grandparent = find_resource(ResourceName.from_str(reply.name).parent.parent)
+                     handler_context) -> ModelReply:
+        grandparent = find_resource(
+            ResourceName.from_str(reply.name).parent.parent)
         if isinstance(grandparent, ModelThread):
             grandparent.reply_count -= 1
             grandparent.update(update_update_time=False)

@@ -1,7 +1,6 @@
 from handler.model.model_thread import ModelThread
 from handler.util.resource_parser import ResourceName, find_resource, parse_name, parse_resource_name
 from handler.model.base.base_db import ListOptions
-from handler.model.reply import Reply
 from handler.model.model_reply import ModelReply, ModelReplyV1
 from handler.common.field_mask import FieldMask, merge_resource
 from typing import Iterable, Optional, Tuple
@@ -12,7 +11,6 @@ import os
 
 from .util.time_util import get_now
 from .common.exception import InvalidArgument, Unauthenticated, NotFound
-from .model.comment import Comment
 from .model.user import User
 from .model.activity import Activity, Action
 from .auths import Authenticator
@@ -39,13 +37,18 @@ class CommentHandler:
         comment.create(parent=parent, user_id=user_id)
         return comment
 
-    def update_comment(self, comment: ModelComment, update_mask: FieldMask,
+    def update_comment(self, base_comment: ModelComment, update_comment: ModelComment, update_mask: FieldMask,
                        handler_context) -> ModelComment:
-        base_comment = ModelComment.from_name(comment.name)
+        # Value of update_count.upvote_count is 1 if upvote event is emitted.
+        # Using 1 rather than precomputed count from client side to avoid race condition
+        #   where multiple upvote event is emiited at the same time.
+        # Remove `upvote_count` from update_mask here and handle the count update
+        #   explicitly later.
+        sanitized_update_mask = FieldMask(
+            set(update_mask.paths) - {'upvote_count'})
         comment = merge_resource(base_resource=base_comment,
-                                 update_request=comment,
-                                 field_mask=update_mask)
-        comment.upvote_count = base_comment.upvote_count
+                                 update_request=update_comment,
+                                 field_mask=sanitized_update_mask)
         user_id = handler_context.user.user_id
 
         if update_mask.has('upvote_count'):

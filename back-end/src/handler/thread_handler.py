@@ -2,7 +2,9 @@ from handler.model.model_reply import ModelReply
 from handler.model.model_comment import ModelComment
 from handler.model.base.base_db import ListOptions
 import handler
-import os, attr, time
+import os
+import attr
+import time
 import logging
 from typing import Iterable, Optional, Tuple
 
@@ -31,7 +33,8 @@ class ThreadHandler:
 
     def list_threads(self, request, handler_context) -> Tuple[Iterable[ModelThread], str]:
         list_options = ListOptions.from_request(request)
-        order_by = 'pinned desc, create_time desc' + (f', {list_options.order_by}' if list_options.order_by else '') 
+        order_by = 'pinned desc, create_time desc' + \
+            (f', {list_options.order_by}' if list_options.order_by else '')
         list_options.order_by = order_by
         if handler_context.user and handler_context.user.is_admin():
             list_options.filter = ''
@@ -39,15 +42,14 @@ class ThreadHandler:
             list_options.filter = 'state=1'
         return ModelThread.list(list_options)
 
-    def update_thread(self, update_thread: ModelThread, update_mask: FieldMask, handler_context) -> ModelThread:
-        thread_original = ModelThread.from_name(update_thread.name)
+    def update_thread(self, base_thread: ModelThread, update_thread: ModelThread, update_mask: FieldMask, handler_context) -> ModelThread:
         thread: ModelThread = merge_resource(
-            thread_original, update_thread, update_mask)
+            base_thread, update_thread, update_mask)
         thread.update(handler_context.user.user_id)
         return thread
 
     def delete_thread(self, thread: ModelThread, handler_context) -> ModelThread:
-        # gcs.delete_folder(thread.name)        
+        # gcs.delete_folder(thread.name)
         for comment in ModelComment.list(ListOptions(parent=thread.name))[0]:
             for reply in ModelReply.list(ListOptions(parent=comment.name))[0]:
                 reply.delete()

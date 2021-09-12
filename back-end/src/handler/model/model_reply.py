@@ -1,8 +1,6 @@
 from __future__ import annotations
 import datetime
-from handler.model.reply import Reply
 from typing import Iterable
-from handler.model.comment import Comment
 import attr
 
 from ..protos import san11_platform_pb2 as pb
@@ -38,17 +36,6 @@ class ModelReply(ModelBase, TrackLifecycle):
     upvote_count = Attrib(
         type=int,
     )
-
-    @classmethod
-    def from_v1(cls, legacy_model: Reply) -> ModelReply:
-        return cls(
-            name=legacy_model.name,
-            author_id=legacy_model.author_id,
-            text=legacy_model.text,
-            create_time=legacy_model.create_time,
-            update_time=legacy_model.update_time,
-            upvote_count=legacy_model.upvote_count,
-        )
 
 @InitModel(
     db_table='replies_model_v1',

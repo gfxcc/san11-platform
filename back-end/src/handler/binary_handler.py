@@ -69,9 +69,7 @@ class BinaryHandler:
         binary.create(parent=parent, user_id=handler_context.user.user_id)
         return binary
 
-    def update_binary(self, binary: ModelBinary, update_mask: FieldMask, handler_context) -> ModelBinary:
-        base_binary = ModelBinary.from_name(binary.name)
-        update_binary = binary
+    def update_binary(self, base_binary: ModelBinary, update_binary: ModelBinary, update_mask: FieldMask, handler_context) -> ModelBinary:
         if update_mask.has('file') and update_binary.file is None:
             base_binary.remove_resource()
         binary = merge_resource(base_resource=base_binary,

@@ -3,9 +3,7 @@ import datetime
 import logging
 from handler.model.base.base_db import ListOptions
 from handler.model.model_reply import ModelReply
-from handler.model.reply import Reply
 from typing import Iterable
-from handler.model.comment import Comment
 import attr
 
 from ..protos import san11_platform_pb2 as pb
@@ -51,17 +49,6 @@ class ModelComment(ModelBase, TrackLifecycle):
         getattr(proto, 'replies').extend([reply.to_pb() for reply in replies])
         return proto
 
-    @classmethod
-    def from_v1(cls, legacy_model: Comment) -> ModelComment:
-        return cls(
-            name=legacy_model.name,
-            author_id=legacy_model.author_id,
-            text=legacy_model.text,
-            create_time=legacy_model.create_time,
-            update_time=legacy_model.update_time,
-            upvote_count=legacy_model.upvote_count,
-        )
-    
 
 @InitModel(
     db_table='comments_model_v1',

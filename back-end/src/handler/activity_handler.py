@@ -1,4 +1,4 @@
-from handler.model.article import Article
+from handler.model.model_article import ModelArticle
 from handler.model.model_reply import ModelReply
 from handler.model.model_comment import ModelComment
 from handler.model.model_thread import ModelThread
@@ -40,7 +40,7 @@ class ActivityHandler:
                     resource_view = ResourceView(name=resource.name, display_name='评论', description='', image_url=None)
                 elif isinstance(resource, ModelReply):
                     resource_view = ResourceView(name=resource.name, display_name='回复', description='', image_url=None)
-                elif isinstance(resource, Article):
+                elif isinstance(resource, ModelArticle):
                     resource_view = ResourceView(name=resource.name, display_name=resource.subject, description='', image_url=None)
                 else:
                     resource_view = resource.view

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from handler.model.model_article import ModelArticle
 from handler.common.exception import InvalidArgument
 from handler.model.base.base import ModelBase
 from handler.model.model_thread import ModelThread
@@ -16,13 +17,10 @@ from ..model.resource import ResourceMixin
 from ..model.package import Package
 from ..model.binary import Binary
 from ..model.tag import Tag
-from ..model.comment import Comment
 from ..model.user import User
-from ..model.reply import Reply
 
 
 logger = logging.getLogger(os.path.basename(__file__))
-
 
 
 def parse_name(name: str) -> Tuple[str, str, int]:
@@ -45,6 +43,7 @@ def parse_resource_name(name: str) -> ModelBase:
         'replies': ModelReply,
         'users': User,
         'threads': ModelThread,
+        'articles': ModelArticle,
     }
     _, collection, resource_id = parse_name(name)
 

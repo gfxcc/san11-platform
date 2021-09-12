@@ -12,8 +12,8 @@ from ..util.time_util import get_now
 )
 @attr.s
 class ModelThread(ModelBase):
-    # Resource name. It is `{parent}/articles/{article_id}`
-    # E.g. `articles/12345`
+    # Resource name. It is `{parent}/threads/{thread_id}`
+    # E.g. `threads/12345`
     name = Attrib(
         type=str,
     )

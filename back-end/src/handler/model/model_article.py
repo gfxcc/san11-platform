@@ -14,7 +14,7 @@ from ..util.time_util import get_now
     proto_class=pb.Article,
 )
 @attr.s
-class Article(ModelBase):
+class ModelArticle(ModelBase):
     # Resource name. It is `{parent}/articles/{article_id}`
     # E.g. `articles/12345`
     name = Attrib(

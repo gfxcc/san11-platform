@@ -7,8 +7,6 @@ from ..model.package import Package
 from ..model.binary import Binary
 from ..common.url import Url
 from ..model.user import User
-from ..model.comment import Comment
-from ..model.reply import Reply
 from .session import Session
 from ..common.exception import Unauthenticated
 
@@ -86,29 +84,29 @@ class Authenticator:
             return self.canUpdateUser(user)
         return False
     
-    # Comment
-    def canDeleteComment(self, comment: Comment) -> bool:
-        if self.isAdmin() or self._super_admin():
-            return True
-        user = self.session.user
-        return user.user_id == comment.author_id
+    # # Comment
+    # def canDeleteComment(self, comment: Comment) -> bool:
+    #     if self.isAdmin() or self._super_admin():
+    #         return True
+    #     user = self.session.user
+    #     return user.user_id == comment.author_id
 
-    def canUpdateComment(self, current: Comment, requested: san11_platform_pb2.Comment) -> bool:
-        if self._super_admin():
-            return True
-        user = self.session.user
-        can = True
-        if requested.text:
-            can = can and (user.user_id == current.author_id)
-        if requested.upvote_count:
-            can = can and True
-        return can
+    # def canUpdateComment(self, current: Comment, requested: san11_platform_pb2.Comment) -> bool:
+    #     if self._super_admin():
+    #         return True
+    #     user = self.session.user
+    #     can = True
+    #     if requested.text:
+    #         can = can and (user.user_id == current.author_id)
+    #     if requested.upvote_count:
+    #         can = can and True
+    #     return can
 
-    def canDeleteReply(self, reply: Reply) -> bool:
-        if self.isAdmin() or self._super_admin():
-            return True
-        user = self.session.user
-        return user.user_id == reply.author_id
+    # def canDeleteReply(self, reply: Reply) -> bool:
+    #     if self.isAdmin() or self._super_admin():
+    #         return True
+    #     user = self.session.user
+    #     return user.user_id == reply.author_id
 
     # User
     def canUpdateUser(self, user: User) -> bool:
