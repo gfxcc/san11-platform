@@ -6,7 +6,7 @@ import { San11PlatformServiceService } from 'src/app/service/san11-platform-serv
 import { UploadService } from 'src/app/service/upload.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
-import { isAdmin, loadUser } from 'src/app/utils/user_util';
+import { getUserUrl, isAdmin, loadUser } from 'src/app/utils/user_util';
 import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
 
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
@@ -32,6 +32,7 @@ export class ThreadDetailComponent implements OnInit {
   descEditor_updated = false;
   descEditor_disabled = true;
   descEditor_config;
+  userFeeds;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,11 +69,15 @@ export class ThreadDetailComponent implements OnInit {
         this.configDescEditor();
       }
     );
+
   }
 
   configDescEditor() {
     this.descEditor_data = this.thread.content;
     this.descEditor_disabled = !this.isAuthor();
+    if (!this.descEditor_disabled) {
+      this.preloadUserFeeds();
+    }
     this.descEditor_config = {
       placeholder: `
       ...编辑帖子
@@ -121,15 +126,15 @@ export class ThreadDetailComponent implements OnInit {
           'tableProperties'
         ]
       },
-      // mention: {
-      //   feeds: [
-      //     {
-      //       marker: '@',
-      //       feed: this.getUsernameFeedItems.bind(this),
-      //       minimumCharacters: 1,
-      //     }
-      //   ]
-      // },
+      mention: {
+        feeds: [
+          {
+            marker: '@',
+            feed: this.getUsernameFeedItems.bind(this),
+            minimumCharacters: 1,
+          }
+        ]
+      },
       licenseKey: '',
     };
   }
@@ -143,6 +148,80 @@ export class ThreadDetailComponent implements OnInit {
 
   onDescEditorChange(event) {
     this.descEditor_updated = true;
+  }
+
+  preloadUserFeeds() {
+    this.san11pkService.listUsers().subscribe(
+      resp => {
+        this.userFeeds = resp.users.map((user: User) => ({
+          id: `@${user.username}`,
+          userId: user.userId,
+          username: user.username,
+          link: getUserUrl(user),
+          userAvatar: getFullUrl(user.imageUrl)
+        }));
+      },
+      error => {
+        console.log('Failed to load user feeds');
+      }
+    );
+  }
+
+  getUsernameFeedItems(queryText: string) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const itemsToDisplay = this.userFeeds
+          // Filter out the full list of all items to only those matching the query text.
+          .filter(isItemMatching)
+          // Return 10 items max - needed for generic queries when the list may contain hundreds of elements.
+          .slice(0, 10);
+
+        resolve(itemsToDisplay);
+      }, 100);
+    });
+
+    function isItemMatching(item) {
+      // Make the search case-insensitive.
+      const searchString = queryText.toLowerCase();
+
+      // Include an item in the search results if the name or username includes the current user input.
+      return (
+        item.username.toLowerCase().includes(searchString) ||
+        item.userId.toLowerCase().includes(searchString)
+      );
+    }
+  }
+
+  MentionCustomization(editor) {
+    // The upcast converter will convert view <a class="mention" href="" data-user-id="">
+    // elements to the model 'mention' text attribute.
+    editor.conversion.for('upcast').elementToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-mention',
+        classes: 'mention',
+        attributes: {
+          href: true,
+          'data-user-id': true
+        }
+      },
+      model: {
+        key: 'mention',
+        value: viewItem => {
+          // The mention feature expects that the mention attribute value
+          // in the model is a plain object with a set of additional attributes.
+          // In order to create a proper object use the toMentionAttribute() helper method:
+          const mentionAttribute = editor.plugins.get('Mention').toMentionAttribute(viewItem, {
+            // Add any other properties that you need.
+            link: viewItem.getAttribute('href'),
+            userId: viewItem.getAttribute('data-user-id')
+          });
+
+          return mentionAttribute;
+        }
+      },
+      converterPriority: 'high'
+    });
   }
 
 

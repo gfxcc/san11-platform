@@ -1,5 +1,5 @@
 import { ViewChild, ElementRef, Input, Component, OnInit } from '@angular/core';
-import { Package, Comment, Reply, CreateCommentRequest, ListCommentsRequest } from "../../../../proto/san11-platform.pb";
+import { Package, Comment, Reply, CreateCommentRequest, ListCommentsRequest, User } from "../../../../proto/san11-platform.pb";
 
 import { GetUserRequest } from "../../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
@@ -11,6 +11,7 @@ import { decrement, increment } from "../../../utils/number_util";
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { UploadService } from 'src/app/service/upload.service';
+import { getUserUrl } from 'src/app/utils/user_util';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class CommentBoardComponent implements OnInit {
   descEditor_updated = false;
   descEditor_disabled = true;
   descEditor_config;
+  userFeeds;
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -73,10 +75,11 @@ export class CommentBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.inputPlaceHolder)
-      if (this.package) {
-        this.resourceOwnerId = this.package.authorId;
-      }
+
+    if (this.package) {
+      this.resourceOwnerId = this.package.authorId;
+    }
+
     this.loadComments();
     this.configDescEditor();
   }
@@ -84,6 +87,9 @@ export class CommentBoardComponent implements OnInit {
   configDescEditor() {
     this.descEditor_data = this.disableInput ? this.inputPlaceHolder : '';
     this.descEditor_disabled = this.disableInput;
+    if (!this.descEditor_disabled) {
+      this.preloadUserFeeds();
+    }
     this.descEditor_config = {
       placeholder: this.inputPlaceHolder,
       toolbar: {
@@ -130,15 +136,30 @@ export class CommentBoardComponent implements OnInit {
           'tableProperties'
         ]
       },
-      // mention: {
-      //   feeds: [
-      //     {
-      //       marker: '@',
-      //       feed: this.getUsernameFeedItems.bind(this),
-      //       minimumCharacters: 1,
-      //     }
-      //   ]
-      // },
+      mention: {
+        feeds: [
+          {
+            marker: '@',
+            feed: this.getUsernameFeedItems.bind(this),
+            minimumCharacters: 1,
+          },
+          // {
+          //   marker: '#',
+          //   feed: [
+          //     '#american', '#asian', '#baking', '#breakfast', '#cake', '#caribbean',
+          //     '#chinese', '#chocolate', '#cooking', '#dairy', '#delicious', '#delish',
+          //     '#dessert', '#desserts', '#dinner', '#eat', '#eating', '#eggs', '#fish',
+          //     '#food', '#foodgasm', '#foodie', '#foodporn', '#foods', '#french', '#fresh',
+          //     '#fusion', '#glutenfree', '#greek', '#grilling', '#halal', '#homemade',
+          //     '#hot', '#hungry', '#icecream', '#indian', '#italian', '#japanese', '#keto',
+          //     '#korean', '#lactosefree', '#lunch', '#meat', '#mediterranean', '#mexican',
+          //     '#moroccan', '#nom', '#nomnom', '#paleo', '#poultry', '#snack', '#spanish',
+          //     '#sugarfree', '#sweet', '#sweettooth', '#tasty', '#thai', '#vegan',
+          //     '#vegetarian', '#vietnamese', '#yum', '#yummy'
+          //   ]
+          // }
+        ]
+      },
       licenseKey: '',
     };
   }
@@ -152,6 +173,81 @@ export class CommentBoardComponent implements OnInit {
 
   onDescEditorChange(event) {
     this.descEditor_updated = true;
+  }
+
+
+  preloadUserFeeds() {
+    this.san11pkService.listUsers().subscribe(
+      resp => {
+        this.userFeeds = resp.users.map((user: User) => ({
+          id: `@${user.username}`,
+          userId: user.userId,
+          username: user.username,
+          link: getUserUrl(user),
+          userAvatar: getFullUrl(user.imageUrl)
+        }));
+      },
+      error => {
+        console.log('Failed to load user feeds');
+      }
+    );
+  }
+
+  getUsernameFeedItems(queryText: string) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const itemsToDisplay = this.userFeeds
+          // Filter out the full list of all items to only those matching the query text.
+          .filter(isItemMatching)
+          // Return 10 items max - needed for generic queries when the list may contain hundreds of elements.
+          .slice(0, 10);
+
+        resolve(itemsToDisplay);
+      }, 100);
+    });
+
+    function isItemMatching(item) {
+      // Make the search case-insensitive.
+      const searchString = queryText.toLowerCase();
+
+      // Include an item in the search results if the name or username includes the current user input.
+      return (
+        item.username.toLowerCase().includes(searchString) ||
+        item.userId.toLowerCase().includes(searchString)
+      );
+    }
+  }
+
+  MentionCustomization(editor) {
+    // The upcast converter will convert view <a class="mention" href="" data-user-id="">
+    // elements to the model 'mention' text attribute.
+    editor.conversion.for('upcast').elementToAttribute({
+      view: {
+        name: 'a',
+        key: 'data-mention',
+        classes: 'mention',
+        attributes: {
+          href: true,
+          'data-user-id': true
+        }
+      },
+      model: {
+        key: 'mention',
+        value: viewItem => {
+          // The mention feature expects that the mention attribute value
+          // in the model is a plain object with a set of additional attributes.
+          // In order to create a proper object use the toMentionAttribute() helper method:
+          const mentionAttribute = editor.plugins.get('Mention').toMentionAttribute(viewItem, {
+            // Add any other properties that you need.
+            link: viewItem.getAttribute('href'),
+            userId: viewItem.getAttribute('data-user-id')
+          });
+
+          return mentionAttribute;
+        }
+      },
+      converterPriority: 'high'
+    });
   }
 
 
