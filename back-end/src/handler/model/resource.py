@@ -132,7 +132,6 @@ class ResourceMixin(ABC):
         '''
         name: full resource name like `categories/123/packages/456/comments/789`
         '''
-        logger.info(name)
         assert re.fullmatch(cls.name_pattern(
         ), name), f'Invalid resource name: {name}. Expected pattern: {cls.name_pattern()}'
         resource_id = int(name.split('/')[-1])

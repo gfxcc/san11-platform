@@ -17,7 +17,7 @@ export class ThreadResolverService {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Thread> | Promise<Thread> | Thread {
     console.log(route.toString());
     return this.san11pkService.getThread(new GetThreadRequest({
-      name: getResolvedUrl(route),
+      name: `discussion/threads/${route.params['threadId']}`,
     }));
   }
 }

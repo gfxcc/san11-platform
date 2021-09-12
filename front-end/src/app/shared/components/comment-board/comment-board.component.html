@@ -13,7 +13,7 @@
             <div class="radius-border shadow-border">
                 <ckeditor class="editor" [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
             </div>
-            <div class="actions-section">
+            <div class="actions-section" *ngIf="!disableInput">
                 <span class="example-spacer"></span>
                 <button style="margin-left: 5px;" mat-button color="grey" (click)="onCancel()">取消</button>
                 <button style="margin-left: 5px;" type="submit" mat-raised-button color="primary" (click)="onCreateComment()">确定</button>

@@ -23,6 +23,16 @@ const routes: Routes = [
     resolve: { thread: ThreadResolverService },
   },
   {
+    path: 'discussion/threads/:threadId/comments/:commentId',
+    component: ThreadDetailComponent,
+    resolve: { thread: ThreadResolverService },
+  },
+  {
+    path: 'discussion/threads/:threadId/comments/:commentId/replies/:replyId',
+    component: ThreadDetailComponent,
+    resolve: { thread: ThreadResolverService },
+  },
+  {
     path: 'articles',
     component: ArticleListComponent,
   },

@@ -105,7 +105,8 @@ export class TimelineComponent implements OnInit {
   }
 
   onDetailClick(event) {
-    this.router.navigate([event.link]);
+    console.log(event.link);
+    this.router.navigate(event.link.split('/'));
   }
 
 }
