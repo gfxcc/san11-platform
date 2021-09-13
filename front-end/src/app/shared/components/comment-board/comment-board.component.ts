@@ -299,7 +299,7 @@ export class CommentBoardComponent implements OnInit {
         this.descEditor_element.setData('');
       },
       error => {
-        this.notificationService.warn('failed' + error.statusMessage);
+        this.notificationService.warn(`创建失败: ${error.statusMessage}`);
       }
     );
   }

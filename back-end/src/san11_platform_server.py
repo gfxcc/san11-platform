@@ -18,6 +18,7 @@ import time
 import re
 import attr
 import grpc
+import iam_util
 
 from typing import List, Optional
 from concurrent import futures
@@ -67,11 +68,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # New model #
     #############
     # Article
-
+    @iam_util.assert_login
     def CreateArticle(self, request, context):
         parent, article = request.parent, ModelArticle.from_pb(request.article)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         created_article = self.article_handler.create_article(
             parent, article, handler_context)
         return created_article.to_pb()
@@ -92,28 +92,26 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
 
+    @iam_util.assert_resource_owner('{article.name}')
     def UpdateArticle(self, request, context):
         update_article, update_mask = ModelArticle.from_pb(
             request.article), FieldMask.from_pb(request.update_mask)
         article = ModelArticle.from_name(request.article.name)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == article.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.article_handler.update_article(article, update_article, update_mask, handler_context).to_pb()
 
+    @iam_util.assert_resource_owner('{name}')
     def DeleteArticle(self, request, context):
         article = ModelArticle.from_name(request.name)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == article.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.article_handler.delete_article(article, handler_context).to_pb()
 
     # binaries
+    @iam_util.assert_login
     def CreateBinary(self, request, context):
         parent, binary = request.parent, ModelBinary.from_pb(request.binary)
         package = Package.from_name(parent)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         created_binary = self.binary_handler.create_binary(
             parent, binary, handler_context)
@@ -130,22 +128,22 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
 
+    @iam_util.assert_login
     def UpdateBinary(self, request, context):
         binary, update_mask = ModelBinary.from_pb(
             request.binary), FieldMask.from_pb(request.update_mask)
         package = Package.from_name(
             str(ResourceName.from_str(binary.name).parent))
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.binary_handler.update_binary(binary, update_mask, handler_context).to_pb()
 
+    @iam_util.assert_login
     def DeleteBinary(self, request, context):
         binary = ModelBinary.from_name(request.name)
         package = Package.from_name(
             str(ResourceName.from_str(binary.name).parent))
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.binary_handler.delete_binary(binary, handler_context).to_pb()
 
@@ -155,16 +153,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return self.binary_handler.download_binary(binary, handler_context).to_pb()
 
     # Comments
+    @iam_util.assert_login
     def CreateComment(self, request, context):
         parent, comment = request.parent, ModelComment.from_pb(request.comment)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         created_comment = self.comment_handler.create_comment(
             parent, comment, handler_context)
         return created_comment.to_pb()
 
     def ListComments(self, request, context):
-        parent, page_size, page_token = request.parent, request.page_size, request.page_token
         handler_context = HandlerContext.from_service_context(context)
         comments, next_page_token = self.comment_handler.list_comments(
             request=request,
@@ -175,54 +172,52 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
 
+    @iam_util.assert_login
     def UpdateComment(self, request, context):
         update_comment, update_mask = ModelComment.from_pb(request.comment), \
             FieldMask.from_pb(request.update_mask)
         comment = ModelComment.from_name(request.comment.name)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         assert handler_context.user.user_id == comment.author_id or handler_context.user.user_type == 'admin' or update_mask.paths == {
             'upvote_count'}, '权限验证失败'
         return self.comment_handler.update_comment(comment, update_comment, update_mask, handler_context).to_pb()
 
+    @iam_util.assert_resource_owner('{name}')
     def DeleteComment(self, request, context):
         comment = ModelComment.from_name(request.name)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == comment.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.comment_handler.delete_comment(comment, handler_context).to_pb()
 
     # Reply
+    @iam_util.assert_login
     def CreateReply(self, request, context):
         parent, reply = request.parent, ModelReply.from_pb(request.reply)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         created_reply = self.reply_handler.create_reply(
             parent, reply, handler_context)
         return created_reply.to_pb()
 
+    @iam_util.assert_login
     def UpdateReply(self, request, context):
         update_reply, update_mask = ModelReply.from_pb(request.reply), \
             FieldMask.from_pb(request.update_mask)
         reply = ModelReply.from_name(request.reply.name)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin' or update_mask.paths == {
             'upvote_count'}, '权限验证失败'
         return self.reply_handler.update_reply(reply, update_reply, update_mask, handler_context).to_pb()
 
+    @iam_util.assert_resource_owner('{name}')
     def DeleteReply(self, request, context):
         reply = ModelReply.from_name(request.name)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.reply_handler.delete_reply(reply, handler_context).to_pb()
 
     # Thread
+    @iam_util.assert_login
     def CreateThread(self, request, context):
         parent, thread = request.parent, ModelThread.from_pb(request.thread)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
         created_thread = self.thread_handler.create_thread(
             parent, thread, handler_context)
         return created_thread.to_pb()
@@ -242,20 +237,18 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
 
+    @iam_util.assert_resource_owner('{thread.name}')
     def UpdateThread(self, request, context):
         update_thread, update_mask = ModelThread.from_pb(request.thread), \
             FieldMask.from_pb(request.update_mask)
         thread = ModelThread.from_name(request.thread.name)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == thread.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.thread_handler.update_thread(thread, update_thread, update_mask, handler_context).to_pb()
 
+    @iam_util.assert_resource_owner('{name}')
     def DeleteThread(self, request, context):
         thread = ModelThread.from_name(request.name)
         handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user, '请登录'
-        assert handler_context.user.user_id == thread.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.thread_handler.delete_thread(thread, handler_context).to_pb()
 
     #############
