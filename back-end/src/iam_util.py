@@ -41,7 +41,7 @@ def assert_resource_owner(user_id_pattern: str):
     Args:
         resource_name_path: Path from request to resource_name and path from resource to user_id can be 
             supplied in the format as `{path_to_resource_name}.path_to_user_id`.
-                E.g. `{user}.custom_user_id`
+                E.g. `{user}.path_to_user_id`
             if `.path_to_user_id` is omitted, default value `author_id` will be applied.
     '''
     def parse_user_id_path(user_id_path: str) -> Tuple[str, str]:
