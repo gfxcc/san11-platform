@@ -11,7 +11,7 @@ import { decrement, increment } from "../../../utils/number_util";
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { UploadService } from 'src/app/service/upload.service';
-import { getUserUrl } from 'src/app/utils/user_util';
+import { getUserUrl, signedIn } from 'src/app/utils/user_util';
 
 
 @Component({
@@ -23,8 +23,8 @@ export class CommentBoardComponent implements OnInit {
   @Input() package: Package;
   @Input() parent: string;
   @Input() commentsOrder: string;
-  @Input() inputPlaceHolder = '输入评论';
   @Input() disableInput = false;
+  @Input() inputPlaceHolder = '输入评论';
 
   @ViewChild('commentForm') commentFormElement: ElementRef
 
@@ -75,6 +75,10 @@ export class CommentBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!signedIn()) {
+      this.disableInput = true;
+      this.inputPlaceHolder = '请登录';
+    }
 
     if (this.package) {
       this.resourceOwnerId = this.package.authorId;
