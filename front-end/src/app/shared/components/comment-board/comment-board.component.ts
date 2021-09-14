@@ -44,6 +44,7 @@ export class CommentBoardComponent implements OnInit {
   descEditor_updated = false;
   descEditor_disabled = true;
   descEditor_config;
+  descEditor_onFocus = false;
   userFeeds;
 
   constructor(
@@ -300,7 +301,9 @@ export class CommentBoardComponent implements OnInit {
           this.comments.splice(0, 0, comment);
         }
         this.commentCount = increment(this.commentCount);
+
         this.descEditor_element.setData('');
+        this.descEditor_onFocus = false;
       },
       error => {
         this.notificationService.warn(`创建失败: ${error.statusMessage}`);
@@ -310,6 +313,7 @@ export class CommentBoardComponent implements OnInit {
 
   onCancel() {
     this.descEditor_element.setData('');
+    this.descEditor_onFocus = false;
   }
 
   onCommentDelete(event) {
