@@ -118,7 +118,9 @@
                 <span class="example-spacer"></span>
                 <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()">更新</button>
             </div>
-            <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
+            <div class="radius-border shadow-border">
+                <ckeditor [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
+            </div>
         </div>
 
         <div class="version-info top-border show-border-dev ">
