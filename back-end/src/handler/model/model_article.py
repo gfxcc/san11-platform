@@ -1,3 +1,4 @@
+from handler.model.activity import TrackLifecycle
 from operator import is_
 import attr
 import datetime
@@ -14,7 +15,7 @@ from ..util.time_util import get_now
     proto_class=pb.Article,
 )
 @attr.s
-class ModelArticle(ModelBase):
+class ModelArticle(ModelBase, TrackLifecycle):
     # Resource name. It is `{parent}/articles/{article_id}`
     # E.g. `articles/12345`
     name = Attrib(

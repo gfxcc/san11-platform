@@ -1,3 +1,4 @@
+from handler.model.activity import TrackLifecycle
 import attr
 import datetime
 
@@ -11,7 +12,7 @@ from ..util.time_util import get_now
     proto_class=pb.Thread,
 )
 @attr.s
-class ModelThread(ModelBase):
+class ModelThread(ModelBase, TrackLifecycle):
     # Resource name. It is `{parent}/threads/{thread_id}`
     # E.g. `threads/12345`
     name = Attrib(
