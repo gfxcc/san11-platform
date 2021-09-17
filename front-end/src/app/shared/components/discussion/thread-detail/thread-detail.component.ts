@@ -9,7 +9,7 @@ import { getAge } from 'src/app/utils/time_util';
 import { getUserUrl, isAdmin, loadUser } from 'src/app/utils/user_util';
 import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
 
-import * as Editor from "../../../common/components/ckeditor/ckeditor";
+import * as Editor from "../../../../common/components/ckeditor/ckeditor";
 
 @Component({
   selector: 'app-thread-detail',

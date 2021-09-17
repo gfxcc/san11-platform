@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { ArticleDetailComponent } from './article/article-detail/article-detail.component';
 import { ArticleResolverService } from './article/article-detail/article-resolver.service';
 import { ArticleListComponent } from './article/article-list/article-list.component';
-import { CreateThreadComponent } from './discussion/create-thread/create-thread.component';
-import { DiscussionComponent } from './discussion/discussion.component';
-import { ThreadDetailComponent } from './discussion/thread-detail/thread-detail.component';
-import { ThreadResolverService } from './discussion/thread-detail/thread-resolver.service';
+import { CreateThreadComponent } from '../shared/components/discussion/create-thread/create-thread.component';
+import { ThreadDetailComponent } from '../shared/components/discussion/thread-detail/thread-detail.component';
+import { ThreadResolverService } from '../shared/components/discussion/thread-detail/thread-resolver.service';
+import { GeneralDiscussionComponent } from './general-discussion/general-discussion.component';
 
 const routes: Routes = [
   {
     path: 'discussion',
-    component: DiscussionComponent,
+    component: GeneralDiscussionComponent,
   },
   {
     path: 'discussion/create',

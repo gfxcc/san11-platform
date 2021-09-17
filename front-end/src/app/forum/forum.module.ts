@@ -16,15 +16,12 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from '../shared/shared.module';
-import { DiscussionComponent } from './discussion/discussion.component';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { TableModule } from 'primeng/table';
-import { CreateThreadComponent } from './discussion/create-thread/create-thread.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import { ThreadCardComponent } from './discussion/thread-card/thread-card.component';
-import { ThreadDetailComponent } from './discussion/thread-detail/thread-detail.component';
 import { SkeletonModule } from 'primeng/skeleton';
+import { GeneralDiscussionComponent } from './general-discussion/general-discussion.component';
 
 
 
@@ -33,10 +30,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     ArticleListComponent,
     ArticleDetailComponent,
     ArticleCardComponent,
-    DiscussionComponent,
-    CreateThreadComponent,
-    ThreadCardComponent,
-    ThreadDetailComponent,
+    GeneralDiscussionComponent,
   ],
   imports: [
     CommonModule,
@@ -54,9 +48,6 @@ import { SkeletonModule } from 'primeng/skeleton';
     MatCardModule,
     CKEditorModule,
     SharedModule,
-    VirtualScrollerModule,
-    TableModule,
-    SkeletonModule,
   ],
   providers: [ProductService]
 })

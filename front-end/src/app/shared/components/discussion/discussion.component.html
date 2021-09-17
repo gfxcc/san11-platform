@@ -1,23 +1,12 @@
-<!-- <p-virtualScroller [value]="virtualThreads" scrollHeight="400px" [itemSize]="280" [rows]="10" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)">
-    <ng-template pTemplate="header">
-        综合讨论区
-    </ng-template>
-    <ng-template let-thread pTemplate="item" let-i="index">
-        <app-thread-card [thread]="thread" class="card-wrapper">
-        </app-thread-card>
-    </ng-template>
-    <ng-template let-product pTemplate="loadingItem">
-
-    </ng-template>
-</p-virtualScroller> -->
-
-
 <div class="main-container">
     <!-- <h5>Virtual Scroll with Lazy Loading from a Remote Datasource (10000 Rows)</h5> -->
     <div class="table-wrapper radius-border shadow-border">
         <p-table [columns]="cols" selectionMode="single" [value]="virtualThreads" [scrollable]="true" [rows]="100" scrollHeight="flex" [virtualScroll]="true" [virtualRowHeight]="72" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)" styleClass="p-datatable-striped">
             <ng-template pTemplate="caption">
-                综合讨论区
+                <!-- <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+                    <mat-icon>add</mat-icon>
+                  </button>  -->
+                {{this.displayName}}
             </ng-template>
 
             <ng-template pTemplate="body" let-thread let-columns="columns">

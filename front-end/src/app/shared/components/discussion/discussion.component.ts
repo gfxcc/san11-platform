@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { min } from 'rxjs-compat/operator/min';
@@ -13,6 +13,8 @@ import { ListThreadsRequest, ListThreadsResponse, Thread } from 'src/proto/san11
   styleUrls: ['./discussion.component.css']
 })
 export class DiscussionComponent implements OnInit {
+  @Input() displayName: string;
+  @Input() parent: string;
 
   virtualThreads: Thread[];
   cols = [];
@@ -39,7 +41,7 @@ export class DiscussionComponent implements OnInit {
 
   loadCarsLazy(event: LazyLoadEvent) {
     const request = new ListThreadsRequest({
-      parent: 'discussion',
+      parent: this.parent,
       pageSize: event.rows.toString(),
       pageToken: `{ "watermark": "${event.first}" }`,
     })
