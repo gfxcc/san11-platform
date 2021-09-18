@@ -40,7 +40,15 @@ class ThreadHandler:
             list_options.filter = ''
         else:
             list_options.filter = 'state=1'
-        return ModelThread.list(list_options)
+        threads, next_page_token = ModelThread.list(list_options)
+        # TODO: remove migration logic
+        # A fixed bug caused empyt list from proto stored as '[]'.
+        for thread in ModelThread.list(ListOptions(parent=None))[0]:
+            if thread.tags == '[]':
+                thread.tags = []
+                thread.update(update_update_time=False)
+        # TODO: END
+        return threads, next_page_token
 
     def update_thread(self, base_thread: ModelThread, update_thread: ModelThread, update_mask: FieldMask, handler_context) -> ModelThread:
         thread: ModelThread = merge_resource(
