@@ -43,6 +43,10 @@ export class DiscussionComponent implements OnInit {
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
+    if (event.first < 0) {
+      return;
+    }
+
     const request = new ListThreadsRequest({
       parent: this.parent,
       pageSize: event.rows.toString(),
