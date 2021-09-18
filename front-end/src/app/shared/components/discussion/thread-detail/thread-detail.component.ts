@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { load } from '@grpc/grpc-js';
 import { NotificationService } from 'src/app/common/notification.service';
@@ -12,6 +14,10 @@ import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, Package, Resou
 
 import * as Editor from "../../../../common/components/ckeditor/ckeditor";
 
+
+export interface Fruit {
+  name: string;
+}
 @Component({
   selector: 'app-thread-detail',
   templateUrl: './thread-detail.component.html',
@@ -34,6 +40,17 @@ export class ThreadDetailComponent implements OnInit {
   descEditor_disabled = true;
   descEditor_config;
   userFeeds;
+
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  fruits: Fruit[] = [
+    { name: 'Lemon' },
+    { name: 'Lime' },
+    { name: 'Apple' },
+  ];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -344,4 +361,61 @@ export class ThreadDetailComponent implements OnInit {
     // );
   }
 
+  // chips
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    console.log('in add');
+    if (!value) {
+      return;
+    }
+
+    // Add our fruit
+    this.san11pkService.updateThread(new UpdateThreadRequest({
+      thread: new Thread({
+        name: this.thread.name,
+        tags: this.thread.tags.concat(value),
+      }),
+      updateMask: new FieldMask({ paths: ['tags'] }),
+    })).subscribe(
+      (thread: Thread) => {
+        this.thread.tags = thread.tags;
+      },
+      error => {
+        this.notificationService.warn(`更新标签失败: ${error.statusMessage}`);
+      }
+    );
+    this.thread.tags.push(value);
+    this._updateTags
+
+    // Clear the input value
+    event.chipInput!.clear();
+  }
+
+  remove(tag: string): void {
+    const index = this.thread.tags.indexOf(tag);
+    console.log('in remove' );
+    console.log(index);
+    if (index < 0) {
+      return;
+    }
+
+    this.san11pkService.updateThread(new UpdateThreadRequest({
+      thread: new Thread({
+        name: this.thread.name,
+        tags: this.thread.tags.slice(index, 1),
+      }),
+      updateMask: new FieldMask({ paths: ['tags'] }),
+    })).subscribe(
+      (thread: Thread) => {
+        this.thread.tags.splice(index, 1);
+      },
+      error => {
+        this.notificationService.warn(`更新标签失败: ${error.statusMessage}`);
+      }
+    );
+  }
+
+  _updateTags() {
+
+  }
 }

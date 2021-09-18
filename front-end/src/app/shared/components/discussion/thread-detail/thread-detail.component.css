@@ -75,6 +75,10 @@
     margin-left: -15px;
 }
 
+.tag-list {
+    width: 100%;
+}
+
 a {
     display: inline-block;
     line-height: 26px;
