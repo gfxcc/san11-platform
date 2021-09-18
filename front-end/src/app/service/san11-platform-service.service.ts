@@ -184,9 +184,8 @@ export class San11PlatformServiceService {
     return this.severClient.signUp(request);
   }
 
-  @Cacheable()
+  @Cacheable({maxCacheCount: 200})
   getUser(request: GetUserRequest): Observable<User> {
-    // TODO: add a cache layer
     return this.severClient.getUser(request, this.getMetadata());
   }
 
