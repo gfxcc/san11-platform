@@ -43,10 +43,10 @@ class ThreadHandler:
         threads, next_page_token = ModelThread.list(list_options)
         # TODO: remove migration logic
         # A fixed bug caused empyt list from proto stored as '[]'.
-        for thread in ModelThread.list(ListOptions(parent=None))[0]:
-            if thread.tags == '[]':
-                thread.tags = []
-                thread.update(update_update_time=False)
+        # for thread in ModelThread.list(ListOptions(parent=None))[0]:
+        #     if thread.tags == '[]':
+        #         thread.tags = []
+        #         thread.update(update_update_time=False)
         # TODO: END
         return threads, next_page_token
 
