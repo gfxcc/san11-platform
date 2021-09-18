@@ -308,6 +308,8 @@ class DbModelBase(ABC):
         for field in self._DB_FIELDS_DICT.values():
             data[field.name] = field.converter.from_model(
                 getattr(self, field.model_path))
+            # frm, to = getattr(self, field.model_path), data[field.name]
+            # logger.debug(f'In _prepare_data: {type(frm)}({frm}) -> {type(to)}({to})')
         return data
 
     @classmethod

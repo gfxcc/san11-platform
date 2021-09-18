@@ -85,7 +85,12 @@ class ProtoModelBase(ABC):
             converter: ProtoConverter = attribute.metadata[base_core.PROTO_CONVERTER]
             field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
             proto_value = _get_by_path(proto_model, path, field_descriptor)
-            properties[attribute.name] = converter.to_model(proto_value)
+            if base_core.is_repeated(attribute):
+                properties[attribute.name] = [converter.to_model(item) for item in proto_value]
+            else:
+                properties[attribute.name] = converter.to_model(proto_value)
+            # frm, to = proto_value, properties[attribute.name]
+            # logger.debug(f'In _prepare_data: {type(frm)}({frm}) -> {type(to)}({to})')
         return cls(**properties)
 
     def to_pb(self) -> message.Message:
