@@ -85,9 +85,13 @@ export class ThreadDetailComponent implements OnInit {
         );
 
         this.configDescEditor();
+        this.configTags();
       }
     );
+  }
 
+  configTags() {
+    this.removable = this.isAdmin() || this.isAuthor();
   }
 
   configDescEditor() {
@@ -364,7 +368,6 @@ export class ThreadDetailComponent implements OnInit {
   // chips
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-    console.log('in add');
     if (!value) {
       return;
     }
@@ -384,8 +387,6 @@ export class ThreadDetailComponent implements OnInit {
         this.notificationService.warn(`更新标签失败: ${error.statusMessage}`);
       }
     );
-    this.thread.tags.push(value);
-    this._updateTags
 
     // Clear the input value
     event.chipInput!.clear();
@@ -393,21 +394,21 @@ export class ThreadDetailComponent implements OnInit {
 
   remove(tag: string): void {
     const index = this.thread.tags.indexOf(tag);
-    console.log('in remove' );
-    console.log(index);
     if (index < 0) {
       return;
     }
 
+    let updated_tags = Array.from(this.thread.tags);
+    updated_tags.splice(index, 1);
     this.san11pkService.updateThread(new UpdateThreadRequest({
       thread: new Thread({
         name: this.thread.name,
-        tags: this.thread.tags.slice(index, 1),
+        tags: updated_tags,
       }),
       updateMask: new FieldMask({ paths: ['tags'] }),
     })).subscribe(
       (thread: Thread) => {
-        this.thread.tags.splice(index, 1);
+        this.thread.tags = thread.tags;
       },
       error => {
         this.notificationService.warn(`更新标签失败: ${error.statusMessage}`);
@@ -415,7 +416,4 @@ export class ThreadDetailComponent implements OnInit {
     );
   }
 
-  _updateTags() {
-
-  }
 }
