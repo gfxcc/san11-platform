@@ -3,10 +3,16 @@
     <div class="table-wrapper radius-border shadow-border">
         <p-table [columns]="cols" selectionMode="single" [value]="virtualThreads" [scrollable]="true" [rows]="100" scrollHeight="flex" [virtualScroll]="true" [virtualRowHeight]="72" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)" styleClass="p-datatable-striped">
             <ng-template pTemplate="caption">
-                <!-- <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
-                    <mat-icon>add</mat-icon>
-                  </button>  -->
+                <div class="caption">
+                    <span>
                 {{this.displayName}}
+                </span>
+                    <span class="example-spacer"></span>
+                    <button mat-mini-fab color="primary" (click)="createThread()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+
             </ng-template>
 
             <ng-template pTemplate="body" let-thread let-columns="columns">

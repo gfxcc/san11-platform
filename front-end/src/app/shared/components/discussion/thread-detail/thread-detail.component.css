@@ -15,7 +15,7 @@
 
 .pageContent {
     background-color: #29AA9F;
-    background-image: url('../../../../assets/images/thread-title-bar.png');
+    background-image: url('../../../../../assets/images/thread-title-bar.png');
     width: 100%;
     padding: 15px;
 }

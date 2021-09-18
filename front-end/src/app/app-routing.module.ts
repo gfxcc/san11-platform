@@ -11,6 +11,8 @@ import { PackageDetailComponent } from "./package-management/package-detail/pack
 import { PackageResolverService } from "./package-management/package-detail/package-resolver.service";
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
 import { CreateNewComponent } from './shared/components/create-new/create-new.component';
+import { ThreadDetailComponent } from './shared/components/discussion/thread-detail/thread-detail.component';
+import { ThreadResolverService } from './shared/components/discussion/thread-detail/thread-resolver.service';
 
 
 
@@ -27,6 +29,11 @@ const routes: Routes = [
     path: 'categories/:categoryId/packages/:packageId',
     component: PackageDetailComponent,
     resolve: { package: PackageResolverService }
+  },
+  {
+    path: 'categories/:categoryId/packages/:packageId/threads/:threadId',
+    component: ThreadDetailComponent,
+    resolve: { thread: ThreadResolverService }
   },
   {
     path: 'categories/:categoryId',

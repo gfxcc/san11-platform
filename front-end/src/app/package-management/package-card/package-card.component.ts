@@ -38,7 +38,7 @@ export class PackageCardComponent implements OnInit {
   authorName: string;
   authorImage: string;
 
-  screenshot: Url = undefined;
+  screenshot: string = undefined;
   selectedBinary;
 
   hideScreenshot: boolean = true;

@@ -5,7 +5,7 @@ from handler.model.model_thread import ModelThread
 from handler.thread_handler import ThreadHandler
 from handler.model.model_reply import ModelReply
 from handler.model.model_comment import ModelComment
-from handler.util.resource_parser import ResourceName
+from handler.util.resource_parser import ResourceName, find_resource
 from handler.model.package import Package
 from handler.model.model_binary import ModelBinary
 from handler.common.field_mask import FieldMask
@@ -243,6 +243,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             FieldMask.from_pb(request.update_mask)
         thread = ModelThread.from_name(request.thread.name)
         handler_context = HandlerContext.from_service_context(context)
+        if 'pinned' in update_mask.paths:
+            if not handler_context.user or not ( handler_context.user.is_admin() or find_resource(ResourceName.from_str(thread.name).parent).author_id == handler_context.user.user_id):
+                context.abort(PermissionDenied().code, PermissionDenied().message)
         return self.thread_handler.update_thread(thread, update_thread, update_mask, handler_context).to_pb()
 
     @iam_util.assert_resource_owner('{name}')

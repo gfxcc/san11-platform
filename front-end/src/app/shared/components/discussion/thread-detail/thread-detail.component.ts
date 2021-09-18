@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { load } from '@grpc/grpc-js';
 import { NotificationService } from 'src/app/common/notification.service';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
@@ -7,7 +8,7 @@ import { UploadService } from 'src/app/service/upload.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
 import { getUserUrl, isAdmin, loadUser } from 'src/app/utils/user_util';
-import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
+import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, Package, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
 
 import * as Editor from "../../../../common/components/ckeditor/ckeditor";
 
@@ -320,6 +321,27 @@ export class ThreadDetailComponent implements OnInit {
 
   isAuthor() {
     return this.thread.authorId === loadUser().userId;
+  }
+
+  isDiscussionAdmin() {
+    return false;
+    // let namePattern = /.*\/(?<packageId>[0-9]+)\/threads\/.+/;
+    // const match = this.thread.name.match(namePattern);
+    // if (!match) {
+    //   return false;
+    // }
+    // this.san11pkService.getPackage(match[1]).subscribe(
+    //   (resp: Package) => {
+    //     if (resp.authorId === loadUser().userId) {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   },
+    //   (error) => {
+    //     return false;
+    //   }
+    // );
   }
 
 }

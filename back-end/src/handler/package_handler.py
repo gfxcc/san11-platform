@@ -1,7 +1,9 @@
+from handler.model.model_reply import ModelReply
+from handler.model.model_thread import ModelThread
 from handler.model.model_comment import ModelComment
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import ModelBinary
-import sys, os
+import sys, os, re
 import logging
 
 
@@ -66,7 +68,48 @@ class PackageHandler:
         return san11_platform_pb2.Empty()
 
     def get_package(self, request, context):
-        return Package.from_id(request.package_id).to_pb()
+        package =  Package.from_id(request.package_id).to_pb()
+
+        # TODO: remove backfill code for comment/reply migration
+        def simplify_text(text: str) -> str:
+            if match := re.match(r'<p>(?P<subject>.+)</p>', text):
+                return match['subject']
+            return text
+        if not ModelThread.list(ListOptions(parent=package.name))[0]:
+            for comment in ModelComment.list(ListOptions(parent=package.name))[0]:
+                replies, _ = ModelReply.list(ListOptions(parent=comment.name, order_by='create_time'))
+                thread = ModelThread(
+                    name='',
+                    subject=simplify_text(comment.text),
+                    content='RT',
+                    author_id=comment.author_id,
+                    state=san11_platform_pb2.ResourceState.NORMAL,
+                    tags=[],
+                    view_count=0,
+                    like_count=0,
+                    comment_count=len(replies),
+                    reply_count=0,
+                    latest_commented_time=replies[-1].create_time if replies else comment.create_time,
+                    latest_commenter_id=replies[-1].author_id if replies else 0,
+                    pinned=False,
+                    create_time=comment.create_time,
+                    update_time=comment.create_time,
+                )
+                thread.create(package.name)
+
+                for i, reply in enumerate(replies):
+                    new_comment = ModelComment(
+                        name='',
+                        author_id=reply.author_id,
+                        text=reply.text,
+                        create_time=reply.create_time,
+                        update_time=reply.update_time,
+                        upvote_count=reply.upvote_count,
+                        index=i+1,
+                    )
+                    new_comment.create(thread.name)
+        # TODO: END
+        return package
 
     def list_packages(self, request, context):
         try:

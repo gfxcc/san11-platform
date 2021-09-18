@@ -15,9 +15,14 @@ export class ThreadResolverService {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Thread> | Promise<Thread> | Thread {
-    console.log(route.toString());
+    // console.log(state.);
+    console.log(route.routeConfig.path);
+
+    const urlPattern = /\/([a-zA-Z0-9/]+)\/threads\/([0-9]+)/;
+    const match = state.url.match(urlPattern);
+    console.log(match);
     return this.san11pkService.getThread(new GetThreadRequest({
-      name: `discussion/threads/${route.params['threadId']}`,
+      name: `${match[1]}/threads/${route.params['threadId']}`,
     }));
   }
 }
