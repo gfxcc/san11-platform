@@ -5,7 +5,7 @@
         <!-- </div> -->
     </td>
 
-    <td>
+    <td style="flex-grow: 1;">
         <div class="main-content">
             <div class="structItem-title">
                 <a href="{{thread.name}}" target="_blink">{{thread.subject}}</a>
@@ -21,6 +21,13 @@
                         {{getThreadAge()}}
                     </li>
                 </ul>
+
+
+                <mat-chip-list #chipList aria-label="Fruit selection">
+                    <mat-chip color="primary" *ngFor="let tag of this.thread.tags">
+                        {{tag}}
+                    </mat-chip>
+                </mat-chip-list>
 
 
                 <div style="width: 200px; display: flex;">
@@ -59,14 +66,12 @@
         </div>
     </td>
 
-    <td>
-        <div *ngIf="this.thread.latestCommenterId != &quot;0&quot;" class="structItem-cell structItem-cell--latest">
+    <td class="structItem-cell structItem-cell--latest">
+        <div>
             <div class="">{{getLatestCommentedAge()}}</div>
             <div class="">
                 <a href="users/{{latestCommenter?.userId}}" target="_blink">{{latestCommenter?.username}}</a>
             </div>
-
-
         </div>
     </td>
 

@@ -4,28 +4,31 @@
     /* margin-bottom: 20px; */
     /* background-color: #fff; */
     /* height: 72px; */
+    padding: 0 10px;
+    display: flex;
 }
 
 .main-content {
     /* width: 70%;
     max-width: 700px;
     min-width: 300px; */
-    display: table-cell;
-    width: 800px;
+    /* display: table-cell; */
+    width: 100%;
     padding: 10px 15px 10px 0px;
 }
 
 .structItem-cell {
-    /* display: table-cell;
+    display: table-cell;
     vertical-align: top;
-    padding: 15px; */
+    padding: 15px;
     font-size: 0.9rem;
     color: #9e9fa2;
 }
 
 .structItem-cell.structItem-cell--latest {
-    width: 190px;
+    width: 120px;
     text-align: right;
+    flex-shrink: 0;
 }
 
 .structItem-title {
@@ -183,4 +186,9 @@ mat-icon {
     margin-right: 10px;
     width: 60px;
     font-size: 0.9rem;
+}
+
+mat-chip {
+    padding: 0 8px;
+    font-size: 0.8rem;
 }
