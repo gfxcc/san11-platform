@@ -130,7 +130,6 @@ class PackageHandler:
         ])
 
     def search_packages(self, request, context):
-        logger.info(f'In SearchPackage: query={request.query}')
         return san11_platform_pb2.SearchPackagesResponse(
             packages=[package.to_pb() for package in Package.search(request.page_size,
                                                                     request.page_token, 
