@@ -98,9 +98,11 @@ class UserHandler:
                 user = User.from_id(request.user_id)
             elif request.HasField('username'):
                 user = User.from_username(request.username)
-        except LookupError:
-            logger.info(f'GetUser: user_id={request.user_id} does not exist')
-            context.abort(code=InvalidArgument().code, details=f'{InvalidArgument().message}: 用户不存在')
+            else:
+                context.abort(code=InvalidArgument().code, details=InvalidArgument().message)
+        except NotFound:
+            logger.debug(f'GetUser: user_id={request.user_id} does not exist')
+            context.abort(code=NotFound().code, details=f'{NotFound().message}: 用户不存在')
         return user.to_pb()
 
     def list_users(self, request, context):
