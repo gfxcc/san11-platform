@@ -18,6 +18,7 @@ import time
 import re
 import attr
 import grpc
+import argparse
 import iam_util
 
 from typing import List, Optional
@@ -68,6 +69,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # New model #
     #############
     # Article
+
     @iam_util.assert_login
     def CreateArticle(self, request, context):
         parent, article = request.parent, ModelArticle.from_pb(request.article)
@@ -244,8 +246,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         thread = ModelThread.from_name(request.thread.name)
         handler_context = HandlerContext.from_service_context(context)
         if 'pinned' in update_mask.paths:
-            if not handler_context.user or not ( handler_context.user.is_admin() or find_resource(ResourceName.from_str(thread.name).parent).author_id == handler_context.user.user_id):
-                context.abort(PermissionDenied().code, PermissionDenied().message)
+            if not handler_context.user or not (handler_context.user.is_admin() or find_resource(ResourceName.from_str(thread.name).parent).author_id == handler_context.user.user_id):
+                context.abort(PermissionDenied().code,
+                              PermissionDenied().message)
         return self.thread_handler.update_thread(thread, update_thread, update_mask, handler_context).to_pb()
 
     @iam_util.assert_resource_owner('{name}')
@@ -345,11 +348,21 @@ def serve():
     server.wait_for_termination()
 
 
-def init_log():
+def init_log(verbose: bool):
     FORMAT = '%(asctime)-15s %(levelname)s %(name)s %(message)s'
-    logging.basicConfig(level=logging.NOTSET, format=FORMAT)
+    logging.basicConfig(
+        level=logging.INFO if not verbose else logging.NOTSET, format=FORMAT)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='san11_platform main server')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='verbose mode')
+    args = parser.parse_args()
+    return args
 
 
 if __name__ == '__main__':
-    init_log()
+    args = parse_args()
+    init_log(args.verbose)
     serve()

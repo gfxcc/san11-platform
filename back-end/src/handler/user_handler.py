@@ -110,7 +110,6 @@ class UserHandler:
         ])
 
     def send_verification_code(self, request, context):
-        logger.info('In send_verfication_code')
         email = request.email
         verification_code = generate_verification_code(email)
         Notifier().send_email(email, '新注册用户的验证码', verification_code)
