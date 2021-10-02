@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Component, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
-import { load } from '@grpc/grpc-js';
 import { NotificationService } from 'src/app/common/notification.service';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
@@ -10,9 +9,9 @@ import { UploadService } from 'src/app/service/upload.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
 import { getUserUrl, isAdmin, loadUser } from 'src/app/utils/user_util';
-import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, Package, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
-
+import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
 import * as Editor from "../../../../common/components/ckeditor/ckeditor";
+
 
 
 export interface Fruit {

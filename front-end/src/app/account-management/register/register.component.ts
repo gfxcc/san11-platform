@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { MatStepper } from '@angular/material/stepper';
-import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
-import { NotificationService } from "../../common/notification.service";
-import { saveUser } from "../../utils/user_util";
-import { MatDialog } from '@angular/material/dialog';
-import { SignUpRequest, User } from '../../../proto/san11-platform.pb';
-import { SendVerificationCodeRequest, VerifyNewUserRequest } from "../../../proto/san11-platform.pb";
-import { VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
+import { SendVerificationCodeRequest, SignUpRequest, User, VerifyEmailRequest, VerifyEmailResponse } from '../../../proto/san11-platform.pb';
+import { NotificationService } from "../../common/notification.service";
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+import { saveUser } from "../../utils/user_util";
 import { NewUserValidators } from "../common/new-user-validator";
+
 
 
 @Component({
