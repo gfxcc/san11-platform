@@ -1,18 +1,13 @@
 from handler.model.model_reply import ModelReply
 from handler.model.model_comment import ModelComment
 from handler.model.base.base_db import ListOptions
-import handler
 import os
-import attr
-import time
 import logging
-from typing import Iterable, Optional, Tuple
+from typing import Iterable, Tuple
 
 from .common.field_mask import FieldMask, merge_resource
 from .model.model_thread import ModelThread
 from .protos import san11_platform_pb2 as pb
-from .auths import Authenticator
-from .util import gcs
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -41,13 +36,6 @@ class ThreadHandler:
         else:
             list_options.filter = 'state=1'
         threads, next_page_token = ModelThread.list(list_options)
-        # TODO: remove migration logic
-        # A fixed bug caused empyt list from proto stored as '[]'.
-        # for thread in ModelThread.list(ListOptions(parent=None))[0]:
-        #     if thread.tags == '[]':
-        #         thread.tags = []
-        #         thread.update(update_update_time=False)
-        # TODO: END
         return threads, next_page_token
 
     def update_thread(self, base_thread: ModelThread, update_thread: ModelThread, update_mask: FieldMask, handler_context) -> ModelThread:

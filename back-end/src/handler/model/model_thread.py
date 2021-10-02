@@ -4,7 +4,6 @@ import datetime
 
 from .base import ModelBase, Attrib, InitModel
 from ..protos import san11_platform_pb2 as pb
-from ..util.time_util import get_now
 
 
 @InitModel(

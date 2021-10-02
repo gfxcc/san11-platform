@@ -1,11 +1,8 @@
 from handler.model.activity import TrackLifecycle
-from operator import is_
 import attr
 import datetime
-from typing import List
 
 from .base import ModelBase, Attrib, InitModel
-from .base import DatetimeProtoConverter
 from ..protos import san11_platform_pb2 as pb
 from ..util.time_util import get_now
 

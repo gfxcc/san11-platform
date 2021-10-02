@@ -1,10 +1,8 @@
-import attr
 from handler.model.base.base_db import ListOptions
 from typing import Iterable, Optional, Tuple
 from handler.util.resource_parser import ResourceName, parse_name
-from handler.model.model_binary import File, ModelBinary, ModelBinaryV1
+from handler.model.model_binary import File, ModelBinary
 import logging
-import sys
 import os
 import uuid
 
@@ -13,13 +11,9 @@ from .model.activity import Activity, Action
 from .common.field_mask import FieldMask, merge_resource
 from .util import gcs
 from .util.size_util import human_readable
-from .common.exception import InvalidArgument, PermissionDenied, ResourceExhausted, Unimplemented
+from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .model.statistic import Statistic
-from .model.binary import Binary
 from .model.package import Package
-from .auths import Authenticator
-from .common.url import Url
-from .protos import san11_platform_pb2
 from .util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -79,14 +73,6 @@ class BinaryHandler:
         return binary
 
     def list_binaries(self, request, handler_context) -> Tuple[Iterable[ModelBinary], str]:
-        # TODO-BEGIN: remove migration hack
-        if not ModelBinary.list(ListOptions(parent=None))[0]:
-            binaries = ModelBinaryV1.list(ListOptions(parent=None))[0]
-            for binary in binaries:
-                model_binary = ModelBinary.from_v1(binary)
-                model_binary.create(parse_name(model_binary.name)[0])
-        # TODO-END
-
         list_options = ListOptions.from_request(request)
         return ModelBinary.list(list_options)
 

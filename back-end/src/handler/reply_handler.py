@@ -1,18 +1,13 @@
-from datetime import datetime
 from handler.model.model_thread import ModelThread
 from handler.util.resource_parser import ResourceName, find_resource, parse_resource_name
 from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.model_reply import ModelReply
-import sys
 import os
 import logging
 
 
-from .protos import san11_platform_pb2
-from .auths import Authenticator
-from .model.user import User
 from .model.activity import Activity, Action
-from .common.exception import InvalidArgument, Unauthenticated, NotFound
+from .common.exception import NotFound
 from .util.time_util import get_now
 
 

@@ -1,21 +1,17 @@
 from handler.model.model_thread import ModelThread
 from handler.util.resource_parser import ResourceName, find_resource, parse_name, parse_resource_name
 from handler.model.base.base_db import ListOptions
-from handler.model.model_reply import ModelReply, ModelReplyV1
+from handler.model.model_reply import ModelReply
 from handler.common.field_mask import FieldMask, merge_resource
 from typing import Iterable, Optional, Tuple
-from handler.model.model_comment import ModelComment, ModelCommentV1
+from handler.model.model_comment import ModelComment
 import logging
-import sys
 import os
 
 from .util.time_util import get_now
-from .common.exception import InvalidArgument, Unauthenticated, NotFound
+from .common.exception import NotFound
 from .model.user import User
 from .model.activity import Activity, Action
-from .auths import Authenticator
-from .protos import san11_platform_pb2
-from datetime import datetime
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -70,19 +66,6 @@ class CommentHandler:
 
     def list_comments(self, request,
                       handler_context) -> Tuple[Iterable[ModelComment], str]:
-        # TODO: remove backfill logic
-        # if not ModelComment.list(ListOptions(parent=None))[0]:
-        #     comment_dict = {}
-        #     for comment in ModelCommentV1.list(ListOptions(parent=None))[0]:
-        #         model = ModelComment.from_v1(comment)
-        #         model.create(parent=parse_name(model.name)[0])
-        #         comment_dict[comment.name] = model.name
-
-        #     for reply in ModelReplyV1.list(ListOptions(parent=None))[0]:
-        #         model = ModelReply.from_v1(reply)
-        #         parent, _, _ = parse_name(model.name)
-        #         model.create(parent=comment_dict[parent])
-        # # TODO: END
         list_options = ListOptions.from_request(request)
         return ModelComment.list(list_options=list_options)
 
