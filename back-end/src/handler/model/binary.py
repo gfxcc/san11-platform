@@ -1,21 +1,15 @@
-import json
-import os
 import logging
-import psycopg2
 import os
 import os.path
-import errno
-from typing import Any, Iterable, List, Union
 from datetime import datetime, timezone
+from typing import Iterable
 
-from ..protos import san11_platform_pb2
-from .resource import ResourceMixin, ResourceView
-from .activity import TrackLifecycle
 from ..db import run_sql_with_param
-from ..util.time_util import datetime_to_str, get_datetime_format, get_now, get_timezone
-from ..util.size_util import human_readable
+from ..protos import san11_platform_pb2
 from ..util import gcs
-
+from ..util.time_util import datetime_to_str, get_now
+from .activity import TrackLifecycle
+from .resource import ResourceMixin, ResourceView
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -25,23 +19,23 @@ class Version:
         self.major = major
         self.minor = minor
         self.patch = patch
-    
+
     def __str__(self) -> str:
         return f'v{self.major}.{self.minor}.{self.patch}'
-    
+
     def to_pb(self) -> san11_platform_pb2.Version:
         return san11_platform_pb2.Version(
             major=self.major,
             minor=self.minor,
             patch=self.patch
         )
-    
+
     @classmethod
     def from_pb(cls, obj: san11_platform_pb2.Version):
         return cls(major=obj.major,
                    minor=obj.minor,
                    patch=obj.patch)
-                
+
     @classmethod
     def from_str(cls, obj: str):
         return cls(*list(map(int, obj[1:].split('.'))))
@@ -59,7 +53,8 @@ class Binary(ResourceMixin, TrackLifecycle):
         self.download_count = download_count
         self.version = version
         self.description = description
-        self.create_time = create_time.replace(tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
+        self.create_time = create_time.replace(
+            tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
         self.tag = tag
         self.download_method = download_method
         self.size = size
@@ -67,7 +62,7 @@ class Binary(ResourceMixin, TrackLifecycle):
 
     def __str__(self):
         return f'{{binary_id: {self.binary_id}, url: {self.url}, download_method: {self.download_method}}}'
-    
+
     @property
     def url(self) -> str:
         '''
@@ -75,18 +70,19 @@ class Binary(ResourceMixin, TrackLifecycle):
         Please use `name`.
         '''
         return self._url
-    
+
     @property
     def name(self) -> str:
         if not self.id:
-            raise ValueError('Binary is not ready/created. self.id is not available.')
+            raise ValueError(
+                'Binary is not ready/created. self.id is not available.')
         return f'{self.parent}/binaries/{self.id}'
-    
+
     # TODO: remove backfill logic
     @property
     def parent(self) -> str:
         return self._parent
-    
+
     @parent.setter
     def parent(self, parent: str) -> None:
         sql = f'UPDATE {self.db_table()} SET parent=%(parent)s WHERE binary_id=%(resource_id)s'
@@ -96,7 +92,7 @@ class Binary(ResourceMixin, TrackLifecycle):
         })
         self._parent = parent
     # TODO: END
-    
+
     @name.setter
     def name(self, name: str) -> None:
         '''
@@ -108,11 +104,11 @@ class Binary(ResourceMixin, TrackLifecycle):
             'binary_id': self.id
         })
         self._name = name
-    
+
     @property
     def id(self) -> int:
         return self.binary_id
-    
+
     @property
     def view(self) -> ResourceView:
         return ResourceView(
@@ -122,20 +118,20 @@ class Binary(ResourceMixin, TrackLifecycle):
             description=None,
             image_url=None
         )
-    
+
     @url.setter
     def url(self, url: str) -> None:
         self._url = url
-    
+
     @classmethod
     def db_table(cls) -> str:
         return 'binaries_legacy'
-    
+
     @classmethod
     def db_fields(cls) -> Iterable[str]:
-        return ['binary_id', 'package_id', 'url', 'download_count', 'version', 
+        return ['binary_id', 'package_id', 'url', 'download_count', 'version',
                 'description', 'create_time', 'tag', 'download_method', 'size', 'parent']
-    
+
     @classmethod
     def name_pattern(cls) -> str:
         return r'categories/[0-9]+/packages/[0-9]+/binaries/[0-9]+'
@@ -158,7 +154,7 @@ class Binary(ResourceMixin, TrackLifecycle):
     def delete(self, user_id: int) -> None:
         self.remove_resource()
         super().delete(user_id=user_id)
-    
+
     def to_pb(self) -> san11_platform_pb2.Binary:
         return san11_platform_pb2.Binary(
             binary_id=self.binary_id,

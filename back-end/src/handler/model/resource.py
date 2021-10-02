@@ -1,19 +1,18 @@
-from logging import Logger
 import logging
-import re
 import os
 import os.path
-import errno
+import re
 from abc import ABC, abstractclassmethod, abstractmethod, abstractproperty
-from typing import List, Any, Iterable, Dict
-from ..common.exception import NotFound, AlreadyExists
+from typing import Any, Dict, List
 
-from ..util.time_util import get_now
+from ..common.exception import NotFound
+from ..db import (get_db_fields_assignment_str, get_db_fields_placeholder_str,
+                  get_db_fields_str, run_sql_with_param,
+                  run_sql_with_param_and_fetch_all,
+                  run_sql_with_param_and_fetch_one)
 from ..protos import san11_platform_pb2
-from ..db import get_db_fields_placeholder_str, get_db_fields_str, get_db_fields_assignment_str, \
-    run_sql_with_param_and_fetch_one, run_sql_with_param, run_sql_with_param_and_fetch_all
+from ..util.time_util import get_now
 from .activity import Action, Activity, TrackLifecycle
-
 
 RESOURCE_PATH = '/data'
 logger = logging.getLogger(os.path.basename(__file__))
@@ -124,7 +123,8 @@ class ResourceMixin(ABC):
         resp = run_sql_with_param_and_fetch_one(
             sql, {'resource_id': resource_id})
         if not resp:
-            raise NotFound(f'resource_id={resource_id} can not be found in table={cls.db_table()}')
+            raise NotFound(
+                f'resource_id={resource_id} can not be found in table={cls.db_table()}')
         return cls(*resp)
 
     @classmethod
@@ -168,7 +168,7 @@ class ResourceMixin(ABC):
         return [cls(*item) for item in resp]
 
     # Methods
-    def create(self, user_id: int, track: bool=True) -> None:
+    def create(self, user_id: int, track: bool = True) -> None:
         '''
         Persist the resource to DB.
         Raise:
@@ -195,7 +195,7 @@ class ResourceMixin(ABC):
         '''
         return params
 
-    def delete(self, user_id: int, track: bool=True)-> None:
+    def delete(self, user_id: int, track: bool = True) -> None:
         '''
         Delete the resource from DB.
         '''
@@ -206,7 +206,7 @@ class ResourceMixin(ABC):
             Activity(activity_id=None, user_id=user_id, create_time=get_now(),
                      action=Action.DELETE, resource_name=self.name).create()
 
-    def update(self, user_id: int, track: bool=True) -> None:
+    def update(self, user_id: int, track: bool = True) -> None:
         sql = f'UPDATE {self.db_table()} SET {get_db_fields_assignment_str(self.db_fields()[1:])} '\
             f'WHERE {self.db_fields()[0]}=%({self.db_fields()[0]})s'
         params_raw = ','.join(

@@ -1,19 +1,19 @@
-from handler.model.base.base_db import ListOptions
-from typing import Iterable, Optional, Tuple
-from handler.util.resource_parser import ResourceName, parse_name
-from handler.model.model_binary import File, ModelBinary
 import logging
 import os
 import uuid
+from typing import Iterable, Tuple
 
+from handler.model.base.base_db import ListOptions
+from handler.model.model_binary import File, ModelBinary
+from handler.util.resource_parser import ResourceName, parse_name
 
-from .model.activity import Activity, Action
+from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .common.field_mask import FieldMask, merge_resource
+from .model.activity import Action, Activity
+from .model.package import Package
+from .model.statistic import Statistic
 from .util import gcs
 from .util.size_util import human_readable
-from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
-from .model.statistic import Statistic
-from .model.package import Package
 from .util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))

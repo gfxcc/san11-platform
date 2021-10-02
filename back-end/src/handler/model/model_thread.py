@@ -1,9 +1,10 @@
-from handler.model.activity import TrackLifecycle
-import attr
 import datetime
 
-from .base import ModelBase, Attrib, InitModel
+import attr
+from handler.model.activity import TrackLifecycle
+
 from ..protos import san11_platform_pb2 as pb
+from .base import Attrib, InitModel, ModelBase
 
 
 @InitModel(
@@ -60,4 +61,3 @@ class ModelThread(ModelBase, TrackLifecycle):
     update_time = Attrib(
         type=datetime.datetime,
     )
-

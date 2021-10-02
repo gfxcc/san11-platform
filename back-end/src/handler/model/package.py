@@ -1,53 +1,55 @@
 from __future__ import annotations
-import os
+
 import logging
-from enum import Enum
-from typing import List, Any, Iterable, Dict
+import os
 from datetime import datetime, timezone
+from enum import Enum
+from typing import Any, Dict, List
 
-from ..protos import san11_platform_pb2
-from ..db import run_sql_with_param_and_fetch_one, run_sql_with_param, \
-    run_sql_with_param_and_fetch_all, get_db_fields_str, \
-    sanitize_str
 from ..common.image import Image
-from ..util.time_util import get_now, get_age
-from .resource import ResourceMixin
-from .tag import Tag
-from .resource import ResourceView
+from ..db import (get_db_fields_str, run_sql_with_param,
+                  run_sql_with_param_and_fetch_all,
+                  run_sql_with_param_and_fetch_one, sanitize_str)
+from ..protos import san11_platform_pb2
+from ..util.time_util import get_age, get_now
 from .activity import TrackLifecycle
-
+from .resource import ResourceMixin, ResourceView
+from .tag import Tag
 
 logger = logging.getLogger(os.path.basename(__file__))
 
 
 class Status(Enum):
     UNKNOWN = 0
-    NORMAL = 1 # publish accessable
-    UNDER_REVIEW = 2 # Only visiable to admin and author
-    HIDDEN = 3 # Only visiable to admin and author
-    SCHEDULE_DELETE = 4 # Only visiable to admin
-    DELETED = 5 # Only visiable to admin
+    NORMAL = 1  # publish accessable
+    UNDER_REVIEW = 2  # Only visiable to admin and author
+    HIDDEN = 3  # Only visiable to admin and author
+    SCHEDULE_DELETE = 4  # Only visiable to admin
+    DELETED = 5  # Only visiable to admin
 
 
 class Package(ResourceMixin, TrackLifecycle):
     DEFAULT_STATUS_FOR_NEW_PACKAGE = Status.UNDER_REVIEW
+
     def __init__(self, package_id: int, package_name: str, description: str,
                  create_time: datetime, category_id: int,
                  status: int, author_id: int,
-                 image_urls: List[str], download_count: int, 
+                 image_urls: List[str], download_count: int,
                  tag_ids: List[int], update_time: datetime) -> None:
         self.package_id = package_id
         self.package_name = package_name
         self.description = description
-        self.create_time = create_time.replace(tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
+        self.create_time = create_time.replace(
+            tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
         self.category_id = category_id
         self.status = status
         self.author_id = author_id
         self.image_urls = image_urls
         self.download_count = download_count
         self.tag_ids = tag_ids or []
-        self.update_time = update_time.replace(tzinfo=timezone.utc) if update_time.tzinfo is None else update_time
-    
+        self.update_time = update_time.replace(
+            tzinfo=timezone.utc) if update_time.tzinfo is None else update_time
+
     @property
     def url(self):
         '''
@@ -63,7 +65,7 @@ class Package(ResourceMixin, TrackLifecycle):
     @property
     def id(self) -> int:
         return self.package_id
-    
+
     @property
     def view(self) -> ResourceView:
         return ResourceView(
@@ -99,11 +101,11 @@ class Package(ResourceMixin, TrackLifecycle):
         except Exception as err:
             logger.error(
                 f'Failed to load author_image_url for user_id={author_id}: {err}')
-    
+
     @property
     def status(self) -> Status:
         return self._status
-    
+
     @status.setter
     def status(self, status: int) -> None:
         self._status = Status(status)
@@ -117,7 +119,7 @@ class Package(ResourceMixin, TrackLifecycle):
         return ['package_id', 'name', 'description', 'create_time',
                 'category_id', 'status', 'author_id', 'image_urls',
                 'download_count', 'tag_ids', 'update_time']
-            
+
     @classmethod
     def name_pattern(cls) -> str:
         return r'categories/[0-9]+/packages/[0-9]+'
@@ -140,7 +142,7 @@ class Package(ResourceMixin, TrackLifecycle):
 
     @classmethod
     def list(cls, page_size: int, page_token: str, **kwargs) -> List[Any]:
-        ret =  super().list(page_size=page_size, page_token=page_token, **kwargs)
+        ret = super().list(page_size=page_size, page_token=page_token, **kwargs)
         # discard description as it might be too large, which will slow down the service
         for item in ret:
             item.description = ''

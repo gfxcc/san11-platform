@@ -1,8 +1,8 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { observable, Observable, TimeoutError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
-import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { Status, VerifyNewUserRequest } from "../../../proto/san11-platform.pb";
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
 export class NewUserValidators {
     static username(san11pkService: San11PlatformServiceService, originalValue: string = undefined): AsyncValidatorFn {

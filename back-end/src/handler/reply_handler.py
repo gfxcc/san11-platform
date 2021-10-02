@@ -1,15 +1,14 @@
-from handler.model.model_thread import ModelThread
-from handler.util.resource_parser import ResourceName, find_resource, parse_resource_name
+import logging
+import os
+
 from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.model_reply import ModelReply
-import os
-import logging
+from handler.model.model_thread import ModelThread
+from handler.util.resource_parser import ResourceName, find_resource
 
-
-from .model.activity import Activity, Action
 from .common.exception import NotFound
+from .model.activity import Action, Activity
 from .util.time_util import get_now
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 

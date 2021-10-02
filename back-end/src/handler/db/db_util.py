@@ -1,12 +1,8 @@
-import logging
 import os
+from typing import Dict, Iterable, List, Tuple
+
 import psycopg2
 from psycopg2.pool import ThreadedConnectionPool
-from retry import retry
-
-
-from typing import Iterable, List, Tuple, Dict
-
 
 # class DbConnect:
 #     def __init__(self):
@@ -34,7 +30,8 @@ def pgpool() -> ThreadedConnectionPool:
     global _pgpool
     if not _pgpool:
         try:
-            _pgpool = ThreadedConnectionPool(MIN_CONNECTION, MAX_CONNECTION, host="db", database=os.environ['DB_NAME'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'])
+            _pgpool = ThreadedConnectionPool(MIN_CONNECTION, MAX_CONNECTION, host="db",
+                                             database=os.environ['DB_NAME'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'])
         except psycopg2.OperationalError as exc:
             _pgpool = None
     return _pgpool

@@ -1,13 +1,13 @@
 from __future__ import annotations
-import logging
-import os
-import attr
-from typing import List, Iterable, Union
-from copy import deepcopy
 
-from ..protos import san11_platform_pb2
+from copy import deepcopy
+from typing import Iterable, Union
+
+import attr
+
+from ..model.base import MODEL_T, ModelBase, is_repeated
 from ..model.resource import ResourceMixin
-from ..model.base import ModelBase, is_repeated, MODEL_T
+from ..protos import san11_platform_pb2
 
 
 def merge_resource(base_resource: Union[ResourceMixin | MODEL_T],

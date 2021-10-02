@@ -1,15 +1,12 @@
-import os
 import logging
-from typing import Union
+import os
 
-from ..protos import san11_platform_pb2
-from ..model.package import Package
-from ..model.binary import Binary
+from ..common.exception import Unauthenticated
 from ..common.url import Url
+from ..model.binary import Binary
+from ..model.package import Package
 from ..model.user import User
 from .session import Session
-from ..common.exception import Unauthenticated
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -35,20 +32,20 @@ class Authenticator:
 
     def isAdmin(self) -> bool:
         return self.session.user.is_admin()
-    
+
     # Package
     def canDeletePackage(self, package: Package) -> bool:
         if self.isAdmin() or self._super_admin():
             return True
         user = self.session.user
         return user.user_id == package.author_id
-    
+
     def canUpdatePackage(self, package: Package) -> bool:
         if self._super_admin():
             return True
         user = self.session.user
         return user.user_id == package.author_id
-    
+
     # Binary
     def canUploadBinary(self, parent: Url) -> bool:
         if self._super_admin():
@@ -56,7 +53,7 @@ class Authenticator:
         package = Package.from_id(parent.package_id)
         user = self.session.user
         return user.user_id == package.author_id
-    
+
     def canDeleteBinary(self, binary: Binary) -> bool:
         if self.isAdmin() or self._super_admin():
             return True
@@ -71,6 +68,7 @@ class Authenticator:
         package = Package.from_id(binary.package_id)
         return user.user_id == package.author_id
     # Image
+
     def canUploadImage(self, parent: Url) -> bool:
         if self._super_admin():
             return True
@@ -83,7 +81,7 @@ class Authenticator:
             user = User.from_id(parent.id)
             return self.canUpdateUser(user)
         return False
-    
+
     # # Comment
     # def canDeleteComment(self, comment: Comment) -> bool:
     #     if self.isAdmin() or self._super_admin():
@@ -121,6 +119,3 @@ class Authenticator:
             true: login as admin and admin is allowed to do anything
         '''
         return self.isAdmin() and True
-
-
-    

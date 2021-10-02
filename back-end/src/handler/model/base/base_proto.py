@@ -1,16 +1,16 @@
 from __future__ import annotations
+
 import datetime
 import logging
 import os
-import attr
 from abc import ABC
 from typing import Any, Generic, Iterable, TypeVar
-from google import protobuf
-from google.protobuf import timestamp_pb2, message, descriptor
+
+import attr
+from google.protobuf import descriptor, message, timestamp_pb2
 
 from ...util.time_util import datetime_to_str, get_now
 from . import base_core
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -86,7 +86,8 @@ class ProtoModelBase(ABC):
             field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
             proto_value = _get_by_path(proto_model, path, field_descriptor)
             if base_core.is_repeated(attribute):
-                properties[attribute.name] = [converter.to_model(item) for item in proto_value]
+                properties[attribute.name] = [
+                    converter.to_model(item) for item in proto_value]
             else:
                 properties[attribute.name] = converter.to_model(proto_value)
             # frm, to = proto_value, properties[attribute.name]
@@ -141,7 +142,7 @@ def _get_by_path(proto: message.Message, path: str, descriptor: descriptor.Field
     # TODO: Following logic needs to be updated if optional keyword is used.
     if oneof_desc := descriptor.containing_oneof:
         if not proto.HasField(path):
-         return None
+            return None
     value = proto
     for item in path.split('.'):
         value = getattr(value, item)

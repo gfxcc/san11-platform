@@ -1,14 +1,14 @@
-from handler.model.model_reply import ModelReply
-from handler.model.model_comment import ModelComment
-from handler.model.base.base_db import ListOptions
-import os
 import logging
+import os
 from typing import Iterable, Tuple
+
+from handler.model.base.base_db import ListOptions
+from handler.model.model_comment import ModelComment
+from handler.model.model_reply import ModelReply
 
 from .common.field_mask import FieldMask, merge_resource
 from .model.model_thread import ModelThread
 from .protos import san11_platform_pb2 as pb
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 

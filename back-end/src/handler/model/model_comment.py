@@ -1,16 +1,14 @@
 from __future__ import annotations
-import datetime
-import logging
-from handler.model.base.base_db import ListOptions
-from handler.model.model_reply import ModelReply
-from typing import Iterable
-import attr
 
-from ..protos import san11_platform_pb2 as pb
+import datetime
+
+import attr
 from handler.model.activity import TrackLifecycle
 from handler.model.base.base import Attrib, InitModel, ModelBase
-from handler.model.base.base_proto import LegacyDatetimeProtoConverter, ProtoConverter
-from handler.util.time_util import get_now
+from handler.model.base.base_db import ListOptions
+from handler.model.model_reply import ModelReply
+
+from ..protos import san11_platform_pb2 as pb
 
 
 @InitModel(
@@ -45,6 +43,7 @@ class ModelComment(ModelBase, TrackLifecycle):
 
     def to_pb(self) -> pb.Comment:
         proto = super(ModelComment, self).to_pb()
-        replies, _ = ModelReply.list(ListOptions(parent=self.name, order_by='create_time'))
+        replies, _ = ModelReply.list(ListOptions(
+            parent=self.name, order_by='create_time'))
         getattr(proto, 'replies').extend([reply.to_pb() for reply in replies])
         return proto

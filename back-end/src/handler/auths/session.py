@@ -1,12 +1,12 @@
-from handler.common.exception import NotFound, Unauthenticated
+import logging
 import os
 import time
-import logging
 import uuid
+
+from handler.common.exception import NotFound, Unauthenticated
 
 from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one
 from ..model.user import User
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -16,7 +16,7 @@ class Session:
         self.sid = sid
         self.expiration = expiration
         self.user = User.from_id(user_id)
-    
+
     def __str__(self):
         return f'{{sid: {self.sid}, user_id: {self.user.user_id}, expiration: {self.expiration}}}'
 
@@ -27,10 +27,10 @@ class Session:
             False: if this session is expired
         '''
         return self.expiration > int(time.time())
-    
+
     def extend(self, validity_day: int = 90):
         expiration = int(time.time()) + validity_day * 24 * 60 * 60
-        
+
         sql = 'UPDATE sessions SET expiration=%(expiration)s WHERE sid=%(sid)s'
         run_sql_with_param(sql, {'sid': self.sid, 'expiration': expiration})
         logger.debug(f'{self} is extended')
@@ -50,7 +50,8 @@ class Session:
         '''
         sql = "SELECT user_id, expiration FROM sessions WHERE sid=%(sid)s"
         try:
-            user_id, expiration = run_sql_with_param_and_fetch_one(sql, {'sid': sid})
+            user_id, expiration = run_sql_with_param_and_fetch_one(sql, {
+                                                                   'sid': sid})
         except Exception as err:
             raise NotFound(f'Failed to find session: sid={sid}') from err
         obj = cls(sid, user_id, expiration)
@@ -67,7 +68,8 @@ class Session:
         '''
         sql = "SELECT sid, expiration FROM sessions WHERE user_id=%(user_id)s"
         try:
-            sid, expiration = run_sql_with_param_and_fetch_one(sql, {'user_id': user_id})
+            sid, expiration = run_sql_with_param_and_fetch_one(
+                sql, {'user_id': user_id})
         except Exception:
             raise LookupError(f'Failed to find session: user_id={user_id}')
         return cls(sid, user_id, expiration)
@@ -78,7 +80,8 @@ class Session:
         sid = str(uuid.uuid1())
 
         sql = 'INSERT INTO sessions VALUES (%(sid)s, %(user_id)s, %(expiration)s)'
-        run_sql_with_param(sql, {'sid': sid, 'user_id': user_id, 'expiration': expiration})
+        run_sql_with_param(
+            sql, {'sid': sid, 'user_id': user_id, 'expiration': expiration})
 
         obj = cls(sid, user_id, expiration)
         logger.info(f'session: {obj} is created')

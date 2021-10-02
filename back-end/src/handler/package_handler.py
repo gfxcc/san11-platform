@@ -1,22 +1,21 @@
-from handler.model.model_reply import ModelReply
-from handler.model.model_thread import ModelThread
-from handler.model.model_comment import ModelComment
+import logging
+import os
+import re
+
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import ModelBinary
-import sys, os, re
-import logging
+from handler.model.model_comment import ModelComment
+from handler.model.model_reply import ModelReply
+from handler.model.model_thread import ModelThread
 
-
-from .protos import san11_platform_pb2
 from .auths import Authenticator
-from .model.package import Package, Status
-from .model.binary import Binary
-from .model.user import User
-from .common.image import Image
 from .common.exception import PermissionDenied
 from .common.field_mask import FieldMask, merge_resource
+from .common.image import Image
+from .model.package import Package, Status
+from .model.user import User
+from .protos import san11_platform_pb2
 from .util.notifier import Notifier
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -31,7 +30,8 @@ class PackageHandler:
         try:
             notifer = Notifier()
             for admin in User.list(0, '', user_type='admin'):
-                notifer.send_email(admin.email, '新工具待审核', f'[{package.package_name}] 已被 {user.username} 创建。请审核。')
+                notifer.send_email(
+                    admin.email, '新工具待审核', f'[{package.package_name}] 已被 {user.username} 创建。请审核。')
         except Exception as err:
             logger.error(f'Failed to notify admin: {err}')
         return package.to_pb()
@@ -41,7 +41,8 @@ class PackageHandler:
 
         auth = Authenticator.from_context(context)
         if not auth.canDeletePackage(package):
-            context.abort(code=PermissionDenied().code, details=PermissionDenied().message)
+            context.abort(code=PermissionDenied().code,
+                          details=PermissionDenied().message)
 
         for image_url in package.image_urls:
             try:
@@ -68,7 +69,7 @@ class PackageHandler:
         return san11_platform_pb2.Empty()
 
     def get_package(self, request, context):
-        package =  Package.from_id(request.package_id).to_pb()
+        package = Package.from_id(request.package_id).to_pb()
 
         # TODO: remove backfill code for comment/reply migration
         def simplify_text(text: str) -> str:
@@ -77,7 +78,8 @@ class PackageHandler:
             return text
         if not ModelThread.list(ListOptions(parent=package.name))[0]:
             for comment in ModelComment.list(ListOptions(parent=package.name))[0]:
-                replies, _ = ModelReply.list(ListOptions(parent=comment.name, order_by='create_time'))
+                replies, _ = ModelReply.list(ListOptions(
+                    parent=comment.name, order_by='create_time'))
                 thread = ModelThread(
                     name='',
                     subject=simplify_text(comment.text),
@@ -132,7 +134,7 @@ class PackageHandler:
     def search_packages(self, request, context):
         return san11_platform_pb2.SearchPackagesResponse(
             packages=[package.to_pb() for package in Package.search(request.page_size,
-                                                                    request.page_token, 
+                                                                    request.page_token,
                                                                     request.query)])
 
     def update_package(self, request, context):
@@ -141,7 +143,8 @@ class PackageHandler:
 
         auth = Authenticator.from_context(context)
         if not auth.canUpdatePackage(base_package):
-            context.abort(code=PermissionDenied().code, details=PermissionDenied().message)
+            context.abort(code=PermissionDenied().code,
+                          details=PermissionDenied().message)
 
         # patch update_mask as Package store tag_ids internal while tags is used
         # for public protos
@@ -150,7 +153,8 @@ class PackageHandler:
             update_mask.paths.remove('tags')
             update_mask.paths.add('tag_ids')
         package = merge_resource(base_resource=base_package,
-                                 update_request=Package.from_pb(request.package),
+                                 update_request=Package.from_pb(
+                                     request.package),
                                  field_mask=update_mask)
         # Delete image resources
         for image_url_to_delete in set(base_package.image_urls) - set(package.image_urls):

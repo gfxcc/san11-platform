@@ -1,10 +1,12 @@
 from __future__ import annotations
-import datetime
-import attr
 
-from ..protos import san11_platform_pb2 as pb
+import datetime
+
+import attr
 from handler.model.activity import TrackLifecycle
 from handler.model.base.base import Attrib, InitModel, ModelBase
+
+from ..protos import san11_platform_pb2 as pb
 
 
 @InitModel(

@@ -1,38 +1,33 @@
 from __future__ import annotations
-from handler.model.model_article import ModelArticle
-from handler import thread_handler
-from handler.model.model_thread import ModelThread
-from handler.thread_handler import ThreadHandler
-from handler.model.model_reply import ModelReply
-from handler.model.model_comment import ModelComment
-from handler.util.resource_parser import ResourceName, find_resource
-from handler.model.package import Package
-from handler.model.model_binary import ModelBinary
-from handler.common.field_mask import FieldMask
-import handler
-from handler.model.user import User
-import os
-import sys
+
+import argparse
 import logging
-import time
-import re
+import os
+from concurrent import futures
+from typing import Optional
+
 import attr
 import grpc
-import argparse
+
 import iam_util
-
-from typing import List, Optional
-from concurrent import futures
-
-from handler.protos import san11_platform_pb2_grpc
-from handler.protos import san11_platform_pb2 as pb
-from handler import PackageHandler, BinaryHandler, ImageHandler, \
-    CommentHandler, ReplyHandler, UserHandler, \
-    ActivityHandler, GeneralHandler, TagHandler, \
-    AdminHandler, ArticleHandler
-from handler.auths import Authenticator, Session
+from handler import (ActivityHandler, AdminHandler, ArticleHandler,
+                     BinaryHandler, CommentHandler, GeneralHandler,
+                     ImageHandler, PackageHandler, ReplyHandler, TagHandler,
+                     UserHandler)
+from handler.auths import Session
 from handler.common.exception import *
-
+from handler.common.field_mask import FieldMask
+from handler.model.model_article import ModelArticle
+from handler.model.model_binary import ModelBinary
+from handler.model.model_comment import ModelComment
+from handler.model.model_reply import ModelReply
+from handler.model.model_thread import ModelThread
+from handler.model.package import Package
+from handler.model.user import User
+from handler.protos import san11_platform_pb2 as pb
+from handler.protos import san11_platform_pb2_grpc
+from handler.thread_handler import ThreadHandler
+from handler.util.resource_parser import ResourceName, find_resource
 
 logger = logging.getLogger(os.path.basename(__file__))
 

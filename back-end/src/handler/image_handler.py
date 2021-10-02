@@ -1,16 +1,16 @@
-import sys, os, uuid
 import logging
+import os
+import sys
+import uuid
 
-
-from .protos import san11_platform_pb2
-from .common.url import Url
 from .auths import Authenticator
 from .common.image import Image
+from .common.url import Url
 from .model.package import Package
-from .model.user import User
 from .model.resource import get_image_url
+from .model.user import User
+from .protos import san11_platform_pb2
 from .util import gcs
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -24,7 +24,8 @@ class ImageHandler:
         if not authenticate.canUploadImage(parent=parent):
             context.abort(code=255, details='权限不足')
 
-        url = get_image_url(request.parent, f'{uuid.uuid1()}.jpeg', request.in_description)
+        url = get_image_url(
+            request.parent, f'{uuid.uuid1()}.jpeg', request.in_description)
         gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, url)
         image = Image(url)
 
@@ -41,5 +42,5 @@ class ImageHandler:
                 user.set_image(image)
             else:
                 raise Exception(f'Invalid parent: {parent}')
-        
+
         return san11_platform_pb2.Url(url=image.url)

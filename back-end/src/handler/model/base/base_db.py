@@ -1,24 +1,24 @@
 from __future__ import annotations
+
 import copy
-from handler.model.base import base_proto
-import os
-import enum
-import re
+import datetime
 import json
 import logging
-import attr
-import datetime
-from typing import Any, Dict, Generic, Iterator, List, Optional, Tuple, TypeVar
-from typing import Iterable
-from abc import ABC, abstractclassmethod
+import os
+import re
+from abc import ABC
+from typing import Any, Dict, Generic, Iterable, Optional, Tuple, TypeVar
 
-from . import base_core
+import attr
+from handler.model.base import base_proto
+
+from ...common.exception import InvalidArgument, NotFound
+from ...db.db_util import (run_sql_with_param,
+                           run_sql_with_param_and_fetch_all,
+                           run_sql_with_param_and_fetch_one)
 from ...protos import san11_platform_pb2 as pb
 from ...util.time_util import get_now
-from ...common.exception import InvalidArgument, NotFound
-from ...db.db_util import get_db_fields_assignment_str, get_db_fields_str, get_db_fields_placeholder_str
-from ...db.db_util import run_sql_with_param_and_fetch_one, run_sql_with_param_and_fetch_all, run_sql_with_param
-
+from . import base_core
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -68,7 +68,8 @@ def parse_filter(cls: type, filter: str) -> Dict:
     '''
     proto2db = {}
     for attribute in attr.fields(cls):
-        proto2db[base_proto._get_proto_path(attribute)] = _get_db_path(attribute)
+        proto2db[base_proto._get_proto_path(
+            attribute)] = _get_db_path(attribute)
 
     kwargs = {}
     segments = map(str.strip, re.split('AND | OR', filter))
@@ -78,6 +79,7 @@ def parse_filter(cls: type, filter: str) -> Dict:
         k, v = map(str.strip, segment.split('='))
         kwargs[proto2db[k]] = v
     return kwargs
+
 
 def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
     '''
@@ -90,7 +92,8 @@ def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
     '''
     proto2db = {}
     for attribute in attr.fields(cls):
-        proto2db[base_proto._get_proto_path(attribute)] = _get_db_path(attribute)
+        proto2db[base_proto._get_proto_path(
+            attribute)] = _get_db_path(attribute)
 
     ret = []
     for segment in order_by.split(','):
@@ -100,7 +103,7 @@ def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
         field_name = segment.split()[0]
         order = 'DESC' if segment.endswith(' desc') else ''
         ret.append((field_name, order))
-    
+
     return ret
 
 
@@ -228,7 +231,7 @@ class DbModelBase(ABC):
             order_by_fields = [('create_time', 'DESC')]
         else:
             order_by_fields = parse_order_by(cls, list_options.order_by)
-        
+
         kwargs = parse_filter(cls, list_options.filter)
 
         db_table = cls._DB_TABLE
@@ -244,7 +247,8 @@ class DbModelBase(ABC):
                     db_path = db_field.name
                     if db_field.repeated:
                         # https://www.postgresql.org/docs/9.5/functions-json.html
-                        wheres.append(f"(data->'{db_path}')::jsonb ? %(db_path)s")
+                        wheres.append(
+                            f"(data->'{db_path}')::jsonb ? %(db_path)s")
                     else:
                         wheres.append(f"data->>'{db_path}'=%({db_path})s")
                 predicate_statement += ' AND ' + 'AND'.join(wheres)
@@ -256,7 +260,8 @@ class DbModelBase(ABC):
         else:
             order_statement = ''
 
-        limit, offset = list_options.page_size, int(list_options.watermark) if list_options.watermark else 0
+        limit, offset = list_options.page_size, int(
+            list_options.watermark) if list_options.watermark else 0
         size_statement = f'LIMIT {limit} OFFSET {offset}'
         sql = f"SELECT data FROM {db_table} {predicate_statement} {order_statement} {size_statement}"
         params = kwargs.copy()
@@ -267,7 +272,6 @@ class DbModelBase(ABC):
         next_page_options.watermark = offset + len(resp)
 
         return [cls.from_data(data[0]) for data in resp], next_page_options.to_token()
-
 
     @classmethod
     def from_data(cls, data: Dict):

@@ -1,15 +1,12 @@
-from handler.model.model_article import ModelArticle
-from handler.model.base.base_db import ListOptions
-import handler
-import os
-import attr
 import logging
-from typing import Iterable, Optional, Tuple
+import os
+from typing import Iterable, Tuple
+
+from handler.model.base.base_db import ListOptions
+from handler.model.model_article import ModelArticle
 
 from .common.field_mask import FieldMask, merge_resource
 from .protos import san11_platform_pb2 as pb
-from .auths import Authenticator
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 

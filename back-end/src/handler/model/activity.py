@@ -1,15 +1,14 @@
-import os
 import logging
-
-from typing import List, Dict, Any, Union
+import os
 from datetime import datetime, timezone
 from enum import Enum
+from typing import Any, Dict, List, Union
 
-from ..protos import san11_platform_pb2
-from ..db import run_sql_with_param_and_fetch_one, run_sql_with_param,\
-    get_db_fields_placeholder_str, get_db_fields_str, run_sql_with_param_and_fetch_all
 from ..common.exception import NotFound
-
+from ..db import (get_db_fields_placeholder_str, get_db_fields_str,
+                  run_sql_with_param, run_sql_with_param_and_fetch_all,
+                  run_sql_with_param_and_fetch_one)
+from ..protos import san11_platform_pb2
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -42,6 +41,7 @@ class TrackLifecycle:
     '''
     ...
 
+
 class Activity:
     def __init__(self, activity_id: int, user_id: int, create_time: datetime, action: Union[int, Action], resource_name: str):
         '''
@@ -50,7 +50,8 @@ class Activity:
         '''
         self.activity_id = activity_id
         self.user_id = user_id
-        self.create_time = create_time.replace(tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
+        self.create_time = create_time.replace(
+            tzinfo=timezone.utc) if create_time.tzinfo is None else create_time
         self.action = Action(action) if isinstance(action, int) else action
         self.resource_name = resource_name
 
@@ -107,15 +108,16 @@ class Activity:
         sql = f'INSERT INTO {self.db_table()} ({get_db_fields_str(self.db_fields())}) VALUES '\
             f'( COALESCE((SELECT MAX({self.db_fields()[0]}) FROM {self.db_table()})+1, 1), '\
             f'{get_db_fields_placeholder_str(self.db_fields()[1:])}) RETURNING {self.db_fields()[0]}'
-        params_raw = ','.join(f"'{field}': self.{field}" for field in self.db_fields())
+        params_raw = ','.join(
+            f"'{field}': self.{field}" for field in self.db_fields())
         params = self._update_db_params(eval(f'{{ {params_raw} }}'))
         resource_id = run_sql_with_param_and_fetch_one(sql, params)[0]
         exec(f"self.{self.db_fields()[0]} = resource_id")
-    
+
     def _update_db_params(self, params_raw) -> Dict:
         params_raw['action'] = params_raw['action'].value
         return params_raw
-        
+
     def delete(self) -> None:
         '''
         Delete the resource from DB.

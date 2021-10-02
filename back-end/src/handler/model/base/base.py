@@ -40,18 +40,14 @@ E.g.
     uri = Attrib(...)
     id = Attrib()
 '''
-from google.protobuf.message import Message
-from handler.util.time_util import get_now
-import attr
 import datetime
-from abc import ABC
-from typing import Any, Callable, Dict, Optional, TypeVar, List
+from typing import Any, Callable, Dict, List, Optional, TypeVar
 
-from . import base_proto
-from . import base_core
-from . import base_db
+import attr
+from handler.util.time_util import get_now
+
 from ..activity import Action, Activity, TrackLifecycle
-
+from . import base_core, base_db, base_proto
 
 MODEL_T = TypeVar('MODEL_T', bound='ModelBase')
 
@@ -121,7 +117,7 @@ def Attrib(
     metadata[base_core.REPEATED] = repeated
     if repeated:
         type = List[type]
-    
+
     if deprecated:
         kwargs['default'] = None
     return attr.ib(metadata=metadata, type=type, **kwargs)

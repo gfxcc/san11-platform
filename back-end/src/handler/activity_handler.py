@@ -1,21 +1,19 @@
+import logging
+import os
+
 from handler.model.model_article import ModelArticle
-from handler.model.model_reply import ModelReply
+from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
+from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.resource import ResourceView
-from handler.model.base.base import ModelBase
-from handler.model.model_binary import ModelBinary
-import sys, os, uuid, logging
 
-
-from .protos import san11_platform_pb2
-from .common.exception import Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists, NotFound
+from .common.exception import NotFound
 from .model.activity import Activity
-from .util.resource_parser import find_resource, parse_name, parse_resource_name
-from .util.time_util import datetime_to_str, get_age
-from .model.binary import Binary
 from .model.package import Package
-
+from .protos import san11_platform_pb2
+from .util.resource_parser import find_resource, parse_name
+from .util.time_util import get_age
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -24,8 +22,9 @@ class ActivityHandler:
     def list_activities(self, request, context):
         # TODO: Need to support list by page as the data size may grow dramatically fast.
         logger.debug(f'In list_activities')
-        activities = Activity.list(page_size=0, page_token='', user_id=request.user_id)
-        activities_pb= []
+        activities = Activity.list(
+            page_size=0, page_token='', user_id=request.user_id)
+        activities_pb = []
         for activity in activities:
             try:
                 resource = find_resource(activity.resource_name)
@@ -35,19 +34,24 @@ class ActivityHandler:
                     resource_view = package.view
                     resource_view.display_name = f'{resource_view.display_name}-{resource.version}'
                 elif isinstance(resource, ModelThread):
-                    resource_view = ResourceView(name=resource.name, display_name=resource.subject, description='', image_url=None)
+                    resource_view = ResourceView(
+                        name=resource.name, display_name=resource.subject, description='', image_url=None)
                 elif isinstance(resource, ModelComment):
-                    resource_view = ResourceView(name=resource.name, display_name='评论', description='', image_url=None)
+                    resource_view = ResourceView(
+                        name=resource.name, display_name='评论', description='', image_url=None)
                 elif isinstance(resource, ModelReply):
-                    resource_view = ResourceView(name=resource.name, display_name='回复', description='', image_url=None)
+                    resource_view = ResourceView(
+                        name=resource.name, display_name='回复', description='', image_url=None)
                 elif isinstance(resource, ModelArticle):
-                    resource_view = ResourceView(name=resource.name, display_name=resource.subject, description='', image_url=None)
+                    resource_view = ResourceView(
+                        name=resource.name, display_name=resource.subject, description='', image_url=None)
                 else:
                     resource_view = resource.view
             except NotFound as err:
                 ...
             except Exception as err:
-                logger.exception(f'Failed to get resource: {activity.resource_name}')
+                logger.exception(
+                    f'Failed to get resource: {activity.resource_name}')
             else:
                 activities_pb.append(san11_platform_pb2.Activity(
                     activity_id=activity.activity_id,

@@ -1,15 +1,16 @@
-import sys, os, uuid, logging
+import logging
+import os
+
 import grpc
 
-from .protos import san11_platform_pb2
-from .common.field_mask import FieldMask, merge_resource
 from .auths import Authenticator, Session
-from .util.notifier import Notifier
+from .common.exception import (AlreadyExists, InvalidArgument, NotFound,
+                               PermissionDenied, Unauthenticated)
+from .common.field_mask import FieldMask, merge_resource
 from .common.image import Image
-from .model.package import Package
 from .model.user import User, generate_verification_code, verify_code
-from .common.exception import NotFound, Unauthenticated, PermissionDenied, InvalidArgument, AlreadyExists
-
+from .protos import san11_platform_pb2
+from .util.notifier import Notifier
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -51,21 +52,22 @@ class UserHandler:
         logger.info(f'Login: user_id={user.user_id} sid={session.sid}')
         return san11_platform_pb2.SignInResponse(user=user.to_pb(),
                                                  sid=session.sid)
-                                                
+
     def sign_out(self, request, context):
         return san11_platform_pb2.Status(code=0, message="登出成功")
-    
+
     def update_user(self, request, context):
         base_user = User.from_id(request.user.user_id)
 
         auth = Authenticator.from_context(context)
         if not auth.canUpdateUser(user=base_user):
-            context.abort(code=PermissionDenied().code, details=PermissionDenied().message)
+            context.abort(code=PermissionDenied().code,
+                          details=PermissionDenied().message)
 
         update_mask = FieldMask.from_pb(request.update_mask)
         user = merge_resource(base_resource=base_user,
-                                update_request=User.from_pb(request.user),
-                                field_mask=update_mask)
+                              update_request=User.from_pb(request.user),
+                              field_mask=update_mask)
         if not user.image_url and base_user.image_url:
             try:
                 Image.from_url(base_user.image_url).delete()
@@ -87,7 +89,8 @@ class UserHandler:
         else:
             authenticate = Authenticator.from_context(context)
             if not authenticate.canUpdateUser(user=user):
-                context.abort(code=PermissionDenied().code, details=PermissionDenied().message)
+                context.abort(code=PermissionDenied().code,
+                              details=PermissionDenied().message)
 
         user.set_password(request.password)
         return san11_platform_pb2.Empty()
@@ -99,10 +102,12 @@ class UserHandler:
             elif request.HasField('username'):
                 user = User.from_username(request.username)
             else:
-                context.abort(code=InvalidArgument().code, details=InvalidArgument().message)
+                context.abort(code=InvalidArgument().code,
+                              details=InvalidArgument().message)
         except NotFound:
             logger.debug(f'GetUser: user_id={request.user_id} does not exist')
-            context.abort(code=NotFound().code, details=f'{NotFound().message}: 用户不存在')
+            context.abort(code=NotFound().code,
+                          details=f'{NotFound().message}: 用户不存在')
         return user.to_pb()
 
     def list_users(self, request, context):
@@ -120,7 +125,7 @@ class UserHandler:
     def verify_email(self, request, context):
         email, code = request.email, request.verification_code
         return san11_platform_pb2.VerifyEmailResponse(ok=verify_code(email, code))
-        
+
     def verify_new_user(self, request, context):
         if request.HasField('username'):
             try:
@@ -136,4 +141,4 @@ class UserHandler:
                 return san11_platform_pb2.Status(code=e.code, message=e.message)
             except AlreadyExists as err:
                 return san11_platform_pb2.Status(code=err.code, message='已被使用')
-        return san11_platform_pb2.Status(code=0, message = '')
+        return san11_platform_pb2.Status(code=0, message='')

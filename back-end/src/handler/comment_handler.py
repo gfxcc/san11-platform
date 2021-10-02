@@ -1,18 +1,17 @@
-from handler.model.model_thread import ModelThread
-from handler.util.resource_parser import ResourceName, find_resource, parse_name, parse_resource_name
-from handler.model.base.base_db import ListOptions
-from handler.model.model_reply import ModelReply
-from handler.common.field_mask import FieldMask, merge_resource
-from typing import Iterable, Optional, Tuple
-from handler.model.model_comment import ModelComment
 import logging
 import os
+from typing import Iterable, Tuple
 
-from .util.time_util import get_now
+from handler.common.field_mask import FieldMask, merge_resource
+from handler.model.base.base_db import ListOptions
+from handler.model.model_comment import ModelComment
+from handler.model.model_reply import ModelReply
+from handler.model.model_thread import ModelThread
+from handler.util.resource_parser import ResourceName, find_resource
+
 from .common.exception import NotFound
-from .model.user import User
-from .model.activity import Activity, Action
-
+from .model.activity import Action, Activity
+from .util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))
 

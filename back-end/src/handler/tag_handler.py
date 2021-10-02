@@ -1,12 +1,11 @@
-import sys, os
 import logging
+import os
+import sys
 
-
-from .protos import san11_platform_pb2
 from .auths import Authenticator, Session
 from .common.exception import Unauthenticated
 from .model.tag import Tag
-
+from .protos import san11_platform_pb2
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -18,7 +17,7 @@ class TagHandler:
         tag = Tag.from_pb(request.tag)
         tag.create()
         return tag.to_pb()
-    
+
     def delete_tag(self, request, context):
         auth = Authenticator.from_context(context=context)
         assert auth.isAdmin()

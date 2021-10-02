@@ -1,16 +1,17 @@
-from handler.model.binary import Binary
+import datetime
 import logging
 import os
+from typing import Dict, Optional
+
 import attr
-import datetime
-from typing import Dict, List, Optional
+from handler.model.binary import Binary
 
-from .base import Attrib, InitModel, ModelBase, LegacyDatetimeProtoConverter, DbConverter, ProtoConverter
-from .activity import TrackLifecycle
 from ..protos import san11_platform_pb2 as pb
-from ..util.time_util import get_now
 from ..util import gcs
-
+from ..util.time_util import get_now
+from .activity import TrackLifecycle
+from .base import (Attrib, DbConverter, InitModel,
+                   LegacyDatetimeProtoConverter, ModelBase, ProtoConverter)
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -161,7 +162,7 @@ class ModelBinary(ModelBase, TrackLifecycle):
     def delete(self, **kwargs) -> None:
         self.remove_resource()
         super(ModelBinary, self).delete(**kwargs)
-    
+
     @classmethod
     def from_v1(cls, legacy_model: Binary):
         return cls(

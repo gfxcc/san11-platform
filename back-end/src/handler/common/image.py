@@ -1,11 +1,10 @@
 from __future__ import annotations
+
 import logging
-import os, os.path
-import uuid
+import os
+import os.path
 
-from ..model.resource import get_image_url
 from ..util import gcs
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -13,10 +12,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 class Image:
     def __init__(self, url) -> None:
         self.url = url
-    
+
     def __str__(self) -> str:
         return self.url
-    
+
     def delete(self):
         gcs.delete_resource(self.url)
         logger.info(f'{self} is deleted')
@@ -24,5 +23,3 @@ class Image:
     @classmethod
     def from_url(cls, url: str):
         return cls(url)
-        
-        

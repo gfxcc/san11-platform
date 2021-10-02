@@ -1,21 +1,20 @@
 from __future__ import annotations
-import os, uuid
-import re
-import json
+
 import logging
-from datetime import datetime, timezone
-from typing import Iterable, List, Tuple
+import os
+import re
+import uuid
+from typing import List
 
-from ..protos import san11_platform_pb2
-from ..db import run_sql_with_param_and_fetch_all, run_sql_with_param_and_fetch_one, \
-                    run_sql_with_param, get_db_fields_str
-from ..util.time_util import get_now
+from ..common.exception import (AlreadyExists, InvalidArgument, NotFound,
+                                Unauthenticated)
 from ..common.image import Image
-from ..util.time_util import get_timezone
-from ..common.exception import InvalidArgument, NotFound, Unauthenticated, AlreadyExists
+from ..db import (run_sql_with_param, run_sql_with_param_and_fetch_all,
+                  run_sql_with_param_and_fetch_one)
+from ..protos import san11_platform_pb2
+from ..util.time_util import get_now
+from .activity import Action, Activity, TrackLifecycle
 from .resource import ResourceMixin, ResourceView
-from .activity import TrackLifecycle, Activity, Action
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 VERIFICATION_CODES_TABLE = 'verification_codes'
@@ -30,12 +29,12 @@ class User(ResourceMixin, TrackLifecycle):
         self.user_id = user_id
         self.username = username
         # Avoid loading password to prevent this sensitive information be propagated
-        # self.password = password 
+        # self.password = password
         self.email = email
         self.user_type = user_type
         self.image_url = image_url
         self.website = website
-    
+
     @property
     def url(self) -> str:
         '''
@@ -47,11 +46,11 @@ class User(ResourceMixin, TrackLifecycle):
     @property
     def name(self) -> str:
         return f'users/{self.user_id}'
-    
+
     @property
     def id(self) -> int:
         return self.user_id
-    
+
     @property
     def view(self) -> ResourceView:
         return ResourceView(
@@ -84,7 +83,7 @@ class User(ResourceMixin, TrackLifecycle):
     @property
     def website(self) -> str:
         return self._website
-    
+
     @website.setter
     def website(self, website: str) -> None:
         self.validate_website(website)
@@ -93,7 +92,7 @@ class User(ResourceMixin, TrackLifecycle):
     def __str__(self):
         return f'{{ user_id: {self.user_id}, username: {self.username}, '\
                f'email: {self.email}, image_url: {self.image_url}, website: {self.website} }}'
-    
+
     @classmethod
     def from_pb(cls, pb_obj: san11_platform_pb2.User) -> User:
         return cls(
@@ -120,14 +119,14 @@ class User(ResourceMixin, TrackLifecycle):
             'email': self.email,
             'user_type': self.DEFAULT_USER_TYPE,
             'create_timestamp': get_now(),
-            'image_url': self.image_url ,
+            'image_url': self.image_url,
             'website': self.website
         })
         self.user_id = resp[0]
         self.user_type = self.DEFAULT_USER_TYPE
         Activity(activity_id=None, user_id=self.user_id, create_time=get_now(),
                  action=Action.CREATE, resource_name=self.name).create()
-    
+
     def delete(self):
         raise NotImplementedError()
 
@@ -151,7 +150,7 @@ class User(ResourceMixin, TrackLifecycle):
         })
         if not resp:
             raise Unauthenticated()
-    
+
     def is_admin(self) -> bool:
         return self.user_type == 'admin'
 
@@ -161,7 +160,7 @@ class User(ResourceMixin, TrackLifecycle):
         param = {'image_url': self.image_url, 'user_id': self.user_id}
         run_sql_with_param(sql, param)
         logger.debug(f'sql={sql}, param={param}')
-    
+
     def set_password(self, password: str) -> None:
         self.validate_password(password)
         sql = 'UPDATE users SET password=%(password)s WHERE user_id=%(user_id)s'
@@ -169,7 +168,7 @@ class User(ResourceMixin, TrackLifecycle):
             'password': password,
             'user_id': self.user_id
         })
-    
+
     def update(self, user_id: int) -> None:
         # TODO: migrate default impl
         sql = 'UPDATE users SET '\
@@ -197,13 +196,13 @@ class User(ResourceMixin, TrackLifecycle):
         '''
         sql = 'SELECT user_id, email, user_type, image_url, website FROM users WHERE username=%(username)s'
         resp = run_sql_with_param_and_fetch_one(
-                sql, {'username': username})
-        
+            sql, {'username': username})
+
         if not resp:
             raise NotFound(f'{username} does not exist')
 
         return cls(resp[0], username, 'password_placeholder', resp[1], resp[2], resp[3], resp[4])
-    
+
     @classmethod
     def from_email(cls, email: str):
         '''
@@ -215,9 +214,10 @@ class User(ResourceMixin, TrackLifecycle):
             resp = run_sql_with_param_and_fetch_all(
                 sql, {'email': email})[0]
         except Exception:
-            raise LookupError(f'email: {email} is not being used by any account')
+            raise LookupError(
+                f'email: {email} is not being used by any account')
         return cls(resp[0], resp[1], 'password_placeholder', resp[2], resp[3], resp[4], resp[5])
-    
+
     @staticmethod
     def validate_email(email: str) -> None:
         '''
@@ -242,7 +242,7 @@ class User(ResourceMixin, TrackLifecycle):
     def validate_password(password: str) -> None:
         if re.fullmatch(r'[0-9a-zA-Z\-_]{4,32}', password) is None:
             raise ValueError("密码要求: [长度] 4-32 [字符] 英文字母大小写 数字 - _")
-    
+
     @staticmethod
     def validate_username(username: str) -> None:
         '''
@@ -260,7 +260,7 @@ class User(ResourceMixin, TrackLifecycle):
             return  # OK, username is not being used
         else:
             raise AlreadyExists("用户名已被使用")
-    
+
     @staticmethod
     def validate_website(website: str) -> None:
         pass
@@ -283,6 +283,7 @@ def generate_verification_code(email: str) -> str:
     })
     return verification_code
 
+
 def get_code(email: str) -> str:
     sql = f'SELECT code FROM {VERIFICATION_CODES_TABLE} WHERE email=%(email)s'
     resp = run_sql_with_param_and_fetch_one(sql, {
@@ -291,6 +292,7 @@ def get_code(email: str) -> str:
     if not resp:
         raise NotFound(f'Verification code for email {email} is not found.')
     return str(resp[0])
+
 
 def verify_code(email: str, code: str) -> bool:
     '''
