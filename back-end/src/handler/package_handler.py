@@ -49,14 +49,14 @@ class PackageHandler:
             except Exception:
                 logger.error(f'Failed to delete image: image_url={image_url}')
 
-        for binary in ModelBinary.list(ListOptions(parent=package.name)):
+        for binary in ModelBinary.list(ListOptions(parent=package.name))[0]:
             try:
                 binary.delete(user_id=auth.session.user.user_id)
             except Exception as err:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
 
-        for comment in ModelComment.list(ListOptions(parent=package.name)):
+        for comment in ModelComment.list(ListOptions(parent=package.name))[0]:
             try:
                 comment.delete(user_id=auth.session.user.user_id)
             except Exception as err:

@@ -61,3 +61,4 @@ class ModelThread(ModelBase, TrackLifecycle):
     update_time = Attrib(
         type=datetime.datetime,
     )
+
