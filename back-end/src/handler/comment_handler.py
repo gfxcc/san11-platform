@@ -70,9 +70,6 @@ class CommentHandler:
 
     def delete_comment(self, comment: ModelComment,
                        handler_context) -> ModelComment:
-        replies = ModelReply.list(ListOptions(parent=comment.name))[0]
-        for reply in replies:
-            reply.delete()
         parent = find_resource(ResourceName.from_str(comment.name).parent)
         if isinstance(parent, ModelThread):
             thread = parent

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+from typing import Optional
 
 import attr
 from handler.model.activity import TrackLifecycle
@@ -47,3 +48,8 @@ class ModelComment(ModelBase, TrackLifecycle):
             parent=self.name, order_by='create_time'))
         getattr(proto, 'replies').extend([reply.to_pb() for reply in replies])
         return proto
+
+    def delete(self, user_id: Optional[int] = None) -> None:
+        for reply in ModelReply.list(ListOptions(parent=self.name))[0]:
+            reply.delete()
+        super().delete(user_id=user_id)

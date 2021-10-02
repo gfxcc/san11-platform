@@ -5,6 +5,7 @@ from typing import Iterable, Tuple
 from handler.model.base.base_db import ListOptions
 from handler.model.model_comment import ModelComment
 from handler.model.model_reply import ModelReply
+from handler.util import gcs
 
 from .common.field_mask import FieldMask, merge_resource
 from .model.model_thread import ModelThread
@@ -45,10 +46,6 @@ class ThreadHandler:
         return thread
 
     def delete_thread(self, thread: ModelThread, handler_context) -> ModelThread:
-        # gcs.delete_folder(thread.name)
-        for comment in ModelComment.list(ListOptions(parent=thread.name))[0]:
-            for reply in ModelReply.list(ListOptions(parent=comment.name))[0]:
-                reply.delete()
-            comment.delete()
+        gcs.delete_folder(thread.name)
         thread.delete(handler_context.user.user_id)
         return thread

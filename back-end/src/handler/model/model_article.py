@@ -1,7 +1,11 @@
 import datetime
+from typing import Optional
 
 import attr
 from handler.model.activity import TrackLifecycle
+from handler.model.base.base_db import ListOptions
+from handler.model.model_comment import ModelComment
+from handler.model.model_thread import ModelThread
 
 from ..protos import san11_platform_pb2 as pb
 from ..util.time_util import get_now
@@ -49,3 +53,8 @@ class ModelArticle(ModelBase, TrackLifecycle):
         type=datetime.datetime,
         default=get_now(),
     )
+
+    def delete(self, user_id: Optional[int] = None) -> None:
+        for comment in ModelComment.list(ListOptions(parent=self.name))[0]:
+            comment.delete()
+        super().delete(user_id=user_id)

@@ -57,11 +57,11 @@ class PackageHandler:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
 
-        for comment in ModelComment.list(ListOptions(parent=package.name))[0]:
+        for thread in ModelThread.list(ListOptions(parent=package.name))[0]:
             try:
-                comment.delete(user_id=auth.session.user.user_id)
+                thread.delete(user_id=auth.session.user.user_id)
             except Exception as err:
-                logger.error(f'Failed to delete {comment} under {self}: {err}')
+                logger.error(f'Failed to delete {thread} under {self}: {err}')
 
         package.delete(user_id=auth.session.user.user_id)
         logger.info(f'Package is deleted: {package}')

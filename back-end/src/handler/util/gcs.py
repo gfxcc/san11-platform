@@ -1,6 +1,7 @@
-import logging, os
-from google.cloud import storage
+import logging
+import os
 
+from google.cloud import storage
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -33,6 +34,7 @@ def _delete_file(bucket_name: str, filename: str) -> None:
     bucket.blob(filename).delete()
     logger.debug(f'({filename}) is deleted from bucket {bucket_name}')
 
+
 def _delete_folder(bucket_name: str, folder_path: str) -> None:
     storage_client = storage.Client()
     bucket = storage_client.get_bucket(bucket_name)
@@ -46,12 +48,19 @@ def disk_usage_under(prefix: str) -> int:
     '''
     Return size of all resources with give prefix under CANONICAL_BUCKET
     '''
+    if os.environ.get('STAGE') == 'DEV':
+        logger.debug(f'Skip gcs operations in env: DEV')
+        return 0
     storage_client = storage.Client()
-    blobs = storage_client.list_blobs(bucket_or_name=CANONICAL_BUCKET, prefix=prefix)
+    blobs = storage_client.list_blobs(
+        bucket_or_name=CANONICAL_BUCKET, prefix=prefix)
     return sum(blob.size for blob in blobs)
 
 
 def get_file_size(bucket_name: str, filename: str) -> int:
+    if os.environ.get('STAGE') == 'DEV':
+        logger.debug(f'Skip gcs operations in env: DEV')
+        return 0
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.get_blob(filename)
@@ -63,8 +72,14 @@ def delete_resource(filename: str) -> None:
 
 
 def delete_tmp_resource(filename: str) -> None:
+    if os.environ.get('STAGE') == 'DEV':
+        logger.debug(f'Skip gcs operations in env: DEV')
+        return
     _delete_file(TMP_BUCKET, filename)
 
 
 def delete_folder(folder_path: str) -> None:
+    if os.environ.get('STAGE') == 'DEV':
+        logger.debug(f'Skip gcs operations in env: DEV')
+        return
     _delete_folder(CANONICAL_BUCKET, folder_path)
