@@ -56,7 +56,7 @@ class PackageHandler:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
 
-        for comment in ModelComment.list(ListOptions(parent=this.name)):
+        for comment in ModelComment.list(ListOptions(parent=package.name)):
             try:
                 comment.delete(user_id=auth.session.user.user_id)
             except Exception as err:
