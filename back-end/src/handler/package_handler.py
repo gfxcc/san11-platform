@@ -1,11 +1,8 @@
 import logging
 import os
-import re
 
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import ModelBinary
-from handler.model.model_comment import ModelComment
-from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 
 from .auths import Authenticator

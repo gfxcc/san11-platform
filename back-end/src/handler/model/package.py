@@ -21,7 +21,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 class Status(Enum):
     UNKNOWN = 0
-    NORMAL = 1  # publish accessable
+    NORMAL = 1  # Public accessable
     UNDER_REVIEW = 2  # Only visiable to admin and author
     HIDDEN = 3  # Only visiable to admin and author
     SCHEDULE_DELETE = 4  # Only visiable to admin
