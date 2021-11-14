@@ -196,14 +196,17 @@ class User(ResourceMixin, TrackLifecycle):
         Raise:
             NotFound: ...
         '''
-        sql = 'SELECT user_id, email, user_type, image_url, website FROM users WHERE username=%(identity)s OR email=%(identity)s'
+        sql = 'SELECT user_id, username, email, user_type, image_url, website FROM users WHERE username=%(identity)s OR email=%(identity)s'
         try:
             resp = run_sql_with_param_and_fetch_all(
                 sql, {'identity': identity})[0]
         except Exception:
             raise NotFound(
                 f'{identity} does not exist.')
-        return cls(resp[0], resp[1], 'password_placeholder', resp[2], resp[3], resp[4], resp[5])
+        ret = cls(resp[0], resp[1], 'password_placeholder',
+                  resp[2], resp[3], resp[4], resp[5])
+        logger.debug(ret)
+        return ret
 
     @classmethod
     def from_username(cls, username: str):

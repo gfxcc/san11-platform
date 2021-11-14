@@ -35,10 +35,11 @@ class UserHandler:
 
     def sign_in(self, request, context: grpc.ServicerContext):
         try:
-            user = User.from_username(request.identity)
+            user = User.from_identity(request.identity)
             user.validate(request.password)
         except NotFound as e:
-            context.abort(code=e.code, details=f'用户名不存在: {request.username}')
+            context.abort(
+                code=e.code, details=f'用户名/邮箱 不存在: {request.identity}')
         except Unauthenticated as e:
             context.abort(code=e.code, details=f'用户名,密码 不匹配')
 
