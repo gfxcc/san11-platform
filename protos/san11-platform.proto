@@ -361,7 +361,8 @@ message GetUserResponse {
 }
 
 message SignInRequest {
-    string username = 1;
+    // Username or email
+    string identity = 1;
     string password = 2;
 }
 

@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-
-import { MatStepper } from '@angular/material/stepper';
-import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
-import { NotificationService } from "../../common/notification.service";
-import { saveUser } from '../../utils/user_util';
-import { MatDialog } from '@angular/material/dialog';
-import { User, GetUserRequest, SendVerificationCodeRequest, VerifyEmailRequest, VerifyEmailResponse, UpdatePasswordRequest } from "../../../proto/san11-platform.pb";
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
+import { GetUserRequest, SendVerificationCodeRequest, UpdatePasswordRequest, User, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
+import { NotificationService } from "../../common/notification.service";
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+import { saveUser } from '../../utils/user_util';
+
 
 
 @Component({
@@ -45,11 +45,12 @@ export class SigninComponent implements OnInit {
   ngOnInit(): void {
 
     this.basicInfoForm = this.formBuilder.group({
-      username: ['', [
+      identity: ['', [
         Validators.required,
         Validators.minLength(4),
-        Validators.maxLength(32),
-        Validators.pattern(/^[^\s]*$/)]],
+        Validators.maxLength(64),
+        Validators.pattern(/^[^\s]*$/)
+      ]],
       email: ['', [
         Validators.required, Validators.email
       ]],

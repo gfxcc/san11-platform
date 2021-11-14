@@ -1,36 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable, ObservedValueOf, Subscription } from 'rxjs';
-
-import { SIRE_PACKAGES, PLAYER_PACKAGES, MOD_MAKER_PACKAGES } from './../mock-packages'
-
-import { GrpcEvent, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
-
-import { Article, CreateArticleRequest, CreatePackageRequest, CreateThreadRequest, DeleteArticleRequest, DeletePackageRequest, DeleteThreadRequest, GetArticleRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListPackagesResponse, ListThreadsRequest, ListThreadsResponse, Thread, UpdateArticleRequest, UpdateThreadRequest, UploadBinaryRequest, UploadImageRequest } from '../../proto/san11-platform.pb'
-import { CreateBinaryRequest, CreateImageRequest } from '../../proto/san11-platform.pb'
-import { GetPackageRequest } from "../../proto/san11-platform.pb";
-import { UpdatePackageRequest } from '../../proto/san11-platform.pb'
-import { SearchPackagesRequest, SearchPackagesResponse } from "../../proto/san11-platform.pb";
-import { AdminMessage, Tag, Url, Statistic, User, Package, Binary, Status, Empty, Comment, Reply } from '../../proto/san11-platform.pb'
-import { ListPackagesRequest } from '../../proto/san11-platform.pb';
-import { ListUsersRequest, ListUsersResponse } from "../../proto/san11-platform.pb";
-import { SignInRequest, SignInResponse } from '../../proto/san11-platform.pb';
-import { SignUpRequest, SignUpResponse } from '../../proto/san11-platform.pb';
-import { SignOutRequest } from '../../proto/san11-platform.pb'
-import { DownloadBinaryRequest } from '../../proto/san11-platform.pb'
-import { GetStatisticRequest } from '../../proto/san11-platform.pb'
-import { DeleteBinaryRequest } from "../../proto/san11-platform.pb";
-import { UpdateUserRequest, UpdatePasswordRequest } from "../../proto/san11-platform.pb";
-import { UpdateCommentRequest, CreateCommentRequest, DeleteCommentRequest, ListCommentsRequest, ListCommentsResponse } from "../../proto/san11-platform.pb";
-import { UpdateReplyRequest, CreateReplyRequest, DeleteReplyRequest } from "../../proto/san11-platform.pb";
-import { CreateTagRequest, ListTagsRequest, ListTagsResponse, DeleteTagRequest } from "../../proto/san11-platform.pb";
-import { UpdateBinaryRequest } from "../../proto/san11-platform.pb";
-import { SendVerificationCodeRequest } from "../../proto/san11-platform.pb";
-import { VerifyEmailRequest, VerifyEmailResponse } from "../../proto/san11-platform.pb";
-import { VerifyNewUserRequest, VerifyNewUserResponse } from "../../proto/san11-platform.pb";
-
-
-import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
+import { GrpcMetadata } from '@ngx-grpc/common';
+import { Observable, Subscription } from 'rxjs';
 import { Cacheable } from 'ts-cacheable';
+import { AdminMessage, Article, Binary, Comment, CreateArticleRequest, CreateBinaryRequest, CreateCommentRequest, CreateImageRequest, CreatePackageRequest, CreateReplyRequest, CreateTagRequest, CreateThreadRequest, DeleteArticleRequest, DeleteBinaryRequest, DeleteCommentRequest, DeletePackageRequest, DeleteReplyRequest, DeleteTagRequest, DeleteThreadRequest, DownloadBinaryRequest, Empty, GetArticleRequest, GetPackageRequest, GetStatisticRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListCommentsRequest, ListCommentsResponse, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, ListTagsResponse, ListThreadsRequest, ListThreadsResponse, ListUsersRequest, ListUsersResponse, Package, Reply, SearchPackagesRequest, SearchPackagesResponse, SendVerificationCodeRequest, SignInRequest, SignInResponse, SignOutRequest, SignUpRequest, SignUpResponse, Statistic, Status, Tag, Thread, UpdateArticleRequest, UpdateBinaryRequest, UpdateCommentRequest, UpdatePackageRequest, UpdatePasswordRequest, UpdateReplyRequest, UpdateThreadRequest, UpdateUserRequest, Url, User, VerifyEmailRequest, VerifyEmailResponse, VerifyNewUserRequest } from '../../proto/san11-platform.pb';
+import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
+
+
+
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -169,7 +147,7 @@ export class San11PlatformServiceService {
   // users
 
   signIn(user): Observable<SignInResponse> {
-    const request = new SignInRequest({ username: user.username, password: user.password });
+    const request = new SignInRequest({ identity: user.identity, password: user.password });
     return this.severClient.signIn(request);
   }
 
@@ -184,7 +162,7 @@ export class San11PlatformServiceService {
     return this.severClient.signUp(request);
   }
 
-  @Cacheable({maxCacheCount: 200})
+  @Cacheable({ maxCacheCount: 200 })
   getUser(request: GetUserRequest): Observable<User> {
     return this.severClient.getUser(request, this.getMetadata());
   }

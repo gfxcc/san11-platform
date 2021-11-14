@@ -189,6 +189,23 @@ class User(ResourceMixin, TrackLifecycle):
                      action=Action.UPDATE, resource_name=self.name).create()
 
     @classmethod
+    def from_identity(cls, identity: str):
+        '''
+        Args:
+            identity: username or email
+        Raise:
+            NotFound: ...
+        '''
+        sql = 'SELECT user_id, email, user_type, image_url, website FROM users WHERE username=%(identity)s OR email=%(identity)s'
+        try:
+            resp = run_sql_with_param_and_fetch_all(
+                sql, {'identity': identity})[0]
+        except Exception:
+            raise NotFound(
+                f'{identity} does not exist.')
+        return cls(resp[0], resp[1], 'password_placeholder', resp[2], resp[3], resp[4], resp[5])
+
+    @classmethod
     def from_username(cls, username: str):
         '''
         Raise:

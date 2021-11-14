@@ -25,7 +25,27 @@ $ docker-compose up
 
 # Development
 
+## Start backend & frontend
+```
+$ cd san11-platform
+$ docker-compose -f docker-compose.dev.yaml up back-end
+
+# In a separate terminal
+$ cd san11-platform/front-end
+$ ng serve
+```
+
 ## Tests
 ```
 $ make test
+```
+
+# Deployment
+```
+$ cd san11-platform
+$ docker-compose up back-end
+
+# In a separate terminal
+$ cd san11-platform
+$ docker-compose up front-end
 ```

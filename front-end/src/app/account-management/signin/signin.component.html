@@ -9,7 +9,7 @@
                 <form class="example-form" #signInForm='ngForm' (ngSubmit)="onSignIn(signInForm)">
                     <mat-card-content>
                         <mat-form-field class="example-full-width">
-                            <input matInput placeholder="用户名" autocomplete="username" required ngModel name="username">
+                            <input matInput placeholder="用户名/邮箱" autocomplete="username" required ngModel name="identity">
                         </mat-form-field>
 
                         <mat-form-field class="example-full-width">
@@ -36,14 +36,14 @@
                             <form class="example-form" [formGroup]="basicInfoForm" (ngSubmit)="onBasicInfoNext(stepper)">
                                 <mat-card-content>
                                     <mat-form-field class="input-field">
-                                        <input matInput autocomplete="username" placeholder="用户名" autocomplete="off" formControlName="username">
-                                        <mat-error *ngIf="username.errors?.minlength && username.touched" align="end">
+                                        <input matInput autocomplete="identity" placeholder="用户名" autocomplete="off" formControlName="identity">
+                                        <mat-error *ngIf="identity.errors?.minlength && username.touched" align="end">
                                             至少需要6个字符
                                         </mat-error>
-                                        <mat-error *ngIf="username.errors?.maxlength && username.touched" align="end">
+                                        <mat-error *ngIf="identity.errors?.maxlength && username.touched" align="end">
                                             不得超过32个字符
                                         </mat-error>
-                                        <mat-error *ngIf="username.errors?.pattern && username.touched" align="end">
+                                        <mat-error *ngIf="identity.errors?.pattern && username.touched" align="end">
                                             不能使用 空格
                                         </mat-error>
                                     </mat-form-field>

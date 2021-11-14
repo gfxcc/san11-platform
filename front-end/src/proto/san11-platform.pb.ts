@@ -7129,7 +7129,7 @@ export class SignInRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: SignInRequest) {
-    _instance.username = _instance.username || '';
+    _instance.identity = _instance.identity || '';
     _instance.password = _instance.password || '';
   }
 
@@ -7147,7 +7147,7 @@ export class SignInRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.username = _reader.readString();
+          _instance.identity = _reader.readString();
           break;
         case 2:
           _instance.password = _reader.readString();
@@ -7169,15 +7169,15 @@ export class SignInRequest implements GrpcMessage {
     _instance: SignInRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.username) {
-      _writer.writeString(1, _instance.username);
+    if (_instance.identity) {
+      _writer.writeString(1, _instance.identity);
     }
     if (_instance.password) {
       _writer.writeString(2, _instance.password);
     }
   }
 
-  private _username?: string;
+  private _identity?: string;
   private _password?: string;
 
   /**
@@ -7186,15 +7186,15 @@ export class SignInRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<SignInRequest.AsObject>) {
     _value = _value || {};
-    this.username = _value.username;
+    this.identity = _value.identity;
     this.password = _value.password;
     SignInRequest.refineValues(this);
   }
-  get username(): string | undefined {
-    return this._username;
+  get identity(): string | undefined {
+    return this._identity;
   }
-  set username(value: string | undefined) {
-    this._username = value;
+  set identity(value: string | undefined) {
+    this._identity = value;
   }
   get password(): string | undefined {
     return this._password;
@@ -7218,7 +7218,7 @@ export class SignInRequest implements GrpcMessage {
    */
   toObject(): SignInRequest.AsObject {
     return {
-      username: this.username,
+      identity: this.identity,
       password: this.password
     };
   }
@@ -7240,7 +7240,7 @@ export class SignInRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): SignInRequest.AsProtobufJSON {
     return {
-      username: this.username,
+      identity: this.identity,
       password: this.password
     };
   }
@@ -7250,7 +7250,7 @@ export module SignInRequest {
    * Standard JavaScript object representation for SignInRequest
    */
   export interface AsObject {
-    username?: string;
+    identity?: string;
     password?: string;
   }
 
@@ -7258,7 +7258,7 @@ export module SignInRequest {
    * Protobuf JSON representation for SignInRequest
    */
   export interface AsProtobufJSON {
-    username?: string;
+    identity?: string;
     password?: string;
   }
 }

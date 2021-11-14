@@ -35,7 +35,7 @@ class UserHandler:
 
     def sign_in(self, request, context: grpc.ServicerContext):
         try:
-            user = User.from_username(request.username)
+            user = User.from_username(request.identity)
             user.validate(request.password)
         except NotFound as e:
             context.abort(code=e.code, details=f'用户名不存在: {request.username}')
