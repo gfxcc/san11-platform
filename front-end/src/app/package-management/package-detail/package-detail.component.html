@@ -31,9 +31,9 @@
                         <div class="author-card show-border-dev" style="display: flex;" (click)="onAuthorClick()">
                             <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage = false;" class="author-image">
 
-                            <span style="display: inline-flex;  align-items: center;">
-                        {{this.author.username}}
-                        </span>
+                            <span class="author-name">
+                                {{this.author.username}}
+                            </span>
                         </div>
                     </div>
 

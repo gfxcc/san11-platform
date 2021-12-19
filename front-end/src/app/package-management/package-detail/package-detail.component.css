@@ -98,7 +98,7 @@
 }
 
 .author-card {
-    width: calc(100% - 20px);
+    /* width: calc(100% - 20px); */
     padding: 10px;
     transition-duration: .5s;
     border-radius: 4px;
@@ -119,6 +119,12 @@
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+}
+
+.author-name {
+    display: inline-flex;
+    align-items: center;
+    overflow-wrap: anywhere;
 }
 
 .right-bottom {
