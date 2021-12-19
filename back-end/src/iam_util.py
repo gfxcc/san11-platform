@@ -17,7 +17,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 def _get_session(context) -> Session:
     sid = dict(context.invocation_metadata()).get('sid', None)
     if not sid:
-        context.abort(PermissionDenied().code, '请登录')
+        raise Unauthenticated('sid is missing')
     return Session.from_sid(sid)
 
 
@@ -37,8 +37,7 @@ def assert_login(func: ServerHandlerType):
             _get_session(context)
         except Unauthenticated as e:
             logger.info(f'unauthenticated user: {e}')
-        except Exception as e:
-            logger.error('failed to authenticate user: {e}')
+            context.abort(PermissionDenied().code, '请登录')
         else:
             return func(this, request, context)
     return iam_wrapper
