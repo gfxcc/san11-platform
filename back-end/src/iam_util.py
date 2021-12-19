@@ -1,13 +1,17 @@
-import functools, re
-from handler.util.resource_parser import find_resource
-
-from google.protobuf import message
-from handler.common.exception import PermissionDenied
-from handler.auths.session import Session
+import functools
+import logging
+import os
+import re
 from typing import Any, Callable, Tuple
 
+from google.protobuf import message
+
+from handler.auths.session import Session
+from handler.common.exception import PermissionDenied, Unauthenticated
+from handler.util.resource_parser import find_resource
 
 ServerHandlerType = Callable[[Any, Any, Any], Any]
+logger = logging.getLogger(os.path.basename(__file__))
 
 
 def _get_session(context) -> Session:
@@ -29,10 +33,15 @@ def assert_admin(func: ServerHandlerType):
 def assert_login(func: ServerHandlerType):
     @functools.wraps(func)
     def iam_wrapper(this, request, context):
-        _get_session(context)
-        return func(this, request, context)
+        try:
+            _get_session(context)
+        except Unauthenticated as e:
+            logger.info(f'unauthenticated user: {e}')
+        except Exception as e:
+            logger.error('failed to authenticate user: {e}')
+        else:
+            return func(this, request, context)
     return iam_wrapper
-
 
 
 def assert_resource_owner(user_id_pattern: str):

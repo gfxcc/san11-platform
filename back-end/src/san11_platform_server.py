@@ -38,12 +38,19 @@ class HandlerContext:
 
     @classmethod
     def from_service_context(cls, service_context: grpc.ServicerContext) -> HandlerContext:
+        '''
+        Constructs a HandlerContext. A valid session is not required.
+        '''
         session = None
         sid = dict(service_context.invocation_metadata()).get('sid', None)
         if not sid:
             return cls(user=None)
-        session = Session.from_sid(sid)
-        return cls(user=session.user)
+        try:
+            session = Session.from_sid(sid)
+        except Unauthenticated:
+            return cls(user=None)
+        else:
+            return cls(user=session.user)
 
 
 class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
