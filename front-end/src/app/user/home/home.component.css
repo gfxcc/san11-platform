@@ -6,8 +6,8 @@
 
 .bottom {
     width: 100%;
-    height: calc(100% - 150px);
-    background-color: #F1F1F1;
+    /* height: calc(100% - 150px); */
+    /* background-color: #F1F1F1; */
 }
 
 .info-group {
