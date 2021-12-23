@@ -8909,6 +8909,7 @@ export class VerifyEmailResponse implements GrpcMessage {
    */
   static refineValues(_instance: VerifyEmailResponse) {
     _instance.ok = _instance.ok || false;
+    _instance.userId = _instance.userId || '0';
   }
 
   /**
@@ -8926,6 +8927,9 @@ export class VerifyEmailResponse implements GrpcMessage {
       switch (_reader.getFieldNumber()) {
         case 1:
           _instance.ok = _reader.readBool();
+          break;
+        case 2:
+          _instance.userId = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -8947,9 +8951,13 @@ export class VerifyEmailResponse implements GrpcMessage {
     if (_instance.ok) {
       _writer.writeBool(1, _instance.ok);
     }
+    if (_instance.userId) {
+      _writer.writeInt64String(2, _instance.userId);
+    }
   }
 
   private _ok?: boolean;
+  private _userId?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8958,6 +8966,7 @@ export class VerifyEmailResponse implements GrpcMessage {
   constructor(_value?: RecursivePartial<VerifyEmailResponse.AsObject>) {
     _value = _value || {};
     this.ok = _value.ok;
+    this.userId = _value.userId;
     VerifyEmailResponse.refineValues(this);
   }
   get ok(): boolean | undefined {
@@ -8965,6 +8974,12 @@ export class VerifyEmailResponse implements GrpcMessage {
   }
   set ok(value: boolean | undefined) {
     this._ok = value;
+  }
+  get userId(): string | undefined {
+    return this._userId;
+  }
+  set userId(value: string | undefined) {
+    this._userId = value;
   }
 
   /**
@@ -8982,7 +8997,8 @@ export class VerifyEmailResponse implements GrpcMessage {
    */
   toObject(): VerifyEmailResponse.AsObject {
     return {
-      ok: this.ok
+      ok: this.ok,
+      userId: this.userId
     };
   }
 
@@ -9003,7 +9019,8 @@ export class VerifyEmailResponse implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): VerifyEmailResponse.AsProtobufJSON {
     return {
-      ok: this.ok
+      ok: this.ok,
+      userId: this.userId
     };
   }
 }
@@ -9013,6 +9030,7 @@ export module VerifyEmailResponse {
    */
   export interface AsObject {
     ok?: boolean;
+    userId?: string;
   }
 
   /**
@@ -9020,6 +9038,7 @@ export module VerifyEmailResponse {
    */
   export interface AsProtobufJSON {
     ok?: boolean;
+    userId?: string;
   }
 }
 

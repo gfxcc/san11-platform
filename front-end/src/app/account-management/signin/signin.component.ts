@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
-import { SendVerificationCodeRequest, UpdatePasswordRequest, User, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
+import { SendVerificationCodeRequest, UpdatePasswordRequest, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
 import { NotificationService } from "../../common/notification.service";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { saveUser } from '../../utils/user_util';
@@ -27,7 +27,7 @@ export class SigninComponent implements OnInit {
   timeToResend: number;
   timeToResendText: string;
 
-  user: User;
+  userId: string;
 
   basicInfoForm: FormGroup;
   emailVerificationForm: FormGroup;
@@ -164,6 +164,7 @@ export class SigninComponent implements OnInit {
     this.san11PlatformServiceService.verifyEmail(request).subscribe(
       (resp: VerifyEmailResponse) => {
         if (resp.ok) {
+          this.userId = resp.userId;
           stepper.next();
         } else {
           this.notificationService.warn('验证码不正确');
@@ -174,7 +175,7 @@ export class SigninComponent implements OnInit {
 
   onUpdatePassword() {
     this.san11PlatformServiceService.updatePassword(new UpdatePasswordRequest({
-      userId: this.user.userId,
+      userId: this.userId,
       password: this.password.value,
       verificationCode: this.verificationCode.value
     })).subscribe(

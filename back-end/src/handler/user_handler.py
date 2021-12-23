@@ -125,7 +125,8 @@ class UserHandler:
 
     def verify_email(self, request, context):
         email, code = request.email, request.verification_code
-        return san11_platform_pb2.VerifyEmailResponse(ok=verify_code(email, code))
+        user = User.from_email(email)
+        return san11_platform_pb2.VerifyEmailResponse(ok=verify_code(email, code), user_id=user.user_id)
 
     def verify_new_user(self, request, context):
         if request.HasField('username'):

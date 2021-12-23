@@ -418,6 +418,7 @@ message VerifyEmailRequest {
 
 message VerifyEmailResponse {
     bool ok = 1;
+    int64 user_id = 2;
 }
 
 message VerifyNewUserRequest {

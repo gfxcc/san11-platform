@@ -205,7 +205,6 @@ class User(ResourceMixin, TrackLifecycle):
                 f'{identity} does not exist.')
         ret = cls(resp[0], resp[1], 'password_placeholder',
                   resp[2], resp[3], resp[4], resp[5])
-        logger.debug(ret)
         return ret
 
     @classmethod
