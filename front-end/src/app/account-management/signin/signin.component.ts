@@ -169,6 +169,9 @@ export class SigninComponent implements OnInit {
         } else {
           this.notificationService.warn('验证码不正确');
         }
+      },
+      error => {
+        this.notificationService.warn(`验证用户失败: ${error.statusMessage}`)
       }
     );
   }

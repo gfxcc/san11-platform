@@ -125,7 +125,10 @@ class UserHandler:
 
     def verify_email(self, request, context):
         email, code = request.email, request.verification_code
-        user = User.from_email(email)
+        try:
+            user = User.from_email(email)
+        except LookupError:
+            return context.abort(NotFound().code, f'该邮箱未注册')
         return san11_platform_pb2.VerifyEmailResponse(ok=verify_code(email, code), user_id=user.user_id)
 
     def verify_new_user(self, request, context):
