@@ -39,7 +39,7 @@ class Session:
         sql = "DELETE FROM sessions WHERE sid=%(sid)s"
         run_sql_with_param(sql, {'sid': self.sid})
         self.expiration = 0
-        logger.info(f'session:{self} is revoked')
+        logger.debug(f'session:{self} is revoked')
 
     @classmethod
     def from_sid(cls, sid: str):
@@ -56,7 +56,6 @@ class Session:
             raise NotFound(f'Failed to find session: sid={sid}') from err
         obj = cls(sid, user_id, expiration)
         if not obj.is_valid():
-            logger.warn(f'{obj} is expired')
             raise Unauthenticated('请重新登陆')
         return obj
 
@@ -84,5 +83,4 @@ class Session:
             sql, {'sid': sid, 'user_id': user_id, 'expiration': expiration})
 
         obj = cls(sid, user_id, expiration)
-        logger.info(f'session: {obj} is created')
         return obj
