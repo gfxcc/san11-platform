@@ -278,7 +278,7 @@ class User(ResourceMixin, TrackLifecycle):
         except NotFound:
             return  # OK, username is not being used
         else:
-            raise AlreadyExists("用户名已被使用")
+            raise AlreadyExists(f'用户名 {username} 已被使用')
 
     @staticmethod
     def validate_website(website: str) -> None:
