@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../../../proto/san11-platform.pb';
 import { NotificationService } from '../../../common/notification.service';
@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   user: User;
   today_visit_count: number = 1;
   today_download_count: number = 2;
+  menuItems = ['a', 'b', 'c'];
 
   searchQuery: string = '';
 

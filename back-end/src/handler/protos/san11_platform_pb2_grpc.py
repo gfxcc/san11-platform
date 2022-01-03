@@ -225,6 +225,16 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.ListActivitiesRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.ListActivitiesResponse.FromString,
                 )
+        self.ListNotifications = channel.unary_unary(
+                '/routeguide.RouteGuide/ListNotifications',
+                request_serializer=san11__platform__pb2.ListNotificationsRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.ListNotificationsResponse.FromString,
+                )
+        self.UpdateNotification = channel.unary_unary(
+                '/routeguide.RouteGuide/UpdateNotification',
+                request_serializer=san11__platform__pb2.UpdateNotificationRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.Notification.FromString,
+                )
         self.CreateTag = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateTag',
                 request_serializer=san11__platform__pb2.CreateTagRequest.SerializeToString,
@@ -517,6 +527,18 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListNotifications(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateNotification(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def CreateTag(self, request, context):
         """Tag related
         """
@@ -761,6 +783,16 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.ListActivities,
                     request_deserializer=san11__platform__pb2.ListActivitiesRequest.FromString,
                     response_serializer=san11__platform__pb2.ListActivitiesResponse.SerializeToString,
+            ),
+            'ListNotifications': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListNotifications,
+                    request_deserializer=san11__platform__pb2.ListNotificationsRequest.FromString,
+                    response_serializer=san11__platform__pb2.ListNotificationsResponse.SerializeToString,
+            ),
+            'UpdateNotification': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateNotification,
+                    request_deserializer=san11__platform__pb2.UpdateNotificationRequest.FromString,
+                    response_serializer=san11__platform__pb2.Notification.SerializeToString,
             ),
             'CreateTag': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateTag,
@@ -1509,6 +1541,40 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListActivities',
             san11__platform__pb2.ListActivitiesRequest.SerializeToString,
             san11__platform__pb2.ListActivitiesResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ListNotifications(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListNotifications',
+            san11__platform__pb2.ListNotificationsRequest.SerializeToString,
+            san11__platform__pb2.ListNotificationsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateNotification(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateNotification',
+            san11__platform__pb2.UpdateNotificationRequest.SerializeToString,
+            san11__platform__pb2.Notification.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

@@ -27,7 +27,7 @@ class MyModel(ModelBase):
     ...
 
 ## OneOf field
-Fields in oneOf field should be listed in Model as a flat field.
+Fields in oneOf field should be listed in Model as flat fields.
 
 E.g. 
     OneOf resource = {

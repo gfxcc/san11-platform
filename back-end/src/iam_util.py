@@ -43,6 +43,28 @@ def assert_login(func: ServerHandlerType):
     return iam_wrapper
 
 
+def assert_user(path_to_user_id: str):
+    '''
+    Admin user will always overpass this check.
+    Args:
+        path_to_user_id: Path from request to `user_id`.
+    '''
+    def wrap(func):
+        @functools.wraps(func)
+        def iam_wrapper(this, request, context):
+            try:
+                session = _get_session(context)
+            except Unauthenticated as e:
+                logger.info(f'unauthenticated user: {e}')
+                context.abort(Unauthenticated().code, Unauthenticated().message)
+            else:
+                if session.user.user_id != _get_attr_by_path(request, path_to_user_id):
+                    context.abort(PermissionDenied().code, PermissionDenied().message)
+                return func(this, request, context)
+        return iam_wrapper
+    return wrap
+
+
 def assert_resource_owner(user_id_pattern: str):
     '''
     Admin user will always overpass this check.
@@ -83,3 +105,10 @@ def assert_resource_owner(user_id_pattern: str):
             return func(this, request, context)
         return iam_wrapper
     return wrap
+
+
+def _get_attr_by_path(request, path: str) -> Any:
+    cur = request
+    for seg in path.split('.'):
+        cur = getattr(cur, seg)
+    return cur

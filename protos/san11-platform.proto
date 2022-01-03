@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
 
 package routeguide;
 
@@ -71,6 +72,9 @@ service RouteGuide {
 
   // Activities reltead
   rpc ListActivities(ListActivitiesRequest) returns (ListActivitiesResponse) {}
+
+  rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse) {}
+  rpc UpdateNotification(UpdateNotificationRequest) returns (Notification) {}
 
   // Tag related
   rpc CreateTag(CreateTagRequest) returns (Tag) {}
@@ -448,6 +452,25 @@ message ListActivitiesResponse {
     repeated Activity activities = 2;
 }
 
+message ListNotificationsRequest {
+    int64 page_size = 1;
+    string page_token = 2;
+
+    int64 user_id = 3;
+}
+
+message ListNotificationsResponse {
+    string next_page_token = 1;
+
+    repeated Notification notifications = 2;
+}
+
+message UpdateNotificationRequest {
+    Notification notification = 1;
+    google.protobuf.FieldMask update_mask = 2;
+}
+
+
 // tag related
 message CreateTagRequest {
     Tag tag = 1;
@@ -628,6 +651,18 @@ message Activity {
     string create_time = 3;
     Action action = 4;
     ResourceView resource_view = 5;
+}
+
+message Notification {
+    int64 notification_id = 1;
+    int64 sender_id = 2; // OUTPUT_ONLY
+    int64 receiver_id = 3; // OUTPUT_ONLY
+    google.protobuf.Timestamp create_time = 4;  // OUTPUT_ONLY
+    google.protobuf.Timestamp update_time = 5;  // OUTPUT_ONLY
+    bool unread = 6;
+    string content = 7; // OUTPUT_ONLY
+    string image_preview = 8; // OUTPUT_ONLY
+    string link = 9; // OUTPUT_ONLY
 }
 
 message ResourceView {
