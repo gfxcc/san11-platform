@@ -12,14 +12,15 @@ import grpc
 import iam_util
 from handler import (ActivityHandler, AdminHandler, ArticleHandler,
                      BinaryHandler, CommentHandler, GeneralHandler,
-                     ImageHandler, PackageHandler, ReplyHandler, TagHandler,
-                     UserHandler)
+                     ImageHandler, NotificationHandler, PackageHandler,
+                     ReplyHandler, TagHandler, UserHandler)
 from handler.auths import Session
 from handler.common.exception import *
 from handler.common.field_mask import FieldMask
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
+from handler.model.model_notification import ModelNotification
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.package import Package
@@ -67,6 +68,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.admin_handler = AdminHandler()
         self.article_handler = ArticleHandler()
         self.thread_handler = ThreadHandler()
+        self.notification_handler = NotificationHandler()
     #############
     # New model #
     #############
@@ -258,6 +260,21 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         thread = ModelThread.from_name(request.name)
         handler_context = HandlerContext.from_service_context(context)
         return self.thread_handler.delete_thread(thread, handler_context).to_pb()
+
+    # TODO: Only allow a user list notifications send to that user.
+    def ListNotifications(self, request, context):
+        handler_context = HandlerContext.from_service_context(context)
+        notifications, next_page_token = self.notification_handler.list_notifications(
+            request=request,
+            handler_context=handler_context,
+        )
+        return pb.ListNotificationsResponse(
+            notifications=[notification.to_pb() for notification in notifications],
+            next_page_token=next_page_token,
+        )
+
+    def UpdateNotification(self, request, context):
+        return super().UpdateNotification(request, context)
 
     #############
     # Old model #

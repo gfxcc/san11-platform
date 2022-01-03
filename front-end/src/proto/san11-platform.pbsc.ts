@@ -20,6 +20,7 @@ import {
 import { Observable } from 'rxjs';
 import * as thisProto from './san11-platform.pb';
 import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
+import * as googleProtobuf001 from '@ngx-grpc/well-known-types';
 import { GRPC_ROUTE_GUIDE_CLIENT_SETTINGS } from './san11-platform.pbconf';
 /**
  * Service client implementation for routeguide.RouteGuide
@@ -917,6 +918,48 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/ListNotifications
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListNotificationsResponse>>
+     */
+    listNotifications: (
+      requestData: thisProto.ListNotificationsRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListNotificationsResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ListNotifications',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListNotificationsRequest,
+        responseClass: thisProto.ListNotificationsResponse
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateNotification
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Notification>>
+     */
+    updateNotification: (
+      requestData: thisProto.UpdateNotificationRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Notification>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateNotification',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateNotificationRequest,
+        responseClass: thisProto.Notification
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/CreateTag
      *
      * @param requestMessage Request message
@@ -1700,6 +1743,38 @@ export class RouteGuideClient {
   ): Observable<thisProto.ListActivitiesResponse> {
     return this.$raw
       .listActivities(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/ListNotifications
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListNotificationsResponse>
+   */
+  listNotifications(
+    requestData: thisProto.ListNotificationsRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListNotificationsResponse> {
+    return this.$raw
+      .listNotifications(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateNotification
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Notification>
+   */
+  updateNotification(
+    requestData: thisProto.UpdateNotificationRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Notification> {
+    return this.$raw
+      .updateNotification(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

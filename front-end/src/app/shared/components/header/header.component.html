@@ -34,12 +34,12 @@
             {{activeUser.Name}}
         </button> -->
 
-        <button mat-icon-button [matMenuTriggerFor]="manageAccounts" [matMenuTriggerData]="menuItems">
+        <button mat-icon-button [matBadge]="this.notificationsCount?.length" matBadgeColor="warn" matBadgeSize="medium" [matMenuTriggerFor]="manageAccounts" [matMenuTriggerData]="menuItems">
             <mat-icon>notifications</mat-icon>
         </button>
 
         <mat-menu #manageAccounts="matMenu">
-            <div style="border-bottom: 1px solid rgb(0, 0, 0, 0.1)">
+            <div style="border-bottom: 1px solid rgb(0, 0, 0, 0.1); width: 200px;">
                 <h5 style="margin-left: 16px;">
                     Notifications
                 </h5>
@@ -53,6 +53,8 @@
             </ng-template>
 
         </mat-menu>
+
+        <span style="width: 20px;"></span>
 
         <button mat-button [matMenuTriggerFor]="menu" style="padding:0;">
             <app-user-card [user]="this.user"> </app-user-card>

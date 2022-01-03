@@ -94,3 +94,7 @@ h5 {
     margin-inline-end: 0px;
     font-weight: bold;
 }
+
+mat-badge-medium.mat-badge-above .mat-badge-content {
+    top: -3px;
+}

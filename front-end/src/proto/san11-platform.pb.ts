@@ -11,6 +11,7 @@ import {
 } from '@ngx-grpc/common';
 import { BinaryReader, BinaryWriter, ByteSource } from 'google-protobuf';
 import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
+import * as googleProtobuf001 from '@ngx-grpc/well-known-types';
 export enum ResourceState {
   RESOURCE_STATE_UNDEFINE = 0,
   NORMAL = 1,
@@ -9744,6 +9745,578 @@ export module ListActivitiesResponse {
 }
 
 /**
+ * Message implementation for routeguide.ListNotificationsRequest
+ */
+export class ListNotificationsRequest implements GrpcMessage {
+  static id = 'routeguide.ListNotificationsRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ListNotificationsRequest();
+    ListNotificationsRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ListNotificationsRequest) {
+    _instance.parent = _instance.parent || '';
+    _instance.pageSize = _instance.pageSize || '0';
+    _instance.pageToken = _instance.pageToken || '';
+    _instance.orderBy = _instance.orderBy || '';
+    _instance.filter = _instance.filter || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ListNotificationsRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
+          _instance.pageSize = _reader.readInt64String();
+          break;
+        case 3:
+          _instance.pageToken = _reader.readString();
+          break;
+        case 4:
+          _instance.orderBy = _reader.readString();
+          break;
+        case 5:
+          _instance.filter = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ListNotificationsRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ListNotificationsRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
+    if (_instance.pageSize) {
+      _writer.writeInt64String(2, _instance.pageSize);
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(3, _instance.pageToken);
+    }
+    if (_instance.orderBy) {
+      _writer.writeString(4, _instance.orderBy);
+    }
+    if (_instance.filter) {
+      _writer.writeString(5, _instance.filter);
+    }
+  }
+
+  private _parent?: string;
+  private _pageSize?: string;
+  private _pageToken?: string;
+  private _orderBy?: string;
+  private _filter?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ListNotificationsRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ListNotificationsRequest.AsObject>) {
+    _value = _value || {};
+    this.parent = _value.parent;
+    this.pageSize = _value.pageSize;
+    this.pageToken = _value.pageToken;
+    this.orderBy = _value.orderBy;
+    this.filter = _value.filter;
+    ListNotificationsRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
+  }
+  get pageSize(): string | undefined {
+    return this._pageSize;
+  }
+  set pageSize(value: string | undefined) {
+    this._pageSize = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+  get orderBy(): string | undefined {
+    return this._orderBy;
+  }
+  set orderBy(value: string | undefined) {
+    this._orderBy = value;
+  }
+  get filter(): string | undefined {
+    return this._filter;
+  }
+  set filter(value: string | undefined) {
+    this._filter = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ListNotificationsRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ListNotificationsRequest.AsObject {
+    return {
+      parent: this.parent,
+      pageSize: this.pageSize,
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ListNotificationsRequest.AsProtobufJSON {
+    return {
+      parent: this.parent,
+      pageSize: this.pageSize,
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
+    };
+  }
+}
+export module ListNotificationsRequest {
+  /**
+   * Standard JavaScript object representation for ListNotificationsRequest
+   */
+  export interface AsObject {
+    parent?: string;
+    pageSize?: string;
+    pageToken?: string;
+    orderBy?: string;
+    filter?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for ListNotificationsRequest
+   */
+  export interface AsProtobufJSON {
+    parent?: string;
+    pageSize?: string;
+    pageToken?: string;
+    orderBy?: string;
+    filter?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.ListNotificationsResponse
+ */
+export class ListNotificationsResponse implements GrpcMessage {
+  static id = 'routeguide.ListNotificationsResponse';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ListNotificationsResponse();
+    ListNotificationsResponse.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ListNotificationsResponse) {
+    _instance.nextPageToken = _instance.nextPageToken || '';
+    _instance.notifications = _instance.notifications || [];
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ListNotificationsResponse,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.nextPageToken = _reader.readString();
+          break;
+        case 2:
+          const messageInitializer2 = new Notification();
+          _reader.readMessage(
+            messageInitializer2,
+            Notification.deserializeBinaryFromReader
+          );
+          (_instance.notifications = _instance.notifications || []).push(
+            messageInitializer2
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ListNotificationsResponse.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ListNotificationsResponse,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.nextPageToken) {
+      _writer.writeString(1, _instance.nextPageToken);
+    }
+    if (_instance.notifications && _instance.notifications.length) {
+      _writer.writeRepeatedMessage(
+        2,
+        _instance.notifications as any,
+        Notification.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _nextPageToken?: string;
+  private _notifications?: Notification[];
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ListNotificationsResponse to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ListNotificationsResponse.AsObject>) {
+    _value = _value || {};
+    this.nextPageToken = _value.nextPageToken;
+    this.notifications = (_value.notifications || []).map(
+      m => new Notification(m)
+    );
+    ListNotificationsResponse.refineValues(this);
+  }
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
+  }
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
+  }
+  get notifications(): Notification[] | undefined {
+    return this._notifications;
+  }
+  set notifications(value: Notification[] | undefined) {
+    this._notifications = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ListNotificationsResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ListNotificationsResponse.AsObject {
+    return {
+      nextPageToken: this.nextPageToken,
+      notifications: (this.notifications || []).map(m => m.toObject())
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ListNotificationsResponse.AsProtobufJSON {
+    return {
+      nextPageToken: this.nextPageToken,
+      notifications: (this.notifications || []).map(m =>
+        m.toProtobufJSON(options)
+      )
+    };
+  }
+}
+export module ListNotificationsResponse {
+  /**
+   * Standard JavaScript object representation for ListNotificationsResponse
+   */
+  export interface AsObject {
+    nextPageToken?: string;
+    notifications?: Notification.AsObject[];
+  }
+
+  /**
+   * Protobuf JSON representation for ListNotificationsResponse
+   */
+  export interface AsProtobufJSON {
+    nextPageToken?: string;
+    notifications?: Notification.AsProtobufJSON[] | null;
+  }
+}
+
+/**
+ * Message implementation for routeguide.UpdateNotificationRequest
+ */
+export class UpdateNotificationRequest implements GrpcMessage {
+  static id = 'routeguide.UpdateNotificationRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UpdateNotificationRequest();
+    UpdateNotificationRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UpdateNotificationRequest) {
+    _instance.notification = _instance.notification || undefined;
+    _instance.updateMask = _instance.updateMask || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UpdateNotificationRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.notification = new Notification();
+          _reader.readMessage(
+            _instance.notification,
+            Notification.deserializeBinaryFromReader
+          );
+          break;
+        case 2:
+          _instance.updateMask = new googleProtobuf001.FieldMask();
+          _reader.readMessage(
+            _instance.updateMask,
+            googleProtobuf001.FieldMask.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UpdateNotificationRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UpdateNotificationRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.notification) {
+      _writer.writeMessage(
+        1,
+        _instance.notification as any,
+        Notification.serializeBinaryToWriter
+      );
+    }
+    if (_instance.updateMask) {
+      _writer.writeMessage(
+        2,
+        _instance.updateMask as any,
+        googleProtobuf001.FieldMask.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _notification?: Notification;
+  private _updateMask?: googleProtobuf001.FieldMask;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UpdateNotificationRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UpdateNotificationRequest.AsObject>) {
+    _value = _value || {};
+    this.notification = _value.notification
+      ? new Notification(_value.notification)
+      : undefined;
+    this.updateMask = _value.updateMask
+      ? new googleProtobuf001.FieldMask(_value.updateMask)
+      : undefined;
+    UpdateNotificationRequest.refineValues(this);
+  }
+  get notification(): Notification | undefined {
+    return this._notification;
+  }
+  set notification(value: Notification | undefined) {
+    this._notification = value;
+  }
+  get updateMask(): googleProtobuf001.FieldMask | undefined {
+    return this._updateMask;
+  }
+  set updateMask(value: googleProtobuf001.FieldMask | undefined) {
+    this._updateMask = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UpdateNotificationRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UpdateNotificationRequest.AsObject {
+    return {
+      notification: this.notification
+        ? this.notification.toObject()
+        : undefined,
+      updateMask: this.updateMask ? this.updateMask.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UpdateNotificationRequest.AsProtobufJSON {
+    return {
+      notification: this.notification
+        ? this.notification.toProtobufJSON(options)
+        : null,
+      updateMask: this.updateMask
+        ? this.updateMask.toProtobufJSON(options)
+        : null
+    };
+  }
+}
+export module UpdateNotificationRequest {
+  /**
+   * Standard JavaScript object representation for UpdateNotificationRequest
+   */
+  export interface AsObject {
+    notification?: Notification.AsObject;
+    updateMask?: googleProtobuf001.FieldMask.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for UpdateNotificationRequest
+   */
+  export interface AsProtobufJSON {
+    notification?: Notification.AsProtobufJSON | null;
+    updateMask?: googleProtobuf001.FieldMask.AsProtobufJSON | null;
+  }
+}
+
+/**
  * Message implementation for routeguide.CreateTagRequest
  */
 export class CreateTagRequest implements GrpcMessage {
@@ -13975,6 +14548,318 @@ export module Activity {
     createTime?: string;
     action?: string;
     resourceView?: ResourceView.AsProtobufJSON | null;
+  }
+}
+
+/**
+ * Message implementation for routeguide.Notification
+ */
+export class Notification implements GrpcMessage {
+  static id = 'routeguide.Notification';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new Notification();
+    Notification.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: Notification) {
+    _instance.name = _instance.name || '0';
+    _instance.senderId = _instance.senderId || '0';
+    _instance.receiverId = _instance.receiverId || '0';
+    _instance.createTime = _instance.createTime || undefined;
+    _instance.updateTime = _instance.updateTime || undefined;
+    _instance.unread = _instance.unread || false;
+    _instance.content = _instance.content || '';
+    _instance.imagePreview = _instance.imagePreview || '';
+    _instance.link = _instance.link || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: Notification,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.name = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.senderId = _reader.readInt64String();
+          break;
+        case 3:
+          _instance.receiverId = _reader.readInt64String();
+          break;
+        case 4:
+          _instance.createTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.createTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 5:
+          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.updateTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 6:
+          _instance.unread = _reader.readBool();
+          break;
+        case 7:
+          _instance.content = _reader.readString();
+          break;
+        case 8:
+          _instance.imagePreview = _reader.readString();
+          break;
+        case 9:
+          _instance.link = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    Notification.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: Notification,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.name) {
+      _writer.writeInt64String(1, _instance.name);
+    }
+    if (_instance.senderId) {
+      _writer.writeInt64String(2, _instance.senderId);
+    }
+    if (_instance.receiverId) {
+      _writer.writeInt64String(3, _instance.receiverId);
+    }
+    if (_instance.createTime) {
+      _writer.writeMessage(
+        4,
+        _instance.createTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
+    if (_instance.updateTime) {
+      _writer.writeMessage(
+        5,
+        _instance.updateTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
+    if (_instance.unread) {
+      _writer.writeBool(6, _instance.unread);
+    }
+    if (_instance.content) {
+      _writer.writeString(7, _instance.content);
+    }
+    if (_instance.imagePreview) {
+      _writer.writeString(8, _instance.imagePreview);
+    }
+    if (_instance.link) {
+      _writer.writeString(9, _instance.link);
+    }
+  }
+
+  private _name?: string;
+  private _senderId?: string;
+  private _receiverId?: string;
+  private _createTime?: googleProtobuf000.Timestamp;
+  private _updateTime?: googleProtobuf000.Timestamp;
+  private _unread?: boolean;
+  private _content?: string;
+  private _imagePreview?: string;
+  private _link?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of Notification to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<Notification.AsObject>) {
+    _value = _value || {};
+    this.name = _value.name;
+    this.senderId = _value.senderId;
+    this.receiverId = _value.receiverId;
+    this.createTime = _value.createTime
+      ? new googleProtobuf000.Timestamp(_value.createTime)
+      : undefined;
+    this.updateTime = _value.updateTime
+      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      : undefined;
+    this.unread = _value.unread;
+    this.content = _value.content;
+    this.imagePreview = _value.imagePreview;
+    this.link = _value.link;
+    Notification.refineValues(this);
+  }
+  get name(): string | undefined {
+    return this._name;
+  }
+  set name(value: string | undefined) {
+    this._name = value;
+  }
+  get senderId(): string | undefined {
+    return this._senderId;
+  }
+  set senderId(value: string | undefined) {
+    this._senderId = value;
+  }
+  get receiverId(): string | undefined {
+    return this._receiverId;
+  }
+  set receiverId(value: string | undefined) {
+    this._receiverId = value;
+  }
+  get createTime(): googleProtobuf000.Timestamp | undefined {
+    return this._createTime;
+  }
+  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._createTime = value;
+  }
+  get updateTime(): googleProtobuf000.Timestamp | undefined {
+    return this._updateTime;
+  }
+  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._updateTime = value;
+  }
+  get unread(): boolean | undefined {
+    return this._unread;
+  }
+  set unread(value: boolean | undefined) {
+    this._unread = value;
+  }
+  get content(): string | undefined {
+    return this._content;
+  }
+  set content(value: string | undefined) {
+    this._content = value;
+  }
+  get imagePreview(): string | undefined {
+    return this._imagePreview;
+  }
+  set imagePreview(value: string | undefined) {
+    this._imagePreview = value;
+  }
+  get link(): string | undefined {
+    return this._link;
+  }
+  set link(value: string | undefined) {
+    this._link = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    Notification.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): Notification.AsObject {
+    return {
+      name: this.name,
+      senderId: this.senderId,
+      receiverId: this.receiverId,
+      createTime: this.createTime ? this.createTime.toObject() : undefined,
+      updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
+      unread: this.unread,
+      content: this.content,
+      imagePreview: this.imagePreview,
+      link: this.link
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): Notification.AsProtobufJSON {
+    return {
+      name: this.name,
+      senderId: this.senderId,
+      receiverId: this.receiverId,
+      createTime: this.createTime
+        ? this.createTime.toProtobufJSON(options)
+        : null,
+      updateTime: this.updateTime
+        ? this.updateTime.toProtobufJSON(options)
+        : null,
+      unread: this.unread,
+      content: this.content,
+      imagePreview: this.imagePreview,
+      link: this.link
+    };
+  }
+}
+export module Notification {
+  /**
+   * Standard JavaScript object representation for Notification
+   */
+  export interface AsObject {
+    name?: string;
+    senderId?: string;
+    receiverId?: string;
+    createTime?: googleProtobuf000.Timestamp.AsObject;
+    updateTime?: googleProtobuf000.Timestamp.AsObject;
+    unread?: boolean;
+    content?: string;
+    imagePreview?: string;
+    link?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for Notification
+   */
+  export interface AsProtobufJSON {
+    name?: string;
+    senderId?: string;
+    receiverId?: string;
+    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    unread?: boolean;
+    content?: string;
+    imagePreview?: string;
+    link?: string;
   }
 }
 
