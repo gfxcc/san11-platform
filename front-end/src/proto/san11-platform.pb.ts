@@ -11,7 +11,6 @@ import {
 } from '@ngx-grpc/common';
 import { BinaryReader, BinaryWriter, ByteSource } from 'google-protobuf';
 import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
-import * as googleProtobuf001 from '@ngx-grpc/well-known-types';
 export enum ResourceState {
   RESOURCE_STATE_UNDEFINE = 0,
   NORMAL = 1,
@@ -10181,10 +10180,10 @@ export class UpdateNotificationRequest implements GrpcMessage {
           );
           break;
         case 2:
-          _instance.updateMask = new googleProtobuf001.FieldMask();
+          _instance.updateMask = new FieldMask();
           _reader.readMessage(
             _instance.updateMask,
-            googleProtobuf001.FieldMask.deserializeBinaryFromReader
+            FieldMask.deserializeBinaryFromReader
           );
           break;
         default:
@@ -10215,13 +10214,13 @@ export class UpdateNotificationRequest implements GrpcMessage {
       _writer.writeMessage(
         2,
         _instance.updateMask as any,
-        googleProtobuf001.FieldMask.serializeBinaryToWriter
+        FieldMask.serializeBinaryToWriter
       );
     }
   }
 
   private _notification?: Notification;
-  private _updateMask?: googleProtobuf001.FieldMask;
+  private _updateMask?: FieldMask;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10233,7 +10232,7 @@ export class UpdateNotificationRequest implements GrpcMessage {
       ? new Notification(_value.notification)
       : undefined;
     this.updateMask = _value.updateMask
-      ? new googleProtobuf001.FieldMask(_value.updateMask)
+      ? new FieldMask(_value.updateMask)
       : undefined;
     UpdateNotificationRequest.refineValues(this);
   }
@@ -10243,10 +10242,10 @@ export class UpdateNotificationRequest implements GrpcMessage {
   set notification(value: Notification | undefined) {
     this._notification = value;
   }
-  get updateMask(): googleProtobuf001.FieldMask | undefined {
+  get updateMask(): FieldMask | undefined {
     return this._updateMask;
   }
-  set updateMask(value: googleProtobuf001.FieldMask | undefined) {
+  set updateMask(value: FieldMask | undefined) {
     this._updateMask = value;
   }
 
@@ -10304,7 +10303,7 @@ export module UpdateNotificationRequest {
    */
   export interface AsObject {
     notification?: Notification.AsObject;
-    updateMask?: googleProtobuf001.FieldMask.AsObject;
+    updateMask?: FieldMask.AsObject;
   }
 
   /**
@@ -10312,7 +10311,7 @@ export module UpdateNotificationRequest {
    */
   export interface AsProtobufJSON {
     notification?: Notification.AsProtobufJSON | null;
-    updateMask?: googleProtobuf001.FieldMask.AsProtobufJSON | null;
+    updateMask?: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -14572,7 +14571,7 @@ export class Notification implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Notification) {
-    _instance.name = _instance.name || '0';
+    _instance.name = _instance.name || '';
     _instance.senderId = _instance.senderId || '0';
     _instance.receiverId = _instance.receiverId || '0';
     _instance.createTime = _instance.createTime || undefined;
@@ -14597,7 +14596,7 @@ export class Notification implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.name = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         case 2:
           _instance.senderId = _reader.readInt64String();
@@ -14649,7 +14648,7 @@ export class Notification implements GrpcMessage {
     _writer: BinaryWriter
   ) {
     if (_instance.name) {
-      _writer.writeInt64String(1, _instance.name);
+      _writer.writeString(1, _instance.name);
     }
     if (_instance.senderId) {
       _writer.writeInt64String(2, _instance.senderId);

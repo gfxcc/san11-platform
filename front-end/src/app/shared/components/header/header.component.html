@@ -34,21 +34,26 @@
             {{activeUser.Name}}
         </button> -->
 
-        <button mat-icon-button [matBadge]="this.notificationsCount?.length" matBadgeColor="warn" matBadgeSize="medium" [matMenuTriggerFor]="manageAccounts" [matMenuTriggerData]="menuItems">
+        <button mat-icon-button [matBadge]="(this.notifications === undefined || this.notifications.length == 0) ? undefined : this.notifications.length" matBadgeColor="warn" matBadgeSize="small" [matMenuTriggerFor]="manageAccounts" [matMenuTriggerData]="menuItems">
             <mat-icon>notifications</mat-icon>
         </button>
 
         <mat-menu #manageAccounts="matMenu">
-            <div style="border-bottom: 1px solid rgb(0, 0, 0, 0.1); width: 200px;">
+            <div class="message-panel-header">
                 <h5 style="margin-left: 16px;">
-                    Notifications
+                    消息
                 </h5>
             </div>
-            <ng-template [matMenuContent]="menuItems">
-                <ng-container *ngFor="let item of menuItems">
-                    <button mat-menu-item>
-                        {{item}}
-                  </button>
+            <div class="message-panel-placeholder" *ngIf="notifications.length === 0">
+                <p>
+                    空信箱
+                </p>
+            </div>
+            <ng-template [matMenuContent]="notifications">
+                <ng-container *ngFor="let notification of notifications; let i = index">
+                    <button mat-menu-item (click)="openNotification(notification, i)">
+                        {{notification.content}}
+                    </button>
                 </ng-container>
             </ng-template>
 

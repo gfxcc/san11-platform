@@ -1,24 +1,23 @@
 from __future__ import annotations
-from handler.model.model_article import ModelArticle
-from handler.common.exception import InvalidArgument
-from handler.model.base.base import ModelBase
-from handler.model.model_thread import ModelThread
-from handler.model.model_reply import ModelReply
-from handler.model.model_comment import ModelComment
-from handler.model.model_binary import ModelBinary
-from os import stat
-import attr
+
+import logging
 import os
 import re
-import logging
-from typing import Optional, Tuple, Union
+from typing import Tuple, Union
 
-from ..model.resource import ResourceMixin
+import attr
+from handler.common.exception import InvalidArgument
+from handler.model.base.base import ModelBase
+from handler.model.model_article import ModelArticle
+from handler.model.model_binary import ModelBinary
+from handler.model.model_comment import ModelComment
+from handler.model.model_notification import ModelNotification
+from handler.model.model_reply import ModelReply
+from handler.model.model_thread import ModelThread
+
 from ..model.package import Package
-from ..model.binary import Binary
 from ..model.tag import Tag
 from ..model.user import User
-
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -44,6 +43,7 @@ def parse_resource_name(name: str) -> ModelBase:
         'users': User,
         'threads': ModelThread,
         'articles': ModelArticle,
+        'notifications': ModelNotification,
     }
     _, collection, resource_id = parse_name(name)
 

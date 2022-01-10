@@ -269,12 +269,18 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             handler_context=handler_context,
         )
         return pb.ListNotificationsResponse(
-            notifications=[notification.to_pb() for notification in notifications],
+            notifications=[notification.to_pb()
+                           for notification in notifications],
             next_page_token=next_page_token,
         )
 
+    @iam_util.assert_resource_owner('{notification.name}.receiver_id')
     def UpdateNotification(self, request, context):
-        return super().UpdateNotification(request, context)
+        source, update_mask = ModelNotification.from_pb(
+            request.notification), request.update_mask
+        dest = ModelNotification.from_name(request.notification.name)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.notification_handler.update_notification(source, dest, update_mask, handler_context).to_pb()
 
     #############
     # Old model #

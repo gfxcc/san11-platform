@@ -1,6 +1,8 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ListNotificationsRequest, ListNotificationsResponse, User } from '../../../../proto/san11-platform.pb';
+import { FieldMask } from '@ngx-grpc/well-known-types';
+import { openInNewTab } from 'src/app/utils/url_util';
+import { ListNotificationsRequest, ListNotificationsResponse, Notification, UpdateNotificationRequest, User } from '../../../../proto/san11-platform.pb';
 import { NotificationService } from '../../../common/notification.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { clearUser, isAdmin, loadUser, signedIn } from '../../../utils/user_util';
@@ -16,8 +18,7 @@ export class HeaderComponent implements OnInit {
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
 
   user: User;
-  notifications;
-  notificationsCount = undefined;
+  notifications: Notification[] = [];
   today_visit_count: number = 1;
   today_download_count: number = 2;
   menuItems = ['a', 'b', 'c'];
@@ -67,6 +68,22 @@ export class HeaderComponent implements OnInit {
         
       }
     );
+  }
+
+  openNotification(notification: Notification, index: number) {
+    this.san11pkService.updateNotification(new UpdateNotificationRequest({
+      notification: new Notification({
+        name: notification.name,
+        unread: false,
+      }),
+      updateMask: new FieldMask({
+        paths: ['unread'],
+      }),
+    })).subscribe();
+    // this.router.navigate();
+
+    openInNewTab(this.router, notification.link)
+    this.notifications.splice(index, 1);
   }
 
   searchChanged() {

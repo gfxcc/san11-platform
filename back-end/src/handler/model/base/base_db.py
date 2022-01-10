@@ -202,6 +202,7 @@ class DbModelBase(ABC):
             'parent': parent,
             'data': json.dumps(data, default=str)
         }
+        logger.debug(sql)
         resp = run_sql_with_param_and_fetch_one(sql, params)
         self.resource_id = resp[0]
         self.name = get_name(parent, self._DB_TABLE, self.resource_id)
@@ -251,7 +252,7 @@ class DbModelBase(ABC):
                             f"(data->'{db_path}')::jsonb ? %(db_path)s")
                     else:
                         wheres.append(f"data->>'{db_path}'=%({db_path})s")
-                predicate_statement += ' AND ' + 'AND'.join(wheres)
+                predicate_statement += ' AND ' + ' AND '.join(wheres)
 
         if order_by_fields:
             order_statement = f'ORDER BY ' + \

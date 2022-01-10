@@ -1,19 +1,22 @@
+import base64
 import logging
 import os
-from typing import Dict
-from googleapiclient.discovery import build
-from apiclient import errors
 from email.mime.text import MIMEText
-import base64
-from google.oauth2 import service_account
+from typing import Dict
 
+from apiclient import errors
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from handler.model.model_notification import ModelNotification
+from handler.util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))
 
 
 class Notifier:
     NOTIFIER_EMAIL_ADDRESS = 'no-reply@san11pk.org'
-    NOTIFIER_SERVICE_ACCOUNT_FILE = os.environ.get('NOTIFIER_SERVICE_ACCOUNT_FILE')
+    NOTIFIER_SERVICE_ACCOUNT_FILE = os.environ.get(
+        'NOTIFIER_SERVICE_ACCOUNT_FILE')
 
     def __init__(self) -> None:
         self._service = self._gmail_login()
@@ -52,3 +55,26 @@ class Notifier:
             self.NOTIFIER_EMAIL_ADDRESS)
         service = build('gmail', 'v1', credentials=delegated_credentials)
         return service
+
+
+def send_email(to: str, subject: str, content: str) -> None:
+    '''Sends an email in the name of the backend system.'''
+    Notifier().send_email(to, subject, content)
+
+
+def send_message(sender_id: int, receiver_id: int, content: str,
+                 link: str, image_preview: str):
+    '''
+    Send a message within the website.
+    '''
+    noti = ModelNotification(
+        name='',  # autofill by method `create`.
+        sender_id=sender_id,
+        receiver_id=receiver_id,
+        create_time=get_now(),
+        update_time=get_now(),
+        content=content,
+        image_preview=image_preview,
+        link=link,
+    )
+    noti.create(parent='')

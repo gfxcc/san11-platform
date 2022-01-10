@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/field_mask.proto";
 
 package routeguide;
 
@@ -476,7 +475,7 @@ message ListNotificationsResponse {
 
 message UpdateNotificationRequest {
     Notification notification = 1;
-    google.protobuf.FieldMask update_mask = 2;
+    FieldMask update_mask = 2;
 }
 
 
@@ -663,7 +662,7 @@ message Activity {
 }
 
 message Notification {
-    int64 name = 1; // Resource name. E.g. 'notifications/12345'
+    string name = 1; // Resource name. E.g. 'notifications/12345'
     int64 sender_id = 2; // OUTPUT_ONLY
     int64 receiver_id = 3; // OUTPUT_ONLY
     google.protobuf.Timestamp create_time = 4;  // OUTPUT_ONLY

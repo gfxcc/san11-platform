@@ -45,3 +45,4 @@ class ModelNotification(ModelBase, TrackLifecycle):
         type=bool,
         default=True,
     )
+

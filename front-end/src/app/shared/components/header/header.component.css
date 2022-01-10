@@ -98,3 +98,19 @@ h5 {
 mat-badge-medium.mat-badge-above .mat-badge-content {
     top: -3px;
 }
+
+.message-panel-header {
+    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+    min-width: 200px;
+}
+
+.message-panel-placeholder {
+    min-height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message-panel-placeholder p {
+    color: grey;
+}
