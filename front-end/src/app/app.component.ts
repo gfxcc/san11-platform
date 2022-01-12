@@ -1,18 +1,8 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-import { San11PlatformServiceService } from './service/san11-platform-service.service';
-import { NotificationService } from "./common/notification.service";
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GlobalConstants } from './common/global-constants'
 
-import { UserDetailComponent, UserData } from "./account-management/user-detail/user-detail.component";
-import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
-import { PackageDetailComponent } from './package-management/package-detail/package-detail.component';
-import { ComponentMessage, EventEmiterService } from "./service/event-emiter.service";
-import { getFullUrl } from './utils/resrouce_util';
-import { CreateTagRequest, ListTagsRequest, DeleteTagRequest, Tag, User } from '../proto/san11-platform.pb';
-import { clearUser, loadUser, signedIn, isAdmin } from './utils/user_util';
 
 
 @Component({
@@ -21,7 +11,8 @@ import { clearUser, loadUser, signedIn, isAdmin } from './utils/user_util';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  sideBarOpen = true;
+  // To auto hide sidebar on mobile.
+  sideBarOpen = !window.matchMedia('(max-width: 40rem)').matches;
 
   constructor(
     private dialog: MatDialog,

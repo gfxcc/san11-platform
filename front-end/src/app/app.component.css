@@ -67,5 +67,5 @@ mat-drawer-container {
 
 mat-drawer-content {
     /* padding: 5px; */
-    padding-right: 10px;
+    padding: 0 .5rem;
 }

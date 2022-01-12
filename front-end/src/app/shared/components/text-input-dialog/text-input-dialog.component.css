@@ -1,3 +1,7 @@
+.container {
+    min-width: 400px;
+}
+
 .form-field {
     width: 100%;
 }
@@ -13,4 +17,10 @@
 
 .button {
     float: right;
+}
+
+@media (max-width:40rem) {
+    .container {
+        min-width: 10rem;
+    }
 }
