@@ -23,9 +23,6 @@ class ModelNotification(ModelBase, TrackLifecycle):
     sender_id = Attrib(
         type=int,
     )
-    receiver_id = Attrib(
-        type=int,
-    )
     create_time = Attrib(
         type=datetime.datetime,
     )

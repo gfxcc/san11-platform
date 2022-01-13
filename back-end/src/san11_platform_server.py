@@ -274,7 +274,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
 
-    @iam_util.assert_resource_owner('{notification.name}.receiver_id')
+    # @iam_util.assert_resource_owner('{notification.name}.receiver_id')
     def UpdateNotification(self, request, context):
         source, update_mask = ModelNotification.from_pb(
             request.notification), request.update_mask

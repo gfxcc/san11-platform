@@ -8,7 +8,9 @@ from apiclient import errors
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from handler.model.model_notification import ModelNotification
+from handler.model.user import User
 from handler.util.time_util import get_now
+from src.handler.protos.san11_platform_pb2 import Activity
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -70,11 +72,13 @@ def send_message(sender_id: int, receiver_id: int, content: str,
     noti = ModelNotification(
         name='',  # autofill by method `create`.
         sender_id=sender_id,
-        receiver_id=receiver_id,
         create_time=get_now(),
         update_time=get_now(),
         content=content,
         image_preview=image_preview,
         link=link,
     )
-    noti.create(parent='')
+    noti.create(parent=f'users/{receiver_id}')
+
+def notify(receiver: User, activity: Activity) -> None:
+    ...
