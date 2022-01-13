@@ -59,8 +59,9 @@
     padding: 8px 0px 8px 25px;
     bottom: 0;
     left: 0;
-    width: 230px;
+    width: 100%;
     position: absolute;
+    background-color: white;
 }
 
 .side-bar-divier {
