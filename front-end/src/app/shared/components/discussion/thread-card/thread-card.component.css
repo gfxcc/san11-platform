@@ -4,7 +4,7 @@
     /* margin-bottom: 20px; */
     /* background-color: #fff; */
     /* height: 72px; */
-    padding: 0 10px;
+    padding: .5rem .5rem;
     display: flex;
 }
 
@@ -14,7 +14,12 @@
     min-width: 300px; */
     /* display: table-cell; */
     width: 100%;
-    padding: 10px 15px 10px 0px;
+    padding: 0 .5rem;
+}
+
+.author-cell {
+    text-align: center;
+    vertical-align: middle;
 }
 
 .structItem-cell {
@@ -183,7 +188,7 @@ mat-icon {
 
 .statistic-div {
     display: flex;
-    margin-right: 10px;
+    margin-right: .25rem;
     width: 60px;
     font-size: 0.9rem;
 }

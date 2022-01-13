@@ -1,5 +1,5 @@
 <div class="container">
-    <td style="text-align: center; vertical-align: middle; padding: 15px;">
+    <td class="author-cell">
         <!-- <div style="height: 100%;"> -->
         <img src="{{getUserAvatar()}}" class="avatar-img">
         <!-- </div> -->
@@ -66,7 +66,7 @@
         </div>
     </td>
 
-    <td class="structItem-cell structItem-cell--latest">
+    <td class="structItem-cell structItem-cell--latest" *ngIf="notMobile">
         <div>
             <div class="">{{getLatestCommentedAge()}}</div>
             <div class="">

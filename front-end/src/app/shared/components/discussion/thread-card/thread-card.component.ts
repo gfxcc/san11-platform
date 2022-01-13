@@ -1,10 +1,10 @@
-import { Component, Input, OnInit, Optional } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
 import { loadUser } from 'src/app/utils/user_util';
-import { Thread, GetUserRequest, Package, ResourceState, User } from 'src/proto/san11-platform.pb';
+import { GetUserRequest, ResourceState, Thread, User } from 'src/proto/san11-platform.pb';
 
 @Component({
   selector: 'app-thread-card',
@@ -17,6 +17,9 @@ export class ThreadCardComponent implements OnInit {
   coverImage: string = null;
   user: User;
   latestCommenter: User;
+
+  notMobile = !window.matchMedia('(max-width: 40rem)').matches;
+
 
   constructor(
     private notificationService: NotificationService,
