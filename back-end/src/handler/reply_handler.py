@@ -4,6 +4,8 @@ import os
 from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
+from handler.model.user import User
+from handler.util.notifier import notify
 from handler.util.resource_parser import ResourceName, find_resource
 
 from .common.exception import NotFound
@@ -25,6 +27,17 @@ class ReplyHandler:
             thread.latest_commented_time = reply.create_time
             thread.latest_commenter_id = user_id
             thread.update(update_update_time=False)
+
+        if isinstance(grand_parent, ModelThread):
+            thread = grand_parent
+            comment = find_resource(ResourceName.from_str(parent))
+            notify(
+                sender_id=user_id,
+                receiver_id=thread.author_id,
+                content=f'{User.from_id(user_id).username} 回复了 {thread.content}',
+                link=thread.name,
+                image_preview='',
+            )
         reply.create(parent=parent, user_id=user_id)
         return reply
 

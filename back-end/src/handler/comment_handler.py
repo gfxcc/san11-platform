@@ -2,12 +2,12 @@ import logging
 import os
 from typing import Iterable, Tuple
 
-from src.handler.util.notifier import send_message
-
 from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_comment import ModelComment
 from handler.model.model_thread import ModelThread
+from handler.model.user import User
+from handler.util.notifier import notify, send_message
 from handler.util.resource_parser import ResourceName, find_resource
 
 from .common.exception import NotFound
@@ -33,12 +33,13 @@ class CommentHandler:
         comment.create(parent=parent, user_id=user_id)
 
         # Send notification
+        # (TODO): Add support for articles.
         if isinstance(parent_obj, ModelThread):
             thread = parent_obj
-            send_message(
+            notify(
                 sender_id=user_id,
                 receiver_id=thread.author_id,
-                content='{User.from_id(user_id).username} 评论了 {thread.subject}',
+                content=f'{User.from_id(user_id).username} 评论了 {thread.subject}',
                 link=thread.name,
                 image_preview='',
             )

@@ -3,9 +3,12 @@ import os
 from typing import Iterable, Tuple
 
 from handler.model.base.base_db import ListOptions
-from handler.model.model_comment import ModelComment
-from handler.model.model_reply import ModelReply
+from handler.model.model_article import ModelArticle
+from handler.model.package import Package
+from handler.model.user import User
 from handler.util import gcs
+from handler.util.notifier import notify
+from handler.util.resource_parser import find_resource
 
 from .common.field_mask import FieldMask, merge_resource
 from .model.model_thread import ModelThread
@@ -19,6 +22,21 @@ class ThreadHandler:
         thread.author_id = handler_context.user.user_id
         thread.state = pb.ResourceState.NORMAL
         thread.create(parent=parent, user_id=handler_context.user.user_id)
+
+        # Send notification
+        try:
+            parent_obj = find_resource(parent)
+            assert isinstance(parent_obj, Package) or isinstance(
+                parent_obj, ModelArticle)
+            notify(
+                sender_id=thread.author_id,
+                receiver_id=parent_obj.author_id,
+                content=f'{User.from_id(thread.author_id).username} 评论了 {parent_obj.package_name if isinstance(parent_obj, Package) else parent_obj.subject}',
+                link=thread.name,
+                image_preview='',
+            )
+        except Exception as err:
+            logger.warning(f'failed to notify user: {err}')
         return thread
 
     def get_thread(self, name: str, handler_context) -> ModelThread:

@@ -9,8 +9,8 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from handler.model.model_notification import ModelNotification
 from handler.model.user import User
+from handler.protos.san11_platform_pb2 import Activity
 from handler.util.time_util import get_now
-from src.handler.protos.san11_platform_pb2 import Activity
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -80,5 +80,12 @@ def send_message(sender_id: int, receiver_id: int, content: str,
     )
     noti.create(parent=f'users/{receiver_id}')
 
-def notify(receiver: User, activity: Activity) -> None:
+
+def notify(sender_id: int, receiver_id: int, content: str,
+           link: str, image_preview: str) -> None:
+    '''
+    '''
+    send_message(
+        sender_id, receiver_id, content, link, image_preview
+    )
     ...

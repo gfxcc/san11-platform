@@ -3,7 +3,6 @@ from __future__ import annotations
 import datetime
 
 import attr
-from handler.model.activity import TrackLifecycle
 from handler.model.base.base import Attrib, InitModel, ModelBase
 
 from ..protos import san11_platform_pb2 as pb
@@ -14,7 +13,7 @@ from ..protos import san11_platform_pb2 as pb
     proto_class=pb.Notification,
 )
 @attr.s
-class ModelNotification(ModelBase, TrackLifecycle):
+class ModelNotification(ModelBase):
     # Resource name. It is `{parent}/notifications/{resource_id}`
     # E.g. `notifications/123`
     name = Attrib(

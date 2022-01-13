@@ -19,7 +19,8 @@ class UserHandler:
     def sign_up(self, request, context):
         try:
             user = User.from_pb(request.user)
-            assert verify_code(user.email, request.verification_code), '邮箱未经验证'
+            if not verify_code(user.email, request.verification_code):
+                context.abort(code=Unauthenticated().code, details='邮箱未经验证')
             User.validate_username(user.username)
             User.validate_email(user.email)
             user.create(request.password)
