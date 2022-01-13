@@ -34,7 +34,7 @@ class ReplyHandler:
             notify(
                 sender_id=user_id,
                 receiver_id=thread.author_id,
-                content=f'{User.from_id(user_id).username} 回复了 {thread.content}',
+                content=f'{User.from_id(user_id).username} 回复了 你的评论',
                 link=thread.name,
                 image_preview='',
             )
