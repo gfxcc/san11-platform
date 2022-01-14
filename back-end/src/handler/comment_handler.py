@@ -5,6 +5,7 @@ from typing import Iterable, Tuple
 from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_comment import ModelComment
+from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.user import User
 from handler.util.notifier import notify, send_message
@@ -84,6 +85,7 @@ class CommentHandler:
     def delete_comment(self, comment: ModelComment,
                        handler_context) -> ModelComment:
         parent = find_resource(ResourceName.from_str(comment.name).parent)
+        replies = ModelReply.list(ListOptions(parent=self.name))[0]
         if isinstance(parent, ModelThread):
             thread = parent
             thread.comment_count -= 1
