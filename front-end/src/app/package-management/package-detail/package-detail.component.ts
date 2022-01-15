@@ -643,7 +643,7 @@ export class PackageDetailComponent implements OnInit {
 
   }
 
-  onLike() {
+  onToggleLike() {
     if (this.liked) {
       this.liked = false;
     } else {
@@ -652,7 +652,7 @@ export class PackageDetailComponent implements OnInit {
     }
   }
 
-  onDislike() {
+  onToggleDislike() {
     if (this.disliked) {
       this.disliked = false;
     } else {

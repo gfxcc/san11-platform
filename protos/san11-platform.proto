@@ -751,6 +751,7 @@ enum Action {
     LIKE = 11;
     UPVOTE = 12;
     SUBSCRIBE = 13;
+    DISLIKE = 14;
 
     // misc
     DOWNLOAD = 21;

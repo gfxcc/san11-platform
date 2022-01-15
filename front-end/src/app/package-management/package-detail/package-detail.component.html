@@ -40,7 +40,7 @@
                 <div class="top-level-buttons">
                     <div class="icon-button">
                         <a matTooltip="我要点赞" class="toggle-button-render">
-                            <button mat-icon-button class="button-svg" (click)="onLike()">
+                            <button mat-icon-button class="button-svg" (click)="onToggleLike()">
                                 <svg *ngIf="!liked" viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -72,7 +72,7 @@
                     </div>
                     <div class="icon-button">
                         <a matTooltip="不喜欢" class="toggle-button-render">
-                            <button mat-icon-button class="button-svg" (click)="onDislike()">
+                            <button mat-icon-button class="button-svg" (click)="onToggleDislike()">
                                 <svg *ngIf="!disliked" viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -178,7 +178,6 @@
                                     </div>
                                     举报
                                 </button>
-                                <button mat-menu-item>Item 2</button>
                             </mat-menu>
 
                         </a>
@@ -300,19 +299,6 @@
 
                 </div>
             </div>
-        </div>
-
-
-        <div class="top-border">
-            <div class="heading-1" style="display: flex; height: 36px;">
-                <span class="">描述</span>
-
-                <!-- <button *ngIf="this.isAuthor()" mat-icon-button (click)="onDownloadDesc()">
-                <mat-icon class="icon">download</mat-icon>
-            </button> -->
-                <span class="example-spacer"></span>
-            </div>
-
         </div>
 
         <div class="version-info top-border show-border-dev">
