@@ -38,6 +38,7 @@ export class PackageDetailComponent implements OnInit {
   @ViewChild('packageNameTitle') packageNameElement: ElementRef
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild('gallery') galleryElementCatched: ElementRef
+  @ViewChild('description') descriptionElement: ElementRef;
 
   images: ImageItem[] = [];
   packageId: string;
@@ -65,6 +66,13 @@ export class PackageDetailComponent implements OnInit {
   userFeeds;
   allTags: Tag[];
   tagCanEdit: boolean;
+
+  // NEW UI
+  descFolded = true;
+  liked = false;
+  disliked = false;
+  subscribed = false;
+  notificationEnabled = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -108,7 +116,6 @@ export class PackageDetailComponent implements OnInit {
       // this.packageNameElement.nativeElement.className = 'clickable title';
       this.packageNameElement.nativeElement.contentEditable = true;
     }
-
   }
 
   configDescEditor() {
@@ -629,6 +636,46 @@ export class PackageDetailComponent implements OnInit {
   // childs
   onChildDownload(msg) {
     this.package.downloadCount = increment(this.package.downloadCount);
+  }
+
+  // NEW UI
+  onAuthorNameClick() {
+
+  }
+
+  onLike() {
+    if (this.liked) {
+      this.liked = false;
+    } else {
+      this.liked = true;
+      this.disliked = false;
+    }
+  }
+
+  onDislike() {
+    if (this.disliked) {
+      this.disliked = false;
+    } else {
+      this.disliked = true;
+      this.liked = false;
+    }
+  }
+
+  onSubscribe() {
+    if (this.subscribed) {
+      this.subscribed = false;
+      this.notificationEnabled = false;
+    } else {
+      this.subscribed = true;
+    }
+  }
+
+  onNotification() {
+    if (this.notificationEnabled) {
+      this.notificationEnabled = false;
+    } else {
+      this.notificationEnabled = true;
+    }
   }
 
 

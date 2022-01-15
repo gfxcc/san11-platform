@@ -9,7 +9,7 @@ from typing import Any, Generic, Iterable, TypeVar
 import attr
 from google.protobuf import descriptor, message, timestamp_pb2
 
-from ...util.time_util import datetime_to_str, get_now
+from ...util.time_util import datetime_to_str, get_age, get_now
 from . import base_core
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -61,7 +61,7 @@ class LegacyDatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_p
         return get_now()
 
     def from_model(self, value: datetime.datetime) -> str:
-        return datetime_to_str(value)
+        return get_age(value)
 
 
 @attr.s(auto_attribs=True)

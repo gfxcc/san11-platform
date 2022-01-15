@@ -719,7 +719,7 @@ message File {
     // E.g. `.txt`, `.png`, `.rar`, `.zip`
     string ext = 2;
     // Unique resource identifier
-    // E.g. categories/123/packages/456/binaries/eafsdfewasdfdfsaasdffda
+    // E.g. categories/123/packags/456/binaries/eafsdfewasdfdfsaasdffda
     string uri = 3;
 }
 

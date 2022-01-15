@@ -149,6 +149,7 @@ body {
 } */
 
 .clickable {
+    cursor: pointer;
     display: inline-block;
     overflow: visible;
     white-space: normal;
@@ -229,6 +230,6 @@ body {
     max-width: 1200px;
     /* min-width: 700px; */
     flex-grow: 1;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 24px;
+    margin-right: 24px;
 }
