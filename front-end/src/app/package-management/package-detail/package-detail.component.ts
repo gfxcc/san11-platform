@@ -1,35 +1,29 @@
-import { ViewChild, ChangeDetectorRef, ElementRef, Component, OnInit, Inject } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { FormControl } from '@angular/forms';
-import { Observable, isObservable } from "rxjs";
-import { map, startWith } from 'rxjs/operators';
-
-import { saveAs } from 'file-saver'
-// import InlineEditor from '@ckeditor/ckeditor5-build-inline';
-import * as Editor from "../../common/components/ckeditor/ckeditor";
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 // import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
 // import Image from '@ckeditor/ckeditor5-image/src/image';
-
-import { GalleryItem, ImageItem } from 'ng-gallery';
-import { GlobalConstants } from '../../common/global-constants'
-import { CreateImageRequest, ListTagsRequest, FieldMask, Package, Status, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
-import { getFullUrl } from "../../utils/resrouce_util";
-import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
+import { ImageItem } from 'ng-gallery';
+import { CreateImageRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListTagsRequest, Package, ResourceState, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+// import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import * as Editor from "../../common/components/ckeditor/ckeditor";
+import { LoadingComponent } from '../../common/components/loading/loading.component';
+import { GlobalConstants } from '../../common/global-constants';
 import { NotificationService } from "../../common/notification.service";
-import { LoadingComponent } from '../../common/components/loading/loading.component'
-import { EventEmiterService } from "../../service/event-emiter.service";
-import { GetUserRequest } from "../../../proto/san11-platform.pb";
-
-
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
-import { isAdmin, getUsernameFeeds, getUserUrl } from "../../utils/user_util";
-import { increment } from '../../utils/number_util';
-import { getPackageUrl } from "../../utils/package_util";
-import { UploadService } from '../../service/upload.service';
 import { MyUploadAdapter } from '../../service/cke-upload-adapter';
+import { EventEmiterService } from "../../service/event-emiter.service";
+import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
+import { UploadService } from '../../service/upload.service';
+import { increment } from '../../utils/number_util';
+import { getCategoryId, getPackageUrl } from "../../utils/package_util";
+import { getFullUrl, parseName } from "../../utils/resrouce_util";
+import { getUserUrl, isAdmin } from "../../utils/user_util";
+
+
+
+
 
 
 export interface DialogData {
@@ -90,7 +84,7 @@ export class PackageDetailComponent implements OnInit {
     this.route.data.subscribe(
       (data) => {
         this.package = data.package;
-        this._eventEmiter.sendMessage({ categoryId: this.package.categoryId });
+        this._eventEmiter.sendMessage({ categoryId: getCategoryId(this.package.name).toString() });
       }
     );
 
@@ -288,7 +282,7 @@ export class PackageDetailComponent implements OnInit {
     });
     const request = new UpdatePackageRequest({
       package: new Package({
-        packageId: this.package.packageId,
+        name: this.package.name,
         packageName: updatedPackageName
       }),
       updateMask: new FieldMask({
@@ -313,7 +307,7 @@ export class PackageDetailComponent implements OnInit {
     if (newDesc != undefined) {
       const request = new UpdatePackageRequest({
         package: new Package({
-          packageId: this.package.packageId,
+          name: this.package.name,
           description: newDesc
         }),
         updateMask: new FieldMask({
@@ -346,16 +340,16 @@ export class PackageDetailComponent implements OnInit {
 
   newTagSelected(tagId: string) {
     for (const tag of this.package.tags) {
-      if (tag.tagId === tagId) {
+      if (tag.name === tagId) {
         return;
       }
     }
-    let updateTags = this.package.tags.map(x => new Tag({ tagId: x.tagId }));
-    updateTags.push(new Tag({ tagId: tagId }));
+    let updateTags = this.package.tags.map(x => new Tag({ name: x.name }));
+    updateTags.push(new Tag({ name: tagId }));
 
     const request = new UpdatePackageRequest({
       package: new Package({
-        packageId: this.package.packageId,
+        name: this.package.name,
         tags: updateTags
       }),
       updateMask: new FieldMask({
@@ -374,11 +368,11 @@ export class PackageDetailComponent implements OnInit {
   }
 
   removeTag(tagToRemove: Tag) {
-    let updateTags = this.package.tags.filter((tag: Tag) => tag.tagId != tagToRemove.tagId);
+    let updateTags = this.package.tags.filter((tag: Tag) => tag.name != tagToRemove.name);
 
     const request = new UpdatePackageRequest({
       package: new Package({
-        packageId: this.package.packageId,
+        name: this.package.name,
         tags: updateTags
       }),
       updateMask: new FieldMask({
@@ -397,7 +391,8 @@ export class PackageDetailComponent implements OnInit {
   }
 
   loadTags() {
-    this.san11pkService.listTags(new ListTagsRequest({ categoryId: this.package.categoryId })).subscribe(
+    const [parent, collection, packageId] = parseName(this.package.name)
+    this.san11pkService.listTags(new ListTagsRequest({ parent: parent })).subscribe(
       resp => {
         this.allTags = resp.tags;
       },
@@ -408,7 +403,7 @@ export class PackageDetailComponent implements OnInit {
   }
 
   loadPage() {
-    if (this.isAdmin() && this.package.status === Package.Status.UNDER_REVIEW) {
+    if (this.isAdmin() && this.package.state === ResourceState.UNDER_REVIEW) {
       this.adminZone = true;
     }
     if (this.isAdmin() || this.isAuthor()) {
@@ -420,7 +415,7 @@ export class PackageDetailComponent implements OnInit {
       this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
     });
 
-    if (this.package.categoryId === '1') {
+    if (getCategoryId(this.package.name) === 1) {
       // append a pre-set image for SIRE package
       const fullImageUrl = getFullUrl('images/sire2.jpg');
       this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
@@ -450,8 +445,8 @@ export class PackageDetailComponent implements OnInit {
 
     const request = new UpdatePackageRequest({
       package: new Package({
-        packageId: this.package.packageId,
-        status: Package.Status.NORMAL
+        name: this.package.name,
+        state: ResourceState.NORMAL,
       }),
       updateMask: new FieldMask({
         paths: ['status']
@@ -461,7 +456,7 @@ export class PackageDetailComponent implements OnInit {
       san11Package => {
         this.notificationService.success('审核通过')
 
-        this.router.navigate(['categories', this.package.categoryId]).then(() => {
+        this.router.navigate(this.package.name.split('/')).then(() => {
           window.location.reload();
         });
       },
@@ -475,8 +470,8 @@ export class PackageDetailComponent implements OnInit {
   onFlipHide() {
     const request = new UpdatePackageRequest({
       package: new Package({
-        packageId: this.package.packageId,
-        status: this.package.status === Package.Status.HIDDEN ? Package.Status.NORMAL : Package.Status.HIDDEN
+        name: this.package.name,
+        state: this.package.state === ResourceState.HIDDEN ? ResourceState.NORMAL : ResourceState.HIDDEN
       }),
       updateMask: new FieldMask({
         paths: ['status']
@@ -485,7 +480,7 @@ export class PackageDetailComponent implements OnInit {
     this.san11pkService.updatePackage(request).subscribe(
       san11Package => {
         this.notificationService.success('操作成功')
-        this.router.navigate(['categories', this.package.categoryId]).then(() => {
+        this.router.navigate(this.package.name.split('/')).then(() => {
           window.location.reload();
         });
       },
@@ -499,7 +494,9 @@ export class PackageDetailComponent implements OnInit {
   onDelete() {
     if (confirm('确认要删除 ' + this.package.packageName + ' 吗？')) {
       if (this.isAdmin()) {
-        this.san11pkService.deletePackage(this.package).subscribe(
+        this.san11pkService.deletePackage(new DeletePackageRequest({
+          name: this.package.name,
+        })).subscribe(
           status => {
             this.notificationService.success('成功删除');
 
@@ -514,8 +511,8 @@ export class PackageDetailComponent implements OnInit {
       } else {
         const request = new UpdatePackageRequest({
           package: new Package({
-            packageId: this.package.packageId,
-            status: Package.Status.SCHEDULE_DELETE
+            name: this.package.name,
+            state: ResourceState.SCHEDULED_DELETE,
           }),
           updateMask: new FieldMask({
             paths: ['status']
@@ -551,7 +548,7 @@ export class PackageDetailComponent implements OnInit {
     } else {
       // ask for delete
       if (confirm("确定要删除这张截图吗?")) {
-        if (this.package.categoryId === '1' && imageIndex === this.images.length - 2) {
+        if (getCategoryId(this.package.name) === 1 && imageIndex === this.images.length - 2) {
           this.notificationService.warn('不可删除系统预设图片');
           return;
         }
@@ -559,7 +556,7 @@ export class PackageDetailComponent implements OnInit {
 
         const request = new UpdatePackageRequest({
           package: new Package({
-            packageId: this.package.packageId,
+            name: this.package.name,
             imageUrls: this.package.imageUrls
           }),
           updateMask: new FieldMask({
@@ -602,7 +599,7 @@ export class PackageDetailComponent implements OnInit {
           url => {
             this.package.imageUrls.push(url.url);
             const fullUrl = getFullUrl(url.url);
-            if (this.package.categoryId === '1') {
+            if (getCategoryId(this.package.name) === 1) {
               this.images.splice(this.images.length - 2, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
             } else {
               this.images.splice(this.images.length - 1, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
@@ -624,7 +621,7 @@ export class PackageDetailComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['categories', this.package.categoryId]);
+    this.router.navigate(['categories', getCategoryId(this.package.name).toString()]);
   }
 
 

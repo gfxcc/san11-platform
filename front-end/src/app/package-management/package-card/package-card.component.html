@@ -10,7 +10,7 @@
 
             <span class="example-spacer"></span>
 
-            <div [hidden]="! (isAdmin() && package.status!=1)">
+            <div [hidden]="! (isAdmin() && package.state!=1)">
                 <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
             </div>
 

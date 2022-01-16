@@ -1005,12 +1005,12 @@ export class RouteGuideClient {
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     * @returns Observable<GrpcEvent<thisProto.Tag>>
      */
     deleteTag: (
       requestData: thisProto.DeleteTagRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
+    ): Observable<GrpcEvent<thisProto.Tag>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
@@ -1018,7 +1018,7 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteTagRequest,
-        responseClass: thisProto.Empty
+        responseClass: thisProto.Tag
       });
     },
     /**
@@ -1814,12 +1814,12 @@ export class RouteGuideClient {
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
+   * @returns Observable<thisProto.Tag>
    */
   deleteTag(
     requestData: thisProto.DeleteTagRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
+  ): Observable<thisProto.Tag> {
     return this.$raw
       .deleteTag(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());

@@ -1,5 +1,6 @@
 
-import { Package, Binary, Version } from '../../proto/san11-platform.pb'
+import { Binary, Package, Version } from '../../proto/san11-platform.pb';
+import { getCategoryId } from './package_util';
 
 
 export function version2str(version: Version): string {
@@ -13,7 +14,7 @@ export function getBinaryFilename(san11Package: Package, binary: Binary): string
     let extension: string;
     if (binary.file && binary.file.ext) {
         extension = binary.file.ext;
-    } else if(san11Package.categoryId === '1') {
+    } else if(getCategoryId(san11Package.name) === 1) {
         if (binary.tag === 'sire2') {
             extension = '.scp';
         } else if (binary.tag === 'sire1') {

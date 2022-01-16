@@ -248,7 +248,7 @@ class RouteGuideStub(object):
         self.DeleteTag = channel.unary_unary(
                 '/routeguide.RouteGuide/DeleteTag',
                 request_serializer=san11__platform__pb2.DeleteTagRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Empty.FromString,
+                response_deserializer=san11__platform__pb2.Tag.FromString,
                 )
         self.GetStatistic = channel.unary_unary(
                 '/routeguide.RouteGuide/GetStatistic',
@@ -807,7 +807,7 @@ def add_RouteGuideServicer_to_server(servicer, server):
             'DeleteTag': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteTag,
                     request_deserializer=san11__platform__pb2.DeleteTagRequest.FromString,
-                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
+                    response_serializer=san11__platform__pb2.Tag.SerializeToString,
             ),
             'GetStatistic': grpc.unary_unary_rpc_method_handler(
                     servicer.GetStatistic,
@@ -1625,7 +1625,7 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteTag',
             san11__platform__pb2.DeleteTagRequest.SerializeToString,
-            san11__platform__pb2.Empty.FromString,
+            san11__platform__pb2.Tag.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

@@ -1,28 +1,24 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { FieldMask, Binary, Package, User, Version as PbVersion, DownloadBinaryRequest, DeleteBinaryRequest, ListBinariesRequest } from "../../../../proto/san11-platform.pb";
-import { UpdateBinaryRequest } from "../../../../proto/san11-platform.pb";
-import { NotificationService } from "../../../common/notification.service";
-
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-
 import { HttpEventType } from "@angular/common/http";
-import { version2str, getBinaryFilename } from "../../../utils/binary_util";
-import { getAcceptFileType } from "../../../utils/resrouce_util";
-import { getPackageUrl } from "../../../utils/package_util";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { saveAs } from 'file-saver';
+import { Subscription } from 'rxjs';
+import { Binary, DeleteBinaryRequest, DownloadBinaryRequest, FieldMask, ListBinariesRequest, Package, UpdateBinaryRequest, Version as PbVersion } from "../../../../proto/san11-platform.pb";
+import { TextDialogComponent } from "../../../common/components/text-dialog/text-dialog.component";
+import { GlobalConstants } from "../../../common/global-constants";
+import { NotificationService } from "../../../common/notification.service";
 import { BinaryService } from "../../../service/binary-service";
 import { DownloadService } from "../../../service/download.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
-import { CreateNewVersionComponent, VersionData } from "../create-new-version/create-new-version.component";
-import { TextDialogComponent, TextData } from "../../../common/components/text-dialog/text-dialog.component";
-import { GlobalConstants } from "../../../common/global-constants";
-import { saveAs } from 'file-saver'
+import { getBinaryFilename, version2str } from "../../../utils/binary_util";
 import { increment } from '../../../utils/number_util';
+import { getCategoryId, getPackageUrl } from "../../../utils/package_util";
+import { getAcceptFileType } from "../../../utils/resrouce_util";
 import { isAdmin, signedIn } from '../../../utils/user_util';
-import { map } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { CreateNewVersionComponent } from "../create-new-version/create-new-version.component";
+
+
 
 // export interface BinaryElement {
 //   version: string;
@@ -104,13 +100,14 @@ export class VersionPanelComponent implements OnInit {
     this.tabs.forEach(tab => {
       latestVersions[tab.tag] = tab.dataSource.data.length > 0 ? tab.dataSource.data[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" });
     });
+    const categoryId = getCategoryId(this.package.name).toString();
     this.dialog.open(CreateNewVersionComponent, {
       disableClose: true,
       data: {
         latestVersions: latestVersions,
-        acceptFileType: getAcceptFileType(this.package.categoryId, selectedTab.tag),
+        acceptFileType: getAcceptFileType(categoryId, selectedTab.tag),
         parent: getPackageUrl(this.package),
-        categoryId: this.package.categoryId,
+        categoryId: categoryId,
         tag: selectedTab.tag,
         tags: Array.from(this.tags)
       }
@@ -138,7 +135,7 @@ export class VersionPanelComponent implements OnInit {
         });
         this.tags = Array.from(tags);
 
-        if (this.package.categoryId === '1') {
+        if (getCategoryId(this.package.name) === 1) {
           this.tags = ['SIRE 2', 'SIRE 1']
         }
         if (this.tags.length === 0) {
@@ -198,7 +195,7 @@ export class VersionPanelComponent implements OnInit {
   }
 
   onDownload(binary: Binary) {
-    if (!signedIn() && this.package.categoryId === '3') {
+    if (!signedIn() && getCategoryId(this.package.name) === 3) {
       this.notificationService.warn('请登录');
       return;
     }

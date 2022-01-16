@@ -6,7 +6,6 @@
     <!-- name Column -->
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> 工具 </th>
-        <!-- <td mat-cell *matCellDef="let package" class="package-name clickable" [routerLink]="this.getLinkForPackage(package)"> -->
         <td mat-cell *matCellDef="let package" class="package-name clickable" (click)="onPackageClick(package)">
             {{package.name}}
         </td>

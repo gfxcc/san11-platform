@@ -1,4 +1,4 @@
-import { ViewChild, Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CreateTagRequest, CreateThreadRequest, DeleteTagRequest, ListTagsRequest, Tag, Thread } from '../../../../proto/san11-platform.pb';
@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
   }
 
   loadTags() {
-    this.san11pkService.listTags(new ListTagsRequest({ categoryId: this.selectedCategory })).subscribe(
+    this.san11pkService.listTags(new ListTagsRequest({ parent: `categories/${this.selectedCategory}` })).subscribe(
       resp => {
         if (resp.tags.length === 0) {
           this.tags = [];
@@ -56,9 +56,9 @@ export class SidebarComponent implements OnInit {
   createTag(event) {
     const newTagName = event.target.value;
     this.san11pkService.createTag(new CreateTagRequest({
+      parent: `categories/${this.selectedCategory}`,
       tag: new Tag({
-        categoryId: this.selectedCategory,
-        name: newTagName
+        tagName: newTagName
       })
     })).subscribe(
       tag => {
@@ -74,7 +74,7 @@ export class SidebarComponent implements OnInit {
     if (!confirm(`删除标签【${tag.name}】?`)) {
       return;
     }
-    this.san11pkService.deleteTag(new DeleteTagRequest({ tagId: tag.tagId })).subscribe(
+    this.san11pkService.deleteTag(new DeleteTagRequest({ name: tag.name })).subscribe(
       resp => {
         this.notificationService.success('删除标签 成功');
         this.loadTags();
@@ -86,7 +86,7 @@ export class SidebarComponent implements OnInit {
   }
 
   onClickTag(tag: Tag) {
-    this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.tagId } });
+    this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.name } });
   }
 
   onCategoryLabelClick(category) {

@@ -1,20 +1,15 @@
-import { Component, OnInit, EventEmitter, ElementRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { CreatePackageRequest, Package } from '../../../proto/san11-platform.pb';
+import { LoadingComponent } from '../../common/components/loading/loading.component';
+import { GlobalConstants } from '../../common/global-constants';
+import { NotificationService } from '../../common/notification.service';
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
 
-import { Package, Version } from '../../../proto/san11-platform.pb'
-import { San11PlatformServiceService } from '../../service/san11-platform-service.service'
-import { Binary } from '../../../proto/san11-platform.pb';
 
-import { getPackageUrl } from '../../utils/package_util'
-import { GlobalConstants } from '../../common/global-constants'
-import { LoadingComponent } from '../../common/components/loading/loading.component'
 
-import { NotificationService } from '../../common/notification.service'
 
 
 
@@ -50,13 +45,14 @@ export class CreatePackageComponent implements OnInit {
 
       this.loading = this.dialog.open(LoadingComponent);
 
-      this.san11PlatformServiceService.createPackage(new Package({
-        packageId: '0',
-        packageName: createPackageForm.value.name,
-        description: '',
-        categoryId: createPackageForm.value.category, // hardcoded to SIRE Plugin
-        authorId: '0',
-        imageUrls: []
+      this.san11PlatformServiceService.createPackage(new CreatePackageRequest({
+        parent: `categories/${createPackageForm.value.category}`,
+        package: new Package({
+          packageName: createPackageForm.value.name,
+          description: '',
+          authorId: '0',
+          imageUrls: []
+        })
       })).subscribe(
         san11Package => {
 

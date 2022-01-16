@@ -78,7 +78,7 @@ service RouteGuide {
   // Tag related
   rpc CreateTag(CreateTagRequest) returns (Tag) {}
   rpc ListTags(ListTagsRequest) returns (ListTagsResponse) {}
-  rpc DeleteTag(DeleteTagRequest) returns (Empty) {}
+  rpc DeleteTag(DeleteTagRequest) returns (Tag) {}
 
   // Generic
   rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}
@@ -88,7 +88,8 @@ service RouteGuide {
 // package related
 
 message CreatePackageRequest {
-    Package package = 1;
+    string parent = 1;
+    Package package = 2;
 }
 
 message UpdatePackageRequest {
@@ -97,7 +98,7 @@ message UpdatePackageRequest {
 }
 
 message DeletePackageRequest {
-    Package package = 1;
+    string name = 1;
 }
 
 message GetPackageRequest {
@@ -481,22 +482,33 @@ message UpdateNotificationRequest {
 
 // tag related
 message CreateTagRequest {
-    Tag tag = 1;
+    string parent = 1; // E.g. `categories/123`
+    Tag tag = 2;
 }
 
 message ListTagsRequest {
-    int64 page_size = 1;
-    string page_token = 2;
-    int64 category_id = 3;
+    // Supported values:
+    // `categories/xxx`
+    string parent = 1;
+    int64 page_size = 2;
+    string page_token = 3;
+
+    // Values should be a comma separated list of fields. For example: "foo,bar".
+    // The default sorting order is ascending. To specify descending order for a field, users append a " desc" suffix;
+    //   for example: "foo desc, bar".
+    string order_by = 4;
+
+    // Support syntax like `field_name = value`
+    string filter = 5;
 }
 
 message ListTagsResponse {
     repeated Tag tags = 1;
-    string page_token = 2;
+    string next_page_token = 2;
 }
 
 message DeleteTagRequest {
-    int64 tag_id = 1;
+    string name = 1; // E.g. `{parent}/tags/{tag_id}`
 }
 
 //
@@ -520,29 +532,20 @@ message Status {
 }
 
 message Package {
-    int64 package_id = 1;
+    // E.g. `categories/123/package/456`
+    string name = 1;
+
     string package_name = 2;
     string description = 3;
     string create_time = 4;
-    int64 category_id = 5;
-    Status status = 6;
-    int64 author_id = 7;
-    string author_image_url = 8;
-    repeated string image_urls = 9;
-    int64 download_count = 10;
+    string update_time = 6;
+    ResourceState state = 7;
+    int64 author_id = 8;
+    repeated string image_urls = 10;
     repeated Tag tags = 11;
-    string update_time = 12;
-    // E.g. `categories/123/package/456`
-    string name = 13;
 
-    enum Status {
-        UNKNOWN = 0;
-        NORMAL = 1; // publish accessable
-        UNDER_REVIEW = 2; // Only visiable to admin and author
-        HIDDEN = 3; // Only visiable to admin and author
-        SCHEDULE_DELETE = 4; // Only visiable to admin
-        DELETED = 5; // Only visiable to admin
-    }
+    // 
+    int64 download_count = 20;
 }
 
 message Binary {
@@ -637,12 +640,11 @@ message Reply {
 }
 
 message Tag {
-    int64 tag_id = 1;
-    string name = 2;  // A string not longer than 8.
-    int64 category_id = 3;
+    string name = 1; // Resource name. E.g. 'categories/123/tags/456'
+    string tag_name = 2;  // A string not longer than 8.
     // Whether a user can update (assign or remove) this tag.
     // A immutable tag can only be updated by backend. E.g. `SIRE 1`, `SIRE 2`
-    bool mutable = 4;
+    bool mutable = 3;
 }
 
 message AdminMessage {

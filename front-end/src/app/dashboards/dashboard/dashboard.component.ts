@@ -1,15 +1,13 @@
-import { EventEmitter, Output, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-
-import { ListPackagesRequest, Package } from '../../../proto/san11-platform.pb'
-import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+import { ListPackagesRequest, Package } from '../../../proto/san11-platform.pb';
 import { NotificationService } from "../../common/notification.service";
-
-import { PackageDetailComponent } from "../../package-management/package-detail/package-detail.component";
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserDetailComponent } from '../../account-management/user-detail/user-detail.component';
 import { EventEmiterService } from "../../service/event-emiter.service";
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+
+
 
 
 @Component({
@@ -70,6 +68,7 @@ export class DashboardComponent implements OnInit {
   loadPackages(request: ListPackagesRequest): void {
     this._eventEmiter.sendMessage({ categoryId: request.categoryId });
 
+    console.log(request);
     this.san11pkService.listPackages(request).subscribe(
       resp => {
         this.packages = resp.packages

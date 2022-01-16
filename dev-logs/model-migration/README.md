@@ -47,3 +47,54 @@ CREATE TABLE replies (
     PRIMARY KEY (parent, resource_id)
 );
 ```
+
+
+# Tag
+
+Started    |
+-----------|
+01/15/2022 |
+
+## DB
+1. Rename current table to `tags_legacy`.
+```
+ALTER TABLE tags
+    RENAME TO tags_legacy;
+```
+
+2. Create new table `tags`.
+```
+CREATE TABLE tags (
+    parent text NOT NULL,
+    resource_id serial NOT NULL,
+
+    data json,
+    
+    PRIMARY KEY (parent, resource_id)
+);
+```
+
+# Package
+
+Started    |
+-----------|
+01/15/2022 |
+
+## DB
+1. Rename current table to `packages_legacy`.
+```
+ALTER TABLE packages
+    RENAME TO packages_legacy;
+```
+
+2. Create new table `packages`.
+```
+CREATE TABLE packages (
+    parent text NOT NULL,
+    resource_id serial NOT NULL,
+
+    data json,
+    
+    PRIMARY KEY (parent, resource_id)
+);
+```

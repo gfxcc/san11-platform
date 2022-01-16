@@ -13,6 +13,7 @@ from ..db import (get_db_fields_str, run_sql_with_param,
 from ..protos import san11_platform_pb2
 from ..util.time_util import get_age, get_now
 from .activity import TrackLifecycle
+from .model_tag import ModelTag
 from .resource import ResourceMixin, ResourceView
 from .tag import Tag
 
@@ -91,16 +92,6 @@ class Package(ResourceMixin, TrackLifecycle):
     @author_id.setter
     def author_id(self, author_id: int) -> None:
         self._author_id = author_id
-        self.author_image_url = ''
-        try:
-            sql = 'SELECT image_url FROM users WHERE user_id=%(user_id)s'
-            resp = run_sql_with_param_and_fetch_one(sql, {
-                'user_id': author_id
-            })
-            self.author_image_url = resp[0]
-        except Exception as err:
-            logger.error(
-                f'Failed to load author_image_url for user_id={author_id}: {err}')
 
     @property
     def status(self) -> Status:
@@ -144,8 +135,8 @@ class Package(ResourceMixin, TrackLifecycle):
     def list(cls, page_size: int, page_token: str, **kwargs) -> List[Any]:
         ret = super().list(page_size=page_size, page_token=page_token, **kwargs)
         # discard description as it might be too large, which will slow down the service
-        for item in ret:
-            item.description = ''
+        # for item in ret:
+        #     item.description = ''
         return ret
 
     @classmethod
@@ -164,17 +155,14 @@ class Package(ResourceMixin, TrackLifecycle):
 
     def to_pb(self) -> san11_platform_pb2.Package:
         return san11_platform_pb2.Package(
-            package_id=self.package_id,
             package_name=self.package_name,
             description=self.description,
             create_time=get_age(self.create_time),
-            category_id=self.category_id,
-            status=self.status.value,
+            state=self.status.value,
             author_id=self.author_id,
-            author_image_url=self.author_image_url,
             image_urls=self.image_urls,
             download_count=self.download_count,
-            tags=[Tag.from_id(tag_id).to_pb() for tag_id in self.tag_ids],
+            tags=[ModelTag.from_id(tag_id).to_pb() for tag_id in self.tag_ids],
             update_time=get_age(self.update_time or self.create_time),
             name=self.name,
         )

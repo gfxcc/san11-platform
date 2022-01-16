@@ -5,7 +5,7 @@ import { LoadingComponent } from 'src/app/common/components/loading/loading.comp
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
-import { Article, CreateArticleRequest, Package, ResourceState } from 'src/proto/san11-platform.pb';
+import { Article, CreateArticleRequest, CreatePackageRequest, Package, ResourceState } from 'src/proto/san11-platform.pb';
 
 
 interface ResourceType {
@@ -95,13 +95,14 @@ export class CreateNewComponent implements OnInit {
   createPackage(packageName: string, categoryId: string) {
     this.loading = this.dialog.open(LoadingComponent);
 
-    this.san11pkService.createPackage(new Package({
-      packageId: '0',
+    this.san11pkService.createPackage(new CreatePackageRequest({
+      parent: `categories/${categoryId}`,
+      package: new Package({
       packageName: packageName,
       description: '',
-      categoryId: categoryId, // hardcoded to SIRE Plugin
       authorId: '0',
       imageUrls: []
+    })
     })).subscribe(
       san11Package => {
         this.loading.close();

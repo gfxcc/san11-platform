@@ -54,6 +54,7 @@ export class CreatePackageRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: CreatePackageRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.package = _instance.package || undefined;
   }
 
@@ -71,6 +72,9 @@ export class CreatePackageRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
           _instance.package = new Package();
           _reader.readMessage(
             _instance.package,
@@ -94,15 +98,19 @@ export class CreatePackageRequest implements GrpcMessage {
     _instance: CreatePackageRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.package) {
       _writer.writeMessage(
-        1,
+        2,
         _instance.package as any,
         Package.serializeBinaryToWriter
       );
     }
   }
 
+  private _parent?: string;
   private _package?: Package;
 
   /**
@@ -111,8 +119,15 @@ export class CreatePackageRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<CreatePackageRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.package = _value.package ? new Package(_value.package) : undefined;
     CreatePackageRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get package(): Package | undefined {
     return this._package;
@@ -136,6 +151,7 @@ export class CreatePackageRequest implements GrpcMessage {
    */
   toObject(): CreatePackageRequest.AsObject {
     return {
+      parent: this.parent,
       package: this.package ? this.package.toObject() : undefined
     };
   }
@@ -157,6 +173,7 @@ export class CreatePackageRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): CreatePackageRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       package: this.package ? this.package.toProtobufJSON(options) : null
     };
   }
@@ -166,6 +183,7 @@ export module CreatePackageRequest {
    * Standard JavaScript object representation for CreatePackageRequest
    */
   export interface AsObject {
+    parent?: string;
     package?: Package.AsObject;
   }
 
@@ -173,6 +191,7 @@ export module CreatePackageRequest {
    * Protobuf JSON representation for CreatePackageRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     package?: Package.AsProtobufJSON | null;
   }
 }
@@ -379,7 +398,7 @@ export class DeletePackageRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: DeletePackageRequest) {
-    _instance.package = _instance.package || undefined;
+    _instance.name = _instance.name || '';
   }
 
   /**
@@ -396,11 +415,7 @@ export class DeletePackageRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.package = new Package();
-          _reader.readMessage(
-            _instance.package,
-            Package.deserializeBinaryFromReader
-          );
+          _instance.name = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -419,16 +434,12 @@ export class DeletePackageRequest implements GrpcMessage {
     _instance: DeletePackageRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.package) {
-      _writer.writeMessage(
-        1,
-        _instance.package as any,
-        Package.serializeBinaryToWriter
-      );
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
   }
 
-  private _package?: Package;
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -436,14 +447,14 @@ export class DeletePackageRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<DeletePackageRequest.AsObject>) {
     _value = _value || {};
-    this.package = _value.package ? new Package(_value.package) : undefined;
+    this.name = _value.name;
     DeletePackageRequest.refineValues(this);
   }
-  get package(): Package | undefined {
-    return this._package;
+  get name(): string | undefined {
+    return this._name;
   }
-  set package(value: Package | undefined) {
-    this._package = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -461,7 +472,7 @@ export class DeletePackageRequest implements GrpcMessage {
    */
   toObject(): DeletePackageRequest.AsObject {
     return {
-      package: this.package ? this.package.toObject() : undefined
+      name: this.name
     };
   }
 
@@ -482,7 +493,7 @@ export class DeletePackageRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): DeletePackageRequest.AsProtobufJSON {
     return {
-      package: this.package ? this.package.toProtobufJSON(options) : null
+      name: this.name
     };
   }
 }
@@ -491,14 +502,14 @@ export module DeletePackageRequest {
    * Standard JavaScript object representation for DeletePackageRequest
    */
   export interface AsObject {
-    package?: Package.AsObject;
+    name?: string;
   }
 
   /**
    * Protobuf JSON representation for DeletePackageRequest
    */
   export interface AsProtobufJSON {
-    package?: Package.AsProtobufJSON | null;
+    name?: string;
   }
 }
 
@@ -10339,6 +10350,7 @@ export class CreateTagRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: CreateTagRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.tag = _instance.tag || undefined;
   }
 
@@ -10356,6 +10368,9 @@ export class CreateTagRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
           _instance.tag = new Tag();
           _reader.readMessage(_instance.tag, Tag.deserializeBinaryFromReader);
           break;
@@ -10376,15 +10391,19 @@ export class CreateTagRequest implements GrpcMessage {
     _instance: CreateTagRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.tag) {
       _writer.writeMessage(
-        1,
+        2,
         _instance.tag as any,
         Tag.serializeBinaryToWriter
       );
     }
   }
 
+  private _parent?: string;
   private _tag?: Tag;
 
   /**
@@ -10393,8 +10412,15 @@ export class CreateTagRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<CreateTagRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.tag = _value.tag ? new Tag(_value.tag) : undefined;
     CreateTagRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get tag(): Tag | undefined {
     return this._tag;
@@ -10418,6 +10444,7 @@ export class CreateTagRequest implements GrpcMessage {
    */
   toObject(): CreateTagRequest.AsObject {
     return {
+      parent: this.parent,
       tag: this.tag ? this.tag.toObject() : undefined
     };
   }
@@ -10439,6 +10466,7 @@ export class CreateTagRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): CreateTagRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       tag: this.tag ? this.tag.toProtobufJSON(options) : null
     };
   }
@@ -10448,6 +10476,7 @@ export module CreateTagRequest {
    * Standard JavaScript object representation for CreateTagRequest
    */
   export interface AsObject {
+    parent?: string;
     tag?: Tag.AsObject;
   }
 
@@ -10455,6 +10484,7 @@ export module CreateTagRequest {
    * Protobuf JSON representation for CreateTagRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     tag?: Tag.AsProtobufJSON | null;
   }
 }
@@ -10483,9 +10513,11 @@ export class ListTagsRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: ListTagsRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
-    _instance.categoryId = _instance.categoryId || '0';
+    _instance.orderBy = _instance.orderBy || '';
+    _instance.filter = _instance.filter || '';
   }
 
   /**
@@ -10502,13 +10534,19 @@ export class ListTagsRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.pageSize = _reader.readInt64String();
+          _instance.parent = _reader.readString();
           break;
         case 2:
-          _instance.pageToken = _reader.readString();
+          _instance.pageSize = _reader.readInt64String();
           break;
         case 3:
-          _instance.categoryId = _reader.readInt64String();
+          _instance.pageToken = _reader.readString();
+          break;
+        case 4:
+          _instance.orderBy = _reader.readString();
+          break;
+        case 5:
+          _instance.filter = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -10527,20 +10565,28 @@ export class ListTagsRequest implements GrpcMessage {
     _instance: ListTagsRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.pageSize) {
-      _writer.writeInt64String(1, _instance.pageSize);
+      _writer.writeInt64String(2, _instance.pageSize);
     }
     if (_instance.pageToken) {
-      _writer.writeString(2, _instance.pageToken);
+      _writer.writeString(3, _instance.pageToken);
     }
-    if (_instance.categoryId) {
-      _writer.writeInt64String(3, _instance.categoryId);
+    if (_instance.orderBy) {
+      _writer.writeString(4, _instance.orderBy);
+    }
+    if (_instance.filter) {
+      _writer.writeString(5, _instance.filter);
     }
   }
 
+  private _parent?: string;
   private _pageSize?: string;
   private _pageToken?: string;
-  private _categoryId?: string;
+  private _orderBy?: string;
+  private _filter?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10548,10 +10594,18 @@ export class ListTagsRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListTagsRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
-    this.categoryId = _value.categoryId;
+    this.orderBy = _value.orderBy;
+    this.filter = _value.filter;
     ListTagsRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get pageSize(): string | undefined {
     return this._pageSize;
@@ -10565,11 +10619,17 @@ export class ListTagsRequest implements GrpcMessage {
   set pageToken(value: string | undefined) {
     this._pageToken = value;
   }
-  get categoryId(): string | undefined {
-    return this._categoryId;
+  get orderBy(): string | undefined {
+    return this._orderBy;
   }
-  set categoryId(value: string | undefined) {
-    this._categoryId = value;
+  set orderBy(value: string | undefined) {
+    this._orderBy = value;
+  }
+  get filter(): string | undefined {
+    return this._filter;
+  }
+  set filter(value: string | undefined) {
+    this._filter = value;
   }
 
   /**
@@ -10587,9 +10647,11 @@ export class ListTagsRequest implements GrpcMessage {
    */
   toObject(): ListTagsRequest.AsObject {
     return {
+      parent: this.parent,
       pageSize: this.pageSize,
       pageToken: this.pageToken,
-      categoryId: this.categoryId
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 
@@ -10610,9 +10672,11 @@ export class ListTagsRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListTagsRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       pageSize: this.pageSize,
       pageToken: this.pageToken,
-      categoryId: this.categoryId
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 }
@@ -10621,18 +10685,22 @@ export module ListTagsRequest {
    * Standard JavaScript object representation for ListTagsRequest
    */
   export interface AsObject {
+    parent?: string;
     pageSize?: string;
     pageToken?: string;
-    categoryId?: string;
+    orderBy?: string;
+    filter?: string;
   }
 
   /**
    * Protobuf JSON representation for ListTagsRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     pageSize?: string;
     pageToken?: string;
-    categoryId?: string;
+    orderBy?: string;
+    filter?: string;
   }
 }
 
@@ -10661,7 +10729,7 @@ export class ListTagsResponse implements GrpcMessage {
    */
   static refineValues(_instance: ListTagsResponse) {
     _instance.tags = _instance.tags || [];
-    _instance.pageToken = _instance.pageToken || '';
+    _instance.nextPageToken = _instance.nextPageToken || '';
   }
 
   /**
@@ -10686,7 +10754,7 @@ export class ListTagsResponse implements GrpcMessage {
           (_instance.tags = _instance.tags || []).push(messageInitializer1);
           break;
         case 2:
-          _instance.pageToken = _reader.readString();
+          _instance.nextPageToken = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -10712,13 +10780,13 @@ export class ListTagsResponse implements GrpcMessage {
         Tag.serializeBinaryToWriter
       );
     }
-    if (_instance.pageToken) {
-      _writer.writeString(2, _instance.pageToken);
+    if (_instance.nextPageToken) {
+      _writer.writeString(2, _instance.nextPageToken);
     }
   }
 
   private _tags?: Tag[];
-  private _pageToken?: string;
+  private _nextPageToken?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10727,7 +10795,7 @@ export class ListTagsResponse implements GrpcMessage {
   constructor(_value?: RecursivePartial<ListTagsResponse.AsObject>) {
     _value = _value || {};
     this.tags = (_value.tags || []).map(m => new Tag(m));
-    this.pageToken = _value.pageToken;
+    this.nextPageToken = _value.nextPageToken;
     ListTagsResponse.refineValues(this);
   }
   get tags(): Tag[] | undefined {
@@ -10736,11 +10804,11 @@ export class ListTagsResponse implements GrpcMessage {
   set tags(value: Tag[] | undefined) {
     this._tags = value;
   }
-  get pageToken(): string | undefined {
-    return this._pageToken;
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
   }
-  set pageToken(value: string | undefined) {
-    this._pageToken = value;
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
   }
 
   /**
@@ -10759,7 +10827,7 @@ export class ListTagsResponse implements GrpcMessage {
   toObject(): ListTagsResponse.AsObject {
     return {
       tags: (this.tags || []).map(m => m.toObject()),
-      pageToken: this.pageToken
+      nextPageToken: this.nextPageToken
     };
   }
 
@@ -10781,7 +10849,7 @@ export class ListTagsResponse implements GrpcMessage {
   ): ListTagsResponse.AsProtobufJSON {
     return {
       tags: (this.tags || []).map(m => m.toProtobufJSON(options)),
-      pageToken: this.pageToken
+      nextPageToken: this.nextPageToken
     };
   }
 }
@@ -10791,7 +10859,7 @@ export module ListTagsResponse {
    */
   export interface AsObject {
     tags?: Tag.AsObject[];
-    pageToken?: string;
+    nextPageToken?: string;
   }
 
   /**
@@ -10799,7 +10867,7 @@ export module ListTagsResponse {
    */
   export interface AsProtobufJSON {
     tags?: Tag.AsProtobufJSON[] | null;
-    pageToken?: string;
+    nextPageToken?: string;
   }
 }
 
@@ -10827,7 +10895,7 @@ export class DeleteTagRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: DeleteTagRequest) {
-    _instance.tagId = _instance.tagId || '0';
+    _instance.name = _instance.name || '';
   }
 
   /**
@@ -10844,7 +10912,7 @@ export class DeleteTagRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.tagId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -10863,12 +10931,12 @@ export class DeleteTagRequest implements GrpcMessage {
     _instance: DeleteTagRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.tagId) {
-      _writer.writeInt64String(1, _instance.tagId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
   }
 
-  private _tagId?: string;
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10876,14 +10944,14 @@ export class DeleteTagRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<DeleteTagRequest.AsObject>) {
     _value = _value || {};
-    this.tagId = _value.tagId;
+    this.name = _value.name;
     DeleteTagRequest.refineValues(this);
   }
-  get tagId(): string | undefined {
-    return this._tagId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set tagId(value: string | undefined) {
-    this._tagId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -10901,7 +10969,7 @@ export class DeleteTagRequest implements GrpcMessage {
    */
   toObject(): DeleteTagRequest.AsObject {
     return {
-      tagId: this.tagId
+      name: this.name
     };
   }
 
@@ -10922,7 +10990,7 @@ export class DeleteTagRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): DeleteTagRequest.AsProtobufJSON {
     return {
-      tagId: this.tagId
+      name: this.name
     };
   }
 }
@@ -10931,14 +10999,14 @@ export module DeleteTagRequest {
    * Standard JavaScript object representation for DeleteTagRequest
    */
   export interface AsObject {
-    tagId?: string;
+    name?: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteTagRequest
    */
   export interface AsProtobufJSON {
-    tagId?: string;
+    name?: string;
   }
 }
 
@@ -11468,19 +11536,16 @@ export class Package implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Package) {
-    _instance.packageId = _instance.packageId || '0';
+    _instance.name = _instance.name || '';
     _instance.packageName = _instance.packageName || '';
     _instance.description = _instance.description || '';
     _instance.createTime = _instance.createTime || '';
-    _instance.categoryId = _instance.categoryId || '0';
-    _instance.status = _instance.status || 0;
-    _instance.authorId = _instance.authorId || '0';
-    _instance.authorImageUrl = _instance.authorImageUrl || '';
-    _instance.imageUrls = _instance.imageUrls || [];
-    _instance.downloadCount = _instance.downloadCount || '0';
-    _instance.tags = _instance.tags || [];
     _instance.updateTime = _instance.updateTime || '';
-    _instance.name = _instance.name || '';
+    _instance.state = _instance.state || 0;
+    _instance.authorId = _instance.authorId || '0';
+    _instance.imageUrls = _instance.imageUrls || [];
+    _instance.tags = _instance.tags || [];
+    _instance.downloadCount = _instance.downloadCount || '0';
   }
 
   /**
@@ -11497,7 +11562,7 @@ export class Package implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.packageId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         case 2:
           _instance.packageName = _reader.readString();
@@ -11508,25 +11573,19 @@ export class Package implements GrpcMessage {
         case 4:
           _instance.createTime = _reader.readString();
           break;
-        case 5:
-          _instance.categoryId = _reader.readInt64String();
-          break;
         case 6:
-          _instance.status = _reader.readEnum();
+          _instance.updateTime = _reader.readString();
           break;
         case 7:
-          _instance.authorId = _reader.readInt64String();
+          _instance.state = _reader.readEnum();
           break;
         case 8:
-          _instance.authorImageUrl = _reader.readString();
+          _instance.authorId = _reader.readInt64String();
           break;
-        case 9:
+        case 10:
           (_instance.imageUrls = _instance.imageUrls || []).push(
             _reader.readString()
           );
-          break;
-        case 10:
-          _instance.downloadCount = _reader.readInt64String();
           break;
         case 11:
           const messageInitializer11 = new Tag();
@@ -11536,11 +11595,8 @@ export class Package implements GrpcMessage {
           );
           (_instance.tags = _instance.tags || []).push(messageInitializer11);
           break;
-        case 12:
-          _instance.updateTime = _reader.readString();
-          break;
-        case 13:
-          _instance.name = _reader.readString();
+        case 20:
+          _instance.downloadCount = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -11556,8 +11612,8 @@ export class Package implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: Package, _writer: BinaryWriter) {
-    if (_instance.packageId) {
-      _writer.writeInt64String(1, _instance.packageId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
     if (_instance.packageName) {
       _writer.writeString(2, _instance.packageName);
@@ -11568,23 +11624,17 @@ export class Package implements GrpcMessage {
     if (_instance.createTime) {
       _writer.writeString(4, _instance.createTime);
     }
-    if (_instance.categoryId) {
-      _writer.writeInt64String(5, _instance.categoryId);
+    if (_instance.updateTime) {
+      _writer.writeString(6, _instance.updateTime);
     }
-    if (_instance.status) {
-      _writer.writeEnum(6, _instance.status);
+    if (_instance.state) {
+      _writer.writeEnum(7, _instance.state);
     }
     if (_instance.authorId) {
-      _writer.writeInt64String(7, _instance.authorId);
-    }
-    if (_instance.authorImageUrl) {
-      _writer.writeString(8, _instance.authorImageUrl);
+      _writer.writeInt64String(8, _instance.authorId);
     }
     if (_instance.imageUrls && _instance.imageUrls.length) {
-      _writer.writeRepeatedString(9, _instance.imageUrls);
-    }
-    if (_instance.downloadCount) {
-      _writer.writeInt64String(10, _instance.downloadCount);
+      _writer.writeRepeatedString(10, _instance.imageUrls);
     }
     if (_instance.tags && _instance.tags.length) {
       _writer.writeRepeatedMessage(
@@ -11593,27 +11643,21 @@ export class Package implements GrpcMessage {
         Tag.serializeBinaryToWriter
       );
     }
-    if (_instance.updateTime) {
-      _writer.writeString(12, _instance.updateTime);
-    }
-    if (_instance.name) {
-      _writer.writeString(13, _instance.name);
+    if (_instance.downloadCount) {
+      _writer.writeInt64String(20, _instance.downloadCount);
     }
   }
 
-  private _packageId?: string;
+  private _name?: string;
   private _packageName?: string;
   private _description?: string;
   private _createTime?: string;
-  private _categoryId?: string;
-  private _status?: Package.Status;
-  private _authorId?: string;
-  private _authorImageUrl?: string;
-  private _imageUrls?: string[];
-  private _downloadCount?: string;
-  private _tags?: Tag[];
   private _updateTime?: string;
-  private _name?: string;
+  private _state?: ResourceState;
+  private _authorId?: string;
+  private _imageUrls?: string[];
+  private _tags?: Tag[];
+  private _downloadCount?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11621,26 +11665,23 @@ export class Package implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<Package.AsObject>) {
     _value = _value || {};
-    this.packageId = _value.packageId;
+    this.name = _value.name;
     this.packageName = _value.packageName;
     this.description = _value.description;
     this.createTime = _value.createTime;
-    this.categoryId = _value.categoryId;
-    this.status = _value.status;
-    this.authorId = _value.authorId;
-    this.authorImageUrl = _value.authorImageUrl;
-    this.imageUrls = (_value.imageUrls || []).slice();
-    this.downloadCount = _value.downloadCount;
-    this.tags = (_value.tags || []).map(m => new Tag(m));
     this.updateTime = _value.updateTime;
-    this.name = _value.name;
+    this.state = _value.state;
+    this.authorId = _value.authorId;
+    this.imageUrls = (_value.imageUrls || []).slice();
+    this.tags = (_value.tags || []).map(m => new Tag(m));
+    this.downloadCount = _value.downloadCount;
     Package.refineValues(this);
   }
-  get packageId(): string | undefined {
-    return this._packageId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set packageId(value: string | undefined) {
-    this._packageId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
   get packageName(): string | undefined {
     return this._packageName;
@@ -11660,17 +11701,17 @@ export class Package implements GrpcMessage {
   set createTime(value: string | undefined) {
     this._createTime = value;
   }
-  get categoryId(): string | undefined {
-    return this._categoryId;
+  get updateTime(): string | undefined {
+    return this._updateTime;
   }
-  set categoryId(value: string | undefined) {
-    this._categoryId = value;
+  set updateTime(value: string | undefined) {
+    this._updateTime = value;
   }
-  get status(): Package.Status | undefined {
-    return this._status;
+  get state(): ResourceState | undefined {
+    return this._state;
   }
-  set status(value: Package.Status | undefined) {
-    this._status = value;
+  set state(value: ResourceState | undefined) {
+    this._state = value;
   }
   get authorId(): string | undefined {
     return this._authorId;
@@ -11678,23 +11719,11 @@ export class Package implements GrpcMessage {
   set authorId(value: string | undefined) {
     this._authorId = value;
   }
-  get authorImageUrl(): string | undefined {
-    return this._authorImageUrl;
-  }
-  set authorImageUrl(value: string | undefined) {
-    this._authorImageUrl = value;
-  }
   get imageUrls(): string[] | undefined {
     return this._imageUrls;
   }
   set imageUrls(value: string[] | undefined) {
     this._imageUrls = value;
-  }
-  get downloadCount(): string | undefined {
-    return this._downloadCount;
-  }
-  set downloadCount(value: string | undefined) {
-    this._downloadCount = value;
   }
   get tags(): Tag[] | undefined {
     return this._tags;
@@ -11702,17 +11731,11 @@ export class Package implements GrpcMessage {
   set tags(value: Tag[] | undefined) {
     this._tags = value;
   }
-  get updateTime(): string | undefined {
-    return this._updateTime;
+  get downloadCount(): string | undefined {
+    return this._downloadCount;
   }
-  set updateTime(value: string | undefined) {
-    this._updateTime = value;
-  }
-  get name(): string | undefined {
-    return this._name;
-  }
-  set name(value: string | undefined) {
-    this._name = value;
+  set downloadCount(value: string | undefined) {
+    this._downloadCount = value;
   }
 
   /**
@@ -11730,19 +11753,16 @@ export class Package implements GrpcMessage {
    */
   toObject(): Package.AsObject {
     return {
-      packageId: this.packageId,
+      name: this.name,
       packageName: this.packageName,
       description: this.description,
       createTime: this.createTime,
-      categoryId: this.categoryId,
-      status: this.status,
-      authorId: this.authorId,
-      authorImageUrl: this.authorImageUrl,
-      imageUrls: (this.imageUrls || []).slice(),
-      downloadCount: this.downloadCount,
-      tags: (this.tags || []).map(m => m.toObject()),
       updateTime: this.updateTime,
-      name: this.name
+      state: this.state,
+      authorId: this.authorId,
+      imageUrls: (this.imageUrls || []).slice(),
+      tags: (this.tags || []).map(m => m.toObject()),
+      downloadCount: this.downloadCount
     };
   }
 
@@ -11763,19 +11783,16 @@ export class Package implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Package.AsProtobufJSON {
     return {
-      packageId: this.packageId,
+      name: this.name,
       packageName: this.packageName,
       description: this.description,
       createTime: this.createTime,
-      categoryId: this.categoryId,
-      status: Package.Status[this.status ?? 0],
-      authorId: this.authorId,
-      authorImageUrl: this.authorImageUrl,
-      imageUrls: (this.imageUrls || []).slice(),
-      downloadCount: this.downloadCount,
-      tags: (this.tags || []).map(m => m.toProtobufJSON(options)),
       updateTime: this.updateTime,
-      name: this.name
+      state: ResourceState[this.state ?? 0],
+      authorId: this.authorId,
+      imageUrls: (this.imageUrls || []).slice(),
+      tags: (this.tags || []).map(m => m.toProtobufJSON(options)),
+      downloadCount: this.downloadCount
     };
   }
 }
@@ -11784,46 +11801,32 @@ export module Package {
    * Standard JavaScript object representation for Package
    */
   export interface AsObject {
-    packageId?: string;
+    name?: string;
     packageName?: string;
     description?: string;
     createTime?: string;
-    categoryId?: string;
-    status?: Package.Status;
-    authorId?: string;
-    authorImageUrl?: string;
-    imageUrls?: string[];
-    downloadCount?: string;
-    tags?: Tag.AsObject[];
     updateTime?: string;
-    name?: string;
+    state?: ResourceState;
+    authorId?: string;
+    imageUrls?: string[];
+    tags?: Tag.AsObject[];
+    downloadCount?: string;
   }
 
   /**
    * Protobuf JSON representation for Package
    */
   export interface AsProtobufJSON {
-    packageId?: string;
+    name?: string;
     packageName?: string;
     description?: string;
     createTime?: string;
-    categoryId?: string;
-    status?: string;
-    authorId?: string;
-    authorImageUrl?: string;
-    imageUrls?: string[];
-    downloadCount?: string;
-    tags?: Tag.AsProtobufJSON[] | null;
     updateTime?: string;
-    name?: string;
-  }
-  export enum Status {
-    UNKNOWN = 0,
-    NORMAL = 1,
-    UNDER_REVIEW = 2,
-    HIDDEN = 3,
-    SCHEDULE_DELETE = 4,
-    DELETED = 5
+    state?: string;
+    authorId?: string;
+    imageUrls?: string[];
+    tags?: Tag.AsProtobufJSON[] | null;
+    downloadCount?: string;
   }
 }
 
@@ -13897,9 +13900,8 @@ export class Tag implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Tag) {
-    _instance.tagId = _instance.tagId || '0';
     _instance.name = _instance.name || '';
-    _instance.categoryId = _instance.categoryId || '0';
+    _instance.tagName = _instance.tagName || '';
     _instance.mutable = _instance.mutable || false;
   }
 
@@ -13914,15 +13916,12 @@ export class Tag implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.tagId = _reader.readInt64String();
-          break;
-        case 2:
           _instance.name = _reader.readString();
           break;
-        case 3:
-          _instance.categoryId = _reader.readInt64String();
+        case 2:
+          _instance.tagName = _reader.readString();
           break;
-        case 4:
+        case 3:
           _instance.mutable = _reader.readBool();
           break;
         default:
@@ -13939,23 +13938,19 @@ export class Tag implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: Tag, _writer: BinaryWriter) {
-    if (_instance.tagId) {
-      _writer.writeInt64String(1, _instance.tagId);
-    }
     if (_instance.name) {
-      _writer.writeString(2, _instance.name);
+      _writer.writeString(1, _instance.name);
     }
-    if (_instance.categoryId) {
-      _writer.writeInt64String(3, _instance.categoryId);
+    if (_instance.tagName) {
+      _writer.writeString(2, _instance.tagName);
     }
     if (_instance.mutable) {
-      _writer.writeBool(4, _instance.mutable);
+      _writer.writeBool(3, _instance.mutable);
     }
   }
 
-  private _tagId?: string;
   private _name?: string;
-  private _categoryId?: string;
+  private _tagName?: string;
   private _mutable?: boolean;
 
   /**
@@ -13964,17 +13959,10 @@ export class Tag implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<Tag.AsObject>) {
     _value = _value || {};
-    this.tagId = _value.tagId;
     this.name = _value.name;
-    this.categoryId = _value.categoryId;
+    this.tagName = _value.tagName;
     this.mutable = _value.mutable;
     Tag.refineValues(this);
-  }
-  get tagId(): string | undefined {
-    return this._tagId;
-  }
-  set tagId(value: string | undefined) {
-    this._tagId = value;
   }
   get name(): string | undefined {
     return this._name;
@@ -13982,11 +13970,11 @@ export class Tag implements GrpcMessage {
   set name(value: string | undefined) {
     this._name = value;
   }
-  get categoryId(): string | undefined {
-    return this._categoryId;
+  get tagName(): string | undefined {
+    return this._tagName;
   }
-  set categoryId(value: string | undefined) {
-    this._categoryId = value;
+  set tagName(value: string | undefined) {
+    this._tagName = value;
   }
   get mutable(): boolean | undefined {
     return this._mutable;
@@ -14010,9 +13998,8 @@ export class Tag implements GrpcMessage {
    */
   toObject(): Tag.AsObject {
     return {
-      tagId: this.tagId,
       name: this.name,
-      categoryId: this.categoryId,
+      tagName: this.tagName,
       mutable: this.mutable
     };
   }
@@ -14034,9 +14021,8 @@ export class Tag implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Tag.AsProtobufJSON {
     return {
-      tagId: this.tagId,
       name: this.name,
-      categoryId: this.categoryId,
+      tagName: this.tagName,
       mutable: this.mutable
     };
   }
@@ -14046,9 +14032,8 @@ export module Tag {
    * Standard JavaScript object representation for Tag
    */
   export interface AsObject {
-    tagId?: string;
     name?: string;
-    categoryId?: string;
+    tagName?: string;
     mutable?: boolean;
   }
 
@@ -14056,9 +14041,8 @@ export module Tag {
    * Protobuf JSON representation for Tag
    */
   export interface AsProtobufJSON {
-    tagId?: string;
     name?: string;
-    categoryId?: string;
+    tagName?: string;
     mutable?: boolean;
   }
 }
@@ -14573,7 +14557,6 @@ export class Notification implements GrpcMessage {
   static refineValues(_instance: Notification) {
     _instance.name = _instance.name || '';
     _instance.senderId = _instance.senderId || '0';
-    _instance.receiverId = _instance.receiverId || '0';
     _instance.createTime = _instance.createTime || undefined;
     _instance.updateTime = _instance.updateTime || undefined;
     _instance.unread = _instance.unread || false;
@@ -14602,32 +14585,29 @@ export class Notification implements GrpcMessage {
           _instance.senderId = _reader.readInt64String();
           break;
         case 3:
-          _instance.receiverId = _reader.readInt64String();
-          break;
-        case 4:
           _instance.createTime = new googleProtobuf000.Timestamp();
           _reader.readMessage(
             _instance.createTime,
             googleProtobuf000.Timestamp.deserializeBinaryFromReader
           );
           break;
-        case 5:
+        case 4:
           _instance.updateTime = new googleProtobuf000.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
             googleProtobuf000.Timestamp.deserializeBinaryFromReader
           );
           break;
-        case 6:
+        case 5:
           _instance.unread = _reader.readBool();
           break;
-        case 7:
+        case 6:
           _instance.content = _reader.readString();
           break;
-        case 8:
+        case 7:
           _instance.imagePreview = _reader.readString();
           break;
-        case 9:
+        case 8:
           _instance.link = _reader.readString();
           break;
         default:
@@ -14653,40 +14633,36 @@ export class Notification implements GrpcMessage {
     if (_instance.senderId) {
       _writer.writeInt64String(2, _instance.senderId);
     }
-    if (_instance.receiverId) {
-      _writer.writeInt64String(3, _instance.receiverId);
-    }
     if (_instance.createTime) {
       _writer.writeMessage(
-        4,
+        3,
         _instance.createTime as any,
         googleProtobuf000.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
-        5,
+        4,
         _instance.updateTime as any,
         googleProtobuf000.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.unread) {
-      _writer.writeBool(6, _instance.unread);
+      _writer.writeBool(5, _instance.unread);
     }
     if (_instance.content) {
-      _writer.writeString(7, _instance.content);
+      _writer.writeString(6, _instance.content);
     }
     if (_instance.imagePreview) {
-      _writer.writeString(8, _instance.imagePreview);
+      _writer.writeString(7, _instance.imagePreview);
     }
     if (_instance.link) {
-      _writer.writeString(9, _instance.link);
+      _writer.writeString(8, _instance.link);
     }
   }
 
   private _name?: string;
   private _senderId?: string;
-  private _receiverId?: string;
   private _createTime?: googleProtobuf000.Timestamp;
   private _updateTime?: googleProtobuf000.Timestamp;
   private _unread?: boolean;
@@ -14702,7 +14678,6 @@ export class Notification implements GrpcMessage {
     _value = _value || {};
     this.name = _value.name;
     this.senderId = _value.senderId;
-    this.receiverId = _value.receiverId;
     this.createTime = _value.createTime
       ? new googleProtobuf000.Timestamp(_value.createTime)
       : undefined;
@@ -14726,12 +14701,6 @@ export class Notification implements GrpcMessage {
   }
   set senderId(value: string | undefined) {
     this._senderId = value;
-  }
-  get receiverId(): string | undefined {
-    return this._receiverId;
-  }
-  set receiverId(value: string | undefined) {
-    this._receiverId = value;
   }
   get createTime(): googleProtobuf000.Timestamp | undefined {
     return this._createTime;
@@ -14787,7 +14756,6 @@ export class Notification implements GrpcMessage {
     return {
       name: this.name,
       senderId: this.senderId,
-      receiverId: this.receiverId,
       createTime: this.createTime ? this.createTime.toObject() : undefined,
       updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
       unread: this.unread,
@@ -14816,7 +14784,6 @@ export class Notification implements GrpcMessage {
     return {
       name: this.name,
       senderId: this.senderId,
-      receiverId: this.receiverId,
       createTime: this.createTime
         ? this.createTime.toProtobufJSON(options)
         : null,
@@ -14837,7 +14804,6 @@ export module Notification {
   export interface AsObject {
     name?: string;
     senderId?: string;
-    receiverId?: string;
     createTime?: googleProtobuf000.Timestamp.AsObject;
     updateTime?: googleProtobuf000.Timestamp.AsObject;
     unread?: boolean;
@@ -14852,7 +14818,6 @@ export module Notification {
   export interface AsProtobufJSON {
     name?: string;
     senderId?: string;
-    receiverId?: string;
     createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
     updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
     unread?: boolean;

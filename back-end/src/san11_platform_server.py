@@ -22,6 +22,7 @@ from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
 from handler.model.model_notification import ModelNotification
 from handler.model.model_reply import ModelReply
+from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.package import Package
 from handler.model.user import User
@@ -282,6 +283,32 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         handler_context = HandlerContext.from_service_context(context)
         return self.notification_handler.update_notification(source, dest, update_mask, handler_context).to_pb()
 
+    # Tags
+    @iam_util.assert_admin
+    def CreateTag(self, request, context):
+        parent, tag = request.parent, ModelTag.from_pb(request.tag)
+        handler_context = HandlerContext.from_service_context(context)
+        created_tag = self.tag_handler.create_tag(
+            parent, tag, handler_context)
+        return created_tag.to_pb()
+
+    @iam_util.assert_admin
+    def DeleteTag(self, request, context):
+        tag = ModelTag.from_name(request.name)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.tag_handler.delete_tag(tag, handler_context).to_pb()
+
+    def ListTags(self, request, context):
+        handler_context = HandlerContext.from_service_context(context)
+        tags, next_page_token = self.tag_handler.list_tags(
+            request=request,
+            handler_context=handler_context,
+        )
+        return pb.ListTagsResponse(
+            tags=[tag.to_pb() for tag in tags],
+            next_page_token=next_page_token,
+        )
+
     #############
     # Old model #
     #############
@@ -349,16 +376,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def GetAdminMessage(self, request, context):
         return self.admin_handler.get_admin_message(request, context)
-
-    # Tags
-    def CreateTag(self, request, context):
-        return self.tag_handler.create_tag(request, context)
-
-    def DeleteTag(self, request, context):
-        return self.tag_handler.delete_tag(request, context)
-
-    def ListTags(self, request, context):
-        return self.tag_handler.list_tags(request, context)
 
 
 def serve():

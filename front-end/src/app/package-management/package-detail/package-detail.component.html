@@ -4,12 +4,13 @@
         <div class="heading show-border-dev">
             <div class="back-btn-div">
                 <button mat-button (click)="onBack()" class="back-btn">
-                <span class="material-icons back-btn-span">
-                    arrow_back
-                </span>
-            </button>
+                    <span class="material-icons back-btn-span">
+                        arrow_back
+                    </span>
+                </button>
             </div>
-            <div #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;"> {{this.package.packageName}} </div>
+            <div #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;">
+                {{this.package.packageName}} </div>
 
             <span class="example-spacer"></span>
 
@@ -26,12 +27,13 @@
 
                 <div class="author-info show-border-dev">
                     <div class="heading-1">作者</div>
-                    <div class="author-card show-border-dev" style="display: flex;" (click)="onAuthorClick()">
-                        <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage = false;" class="author-image">
+                    <div class="author-card show-border-dev" style="display:
+                        flex;" (click)="onAuthorClick()">
+                        <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage= false;" class="author-image">
 
                         <span class="author-name">
-                                {{this.author.username}}
-                            </span>
+                            {{this.author.username}}
+                        </span>
                     </div>
                 </div>
 
@@ -52,13 +54,12 @@
                         <div class="content">{{this.package.downloadCount}}</div>
                     </div>
                     <!-- <mat-icon class="icon" matTooltip="总下载量" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon> -->
-
                     <div *ngIf="true">
                         <div style="margin-bottom: 5px;">
                             <div class="heading-1">标签</div>
                             <mat-chip-list #chipList>
                                 <mat-chip *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
-                                    {{tag.name}}
+                                    {{tag.tagName}}
                                     <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
                                 </mat-chip>
                             </mat-chip-list>
@@ -87,11 +88,12 @@
                     <div *ngIf="(isAdmin() || isAuthor())" class="package-controller top-border show-border-dev">
                         <div class="admin-zone" *ngIf="isAdmin()">
                             <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===2" (click)="onApprove()">通过审核</button>
-                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===1 || this.package.status===3" (click)="onFlipHide()">{{this.package.status===3 ? '取消隐藏' : '隐藏'}}</button>
+                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===1 ||
+                                this.package.status===3" (click)="onFlipHide()">{{this.package.status===3
+                                ? '取消隐藏' : '隐藏'}}</button>
                         </div>
 
                         <span [hidden]="!adminZone" class="example-spacer"></span>
-
                         <span class="example-spacer"></span>
                         <div class="author-zone" *ngIf="authorZone">
 
@@ -123,8 +125,9 @@
             </div>
         </div>
 
-        <div class="version-info top-border show-border-dev ">
-            <app-version-panel [package]="this.package " (downloadEvent)="onChildDownload($event) "> </app-version-panel>
+        <div class="version-info top-border show-border-dev">
+            <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)">
+            </app-version-panel>
         </div>
 
         <!-- <app-comment-board [parent]="this.getPackageUrl()" [package]="this.package" class="comment-section"></app-comment-board> -->

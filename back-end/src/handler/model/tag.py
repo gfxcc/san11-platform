@@ -43,7 +43,7 @@ class Tag(ResourceMixin, TrackLifecycle):
 
     @classmethod
     def db_table(cls) -> str:
-        return 'tags'
+        return 'tags_legacy'
 
     @classmethod
     def db_fields(cls):

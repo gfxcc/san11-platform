@@ -1,26 +1,19 @@
-import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { GalleryItem, ImageItem, GalleryComponent } from 'ng-gallery';
-import { GlobalConstants } from '../../common/global-constants'
-import { CreateImageRequest, FieldMask, ListPackagesRequest, Package, UpdatePasswordRequest, UpdateUserRequest, User } from "../../../proto/san11-platform.pb";
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GalleryComponent, ImageItem } from 'ng-gallery';
+import { CreateImageRequest, FieldMask, GetUserRequest, ListPackagesRequest, Package, UpdatePasswordRequest, UpdateUserRequest, User } from "../../../proto/san11-platform.pb";
+import { LoadingComponent } from '../../common/components/loading/loading.component';
+import { GlobalConstants } from '../../common/global-constants';
+import { NotificationService } from "../../common/notification.service";
+import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
+import { UploadService } from '../../service/upload.service';
 import { getFullUrl } from "../../utils/resrouce_util";
 import { getUserUrl } from "../../utils/user_util";
-import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
-import { NotificationService } from "../../common/notification.service";
-import { TextInputDialogComponent, TextData } from "../../common/components/text-input-dialog/text-input-dialog.component";
-import { LoadingComponent } from '../../common/components/loading/loading.component'
 
-import { GetUserRequest } from "../../../proto/san11-platform.pb";
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 
-import { isAdmin } from "../../utils/user_util";
-import { increment } from '../../utils/number_util';
-import { getPackageUrl } from "../../utils/package_util";
-import { PackageDetailComponent } from '../../package-management/package-detail/package-detail.component';
-import { UploadService } from '../../service/upload.service';
 
 
 export interface UserData {
@@ -206,7 +199,7 @@ export class UserDetailComponent implements OnInit {
 
   onPackageClick(san11Package: Package) {
     // this.dialogRef.close();
-    this.router.navigate(['categories', san11Package.categoryId, 'packages', san11Package.packageId]);
+    this.router.navigate(san11Package.name.split('/'));
     // this.san11pkService.getPackage(packageId).subscribe(
     //   san11Package => {
     //     this.dialog.open(PackageDetailComponent, {
@@ -224,11 +217,6 @@ export class UserDetailComponent implements OnInit {
 
   iAmTheUser() {
     return this.user.userId === localStorage.getItem('userId');
-  }
-  // import functions
-
-  getLinkForPackage(san11Package: Package) {
-    return 'categories/' + san11Package.categoryId + '/packages/' + san11Package.packageId;
   }
 }
 

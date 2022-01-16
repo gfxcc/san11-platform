@@ -66,13 +66,11 @@ export class San11PlatformServiceService {
   }
   // packages
 
-  createPackage(san11Package: Package): Observable<Package> {
-    const request = new CreatePackageRequest({ package: san11Package });
+  createPackage(request: CreatePackageRequest): Observable<Package> {
     return this.severClient.createPackage(request, this.getMetadata());
   }
 
-  deletePackage(san11Package: Package): Observable<Empty> {
-    const request = new DeletePackageRequest({ package: new Package({ packageId: san11Package.packageId }) });
+  deletePackage(request: DeletePackageRequest): Observable<Empty> {
     return this.severClient.deletePackage(request, this.getMetadata());
   }
 

@@ -19,3 +19,8 @@ export function getAcceptFileType(categoryId: string, tag: string): string {
     }
     return '';
 }
+
+export function parseName(name: string): [string, string, number] {
+    const { groups: { parent, collection, resource_id } } = /((?<parent>.+)\/)?(?<collection>[a-zA-Z0-9]+)\/(?<resource_id>[0-9]+)/.exec(name)
+    return [parent, collection, Number(resource_id)]
+}

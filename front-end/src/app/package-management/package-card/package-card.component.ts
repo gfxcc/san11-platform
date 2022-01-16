@@ -1,30 +1,18 @@
-import { Component, OnInit, Input, Inject, ElementRef, ViewChild, Renderer2 } from '@angular/core';
-import { Package } from '../../../proto/san11-platform.pb'
-import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Observable } from 'rxjs'
-import { HttpEventType } from "@angular/common/http";
-
-import * as FileSaver from 'file-saver';
-
+import { Component, Inject, Input, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-
-import { GetUserRequest } from "../../../proto/san11-platform.pb";
-import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { getCategoryId } from 'src/app/utils/package_util';
+import { DeletePackageRequest, GetUserRequest, Package, ResourceState, User } from '../../../proto/san11-platform.pb';
 import { NotificationService } from "../../common/notification.service";
-import { Binary, Version } from '../../../proto/san11-platform.pb'
-import { Url } from 'url';
-
-import { GlobalConstants } from '../../common/global-constants'
-import { getPackageUrl } from '../../utils/package_util'
-import { getBinaryFilename } from '../../utils/binary_util'
-
-import { LoadingComponent } from "../../common/components/loading/loading.component";
 import { DownloadService } from "../../service/download.service";
-import { saveAs } from 'file-saver'
-import { PackageDetailComponent } from "../package-detail/package-detail.component";
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { getFullUrl } from "../../utils/resrouce_util";
+
+
+
+
+
 
 
 @Component({
@@ -35,6 +23,7 @@ import { getFullUrl } from "../../utils/resrouce_util";
 export class PackageCardComponent implements OnInit {
   @Input() package: Package;
 
+  author: User;
   authorName: string;
   authorImage: string;
 
@@ -66,17 +55,18 @@ export class PackageCardComponent implements OnInit {
   ngOnInit(): void {
     this.san11PlatformServiceService.getUser(new GetUserRequest({ userId: this.package.authorId })).subscribe(
       user => {
+        this.author = user;
         this.authorName = user.username;
+
+        if (this.author.imageUrl != '') {
+          this.authorImage = getFullUrl(this.author.imageUrl);
+        } else {
+          this.authorImage = '../../../assets/images/zhuge.jpg';
+        }
       }
     );
     this.loadImage();
-    this.acceptFileType = this.package.categoryId === '1' ? '.scp, .scp-en' : '.rar';
-
-    if (this.package.authorImageUrl != '') {
-      this.authorImage = getFullUrl(this.package.authorImageUrl);
-    } else {
-      this.authorImage = '../../../assets/images/zhuge.jpg';
-    }
+    this.acceptFileType = getCategoryId(this.package.name) === 1 ? '.scp, .scp-en' : '.rar';
   }
 
   ngAfterViewInit() {
@@ -101,11 +91,12 @@ export class PackageCardComponent implements OnInit {
   }
 
   onClick() {
-    this.router.navigate(['categories', this.package.categoryId, 'packages', this.package.packageId]);
+    console.log(this.package.name.split('/'));
+    this.router.navigate(this.package.name.split('/'));
   }
 
   getStatusName() {
-    return Package.Status[this.package.status];
+    return ResourceState[this.package.state];
   }
 
 }
@@ -131,7 +122,9 @@ export class DeleteDialog {
   }
 
   onDeleteConfirm() {
-    this.san11PlatformServiceService.deletePackage(this.package).subscribe(
+    this.san11PlatformServiceService.deletePackage(new DeletePackageRequest({
+      name: this.package.name,
+    })).subscribe(
       value => {
         this.notificationService.success('删除成功');
         this.router.navigate(['/']).then(() => {

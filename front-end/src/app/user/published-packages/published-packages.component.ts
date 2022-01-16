@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { User, ListPackagesRequest, Package } from '../../../proto/san11-platform.pb';
+import { ListPackagesRequest, Package } from '../../../proto/san11-platform.pb';
 import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
@@ -48,6 +47,6 @@ export class PublishedPackagesComponent implements OnInit {
   }
 
   onPackageClick(san11Package: Package) {
-    this.router.navigate(['categories', san11Package.categoryId, 'packages', san11Package.packageId]);
+    this.router.navigate(san11Package.name.split('/'));
   }
 }
