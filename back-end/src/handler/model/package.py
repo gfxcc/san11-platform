@@ -162,7 +162,7 @@ class Package(ResourceMixin, TrackLifecycle):
             author_id=self.author_id,
             image_urls=self.image_urls,
             download_count=self.download_count,
-            tags=[ModelTag.from_id(tag_id).to_pb() for tag_id in self.tag_ids],
+            # tags=[ModelTag.from_id(tag_id).to_pb() for tag_id in self.tag_ids],
             update_time=get_age(self.update_time or self.create_time),
             name=self.name,
         )
