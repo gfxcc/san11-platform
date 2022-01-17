@@ -67,14 +67,7 @@ class PackageHandler:
                               packages)
         return packages, next_page_token
 
-    def delete_package(self, request, context):
-        package = Package.from_id(request.package.package_id)
-
-        auth = Authenticator.from_context(context)
-        if not auth.canDeletePackage(package):
-            context.abort(code=PermissionDenied().code,
-                          details=PermissionDenied().message)
-
+    def delete_package(self, package: ModelPackage, handler_context):
         for image_url in package.image_urls:
             try:
                 Image.from_url(image_url).delete()
@@ -83,21 +76,19 @@ class PackageHandler:
 
         for binary in ModelBinary.list(ListOptions(parent=package.name))[0]:
             try:
-                binary.delete(user_id=auth.session.user.user_id)
+                binary.delete(user_id=handler_context.user.user_id)
             except Exception as err:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
 
         for thread in ModelThread.list(ListOptions(parent=package.name))[0]:
             try:
-                thread.delete(user_id=auth.session.user.user_id)
+                thread.delete(user_id=handler_context.user.user_id)
             except Exception as err:
                 logger.error(f'Failed to delete {thread} under {self}: {err}')
 
-        package.delete(user_id=auth.session.user.user_id)
-        logger.info(f'Package is deleted: {package}')
-
-        return pb.Empty()
+        package.delete(user_id=handler_context.user.user_id)
+        return package
 
     def search_packages(self, request, context):
         return pb.SearchPackagesResponse(

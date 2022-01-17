@@ -345,8 +345,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         handler_context = HandlerContext.from_service_context(context)
         return self.package_handler.update_package(package, update_package, update_mask, handler_context).to_pb()
 
+    @iam_util.assert_admin
     def DeletePackage(self, request, context):
-        return self.package_handler.delete_package(request, context)
+        package = ModelPackage.from_name(request.name)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.package_handler.delete_package(package, handler_context).to_pb()
 
     def SearchPackages(self, request, context):
         return self.package_handler.search_packages(request, context)
