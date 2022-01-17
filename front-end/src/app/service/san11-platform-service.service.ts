@@ -70,17 +70,16 @@ export class San11PlatformServiceService {
     return this.severClient.createPackage(request, this.getMetadata());
   }
 
+  getPackage(request: GetPackageRequest): Observable<Package> {
+    return this.severClient.getPackage(request, this.getMetadata());
+  }
+
   deletePackage(request: DeletePackageRequest): Observable<Empty> {
     return this.severClient.deletePackage(request, this.getMetadata());
   }
 
   updatePackage(request: UpdatePackageRequest): Observable<Package> {
     return this.severClient.updatePackage(request, this.getMetadata());
-  }
-
-  getPackage(packageId: string): Observable<Package> {
-    const request = new GetPackageRequest({ packageId: packageId });
-    return this.severClient.getPackage(request, this.getMetadata());
   }
 
   listPackages(request: ListPackagesRequest): Observable<ListPackagesResponse> {

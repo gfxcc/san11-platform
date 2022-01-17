@@ -54,19 +54,22 @@ export class DashboardComponent implements OnInit {
         this.searchPackages(query);
       } else if (categoryId != undefined) {
         this.loadPackages(new ListPackagesRequest({
-          categoryId: ap.params['categoryId'],
-          tagId: ap.qparams['tagId']
+          parent: `categories/${ap.params['categoryId']}`,
+          filter: `tag=${ap.qparams['tagId']}`,
         }));
       } else if (userId != undefined) {
-        this.loadPackages(new ListPackagesRequest({
-          authorId: userId
-        }));
+        // TODO: Reimplement this with SearchPackage.
+        // this.loadPackages(new ListPackagesRequest({
+        //   authorId: userId
+
+        //   filter: `tag=${ap.qparams['tagId']}`,
+        // }));
       }
     });
   }
 
   loadPackages(request: ListPackagesRequest): void {
-    this._eventEmiter.sendMessage({ categoryId: request.categoryId });
+    // this._eventEmiter.sendMessage({ categoryId: request.categoryId });
 
     console.log(request);
     this.san11pkService.listPackages(request).subscribe(

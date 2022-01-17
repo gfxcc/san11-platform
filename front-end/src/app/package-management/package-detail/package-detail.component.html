@@ -69,8 +69,8 @@
                             <mat-form-field style="width: 100%;">
                                 <mat-label>新标签...</mat-label>
                                 <mat-select required (selectionChange)="newTagSelected($event.value)">
-                                    <mat-option *ngFor="let tag of this.allTags" [value]="tag.tagId">
-                                        {{tag.name}}
+                                    <mat-option *ngFor="let tag of this.allTags" [value]="tag">
+                                        {{tag.tagName}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -87,9 +87,9 @@
 
                     <div *ngIf="(isAdmin() || isAuthor())" class="package-controller top-border show-border-dev">
                         <div class="admin-zone" *ngIf="isAdmin()">
-                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===2" (click)="onApprove()">通过审核</button>
-                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.status===1 ||
-                                this.package.status===3" (click)="onFlipHide()">{{this.package.status===3
+                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.state===2" (click)="onApprove()">通过审核</button>
+                            <button mat-button mat-stroked-button color="accent" *ngIf="this.package.state===1 ||
+                                this.package.state===3" (click)="onFlipHide()">{{this.package.status===3
                                 ? '取消隐藏' : '隐藏'}}</button>
                         </div>
 

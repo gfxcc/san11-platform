@@ -91,7 +91,6 @@ export class PackageCardComponent implements OnInit {
   }
 
   onClick() {
-    console.log(this.package.name.split('/'));
     this.router.navigate(this.package.name.split('/'));
   }
 

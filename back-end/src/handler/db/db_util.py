@@ -109,6 +109,16 @@ def get_db_fields_assignment_str(fields: Iterable[str]) -> str:
     return ', '.join(f'{field}=%({field})s' for field in fields)
 
 
+def auto_adjust_resource_id_next_val(table: str) -> None:
+    '''
+    Adjust the `next_val` of field `resource_id` to the next available values. (max + 1).
+    WARNING: Concurrent write access may cause issue. Block new row creation 
+    before calling this function.
+    '''
+    sql = f"SELECT setval('{table}_resource_id_seq', (SELECT MAX(resource_id) FROM {table})+1);"
+    run_sql_with_param(sql, {})
+
+
 def sanitize_str(input: str) -> str:
     '''
     Remove characters which could be used for SQL injection.

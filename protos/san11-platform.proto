@@ -12,7 +12,7 @@ service RouteGuide {
   rpc GetPackage(GetPackageRequest) returns (Package) {}
   rpc ListPackages(ListPackagesRequest) returns (ListPackagesResponse) {}
   rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
-  rpc DeletePackage(DeletePackageRequest) returns (Empty) {}
+  rpc DeletePackage(DeletePackageRequest) returns (Package) {}
 
   rpc SearchPackages(SearchPackagesRequest) returns (SearchPackagesResponse) {}
 
@@ -92,6 +92,10 @@ message CreatePackageRequest {
     Package package = 2;
 }
 
+message GetPackageRequest {
+    string name = 1; // E.g. `categories/123/packages/456`
+}
+
 message UpdatePackageRequest {
     Package package = 1;
     FieldMask update_mask = 2;
@@ -101,16 +105,20 @@ message DeletePackageRequest {
     string name = 1;
 }
 
-message GetPackageRequest {
-    int64 package_id = 1;
-}
-
 message ListPackagesRequest {
-    int64 page_size = 1;
-    string page_token = 2;
-    int64 category_id = 3;
-    int64 author_id = 4;
-    int64 tag_id = 5;
+    // Supported values:
+    // `categories/xxx/packages/xxx`
+    string parent = 1;
+    int64 page_size = 2;
+    string page_token = 3;
+
+    // Values should be a comma separated list of fields. For example: "foo,bar".
+    // The default sorting order is ascending. To specify descending order for a field, users append a " desc" suffix;
+    //   for example: "foo desc, bar".
+    string order_by = 4;
+
+    // Support syntax like `field_name = value`
+    string filter = 5;
 }
 
 message ListPackagesResponse {

@@ -111,7 +111,12 @@ class ProtoModelBase(ABC):
                 continue
 
             if attribute.metadata[base_core.REPEATED]:
-                getattr(proto_model, path)[:] = proto_value
+                if field_descriptor.type == descriptor.FieldDescriptor.TYPE_MESSAGE:
+                    del getattr(proto_model, path)[:]
+                    for item in proto_value:
+                        getattr(proto_model, path).append(item)
+                else:
+                    getattr(proto_model, path)[:] = proto_value
             else:
                 if field_descriptor.type == descriptor.FieldDescriptor.TYPE_MESSAGE:
                     getattr(proto_model, path).CopyFrom(proto_value)

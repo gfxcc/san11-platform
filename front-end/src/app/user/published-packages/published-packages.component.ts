@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ListPackagesRequest, Package } from '../../../proto/san11-platform.pb';
+import { Package } from '../../../proto/san11-platform.pb';
 import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
@@ -34,16 +34,17 @@ export class PublishedPackagesComponent implements OnInit {
   }
 
   loadPackageList(userId: string) {
-    this.san11pkService.listPackages(new ListPackagesRequest({ authorId: userId })).subscribe(
-      resp => {
-        console.log(resp);
-        this.dataSource = new MatTableDataSource(resp.packages);
-        this.dataSource.paginator = this.paginator;
-      },
-      error => {
-        this.notificationService.warn('获取工具列表 失败: ' + error.statusMessage);
-      }
-    );
+    // TODO: Reimplement this logic with SearchPackage.
+    // this.san11pkService.listPackages(new ListPackagesRequest({ authorId: userId })).subscribe(
+    //   resp => {
+    //     console.log(resp);
+    //     this.dataSource = new MatTableDataSource(resp.packages);
+    //     this.dataSource.paginator = this.paginator;
+    //   },
+    //   error => {
+    //     this.notificationService.warn('获取工具列表 失败: ' + error.statusMessage);
+    //   }
+    // );
   }
 
   onPackageClick(san11Package: Package) {

@@ -21,6 +21,7 @@ from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
 from handler.model.model_notification import ModelNotification
+from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
@@ -29,7 +30,8 @@ from handler.model.user import User
 from handler.protos import san11_platform_pb2 as pb
 from handler.protos import san11_platform_pb2_grpc
 from handler.thread_handler import ThreadHandler
-from handler.util.resource_parser import ResourceName, find_resource
+from handler.util.name_util import ResourceName
+from handler.util.resource_parser import find_resource
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -309,27 +311,49 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
 
-    #############
-    # Old model #
-    #############
-
+    # package
+    @iam_util.assert_login
     def CreatePackage(self, request, context):
-        return self.package_handler.create_package(request, context)
-
-    def UpdatePackage(self, request, context):
-        return self.package_handler.update_package(request, context)
-
+        parent, package = request.parent, ModelPackage.from_pb(request.package)
+        handler_context = HandlerContext.from_service_context(context)
+        created_package = self.package_handler.create_package(
+            parent, package, handler_context)
+        return created_package.to_pb()
+    
     def GetPackage(self, request, context):
-        return self.package_handler.get_package(request, context)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.package_handler.get_package(request.name, handler_context).to_pb()
 
     def ListPackages(self, request, context):
-        return self.package_handler.list_packages(request, context)
+        handler_context = HandlerContext.from_service_context(context)
+        packages, next_page_token = self.package_handler.list_packages(
+            request=request,
+            handler_context=handler_context,
+        )
+        ret = pb.ListPackagesResponse(
+            packages=[package.to_pb() for package in packages],
+            next_page_token=next_page_token,
+        )
+        return ret
+
+
+    @iam_util.assert_resource_owner('{package.name}')
+    def UpdatePackage(self, request, context):
+        update_package, update_mask = ModelPackage.from_pb(request.package), \
+            FieldMask.from_pb(request.update_mask)
+        package = ModelPackage.from_name(request.package.name)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.package_handler.update_package(package, update_package, update_mask, handler_context).to_pb()
 
     def DeletePackage(self, request, context):
         return self.package_handler.delete_package(request, context)
 
     def SearchPackages(self, request, context):
         return self.package_handler.search_packages(request, context)
+    #############
+    # Old model #
+    #############
+
 
     # image
     def CreateImage(self, request, context):

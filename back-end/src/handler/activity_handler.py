@@ -7,12 +7,13 @@ from handler.model.model_comment import ModelComment
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.resource import ResourceView
+from handler.util.name_util import ResourceName
 
 from .common.exception import NotFound
 from .model.activity import Activity
 from .model.package import Package
 from .protos import san11_platform_pb2
-from .util.resource_parser import find_resource, parse_name
+from .util.resource_parser import find_resource
 from .util.time_util import get_age
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -29,8 +30,7 @@ class ActivityHandler:
             try:
                 resource = find_resource(activity.resource_name)
                 if isinstance(resource, ModelBinary):
-                    parent, _, _ = parse_name(resource.name)
-                    package = Package.from_name(parent)
+                    package = Package.from_name(str(ResourceName.from_str(resource.name).parent))
                     resource_view = package.view
                     resource_view.display_name = f'{resource_view.display_name}-{resource.version}'
                 elif isinstance(resource, ModelThread):

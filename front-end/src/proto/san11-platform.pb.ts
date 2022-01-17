@@ -197,6 +197,145 @@ export module CreatePackageRequest {
 }
 
 /**
+ * Message implementation for routeguide.GetPackageRequest
+ */
+export class GetPackageRequest implements GrpcMessage {
+  static id = 'routeguide.GetPackageRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new GetPackageRequest();
+    GetPackageRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: GetPackageRequest) {
+    _instance.name = _instance.name || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: GetPackageRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.name = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    GetPackageRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: GetPackageRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
+    }
+  }
+
+  private _name?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of GetPackageRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<GetPackageRequest.AsObject>) {
+    _value = _value || {};
+    this.name = _value.name;
+    GetPackageRequest.refineValues(this);
+  }
+  get name(): string | undefined {
+    return this._name;
+  }
+  set name(value: string | undefined) {
+    this._name = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    GetPackageRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): GetPackageRequest.AsObject {
+    return {
+      name: this.name
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): GetPackageRequest.AsProtobufJSON {
+    return {
+      name: this.name
+    };
+  }
+}
+export module GetPackageRequest {
+  /**
+   * Standard JavaScript object representation for GetPackageRequest
+   */
+  export interface AsObject {
+    name?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for GetPackageRequest
+   */
+  export interface AsProtobufJSON {
+    name?: string;
+  }
+}
+
+/**
  * Message implementation for routeguide.UpdatePackageRequest
  */
 export class UpdatePackageRequest implements GrpcMessage {
@@ -514,145 +653,6 @@ export module DeletePackageRequest {
 }
 
 /**
- * Message implementation for routeguide.GetPackageRequest
- */
-export class GetPackageRequest implements GrpcMessage {
-  static id = 'routeguide.GetPackageRequest';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new GetPackageRequest();
-    GetPackageRequest.deserializeBinaryFromReader(
-      instance,
-      new BinaryReader(bytes)
-    );
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: GetPackageRequest) {
-    _instance.packageId = _instance.packageId || '0';
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(
-    _instance: GetPackageRequest,
-    _reader: BinaryReader
-  ) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.packageId = _reader.readInt64String();
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    GetPackageRequest.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(
-    _instance: GetPackageRequest,
-    _writer: BinaryWriter
-  ) {
-    if (_instance.packageId) {
-      _writer.writeInt64String(1, _instance.packageId);
-    }
-  }
-
-  private _packageId?: string;
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of GetPackageRequest to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<GetPackageRequest.AsObject>) {
-    _value = _value || {};
-    this.packageId = _value.packageId;
-    GetPackageRequest.refineValues(this);
-  }
-  get packageId(): string | undefined {
-    return this._packageId;
-  }
-  set packageId(value: string | undefined) {
-    this._packageId = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    GetPackageRequest.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): GetPackageRequest.AsObject {
-    return {
-      packageId: this.packageId
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): GetPackageRequest.AsProtobufJSON {
-    return {
-      packageId: this.packageId
-    };
-  }
-}
-export module GetPackageRequest {
-  /**
-   * Standard JavaScript object representation for GetPackageRequest
-   */
-  export interface AsObject {
-    packageId?: string;
-  }
-
-  /**
-   * Protobuf JSON representation for GetPackageRequest
-   */
-  export interface AsProtobufJSON {
-    packageId?: string;
-  }
-}
-
-/**
  * Message implementation for routeguide.ListPackagesRequest
  */
 export class ListPackagesRequest implements GrpcMessage {
@@ -676,11 +676,11 @@ export class ListPackagesRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: ListPackagesRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
-    _instance.categoryId = _instance.categoryId || '0';
-    _instance.authorId = _instance.authorId || '0';
-    _instance.tagId = _instance.tagId || '0';
+    _instance.orderBy = _instance.orderBy || '';
+    _instance.filter = _instance.filter || '';
   }
 
   /**
@@ -697,19 +697,19 @@ export class ListPackagesRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.pageSize = _reader.readInt64String();
+          _instance.parent = _reader.readString();
           break;
         case 2:
-          _instance.pageToken = _reader.readString();
+          _instance.pageSize = _reader.readInt64String();
           break;
         case 3:
-          _instance.categoryId = _reader.readInt64String();
+          _instance.pageToken = _reader.readString();
           break;
         case 4:
-          _instance.authorId = _reader.readInt64String();
+          _instance.orderBy = _reader.readString();
           break;
         case 5:
-          _instance.tagId = _reader.readInt64String();
+          _instance.filter = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -728,28 +728,28 @@ export class ListPackagesRequest implements GrpcMessage {
     _instance: ListPackagesRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.pageSize) {
-      _writer.writeInt64String(1, _instance.pageSize);
+      _writer.writeInt64String(2, _instance.pageSize);
     }
     if (_instance.pageToken) {
-      _writer.writeString(2, _instance.pageToken);
+      _writer.writeString(3, _instance.pageToken);
     }
-    if (_instance.categoryId) {
-      _writer.writeInt64String(3, _instance.categoryId);
+    if (_instance.orderBy) {
+      _writer.writeString(4, _instance.orderBy);
     }
-    if (_instance.authorId) {
-      _writer.writeInt64String(4, _instance.authorId);
-    }
-    if (_instance.tagId) {
-      _writer.writeInt64String(5, _instance.tagId);
+    if (_instance.filter) {
+      _writer.writeString(5, _instance.filter);
     }
   }
 
+  private _parent?: string;
   private _pageSize?: string;
   private _pageToken?: string;
-  private _categoryId?: string;
-  private _authorId?: string;
-  private _tagId?: string;
+  private _orderBy?: string;
+  private _filter?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -757,12 +757,18 @@ export class ListPackagesRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListPackagesRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
-    this.categoryId = _value.categoryId;
-    this.authorId = _value.authorId;
-    this.tagId = _value.tagId;
+    this.orderBy = _value.orderBy;
+    this.filter = _value.filter;
     ListPackagesRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get pageSize(): string | undefined {
     return this._pageSize;
@@ -776,23 +782,17 @@ export class ListPackagesRequest implements GrpcMessage {
   set pageToken(value: string | undefined) {
     this._pageToken = value;
   }
-  get categoryId(): string | undefined {
-    return this._categoryId;
+  get orderBy(): string | undefined {
+    return this._orderBy;
   }
-  set categoryId(value: string | undefined) {
-    this._categoryId = value;
+  set orderBy(value: string | undefined) {
+    this._orderBy = value;
   }
-  get authorId(): string | undefined {
-    return this._authorId;
+  get filter(): string | undefined {
+    return this._filter;
   }
-  set authorId(value: string | undefined) {
-    this._authorId = value;
-  }
-  get tagId(): string | undefined {
-    return this._tagId;
-  }
-  set tagId(value: string | undefined) {
-    this._tagId = value;
+  set filter(value: string | undefined) {
+    this._filter = value;
   }
 
   /**
@@ -810,11 +810,11 @@ export class ListPackagesRequest implements GrpcMessage {
    */
   toObject(): ListPackagesRequest.AsObject {
     return {
+      parent: this.parent,
       pageSize: this.pageSize,
       pageToken: this.pageToken,
-      categoryId: this.categoryId,
-      authorId: this.authorId,
-      tagId: this.tagId
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 
@@ -835,11 +835,11 @@ export class ListPackagesRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListPackagesRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       pageSize: this.pageSize,
       pageToken: this.pageToken,
-      categoryId: this.categoryId,
-      authorId: this.authorId,
-      tagId: this.tagId
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 }
@@ -848,22 +848,22 @@ export module ListPackagesRequest {
    * Standard JavaScript object representation for ListPackagesRequest
    */
   export interface AsObject {
+    parent?: string;
     pageSize?: string;
     pageToken?: string;
-    categoryId?: string;
-    authorId?: string;
-    tagId?: string;
+    orderBy?: string;
+    filter?: string;
   }
 
   /**
    * Protobuf JSON representation for ListPackagesRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     pageSize?: string;
     pageToken?: string;
-    categoryId?: string;
-    authorId?: string;
-    tagId?: string;
+    orderBy?: string;
+    filter?: string;
   }
 }
 

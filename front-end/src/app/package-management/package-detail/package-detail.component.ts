@@ -67,8 +67,6 @@ export class PackageDetailComponent implements OnInit {
   tagCanEdit: boolean;
 
   constructor(
-    // public dialogRef: MatDialogRef<PackageDetailComponent>,
-    // @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private route: ActivatedRoute,
     private router: Router,
     public san11pkService: San11PlatformServiceService,
@@ -84,7 +82,8 @@ export class PackageDetailComponent implements OnInit {
     this.route.data.subscribe(
       (data) => {
         this.package = data.package;
-        this._eventEmiter.sendMessage({ categoryId: getCategoryId(this.package.name).toString() });
+        // Disable the logic which is used to set sidebar when directly load a packge-details from a link.
+        // this._eventEmiter.sendMessage({ categoryId: getCategoryId(this.package.name).toString() });
       }
     );
 
@@ -338,14 +337,16 @@ export class PackageDetailComponent implements OnInit {
     this.descEditor_updated = true;
   }
 
-  newTagSelected(tagId: string) {
+  newTagSelected(newTag: Tag) {
     for (const tag of this.package.tags) {
-      if (tag.name === tagId) {
+      if (tag.name === newTag.name) {
         return;
       }
     }
-    let updateTags = this.package.tags.map(x => new Tag({ name: x.name }));
-    updateTags.push(new Tag({ name: tagId }));
+    let updateTags = this.package.tags;
+    updateTags.push(newTag);
+
+    console.log(updateTags);
 
     const request = new UpdatePackageRequest({
       package: new Package({
@@ -474,7 +475,7 @@ export class PackageDetailComponent implements OnInit {
         state: this.package.state === ResourceState.HIDDEN ? ResourceState.NORMAL : ResourceState.HIDDEN
       }),
       updateMask: new FieldMask({
-        paths: ['status']
+        paths: ['state']
       })
     });
     this.san11pkService.updatePackage(request).subscribe(
@@ -515,7 +516,7 @@ export class PackageDetailComponent implements OnInit {
             state: ResourceState.SCHEDULED_DELETE,
           }),
           updateMask: new FieldMask({
-            paths: ['status']
+            paths: ['state']
           })
         });
         this.san11pkService.updatePackage(request).subscribe(

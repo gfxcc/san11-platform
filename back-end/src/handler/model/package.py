@@ -103,7 +103,7 @@ class Package(ResourceMixin, TrackLifecycle):
 
     @classmethod
     def db_table(cls) -> str:
-        return 'packages'
+        return 'packages_legacy'
 
     @classmethod
     def db_fields(cls):

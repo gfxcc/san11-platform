@@ -5,8 +5,9 @@ from handler.common.field_mask import FieldMask, merge_resource
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.user import User
+from handler.util.name_util import ResourceName
 from handler.util.notifier import notify
-from handler.util.resource_parser import ResourceName, find_resource
+from handler.util.resource_parser import find_resource
 
 from .common.exception import NotFound
 from .model.activity import Action, Activity

@@ -123,12 +123,12 @@ export class RouteGuideClient {
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
+     * @returns Observable<GrpcEvent<thisProto.Package>>
      */
     deletePackage: (
       requestData: thisProto.DeletePackageRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
+    ): Observable<GrpcEvent<thisProto.Package>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
@@ -136,7 +136,7 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.DeletePackageRequest,
-        responseClass: thisProto.Empty
+        responseClass: thisProto.Package
       });
     },
     /**
@@ -1142,12 +1142,12 @@ export class RouteGuideClient {
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
+   * @returns Observable<thisProto.Package>
    */
   deletePackage(
     requestData: thisProto.DeletePackageRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
+  ): Observable<thisProto.Package> {
     return this.$raw
       .deletePackage(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());

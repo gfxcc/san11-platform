@@ -23,15 +23,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 class TagProtoConverter(ProtoConverter):
     def from_model(self, value: ModelTag) -> pb.Tag:
-        return pb.Tag(
-            name=value.name,
-            mutable=value.mutable,
-        )
+        return value.to_pb()
 
     def to_model(self, proto_value: pb.Tag) -> ModelTag:
-        return ModelTag(
-            name=proto_value.name,
-            mutable=proto_value.mutable)
+        return ModelTag.from_pb(proto_value)
 
 
 class TagDbConverter(DbConverter):
@@ -89,19 +84,15 @@ class ModelPackage(ModelBase, TrackLifecycle):
 
     @classmethod
     def from_v1(cls, legacy_model: Package):
-        def load_model_tag(tag_id: int) -> ModelTag:
-            tag = Tag.from_id(tag_id)
-            return ModelTag.from_name(f'categories/{tag.category_id}/tags/{tag_id}')
-
         return cls(
             name=legacy_model.name,
             package_name=legacy_model.package_name,
             description=legacy_model.description,
             create_time=legacy_model.create_time,
             update_time=legacy_model.update_time,
-            state=legacy_model.status,
+            state=legacy_model.status.value,
             author_id=legacy_model.author_id,
             image_urls=legacy_model.image_urls,
-            tags=[load_model_tag(tag_id) for tag_id in legacy_model.tag_ids]
+            tags=[ModelTag.from_id(tag_id) for tag_id in legacy_model.tag_ids],
             download_count=legacy_model.download_count,
         )

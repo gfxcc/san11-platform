@@ -1,3 +1,4 @@
+import imp
 import logging
 import os
 from typing import Iterable, Tuple
@@ -8,8 +9,9 @@ from handler.model.model_comment import ModelComment
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.user import User
+from handler.util.name_util import ResourceName
 from handler.util.notifier import notify, send_message
-from handler.util.resource_parser import ResourceName, find_resource
+from handler.util.resource_parser import find_resource
 
 from .common.exception import NotFound
 from .model.activity import Action, Activity

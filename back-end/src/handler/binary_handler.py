@@ -5,7 +5,7 @@ from typing import Iterable, Tuple
 
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import File, ModelBinary
-from handler.util.resource_parser import ResourceName, parse_name
+from handler.util.name_util import ResourceName
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .common.field_mask import FieldMask, merge_resource
@@ -82,7 +82,6 @@ class BinaryHandler:
         # website statistic
         Statistic.load_today().increment_download()
         # Package statistic
-        parent, _, _ = parse_name(binary.name)
         Package.from_name(str(ResourceName.from_str(
             binary.name).parent)).increment_download()
         try:

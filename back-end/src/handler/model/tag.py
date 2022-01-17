@@ -1,3 +1,6 @@
+import imp
+import logging
+import os
 
 from ..common.exception import PermissionDenied
 from ..db.db_util import (get_db_fields_placeholder_str, get_db_fields_str,
@@ -5,6 +8,8 @@ from ..db.db_util import (get_db_fields_placeholder_str, get_db_fields_str,
 from ..protos import san11_platform_pb2
 from .activity import TrackLifecycle
 from .resource import ResourceMixin, ResourceView
+
+logger = logging.getLogger(os.path.basename(__file__))
 
 
 class Tag(ResourceMixin, TrackLifecycle):

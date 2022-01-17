@@ -11,9 +11,11 @@ from typing import Any, Dict, Generic, Iterable, Optional, Tuple, TypeVar
 
 import attr
 from handler.model.base import base_proto
+from handler.util.name_util import ResourceName
 
 from ...common.exception import InvalidArgument, NotFound
-from ...db.db_util import (run_sql_with_param,
+from ...db.db_util import (auto_adjust_resource_id_next_val,
+                           run_sql_with_param,
                            run_sql_with_param_and_fetch_all,
                            run_sql_with_param_and_fetch_one)
 from ...protos import san11_platform_pb2 as pb
@@ -59,6 +61,7 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
 
 def parse_filter(cls: type, filter: str) -> Dict:
     '''
+    (TODO): Support OR operation.
     Input:
         cls: class of resource class.
         filter: E.g. "create_time > '2021-07-20 10:43:28.313033+08:00'"
@@ -184,10 +187,18 @@ class DbModelBase(ABC):
         Raise:
             AlreadyExists: if the resource is already exists in DB.
         '''
-        # def get_next_resource_id(parent: str) -> int:
-        #     sql = f'SELECT COALESCE(MAX(resource_id)+1, 1) FROM {self._DB_TABLE} WHERE parent=%(parent)s'
-        #     return run_sql_with_param_and_fetch_one(sql, {'parent': parent})[0]
+        return self._create(parent, None)
 
+    def _create(self, parent: str, resource_id: Optional[int]) -> None:
+        '''
+        Persist the resource to DB.
+        Args:
+            parent: field `parent` in DB.
+            resource_id: pass `None` to allow field `resource_id` to be auto assign, which
+                is concurrent safe. Check the avaibility of resource_id before specifing it to certain value.
+                Specifing `resource_id` to an integer value will make the method not concurrent-safe. 
+                Use with caution.
+        '''
         def get_name(parent: str, collection_name: str, resource_id: int) -> str:
             segments = [collection_name, resource_id]
             if parent:
@@ -196,16 +207,27 @@ class DbModelBase(ABC):
 
         db_table = self._DB_TABLE
         data = self._prepare_data()
-        db_fields_name = ['parent', 'resource_id', 'data']
-        sql = f"INSERT INTO {db_table} (parent, data) VALUES (%(parent)s, %(data)s) RETURNING resource_id"
-        params = {
-            'parent': parent,
-            'data': json.dumps(data, default=str)
-        }
-        logger.debug(sql)
-        resp = run_sql_with_param_and_fetch_one(sql, params)
-        self.resource_id = resp[0]
-        self.name = get_name(parent, self._DB_TABLE, self.resource_id)
+        if resource_id is None:
+            sql = f"INSERT INTO {db_table} (parent, data) VALUES (%(parent)s, %(data)s) RETURNING resource_id"
+            params = {
+                'parent': parent,
+                'data': json.dumps(data, default=str)
+            }
+            resp = run_sql_with_param_and_fetch_one(sql, params)
+            resource_id = resp[0]
+            self.name = get_name(parent, self._DB_TABLE, resource_id)
+        else:
+            sql = f"INSERT INTO {db_table} (parent, resource_id, data) VALUES "\
+                  f" (%(parent)s, %(resource_id)s, %(data)s)"
+            params = {
+                'parent': parent,
+                'resource_id': resource_id,
+                'data': json.dumps(data, default=str)
+            }
+            self.name = get_name(parent, self._DB_TABLE, resource_id)
+            run_sql_with_param(sql, params)
+            # Update NextVal
+            auto_adjust_resource_id_next_val(db_table)
         self.update(update_update_time=False)
         logger.info(f'CREATED: {self}')
 
@@ -278,8 +300,12 @@ class DbModelBase(ABC):
     def from_data(cls, data: Dict):
         obj_args = {}
         for field in cls._DB_FIELDS_DICT.values():
-            obj_args[field.model_path] = field.converter.to_model(
-                data.get(field.name, None))
+            if field.repeated:
+                obj_args[field.model_path] = [field.converter.to_model(item)
+                                              for item in data.get(field.name, None)]
+            else:
+                obj_args[field.model_path] = field.converter.to_model(
+                    data.get(field.name, None))
         return cls(**obj_args)
 
     def update(self, update_update_time: bool = True) -> None:
@@ -308,11 +334,40 @@ class DbModelBase(ABC):
         run_sql_with_param(sql, params)
         logger.info(f'DELETED: {self}')
 
+    def backfill(self) -> None:
+        '''
+        Backfill will try to preserve the resource name as provided. Failed to 
+        do so will result as failure. E.g. resource_id collision.
+        This is reserved for data model migration.
+        '''
+        # 1. Safe checks
+        if not self.name:
+            raise InvalidArgument(
+                message='Field `name` is required for backfill.')
+        try:
+            self.from_name(self.name)
+        except NotFound:
+            ...
+        else:
+            raise InvalidArgument(
+                message=f'Resource name: {self.name} is used.')
+        # 2. Create resource
+        name = ResourceName.from_str(self.name)
+        self._create(parent=str(name.parent),
+                     resource_id=name.resource_id)
+
     def _prepare_data(self) -> Dict:
+        '''
+        Construct the field `data` which will be stored in DB.
+        '''
         data = {}
         for field in self._DB_FIELDS_DICT.values():
-            data[field.name] = field.converter.from_model(
-                getattr(self, field.model_path))
+            if field.repeated:
+                data[field.name] = [field.converter.from_model(item)
+                                    for item in getattr(self, field.model_path)]
+            else:
+                data[field.name] = field.converter.from_model(
+                    getattr(self, field.model_path))
             # frm, to = getattr(self, field.model_path), data[field.name]
             # logger.debug(f'In _prepare_data: {type(frm)}({frm}) -> {type(to)}({to})')
         return data

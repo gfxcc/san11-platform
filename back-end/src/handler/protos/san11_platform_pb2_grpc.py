@@ -38,7 +38,7 @@ class RouteGuideStub(object):
         self.DeletePackage = channel.unary_unary(
                 '/routeguide.RouteGuide/DeletePackage',
                 request_serializer=san11__platform__pb2.DeletePackageRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Empty.FromString,
+                response_deserializer=san11__platform__pb2.Package.FromString,
                 )
         self.SearchPackages = channel.unary_unary(
                 '/routeguide.RouteGuide/SearchPackages',
@@ -597,7 +597,7 @@ def add_RouteGuideServicer_to_server(servicer, server):
             'DeletePackage': grpc.unary_unary_rpc_method_handler(
                     servicer.DeletePackage,
                     request_deserializer=san11__platform__pb2.DeletePackageRequest.FromString,
-                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
+                    response_serializer=san11__platform__pb2.Package.SerializeToString,
             ),
             'SearchPackages': grpc.unary_unary_rpc_method_handler(
                     servicer.SearchPackages,
@@ -911,7 +911,7 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeletePackage',
             san11__platform__pb2.DeletePackageRequest.SerializeToString,
-            san11__platform__pb2.Empty.FromString,
+            san11__platform__pb2.Package.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
