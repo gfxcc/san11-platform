@@ -73,3 +73,9 @@ class ModelPackage(ModelBase, TrackLifecycle):
     download_count = Attrib(
         type=int,
     )
+    like_count = Attrib(
+        type=int,
+    )
+    dislike_count = Attrib(
+        type=int,
+    )

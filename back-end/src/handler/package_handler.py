@@ -2,10 +2,12 @@ import logging
 import os
 from typing import Iterable, Tuple
 
+from handler.model.activity import Action, Activity
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
 from handler.model.model_thread import ModelThread
+from handler.util.time_util import get_now
 
 from .common.field_mask import FieldMask, merge_resource
 from .common.image import Image
@@ -91,7 +93,38 @@ class PackageHandler:
         # (TODO): Reimplement this with ModelPackage
         return pb.SearchPackagesResponse()
 
-    def update_package(self, base_package: ModelPackage, update_package: ModelPackage, update_mask: FieldMask, handler_context):
+    def update_package(self, base_package: ModelPackage,
+                       update_package: ModelPackage,
+                       update_mask: FieldMask,
+                       handler_context):
+        def toggle_action(name: str, user_id: int, action: Action):
+            try:
+                activity = Activity.from_detail(
+                    user_id=user_id, action=action, resource_name=name)
+            except NotFound:
+                Activity(activity_id=0, user_id=user_id,
+                         create_time=get_now(),
+                         action=action, resource_name=name).create()
+                delta = 1
+            else:
+                # action from the same user will result as cancelling previous upvote
+                activity.delete()
+                delta = -1
+            return delta
+        # Remove `like_count`, `dislike_count` from update_mask here and handle the count update
+        #   explicitly later.
+        sanitized_update_mask = FieldMask(
+            set(update_mask.paths) - {'like_count', 'dislike_count'})
+        package = merge_resource(base_resource=base_package,
+                                 update_request=update_package,
+                                 field_mask=sanitized_update_mask)
+        user_id = handler_context.user.user_id
+
+        if update_mask.has('like_count'):
+            logger.debug('in')
+            package.like_count += toggle_action(package.name, user_id, Action.LIKE)
+        if update_mask.has('dislike_count'):
+            package.dislike_count += toggle_action(package.name, user_id, Action.DISLIKE)
         # Delete image resources
         for image_url_to_delete in set(base_package.image_urls) - set(update_package.image_urls):
             try:
@@ -100,7 +133,5 @@ class PackageHandler:
             except Exception as err:
                 logger.error(f'Failed to delete {image_url_to_delete}: {err}')
 
-        package: ModelPackage = merge_resource(
-            base_package, update_package, update_mask)
         package.update(handler_context.user.user_id)
         return package

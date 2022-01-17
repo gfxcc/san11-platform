@@ -165,6 +165,7 @@ class DbField:
     converter: DbConverter
     model_path: str
     repeated: bool
+    type: type
 
 
 class DbModelBase(ABC):
@@ -302,14 +303,18 @@ class DbModelBase(ABC):
 
     @classmethod
     def from_data(cls, data: Dict):
+        def populate_default(value, type):
+            if value is None:
+                return type()
+            return value
         obj_args = {}
         for field in cls._DB_FIELDS_DICT.values():
             if field.repeated:
-                obj_args[field.model_path] = [field.converter.to_model(item)
+                obj_args[field.model_path] = [populate_default(field.converter.to_model(item), field.type)
                                               for item in data.get(field.name, None)]
             else:
-                obj_args[field.model_path] = field.converter.to_model(
-                    data.get(field.name, None))
+                obj_args[field.model_path] = populate_default(field.converter.to_model(
+                    data.get(field.name, None)), field.type)
         return cls(**obj_args)
 
     def update(self, update_update_time: bool = True) -> None:
@@ -327,6 +332,7 @@ class DbModelBase(ABC):
             'data': json.dumps(data, default=str)
         }
         run_sql_with_param(sql, params)
+        logger.debug(f'Resource is updated to {self}')
 
     def delete(self) -> None:
         parent, resource_id = self._parse_name(self.name)
@@ -400,6 +406,7 @@ def init_db_model(cls: type, db_table: str) -> None:
             converter=converter,
             model_path=attribute.name,
             repeated=base_core.is_repeated(attribute),
+            type=attribute.type,
         )
         db_fields[db_path] = field
     cls._DB_FIELDS_DICT = db_fields

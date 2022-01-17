@@ -28,6 +28,7 @@ export enum Action {
   LIKE = 11,
   UPVOTE = 12,
   SUBSCRIBE = 13,
+  DISLIKE = 14,
   DOWNLOAD = 21
 }
 /**
@@ -11584,6 +11585,8 @@ export class Package implements GrpcMessage {
     _instance.imageUrls = _instance.imageUrls || [];
     _instance.tags = _instance.tags || [];
     _instance.downloadCount = _instance.downloadCount || '0';
+    _instance.likeCount = _instance.likeCount || '0';
+    _instance.dislikeCount = _instance.dislikeCount || '0';
   }
 
   /**
@@ -11636,6 +11639,12 @@ export class Package implements GrpcMessage {
         case 20:
           _instance.downloadCount = _reader.readInt64String();
           break;
+        case 21:
+          _instance.likeCount = _reader.readInt64String();
+          break;
+        case 22:
+          _instance.dislikeCount = _reader.readInt64String();
+          break;
         default:
           _reader.skipField();
       }
@@ -11684,6 +11693,12 @@ export class Package implements GrpcMessage {
     if (_instance.downloadCount) {
       _writer.writeInt64String(20, _instance.downloadCount);
     }
+    if (_instance.likeCount) {
+      _writer.writeInt64String(21, _instance.likeCount);
+    }
+    if (_instance.dislikeCount) {
+      _writer.writeInt64String(22, _instance.dislikeCount);
+    }
   }
 
   private _name?: string;
@@ -11696,6 +11711,8 @@ export class Package implements GrpcMessage {
   private _imageUrls?: string[];
   private _tags?: Tag[];
   private _downloadCount?: string;
+  private _likeCount?: string;
+  private _dislikeCount?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11713,6 +11730,8 @@ export class Package implements GrpcMessage {
     this.imageUrls = (_value.imageUrls || []).slice();
     this.tags = (_value.tags || []).map(m => new Tag(m));
     this.downloadCount = _value.downloadCount;
+    this.likeCount = _value.likeCount;
+    this.dislikeCount = _value.dislikeCount;
     Package.refineValues(this);
   }
   get name(): string | undefined {
@@ -11775,6 +11794,18 @@ export class Package implements GrpcMessage {
   set downloadCount(value: string | undefined) {
     this._downloadCount = value;
   }
+  get likeCount(): string | undefined {
+    return this._likeCount;
+  }
+  set likeCount(value: string | undefined) {
+    this._likeCount = value;
+  }
+  get dislikeCount(): string | undefined {
+    return this._dislikeCount;
+  }
+  set dislikeCount(value: string | undefined) {
+    this._dislikeCount = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -11800,7 +11831,9 @@ export class Package implements GrpcMessage {
       authorId: this.authorId,
       imageUrls: (this.imageUrls || []).slice(),
       tags: (this.tags || []).map(m => m.toObject()),
-      downloadCount: this.downloadCount
+      downloadCount: this.downloadCount,
+      likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount
     };
   }
 
@@ -11830,7 +11863,9 @@ export class Package implements GrpcMessage {
       authorId: this.authorId,
       imageUrls: (this.imageUrls || []).slice(),
       tags: (this.tags || []).map(m => m.toProtobufJSON(options)),
-      downloadCount: this.downloadCount
+      downloadCount: this.downloadCount,
+      likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount
     };
   }
 }
@@ -11849,6 +11884,8 @@ export module Package {
     imageUrls?: string[];
     tags?: Tag.AsObject[];
     downloadCount?: string;
+    likeCount?: string;
+    dislikeCount?: string;
   }
 
   /**
@@ -11865,6 +11902,8 @@ export module Package {
     imageUrls?: string[];
     tags?: Tag.AsProtobufJSON[] | null;
     downloadCount?: string;
+    likeCount?: string;
+    dislikeCount?: string;
   }
 }
 

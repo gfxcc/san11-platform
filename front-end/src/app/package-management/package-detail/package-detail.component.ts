@@ -648,8 +648,12 @@ export class PackageDetailComponent implements OnInit {
       this.liked = false;
     } else {
       this.liked = true;
-      this.disliked = false;
+      if (this.disliked) {
+        this.disliked = false;
+        this.toggleAction('dislike_count');
+      }
     }
+    this.toggleAction('like_count');
   }
 
   onToggleDislike() {
@@ -657,8 +661,12 @@ export class PackageDetailComponent implements OnInit {
       this.disliked = false;
     } else {
       this.disliked = true;
-      this.liked = false;
+      if (this.liked) {
+        this.liked = false;
+        this.toggleAction('like_count');
+      }
     }
+    this.toggleAction('dislike_count');
   }
 
   onSubscribe() {
@@ -680,10 +688,27 @@ export class PackageDetailComponent implements OnInit {
 
 
   // utils
+  toggleAction(field: string) {
+    this.san11pkService.updatePackage(new UpdatePackageRequest({
+      package: new Package({
+        name: this.package.name,
+      }),
+      updateMask: new FieldMask({
+        paths: [field],
+      })
+    })).subscribe(
+      (pkg: Package) => {
+        this.package = pkg;
+      },
+      error => {
+        this.notificationService.warn(`操作失败: ${error.statusMessage}`);
+      }
+    );
+  }
+
   isAdmin() {
     return isAdmin();
   }
-
 
   isAuthor() {
     return this.package.authorId === localStorage.getItem('userId');

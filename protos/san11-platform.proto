@@ -563,6 +563,8 @@ message Package {
 
     // 
     int64 download_count = 20;
+    int64 like_count = 21;
+    int64 dislike_count = 22;
 }
 
 message Binary {
