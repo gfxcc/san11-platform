@@ -450,7 +450,7 @@ export class PackageDetailComponent implements OnInit {
         state: ResourceState.NORMAL,
       }),
       updateMask: new FieldMask({
-        paths: ['status']
+        paths: ['state']
       })
     });
     this.san11pkService.updatePackage(request).subscribe(
