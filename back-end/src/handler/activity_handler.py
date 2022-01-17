@@ -4,6 +4,7 @@ import os
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
+from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.resource import ResourceView
@@ -45,6 +46,9 @@ class ActivityHandler:
                 elif isinstance(resource, ModelArticle):
                     resource_view = ResourceView(
                         name=resource.name, display_name=resource.subject, description='', image_url=None)
+                elif isinstance(resource, ModelPackage):
+                    resource_view = ResourceView(
+                        name=resource.name, display_name=resource.package_name, description='', image_url=resource.image_urls[0] if resource.image_urls else '')
                 else:
                     resource_view = resource.view
             except NotFound as err:
