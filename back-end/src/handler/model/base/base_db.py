@@ -71,6 +71,8 @@ def parse_filter(cls: type, filter: str) -> Dict:
     '''
     proto2db = {}
     for attribute in attr.fields(cls):
+        if not (base_proto._is_proto_field(attribute) and _is_db_field(attribute)):
+            continue
         proto2db[base_proto._get_proto_path(
             attribute)] = _get_db_path(attribute)
 
@@ -95,6 +97,8 @@ def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
     '''
     proto2db = {}
     for attribute in attr.fields(cls):
+        if not (base_proto._is_proto_field(attribute) and _is_db_field(attribute)):
+            continue
         proto2db[base_proto._get_proto_path(
             attribute)] = _get_db_path(attribute)
 
@@ -403,3 +407,7 @@ def init_db_model(cls: type, db_table: str) -> None:
 
 def _get_db_path(attribute: attr.Attribute) -> str:
     return attribute.metadata[base_core.DB_PATH] or attribute.name
+
+
+def _is_db_field(attribute: attr.Attribute) -> bool:
+    return attribute.metadata[base_core.IS_DB_FIELD]

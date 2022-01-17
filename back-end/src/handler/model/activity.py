@@ -1,45 +1,15 @@
 import logging
 import os
 from datetime import datetime, timezone
-from enum import Enum
 from typing import Any, Dict, List, Union
 
 from ..common.exception import NotFound
 from ..db import (get_db_fields_placeholder_str, get_db_fields_str,
                   run_sql_with_param, run_sql_with_param_and_fetch_all,
                   run_sql_with_param_and_fetch_one)
-from ..protos import san11_platform_pb2
+from .model_activity import Action
 
 logger = logging.getLogger(os.path.basename(__file__))
-
-
-class Action(Enum):
-    UNDEFINED_ACTION = 0
-    # resource
-    CREATE = 1
-    DELETE = 2
-    UPDATE = 3
-    SELECT = 4
-    # social
-    LIKE = 11
-    UPVOTE = 12
-    SUBSCRIBE = 13
-    # misc
-    DOWNLOAD = 21
-
-    @classmethod
-    def from_pb(cls, pb_obj: san11_platform_pb2.Action):
-        return cls(pb_obj)
-
-    def to_pb(self) -> san11_platform_pb2.Action:
-        return self.value
-
-
-class TrackLifecycle:
-    '''
-    Lifecyle activities on sub-class will tracked (persisted in DB).
-    '''
-    ...
 
 
 class Activity:
@@ -57,7 +27,7 @@ class Activity:
 
     @classmethod
     def db_table(cls) -> str:
-        return 'activities'
+        return 'activities_legacy'
 
     @classmethod
     def db_fields(cls) -> List[str]:

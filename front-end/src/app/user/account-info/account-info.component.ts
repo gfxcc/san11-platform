@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UpdateUserRequest, User, FieldMask, VerifyEmailRequest, VerifyEmailResponse, SendVerificationCodeRequest, UpdatePasswordRequest } from '../../../proto/san11-platform.pb';
-import { PasswordDialog } from '../../account-management/user-detail/user-detail.component';
+import { FieldMask, SendVerificationCodeRequest, UpdatePasswordRequest, UpdateUserRequest, User, VerifyEmailRequest, VerifyEmailResponse } from '../../../proto/san11-platform.pb';
+import { NewUserValidators } from "../../account-management/common/new-user-validator";
 import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
-import { NewUserValidators } from "../../account-management/common/new-user-validator";
-import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-account-info',
@@ -187,7 +186,7 @@ export class AccountInfoComponent implements OnInit {
     if (this.password.value != this.PASSWORD_PLACEHOLDER) {
       this.san11pkService.updatePassword(new UpdatePasswordRequest({
         userId: this.user.userId,
-        password: this.password.value
+        password: this.password.value,
       })).subscribe(
         empty => {
           this.notificationService.success('更新密码 成功');

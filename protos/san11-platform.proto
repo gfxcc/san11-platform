@@ -448,16 +448,25 @@ message VerifyNewUserResponse {
 
 // activities related
 message ListActivitiesRequest {
-    int64 page_size = 1;
-    string page_token = 2;
+    // Supported values:
+    // `categories/xxx/packages/xxx`
+    // `website`
+    string parent = 1;
+    int64 page_size = 2;
+    string page_token = 3;
 
-    int64 user_id = 3;
+    // Values should be a comma separated list of fields. For example: "foo,bar".
+    // The default sorting order is ascending. To specify descending order for a field, users append a " desc" suffix;
+    //   for example: "foo desc, bar".
+    string order_by = 4;
+
+    // Support syntax like `field_name = value`
+    string filter = 5;
 }
 
 message ListActivitiesResponse {
-    string next_page_token = 1;
-
-    repeated Activity activities = 2;
+    repeated Activity activities = 1;
+    string next_page_token = 2;
 }
 
 message ListNotificationsRequest {
@@ -664,11 +673,10 @@ message Auth {
 }
 
 message Activity {
-    int64 activity_id = 1;
-    int64 user_id = 2;
-    string create_time = 3;
-    Action action = 4;
-    ResourceView resource_view = 5;
+    string name = 1;
+    string create_time = 2;
+    Action action = 3;
+    ResourceView resource_view = 4;
 }
 
 message Notification {

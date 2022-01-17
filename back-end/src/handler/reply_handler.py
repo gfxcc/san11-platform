@@ -10,7 +10,8 @@ from handler.util.notifier import notify
 from handler.util.resource_parser import find_resource
 
 from .common.exception import NotFound
-from .model.activity import Action, Activity
+from .model.activity import Activity
+from .model.model_activity import Action
 from .util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))

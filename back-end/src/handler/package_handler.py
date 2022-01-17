@@ -7,11 +7,8 @@ from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
 from handler.model.model_thread import ModelThread
 
-from .auths import Authenticator
-from .common.exception import PermissionDenied
 from .common.field_mask import FieldMask, merge_resource
 from .common.image import Image
-from .model.package import Package, Status
 from .model.user import User
 from .protos import san11_platform_pb2 as pb
 from .util.notifier import Notifier
@@ -91,10 +88,8 @@ class PackageHandler:
         return package
 
     def search_packages(self, request, context):
-        return pb.SearchPackagesResponse(
-            packages=[package.to_pb() for package in Package.search(request.page_size,
-                                                                    request.page_token,
-                                                                    request.query)])
+        # (TODO): Reimplement this with ModelPackage
+        return pb.SearchPackagesResponse()
 
     def update_package(self, base_package: ModelPackage, update_package: ModelPackage, update_mask: FieldMask, handler_context):
         # Delete image resources

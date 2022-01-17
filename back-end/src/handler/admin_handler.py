@@ -2,7 +2,6 @@ import json
 import logging
 import os
 
-from .auths import Authenticator
 from .db.db_util import run_sql_with_param_and_fetch_all
 from .protos import san11_platform_pb2
 
@@ -12,8 +11,6 @@ logger = logging.getLogger(os.path.basename(__file__))
 class AdminHandler:
     def get_admin_message(self, request, context):
         message = {}
-        authenticate = Authenticator.from_context(context)
-        assert authenticate.isAdmin()
         sql = 'SELECT username, create_timestamp FROM users ORDER BY create_timestamp desc limit 10'
         message['new-users'] = list(map(lambda fields: ', '.join(
             map(str, fields)), run_sql_with_param_and_fetch_all(sql, {})))

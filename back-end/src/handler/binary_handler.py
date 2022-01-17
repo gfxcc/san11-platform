@@ -9,8 +9,9 @@ from handler.util.name_util import ResourceName
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .common.field_mask import FieldMask, merge_resource
-from .model.activity import Action, Activity
-from .model.package import Package
+from .model.activity import Activity
+from .model.model_activity import Action
+from .model.model_package import ModelPackage
 from .model.statistic import Statistic
 from .util import gcs
 from .util.size_util import human_readable
@@ -82,8 +83,10 @@ class BinaryHandler:
         # website statistic
         Statistic.load_today().increment_download()
         # Package statistic
-        Package.from_name(str(ResourceName.from_str(
-            binary.name).parent)).increment_download()
+        package = ModelPackage.from_name(str(ResourceName.from_str(
+            binary.name).parent))
+        package.download_count += 1
+        package.update(update_update_time=False)
         try:
             Activity(activity_id=None, user_id=handler_context.user.user_id, create_time=get_now(
             ), action=Action.DOWNLOAD, resource_name=binary.name).create()

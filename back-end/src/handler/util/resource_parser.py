@@ -4,7 +4,7 @@ import logging
 import os
 from typing import Union
 
-from handler.model.base.base import ModelBase
+from handler.model.base import ModelBase
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment

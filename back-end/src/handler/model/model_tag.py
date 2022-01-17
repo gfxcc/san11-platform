@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import attr
 from handler.db.db_util import run_sql_with_param_and_fetch_one
-from handler.model.activity import TrackLifecycle
-from handler.model.base.base import Attrib, InitModel, ModelBase
-from handler.model.tag import Tag
+from handler.model.base import Attrib, InitModel, ModelBase
+from handler.model.model_activity import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
 
@@ -26,14 +25,6 @@ class ModelTag(ModelBase, TrackLifecycle):
     mutable = Attrib(
         type=bool,
     )
-
-    @classmethod
-    def from_v1(cls, legacy_model: Tag):
-        return cls(
-            name=f'categories/{legacy_model.category_id}/tags/{legacy_model.tag_id}',
-            tag_name=legacy_model.tag_name,
-            mutable=legacy_model.mutable,
-        )
 
     @classmethod
     def from_id(cls, id: int):

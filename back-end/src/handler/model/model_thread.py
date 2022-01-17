@@ -2,8 +2,8 @@ import datetime
 from typing import Optional
 
 import attr
-from handler.model.activity import TrackLifecycle
 from handler.model.base.base_db import ListOptions
+from handler.model.model_activity import TrackLifecycle
 from handler.model.model_comment import ModelComment
 
 from ..protos import san11_platform_pb2 as pb

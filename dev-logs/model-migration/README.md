@@ -98,3 +98,27 @@ CREATE TABLE packages (
     PRIMARY KEY (parent, resource_id)
 );
 ```
+
+# Activity
+Started    |
+-----------|
+01/17/2022 |
+
+## DB
+1. Rename current table to `activities_legacy`.
+```
+ALTER TABLE activities
+    RENAME TO activities_legacy;
+```
+
+2. Create new table `activities`.
+```
+CREATE TABLE activities (
+    parent text NOT NULL,
+    resource_id serial NOT NULL,
+
+    data json,
+    
+    PRIMARY KEY (parent, resource_id)
+);
+```

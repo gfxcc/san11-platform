@@ -8,10 +8,25 @@ In most case, a resource could exists in 3 differnt layers.
     Data layer          | Db schema         | base_db.py
 
 # Dependency
-```
-base_db -> base_proto -> base_core
-   |                       ^
-   -------------------------
+
+    ┌───────┐
+ ┌──┤base.py├─────────┐
+ │  └───┬───┘         │
+ │      │             │
+ │      │             │
+ │  ┌───▼──────┐      │
+ │  │base_db.py├────┐ │
+ │  └───┬──────┘    │ │
+ │      │           │ │
+ │      │           │ │
+ │  ┌───▼─────────┐ │ │
+ │  │base_proto.py│◄┘ │
+ │  └───┬─────────┘   │
+ │      │             │
+ │      │             │
+ │  ┌───▼────────┐    │
+ └──►base_core.py│◄◄──┘
+    └────────────┘
 ```
 
 # Usage:
@@ -44,9 +59,7 @@ import datetime
 from typing import Any, Callable, Dict, List, Optional, TypeVar
 
 import attr
-from handler.util.time_util import get_now
 
-from ..activity import Action, Activity, TrackLifecycle
 from . import base_core, base_db, base_proto
 
 MODEL_T = TypeVar('MODEL_T', bound='ModelBase')
@@ -121,28 +134,6 @@ def Attrib(
     if deprecated:
         kwargs['default'] = None
     return attr.ib(metadata=metadata, type=type, **kwargs)
-
-
-# TODO: integrate TrackLifecycle
-class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
-
-    def create(self, parent: str, user_id: Optional[int] = None) -> None:
-        base_db.DbModelBase.create(self, parent)
-        if isinstance(self, TrackLifecycle) and user_id:
-            Activity(activity_id=None, user_id=user_id, create_time=get_now(),
-                     action=Action.CREATE, resource_name=self.name).create()
-
-    def update(self, update_update_time: bool = True, user_id: Optional[int] = None) -> None:
-        base_db.DbModelBase.update(self, update_update_time=update_update_time)
-        if isinstance(self, TrackLifecycle) and user_id:
-            Activity(activity_id=None, user_id=user_id, create_time=get_now(),
-                     action=Action.UPDATE, resource_name=self.name).create()
-
-    def delete(self, user_id: Optional[int] = None) -> None:
-        base_db.DbModelBase.delete(self)
-        if isinstance(self, TrackLifecycle) and user_id:
-            Activity(activity_id=None, user_id=user_id, create_time=get_now(),
-                     action=Action.DELETE, resource_name=self.name).create()
 
 
 MODELS = {}

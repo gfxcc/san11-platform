@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PrimeIcons } from 'primeng/api';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
-import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse, User } from 'src/proto/san11-platform.pb';
+import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse } from 'src/proto/san11-platform.pb';
 
 
 @Component({
@@ -34,7 +33,8 @@ export class TimelineComponent implements OnInit {
 
   load_activities() {
     this.san11pkService.listActivities(new ListActivitiesRequest({
-      userId: this.userId
+      parent: `users/${this.userId}`,
+      orderBy: 'create_time desc',
     })).subscribe(
       (resp: ListActivitiesResponse) => {
         this.events = resp.activities.map((activity: Activity) => {

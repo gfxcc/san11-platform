@@ -4,9 +4,9 @@ import datetime
 from typing import Optional
 
 import attr
-from handler.model.activity import TrackLifecycle
-from handler.model.base.base import Attrib, InitModel, ModelBase
+from handler.model.base import Attrib, InitModel, ModelBase
 from handler.model.base.base_db import ListOptions
+from handler.model.model_activity import TrackLifecycle
 from handler.model.model_reply import ModelReply
 
 from ..protos import san11_platform_pb2 as pb

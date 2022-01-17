@@ -89,7 +89,7 @@
                         <div class="admin-zone" *ngIf="isAdmin()">
                             <button mat-button mat-stroked-button color="accent" *ngIf="this.package.state===2" (click)="onApprove()">通过审核</button>
                             <button mat-button mat-stroked-button color="accent" *ngIf="this.package.state===1 ||
-                                this.package.state===3" (click)="onFlipHide()">{{this.package.status===3
+                                this.package.state===3" (click)="onFlipHide()">{{this.package.state===3
                                 ? '取消隐藏' : '隐藏'}}</button>
                         </div>
 

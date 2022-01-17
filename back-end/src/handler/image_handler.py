@@ -1,12 +1,11 @@
 import logging
 import os
-import sys
 import uuid
 
-from .auths import Authenticator
+from handler.model.model_package import ModelPackage
+
 from .common.image import Image
 from .common.url import Url
-from .model.package import Package
 from .model.resource import get_image_url
 from .model.user import User
 from .protos import san11_platform_pb2
@@ -20,10 +19,6 @@ class ImageHandler:
         logger.info(f'In create_image: parent={request.parent}')
         parent = Url(request.parent)
 
-        authenticate = Authenticator.from_context(context)
-        if not authenticate.canUploadImage(parent=parent):
-            context.abort(code=255, details='权限不足')
-
         url = get_image_url(
             request.parent, f'{uuid.uuid1()}.jpeg', request.in_description)
         gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, url)
@@ -31,7 +26,9 @@ class ImageHandler:
 
         if not request.in_description:
             if parent.type == 'packages':
-                Package.from_id(parent.id).append_image(image)
+                package = ModelPackage.from_name(request.parent)
+                package.image_urls.append(image.url)
+                package.update()
             elif parent.type == 'users':
                 user = User.from_id(parent.id)
                 if user.image_url:

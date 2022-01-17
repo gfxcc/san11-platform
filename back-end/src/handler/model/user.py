@@ -13,7 +13,8 @@ from ..db import (run_sql_with_param, run_sql_with_param_and_fetch_all,
                   run_sql_with_param_and_fetch_one)
 from ..protos import san11_platform_pb2
 from ..util.time_util import get_now
-from .activity import Action, Activity, TrackLifecycle
+from .activity import Activity
+from .model_activity import Action, TrackLifecycle
 from .resource import ResourceMixin, ResourceView
 
 logger = logging.getLogger(os.path.basename(__file__))

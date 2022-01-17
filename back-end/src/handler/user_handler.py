@@ -3,7 +3,7 @@ import os
 
 import grpc
 
-from .auths import Authenticator, Session
+from .auths import Session
 from .common.exception import (AlreadyExists, InvalidArgument, NotFound,
                                PermissionDenied, Unauthenticated)
 from .common.field_mask import FieldMask, merge_resource
@@ -61,11 +61,6 @@ class UserHandler:
     def update_user(self, request, context):
         base_user = User.from_id(request.user.user_id)
 
-        auth = Authenticator.from_context(context)
-        if not auth.canUpdateUser(user=base_user):
-            context.abort(code=PermissionDenied().code,
-                          details=PermissionDenied().message)
-
         update_mask = FieldMask.from_pb(request.update_mask)
         user = merge_resource(base_resource=base_user,
                               update_request=User.from_pb(request.user),
@@ -88,12 +83,6 @@ class UserHandler:
         if request.verification_code:
             if not verify_code(user.email, request.verification_code):
                 context.abort(code=PermissionDenied().code, details='验证码不正确')
-        else:
-            authenticate = Authenticator.from_context(context)
-            if not authenticate.canUpdateUser(user=user):
-                context.abort(code=PermissionDenied().code,
-                              details=PermissionDenied().message)
-
         user.set_password(request.password)
         return san11_platform_pb2.Empty()
 
@@ -120,7 +109,7 @@ class UserHandler:
     def send_verification_code(self, request, context):
         email = request.email
         verification_code = generate_verification_code(email)
-        Notifier().send_email(email, '新注册用户的验证码', verification_code)
+        Notifier().send_email(email, '账号验证码', verification_code)
         return san11_platform_pb2.Empty()
 
     def verify_email(self, request, context):

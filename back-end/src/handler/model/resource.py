@@ -12,7 +12,8 @@ from ..db import (get_db_fields_assignment_str, get_db_fields_placeholder_str,
                   run_sql_with_param_and_fetch_one)
 from ..protos import san11_platform_pb2
 from ..util.time_util import get_now
-from .activity import Action, Activity, TrackLifecycle
+from .activity import Activity
+from .model_activity import Action, TrackLifecycle
 
 RESOURCE_PATH = '/data'
 logger = logging.getLogger(os.path.basename(__file__))

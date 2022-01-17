@@ -25,7 +25,6 @@ from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
-from handler.model.package import Package
 from handler.model.user import User
 from handler.protos import san11_platform_pb2 as pb
 from handler.protos import san11_platform_pb2_grpc
@@ -116,10 +115,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return self.article_handler.delete_article(article, handler_context).to_pb()
 
     # binaries
-    @iam_util.assert_login
+    @iam_util.assert_resource_owner('{parent}')
     def CreateBinary(self, request, context):
         parent, binary = request.parent, ModelBinary.from_pb(request.binary)
-        package = Package.from_name(parent)
+        package = ModelPackage.from_name(parent)
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         created_binary = self.binary_handler.create_binary(
@@ -141,16 +140,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def UpdateBinary(self, request, context):
         binary, update_mask = ModelBinary.from_pb(
             request.binary), FieldMask.from_pb(request.update_mask)
-        package = Package.from_name(
+        package = ModelPackage.from_name(
             str(ResourceName.from_str(binary.name).parent))
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
         return self.binary_handler.update_binary(binary, update_mask, handler_context).to_pb()
 
-    @iam_util.assert_login
     def DeleteBinary(self, request, context):
         binary = ModelBinary.from_name(request.name)
-        package = Package.from_name(
+        package = ModelPackage.from_name(
             str(ResourceName.from_str(binary.name).parent))
         handler_context = HandlerContext.from_service_context(context)
         assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
@@ -319,7 +317,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         created_package = self.package_handler.create_package(
             parent, package, handler_context)
         return created_package.to_pb()
-    
+
     def GetPackage(self, request, context):
         handler_context = HandlerContext.from_service_context(context)
         return self.package_handler.get_package(request.name, handler_context).to_pb()
@@ -335,7 +333,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
         return ret
-
 
     @iam_util.assert_resource_owner('{package.name}')
     def UpdatePackage(self, request, context):
@@ -353,12 +350,26 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def SearchPackages(self, request, context):
         return self.package_handler.search_packages(request, context)
+
+    # activities
+    def ListActivities(self, request, context):
+        handler_context = HandlerContext.from_service_context(context)
+        activities, next_page_token = self.activity_handler.list_activities(
+            request=request,
+            handler_context=handler_context,
+        )
+        return pb.ListActivitiesResponse(
+            activities=list(activities),
+            next_page_token=next_page_token,
+        )
+
     #############
     # Old model #
     #############
 
-
     # image
+
+    @iam_util.assert_resource_owner('{parent}')
     def CreateImage(self, request, context):
         return self.image_handler.create_image(request, context)
 
@@ -372,9 +383,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def SignOut(self, request, context):
         return self.user_handler.sign_out(request, context)
 
+    @iam_util.assert_user('user.user_id')
     def UpdateUser(self, request, context):
         return self.user_handler.update_user(request, context)
 
+    @iam_util.assert_user('user_id')
     def UpdatePassword(self, request, context):
         return self.user_handler.update_password(request, context)
 
@@ -392,10 +405,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def VerifyNewUser(self, request, context):
         return self.user_handler.verify_new_user(request, context)
-
-    # activities
-    def ListActivities(self, request, context):
-        return self.activity_handler.list_activities(request, context)
 
     # general
     def GetStatistic(self, request, context):

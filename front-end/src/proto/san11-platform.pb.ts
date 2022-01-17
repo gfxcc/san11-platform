@@ -9432,9 +9432,11 @@ export class ListActivitiesRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: ListActivitiesRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
-    _instance.userId = _instance.userId || '0';
+    _instance.orderBy = _instance.orderBy || '';
+    _instance.filter = _instance.filter || '';
   }
 
   /**
@@ -9451,13 +9453,19 @@ export class ListActivitiesRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.pageSize = _reader.readInt64String();
+          _instance.parent = _reader.readString();
           break;
         case 2:
-          _instance.pageToken = _reader.readString();
+          _instance.pageSize = _reader.readInt64String();
           break;
         case 3:
-          _instance.userId = _reader.readInt64String();
+          _instance.pageToken = _reader.readString();
+          break;
+        case 4:
+          _instance.orderBy = _reader.readString();
+          break;
+        case 5:
+          _instance.filter = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -9476,20 +9484,28 @@ export class ListActivitiesRequest implements GrpcMessage {
     _instance: ListActivitiesRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.pageSize) {
-      _writer.writeInt64String(1, _instance.pageSize);
+      _writer.writeInt64String(2, _instance.pageSize);
     }
     if (_instance.pageToken) {
-      _writer.writeString(2, _instance.pageToken);
+      _writer.writeString(3, _instance.pageToken);
     }
-    if (_instance.userId) {
-      _writer.writeInt64String(3, _instance.userId);
+    if (_instance.orderBy) {
+      _writer.writeString(4, _instance.orderBy);
+    }
+    if (_instance.filter) {
+      _writer.writeString(5, _instance.filter);
     }
   }
 
+  private _parent?: string;
   private _pageSize?: string;
   private _pageToken?: string;
-  private _userId?: string;
+  private _orderBy?: string;
+  private _filter?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -9497,10 +9513,18 @@ export class ListActivitiesRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListActivitiesRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
-    this.userId = _value.userId;
+    this.orderBy = _value.orderBy;
+    this.filter = _value.filter;
     ListActivitiesRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get pageSize(): string | undefined {
     return this._pageSize;
@@ -9514,11 +9538,17 @@ export class ListActivitiesRequest implements GrpcMessage {
   set pageToken(value: string | undefined) {
     this._pageToken = value;
   }
-  get userId(): string | undefined {
-    return this._userId;
+  get orderBy(): string | undefined {
+    return this._orderBy;
   }
-  set userId(value: string | undefined) {
-    this._userId = value;
+  set orderBy(value: string | undefined) {
+    this._orderBy = value;
+  }
+  get filter(): string | undefined {
+    return this._filter;
+  }
+  set filter(value: string | undefined) {
+    this._filter = value;
   }
 
   /**
@@ -9536,9 +9566,11 @@ export class ListActivitiesRequest implements GrpcMessage {
    */
   toObject(): ListActivitiesRequest.AsObject {
     return {
+      parent: this.parent,
       pageSize: this.pageSize,
       pageToken: this.pageToken,
-      userId: this.userId
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 
@@ -9559,9 +9591,11 @@ export class ListActivitiesRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListActivitiesRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       pageSize: this.pageSize,
       pageToken: this.pageToken,
-      userId: this.userId
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 }
@@ -9570,18 +9604,22 @@ export module ListActivitiesRequest {
    * Standard JavaScript object representation for ListActivitiesRequest
    */
   export interface AsObject {
+    parent?: string;
     pageSize?: string;
     pageToken?: string;
-    userId?: string;
+    orderBy?: string;
+    filter?: string;
   }
 
   /**
    * Protobuf JSON representation for ListActivitiesRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     pageSize?: string;
     pageToken?: string;
-    userId?: string;
+    orderBy?: string;
+    filter?: string;
   }
 }
 
@@ -9609,8 +9647,8 @@ export class ListActivitiesResponse implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: ListActivitiesResponse) {
-    _instance.nextPageToken = _instance.nextPageToken || '';
     _instance.activities = _instance.activities || [];
+    _instance.nextPageToken = _instance.nextPageToken || '';
   }
 
   /**
@@ -9627,17 +9665,17 @@ export class ListActivitiesResponse implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.nextPageToken = _reader.readString();
-          break;
-        case 2:
-          const messageInitializer2 = new Activity();
+          const messageInitializer1 = new Activity();
           _reader.readMessage(
-            messageInitializer2,
+            messageInitializer1,
             Activity.deserializeBinaryFromReader
           );
           (_instance.activities = _instance.activities || []).push(
-            messageInitializer2
+            messageInitializer1
           );
+          break;
+        case 2:
+          _instance.nextPageToken = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -9656,20 +9694,20 @@ export class ListActivitiesResponse implements GrpcMessage {
     _instance: ListActivitiesResponse,
     _writer: BinaryWriter
   ) {
-    if (_instance.nextPageToken) {
-      _writer.writeString(1, _instance.nextPageToken);
-    }
     if (_instance.activities && _instance.activities.length) {
       _writer.writeRepeatedMessage(
-        2,
+        1,
         _instance.activities as any,
         Activity.serializeBinaryToWriter
       );
     }
+    if (_instance.nextPageToken) {
+      _writer.writeString(2, _instance.nextPageToken);
+    }
   }
 
-  private _nextPageToken?: string;
   private _activities?: Activity[];
+  private _nextPageToken?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -9677,21 +9715,21 @@ export class ListActivitiesResponse implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListActivitiesResponse.AsObject>) {
     _value = _value || {};
-    this.nextPageToken = _value.nextPageToken;
     this.activities = (_value.activities || []).map(m => new Activity(m));
+    this.nextPageToken = _value.nextPageToken;
     ListActivitiesResponse.refineValues(this);
-  }
-  get nextPageToken(): string | undefined {
-    return this._nextPageToken;
-  }
-  set nextPageToken(value: string | undefined) {
-    this._nextPageToken = value;
   }
   get activities(): Activity[] | undefined {
     return this._activities;
   }
   set activities(value: Activity[] | undefined) {
     this._activities = value;
+  }
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
+  }
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
   }
 
   /**
@@ -9709,8 +9747,8 @@ export class ListActivitiesResponse implements GrpcMessage {
    */
   toObject(): ListActivitiesResponse.AsObject {
     return {
-      nextPageToken: this.nextPageToken,
-      activities: (this.activities || []).map(m => m.toObject())
+      activities: (this.activities || []).map(m => m.toObject()),
+      nextPageToken: this.nextPageToken
     };
   }
 
@@ -9731,8 +9769,8 @@ export class ListActivitiesResponse implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListActivitiesResponse.AsProtobufJSON {
     return {
-      nextPageToken: this.nextPageToken,
-      activities: (this.activities || []).map(m => m.toProtobufJSON(options))
+      activities: (this.activities || []).map(m => m.toProtobufJSON(options)),
+      nextPageToken: this.nextPageToken
     };
   }
 }
@@ -9741,16 +9779,16 @@ export module ListActivitiesResponse {
    * Standard JavaScript object representation for ListActivitiesResponse
    */
   export interface AsObject {
-    nextPageToken?: string;
     activities?: Activity.AsObject[];
+    nextPageToken?: string;
   }
 
   /**
    * Protobuf JSON representation for ListActivitiesResponse
    */
   export interface AsProtobufJSON {
-    nextPageToken?: string;
     activities?: Activity.AsProtobufJSON[] | null;
+    nextPageToken?: string;
   }
 }
 
@@ -14334,8 +14372,7 @@ export class Activity implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Activity) {
-    _instance.activityId = _instance.activityId || '0';
-    _instance.userId = _instance.userId || '0';
+    _instance.name = _instance.name || '';
     _instance.createTime = _instance.createTime || '';
     _instance.action = _instance.action || 0;
     _instance.resourceView = _instance.resourceView || undefined;
@@ -14355,18 +14392,15 @@ export class Activity implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.activityId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         case 2:
-          _instance.userId = _reader.readInt64String();
-          break;
-        case 3:
           _instance.createTime = _reader.readString();
           break;
-        case 4:
+        case 3:
           _instance.action = _reader.readEnum();
           break;
-        case 5:
+        case 4:
           _instance.resourceView = new ResourceView();
           _reader.readMessage(
             _instance.resourceView,
@@ -14387,29 +14421,25 @@ export class Activity implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: Activity, _writer: BinaryWriter) {
-    if (_instance.activityId) {
-      _writer.writeInt64String(1, _instance.activityId);
-    }
-    if (_instance.userId) {
-      _writer.writeInt64String(2, _instance.userId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
     if (_instance.createTime) {
-      _writer.writeString(3, _instance.createTime);
+      _writer.writeString(2, _instance.createTime);
     }
     if (_instance.action) {
-      _writer.writeEnum(4, _instance.action);
+      _writer.writeEnum(3, _instance.action);
     }
     if (_instance.resourceView) {
       _writer.writeMessage(
-        5,
+        4,
         _instance.resourceView as any,
         ResourceView.serializeBinaryToWriter
       );
     }
   }
 
-  private _activityId?: string;
-  private _userId?: string;
+  private _name?: string;
   private _createTime?: string;
   private _action?: Action;
   private _resourceView?: ResourceView;
@@ -14420,8 +14450,7 @@ export class Activity implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<Activity.AsObject>) {
     _value = _value || {};
-    this.activityId = _value.activityId;
-    this.userId = _value.userId;
+    this.name = _value.name;
     this.createTime = _value.createTime;
     this.action = _value.action;
     this.resourceView = _value.resourceView
@@ -14429,17 +14458,11 @@ export class Activity implements GrpcMessage {
       : undefined;
     Activity.refineValues(this);
   }
-  get activityId(): string | undefined {
-    return this._activityId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set activityId(value: string | undefined) {
-    this._activityId = value;
-  }
-  get userId(): string | undefined {
-    return this._userId;
-  }
-  set userId(value: string | undefined) {
-    this._userId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
   get createTime(): string | undefined {
     return this._createTime;
@@ -14475,8 +14498,7 @@ export class Activity implements GrpcMessage {
    */
   toObject(): Activity.AsObject {
     return {
-      activityId: this.activityId,
-      userId: this.userId,
+      name: this.name,
       createTime: this.createTime,
       action: this.action,
       resourceView: this.resourceView ? this.resourceView.toObject() : undefined
@@ -14500,8 +14522,7 @@ export class Activity implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Activity.AsProtobufJSON {
     return {
-      activityId: this.activityId,
-      userId: this.userId,
+      name: this.name,
       createTime: this.createTime,
       action: Action[this.action ?? 0],
       resourceView: this.resourceView
@@ -14515,8 +14536,7 @@ export module Activity {
    * Standard JavaScript object representation for Activity
    */
   export interface AsObject {
-    activityId?: string;
-    userId?: string;
+    name?: string;
     createTime?: string;
     action?: Action;
     resourceView?: ResourceView.AsObject;
@@ -14526,8 +14546,7 @@ export module Activity {
    * Protobuf JSON representation for Activity
    */
   export interface AsProtobufJSON {
-    activityId?: string;
-    userId?: string;
+    name?: string;
     createTime?: string;
     action?: string;
     resourceView?: ResourceView.AsProtobufJSON | null;

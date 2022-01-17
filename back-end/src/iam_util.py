@@ -67,6 +67,7 @@ def assert_user(path_to_user_id: str):
 
 def assert_resource_owner(user_id_pattern: str):
     '''
+    (TODO): Support inherited ownership.
     Admin user will always overpass this check.
     Args:
         resource_name_path: Path from request to resource_name and path from resource to user_id can be 

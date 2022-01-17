@@ -3,7 +3,7 @@ from __future__ import annotations
 import datetime
 
 import attr
-from handler.model.base.base import Attrib, InitModel, ModelBase
+from handler.model.base import Attrib, InitModel, ModelBase
 
 from ..protos import san11_platform_pb2 as pb
 

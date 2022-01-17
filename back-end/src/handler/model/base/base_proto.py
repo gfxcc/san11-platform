@@ -160,3 +160,7 @@ def _set_by_path(proto: message.Message, path: str, proto_value: Any) -> None:
 
 def _get_proto_path(attribute: attr.Attribute) -> str:
     return attribute.metadata[base_core.PROTO_PATH] or attribute.name
+
+
+def _is_proto_field(attribute: attr.Attribute) -> bool:
+    return attribute.metadata[base_core.IS_PROTO_FIELD]
