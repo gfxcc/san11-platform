@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
@@ -15,11 +17,13 @@ export class TimelineComponent implements OnInit {
   userId: string;
 
   events: any[];
+  loading;
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +36,7 @@ export class TimelineComponent implements OnInit {
   }
 
   load_activities() {
+    this.loading = this.dialog.open(LoadingComponent);
     this.san11pkService.listActivities(new ListActivitiesRequest({
       parent: `users/${this.userId}`,
       orderBy: 'create_time desc',
@@ -40,9 +45,11 @@ export class TimelineComponent implements OnInit {
         this.events = resp.activities.map((activity: Activity) => {
           return this.activityToEvent(activity);
         });
+        this.loading.close();
       }, 
       error => {
         this.notificationService.warn(`获取时间线失败: ${error.statusMessage}`)
+        this.loading.close();
       }
     );
   }
