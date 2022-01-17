@@ -38,10 +38,10 @@ class PackageHandler:
 
     def list_packages(self, request, handler_context) -> Tuple[Iterable[ModelPackage], str]:
         # (TODO): BEGIN - Remove logic for model migration
-        if not ModelPackage.list(ListOptions(parent='categories/1'))[0]:
-            for package in Package.list(page_size=1000, page_token=''):
-                new_model = ModelPackage.from_v1(package)
-                new_model.backfill()
+        # if not ModelPackage.list(ListOptions(parent='categories/1'))[0]:
+        #     for package in Package.list(page_size=1000, page_token=''):
+        #         new_model = ModelPackage.from_v1(package)
+        #         new_model.backfill()
         # - END
         list_options = ListOptions.from_request(request)
         # (TODO): Due to ListOptions.filter does not support `OR` operation, we
@@ -60,9 +60,9 @@ class PackageHandler:
             # Users who also publish packages will also see packages they published
             # in `HIDDEN`, `UNDER_REVIEW` state.
             packages = filter(lambda x: handler_context.user.user_type == 'admin' or
+                              x.state == pb.ResourceState.NORMAL or
                               (x.author_id == handler_context.user.user_id and
-                               x.state in [pb.ResourceState.NORMAL,
-                                           pb.ResourceState.HIDDEN,
+                               x.state in [pb.ResourceState.HIDDEN,
                                            pb.ResourceState.UNDER_REVIEW]),
                               packages)
         return packages, next_page_token
