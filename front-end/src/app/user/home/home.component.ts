@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { v4 as uuid } from 'uuid';
 import { CreateImageRequest, User } from '../../../proto/san11-platform.pb';
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
@@ -8,7 +9,7 @@ import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { UploadService } from '../../service/upload.service';
 import { getFullUrl } from '../../utils/resrouce_util';
-import { getUserUrl, isAdmin, loadUser } from '../../utils/user_util';
+import { getUserUrl, loadUser } from '../../utils/user_util';
 
 @Component({
   selector: 'app-home',
@@ -117,7 +118,7 @@ export class HomeComponent implements OnInit {
     this.loading = this.dialog.open(LoadingComponent);
 
     const parent = getUserUrl(this.user);
-    const filename = `${parent}/images/tmp.jpeg`
+    const filename = `${parent}/images/${uuid()}.jpeg`
     this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
       if (upload.state === 'DONE') {
         this.san11pkService.createImage(new CreateImageRequest({
