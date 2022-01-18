@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 // import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
 // import Image from '@ckeditor/ckeditor5-image/src/image';
 import { ImageItem } from 'ng-gallery';
-import { CreateImageRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListTagsRequest, Package, ResourceState, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { Action, CreateImageRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListTagsRequest, Package, ResourceState, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 // import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
@@ -19,7 +19,7 @@ import { UploadService } from '../../service/upload.service';
 import { increment } from '../../utils/number_util';
 import { getCategoryId, getPackageUrl } from "../../utils/package_util";
 import { getFullUrl, parseName } from "../../utils/resrouce_util";
-import { getUserUrl, isAdmin } from "../../utils/user_util";
+import { getUserUrl, isAdmin, loadUser, signedIn } from "../../utils/user_util";
 
 
 
@@ -442,6 +442,24 @@ export class PackageDetailComponent implements OnInit {
         this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
       }
     );
+
+    this.san11pkService.listActivities(new ListActivitiesRequest({
+      parent: `users/${loadUser().userId}`,
+      filter: `resource_name=${this.package.name}`,
+    })).subscribe(
+      (resp: ListActivitiesResponse) => {
+        resp.activities.forEach(activity => {
+          if (activity.action === Action.LIKE) {
+            this.liked = true;
+          } else if (activity.action === Action.DISLIKE) {
+            this.disliked = true;
+          }
+        });        
+      },
+      error => {
+
+      }
+    );
   }
 
   onAuthorClick() {
@@ -644,32 +662,42 @@ export class PackageDetailComponent implements OnInit {
   }
 
   onToggleLike() {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+      return;
+    }
     if (this.liked) {
       this.liked = false;
     } else {
       this.liked = true;
       if (this.disliked) {
         this.disliked = false;
-        this.toggleAction('dislike_count');
       }
     }
     this.toggleAction('like_count');
   }
 
   onToggleDislike() {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+      return;
+    }
     if (this.disliked) {
       this.disliked = false;
     } else {
       this.disliked = true;
       if (this.liked) {
         this.liked = false;
-        this.toggleAction('like_count');
       }
     }
     this.toggleAction('dislike_count');
   }
 
   onSubscribe() {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+      return;
+    }
     if (this.subscribed) {
       this.subscribed = false;
       this.notificationEnabled = false;
@@ -684,6 +712,15 @@ export class PackageDetailComponent implements OnInit {
     } else {
       this.notificationEnabled = true;
     }
+  }
+
+  onReport() {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+      return;
+    }
+
+
   }
 
 

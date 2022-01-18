@@ -1,5 +1,5 @@
 .container {
-    width: 1140px;
+    max-width: 1140px;
     margin-top: 20px;
     margin-bottom: 20px;
     background-color: #fff;
@@ -31,6 +31,12 @@
     text-overflow: ellipsis;
     overflow-y: hidden;
     margin: 0%;
+}
+
+.entry-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .entry-image {
@@ -117,4 +123,10 @@ hr.card-footer-divider {
 
 mat-icon {
     margin-right: 30px;
+}
+
+@media (max-width: 40rem) {
+    .entry-area {
+        flex-direction: column;
+    }
 }

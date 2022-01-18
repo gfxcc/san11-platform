@@ -94,6 +94,11 @@ export class TimelineComponent implements OnInit {
         icon = 'notifications';
         color = '#FBBE04';
         break;
+      case Action.DISLIKE:
+        action = '反对';
+        icon = 'thumb_down';
+        color = '#EA4333';
+        break;
       case Action.DOWNLOAD:
         action = '下载';
         icon = 'get_app';

@@ -1,7 +1,6 @@
-import { transition } from "@angular/animations";
-import { map, filter, tap } from 'rxjs/operators';
-import { Observer, Observable } from "rxjs";
-import { User, ListUsersResponse } from "../../proto/san11-platform.pb";
+import { Observable } from "rxjs";
+import { map } from 'rxjs/operators';
+import { ListUsersResponse, User } from "../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from "../service/san11-platform-service.service";
 
 

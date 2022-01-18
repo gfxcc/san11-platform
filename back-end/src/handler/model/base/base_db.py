@@ -82,7 +82,11 @@ def parse_filter(cls: type, filter: str) -> Dict:
         if not segment:
             continue
         k, v = map(str.strip, segment.split('='))
-        kwargs[proto2db[k]] = v
+        # To support fields not in proto message.
+        if k not in proto2db:
+            kwargs[k] = v
+        else:
+            kwargs[proto2db[k]] = v
     return kwargs
 
 
@@ -304,7 +308,7 @@ class DbModelBase(ABC):
     @classmethod
     def from_data(cls, data: Dict):
         def populate_default(value, type):
-            if value is None:
+            if value is None and type in [str, int, bool]:
                 return type()
             return value
         obj_args = {}

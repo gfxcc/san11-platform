@@ -1,9 +1,12 @@
 import logging
 import os
+from operator import is_
 from typing import Iterable, Tuple
 
+from handler.common.exception import NotFound
 from handler.model.activity import Action, Activity
 from handler.model.base.base_db import ListOptions
+from handler.model.model_activity import ModelActivity, search_activity
 from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
 from handler.model.model_thread import ModelThread
@@ -97,20 +100,6 @@ class PackageHandler:
                        update_package: ModelPackage,
                        update_mask: FieldMask,
                        handler_context):
-        def toggle_action(name: str, user_id: int, action: Action):
-            try:
-                activity = Activity.from_detail(
-                    user_id=user_id, action=action, resource_name=name)
-            except NotFound:
-                Activity(activity_id=0, user_id=user_id,
-                         create_time=get_now(),
-                         action=action, resource_name=name).create()
-                delta = 1
-            else:
-                # action from the same user will result as cancelling previous upvote
-                activity.delete()
-                delta = -1
-            return delta
         # Remove `like_count`, `dislike_count` from update_mask here and handle the count update
         #   explicitly later.
         sanitized_update_mask = FieldMask(
@@ -120,18 +109,50 @@ class PackageHandler:
                                  field_mask=sanitized_update_mask)
         user_id = handler_context.user.user_id
 
-        if update_mask.has('like_count'):
-            logger.debug('in')
-            package.like_count += toggle_action(package.name, user_id, Action.LIKE)
-        if update_mask.has('dislike_count'):
-            package.dislike_count += toggle_action(package.name, user_id, Action.DISLIKE)
-        # Delete image resources
-        for image_url_to_delete in set(base_package.image_urls) - set(update_package.image_urls):
-            try:
-                image = Image.from_url(image_url_to_delete)
-                image.delete()
-            except Exception as err:
-                logger.error(f'Failed to delete {image_url_to_delete}: {err}')
+        def toggle_like_dislike(user_id: int, action: Action, package: ModelPackage):
+            action2field = {
+                Action.LIKE: 'like_count',
+                Action.DISLIKE: 'dislike_count',
+            }
+            act1 = search_activity(
+                f'users/{user_id}', action, package.name)
+            if act1:
+                act1.delete()
+                setattr(package, action2field[action], getattr(
+                    package, action2field[action]) - 1)
+            else:
+                ModelActivity(name='', create_time=get_now(),
+                              action=action.value, resource_name=package.name).create(parent=f'users/{user_id}')
+                setattr(package, action2field[action], getattr(
+                    package, action2field[action]) + 1)
 
-        package.update(handler_context.user.user_id)
+                reversed_action = Action.DISLIKE if action == Action.LIKE else Action.LIKE
+                act2 = search_activity(
+                    f'users/{user_id}', reversed_action, package.name)
+                if act2:
+                    act2.delete()
+                    setattr(package, action2field[reversed_action], getattr(
+                        package, action2field[reversed_action]) - 1)
+
+        if update_mask.has('like_count'):
+            toggle_like_dislike(user_id, Action.LIKE, package)
+        if update_mask.has('dislike_count'):
+            toggle_like_dislike(user_id, Action.DISLIKE, package)
+
+        # Delete image resources
+        if update_mask.has('image_urls'):
+            for image_url_to_delete in set(base_package.image_urls) - set(update_package.image_urls):
+                try:
+                    image = Image.from_url(image_url_to_delete)
+                    image.delete()
+                except Exception as err:
+                    logger.error(
+                        f'Failed to delete {image_url_to_delete}: {err}')
+
+        is_visitor = True if set(update_mask.paths) <= {
+            'like_count', 'dislike_count'} else False
+        if is_visitor:
+            package.update(update_update_time=False)
+        else:
+            package.update(user_id)
         return package

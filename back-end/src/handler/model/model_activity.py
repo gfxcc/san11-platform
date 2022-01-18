@@ -1,5 +1,6 @@
 import datetime
 from enum import Enum
+from typing import Optional
 
 import attr
 
@@ -27,6 +28,7 @@ class Action(Enum):
     LIKE = 11
     UPVOTE = 12
     SUBSCRIBE = 13
+    DISLIKE = 14
     # misc
     DOWNLOAD = 21
 
@@ -68,3 +70,13 @@ class ModelActivity(base_db.DbModelBase, base_proto.ProtoModelBase):
             action=legacy_model.action.value,
             resource_name=legacy_model.resource_name,
         )
+
+
+def search_activity(parent: str, action: Action, resource_name: str) -> Optional[ModelActivity]:
+    activities = ModelActivity.list(
+        base_db.ListOptions(parent=parent,
+                    filter=f"action={action.value} AND resource_name={resource_name}")
+    )[0]
+    if not activities:
+        return None
+    return activities[0]

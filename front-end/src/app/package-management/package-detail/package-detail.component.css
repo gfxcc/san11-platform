@@ -153,7 +153,13 @@
 .comment-section {}
 
 
+/*  */
+
+
 /* new layout */
+
+
+/*  */
 
 .info-container {
     padding: 20px 0 8px 0;
@@ -168,18 +174,10 @@
     display: flex;
 }
 
-.counter-render {
+.primary-text {
     color: #606060;
     font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1.4rem;
-    line-height: 2rem;
-    font-weight: 400;
-}
-
-.create-time-render {
-    color: #606060;
-    font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     font-weight: 400;
 }
@@ -214,7 +212,7 @@
 
 .toggle-button-render {
     display: flex;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 500;
     letter-spacing: 0.5px;
     align-items: center;
@@ -236,7 +234,7 @@
 
 .meta-content {
     border-bottom: 1px solid rgb(0, 0, 0, 0.1);
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     padding-bottom: 16px;
 }
 
@@ -254,7 +252,7 @@
 
 .author-name {
     font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     font-weight: 500;
 }
@@ -264,7 +262,7 @@
     margin-right: 4px;
     text-transform: none;
     font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 1.8rem;
     font-weight: 400;
 }

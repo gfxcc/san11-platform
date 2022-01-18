@@ -22,14 +22,14 @@
             <div class="info-content">
 
                 <div class="primary-info-render">
-                    <div class="counter-render">
+                    <div class="primary-text">
                         <span>{{this.package.downloadCount}} 下载</span>
                     </div>
-                    <div class="create-time-render">
+                    <div class="primary-text">
                         <span class="dot-render"></span>
                         <span matTooltip="创建日期">{{this.package.createTime}}</span>
                     </div>
-                    <div class="create-time-render">
+                    <div class="primary-text">
                         <span class="dot-render"></span>
                         <span matTooltip="最近更新">{{this.package.updateTime}}</span>
                     </div>
@@ -101,7 +101,7 @@
                         </a>
                     </div>
 
-                    <div class="icon-button">
+                    <div *ngIf="false" class="icon-button">
                         <a matTooltip="分享 (未开放)" class="toggle-button-render
                             disabled-text">
                             <button mat-icon-button class="button-svg">
@@ -121,10 +121,10 @@
                         </a>
                     </div>
 
-                    <div class="icon-button">
+                    <div *ngIf="false" class="icon-button">
                         <a matTooltip="收藏 (未开放)" class="toggle-button-render
                             disabled-text">
-                            <button mat-icon-button class="button-svg">
+                            <button mat-icon-button class="button-svg" [disabled]="true">
                                 <svg viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -157,7 +157,8 @@
                                             class="style-scope yt-icon"></path></g></svg>
                             </button>
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item style="display: flex; align-items: center;">
+                                <button mat-menu-item style="display: flex;
+                                    align-items: center;" (click)="onReport()">
                                     <div style="width: 24px; height: 24px;">
                                         <svg viewBox="0 0 24 24"
                                             preserveAspectRatio="xMidYMid
@@ -270,6 +271,26 @@
 
         </div>
 
+        <div style="margin-bottom: 5px;">
+            <!-- <div class="heading-1">标签</div> -->
+            <mat-chip-list #chipList>
+                <mat-chip *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
+                    {{tag.tagName}}
+                    <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
+                </mat-chip>
+
+                <mat-form-field *ngIf="tagCanEdit">
+                    <mat-label>新标签...</mat-label>
+                    <mat-select required (selectionChange)="newTagSelected($event.value)">
+                        <mat-option *ngFor="let tag of this.allTags" [value]="tag">
+                            {{tag.tagName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-chip-list>
+
+        </div>
+
 
         <div class="right-bottom">
             <div class="icon-section">
@@ -301,7 +322,7 @@
             </div>
         </div>
 
-        <div class="version-info top-border show-border-dev">
+        <div class="version-info show-border-dev">
             <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)">
             </app-version-panel>
         </div>
