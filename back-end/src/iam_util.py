@@ -8,6 +8,7 @@ from google.protobuf import message
 
 from handler.auths.session import Session
 from handler.common.exception import PermissionDenied, Unauthenticated
+from handler.model.user import User
 from handler.util.resource_parser import find_resource
 
 ServerHandlerType = Callable[[Any, Any, Any], Any]
@@ -83,6 +84,16 @@ def assert_resource_owner(user_id_pattern: str):
         match = re.fullmatch(NAME_PATTERN, user_id_path)
         assert match
         return match['path_to_resource'], match['path_to_user_id'] or 'author_id'
+    
+    def get_resource_owner_id(resource, owner_id_path: str) -> int:
+        if isinstance(resource, User):
+            return resource.user_id
+        cur = resource
+        for segment in owner_id_path.split('.'):
+            cur = getattr(cur, segment)
+        else:
+            user_id = cur
+        return user_id
 
     def wrap(func):
         @functools.wraps(func)
@@ -94,10 +105,7 @@ def assert_resource_owner(user_id_pattern: str):
             else:
                 resource = find_resource(cur)
             cur = resource
-            for segment in user_id_path.split('.'):
-                cur = getattr(cur, segment)
-            else:
-                user_id = cur
+            user_id = get_resource_owner_id(resource, user_id_path)
 
             user = _get_session(context).user
             if not (user_id == user.user_id or user.is_admin()):
