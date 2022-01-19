@@ -50,7 +50,6 @@ class PackageHandler:
         # will do list without any filter and hide content later manually.
         # This should be replaced with different `filter` expression later when
         # possible.
-        list_options.filter = ''
         packages, next_page_token = ModelPackage.list(list_options)
         if handler_context.user is None:
             # Most users (including anonymous users) should only see packages in

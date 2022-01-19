@@ -158,7 +158,7 @@
                             </button>
                             <mat-menu #menu="matMenu">
                                 <button mat-menu-item style="display: flex;
-                                    align-items: center;" (click)="onReport()">
+                                    align-items: center;" (click)="onReport()" [disabled]="true">
                                     <div style="width: 24px; height: 24px;">
                                         <svg viewBox="0 0 24 24"
                                             preserveAspectRatio="xMidYMid
@@ -177,7 +177,7 @@
                                                     class="style-scope
                                                     yt-icon"></path></g></svg>
                                     </div>
-                                    举报
+                                    举报(未开放)
                                 </button>
                             </mat-menu>
 
@@ -203,7 +203,7 @@
                     <div style="flex-grow: 1;">
                     </div>
                     <div class="subscribe-section">
-                        <button class="subscribe-button" mat-flat-button [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{subscribed?'退订':'订阅'}}</button>
+                        <button [disabled]="true" class="subscribe-button" mat-flat-button [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{subscribed?'退订':'订阅 (未开放)'}}</button>
                         <div *ngIf="subscribed" class="icon-button" style="margin-left: .5rem !important;">
                             <a class="toggle-button-render disabled-text">
                                 <button mat-icon-button class="button-svg" (click)="onNotification()">

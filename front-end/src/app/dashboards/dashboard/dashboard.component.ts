@@ -53,17 +53,19 @@ export class DashboardComponent implements OnInit {
       if (query != undefined) {
         this.searchPackages(query);
       } else if (categoryId != undefined) {
-        this.loadPackages(new ListPackagesRequest({
+        let request = new ListPackagesRequest({
           parent: `categories/${ap.params['categoryId']}`,
-          filter: `tag=${ap.qparams['tagId']}`,
-        }));
+        })
+        if (ap.qparams['tagId'] != undefined) {
+          request.filter = `tags=${ap.qparams['tagId']}`;
+        }
+        this.loadPackages(request);
       } else if (userId != undefined) {
         // TODO: Reimplement this with SearchPackage.
-        // this.loadPackages(new ListPackagesRequest({
-        //   authorId: userId
-
-        //   filter: `tag=${ap.qparams['tagId']}`,
-        // }));
+        this.packages = [];
+        this.loadPackagesInCate(userId, 1);
+        this.loadPackagesInCate(userId, 2);
+        this.loadPackagesInCate(userId, 3);
       }
     });
   }
@@ -81,6 +83,23 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+  loadPackagesInCate(userId: string, category: number) {
+    this.san11pkService.listPackages(new ListPackagesRequest({
+      parent: `categories/${category.toString()}`,
+      filter: `author_id=${userId}`
+    })).subscribe(
+      resp => {
+        resp.packages.forEach(p => {
+          this.packages.push(p)
+        });
+      },
+      error => {
+        this.notificationService.warn('获取工具列表 失败: ' + error.statusMessage);
+      }
+    );
+  }
+
 
   searchPackages(query: string): void {
     this.san11pkService.searchPackages(query, 0, '').subscribe(

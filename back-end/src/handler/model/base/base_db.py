@@ -61,7 +61,8 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
 
 def parse_filter(cls: type, filter: str) -> Dict:
     '''
-    (TODO): Support OR operation.
+    (TODO): Support OR (OR) operation.
+    (TODO): Support HAS (:) operation.
     Input:
         cls: class of resource class.
         filter: E.g. "create_time > '2021-07-20 10:43:28.313033+08:00'"
@@ -238,7 +239,7 @@ class DbModelBase(ABC):
             # Update NextVal
             auto_adjust_resource_id_next_val(db_table)
         self.update(update_update_time=False)
-        logger.info(f'CREATED: {self}')
+        logger.debug(f'CREATED: {self}')
 
     @classmethod
     def from_name(cls, name: str) -> _SUB_DB_MODEL_T:
@@ -280,7 +281,7 @@ class DbModelBase(ABC):
                     if db_field.repeated:
                         # https://www.postgresql.org/docs/9.5/functions-json.html
                         wheres.append(
-                            f"(data->'{db_path}')::jsonb ? %(db_path)s")
+                            f"(data->'{db_path}')::jsonb ? %({db_path})s")
                     else:
                         wheres.append(f"data->>'{db_path}'=%({db_path})s")
                 predicate_statement += ' AND ' + ' AND '.join(wheres)
@@ -346,7 +347,7 @@ class DbModelBase(ABC):
             'resource_id': resource_id,
         }
         run_sql_with_param(sql, params)
-        logger.info(f'DELETED: {self}')
+        logger.debug(f'DELETED: {self}')
 
     def backfill(self) -> None:
         '''
