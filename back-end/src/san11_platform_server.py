@@ -427,7 +427,7 @@ def serve():
 
 
 def init_log(verbose: bool):
-    FORMAT = '%(asctime)-15s %(levelname)s %(name)s %(message)s'
+    FORMAT = '%(asctime)-15s %(levelname)s %(name)s:%(lineno)s [func=%(funcName)s] %(message)s'
     logging.basicConfig(
         level=logging.INFO if not verbose else logging.NOTSET, format=FORMAT)
 
