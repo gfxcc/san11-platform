@@ -39,8 +39,8 @@
 
                 <div class="top-level-buttons">
                     <div class="icon-button">
-                        <a matTooltip="我要点赞" class="toggle-button-render">
-                            <button mat-icon-button class="button-svg" (click)="onToggleLike()">
+                        <a matTooltip="我要点赞" class="toggle-button-render" (click)="onToggleLike()">
+                            <button mat-icon-button class="button-svg">
                                 <svg *ngIf="!liked" viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -71,8 +71,8 @@
                         </a>
                     </div>
                     <div class="icon-button">
-                        <a matTooltip="不喜欢" class="toggle-button-render">
-                            <button mat-icon-button class="button-svg" (click)="onToggleDislike()">
+                        <a matTooltip="不喜欢" class="toggle-button-render" (click)="onToggleDislike()">
+                            <button mat-icon-button class="button-svg">
                                 <svg *ngIf="!disliked" viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -193,17 +193,21 @@
                 <div class="top-row">
                     <div class="package-owner-render">
 
-                        <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage= false;" class="author-image">
+                        <a [href]="&quot;users/&quot;+this.author.userId">
+                            <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage= false;" class="author-image">
+                        </a>
                         <div class="upload-info">
                             <a class="author-name clickable" [matTooltip]="this.author.username" [href]="&quot;users/&quot;+this.author.userId">{{this.author.username}}</a>
-                            <div *ngIf="false" class="author-sub-count">30.1k subscribers</div>
+                            <div *ngIf="false" class="author-sub-count">30.1k subscribers
+                            </div>
                         </div>
 
                     </div>
                     <div style="flex-grow: 1;">
                     </div>
                     <div class="subscribe-section">
-                        <button [disabled]="true" class="subscribe-button" mat-flat-button [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{subscribed?'退订':'订阅 (未开放)'}}</button>
+                        <button [disabled]="true" class="subscribe-button" mat-flat-button [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{subscribed?'退订':'订阅
+                            (未开放)'}}</button>
                         <div *ngIf="subscribed" class="icon-button" style="margin-left: .5rem !important;">
                             <a class="toggle-button-render disabled-text">
                                 <button mat-icon-button class="button-svg" (click)="onNotification()">
