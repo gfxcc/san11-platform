@@ -74,6 +74,7 @@ class UserHandler:
             User.validate_username(user.username)
         if user.email != base_user.email:
             User.validate_email(user.email)
+        user.update(user_id=user.user_id)
         return user.to_pb()
 
     def update_password(self, request, context):
