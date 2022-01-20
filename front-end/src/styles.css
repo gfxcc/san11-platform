@@ -160,6 +160,7 @@ body {
     text-decoration-thickness: initial;
     text-decoration-style: initial;
     text-decoration-color: initial;
+    color: rgb(3, 3, 3);
 }
 
 .clickable:hover {

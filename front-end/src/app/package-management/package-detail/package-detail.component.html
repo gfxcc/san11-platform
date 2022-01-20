@@ -195,8 +195,8 @@
 
                         <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage= false;" class="author-image">
                         <div class="upload-info">
-                            <div class="author-name clickable" [matTooltip]="this.author.username" (click)="onAuthorNameClick()">{{this.author.username}}</div>
-                            <div class="author-sub-count">30.1k subscribers</div>
+                            <a class="author-name clickable" [matTooltip]="this.author.username" [href]="&quot;users/&quot;+this.author.userId">{{this.author.username}}</a>
+                            <div *ngIf="false" class="author-sub-count">30.1k subscribers</div>
                         </div>
 
                     </div>
