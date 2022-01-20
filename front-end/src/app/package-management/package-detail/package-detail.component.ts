@@ -658,7 +658,7 @@ export class PackageDetailComponent implements OnInit {
 
   // NEW UI
   onAuthorNameClick() {
-
+    this.router.navigate(['users', this.package.authorId]);
   }
 
   onToggleLike() {

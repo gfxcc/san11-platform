@@ -195,7 +195,7 @@
 
                         <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage= false;" class="author-image">
                         <div class="upload-info">
-                            <div class="author-name" (click)="onAuthorNameClick()">{{this.author.username}}</div>
+                            <div class="author-name clickable" [matTooltip]="this.author.username" (click)="onAuthorNameClick()">{{this.author.username}}</div>
                             <div class="author-sub-count">30.1k subscribers</div>
                         </div>
 

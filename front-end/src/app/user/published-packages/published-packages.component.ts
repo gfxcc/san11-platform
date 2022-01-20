@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ListPackagesRequest, Package } from '../../../proto/san11-platform.pb';
+import { Package } from '../../../proto/san11-platform.pb';
 import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
@@ -29,7 +29,6 @@ export class PublishedPackagesComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.parent.params.subscribe(params => {
-      console.log(2);
       this.userId = params.userId;
       this.loadPackageList(this.userId);
     });
@@ -38,28 +37,6 @@ export class PublishedPackagesComponent implements OnInit {
   loadPackageList(userId: string) {
     this.publishedPackages = []; 
     // TODO: Reimplement this logic with SearchPackage.
-    this.loadPackagesInCate(userId, 1);
-    this.loadPackagesInCate(userId, 2);
-    this.loadPackagesInCate(userId, 3);
-  }
-
-  loadPackagesInCate(userId: string, category: number) {
-    console.log(1);
-    this.san11pkService.listPackages(new ListPackagesRequest({
-      parent: `categories/${category.toString()}`,
-      filter: `author_id=${userId}`
-    })).subscribe(
-      resp => {
-        resp.packages.forEach(p => {
-          this.publishedPackages.push(p)
-        });
-        this.dataSource = new MatTableDataSource(this.publishedPackages);
-        this.dataSource.paginator = this.paginator;
-      },
-      error => {
-        this.notificationService.warn('获取工具列表 失败: ' + error.statusMessage);
-      }
-    );
   }
 
   onPackageClick(san11Package: Package) {

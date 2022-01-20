@@ -163,7 +163,7 @@ body {
 }
 
 .clickable:hover {
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 .actions-section {
