@@ -5,7 +5,7 @@ import grpc
 
 from .auths import Session
 from .common.exception import (AlreadyExists, InvalidArgument, NotFound,
-                               PermissionDenied, Unauthenticated)
+                               Unauthenticated)
 from .common.field_mask import FieldMask, merge_resource
 from .common.image import Image
 from .model.user import User, generate_verification_code, verify_code
@@ -78,10 +78,6 @@ class UserHandler:
 
     def update_password(self, request, context):
         user = User.from_id(request.user_id)
-
-        if request.verification_code:
-            if not verify_code(user.email, request.verification_code):
-                context.abort(code=PermissionDenied().code, details='验证码不正确')
         user.set_password(request.password)
         return san11_platform_pb2.Empty()
 

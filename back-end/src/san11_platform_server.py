@@ -25,7 +25,7 @@ from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
-from handler.model.user import User
+from handler.model.user import User, verify_code
 from handler.protos import san11_platform_pb2 as pb
 from handler.protos import san11_platform_pb2_grpc
 from handler.thread_handler import ThreadHandler
@@ -387,8 +387,19 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def UpdateUser(self, request, context):
         return self.user_handler.update_user(request, context)
 
-    @iam_util.assert_user('user_id')
     def UpdatePassword(self, request, context):
+        user = User.from_id(request.user_id)
+        if request.verification_code:
+            if not verify_code(user.email, request.verification_code):
+                context.abort(code=PermissionDenied().code, details='验证码不正确')
+        else:
+            try:
+                current_user = iam_util.load_user(context)
+            except Unauthenticated as e:
+                context.abort(code=e.code, details=str(e))
+            if current_user.user_id != user.user_id:
+                context.abort(code=Unauthenticated().code,
+                              details=Unauthenticated().message)
         return self.user_handler.update_password(request, context)
 
     def GetUser(self, request, context):

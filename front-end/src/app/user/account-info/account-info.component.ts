@@ -187,6 +187,7 @@ export class AccountInfoComponent implements OnInit {
       this.san11pkService.updatePassword(new UpdatePasswordRequest({
         userId: this.user.userId,
         password: this.password.value,
+        verificationCode: this.verificationCode.value,
       })).subscribe(
         empty => {
           this.notificationService.success('更新密码 成功');

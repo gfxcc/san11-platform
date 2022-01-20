@@ -22,6 +22,11 @@ def _get_session(context) -> Session:
     return Session.from_sid(sid)
 
 
+def load_user(context) -> User:
+    session = _get_session(context)
+    return session.user
+
+
 def assert_admin(func: ServerHandlerType):
     @functools.wraps(func)
     def iam_wrapper(this, request, context):
