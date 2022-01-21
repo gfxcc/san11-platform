@@ -1062,6 +1062,90 @@ export class RouteGuideClient {
         requestClass: thisProto.GetAdminMessageRequest,
         responseClass: thisProto.AdminMessage
       });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/CreateSubscriptioin
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Subscription>>
+     */
+    createSubscriptioin: (
+      requestData: thisProto.CreateSubscriptionRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Subscription>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/CreateSubscriptioin',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.CreateSubscriptionRequest,
+        responseClass: thisProto.Subscription
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/ListSubscriptioins
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListSubscriptionsResponse>>
+     */
+    listSubscriptioins: (
+      requestData: thisProto.ListSubscriptionsRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListSubscriptionsResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ListSubscriptioins',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListSubscriptionsRequest,
+        responseClass: thisProto.ListSubscriptionsResponse
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateSubscriptioin
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Subscription>>
+     */
+    updateSubscriptioin: (
+      requestData: thisProto.UpdateSubscriptionRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Subscription>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateSubscriptioin',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateSubscriptionRequest,
+        responseClass: thisProto.Subscription
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DeleteSubscriptioin
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Subscription>>
+     */
+    deleteSubscriptioin: (
+      requestData: thisProto.DeleteSubscriptionRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Subscription>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DeleteSubscriptioin',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DeleteSubscriptionRequest,
+        responseClass: thisProto.Subscription
+      });
     }
   };
 
@@ -1854,6 +1938,70 @@ export class RouteGuideClient {
   ): Observable<thisProto.AdminMessage> {
     return this.$raw
       .getAdminMessage(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/CreateSubscriptioin
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Subscription>
+   */
+  createSubscriptioin(
+    requestData: thisProto.CreateSubscriptionRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Subscription> {
+    return this.$raw
+      .createSubscriptioin(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/ListSubscriptioins
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListSubscriptionsResponse>
+   */
+  listSubscriptioins(
+    requestData: thisProto.ListSubscriptionsRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListSubscriptionsResponse> {
+    return this.$raw
+      .listSubscriptioins(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateSubscriptioin
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Subscription>
+   */
+  updateSubscriptioin(
+    requestData: thisProto.UpdateSubscriptionRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Subscription> {
+    return this.$raw
+      .updateSubscriptioin(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DeleteSubscriptioin
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Subscription>
+   */
+  deleteSubscriptioin(
+    requestData: thisProto.DeleteSubscriptionRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Subscription> {
+    return this.$raw
+      .deleteSubscriptioin(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

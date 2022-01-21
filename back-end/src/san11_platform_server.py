@@ -28,6 +28,7 @@ from handler.model.model_comment import ModelComment
 from handler.model.model_notification import ModelNotification
 from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
+from handler.model.model_subscription import ModelSubscription
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import (ModelUser, get_user_by_email,
@@ -79,6 +80,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.article_handler = ArticleHandler()
         self.thread_handler = ThreadHandler()
         self.notification_handler = NotificationHandler()
+        self.subscription_handler = SubscriptionHandler()
     #############
     # New model #
     #############
@@ -351,6 +353,42 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             activities=activities,
             next_page_token=next_page_token,
         )
+    # Subscription
+
+    @iam_util.assert_login
+    def CreateSubscriptioin(self, request, context):
+        parent, sub = request.parent, ModelSubscription.from_pb(request.thread)
+        handler_context = HandlerContext.from_service_context(context)
+        created_sub = self.subscription_handler.create_subscription(
+            parent, sub, handler_context)
+        return created_sub.to_pb()
+
+    def ListSubscriptioins(self, request, context):
+        handler_context = HandlerContext.from_service_context(context)
+        subs, next_page_token = self.subscription_handler.list_subscriptions(
+            request=request,
+            handler_context=handler_context,
+        )
+        return pb.ListThreadsResponse(
+            subscriptions=[subscription.to_pb() for subscription in subs],
+            next_page_token=next_page_token,
+        )
+
+    def UpdateSubscriptioin(self, request, context):
+        update_sub, update_mask = ModelSubscription.from_pb(request.subscription), \
+            FieldMask.from_pb(request.update_mask)
+        sub = ModelSubscription.from_name(request.subscription.name)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.subscription_handler.update_subscription(sub,
+                                                             update_sub,
+                                                             update_mask,
+                                                             handler_context).to_pb()
+
+    def DeleteSubscriptioin(self, request, context):
+        sub = ModelSubscription.from_name(request.name)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.subscription_handler.delete_subscription(sub,
+                                                             handler_context).to_pb()
 
     # users
     @GrpcAbortOnExcep
