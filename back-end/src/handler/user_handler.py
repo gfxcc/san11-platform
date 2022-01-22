@@ -1,7 +1,10 @@
 import logging
 import os
+from typing import Iterable, Tuple
 
 import grpc
+
+from handler.model.model_user import ModelUser
 
 from .auths import Session
 from .common.exception import (AlreadyExists, InvalidArgument, NotFound,
@@ -16,6 +19,25 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class UserHandler:
+    def create_user(self, parent: str, user: ModelUser,
+                    handler_context) -> ModelUser:
+        user.create(parent, user.user_id)
+        return user
+
+    def get_user(self, name: str, handler_context) -> ModelUser:
+        ...
+
+    def list_user(self, request, handler_context) -> Tuple[Iterable[ModelUser], str]:
+        ...
+
+    def update_user(self, base_user: ModelUser, update_user: ModelUser,
+                    update_mask: FieldMask, handler_context) -> ModelUser:
+        ...
+
+    #
+    #
+    #
+
     def sign_up(self, request, context):
         try:
             user = User.from_pb(request.user)

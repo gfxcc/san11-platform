@@ -25,6 +25,7 @@ from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
+from handler.model.model_user import ModelUser
 from handler.model.user import User, verify_code
 from handler.protos import san11_platform_pb2 as pb
 from handler.protos import san11_platform_pb2_grpc
@@ -363,17 +364,25 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
 
-    #############
-    # Old model #
-    #############
-
-    # image
-
-    @iam_util.assert_resource_owner('{parent}')
-    def CreateImage(self, request, context):
-        return self.image_handler.create_image(request, context)
-
     # users
+    def CreateUser(self, request, context):
+        parent, user, = request.parent, ModelUser.from_pb(request.user)
+        handler_context = HandlerContext.from_service_context(context)
+        created_thread = self.thread_handler.create_thread(
+            parent, thread, handler_context)
+        return created_thread.to_pb()
+        return super().CreateUser(request, context)
+
+    def GetUser(self, request, context):
+        return self.user_handler.get_user(request, context)
+
+    def ListUsers(self, request, context):
+        return self.user_handler.list_users(request, context)
+
+    @iam_util.assert_user('user.user_id')
+    def UpdateUser(self, request, context):
+        return self.user_handler.update_user(request, context)
+
     def SignUp(self, request, context):
         return self.user_handler.sign_up(request, context)
 
@@ -382,10 +391,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def SignOut(self, request, context):
         return self.user_handler.sign_out(request, context)
-
-    @iam_util.assert_user('user.user_id')
-    def UpdateUser(self, request, context):
-        return self.user_handler.update_user(request, context)
 
     def UpdatePassword(self, request, context):
         user = User.from_id(request.user_id)
@@ -402,11 +407,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
                               details=Unauthenticated().message)
         return self.user_handler.update_password(request, context)
 
-    def GetUser(self, request, context):
-        return self.user_handler.get_user(request, context)
+    #############
+    # Old model #
+    #############
 
-    def ListUsers(self, request, context):
-        return self.user_handler.list_users(request, context)
+    # image
+
+    @iam_util.assert_resource_owner('{parent}')
+    def CreateImage(self, request, context):
+        return self.image_handler.create_image(request, context)
 
     def SendVerificationCode(self, request, context):
         return self.user_handler.send_verification_code(request, context)
