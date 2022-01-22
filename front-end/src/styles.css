@@ -227,7 +227,10 @@ body {
     align-items: center;
 }
 
-.page-wrapper {}
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+}
 
 .page-content {
     max-width: 1200px;
