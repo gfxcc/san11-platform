@@ -30,7 +30,7 @@ class PackageHandler:
             notifer = Notifier()
             for admin in User.list(0, '', user_type='admin'):
                 notifer.send_email(
-                    admin.email, '新工具待审核', f'[{package.package_name}] 已被 {user.username} 创建。请审核。')
+                    admin.email, '新工具待审核', f'[{package.package_name}] 已被 {admin.username} 创建。请审核。')
         except Exception as err:
             logger.error(f'Failed to notify admin: {err}')
         return package
