@@ -30,6 +30,7 @@ class EmailProtoConverter(ProtoConverter):
 class EmailDbConverter(DbConverter):
     '''
     Normalize email before persisting.
+    This is useful when handling legacy records.
     '''
 
     def from_model(self, value: str) -> str:
@@ -123,6 +124,11 @@ def validate_username(username: str) -> None:
         raise InvalidArgument("用户名要求: [长度] 4-32 [字符] 不包含 空格, @")
     if ModelUser.list(ListOptions(parent='', filter=f'username=\"{username}\"'))[0]:
         raise AlreadyExists(f'用户名 {username} 已被使用')
+
+
+def validate_new_user(self, user: ModelUser) -> None:
+    validate_username(user.username)
+    validate_email(user.email)
 
 
 def get_user_by_email(email: str) -> ModelUser:

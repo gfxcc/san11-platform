@@ -854,23 +854,23 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/VerifyNewUser
+     * Unary RPC for /routeguide.RouteGuide/ValidateNewUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
      * @returns Observable<GrpcEvent<thisProto.Status>>
      */
-    verifyNewUser: (
-      requestData: thisProto.VerifyNewUserRequest,
+    validateNewUser: (
+      requestData: thisProto.ValidateNewUserRequest,
       requestMetadata = new GrpcMetadata()
     ): Observable<GrpcEvent<thisProto.Status>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/VerifyNewUser',
+        path: '/routeguide.RouteGuide/ValidateNewUser',
         requestData,
         requestMetadata,
-        requestClass: thisProto.VerifyNewUserRequest,
+        requestClass: thisProto.ValidateNewUserRequest,
         responseClass: thisProto.Status
       });
     },
@@ -1698,18 +1698,18 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/VerifyNewUser
+   * Unary RPC for /routeguide.RouteGuide/ValidateNewUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
    * @returns Observable<thisProto.Status>
    */
-  verifyNewUser(
-    requestData: thisProto.VerifyNewUserRequest,
+  validateNewUser(
+    requestData: thisProto.ValidateNewUserRequest,
     requestMetadata = new GrpcMetadata()
   ): Observable<thisProto.Status> {
     return this.$raw
-      .verifyNewUser(requestData, requestMetadata)
+      .validateNewUser(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

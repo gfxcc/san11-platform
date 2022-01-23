@@ -65,7 +65,7 @@ service RouteGuide {
   // User related utilities
   rpc SendVerificationCode(SendVerificationCodeRequest) returns (Empty) {}
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
-  rpc VerifyNewUser(VerifyNewUserRequest) returns (Status) {}
+  rpc ValidateNewUser(ValidateNewUserRequest) returns (Status) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (User) {}
 
   // Activities reltead
@@ -416,17 +416,8 @@ message VerifyEmailResponse {
   User user = 2;
 }
 
-message VerifyNewUserRequest {
-  oneof field {
-    string username = 1;
-    string password = 2;
-    string email = 3;
-  }
-}
-
-message VerifyNewUserResponse {
-  bool ok = 1;
-  string message = 2;
+message ValidateNewUserRequest {
+  User user = 1;
 }
 
 // activities related

@@ -1,5 +1,6 @@
 
-from typing import Optional
+from abc import ABC
+from typing import Optional, Type
 
 from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
@@ -37,3 +38,30 @@ class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
                           create_time=get_now(),
                           action=Action.DELETE.value,
                           resource_name=self.name).create(parent=f'users/{user_id}')
+
+
+class Context(ABC):
+    '''
+    Provides metadata/operations.
+    '''
+    ...
+
+
+class HandlerBase(ABC):
+    '''
+    Provides CRUD operations on resource classes.
+    '''
+    def create(self, parent: str, resource: Type[ModelBase], handler_context: Type[Context]):
+        ...
+    
+    def get(self, name: str, handler_context):
+        ...
+
+    def list(self, list_options, handler_context):
+        ...
+
+    def update(self, request, handler_context):
+        ...
+
+    def delete(self, request, handler_context):
+        ...

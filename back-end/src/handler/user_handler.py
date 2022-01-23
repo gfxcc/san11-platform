@@ -4,8 +4,8 @@ from typing import Iterable, Optional, Tuple
 
 from handler.model.base.base_db import ListOptions
 from handler.model.model_user import (ModelUser, get_user_by_email,
-                                      validate_email, validate_password,
-                                      validate_username)
+                                      validate_email, validate_new_user,
+                                      validate_password, validate_username)
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.user_util import (hash_password, normalize_email,
                                     verify_password)
@@ -27,9 +27,7 @@ class UserHandler:
                     handler_context) -> Tuple[ModelUser, Session]:
         user.image_url = 'users/default_avatar.jpg'
 
-        validate_email(user.email)
-        validate_username(user.username)
-        validate_password(user.password)
+        validate_new_user(user)
 
         user.create(parent, user.user_id)
         session = Session.create(user.user_id)
@@ -102,12 +100,3 @@ class UserHandler:
         except NotFound:
             user = None
         return True, user
-
-    def verify_new_user(self, request, handler_context) -> pb.Status:
-        if request.HasField('username'):
-            validate_username(request.username)
-        elif request.HasField('password'):
-            validate_password(request.password)
-        elif request.HasField('email'):
-            validate_email(request.email)
-        return san11_platform_pb2.Status(code=0, message='')

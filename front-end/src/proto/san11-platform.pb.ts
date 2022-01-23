@@ -9018,18 +9018,18 @@ export module VerifyEmailResponse {
 }
 
 /**
- * Message implementation for routeguide.VerifyNewUserRequest
+ * Message implementation for routeguide.ValidateNewUserRequest
  */
-export class VerifyNewUserRequest implements GrpcMessage {
-  static id = 'routeguide.VerifyNewUserRequest';
+export class ValidateNewUserRequest implements GrpcMessage {
+  static id = 'routeguide.ValidateNewUserRequest';
 
   /**
    * Deserialize binary data to message
    * @param instance message instance
    */
   static deserializeBinary(bytes: ByteSource) {
-    const instance = new VerifyNewUserRequest();
-    VerifyNewUserRequest.deserializeBinaryFromReader(
+    const instance = new ValidateNewUserRequest();
+    ValidateNewUserRequest.deserializeBinaryFromReader(
       instance,
       new BinaryReader(bytes)
     );
@@ -9040,7 +9040,9 @@ export class VerifyNewUserRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: VerifyNewUserRequest) {}
+  static refineValues(_instance: ValidateNewUserRequest) {
+    _instance.user = _instance.user || undefined;
+  }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -9048,7 +9050,7 @@ export class VerifyNewUserRequest implements GrpcMessage {
    * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    _instance: VerifyNewUserRequest,
+    _instance: ValidateNewUserRequest,
     _reader: BinaryReader
   ) {
     while (_reader.nextField()) {
@@ -9056,20 +9058,15 @@ export class VerifyNewUserRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.username = _reader.readString();
-          break;
-        case 2:
-          _instance.password = _reader.readString();
-          break;
-        case 3:
-          _instance.email = _reader.readString();
+          _instance.user = new User();
+          _reader.readMessage(_instance.user, User.deserializeBinaryFromReader);
           break;
         default:
           _reader.skipField();
       }
     }
 
-    VerifyNewUserRequest.refineValues(_instance);
+    ValidateNewUserRequest.refineValues(_instance);
   }
 
   /**
@@ -9078,70 +9075,34 @@ export class VerifyNewUserRequest implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(
-    _instance: VerifyNewUserRequest,
+    _instance: ValidateNewUserRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.username || _instance.username === '') {
-      _writer.writeString(1, _instance.username);
-    }
-    if (_instance.password || _instance.password === '') {
-      _writer.writeString(2, _instance.password);
-    }
-    if (_instance.email || _instance.email === '') {
-      _writer.writeString(3, _instance.email);
+    if (_instance.user) {
+      _writer.writeMessage(
+        1,
+        _instance.user as any,
+        User.serializeBinaryToWriter
+      );
     }
   }
 
-  private _username?: string;
-  private _password?: string;
-  private _email?: string;
-
-  private _field: VerifyNewUserRequest.FieldCase =
-    VerifyNewUserRequest.FieldCase.none;
+  private _user?: User;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of VerifyNewUserRequest to deeply clone from
+   * @param _value initial values object or instance of ValidateNewUserRequest to deeply clone from
    */
-  constructor(_value?: RecursivePartial<VerifyNewUserRequest.AsObject>) {
+  constructor(_value?: RecursivePartial<ValidateNewUserRequest.AsObject>) {
     _value = _value || {};
-    this.username = _value.username;
-    this.password = _value.password;
-    this.email = _value.email;
-    VerifyNewUserRequest.refineValues(this);
+    this.user = _value.user ? new User(_value.user) : undefined;
+    ValidateNewUserRequest.refineValues(this);
   }
-  get username(): string | undefined {
-    return this._username;
+  get user(): User | undefined {
+    return this._user;
   }
-  set username(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this._password = this._email = undefined;
-      this._field = VerifyNewUserRequest.FieldCase.username;
-    }
-    this._username = value;
-  }
-  get password(): string | undefined {
-    return this._password;
-  }
-  set password(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this._username = this._email = undefined;
-      this._field = VerifyNewUserRequest.FieldCase.password;
-    }
-    this._password = value;
-  }
-  get email(): string | undefined {
-    return this._email;
-  }
-  set email(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this._username = this._password = undefined;
-      this._field = VerifyNewUserRequest.FieldCase.email;
-    }
-    this._email = value;
-  }
-  get field() {
-    return this._field;
+  set user(value: User | undefined) {
+    this._user = value;
   }
 
   /**
@@ -9150,18 +9111,16 @@ export class VerifyNewUserRequest implements GrpcMessage {
    */
   serializeBinary() {
     const writer = new BinaryWriter();
-    VerifyNewUserRequest.serializeBinaryToWriter(this, writer);
+    ValidateNewUserRequest.serializeBinaryToWriter(this, writer);
     return writer.getResultBuffer();
   }
 
   /**
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
-  toObject(): VerifyNewUserRequest.AsObject {
+  toObject(): ValidateNewUserRequest.AsObject {
     return {
-      username: this.username,
-      password: this.password,
-      email: this.email
+      user: this.user ? this.user.toObject() : undefined
     };
   }
 
@@ -9180,195 +9139,25 @@ export class VerifyNewUserRequest implements GrpcMessage {
   toProtobufJSON(
     // @ts-ignore
     options?: ToProtobufJSONOptions
-  ): VerifyNewUserRequest.AsProtobufJSON {
+  ): ValidateNewUserRequest.AsProtobufJSON {
     return {
-      username: this.username ?? null,
-      password: this.password ?? null,
-      email: this.email ?? null
+      user: this.user ? this.user.toProtobufJSON(options) : null
     };
   }
 }
-export module VerifyNewUserRequest {
+export module ValidateNewUserRequest {
   /**
-   * Standard JavaScript object representation for VerifyNewUserRequest
+   * Standard JavaScript object representation for ValidateNewUserRequest
    */
   export interface AsObject {
-    username?: string;
-    password?: string;
-    email?: string;
+    user?: User.AsObject;
   }
 
   /**
-   * Protobuf JSON representation for VerifyNewUserRequest
+   * Protobuf JSON representation for ValidateNewUserRequest
    */
   export interface AsProtobufJSON {
-    username?: string | null;
-    password?: string | null;
-    email?: string | null;
-  }
-  export enum FieldCase {
-    none = 0,
-    username = 1,
-    password = 2,
-    email = 3
-  }
-}
-
-/**
- * Message implementation for routeguide.VerifyNewUserResponse
- */
-export class VerifyNewUserResponse implements GrpcMessage {
-  static id = 'routeguide.VerifyNewUserResponse';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new VerifyNewUserResponse();
-    VerifyNewUserResponse.deserializeBinaryFromReader(
-      instance,
-      new BinaryReader(bytes)
-    );
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: VerifyNewUserResponse) {
-    _instance.ok = _instance.ok || false;
-    _instance.message = _instance.message || '';
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(
-    _instance: VerifyNewUserResponse,
-    _reader: BinaryReader
-  ) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.ok = _reader.readBool();
-          break;
-        case 2:
-          _instance.message = _reader.readString();
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    VerifyNewUserResponse.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(
-    _instance: VerifyNewUserResponse,
-    _writer: BinaryWriter
-  ) {
-    if (_instance.ok) {
-      _writer.writeBool(1, _instance.ok);
-    }
-    if (_instance.message) {
-      _writer.writeString(2, _instance.message);
-    }
-  }
-
-  private _ok?: boolean;
-  private _message?: string;
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of VerifyNewUserResponse to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<VerifyNewUserResponse.AsObject>) {
-    _value = _value || {};
-    this.ok = _value.ok;
-    this.message = _value.message;
-    VerifyNewUserResponse.refineValues(this);
-  }
-  get ok(): boolean | undefined {
-    return this._ok;
-  }
-  set ok(value: boolean | undefined) {
-    this._ok = value;
-  }
-  get message(): string | undefined {
-    return this._message;
-  }
-  set message(value: string | undefined) {
-    this._message = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    VerifyNewUserResponse.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): VerifyNewUserResponse.AsObject {
-    return {
-      ok: this.ok,
-      message: this.message
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): VerifyNewUserResponse.AsProtobufJSON {
-    return {
-      ok: this.ok,
-      message: this.message
-    };
-  }
-}
-export module VerifyNewUserResponse {
-  /**
-   * Standard JavaScript object representation for VerifyNewUserResponse
-   */
-  export interface AsObject {
-    ok?: boolean;
-    message?: string;
-  }
-
-  /**
-   * Protobuf JSON representation for VerifyNewUserResponse
-   */
-  export interface AsProtobufJSON {
-    ok?: boolean;
-    message?: string;
+    user?: User.AsProtobufJSON | null;
   }
 }
 

@@ -388,7 +388,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         if not verify_code(user.email, request.verification_code):
             context.abort(code=Unauthenticated().code,
                           message='邮箱未经验证')
-        created_user, session = self.thread_handler.create_thread(
+        created_user, session = self.user_handler.create_user(
             parent, user, handler_context)
         return pb.CreateUserResponse(
             user=created_user.to_pb(),
@@ -477,9 +477,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             user=user.to_pb(),
         )
 
-    def VerifyNewUser(self, request, context):
+    def ValidateNewUser(self, request, context):
         try:
-            return self.user_handler.verify_new_user(request, context)
+            user = ModelUser.from_pb(request.user)
+            return self.user_handler.validate_new_user(request, context)
         except Excep as err:
             return pb.Status(code=err.code, message=err.message)
 
