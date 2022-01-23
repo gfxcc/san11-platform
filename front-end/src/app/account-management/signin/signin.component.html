@@ -6,7 +6,7 @@
                     <mat-card-title>登陆</mat-card-title>
                 </mat-card-header>
 
-                <form class="example-form" #signInForm='ngForm' (ngSubmit)="onSignIn(signInForm)">
+                <form class="example-form" #signInForm='ngForm' (ngSubmit)="onSignIn(signInForm.value)">
                     <mat-card-content>
                         <mat-form-field class="example-full-width">
                             <input matInput placeholder="用户名/邮箱" autocomplete="username" required ngModel name="identity">
@@ -85,7 +85,7 @@
                     <mat-step state="password">
                         <ng-template matStepLabel>3. 修改密码</ng-template>
                         <ng-template matStepContent>
-                            <form class="example-form" [formGroup]="resetPasswordForm" (ngSubmit)="onVerifyEmail()">
+                            <form class="example-form" [formGroup]="resetPasswordForm">
                                 <mat-form-field appearance="standard" style="width: 100%;">
                                     <mat-label>新密码</mat-label>
                                     <input matInput [type]="hidePassword ? 'password' : 'text'" autocomplete="off" formControlName="password">

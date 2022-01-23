@@ -20,7 +20,7 @@
                                     不得超过32个字符
                                 </mat-error>
                                 <mat-error *ngIf="username.errors?.pattern && username.touched" align="end">
-                                    不能使用 空格
+                                    不能使用 空格, @
                                 </mat-error>
                                 <mat-error *ngIf="username.errors?.invalidNewUser && username.touched" align="end">
                                     {{username.errors.invalidNewUser}}

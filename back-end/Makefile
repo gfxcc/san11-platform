@@ -4,13 +4,17 @@ PROTO_FILES:=$(PROTO_PATH)/*.proto
 OUTPUT_PATH:=./src/handler/protos
 
 .PHONY: test
-test: itest
+test: itest utest
 	date
 
 .PHONY: itest
 itest:
-	$(PY) -m pytest  ./tests/itest/
+	date
+	# $(PY) -m pytest ./tests/itest/
 
+.PHONY: utest
+utest:
+	cd src && $(PY) -m pytest .
 
 .PHONY: regen
 regen:

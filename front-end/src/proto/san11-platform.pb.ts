@@ -6822,7 +6822,9 @@ export class GetUserRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: GetUserRequest) {}
+  static refineValues(_instance: GetUserRequest) {
+    _instance.name = _instance.name || '';
+  }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -6838,10 +6840,7 @@ export class GetUserRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.userId = _reader.readInt64String();
-          break;
-        case 2:
-          _instance.username = _reader.readString();
+          _instance.name = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -6860,19 +6859,12 @@ export class GetUserRequest implements GrpcMessage {
     _instance: GetUserRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.userId || _instance.userId === '0') {
-      _writer.writeInt64String(1, _instance.userId);
-    }
-    if (_instance.username || _instance.username === '') {
-      _writer.writeString(2, _instance.username);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
   }
 
-  private _userId?: string;
-  private _username?: string;
-
-  private _identify: GetUserRequest.IdentifyCase =
-    GetUserRequest.IdentifyCase.none;
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -6880,32 +6872,14 @@ export class GetUserRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<GetUserRequest.AsObject>) {
     _value = _value || {};
-    this.userId = _value.userId;
-    this.username = _value.username;
+    this.name = _value.name;
     GetUserRequest.refineValues(this);
   }
-  get userId(): string | undefined {
-    return this._userId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set userId(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this._username = undefined;
-      this._identify = GetUserRequest.IdentifyCase.userId;
-    }
-    this._userId = value;
-  }
-  get username(): string | undefined {
-    return this._username;
-  }
-  set username(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this._userId = undefined;
-      this._identify = GetUserRequest.IdentifyCase.username;
-    }
-    this._username = value;
-  }
-  get identify() {
-    return this._identify;
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -6923,8 +6897,7 @@ export class GetUserRequest implements GrpcMessage {
    */
   toObject(): GetUserRequest.AsObject {
     return {
-      userId: this.userId,
-      username: this.username
+      name: this.name
     };
   }
 
@@ -6945,8 +6918,7 @@ export class GetUserRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): GetUserRequest.AsProtobufJSON {
     return {
-      userId: this.userId ?? null,
-      username: this.username ?? null
+      name: this.name
     };
   }
 }
@@ -6955,21 +6927,14 @@ export module GetUserRequest {
    * Standard JavaScript object representation for GetUserRequest
    */
   export interface AsObject {
-    userId?: string;
-    username?: string;
+    name?: string;
   }
 
   /**
    * Protobuf JSON representation for GetUserRequest
    */
   export interface AsProtobufJSON {
-    userId?: string | null;
-    username?: string | null;
-  }
-  export enum IdentifyCase {
-    none = 0,
-    userId = 1,
-    username = 2
+    name?: string;
   }
 }
 
@@ -7461,9 +7426,7 @@ export class SignOutRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: SignOutRequest) {
-    _instance.userId = _instance.userId || '0';
-  }
+  static refineValues(_instance: SignOutRequest) {}
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -7478,9 +7441,6 @@ export class SignOutRequest implements GrpcMessage {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.userId = _reader.readInt64String();
-          break;
         default:
           _reader.skipField();
       }
@@ -7497,13 +7457,7 @@ export class SignOutRequest implements GrpcMessage {
   static serializeBinaryToWriter(
     _instance: SignOutRequest,
     _writer: BinaryWriter
-  ) {
-    if (_instance.userId) {
-      _writer.writeInt64String(1, _instance.userId);
-    }
-  }
-
-  private _userId?: string;
+  ) {}
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -7511,14 +7465,7 @@ export class SignOutRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<SignOutRequest.AsObject>) {
     _value = _value || {};
-    this.userId = _value.userId;
     SignOutRequest.refineValues(this);
-  }
-  get userId(): string | undefined {
-    return this._userId;
-  }
-  set userId(value: string | undefined) {
-    this._userId = value;
   }
 
   /**
@@ -7535,9 +7482,7 @@ export class SignOutRequest implements GrpcMessage {
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
   toObject(): SignOutRequest.AsObject {
-    return {
-      userId: this.userId
-    };
+    return {};
   }
 
   /**
@@ -7556,40 +7501,34 @@ export class SignOutRequest implements GrpcMessage {
     // @ts-ignore
     options?: ToProtobufJSONOptions
   ): SignOutRequest.AsProtobufJSON {
-    return {
-      userId: this.userId
-    };
+    return {};
   }
 }
 export module SignOutRequest {
   /**
    * Standard JavaScript object representation for SignOutRequest
    */
-  export interface AsObject {
-    userId?: string;
-  }
+  export interface AsObject {}
 
   /**
    * Protobuf JSON representation for SignOutRequest
    */
-  export interface AsProtobufJSON {
-    userId?: string;
-  }
+  export interface AsProtobufJSON {}
 }
 
 /**
- * Message implementation for routeguide.SignUpRequest
+ * Message implementation for routeguide.CreateUserRequest
  */
-export class SignUpRequest implements GrpcMessage {
-  static id = 'routeguide.SignUpRequest';
+export class CreateUserRequest implements GrpcMessage {
+  static id = 'routeguide.CreateUserRequest';
 
   /**
    * Deserialize binary data to message
    * @param instance message instance
    */
   static deserializeBinary(bytes: ByteSource) {
-    const instance = new SignUpRequest();
-    SignUpRequest.deserializeBinaryFromReader(
+    const instance = new CreateUserRequest();
+    CreateUserRequest.deserializeBinaryFromReader(
       instance,
       new BinaryReader(bytes)
     );
@@ -7600,7 +7539,8 @@ export class SignUpRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: SignUpRequest) {
+  static refineValues(_instance: CreateUserRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.user = _instance.user || undefined;
     _instance.password = _instance.password || '';
     _instance.verificationCode = _instance.verificationCode || '';
@@ -7612,7 +7552,7 @@ export class SignUpRequest implements GrpcMessage {
    * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    _instance: SignUpRequest,
+    _instance: CreateUserRequest,
     _reader: BinaryReader
   ) {
     while (_reader.nextField()) {
@@ -7620,13 +7560,16 @@ export class SignUpRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
           _instance.user = new User();
           _reader.readMessage(_instance.user, User.deserializeBinaryFromReader);
           break;
-        case 2:
+        case 3:
           _instance.password = _reader.readString();
           break;
-        case 3:
+        case 4:
           _instance.verificationCode = _reader.readString();
           break;
         default:
@@ -7634,7 +7577,7 @@ export class SignUpRequest implements GrpcMessage {
       }
     }
 
-    SignUpRequest.refineValues(_instance);
+    CreateUserRequest.refineValues(_instance);
   }
 
   /**
@@ -7643,38 +7586,49 @@ export class SignUpRequest implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(
-    _instance: SignUpRequest,
+    _instance: CreateUserRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.user) {
       _writer.writeMessage(
-        1,
+        2,
         _instance.user as any,
         User.serializeBinaryToWriter
       );
     }
     if (_instance.password) {
-      _writer.writeString(2, _instance.password);
+      _writer.writeString(3, _instance.password);
     }
     if (_instance.verificationCode) {
-      _writer.writeString(3, _instance.verificationCode);
+      _writer.writeString(4, _instance.verificationCode);
     }
   }
 
+  private _parent?: string;
   private _user?: User;
   private _password?: string;
   private _verificationCode?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of SignUpRequest to deeply clone from
+   * @param _value initial values object or instance of CreateUserRequest to deeply clone from
    */
-  constructor(_value?: RecursivePartial<SignUpRequest.AsObject>) {
+  constructor(_value?: RecursivePartial<CreateUserRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.user = _value.user ? new User(_value.user) : undefined;
     this.password = _value.password;
     this.verificationCode = _value.verificationCode;
-    SignUpRequest.refineValues(this);
+    CreateUserRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get user(): User | undefined {
     return this._user;
@@ -7701,15 +7655,16 @@ export class SignUpRequest implements GrpcMessage {
    */
   serializeBinary() {
     const writer = new BinaryWriter();
-    SignUpRequest.serializeBinaryToWriter(this, writer);
+    CreateUserRequest.serializeBinaryToWriter(this, writer);
     return writer.getResultBuffer();
   }
 
   /**
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
-  toObject(): SignUpRequest.AsObject {
+  toObject(): CreateUserRequest.AsObject {
     return {
+      parent: this.parent,
       user: this.user ? this.user.toObject() : undefined,
       password: this.password,
       verificationCode: this.verificationCode
@@ -7731,28 +7686,31 @@ export class SignUpRequest implements GrpcMessage {
   toProtobufJSON(
     // @ts-ignore
     options?: ToProtobufJSONOptions
-  ): SignUpRequest.AsProtobufJSON {
+  ): CreateUserRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       user: this.user ? this.user.toProtobufJSON(options) : null,
       password: this.password,
       verificationCode: this.verificationCode
     };
   }
 }
-export module SignUpRequest {
+export module CreateUserRequest {
   /**
-   * Standard JavaScript object representation for SignUpRequest
+   * Standard JavaScript object representation for CreateUserRequest
    */
   export interface AsObject {
+    parent?: string;
     user?: User.AsObject;
     password?: string;
     verificationCode?: string;
   }
 
   /**
-   * Protobuf JSON representation for SignUpRequest
+   * Protobuf JSON representation for CreateUserRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     user?: User.AsProtobufJSON | null;
     password?: string;
     verificationCode?: string;
@@ -7760,18 +7718,18 @@ export module SignUpRequest {
 }
 
 /**
- * Message implementation for routeguide.SignUpResponse
+ * Message implementation for routeguide.CreateUserResponse
  */
-export class SignUpResponse implements GrpcMessage {
-  static id = 'routeguide.SignUpResponse';
+export class CreateUserResponse implements GrpcMessage {
+  static id = 'routeguide.CreateUserResponse';
 
   /**
    * Deserialize binary data to message
    * @param instance message instance
    */
   static deserializeBinary(bytes: ByteSource) {
-    const instance = new SignUpResponse();
-    SignUpResponse.deserializeBinaryFromReader(
+    const instance = new CreateUserResponse();
+    CreateUserResponse.deserializeBinaryFromReader(
       instance,
       new BinaryReader(bytes)
     );
@@ -7782,7 +7740,7 @@ export class SignUpResponse implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: SignUpResponse) {
+  static refineValues(_instance: CreateUserResponse) {
     _instance.user = _instance.user || undefined;
     _instance.sid = _instance.sid || '';
   }
@@ -7793,18 +7751,18 @@ export class SignUpResponse implements GrpcMessage {
    * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    _instance: SignUpResponse,
+    _instance: CreateUserResponse,
     _reader: BinaryReader
   ) {
     while (_reader.nextField()) {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
-        case 2:
+        case 1:
           _instance.user = new User();
           _reader.readMessage(_instance.user, User.deserializeBinaryFromReader);
           break;
-        case 3:
+        case 2:
           _instance.sid = _reader.readString();
           break;
         default:
@@ -7812,7 +7770,7 @@ export class SignUpResponse implements GrpcMessage {
       }
     }
 
-    SignUpResponse.refineValues(_instance);
+    CreateUserResponse.refineValues(_instance);
   }
 
   /**
@@ -7821,18 +7779,18 @@ export class SignUpResponse implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(
-    _instance: SignUpResponse,
+    _instance: CreateUserResponse,
     _writer: BinaryWriter
   ) {
     if (_instance.user) {
       _writer.writeMessage(
-        2,
+        1,
         _instance.user as any,
         User.serializeBinaryToWriter
       );
     }
     if (_instance.sid) {
-      _writer.writeString(3, _instance.sid);
+      _writer.writeString(2, _instance.sid);
     }
   }
 
@@ -7841,13 +7799,13 @@ export class SignUpResponse implements GrpcMessage {
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of SignUpResponse to deeply clone from
+   * @param _value initial values object or instance of CreateUserResponse to deeply clone from
    */
-  constructor(_value?: RecursivePartial<SignUpResponse.AsObject>) {
+  constructor(_value?: RecursivePartial<CreateUserResponse.AsObject>) {
     _value = _value || {};
     this.user = _value.user ? new User(_value.user) : undefined;
     this.sid = _value.sid;
-    SignUpResponse.refineValues(this);
+    CreateUserResponse.refineValues(this);
   }
   get user(): User | undefined {
     return this._user;
@@ -7868,14 +7826,14 @@ export class SignUpResponse implements GrpcMessage {
    */
   serializeBinary() {
     const writer = new BinaryWriter();
-    SignUpResponse.serializeBinaryToWriter(this, writer);
+    CreateUserResponse.serializeBinaryToWriter(this, writer);
     return writer.getResultBuffer();
   }
 
   /**
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
-  toObject(): SignUpResponse.AsObject {
+  toObject(): CreateUserResponse.AsObject {
     return {
       user: this.user ? this.user.toObject() : undefined,
       sid: this.sid
@@ -7897,16 +7855,16 @@ export class SignUpResponse implements GrpcMessage {
   toProtobufJSON(
     // @ts-ignore
     options?: ToProtobufJSONOptions
-  ): SignUpResponse.AsProtobufJSON {
+  ): CreateUserResponse.AsProtobufJSON {
     return {
       user: this.user ? this.user.toProtobufJSON(options) : null,
       sid: this.sid
     };
   }
 }
-export module SignUpResponse {
+export module CreateUserResponse {
   /**
-   * Standard JavaScript object representation for SignUpResponse
+   * Standard JavaScript object representation for CreateUserResponse
    */
   export interface AsObject {
     user?: User.AsObject;
@@ -7914,7 +7872,7 @@ export module SignUpResponse {
   }
 
   /**
-   * Protobuf JSON representation for SignUpResponse
+   * Protobuf JSON representation for CreateUserResponse
    */
   export interface AsProtobufJSON {
     user?: User.AsProtobufJSON | null;
@@ -8121,7 +8079,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: UpdatePasswordRequest) {
-    _instance.userId = _instance.userId || '0';
+    _instance.user = _instance.user || undefined;
     _instance.password = _instance.password || '';
     _instance.verificationCode = _instance.verificationCode || '';
   }
@@ -8140,7 +8098,8 @@ export class UpdatePasswordRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.userId = _reader.readInt64String();
+          _instance.user = new User();
+          _reader.readMessage(_instance.user, User.deserializeBinaryFromReader);
           break;
         case 2:
           _instance.password = _reader.readString();
@@ -8165,8 +8124,12 @@ export class UpdatePasswordRequest implements GrpcMessage {
     _instance: UpdatePasswordRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.userId) {
-      _writer.writeInt64String(1, _instance.userId);
+    if (_instance.user) {
+      _writer.writeMessage(
+        1,
+        _instance.user as any,
+        User.serializeBinaryToWriter
+      );
     }
     if (_instance.password) {
       _writer.writeString(2, _instance.password);
@@ -8176,7 +8139,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
     }
   }
 
-  private _userId?: string;
+  private _user?: User;
   private _password?: string;
   private _verificationCode?: string;
 
@@ -8186,16 +8149,16 @@ export class UpdatePasswordRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<UpdatePasswordRequest.AsObject>) {
     _value = _value || {};
-    this.userId = _value.userId;
+    this.user = _value.user ? new User(_value.user) : undefined;
     this.password = _value.password;
     this.verificationCode = _value.verificationCode;
     UpdatePasswordRequest.refineValues(this);
   }
-  get userId(): string | undefined {
-    return this._userId;
+  get user(): User | undefined {
+    return this._user;
   }
-  set userId(value: string | undefined) {
-    this._userId = value;
+  set user(value: User | undefined) {
+    this._user = value;
   }
   get password(): string | undefined {
     return this._password;
@@ -8225,7 +8188,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
    */
   toObject(): UpdatePasswordRequest.AsObject {
     return {
-      userId: this.userId,
+      user: this.user ? this.user.toObject() : undefined,
       password: this.password,
       verificationCode: this.verificationCode
     };
@@ -8248,7 +8211,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): UpdatePasswordRequest.AsProtobufJSON {
     return {
-      userId: this.userId,
+      user: this.user ? this.user.toProtobufJSON(options) : null,
       password: this.password,
       verificationCode: this.verificationCode
     };
@@ -8259,7 +8222,7 @@ export module UpdatePasswordRequest {
    * Standard JavaScript object representation for UpdatePasswordRequest
    */
   export interface AsObject {
-    userId?: string;
+    user?: User.AsObject;
     password?: string;
     verificationCode?: string;
   }
@@ -8268,7 +8231,7 @@ export module UpdatePasswordRequest {
    * Protobuf JSON representation for UpdatePasswordRequest
    */
   export interface AsProtobufJSON {
-    userId?: string;
+    user?: User.AsProtobufJSON | null;
     password?: string;
     verificationCode?: string;
   }
@@ -8921,7 +8884,7 @@ export class VerifyEmailResponse implements GrpcMessage {
    */
   static refineValues(_instance: VerifyEmailResponse) {
     _instance.ok = _instance.ok || false;
-    _instance.userId = _instance.userId || '0';
+    _instance.user = _instance.user || undefined;
   }
 
   /**
@@ -8941,7 +8904,8 @@ export class VerifyEmailResponse implements GrpcMessage {
           _instance.ok = _reader.readBool();
           break;
         case 2:
-          _instance.userId = _reader.readInt64String();
+          _instance.user = new User();
+          _reader.readMessage(_instance.user, User.deserializeBinaryFromReader);
           break;
         default:
           _reader.skipField();
@@ -8963,13 +8927,17 @@ export class VerifyEmailResponse implements GrpcMessage {
     if (_instance.ok) {
       _writer.writeBool(1, _instance.ok);
     }
-    if (_instance.userId) {
-      _writer.writeInt64String(2, _instance.userId);
+    if (_instance.user) {
+      _writer.writeMessage(
+        2,
+        _instance.user as any,
+        User.serializeBinaryToWriter
+      );
     }
   }
 
   private _ok?: boolean;
-  private _userId?: string;
+  private _user?: User;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8978,7 +8946,7 @@ export class VerifyEmailResponse implements GrpcMessage {
   constructor(_value?: RecursivePartial<VerifyEmailResponse.AsObject>) {
     _value = _value || {};
     this.ok = _value.ok;
-    this.userId = _value.userId;
+    this.user = _value.user ? new User(_value.user) : undefined;
     VerifyEmailResponse.refineValues(this);
   }
   get ok(): boolean | undefined {
@@ -8987,11 +8955,11 @@ export class VerifyEmailResponse implements GrpcMessage {
   set ok(value: boolean | undefined) {
     this._ok = value;
   }
-  get userId(): string | undefined {
-    return this._userId;
+  get user(): User | undefined {
+    return this._user;
   }
-  set userId(value: string | undefined) {
-    this._userId = value;
+  set user(value: User | undefined) {
+    this._user = value;
   }
 
   /**
@@ -9010,7 +8978,7 @@ export class VerifyEmailResponse implements GrpcMessage {
   toObject(): VerifyEmailResponse.AsObject {
     return {
       ok: this.ok,
-      userId: this.userId
+      user: this.user ? this.user.toObject() : undefined
     };
   }
 
@@ -9032,7 +9000,7 @@ export class VerifyEmailResponse implements GrpcMessage {
   ): VerifyEmailResponse.AsProtobufJSON {
     return {
       ok: this.ok,
-      userId: this.userId
+      user: this.user ? this.user.toProtobufJSON(options) : null
     };
   }
 }
@@ -9042,7 +9010,7 @@ export module VerifyEmailResponse {
    */
   export interface AsObject {
     ok?: boolean;
-    userId?: string;
+    user?: User.AsObject;
   }
 
   /**
@@ -9050,7 +9018,7 @@ export module VerifyEmailResponse {
    */
   export interface AsProtobufJSON {
     ok?: boolean;
-    userId?: string;
+    user?: User.AsProtobufJSON | null;
   }
 }
 
@@ -12315,10 +12283,10 @@ export class User implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: User) {
-    _instance.userId = _instance.userId || '0';
+    _instance.name = _instance.name || '';
     _instance.username = _instance.username || '';
     _instance.email = _instance.email || '';
-    _instance.userType = _instance.userType || '';
+    _instance.type = _instance.type || 0;
     _instance.imageUrl = _instance.imageUrl || '';
     _instance.website = _instance.website || '';
   }
@@ -12334,7 +12302,7 @@ export class User implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.userId = _reader.readInt64String();
+          _instance.name = _reader.readString();
           break;
         case 2:
           _instance.username = _reader.readString();
@@ -12343,7 +12311,7 @@ export class User implements GrpcMessage {
           _instance.email = _reader.readString();
           break;
         case 4:
-          _instance.userType = _reader.readString();
+          _instance.type = _reader.readEnum();
           break;
         case 5:
           _instance.imageUrl = _reader.readString();
@@ -12365,8 +12333,8 @@ export class User implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: User, _writer: BinaryWriter) {
-    if (_instance.userId) {
-      _writer.writeInt64String(1, _instance.userId);
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
     if (_instance.username) {
       _writer.writeString(2, _instance.username);
@@ -12374,8 +12342,8 @@ export class User implements GrpcMessage {
     if (_instance.email) {
       _writer.writeString(3, _instance.email);
     }
-    if (_instance.userType) {
-      _writer.writeString(4, _instance.userType);
+    if (_instance.type) {
+      _writer.writeEnum(4, _instance.type);
     }
     if (_instance.imageUrl) {
       _writer.writeString(5, _instance.imageUrl);
@@ -12385,10 +12353,10 @@ export class User implements GrpcMessage {
     }
   }
 
-  private _userId?: string;
+  private _name?: string;
   private _username?: string;
   private _email?: string;
-  private _userType?: string;
+  private _type?: User.UserType;
   private _imageUrl?: string;
   private _website?: string;
 
@@ -12398,19 +12366,19 @@ export class User implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<User.AsObject>) {
     _value = _value || {};
-    this.userId = _value.userId;
+    this.name = _value.name;
     this.username = _value.username;
     this.email = _value.email;
-    this.userType = _value.userType;
+    this.type = _value.type;
     this.imageUrl = _value.imageUrl;
     this.website = _value.website;
     User.refineValues(this);
   }
-  get userId(): string | undefined {
-    return this._userId;
+  get name(): string | undefined {
+    return this._name;
   }
-  set userId(value: string | undefined) {
-    this._userId = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
   get username(): string | undefined {
     return this._username;
@@ -12424,11 +12392,11 @@ export class User implements GrpcMessage {
   set email(value: string | undefined) {
     this._email = value;
   }
-  get userType(): string | undefined {
-    return this._userType;
+  get type(): User.UserType | undefined {
+    return this._type;
   }
-  set userType(value: string | undefined) {
-    this._userType = value;
+  set type(value: User.UserType | undefined) {
+    this._type = value;
   }
   get imageUrl(): string | undefined {
     return this._imageUrl;
@@ -12458,10 +12426,10 @@ export class User implements GrpcMessage {
    */
   toObject(): User.AsObject {
     return {
-      userId: this.userId,
+      name: this.name,
       username: this.username,
       email: this.email,
-      userType: this.userType,
+      type: this.type,
       imageUrl: this.imageUrl,
       website: this.website
     };
@@ -12484,10 +12452,10 @@ export class User implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): User.AsProtobufJSON {
     return {
-      userId: this.userId,
+      name: this.name,
       username: this.username,
       email: this.email,
-      userType: this.userType,
+      type: User.UserType[this.type ?? 0],
       imageUrl: this.imageUrl,
       website: this.website
     };
@@ -12498,10 +12466,10 @@ export module User {
    * Standard JavaScript object representation for User
    */
   export interface AsObject {
-    userId?: string;
+    name?: string;
     username?: string;
     email?: string;
-    userType?: string;
+    type?: User.UserType;
     imageUrl?: string;
     website?: string;
   }
@@ -12510,12 +12478,17 @@ export module User {
    * Protobuf JSON representation for User
    */
   export interface AsProtobufJSON {
-    userId?: string;
+    name?: string;
     username?: string;
     email?: string;
-    userType?: string;
+    type?: string;
     imageUrl?: string;
     website?: string;
+  }
+  export enum UserType {
+    USER_TYPE_UNDEFINED = 0,
+    ADMIN = 1,
+    REGULAR = 11
   }
 }
 

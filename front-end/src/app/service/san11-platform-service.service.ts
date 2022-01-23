@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GrpcMetadata } from '@ngx-grpc/common';
 import { Observable, Subscription } from 'rxjs';
 import { Cacheable } from 'ts-cacheable';
-import { AdminMessage, Article, Binary, Comment, CreateArticleRequest, CreateBinaryRequest, CreateCommentRequest, CreateImageRequest, CreatePackageRequest, CreateReplyRequest, CreateTagRequest, CreateThreadRequest, DeleteArticleRequest, DeleteBinaryRequest, DeleteCommentRequest, DeletePackageRequest, DeleteReplyRequest, DeleteTagRequest, DeleteThreadRequest, DownloadBinaryRequest, Empty, GetArticleRequest, GetPackageRequest, GetStatisticRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListCommentsRequest, ListCommentsResponse, ListNotificationsRequest, ListNotificationsResponse, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, ListTagsResponse, ListThreadsRequest, ListThreadsResponse, ListUsersRequest, ListUsersResponse, Notification, Package, Reply, SearchPackagesRequest, SearchPackagesResponse, SendVerificationCodeRequest, SignInRequest, SignInResponse, SignOutRequest, SignUpRequest, SignUpResponse, Statistic, Status, Tag, Thread, UpdateArticleRequest, UpdateBinaryRequest, UpdateCommentRequest, UpdateNotificationRequest, UpdatePackageRequest, UpdatePasswordRequest, UpdateReplyRequest, UpdateThreadRequest, UpdateUserRequest, Url, User, VerifyEmailRequest, VerifyEmailResponse, VerifyNewUserRequest } from '../../proto/san11-platform.pb';
+import { AdminMessage, Article, Binary, Comment, CreateArticleRequest, CreateBinaryRequest, CreateCommentRequest, CreateImageRequest, CreatePackageRequest, CreateReplyRequest, CreateTagRequest, CreateThreadRequest, CreateUserRequest, CreateUserResponse, DeleteArticleRequest, DeleteBinaryRequest, DeleteCommentRequest, DeletePackageRequest, DeleteReplyRequest, DeleteTagRequest, DeleteThreadRequest, DownloadBinaryRequest, Empty, GetArticleRequest, GetPackageRequest, GetStatisticRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListCommentsRequest, ListCommentsResponse, ListNotificationsRequest, ListNotificationsResponse, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, ListTagsResponse, ListThreadsRequest, ListThreadsResponse, ListUsersRequest, ListUsersResponse, Notification, Package, Reply, SearchPackagesRequest, SearchPackagesResponse, SendVerificationCodeRequest, SignInRequest, SignInResponse, SignOutRequest, Statistic, Status, Tag, Thread, UpdateArticleRequest, UpdateBinaryRequest, UpdateCommentRequest, UpdateNotificationRequest, UpdatePackageRequest, UpdatePasswordRequest, UpdateReplyRequest, UpdateThreadRequest, UpdateUserRequest, Url, User, VerifyEmailRequest, VerifyEmailResponse, VerifyNewUserRequest } from '../../proto/san11-platform.pb';
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
 
 
@@ -143,20 +143,16 @@ export class San11PlatformServiceService {
   }
   // users
 
-  signIn(user): Observable<SignInResponse> {
-    const request = new SignInRequest({ identity: user.identity, password: user.password });
-    return this.severClient.signIn(request);
+  signIn(request: SignInRequest): Observable<SignInResponse> {
+    return this.severClient.signIn(request, this.getMetadata());
   }
 
-  signOut(userId): Observable<Status> {
-    const request = new SignOutRequest({
-      userId: userId
-    });
-    return this.severClient.signOut(request);
+  signOut(request: SignOutRequest): Observable<Status> {
+    return this.severClient.signOut(request, this.getMetadata());
   }
 
-  signUp(request: SignUpRequest): Observable<SignUpResponse> {
-    return this.severClient.signUp(request);
+  createUser(request: CreateUserRequest): Observable<CreateUserResponse> {
+    return this.severClient.createUser(request, this.getMetadata());
   }
 
   @Cacheable({ maxCacheCount: 200 })

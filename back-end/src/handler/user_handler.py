@@ -4,7 +4,9 @@ from typing import Iterable, Tuple
 
 import grpc
 
-from handler.model.model_user import ModelUser
+from handler.model.base.base_db import ListOptions
+from handler.model.model_user import (ModelUser, validate_email,
+                                      validate_password, validate_username)
 
 from .auths import Session
 from .common.exception import (AlreadyExists, InvalidArgument, NotFound,
@@ -20,55 +22,49 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 class UserHandler:
     def create_user(self, parent: str, user: ModelUser,
-                    handler_context) -> ModelUser:
+                    handler_context) -> Tuple[ModelUser, Session]:
+        validate_email(user.email)
+        validate_username(user.username)
+        validate_password(user.password)
+
         user.create(parent, user.user_id)
-        return user
+        session = Session.create(user.user_id)
+        return user, session
 
     def get_user(self, name: str, handler_context) -> ModelUser:
-        ...
+        user = ModelUser.from_name(name)
+        return user
 
-    def list_user(self, request, handler_context) -> Tuple[Iterable[ModelUser], str]:
-        ...
+    def list_users(self, request, handler_context) -> Tuple[Iterable[ModelUser], str]:
+        list_options = ListOptions.from_request(request)
+        users, next_page_token = ModelUser.list(list_options)
+        return users, next_page_token
 
     def update_user(self, base_user: ModelUser, update_user: ModelUser,
                     update_mask: FieldMask, handler_context) -> ModelUser:
-        ...
+        user: ModelUser = merge_resource(
+            base_user, update_user, update_mask)
+        user.update(handler_context.user.user_id)
+        return user
 
-    #
-    #
-    #
+    def sign_in(self, user: ModelUser, password: str, handler_context):
+        if user.name:
+            user = ModelUser.from_name(user.name)
+        elif user.email:
+            users = ModelUser.list(ListOptions(
+                parent='', filter=f'email=\"{user.email}\"'))[0]
+            if not users:
+                raise NotFound(message='用户不存在')
+            user = users[0]
+        else:
+            raise NotFound(message='用户不存在')
 
-    def sign_up(self, request, context):
-        try:
-            user = User.from_pb(request.user)
-            if not verify_code(user.email, request.verification_code):
-                context.abort(code=Unauthenticated().code, details='邮箱未经验证')
-            User.validate_username(user.username)
-            User.validate_email(user.email)
-            user.create(request.password)
-        except ValueError as err:
-            context.abort(code=255, details=str(err))
-
-        session = Session.create(user.user_id)
-        resp = san11_platform_pb2.SignUpResponse(
-            user=user.to_pb(),
-            sid=session.sid)
-        logger.info(f'user is created: resp={resp}')
-        return resp
-
-    def sign_in(self, request, context: grpc.ServicerContext):
-        try:
-            user = User.from_identity(request.identity)
-            user.validate(request.password)
-        except NotFound as e:
-            context.abort(
-                code=e.code, details=f'用户名/邮箱 不存在: {request.identity}')
-        except Unauthenticated as e:
-            context.abort(code=e.code, details=f'用户名,密码 不匹配')
+        if user.password != password:
+            raise Unauthenticated(message='用户名,密码 不匹配')
 
         try:
             session = Session.from_user_id(user.user_id)
-        except LookupError:
+        except NotFound:
             session = Session.create(user.user_id)
         else:
             session.extend()
@@ -78,60 +74,42 @@ class UserHandler:
                                                  sid=session.sid)
 
     def sign_out(self, request, context):
-        return san11_platform_pb2.Status(code=0, message="登出成功")
+        ...
 
-    def update_user(self, request, context):
-        base_user = User.from_id(request.user.user_id)
-
-        update_mask = FieldMask.from_pb(request.update_mask)
-        user = merge_resource(base_resource=base_user,
-                              update_request=User.from_pb(request.user),
-                              field_mask=update_mask)
-        if not user.image_url and base_user.image_url:
-            try:
-                Image.from_url(base_user.image_url).delete()
-            except Exception as err:
-                logger.error(f'Failed to delete {base_user.image_url}: {err}')
+    def update_user(self, base_user: ModelUser, update_user: ModelUser,
+                    update_mask: FieldMask, handler_context) -> ModelUser:
+        user = merge_resource(base_user,
+                              update_user,
+                              update_mask)
+        if user.image_url != base_user.image_url:
+            if base_user.image_url:
+                try:
+                    Image.from_url(base_user.image_url).delete()
+                except Exception as err:
+                    logger.error(
+                        f'Failed to delete {base_user.image_url}: {err}')
         if user.username != base_user.username:
-            User.validate_username(user.username)
+            validate_username(user.username)
         if user.email != base_user.email:
-            User.validate_email(user.email)
+            validate_email(user.email)
+        if user.password != base_user.password:
+            validate_password(user.password)
         user.update(user_id=user.user_id)
-        return user.to_pb()
-
-    def update_password(self, request, context):
-        user = User.from_id(request.user_id)
-        user.set_password(request.password)
-        return san11_platform_pb2.Empty()
-
-    def get_user(self, request, context):
-        try:
-            if request.HasField('user_id'):
-                user = User.from_id(request.user_id)
-            elif request.HasField('username'):
-                user = User.from_username(request.username)
-            else:
-                context.abort(code=InvalidArgument().code,
-                              details=InvalidArgument().message)
-        except NotFound:
-            logger.debug(f'GetUser: user_id={request.user_id} does not exist')
-            context.abort(code=NotFound().code,
-                          details=f'{NotFound().message}: 用户不存在')
-        return user.to_pb()
+        return user
 
     def list_users(self, request, context):
-        return san11_platform_pb2.ListUsersResponse(users=[
-            user.to_pb() for user in User.list(0, '')
-        ])
+        # (TODO): Consider bucket user fields into different sections
+        # and only populate certain section with permission check.
+        # E.g. public_section, private_section, admin_section, ...
+        list_options = ListOptions.from_request(request)
+        users, next_page_token = ModelUser.list(list_options)
+        return users, next_page_token
 
-    def send_verification_code(self, request, context):
-        email = request.email
+    def send_verification_code(self, email: str, handler_context) -> None:
         verification_code = generate_verification_code(email)
         Notifier().send_email(email, '账号验证码', verification_code)
-        return san11_platform_pb2.Empty()
 
-    def verify_email(self, request, context):
-        email, code = request.email, request.verification_code
+    def verify_email(self, email: str, verification_code: str, context):
         try:
             user = User.from_email(email)
         except LookupError:

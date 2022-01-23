@@ -686,27 +686,6 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/SignUp
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.SignUpResponse>>
-     */
-    signUp: (
-      requestData: thisProto.SignUpRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.SignUpResponse>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/SignUp',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.SignUpRequest,
-        responseClass: thisProto.SignUpResponse
-      });
-    },
-    /**
      * Unary RPC for /routeguide.RouteGuide/SignIn
      *
      * @param requestMessage Request message
@@ -749,6 +728,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary RPC for /routeguide.RouteGuide/CreateUser
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.CreateUserResponse>>
+     */
+    createUser: (
+      requestData: thisProto.CreateUserRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.CreateUserResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/CreateUser',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.CreateUserRequest,
+        responseClass: thisProto.CreateUserResponse
+      });
+    },
+    /**
      * Unary RPC for /routeguide.RouteGuide/GetUser
      *
      * @param requestMessage Request message
@@ -788,6 +788,27 @@ export class RouteGuideClient {
         requestMetadata,
         requestClass: thisProto.ListUsersRequest,
         responseClass: thisProto.ListUsersResponse
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateUser
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.User>>
+     */
+    updateUser: (
+      requestData: thisProto.UpdateUserRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.User>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateUser',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateUserRequest,
+        responseClass: thisProto.User
       });
     },
     /**
@@ -854,37 +875,16 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateUser
+     * Unary RPC for /routeguide.RouteGuide/UpdatePassword
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
      * @returns Observable<GrpcEvent<thisProto.User>>
      */
-    updateUser: (
-      requestData: thisProto.UpdateUserRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.User>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/UpdateUser',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.UpdateUserRequest,
-        responseClass: thisProto.User
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/UpdatePassword
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Empty>>
-     */
     updatePassword: (
       requestData: thisProto.UpdatePasswordRequest,
       requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Empty>> => {
+    ): Observable<GrpcEvent<thisProto.User>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
@@ -892,7 +892,7 @@ export class RouteGuideClient {
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdatePasswordRequest,
-        responseClass: thisProto.Empty
+        responseClass: thisProto.User
       });
     },
     /**
@@ -1570,22 +1570,6 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/SignUp
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.SignUpResponse>
-   */
-  signUp(
-    requestData: thisProto.SignUpRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.SignUpResponse> {
-    return this.$raw
-      .signUp(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
    * Unary RPC for /routeguide.RouteGuide/SignIn
    *
    * @param requestMessage Request message
@@ -1618,6 +1602,22 @@ export class RouteGuideClient {
   }
 
   /**
+   * Unary RPC for /routeguide.RouteGuide/CreateUser
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.CreateUserResponse>
+   */
+  createUser(
+    requestData: thisProto.CreateUserRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.CreateUserResponse> {
+    return this.$raw
+      .createUser(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
    * Unary RPC for /routeguide.RouteGuide/GetUser
    *
    * @param requestMessage Request message
@@ -1646,6 +1646,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.ListUsersResponse> {
     return this.$raw
       .listUsers(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateUser
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.User>
+   */
+  updateUser(
+    requestData: thisProto.UpdateUserRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.User> {
+    return this.$raw
+      .updateUser(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 
@@ -1698,32 +1714,16 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateUser
+   * Unary RPC for /routeguide.RouteGuide/UpdatePassword
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
    * @returns Observable<thisProto.User>
    */
-  updateUser(
-    requestData: thisProto.UpdateUserRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.User> {
-    return this.$raw
-      .updateUser(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/UpdatePassword
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Empty>
-   */
   updatePassword(
     requestData: thisProto.UpdatePasswordRequest,
     requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Empty> {
+  ): Observable<thisProto.User> {
     return this.$raw
       .updatePassword(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());

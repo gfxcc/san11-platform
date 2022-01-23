@@ -1,10 +1,10 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
-import { SendVerificationCodeRequest, UpdatePasswordRequest, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
+import { SendVerificationCodeRequest, SignInRequest, UpdatePasswordRequest, User, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
 import { NotificationService } from "../../common/notification.service";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { saveUser } from '../../utils/user_util';
@@ -89,9 +89,12 @@ export class SigninComponent implements OnInit {
   }
   //
 
-  onSignIn(signInForm: NgForm) {
-
-    this.san11PlatformServiceService.signIn(signInForm.value).subscribe(
+  onSignIn(input) {
+// signInForm.value
+    this.san11PlatformServiceService.signIn(new SignInRequest({
+      identity: input.identity,
+      password: input.password
+    })).subscribe(
       resp => {
 
         this.notificationService.success('登陆成功');
@@ -179,6 +182,9 @@ export class SigninComponent implements OnInit {
   onUpdatePassword() {
     this.san11PlatformServiceService.updatePassword(new UpdatePasswordRequest({
       userId: this.userId,
+      user: new User({
+        name: 
+      }),
       password: this.password.value,
       verificationCode: this.verificationCode.value
     })).subscribe(

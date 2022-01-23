@@ -10,13 +10,16 @@ import attr
 import grpc
 
 import iam_util
-from handler import (ActivityHandler, AdminHandler, ArticleHandler,
-                     BinaryHandler, CommentHandler, GeneralHandler,
-                     ImageHandler, NotificationHandler, PackageHandler,
-                     ReplyHandler, TagHandler, UserHandler)
+from handler.activity_handler import ActivityHandler
+from handler.admin_handler import AdminHandler
+from handler.article_handler import ArticleHandler
 from handler.auths import Session
+from handler.binary_handler import BinaryHandler
+from handler.comment_handler import CommentHandler
 from handler.common.exception import *
 from handler.common.field_mask import FieldMask
+from handler.general_handler import GeneralHandler
+from handler.image_handler import ImageHandler
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
@@ -27,9 +30,14 @@ from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
 from handler.model.user import User, verify_code
+from handler.notification_handler import NotificationHandler
+from handler.package_handler import PackageHandler
 from handler.protos import san11_platform_pb2 as pb
 from handler.protos import san11_platform_pb2_grpc
+from handler.reply_handler import ReplyHandler
+from handler.tag_handler import TagHandler
 from handler.thread_handler import ThreadHandler
+from handler.user_handler import UserHandler
 from handler.util.name_util import ResourceName
 from handler.util.resource_parser import find_resource
 
@@ -39,6 +47,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 @attr.s(auto_attribs=True)
 class HandlerContext:
     user: Optional[User]
+    service_context: grpc.ServicerContext
 
     @classmethod
     def from_service_context(cls, service_context: grpc.ServicerContext) -> HandlerContext:
@@ -48,13 +57,13 @@ class HandlerContext:
         session = None
         sid = dict(service_context.invocation_metadata()).get('sid', None)
         if not sid:
-            return cls(user=None)
+            return cls(user=None, service_context=None)
         try:
             session = Session.from_sid(sid)
         except Unauthenticated:
-            return cls(user=None)
+            return cls(user=None, service_context=None)
         else:
-            return cls(user=session.user)
+            return cls(user=session.user, service_context=service_context)
 
 
 class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
@@ -368,32 +377,60 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def CreateUser(self, request, context):
         parent, user, = request.parent, ModelUser.from_pb(request.user)
         handler_context = HandlerContext.from_service_context(context)
-        created_thread = self.thread_handler.create_thread(
-            parent, thread, handler_context)
-        return created_thread.to_pb()
-        return super().CreateUser(request, context)
+        if not verify_code(user.email, request.verification_code):
+            context.abort(code=Unauthenticated().code,
+                          message='邮箱未经验证')
+        created_user, session = self.thread_handler.create_thread(
+            parent, user, handler_context)
+        return pb.CreateUserResponse(
+            user=created_user.to_pb(),
+            sid=session.sid,
+        )
 
     def GetUser(self, request, context):
-        return self.user_handler.get_user(request, context)
+        return self.user_handler.get_user(request.name, context).to_pb()
 
     def ListUsers(self, request, context):
-        return self.user_handler.list_users(request, context)
+        handler_context = HandlerContext.from_service_context(context)
+        users, next_page_token = self.user_handler.list_users(
+            request=request,
+            handler_context=handler_context,
+        )
+        return pb.ListUsersResponse(
+            users=[user.to_pb() for user in users],
+            next_page_token=next_page_token,
+        )
 
     @iam_util.assert_user('user.user_id')
     def UpdateUser(self, request, context):
-        return self.user_handler.update_user(request, context)
-
-    def SignUp(self, request, context):
-        return self.user_handler.sign_up(request, context)
+        update_user, update_mask = ModelUser.from_pb(request.user), \
+            FieldMask.from_pb(request.update_mask)
+        # `password` has to be updated via API `UpdatePassword`
+        update_mask.paths -= set('password')
+        user = ModelUser.from_name(request.user.name)
+        handler_context = HandlerContext.from_service_context(context)
+        return self.user_handler.update_user(user, update_user, update_mask, handler_context).to_pb()
 
     def SignIn(self, request, context):
-        return self.user_handler.sign_in(request, context)
+        user, password = ModelUser.from_pb(request.user), request.password
+        handler_context = HandlerContext.from_service_context(context)
+        user, sid = self.user_handler.sign_in(user, password, handler_context)
+        return pb.SignInResponse(
+            user=user.to_pb(),
+            sid=sid,
+        )
 
     def SignOut(self, request, context):
-        return self.user_handler.sign_out(request, context)
+        # (TODO)
+        return pb.Status(code=0, message='登出成功')
 
     def UpdatePassword(self, request, context):
-        user = User.from_id(request.user_id)
+        handler_context = HandlerContext.from_service_context(context)
+        user = ModelUser.from_name(request.user.name)
+        update_user = ModelUser.from_name(user.name)
+        # User may update password on following scenarios
+        # 1. Update password while loged in.
+        # 2. Fetch verification_code when password is forgot.
         if request.verification_code:
             if not verify_code(user.email, request.verification_code):
                 context.abort(code=PermissionDenied().code, details='验证码不正确')
@@ -405,7 +442,20 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             if current_user.user_id != user.user_id:
                 context.abort(code=Unauthenticated().code,
                               details=Unauthenticated().message)
-        return self.user_handler.update_password(request, context)
+        update_user.password = password
+        update_mask = FieldMask({'password'})
+        return self.user_handler.update_user(user, update_user, update_mask,
+                                             handler_context).to_pb()
+
+    def SendVerificationCode(self, request, context):
+        self.user_handler.send_verification_code(request.email, context)
+        return pb.Empty
+
+    def VerifyEmail(self, request, context):
+        return self.user_handler.verify_email(request, context)
+
+    def VerifyNewUser(self, request, context):
+        return self.user_handler.verify_new_user(request, context)
 
     #############
     # Old model #
@@ -416,15 +466,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @iam_util.assert_resource_owner('{parent}')
     def CreateImage(self, request, context):
         return self.image_handler.create_image(request, context)
-
-    def SendVerificationCode(self, request, context):
-        return self.user_handler.send_verification_code(request, context)
-
-    def VerifyEmail(self, request, context):
-        return self.user_handler.verify_email(request, context)
-
-    def VerifyNewUser(self, request, context):
-        return self.user_handler.verify_new_user(request, context)
 
     # general
     def GetStatistic(self, request, context):

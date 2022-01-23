@@ -445,7 +445,7 @@ export class PackageDetailComponent implements OnInit {
 
     this.san11pkService.listActivities(new ListActivitiesRequest({
       parent: `users/${loadUser().userId}`,
-      filter: `resource_name=${this.package.name}`,
+      filter: `resource_name="${this.package.name}"`,
     })).subscribe(
       (resp: ListActivitiesResponse) => {
         resp.activities.forEach(activity => {

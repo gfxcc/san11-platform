@@ -170,11 +170,6 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.DeleteArticleRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Article.FromString,
                 )
-        self.SignUp = channel.unary_unary(
-                '/routeguide.RouteGuide/SignUp',
-                request_serializer=san11__platform__pb2.SignUpRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.SignUpResponse.FromString,
-                )
         self.SignIn = channel.unary_unary(
                 '/routeguide.RouteGuide/SignIn',
                 request_serializer=san11__platform__pb2.SignInRequest.SerializeToString,
@@ -188,7 +183,7 @@ class RouteGuideStub(object):
         self.CreateUser = channel.unary_unary(
                 '/routeguide.RouteGuide/CreateUser',
                 request_serializer=san11__platform__pb2.CreateUserRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.User.FromString,
+                response_deserializer=san11__platform__pb2.CreateUserResponse.FromString,
                 )
         self.GetUser = channel.unary_unary(
                 '/routeguide.RouteGuide/GetUser',
@@ -223,7 +218,7 @@ class RouteGuideStub(object):
         self.UpdatePassword = channel.unary_unary(
                 '/routeguide.RouteGuide/UpdatePassword',
                 request_serializer=san11__platform__pb2.UpdatePasswordRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Empty.FromString,
+                response_deserializer=san11__platform__pb2.User.FromString,
                 )
         self.ListActivities = channel.unary_unary(
                 '/routeguide.RouteGuide/ListActivities',
@@ -463,15 +458,9 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SignUp(self, request, context):
+    def SignIn(self, request, context):
         """User related - legacy
         """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def SignIn(self, request, context):
-        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -483,7 +472,8 @@ class RouteGuideServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def CreateUser(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """User related
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -740,11 +730,6 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.DeleteArticleRequest.FromString,
                     response_serializer=san11__platform__pb2.Article.SerializeToString,
             ),
-            'SignUp': grpc.unary_unary_rpc_method_handler(
-                    servicer.SignUp,
-                    request_deserializer=san11__platform__pb2.SignUpRequest.FromString,
-                    response_serializer=san11__platform__pb2.SignUpResponse.SerializeToString,
-            ),
             'SignIn': grpc.unary_unary_rpc_method_handler(
                     servicer.SignIn,
                     request_deserializer=san11__platform__pb2.SignInRequest.FromString,
@@ -758,7 +743,7 @@ def add_RouteGuideServicer_to_server(servicer, server):
             'CreateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateUser,
                     request_deserializer=san11__platform__pb2.CreateUserRequest.FromString,
-                    response_serializer=san11__platform__pb2.User.SerializeToString,
+                    response_serializer=san11__platform__pb2.CreateUserResponse.SerializeToString,
             ),
             'GetUser': grpc.unary_unary_rpc_method_handler(
                     servicer.GetUser,
@@ -793,7 +778,7 @@ def add_RouteGuideServicer_to_server(servicer, server):
             'UpdatePassword': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdatePassword,
                     request_deserializer=san11__platform__pb2.UpdatePasswordRequest.FromString,
-                    response_serializer=san11__platform__pb2.Empty.SerializeToString,
+                    response_serializer=san11__platform__pb2.User.SerializeToString,
             ),
             'ListActivities': grpc.unary_unary_rpc_method_handler(
                     servicer.ListActivities,
@@ -1374,23 +1359,6 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SignUp(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/SignUp',
-            san11__platform__pb2.SignUpRequest.SerializeToString,
-            san11__platform__pb2.SignUpResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def SignIn(request,
             target,
             options=(),
@@ -1437,7 +1405,7 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateUser',
             san11__platform__pb2.CreateUserRequest.SerializeToString,
-            san11__platform__pb2.User.FromString,
+            san11__platform__pb2.CreateUserResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -1556,7 +1524,7 @@ class RouteGuide(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdatePassword',
             san11__platform__pb2.UpdatePasswordRequest.SerializeToString,
-            san11__platform__pb2.Empty.FromString,
+            san11__platform__pb2.User.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

@@ -53,11 +53,11 @@ service RouteGuide {
   rpc DeleteArticle(DeleteArticleRequest) returns (Article) {}
 
   // User related - legacy
-  rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
   rpc SignIn(SignInRequest) returns (SignInResponse) {}
   rpc SignOut(SignOutRequest) returns (Status) {}
 
-  rpc CreateUser(CreateUserRequest) returns (User) {}
+  // User related
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
   rpc GetUser(GetUserRequest) returns (User) {}
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
   rpc UpdateUser(UpdateUserRequest) returns (User) {}
@@ -66,7 +66,7 @@ service RouteGuide {
   rpc SendVerificationCode(SendVerificationCodeRequest) returns (Empty) {}
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
   rpc VerifyNewUser(VerifyNewUserRequest) returns (Status) {}
-  rpc UpdatePassword(UpdatePasswordRequest) returns (Empty) {}
+  rpc UpdatePassword(UpdatePasswordRequest) returns (User) {}
 
   // Activities reltead
   rpc ListActivities(ListActivitiesRequest) returns (ListActivitiesResponse) {}
@@ -350,10 +350,8 @@ message DeleteArticleRequest {
 // user
 
 message GetUserRequest {
-  oneof identify {
-    int64 user_id = 1;
-    string username = 2;
-  }
+  // E.g. `users/123`
+  string name = 1;
 }
 
 message GetUserResponse { User user = 1; }
@@ -369,23 +367,19 @@ message SignInResponse {
   string sid = 3;
 }
 
-message SignOutRequest { int64 user_id = 1; }
-
-message SignUpRequest {
-  User user = 1;
-  string password = 2;
-  string verification_code = 3;
-}
-
-message SignUpResponse {
-  User user = 2;
-  string sid = 3;
-}
+message SignOutRequest {}
 
 message CreateUserRequest {
   // E.g. ``
   string parent = 1;
   User user = 2;
+  string password = 3;
+  string verification_code = 4;
+}
+
+message CreateUserResponse {
+  User user = 1;
+  string sid = 2;
 }
 
 message UpdateUserRequest {
@@ -394,7 +388,7 @@ message UpdateUserRequest {
 }
 
 message UpdatePasswordRequest {
-  int64 user_id = 1;
+  User user = 1;
   string password = 2;
   string verification_code = 3;
 }
@@ -418,7 +412,7 @@ message VerifyEmailRequest {
 
 message VerifyEmailResponse {
   bool ok = 1;
-  int64 user_id = 2;
+  User user = 2;
 }
 
 message VerifyNewUserRequest {
@@ -575,10 +569,10 @@ message Binary {
 }
 
 message User {
-  int64 user_id = 1;
+  string name = 1;
   string username = 2;
   string email = 3;
-  string user_type = 4;
+  UserType type = 4;
   string image_url = 5;
   string website = 6;
 

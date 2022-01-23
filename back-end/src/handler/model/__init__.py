@@ -1,1 +1,0 @@
-from .model_article import ModelArticle

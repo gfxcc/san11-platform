@@ -4,9 +4,9 @@ import time
 import uuid
 
 from handler.common.exception import NotFound, Unauthenticated
+from handler.model.model_user import ModelUser
 
 from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one
-from ..model.user import User
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -15,7 +15,7 @@ class Session:
     def __init__(self, sid: str, user_id: int, expiration: int):
         self.sid = sid
         self.expiration = expiration
-        self.user = User.from_id(user_id)
+        self.user = ModelUser.from_name(f'users/{user_id}')
 
     def __str__(self):
         return f'{{sid: {self.sid}, user_id: {self.user.user_id}, expiration: {self.expiration}}}'
@@ -63,14 +63,15 @@ class Session:
     def from_user_id(cls, user_id: int):
         '''
         Raise:
-            LookUpError
+            NotFound
         '''
         sql = "SELECT sid, expiration FROM sessions WHERE user_id=%(user_id)s"
         try:
             sid, expiration = run_sql_with_param_and_fetch_one(
                 sql, {'user_id': user_id})
         except Exception:
-            raise LookupError(f'Failed to find session: user_id={user_id}')
+            raise NotFound(
+                message=f'Failed to find session: user_id={user_id}')
         return cls(sid, user_id, expiration)
 
     @classmethod
