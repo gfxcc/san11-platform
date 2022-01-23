@@ -1,11 +1,10 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
 import { NotificationService } from 'src/app/common/notification.service';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
-import { getPackageUrl } from 'src/app/utils/package_util';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
 import { isAdmin, loadUser } from 'src/app/utils/user_util';
@@ -141,10 +140,10 @@ export class ArticleDetailComponent implements OnInit {
     this.descEditor_updated = true;
   }
 
-  
+
   loadUser() {
     this.san11pkService.getUser(new GetUserRequest({
-      userId: this.article.authorId
+      name: `users/${this.article.authorId}`,
     })).subscribe(
       (resp: User) => {
         this.user = resp;
@@ -154,7 +153,7 @@ export class ArticleDetailComponent implements OnInit {
       }
     );
   }
-   
+
   onDelete() {
     if (!confirm(`确定要删除文章 ${this.article.subject} 吗？`)) {
       return;
@@ -226,10 +225,10 @@ export class ArticleDetailComponent implements OnInit {
 
   getArticleCreateTime() {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    return this.article.createTime.toDate().toLocaleString("en-US", {timeZone: tz});
+    return this.article.createTime.toDate().toLocaleString("en-US", { timeZone: tz });
   }
 
-  
+
   // utils
   isAdmin() {
     return isAdmin();

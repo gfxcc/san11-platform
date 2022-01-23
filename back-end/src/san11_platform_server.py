@@ -20,6 +20,7 @@ from handler.common.exception import *
 from handler.common.field_mask import FieldMask
 from handler.general_handler import GeneralHandler
 from handler.image_handler import ImageHandler
+from handler.model.base.base_db import ListOptions
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
@@ -28,7 +29,8 @@ from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
-from handler.model.model_user import ModelUser
+from handler.model.model_user import (ModelUser, get_user_by_email,
+                                      get_user_by_username, validate_password)
 from handler.model.user import User, verify_code
 from handler.notification_handler import NotificationHandler
 from handler.package_handler import PackageHandler
@@ -40,6 +42,7 @@ from handler.thread_handler import ThreadHandler
 from handler.user_handler import UserHandler
 from handler.util.name_util import ResourceName
 from handler.util.resource_parser import find_resource
+from handler.util.user_util import hash_password, is_email
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -333,6 +336,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return self.package_handler.get_package(request.name, handler_context).to_pb()
 
     def ListPackages(self, request, context):
+        # (TODO): BEGIN - Remove model migration logic.
+        if not ModelUser.list(ListOptions(parent=''))[0]:
+            for user in User.list(10000, ''):
+                ModelUser.from_v1(user).backfill()
+        # END
         handler_context = HandlerContext.from_service_context(context)
         packages, next_page_token = self.package_handler.list_packages(
             request=request,
@@ -412,13 +420,21 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return self.user_handler.update_user(user, update_user, update_mask, handler_context).to_pb()
 
     def SignIn(self, request, context):
-        user, password = ModelUser.from_pb(request.user), request.password
-        handler_context = HandlerContext.from_service_context(context)
-        user, sid = self.user_handler.sign_in(user, password, handler_context)
-        return pb.SignInResponse(
-            user=user.to_pb(),
-            sid=sid,
-        )
+        try:
+            if is_email(request.identity):
+                user = get_user_by_email(request.identity)
+            else:
+                user = get_user_by_username(request.identity)
+            password = request.password
+            handler_context = HandlerContext.from_service_context(context)
+            user, sid = self.user_handler.sign_in(user, password, handler_context)
+            return pb.SignInResponse(
+                user=user.to_pb(),
+                sid=sid,
+            )
+        except Excep as e:
+            logger.debug(e, exc_info=1)
+            context.abort(code=e.code, details=e.message)
 
     def SignOut(self, request, context):
         # (TODO)
@@ -426,7 +442,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     def UpdatePassword(self, request, context):
         handler_context = HandlerContext.from_service_context(context)
-        user = ModelUser.from_name(request.user.name)
+        user = ModelUser.from_name(request.name)
         update_user = ModelUser.from_name(user.name)
         # User may update password on following scenarios
         # 1. Update password while loged in.
@@ -442,8 +458,10 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             if current_user.user_id != user.user_id:
                 context.abort(code=Unauthenticated().code,
                               details=Unauthenticated().message)
-        update_user.password = password
-        update_mask = FieldMask({'password'})
+        validate_password(password)
+
+        update_user.hashed_password = hash_password(password)
+        update_mask = FieldMask({'hashed_password'})
         return self.user_handler.update_user(user, update_user, update_mask,
                                              handler_context).to_pb()
 
@@ -452,10 +470,18 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         return pb.Empty
 
     def VerifyEmail(self, request, context):
-        return self.user_handler.verify_email(request, context)
+        ok, user = self.user_handler.verify_email(
+            request.email, request.verification_code)
+        return pb.VerifyEmailResponse(
+            ok=ok,
+            user=user.to_pb(),
+        )
 
     def VerifyNewUser(self, request, context):
-        return self.user_handler.verify_new_user(request, context)
+        try:
+            return self.user_handler.verify_new_user(request, context)
+        except Excep as err:
+            return pb.Status(code=err.code, message=err.message)
 
     #############
     # Old model #
@@ -490,7 +516,9 @@ def serve():
 def init_log(verbose: bool):
     FORMAT = '%(asctime)-15s %(levelname)s %(name)s:%(lineno)s [func=%(funcName)s] %(message)s'
     logging.basicConfig(
-        level=logging.INFO if not verbose else logging.NOTSET, format=FORMAT)
+        level=logging.INFO if not verbose else logging.NOTSET,
+        format=FORMAT,
+        datefmt='%Y-%m-%d %H:%M:%S %Z')
 
 
 def parse_args():

@@ -3,7 +3,7 @@ import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
-import { loadUser } from 'src/app/utils/user_util';
+import { isAdmin, loadUser } from 'src/app/utils/user_util';
 import { GetUserRequest, ResourceState, Thread, User } from 'src/proto/san11-platform.pb';
 
 @Component({
@@ -29,7 +29,7 @@ export class ThreadCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.san11pkService.getUser(new GetUserRequest({
-      userId: this.thread.authorId
+      name: `users/${this.thread.authorId}`,
     })).subscribe(
       (resp: User) => {
         this.user = resp;
@@ -40,7 +40,9 @@ export class ThreadCardComponent implements OnInit {
     );
 
     if (this.thread.latestCommenterId != '0') {
-      this.san11pkService.getUser(new GetUserRequest({ userId: this.thread.latestCommenterId })).subscribe(
+      this.san11pkService.getUser(new GetUserRequest({
+        name: `users/${this.thread.latestCommenterId}`,
+      })).subscribe(
         (resp: User) => {
           this.latestCommenter = resp;
         },
@@ -82,7 +84,7 @@ export class ThreadCardComponent implements OnInit {
 
 
   isAdmin() {
-    return loadUser().userType === 'admin';
+    return isAdmin();
   }
 
   isAuthor() {

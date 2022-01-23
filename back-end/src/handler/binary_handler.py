@@ -5,12 +5,13 @@ from typing import Iterable, Tuple
 
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import File, ModelBinary
+from handler.protos import san11_platform_pb2 as pb
 from handler.util.name_util import ResourceName
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .common.field_mask import FieldMask, merge_resource
 from .model.activity import Activity
-from .model.model_activity import Action
+from .model.model_activity import Action, ModelActivity
 from .model.model_package import ModelPackage
 from .model.statistic import Statistic
 from .util import gcs
@@ -88,8 +89,10 @@ class BinaryHandler:
         package.download_count += 1
         package.update(update_update_time=False)
         try:
-            Activity(activity_id=None, user_id=handler_context.user.user_id, create_time=get_now(
-            ), action=Action.DOWNLOAD, resource_name=binary.name).create()
+            ModelActivity(
+                name='', create_time=get_now(),
+                action=pb.Action.DOWNLOAD, resource_name=binary.name
+            ).create(parent=f'users/{handler_context.user.user_id}')
         except Exception:
             pass
         return binary

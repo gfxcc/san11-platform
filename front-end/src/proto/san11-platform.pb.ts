@@ -8079,7 +8079,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: UpdatePasswordRequest) {
-    _instance.user = _instance.user || undefined;
+    _instance.name = _instance.name || '';
     _instance.password = _instance.password || '';
     _instance.verificationCode = _instance.verificationCode || '';
   }
@@ -8098,8 +8098,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.user = new User();
-          _reader.readMessage(_instance.user, User.deserializeBinaryFromReader);
+          _instance.name = _reader.readString();
           break;
         case 2:
           _instance.password = _reader.readString();
@@ -8124,12 +8123,8 @@ export class UpdatePasswordRequest implements GrpcMessage {
     _instance: UpdatePasswordRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.user) {
-      _writer.writeMessage(
-        1,
-        _instance.user as any,
-        User.serializeBinaryToWriter
-      );
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
     }
     if (_instance.password) {
       _writer.writeString(2, _instance.password);
@@ -8139,7 +8134,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
     }
   }
 
-  private _user?: User;
+  private _name?: string;
   private _password?: string;
   private _verificationCode?: string;
 
@@ -8149,16 +8144,16 @@ export class UpdatePasswordRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<UpdatePasswordRequest.AsObject>) {
     _value = _value || {};
-    this.user = _value.user ? new User(_value.user) : undefined;
+    this.name = _value.name;
     this.password = _value.password;
     this.verificationCode = _value.verificationCode;
     UpdatePasswordRequest.refineValues(this);
   }
-  get user(): User | undefined {
-    return this._user;
+  get name(): string | undefined {
+    return this._name;
   }
-  set user(value: User | undefined) {
-    this._user = value;
+  set name(value: string | undefined) {
+    this._name = value;
   }
   get password(): string | undefined {
     return this._password;
@@ -8188,7 +8183,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
    */
   toObject(): UpdatePasswordRequest.AsObject {
     return {
-      user: this.user ? this.user.toObject() : undefined,
+      name: this.name,
       password: this.password,
       verificationCode: this.verificationCode
     };
@@ -8211,7 +8206,7 @@ export class UpdatePasswordRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): UpdatePasswordRequest.AsProtobufJSON {
     return {
-      user: this.user ? this.user.toProtobufJSON(options) : null,
+      name: this.name,
       password: this.password,
       verificationCode: this.verificationCode
     };
@@ -8222,7 +8217,7 @@ export module UpdatePasswordRequest {
    * Standard JavaScript object representation for UpdatePasswordRequest
    */
   export interface AsObject {
-    user?: User.AsObject;
+    name?: string;
     password?: string;
     verificationCode?: string;
   }
@@ -8231,7 +8226,7 @@ export module UpdatePasswordRequest {
    * Protobuf JSON representation for UpdatePasswordRequest
    */
   export interface AsProtobufJSON {
-    user?: User.AsProtobufJSON | null;
+    name?: string;
     password?: string;
     verificationCode?: string;
   }
@@ -12289,6 +12284,7 @@ export class User implements GrpcMessage {
     _instance.type = _instance.type || 0;
     _instance.imageUrl = _instance.imageUrl || '';
     _instance.website = _instance.website || '';
+    _instance.userId = _instance.userId || '0';
   }
 
   /**
@@ -12318,6 +12314,9 @@ export class User implements GrpcMessage {
           break;
         case 6:
           _instance.website = _reader.readString();
+          break;
+        case 7:
+          _instance.userId = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -12351,6 +12350,9 @@ export class User implements GrpcMessage {
     if (_instance.website) {
       _writer.writeString(6, _instance.website);
     }
+    if (_instance.userId) {
+      _writer.writeInt64String(7, _instance.userId);
+    }
   }
 
   private _name?: string;
@@ -12359,6 +12361,7 @@ export class User implements GrpcMessage {
   private _type?: User.UserType;
   private _imageUrl?: string;
   private _website?: string;
+  private _userId?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -12372,6 +12375,7 @@ export class User implements GrpcMessage {
     this.type = _value.type;
     this.imageUrl = _value.imageUrl;
     this.website = _value.website;
+    this.userId = _value.userId;
     User.refineValues(this);
   }
   get name(): string | undefined {
@@ -12410,6 +12414,12 @@ export class User implements GrpcMessage {
   set website(value: string | undefined) {
     this._website = value;
   }
+  get userId(): string | undefined {
+    return this._userId;
+  }
+  set userId(value: string | undefined) {
+    this._userId = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -12431,7 +12441,8 @@ export class User implements GrpcMessage {
       email: this.email,
       type: this.type,
       imageUrl: this.imageUrl,
-      website: this.website
+      website: this.website,
+      userId: this.userId
     };
   }
 
@@ -12457,7 +12468,8 @@ export class User implements GrpcMessage {
       email: this.email,
       type: User.UserType[this.type ?? 0],
       imageUrl: this.imageUrl,
-      website: this.website
+      website: this.website,
+      userId: this.userId
     };
   }
 }
@@ -12472,6 +12484,7 @@ export module User {
     type?: User.UserType;
     imageUrl?: string;
     website?: string;
+    userId?: string;
   }
 
   /**
@@ -12484,6 +12497,7 @@ export module User {
     type?: string;
     imageUrl?: string;
     website?: string;
+    userId?: string;
   }
   export enum UserType {
     USER_TYPE_UNDEFINED = 0,

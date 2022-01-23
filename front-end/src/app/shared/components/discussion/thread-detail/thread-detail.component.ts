@@ -72,7 +72,9 @@ export class ThreadDetailComponent implements OnInit {
           upvoteCount: this.thread.likeCount,
         })
 
-        this.san11pkService.getUser(new GetUserRequest({ userId: this.thread.authorId })).subscribe(
+        this.san11pkService.getUser(new GetUserRequest({
+          name: `users/${this.thread.authorId}`,
+        })).subscribe(
           user => {
             this.userImage = getFullUrl(user.imageUrl);
             this.user = user;

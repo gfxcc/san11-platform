@@ -3,14 +3,40 @@ import re
 from typing import Optional
 
 import attr
-from handler.common.exception import AlreadyExists, InvalidArgument
-from handler.model.base.base_db import ListOptions
+from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
+from handler.model.base.base_db import DbConverter, ListOptions
+from handler.model.base.base_proto import ProtoConverter
 from handler.model.model_activity import TrackLifecycle
 from handler.model.model_comment import ModelComment
 from handler.util.name_util import ResourceName
+from handler.util.user_util import hash_password, is_email, normalize_email
 
 from ..protos import san11_platform_pb2 as pb
 from .base import Attrib, InitModel, ModelBase
+
+
+class EmailProtoConverter(ProtoConverter):
+    '''
+    Normalize user entered email.
+    '''
+
+    def from_model(self, value: str) -> str:
+        return normalize_email(value)
+
+    def to_model(self, proto_value: str) -> str:
+        return normalize_email(proto_value)
+
+
+class EmailDbConverter(DbConverter):
+    '''
+    Normalize email before persisting.
+    '''
+
+    def from_model(self, value: str) -> str:
+        return normalize_email(value)
+
+    def to_model(self, proto_value: str) -> str:
+        return normalize_email(proto_value)
 
 
 @InitModel(
@@ -24,11 +50,16 @@ class ModelUser(ModelBase, TrackLifecycle):
     name = Attrib(
         type=str,
     )
+    user_id = Attrib(
+        type=int,
+    )
     username = Attrib(
         type=str,
     )
     email = Attrib(
         type=str,
+        proto_converter=EmailProtoConverter(),
+        db_converter=EmailDbConverter(),
     )
     type = Attrib(
         type=int,  # TODO
@@ -39,25 +70,25 @@ class ModelUser(ModelBase, TrackLifecycle):
     website = Attrib(
         type=str,
     )
-    password = Attrib(
+    hashed_password = Attrib(
         type=str,
         is_proto_field=False,
     )
 
-    @property
-    def user_id(self) -> int:
-        return ResourceName.from_str(self.name).resource_id
+    def is_admin(self) -> bool:
+        return self.type == pb.User.UserType.ADMIN
 
     @classmethod
     def from_v1(cls, legacy_model):
         return cls(
-            name='',
+            name=f'users/{legacy_model.user_id}',
             user_id=legacy_model.user_id,
             username=legacy_model.username,
-            email=legacy_model.email,
-            user_type=1 if legacy_model.user_type == 'admin' else 11,
-            image_url=legacy_model.image_url,
+            email=normalize_email(legacy_model.email),
+            type=1 if legacy_model.user_type == 'admin' else 11,
+            image_url=legacy_model.image_url or 'users/default_avatar.jpg',
             website=legacy_model.website,
+            hashed_password=hash_password(legacy_model._get_password()),
         )
 
 
@@ -68,7 +99,7 @@ def validate_email(email: str) -> None:
         AlreadyExists: if email is already used by an accout
     '''
     ADMIN_EMAIL = 'ycao181@gmail.com'
-    if re.fullmatch(r'[^@]+@[^@]+\.[^@]+', email) is None:
+    if not is_email(email):
         raise InvalidArgument('无效的邮箱地址')
     # Allow admin to reuse email for new account for testing.
     if email == ADMIN_EMAIL:
@@ -92,3 +123,19 @@ def validate_username(username: str) -> None:
         raise InvalidArgument("用户名要求: [长度] 4-32 [字符] 不包含 空格, @")
     if ModelUser.list(ListOptions(parent='', filter=f'username=\"{username}\"'))[0]:
         raise AlreadyExists(f'用户名 {username} 已被使用')
+
+
+def get_user_by_email(email: str) -> ModelUser:
+    users = ModelUser.list(ListOptions(
+        parent='', filter=f'email=\"{email}\"'))[0]
+    if not users:
+        raise NotFound(message='用户不存在')
+    return users[0]
+
+
+def get_user_by_username(username: str) -> ModelUser:
+    users = ModelUser.list(ListOptions(
+        parent='', filter=f'username=\"{username}\"'))[0]
+    if not users:
+        raise NotFound(message='用户不存在')
+    return users[0]

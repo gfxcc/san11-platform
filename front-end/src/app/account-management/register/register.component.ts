@@ -155,6 +155,9 @@ export class RegisterComponent implements OnInit {
         } else {
           this.notificationService.warn('验证码不正确');
         }
+      },
+      error => {
+        this.notificationService.warn(`验证失败: ${error.statusMessage}`);
       }
     );
   }

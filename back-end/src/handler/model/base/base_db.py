@@ -83,6 +83,12 @@ def parse_filter(cls: type, filter: str) -> Dict:
         if not segment:
             continue
         k, v = map(str.strip, segment.split('='))
+        if match := re.fullmatch(r'"(?P<value>.+)"', v):
+            v = match['value']
+        else:
+            # (TODO): In postgres, ->> return text
+            v = v
+        
         # To support fields not in proto message.
         if k not in proto2db:
             kwargs[k] = v

@@ -9,6 +9,7 @@ from google.protobuf import message
 from handler.auths.session import Session
 from handler.common.exception import PermissionDenied, Unauthenticated
 from handler.model.user import User
+from handler.protos import san11_platform_pb2 as pb
 from handler.util.resource_parser import find_resource
 
 ServerHandlerType = Callable[[Any, Any, Any], Any]
@@ -30,7 +31,7 @@ def load_user(context) -> User:
 def assert_admin(func: ServerHandlerType):
     @functools.wraps(func)
     def iam_wrapper(this, request, context):
-        if not _get_session(context).user.is_admin():
+        if _get_session(context).user.type != pb.User.UserType.ADMIN:
             context.abort(PermissionDenied().code, '需要管理员权限')
         return func(this, request, context)
     return iam_wrapper

@@ -388,7 +388,8 @@ message UpdateUserRequest {
 }
 
 message UpdatePasswordRequest {
-  User user = 1;
+  // Field `name` in User. E.g. `users/123`.
+  string name = 1; 
   string password = 2;
   string verification_code = 3;
 }
@@ -575,6 +576,11 @@ message User {
   UserType type = 4;
   string image_url = 5;
   string website = 6;
+  // This is OUTPUT_ONLY field parsed from `name`.
+  // Field `name` should be preferred when possible. Should be used for legacy
+  // use cases. 
+  // [ OUTPUT_ONLY ]
+  int64 user_id = 7;
 
   enum UserType {
     USER_TYPE_UNDEFINED = 0;

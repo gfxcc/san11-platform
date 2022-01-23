@@ -1,17 +1,15 @@
-import { ViewChild, ElementRef, Input, Component, OnInit } from '@angular/core';
-import { Package, Comment, Reply, CreateCommentRequest, ListCommentsRequest, User } from "../../../../proto/san11-platform.pb";
-
-import { GetUserRequest } from "../../../../proto/san11-platform.pb";
-import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
-import { NotificationService } from "../../../common/notification.service";
-import { getFullUrl } from "../../../utils/resrouce_util";
-import { getPackageUrl } from '../../../utils/package_util';
-import { decrement, increment } from "../../../utils/number_util";
-
-import * as Editor from "../../../common/components/ckeditor/ckeditor";
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { UploadService } from 'src/app/service/upload.service';
 import { getUserUrl, signedIn } from 'src/app/utils/user_util';
+import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, Package, User } from "../../../../proto/san11-platform.pb";
+import * as Editor from "../../../common/components/ckeditor/ckeditor";
+import { NotificationService } from "../../../common/notification.service";
+import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
+import { increment } from "../../../utils/number_util";
+import { getFullUrl } from "../../../utils/resrouce_util";
+
+
 
 
 @Component({
@@ -57,7 +55,9 @@ export class CommentBoardComponent implements OnInit {
     if (this.authorId != null) {
       const localAuthorImage = localStorage.getItem('userImageUrl');
       if (localAuthorImage === null) {
-        this.san11pkService.getUser(new GetUserRequest({ userId: this.authorId })).subscribe(
+        this.san11pkService.getUser(new GetUserRequest({
+          name: `users/${this.authorId}`,
+        })).subscribe(
           user => {
             this.authorImage = getFullUrl(user.imageUrl);
           },

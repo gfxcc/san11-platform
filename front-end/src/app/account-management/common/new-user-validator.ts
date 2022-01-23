@@ -11,7 +11,14 @@ export class NewUserValidators {
                 username: control.value
             })).pipe(
                 debounceTime(500),
-                map((status: Status) => (status.code === '0' || control.value === originalValue) ? null : { invalidNewUser: status.message })
+                map(
+                    (status: Status) => {
+                        return (status.code === '0' || control.value === originalValue) ? null : { invalidNewUser: status.message };
+                    },
+                    (error) => {
+                        return { invalidNewUser: error.statusMessage };
+                    }
+                )
             );
         };
     }

@@ -49,3 +49,25 @@ class TestUtilFuncs(unittest.TestCase):
         for username in usernames:
             self.assertRaises(
                 InvalidArgument, model_user.validate_username, username)
+
+    @patch.object(model_user, 'ModelUser')
+    def test_validate_email_valid_emails(self, mock_ModelUser):
+        emails = [
+            'ycao181@gmail.com',
+            'test@test.com',
+        ]
+        mock_ModelUser.list = MagicMock(return_value=([], ''))
+        for email in emails:
+            # no raise
+            model_user.validate_email(email)
+
+    @patch.object(model_user, 'ModelUser')
+    def test_validate_email_invalid_email_causes_raise(self, mock_ModelUser):
+        emails = [
+            'what',
+            'invalid.com',
+        ]
+        mock_ModelUser.list = MagicMock(return_value=([], ''))
+        for email in emails:
+            self.assertRaises(
+                InvalidArgument, model_user.validate_email, email)

@@ -63,7 +63,7 @@ class User(ResourceMixin, TrackLifecycle):
 
     @classmethod
     def db_table(cls) -> str:
-        return 'users'
+        return 'users_legacy'
 
     @classmethod
     def db_fields(cls) -> List[str]:
@@ -139,12 +139,19 @@ class User(ResourceMixin, TrackLifecycle):
                                        image_url=self.image_url or self.DEFAULT_USER_AVATAR,
                                        website=self.website)
 
+    def _get_password(self) -> str:
+        sql = f'SELECT password FROM {self.db_table()} WHERE username=%(username)s'
+        resp = run_sql_with_param_and_fetch_one(sql, {
+            'username': self.username,
+        })
+        return resp[0]
+
     def validate(self, password: str) -> None:
         '''
         Raise:
             Unauthenticated: ...
         '''
-        sql = 'SELECT * FROM users WHERE username=%(username)s AND password=%(password)s'
+        sql = f'SELECT * FROM  WHERE {self.db_table()} username=%(username)s AND password=%(password)s'
         resp = run_sql_with_param_and_fetch_all(sql, {
             'username': self.username,
             'password': password

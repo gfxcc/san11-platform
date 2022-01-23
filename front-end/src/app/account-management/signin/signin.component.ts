@@ -27,7 +27,7 @@ export class SigninComponent implements OnInit {
   timeToResend: number;
   timeToResendText: string;
 
-  userId: string;
+  user: User;
 
   basicInfoForm: FormGroup;
   emailVerificationForm: FormGroup;
@@ -107,7 +107,7 @@ export class SigninComponent implements OnInit {
         });
       },
       error => {
-        this.notificationService.warn(error.statusMessage);
+        this.notificationService.warn(`登录失败: ${error.statusMessage}`);
       }
     );
   }
@@ -167,7 +167,7 @@ export class SigninComponent implements OnInit {
     this.san11PlatformServiceService.verifyEmail(request).subscribe(
       (resp: VerifyEmailResponse) => {
         if (resp.ok) {
-          this.userId = resp.userId;
+          this.user = resp.user;
           stepper.next();
         } else {
           this.notificationService.warn('验证码不正确');
@@ -181,10 +181,7 @@ export class SigninComponent implements OnInit {
 
   onUpdatePassword() {
     this.san11PlatformServiceService.updatePassword(new UpdatePasswordRequest({
-      userId: this.userId,
-      user: new User({
-        name: 
-      }),
+      name: this.user.name,
       password: this.password.value,
       verificationCode: this.verificationCode.value
     })).subscribe(

@@ -3,8 +3,8 @@ import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
-import { loadUser } from 'src/app/utils/user_util';
-import { Article, GetUserRequest, Package, ResourceState, User } from 'src/proto/san11-platform.pb';
+import { isAdmin, loadUser } from 'src/app/utils/user_util';
+import { Article, GetUserRequest, ResourceState, User } from 'src/proto/san11-platform.pb';
 
 @Component({
   selector: 'app-article-card',
@@ -23,7 +23,7 @@ export class ArticleCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.san11pkService.getUser(new GetUserRequest({
-      userId: this.article.authorId
+      name: `users/${this.article.authorId}`,
     })).subscribe(
       (resp: User) => {
         this.user = resp;
@@ -81,7 +81,7 @@ export class ArticleCardComponent implements OnInit {
 
 
 isAdmin() {
-  return loadUser().userType === 'admin';
+  return isAdmin();
 }
 
 isAuthor() {

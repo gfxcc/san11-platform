@@ -1,10 +1,8 @@
 import logging
 import os
-from operator import is_
 from typing import Iterable, Tuple
 
-from handler.common.exception import NotFound
-from handler.model.activity import Action, Activity
+from handler.model.activity import Action
 from handler.model.base.base_db import ListOptions
 from handler.model.model_activity import ModelActivity, search_activity
 from handler.model.model_binary import ModelBinary
@@ -60,7 +58,7 @@ class PackageHandler:
             # Admin user can see all packages.
             # Users who also publish packages will also see packages they published
             # in `HIDDEN`, `UNDER_REVIEW` state.
-            packages = filter(lambda x: handler_context.user.user_type == 'admin' or
+            packages = filter(lambda x: handler_context.user.type == pb.User.UserType.ADMIN or
                               x.state == pb.ResourceState.NORMAL or
                               (x.author_id == handler_context.user.user_id and
                                x.state in [pb.ResourceState.HIDDEN,

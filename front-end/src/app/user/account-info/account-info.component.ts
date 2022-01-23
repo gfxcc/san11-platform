@@ -185,7 +185,7 @@ export class AccountInfoComponent implements OnInit {
     }
     if (this.password.value != this.PASSWORD_PLACEHOLDER) {
       this.san11pkService.updatePassword(new UpdatePasswordRequest({
-        userId: this.user.userId,
+        name: this.user.name,
         password: this.password.value,
         verificationCode: this.verificationCode.value,
       })).subscribe(

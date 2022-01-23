@@ -2,10 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
-import { min } from 'rxjs-compat/operator/min';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
-import { isAdmin } from 'src/app/utils/user_util';
 import { CreateThreadRequest, ListThreadsRequest, ListThreadsResponse, Thread } from 'src/proto/san11-platform.pb';
 import { TextInputDialogComponent } from '../text-input-dialog/text-input-dialog.component';
 
@@ -29,10 +27,6 @@ export class DiscussionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // if (!isAdmin()) {
-    //   this.notificationService.warn('尚未开放');
-    //   this.router.navigate(['']);
-    // }
     this.cols = [
       { field: 'vin', header: 'Vin' },
       { field: 'year', header: 'Year' },

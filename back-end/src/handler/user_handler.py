@@ -1,12 +1,14 @@
 import logging
 import os
-from typing import Iterable, Tuple
-
-import grpc
+from typing import Iterable, Optional, Tuple
 
 from handler.model.base.base_db import ListOptions
-from handler.model.model_user import (ModelUser, validate_email,
-                                      validate_password, validate_username)
+from handler.model.model_user import (ModelUser, get_user_by_email,
+                                      validate_email, validate_password,
+                                      validate_username)
+from handler.protos import san11_platform_pb2 as pb
+from handler.util.user_util import (hash_password, normalize_email,
+                                    verify_password)
 
 from .auths import Session
 from .common.exception import (AlreadyExists, InvalidArgument, NotFound,
@@ -23,6 +25,8 @@ logger = logging.getLogger(os.path.basename(__file__))
 class UserHandler:
     def create_user(self, parent: str, user: ModelUser,
                     handler_context) -> Tuple[ModelUser, Session]:
+        user.image_url = 'users/default_avatar.jpg'
+
         validate_email(user.email)
         validate_username(user.username)
         validate_password(user.password)
@@ -36,6 +40,9 @@ class UserHandler:
         return user
 
     def list_users(self, request, handler_context) -> Tuple[Iterable[ModelUser], str]:
+        # (TODO): Consider bucket user fields into different sections
+        # and only populate certain section with permission check.
+        # E.g. public_section, private_section, admin_section, ...
         list_options = ListOptions.from_request(request)
         users, next_page_token = ModelUser.list(list_options)
         return users, next_page_token
@@ -47,19 +54,8 @@ class UserHandler:
         user.update(handler_context.user.user_id)
         return user
 
-    def sign_in(self, user: ModelUser, password: str, handler_context):
-        if user.name:
-            user = ModelUser.from_name(user.name)
-        elif user.email:
-            users = ModelUser.list(ListOptions(
-                parent='', filter=f'email=\"{user.email}\"'))[0]
-            if not users:
-                raise NotFound(message='用户不存在')
-            user = users[0]
-        else:
-            raise NotFound(message='用户不存在')
-
-        if user.password != password:
+    def sign_in(self, user: ModelUser, password: str, handler_context) -> Tuple[ModelUser, str]:
+        if not verify_password(password, user.hashed_password):
             raise Unauthenticated(message='用户名,密码 不匹配')
 
         try:
@@ -70,8 +66,7 @@ class UserHandler:
             session.extend()
 
         logger.info(f'Login: user_id={user.user_id} sid={session.sid}')
-        return san11_platform_pb2.SignInResponse(user=user.to_pb(),
-                                                 sid=session.sid)
+        return user, session.sid
 
     def sign_out(self, request, context):
         ...
@@ -92,43 +87,27 @@ class UserHandler:
             validate_username(user.username)
         if user.email != base_user.email:
             validate_email(user.email)
-        if user.password != base_user.password:
-            validate_password(user.password)
         user.update(user_id=user.user_id)
         return user
-
-    def list_users(self, request, context):
-        # (TODO): Consider bucket user fields into different sections
-        # and only populate certain section with permission check.
-        # E.g. public_section, private_section, admin_section, ...
-        list_options = ListOptions.from_request(request)
-        users, next_page_token = ModelUser.list(list_options)
-        return users, next_page_token
 
     def send_verification_code(self, email: str, handler_context) -> None:
         verification_code = generate_verification_code(email)
         Notifier().send_email(email, '账号验证码', verification_code)
 
-    def verify_email(self, email: str, verification_code: str, context):
+    def verify_email(self, email: str, verification_code: str, context) -> Tuple[bool, Optional[User]]:
+        if not verify_code(email, verification_code):
+            return context.abort(NotFound().code, f'验证失败')
         try:
-            user = User.from_email(email)
-        except LookupError:
-            return context.abort(NotFound().code, f'该邮箱未注册')
-        return san11_platform_pb2.VerifyEmailResponse(ok=verify_code(email, code), user_id=user.user_id)
+            user = get_user_by_email(email)
+        except NotFound:
+            user = None
+        return True, user
 
-    def verify_new_user(self, request, context):
+    def verify_new_user(self, request, handler_context) -> pb.Status:
         if request.HasField('username'):
-            try:
-                User.validate_username(request.username)
-            except AlreadyExists as err:
-                return san11_platform_pb2.Status(code=err.code, message='已被使用')
+            validate_username(request.username)
         elif request.HasField('password'):
-            ...
+            validate_password(request.password)
         elif request.HasField('email'):
-            try:
-                User.validate_email(request.email)
-            except InvalidArgument as e:
-                return san11_platform_pb2.Status(code=e.code, message=e.message)
-            except AlreadyExists as err:
-                return san11_platform_pb2.Status(code=err.code, message='已被使用')
+            validate_email(request.email)
         return san11_platform_pb2.Status(code=0, message='')
