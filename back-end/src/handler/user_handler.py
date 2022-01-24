@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Iterable, Optional, Tuple
 
+from handler.model.base import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_user import (ModelUser, get_user_by_email,
                                       validate_email, validate_new_user,
@@ -13,7 +14,6 @@ from handler.util.user_util import (hash_password, normalize_email,
 from .auths import Session
 from .common.exception import (AlreadyExists, InvalidArgument, NotFound,
                                Unauthenticated)
-from .common.field_mask import FieldMask, merge_resource
 from .common.image import Image
 from .model.user import User, generate_verification_code, verify_code
 from .protos import san11_platform_pb2

@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Iterable, Tuple
 
+from handler.model.base import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_article import ModelArticle
 from handler.model.model_package import ModelPackage
@@ -10,7 +11,6 @@ from handler.util import gcs
 from handler.util.notifier import notify
 from handler.util.resource_parser import find_resource
 
-from .common.field_mask import FieldMask, merge_resource
 from .model.model_thread import ModelThread
 from .protos import san11_platform_pb2 as pb
 

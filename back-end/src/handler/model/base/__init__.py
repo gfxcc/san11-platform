@@ -1,15 +1,88 @@
+'''
+A model is an internal representation of a resource. 
+In most case, a resource could exists in 3 differnt layers.
+        Layer           | Data state        | file sample
+    --------------------+-------------------+---------------
+    Grpc layer          | protobuff message | san11_platform_pb2.py (generated)
+    Logic/Handler layer | ModelBase         | handler/xxxx_handler.py
+    Data layer          | Db schema         | base_db.py
 
+# Dependency
+
+
+                   ┌──────────────────────────────────────────────────────────────────┐
+                   │                                                                  │
+       interface   │                                                                  │
+                   │            ┌───────────┐                                         │
+                   │            │__init__.py│                                         │
+                   │            └─────┬─────┘                                         │
+                   │                  │                                               │
+                   ├──────────────────┼───────────────────────────────────────────────┤
+                   │                  │                                               │
+                   │            ┌─────▼─┐                                             │
+                   │            │base.py│                                             │
+                   │            └─────┬─┘                                             │
+    implementation │                  │                                               │
+                   │                  │                                               │
+                   │            ┌─────▼────┐                                          │
+                   │            │base_db.py│                                          │
+                   │            └─────┬────┘                                          │
+                   │                  │                                               │
+                   │                  │                                               │
+                   │            ┌─────▼───────┐                                       │
+                   │            │base_proto.py│                                       │
+                   │            └─────┬───────┘                                       │
+                   │                  │                                               │
+                   ├──────────────────┼───────────────────────────────────────────────┤
+                   │                  │                                               │
+                   │            ┌─────▼──────┐    ┌─────────┐                         │
+    core/utility   │            │base_core.py│    │common.py│                         │
+                   │            └────────────┘    └─────────┘                         │
+                   │                                                                  │
+                   └──────────────────────────────────────────────────────────────────┘
+
+```
+
+# Usage:
+
+@InitModel(
+    ...
+)
+@attr.s
+class MyModel(ModelBase):
+    first_attr = Attrib(
+        ...
+    )
+    ...
+
+## OneOf field
+Fields in oneOf field should be listed in Model as flat fields.
+
+E.g. 
+    OneOf resource = {
+        string uri = 1;
+        int64 id = 2;
+    }
+    
+    =>>
+
+    uri = Attrib(...)
+    id = Attrib()
+'''
 from abc import ABC
+from copy import deepcopy
 from typing import Optional, Type
 
+import attr
 from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
-from .base import MODEL_T, Attrib, InitModel
+from .base import Attrib, InitModel
 from .base_core import is_repeated
-from .base_db import DbConverter
+from .base_db import DbConverter, ListOptions
 from .base_proto import (DatetimeProtoConverter, LegacyDatetimeProtoConverter,
                          ProtoConverter)
+from .common import FieldMask
 
 
 # TODO: integrate TrackLifecycle
@@ -51,17 +124,34 @@ class HandlerBase(ABC):
     '''
     Provides CRUD operations on resource classes.
     '''
+
     def create(self, parent: str, resource: Type[ModelBase], handler_context: Type[Context]):
         ...
-    
-    def get(self, name: str, handler_context):
+
+    def get(self, name: str, handler_context: Type[Context]):
         ...
 
-    def list(self, list_options, handler_context):
+    def list(self, list_options: ListOptions, handler_context: Type[Context]):
         ...
 
-    def update(self, request, handler_context):
+    def update(self, update_resource: Type[ModelBase], update_mask: FieldMask, handler_context: Type[Context]):
         ...
 
     def delete(self, request, handler_context):
         ...
+
+
+def merge_resource(base_resource: Type[ModelBase],
+                   update_request: Type[ModelBase],
+                   field_mask: FieldMask) -> Type[ModelBase]:
+    if isinstance(base_resource, ModelBase) and isinstance(update_request, ModelBase):
+        updated_resource = deepcopy(base_resource)
+        for path in field_mask.paths:
+            if is_repeated(attr.fields_dict(type(base_resource))[path]):
+                getattr(updated_resource, path)[
+                    :] = getattr(update_request, path)
+            else:
+                setattr(updated_resource, path, getattr(update_request, path))
+        return updated_resource
+    else:
+        raise ValueError(f'unsupport type: {base_resource}, {update_request}')

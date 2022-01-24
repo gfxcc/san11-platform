@@ -3,13 +3,13 @@ import os
 import uuid
 from typing import Iterable, Tuple
 
+from handler.model.base import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import File, ModelBinary
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.name_util import ResourceName
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
-from .common.field_mask import FieldMask, merge_resource
 from .model.activity import Activity
 from .model.model_activity import Action, ModelActivity
 from .model.model_package import ModelPackage

@@ -7,7 +7,7 @@ import logging
 import os
 import re
 from abc import ABC
-from typing import Any, Dict, Generic, Iterable, Optional, Tuple, TypeVar
+from typing import Any, Dict, Generic, Iterable, Optional, Tuple, Type, TypeVar
 
 import attr
 from handler.model.base import base_proto
@@ -127,6 +127,7 @@ def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
 
 @attr.s(auto_attribs=True)
 class ListOptions:
+    # (TODO): Split this class into a separate file.
     '''
     Field name in `order_by`, `filter` is proto_name.
     '''
@@ -264,7 +265,7 @@ class DbModelBase(ABC):
         return cls.from_data(resp[0])
 
     @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[Iterable[_SUB_DB_MODEL_T], str]:
+    def list(cls, list_options: ListOptions) -> Tuple[Iterable[Type[DbModelBase]], str]:
         # prepare default value for mutable fields.
         if not list_options.order_by:
             order_by_fields = [('create_time', 'DESC')]

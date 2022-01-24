@@ -1,14 +1,10 @@
-import datetime
 import re
-from typing import Optional
 
 import attr
 from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
 from handler.model.base.base_db import DbConverter, ListOptions
 from handler.model.base.base_proto import ProtoConverter
 from handler.model.model_activity import TrackLifecycle
-from handler.model.model_comment import ModelComment
-from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
 
 from ..protos import san11_platform_pb2 as pb
@@ -126,7 +122,7 @@ def validate_username(username: str) -> None:
         raise AlreadyExists(f'用户名 {username} 已被使用')
 
 
-def validate_new_user(self, user: ModelUser) -> None:
+def validate_new_user(user: ModelUser) -> None:
     validate_username(user.username)
     validate_email(user.email)
 

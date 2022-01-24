@@ -3,6 +3,7 @@ import os
 from typing import Iterable, Tuple
 
 from handler.model.activity import Action
+from handler.model.base import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_activity import ModelActivity, search_activity
 from handler.model.model_binary import ModelBinary
@@ -10,7 +11,6 @@ from handler.model.model_package import ModelPackage
 from handler.model.model_thread import ModelThread
 from handler.util.time_util import get_now
 
-from .common.field_mask import FieldMask, merge_resource
 from .common.image import Image
 from .model.user import User
 from .protos import san11_platform_pb2 as pb

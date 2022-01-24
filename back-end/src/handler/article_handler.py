@@ -2,10 +2,10 @@ import logging
 import os
 from typing import Iterable, Tuple
 
+from handler.model.base import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_article import ModelArticle
 
-from .common.field_mask import FieldMask, merge_resource
 from .protos import san11_platform_pb2 as pb
 
 logger = logging.getLogger(os.path.basename(__file__))

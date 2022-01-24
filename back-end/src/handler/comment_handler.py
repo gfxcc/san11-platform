@@ -3,7 +3,7 @@ import logging
 import os
 from typing import Iterable, Tuple
 
-from handler.common.field_mask import FieldMask, merge_resource
+from handler.model.base import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_comment import ModelComment
 from handler.model.model_reply import ModelReply

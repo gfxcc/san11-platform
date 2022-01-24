@@ -2,7 +2,7 @@ import logging
 import os
 from typing import Iterable, Tuple
 
-from handler.common.field_mask import FieldMask, merge_resource
+from handler.model.base import FieldMask, merge_resource
 from handler.model.base.base_db import ListOptions
 
 from .model.model_notification import ModelNotification

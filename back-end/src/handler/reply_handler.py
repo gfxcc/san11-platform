@@ -1,7 +1,7 @@
 import logging
 import os
 
-from handler.common.field_mask import FieldMask, merge_resource
+from handler.model.base import FieldMask, merge_resource
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.user import User

@@ -17,10 +17,10 @@ from handler.auths import Session
 from handler.binary_handler import BinaryHandler
 from handler.comment_handler import CommentHandler
 from handler.common.exception import *
-from handler.common.field_mask import FieldMask
 from handler.general_handler import GeneralHandler
 from handler.image_handler import ImageHandler
 from handler.model.base.base_db import ListOptions
+from handler.model.base.common import FieldMask
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
