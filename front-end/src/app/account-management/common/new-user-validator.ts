@@ -1,7 +1,7 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
-import { Status, User, ValidateNewUserRequest } from "../../../proto/san11-platform.pb";
+import { Status, User, ValidateNewUserRequest, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
 export class NewUserValidators {
@@ -14,12 +14,9 @@ export class NewUserValidators {
             })).pipe(
                 debounceTime(500),
                 map(
-                    (status: Status) => {
+                    (status) => {
                         return (status.code === '0' || control.value === originalValue) ? null : { invalidNewUser: status.message };
                     },
-                    (error) => {
-                        return { invalidNewUser: error.statusMessage };
-                    }
                 )
             );
         };
@@ -35,6 +32,18 @@ export class NewUserValidators {
             })).pipe(
                 debounceTime(500),
                 map((status: Status) => (status.code === '0' || control.value === originalValue) ? null : { invalidNewUser: status.message })
+            );
+        };
+    }
+
+    static verification_code(san11pkService: San11PlatformServiceService, email: AbstractControl, originalValue: string = undefined): AsyncValidatorFn {
+        return (control: AbstractControl): Observable<ValidationErrors> => {
+            return san11pkService.verifyEmail(new VerifyEmailRequest({
+                email: email.value,
+                verificationCode: control.value,
+            })).pipe(
+                debounceTime(500),
+                map((resp: VerifyEmailResponse) => (resp.ok === true || control.value === originalValue) ? null : { invalidNewUser: '验证码不正确' })
             );
         };
     }

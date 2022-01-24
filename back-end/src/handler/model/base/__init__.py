@@ -69,9 +69,11 @@ E.g.
     uri = Attrib(...)
     id = Attrib()
 '''
+from __future__ import annotations
+
 from abc import ABC
 from copy import deepcopy
-from typing import Optional, Type
+from typing import List, Optional, Tuple, Type, TypeVar
 
 import attr
 from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
@@ -84,10 +86,10 @@ from .base_proto import (DatetimeProtoConverter, LegacyDatetimeProtoConverter,
                          ProtoConverter)
 from .common import FieldMask
 
+_SUB_MODEL_BASE_T = TypeVar('_SUB_MODEL_BASE_T', bound='ModelBase')
 
 # TODO: integrate TrackLifecycle
 class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
-
     def create(self, parent: str, user_id: Optional[int] = None) -> None:
         base_db.DbModelBase.create(self, parent)
         if isinstance(self, TrackLifecycle) and user_id:
@@ -125,25 +127,25 @@ class HandlerBase(ABC):
     Provides CRUD operations on resource classes.
     '''
 
-    def create(self, parent: str, resource: Type[ModelBase], handler_context: Type[Context]):
+    def create(self, parent: str, resource: Type[ModelBase], handler_context: Type[Context]) -> Type[ModelBase]:
         ...
 
-    def get(self, name: str, handler_context: Type[Context]):
+    def get(self, name: str, handler_context: Type[Context]) -> Type[ModelBase]:
         ...
 
-    def list(self, list_options: ListOptions, handler_context: Type[Context]):
+    def list(self, list_options: ListOptions, handler_context: Type[Context]) -> Tuple[List[Type[ModelBase]], str]:
         ...
 
-    def update(self, update_resource: Type[ModelBase], update_mask: FieldMask, handler_context: Type[Context]):
+    def update(self, update_resource: Type[ModelBase], update_mask: FieldMask, handler_context: Type[Context]) -> Type[ModelBase]:
         ...
 
-    def delete(self, request, handler_context):
+    def delete(self, request, handler_context) -> Type[ModelBase]:
         ...
 
 
-def merge_resource(base_resource: Type[ModelBase],
-                   update_request: Type[ModelBase],
-                   field_mask: FieldMask) -> Type[ModelBase]:
+def merge_resource(base_resource: _SUB_MODEL_BASE_T,
+                   update_request: _SUB_MODEL_BASE_T,
+                   field_mask: FieldMask) -> _SUB_MODEL_BASE_T:
     if isinstance(base_resource, ModelBase) and isinstance(update_request, ModelBase):
         updated_resource = deepcopy(base_resource)
         for path in field_mask.paths:

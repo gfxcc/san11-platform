@@ -5,7 +5,7 @@ import { San11PlatformServiceService } from "../service/san11-platform-service.s
 
 
 export function isAdmin(): boolean {
-    return localStorage.getItem('userType') === 'admin';
+    return localStorage.getItem('userType') === User.UserType[User.UserType.ADMIN];
 }
 
 export function getUserUrl(user: User): string {
@@ -14,10 +14,6 @@ export function getUserUrl(user: User): string {
 
 export function signedIn(): boolean {
     const user = loadUser();
-    console.log(user);
-    console.log(user.userId != '0');
-    console.log(user.username != '');
-
     return user.userId != '0' && user.username != '';
 }
 

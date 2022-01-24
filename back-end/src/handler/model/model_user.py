@@ -1,10 +1,15 @@
+from __future__ import annotations
+
 import re
+from typing import List, Tuple
 
 import attr
+from google.protobuf import message
 from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
 from handler.model.base.base_db import DbConverter, ListOptions
 from handler.model.base.base_proto import ProtoConverter
 from handler.model.model_activity import TrackLifecycle
+from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
 
 from ..protos import san11_platform_pb2 as pb
@@ -47,9 +52,6 @@ class ModelUser(ModelBase, TrackLifecycle):
     name = Attrib(
         type=str,
     )
-    user_id = Attrib(
-        type=int,
-    )
     username = Attrib(
         type=str,
     )
@@ -72,14 +74,16 @@ class ModelUser(ModelBase, TrackLifecycle):
         is_proto_field=False,
     )
 
-    def is_admin(self) -> bool:
-        return self.type == pb.User.UserType.ADMIN
+    def to_pb(self) -> message.Message:
+        # Field `user_id` only exist in public proto for easy access. 
+        ret = super().to_pb()
+        setattr(ret, 'user_id', self.user_id)
+        return ret
 
     @classmethod
     def from_v1(cls, legacy_model):
         return cls(
             name=f'users/{legacy_model.user_id}',
-            user_id=legacy_model.user_id,
             username=legacy_model.username,
             email=normalize_email(legacy_model.email),
             type=1 if legacy_model.user_type == 'admin' else 11,
@@ -88,6 +92,24 @@ class ModelUser(ModelBase, TrackLifecycle):
             hashed_password=hash_password(legacy_model._get_password()),
         )
 
+    @classmethod
+    def from_pb(cls, proto_model: message.Message) -> ModelUser:
+        return super().from_pb(proto_model)
+
+    @classmethod
+    def from_name(cls, name: str) -> ModelUser:
+        return super().from_name(name)
+
+    @classmethod
+    def list(cls, list_options: ListOptions) -> Tuple[List[ModelUser], str]:
+        return super().list(list_options)
+
+    def is_admin(self) -> bool:
+        return self.type == pb.User.UserType.ADMIN
+    
+    @property
+    def user_id(self) -> int:
+        return ResourceName.from_str(self.name).resource_id
 
 def validate_email(email: str) -> None:
     '''

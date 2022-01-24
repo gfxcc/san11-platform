@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit {
         this.packages = resp.packages
       },
       error => {
-        this.notificationService.warn('载入工具列表失败:' + error.statusMessage);
+        this.notificationService.warn(`载入工具列表失败: ${error.statusMessage}`);
       }
     );
   }
@@ -95,7 +95,7 @@ export class DashboardComponent implements OnInit {
         });
       },
       error => {
-        this.notificationService.warn('获取工具列表 失败: ' + error.statusMessage);
+        this.notificationService.warn(`获取工具列表失败: ${error.statusMessage}`);
       }
     );
   }
@@ -107,7 +107,7 @@ export class DashboardComponent implements OnInit {
         this.packages = resp.packages;
       },
       error => {
-        this.notificationService.warn('搜索失败: ' + error.statusMessage);
+        this.notificationService.warn(`搜索失败: ${error.statusMessage}`);
       }
     );
 

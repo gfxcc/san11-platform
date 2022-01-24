@@ -2,12 +2,13 @@ import functools
 import logging
 import os
 import re
-from typing import Any, Callable, Tuple
+from typing import Any, Callable, Optional, Tuple
 
 from google.protobuf import message
 
 from handler.auths.session import Session
 from handler.common.exception import PermissionDenied, Unauthenticated
+from handler.model.model_user import ModelUser
 from handler.model.user import User
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.resource_parser import find_resource
@@ -23,7 +24,7 @@ def _get_session(context) -> Session:
     return Session.from_sid(sid)
 
 
-def load_user(context) -> User:
+def load_user(context) -> ModelUser:
     session = _get_session(context)
     return session.user
 
@@ -72,7 +73,7 @@ def assert_user(path_to_user_id: str):
     return wrap
 
 
-def assert_resource_owner(user_id_pattern: str):
+def assert_resource_owner(user_id_pattern: str, bypass: Optional[str] = None):
     '''
     (TODO): Support inherited ownership.
     Admin user will always overpass this check.
@@ -81,6 +82,7 @@ def assert_resource_owner(user_id_pattern: str):
             supplied in the format as `{path_to_resource_name}.path_to_user_id`.
                 E.g. `{user}.path_to_user_id`
             if `.path_to_user_id` is omitted, default value `author_id` will be applied.
+        bypass: bypass the assertion if the given statement is evaluated as `True`.
     '''
     def parse_user_id_path(user_id_path: str) -> Tuple[str, str]:
         '''
@@ -92,7 +94,7 @@ def assert_resource_owner(user_id_pattern: str):
         return match['path_to_resource'], match['path_to_user_id'] or 'author_id'
     
     def get_resource_owner_id(resource, owner_id_path: str) -> int:
-        if isinstance(resource, User):
+        if isinstance(resource, ModelUser):
             return resource.user_id
         cur = resource
         for segment in owner_id_path.split('.'):
@@ -104,19 +106,20 @@ def assert_resource_owner(user_id_pattern: str):
     def wrap(func):
         @functools.wraps(func)
         def iam_wrapper(this, request, context):
-            resource_path, user_id_path = parse_user_id_path(user_id_pattern)
-            cur = request
-            for segment in resource_path.split('.'):
-                cur = getattr(cur, segment)
-            else:
-                resource = find_resource(cur)
-            cur = resource
-            user_id = get_resource_owner_id(resource, user_id_path)
+            if bypass is None or eval(bypass) == False:
+                resource_path, user_id_path = parse_user_id_path(user_id_pattern)
+                cur = request
+                for segment in resource_path.split('.'):
+                    cur = getattr(cur, segment)
+                else:
+                    resource = find_resource(cur)
+                cur = resource
+                user_id = get_resource_owner_id(resource, user_id_path)
 
-            user = _get_session(context).user
-            if not (user_id == user.user_id or user.is_admin()):
-                context.abort(PermissionDenied().code,
-                              PermissionDenied().message)
+                user = _get_session(context).user
+                if not (user_id == user.user_id or user.is_admin()):
+                    context.abort(PermissionDenied().code,
+                                  PermissionDenied().message)
             return func(this, request, context)
         return iam_wrapper
     return wrap

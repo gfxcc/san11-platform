@@ -1,5 +1,5 @@
 import datetime
-from typing import Any, Callable, Dict, List, Optional, TypeVar
+from typing import Any, Callable, Dict, List, Optional, TypedDict, TypeVar
 
 import attr
 
@@ -78,6 +78,7 @@ def Attrib(
 
 
 MODELS = {}
+COLLECTION_TO_MODEL = {}
 
 
 def InitModel(
@@ -88,5 +89,6 @@ def InitModel(
         base_db.init_db_model(cls, db_table)
         base_proto.init_proto_model(cls, proto_class)
         MODELS[cls.__name__] = cls
+        COLLECTION_TO_MODEL[db_table] = cls
         return cls
     return wraps

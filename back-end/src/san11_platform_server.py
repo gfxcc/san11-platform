@@ -1,23 +1,24 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import logging
 import os
 from concurrent import futures
-from typing import Optional
+from typing import Any, Callable
 
-import attr
 import grpc
+from google.protobuf import message
 
 import iam_util
 from handler.activity_handler import ActivityHandler
 from handler.admin_handler import AdminHandler
 from handler.article_handler import ArticleHandler
-from handler.auths import Session
 from handler.binary_handler import BinaryHandler
 from handler.comment_handler import CommentHandler
 from handler.common.exception import *
 from handler.general_handler import GeneralHandler
+from handler.handler_context import HandlerContext
 from handler.image_handler import ImageHandler
 from handler.model.base.base_db import ListOptions
 from handler.model.base.common import FieldMask
@@ -30,7 +31,8 @@ from handler.model.model_reply import ModelReply
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import (ModelUser, get_user_by_email,
-                                      get_user_by_username, validate_password)
+                                      get_user_by_username, validate_email,
+                                      validate_password, validate_username)
 from handler.model.user import User, verify_code
 from handler.notification_handler import NotificationHandler
 from handler.package_handler import PackageHandler
@@ -47,26 +49,18 @@ from handler.util.user_util import hash_password, is_email
 logger = logging.getLogger(os.path.basename(__file__))
 
 
-@attr.s(auto_attribs=True)
-class HandlerContext:
-    user: Optional[User]
-    service_context: grpc.ServicerContext
+RpcFunc = Callable[[Any, Any, Any], Any]
 
-    @classmethod
-    def from_service_context(cls, service_context: grpc.ServicerContext) -> HandlerContext:
-        '''
-        Constructs a HandlerContext. A valid session is not required.
-        '''
-        session = None
-        sid = dict(service_context.invocation_metadata()).get('sid', None)
-        if not sid:
-            return cls(user=None, service_context=None)
+
+def GrpcAbortOnExcep(func: RpcFunc):
+    @functools.wraps(func)
+    def wrapper(this, request: message.Message, context: grpc.ServicerContext):
         try:
-            session = Session.from_sid(sid)
-        except Unauthenticated:
-            return cls(user=None, service_context=None)
-        else:
-            return cls(user=session.user, service_context=service_context)
+            return func(this, request, context)
+        except Excep as err:
+            logger.debug(err, exc_info=True)
+            context.abort(code=err.code, details=err.message)
+    return wrapper
 
 
 class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
@@ -335,6 +329,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         handler_context = HandlerContext.from_service_context(context)
         return self.package_handler.get_package(request.name, handler_context).to_pb()
 
+    @GrpcAbortOnExcep
     def ListPackages(self, request, context):
         # (TODO): BEGIN - Remove model migration logic.
         if not ModelUser.list(ListOptions(parent=''))[0]:
@@ -352,7 +347,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
         return ret
 
-    @iam_util.assert_resource_owner('{package.name}')
+    @iam_util.assert_resource_owner(user_id_pattern='{package.name}',
+                                    bypass="set(request.update_mask.paths) <= {'like_count', 'dislike_count'}")
     def UpdatePackage(self, request, context):
         update_package, update_mask = ModelPackage.from_pb(request.package), \
             FieldMask.from_pb(request.update_mask)
@@ -360,6 +356,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         handler_context = HandlerContext.from_service_context(context)
         return self.package_handler.update_package(package, update_package, update_mask, handler_context).to_pb()
 
+    @GrpcAbortOnExcep
     @iam_util.assert_admin
     def DeletePackage(self, request, context):
         package = ModelPackage.from_name(request.name)
@@ -382,12 +379,13 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     # users
+    @GrpcAbortOnExcep
     def CreateUser(self, request, context):
         parent, user, = request.parent, ModelUser.from_pb(request.user)
         handler_context = HandlerContext.from_service_context(context)
         if not verify_code(user.email, request.verification_code):
-            context.abort(code=Unauthenticated().code,
-                          message='邮箱未经验证')
+            raise Unauthenticated(message='邮箱未经验证')
+        user.hashed_password = hash_password(request.password)
         created_user, session = self.user_handler.create_user(
             parent, user, handler_context)
         return pb.CreateUserResponse(
@@ -395,13 +393,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             sid=session.sid,
         )
 
+    @GrpcAbortOnExcep
     def GetUser(self, request, context):
-        return self.user_handler.get_user(request.name, context).to_pb()
+        return self.user_handler.get(request.name, context).to_pb()
 
+    @GrpcAbortOnExcep
     def ListUsers(self, request, context):
         handler_context = HandlerContext.from_service_context(context)
-        users, next_page_token = self.user_handler.list_users(
-            request=request,
+        users, next_page_token = self.user_handler.list(
+            list_options=ListOptions.from_request(request),
             handler_context=handler_context,
         )
         return pb.ListUsersResponse(
@@ -409,16 +409,17 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             next_page_token=next_page_token,
         )
 
+    @GrpcAbortOnExcep
     @iam_util.assert_user('user.user_id')
     def UpdateUser(self, request, context):
         update_user, update_mask = ModelUser.from_pb(request.user), \
             FieldMask.from_pb(request.update_mask)
         # `password` has to be updated via API `UpdatePassword`
         update_mask.paths -= set('password')
-        user = ModelUser.from_name(request.user.name)
         handler_context = HandlerContext.from_service_context(context)
-        return self.user_handler.update_user(user, update_user, update_mask, handler_context).to_pb()
+        return self.user_handler.update(update_user, update_mask, handler_context).to_pb()
 
+    @GrpcAbortOnExcep
     def SignIn(self, request, context):
         try:
             if is_email(request.identity):
@@ -427,60 +428,74 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
                 user = get_user_by_username(request.identity)
             password = request.password
             handler_context = HandlerContext.from_service_context(context)
-            user, sid = self.user_handler.sign_in(user, password, handler_context)
+            user, sid = self.user_handler.sign_in(
+                user, password, handler_context)
             return pb.SignInResponse(
                 user=user.to_pb(),
                 sid=sid,
             )
         except Excep as e:
-            logger.debug(e, exc_info=1)
+            logger.debug(e, exc_info=True)
             context.abort(code=e.code, details=e.message)
 
+    @GrpcAbortOnExcep
     def SignOut(self, request, context):
         # (TODO)
         return pb.Status(code=0, message='登出成功')
 
+    @GrpcAbortOnExcep
     def UpdatePassword(self, request, context):
         handler_context = HandlerContext.from_service_context(context)
-        user = ModelUser.from_name(request.name)
-        update_user = ModelUser.from_name(user.name)
+        update_user = ModelUser.from_name(request.name)
         # User may update password on following scenarios
         # 1. Update password while loged in.
         # 2. Fetch verification_code when password is forgot.
         if request.verification_code:
-            if not verify_code(user.email, request.verification_code):
-                context.abort(code=PermissionDenied().code, details='验证码不正确')
+            if not verify_code(update_user.email, request.verification_code):
+                raise Unauthenticated(message='验证码不正确')
         else:
             try:
                 current_user = iam_util.load_user(context)
             except Unauthenticated as e:
                 context.abort(code=e.code, details=str(e))
-            if current_user.user_id != user.user_id:
+            if current_user.user_id != update_user.user_id:
                 context.abort(code=Unauthenticated().code,
                               details=Unauthenticated().message)
-        validate_password(password)
+        validate_password(request.password)
 
-        update_user.hashed_password = hash_password(password)
+        update_user.hashed_password = hash_password(request.password)
         update_mask = FieldMask({'hashed_password'})
-        return self.user_handler.update_user(user, update_user, update_mask,
-                                             handler_context).to_pb()
+        return self.user_handler.update(update_user, update_mask,
+                                        handler_context).to_pb()
 
+    @GrpcAbortOnExcep
     def SendVerificationCode(self, request, context):
         self.user_handler.send_verification_code(request.email, context)
-        return pb.Empty
+        return pb.Empty()
 
     def VerifyEmail(self, request, context):
-        ok, user = self.user_handler.verify_email(
-            request.email, request.verification_code)
-        return pb.VerifyEmailResponse(
-            ok=ok,
-            user=user.to_pb(),
-        )
+        try:
+            handler_context = HandlerContext.from_service_context(context)
+            ok, user = self.user_handler.verify_email(
+                request.email, request.verification_code, handler_context)
+            ret = pb.VerifyEmailResponse(
+                ok=ok,
+            )
+            if user:
+                getattr(ret, 'user').CopyFrom(user.to_pb())
+
+            return ret
+        except Excep as err:
+            return pb.VerifyEmailResponse(ok=False)
 
     def ValidateNewUser(self, request, context):
         try:
             user = ModelUser.from_pb(request.user)
-            return self.user_handler.validate_new_user(request, context)
+            if user.email:
+                validate_email(user.email)
+            if user.username:
+                validate_username(user.username)
+            return pb.Status(code=0, message='')
         except Excep as err:
             return pb.Status(code=err.code, message=err.message)
 

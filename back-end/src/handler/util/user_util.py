@@ -25,9 +25,5 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(password: str, hashed: str) -> bool:
-
-    logger.debug(password)
-    logger.debug(hashed)
-
     hashed_bytes = base64.b64decode(hashed.encode())
     return bcrypt.checkpw(password.encode(), hashed_bytes)
