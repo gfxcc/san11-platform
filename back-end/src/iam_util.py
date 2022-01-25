@@ -78,7 +78,9 @@ def assert_resource_owner(resource_name_path: str, bypass: Optional[str] = None)
     def get_owner_id(resource) -> int:
         if isinstance(resource, ModelUser):
             return resource.user_id
-        return getattr(resource, 'author_id')
+        if hasattr(resource, 'author_id'):
+            return getattr(resource, 'author_id')
+        return 0
 
     def wrap(func):
         @functools.wraps(func)
