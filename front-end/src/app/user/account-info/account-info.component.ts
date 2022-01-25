@@ -154,6 +154,7 @@ export class AccountInfoComponent implements OnInit {
   
   prepareUpdateUser() {
     this.updatedUser.userId = this.user.userId;
+    this.updatedUser.name = `users/${this.user.userId}`;
     this.updatedUser.username = this.user.username != this.username.value ? this.username.value : undefined;
     this.updatedUser.email = this.user.email != this.email.value ? this.email.value : undefined;
   }
