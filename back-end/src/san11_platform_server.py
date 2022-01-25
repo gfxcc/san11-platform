@@ -297,6 +297,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreatePackage(self, request, context):
+        raise FailedPrecondition(message='网站维护中')
         return self.package_handler.create(
             request.parent, ModelPackage.from_pb(request.package), context).to_pb()
 
@@ -310,6 +311,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         if not ModelUser.list(ListOptions(parent='', page_size=1))[0]:
             for user in User.list(10000, ''):
                 ModelUser.from_v1(user).backfill()
+        raise FailedPrecondition(message='网站维护中')
         # END
         packages, next_page_token = self.package_handler.list(
             list_options=ListOptions.from_request(request),
