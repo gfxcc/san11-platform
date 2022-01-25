@@ -410,7 +410,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     @GrpcAbortOnExcep
     def UpdatePassword(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
         update_user = ModelUser.from_name(request.name)
         # User may update password on following scenarios
         # 1. Update password while loged in.
@@ -427,7 +426,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         update_user.hashed_password = hash_password(request.password)
         return self.user_handler.update(
             update_user, FieldMask({'hashed_password'}),
-            handler_context).to_pb()
+            context).to_pb()
 
     @GrpcAbortOnExcep
     def SendVerificationCode(self, request, context):
