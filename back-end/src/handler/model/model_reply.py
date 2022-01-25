@@ -35,3 +35,7 @@ class ModelReply(ModelBase, TrackLifecycle):
     upvote_count = Attrib(
         type=int,
     )
+
+    @classmethod
+    def from_name(cls, name: str) -> ModelReply:
+        return super().from_name(name)

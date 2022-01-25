@@ -1,17 +1,17 @@
 import logging
 import os
 import uuid
-from typing import Iterable, Tuple
+from typing import Iterable, List, Tuple
 
-from handler.model.base import FieldMask, merge_resource
+from handler.handler_context import HandlerContext
+from handler.model.base import FieldMask, HandlerBase, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import File, ModelBinary
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.name_util import ResourceName
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
-from .model.activity import Activity
-from .model.model_activity import Action, ModelActivity
+from .model.model_activity import ModelActivity
 from .model.model_package import ModelPackage
 from .model.statistic import Statistic
 from .util import gcs
@@ -41,8 +41,9 @@ def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
     return f'{parent}/binaries/{binary.version}-{uuid.uuid1()}{binary.file.ext}'
 
 
-class BinaryHandler:
-    def create_binary(self, parent: str, binary: ModelBinary, handler_context) -> ModelBinary:
+class BinaryHandler(HandlerBase):
+
+    def create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
         if binary.file:
             file: File = binary.file
             if not check_per_package_size(parent, file.uri):
@@ -65,7 +66,8 @@ class BinaryHandler:
         binary.create(parent=parent, user_id=handler_context.user.user_id)
         return binary
 
-    def update_binary(self, base_binary: ModelBinary, update_binary: ModelBinary, update_mask: FieldMask, handler_context) -> ModelBinary:
+    def update(self, update_binary: ModelBinary, update_mask: FieldMask, handler_context: HandlerContext) -> ModelBinary:
+        base_binary = ModelBinary.from_name(update_binary.name)
         if update_mask.has('file') and update_binary.file is None:
             base_binary.remove_resource()
         binary = merge_resource(base_resource=base_binary,
@@ -74,9 +76,14 @@ class BinaryHandler:
         binary.update(user_id=handler_context.user.user_id)
         return binary
 
-    def list_binaries(self, request, handler_context) -> Tuple[Iterable[ModelBinary], str]:
+    def list_binaries(self, request, handler_context) -> Tuple[List[ModelBinary], str]:
         list_options = ListOptions.from_request(request)
         return ModelBinary.list(list_options)
+
+    def delete(self, name: str, handler_context) -> ModelBinary:
+        binary = ModelBinary.from_name(name)
+        binary.delete(user_id=handler_context.user.user_id)
+        return binary
 
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
         binary.download_count += 1
@@ -95,8 +102,4 @@ class BinaryHandler:
             ).create(parent=f'users/{handler_context.user.user_id}')
         except Exception:
             pass
-        return binary
-
-    def delete_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
-        binary.delete(user_id=handler_context.user.user_id)
         return binary

@@ -24,7 +24,7 @@ def _parse_name(name: str) -> Tuple[str, str, int]:
 
 @attr.s(auto_attribs=True)
 class ResourceName:
-    parent : Union[ResourceName | str]
+    parent : ResourceName
     collection : str
     resource_id : int
 

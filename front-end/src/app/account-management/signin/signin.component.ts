@@ -167,6 +167,10 @@ export class SigninComponent implements OnInit {
     this.san11PlatformServiceService.verifyEmail(request).subscribe(
       (resp: VerifyEmailResponse) => {
         if (resp.ok) {
+          if (resp.user == undefined) {
+            this.notificationService.warn('找不到匹配用户');
+            return
+          }
           this.user = resp.user;
           stepper.next();
         } else {

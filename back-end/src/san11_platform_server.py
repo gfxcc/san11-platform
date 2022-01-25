@@ -56,7 +56,7 @@ def GrpcAbortOnExcep(func: RpcFunc):
     @functools.wraps(func)
     def wrapper(this, request: message.Message, context: grpc.ServicerContext):
         try:
-            return func(this, request, context)
+            return func(this, request, HandlerContext.from_service_context(context))
         except Excep as err:
             logger.debug(err, exc_info=True)
             context.abort(code=err.code, details=err.message)
@@ -83,198 +83,176 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     #############
     # Article
 
+    @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateArticle(self, request, context):
-        parent, article = request.parent, ModelArticle.from_pb(request.article)
-        handler_context = HandlerContext.from_service_context(context)
-        created_article = self.article_handler.create_article(
-            parent, article, handler_context)
-        return created_article.to_pb()
+        return self.article_handler.create(
+            request.parent,
+            ModelArticle.from_pb(request.article),
+            context).to_pb()
 
+    @GrpcAbortOnExcep
     def GetArticle(self, request, context):
-        name = request.name
-        handler_context = HandlerContext.from_service_context(context)
-        return self.article_handler.get_article(name, handler_context).to_pb()
+        return self.article_handler.get(request.name, context).to_pb()
 
+    @GrpcAbortOnExcep
     def ListArticles(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
-        articles, next_page_token = self.article_handler.list_articles(
-            request=request,
-            handler_context=handler_context,
+        articles, next_page_token = self.article_handler.list(
+            ListOptions.from_request(request),
+            context,
         )
         return pb.ListArticlesResponse(
             articles=[article.to_pb() for article in articles],
             next_page_token=next_page_token,
         )
 
-    @iam_util.assert_resource_owner('{article.name}')
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('article.name')
     def UpdateArticle(self, request, context):
-        update_article, update_mask = ModelArticle.from_pb(
-            request.article), FieldMask.from_pb(request.update_mask)
-        article = ModelArticle.from_name(request.article.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.article_handler.update_article(article, update_article, update_mask, handler_context).to_pb()
+        return self.article_handler.update(
+            ModelArticle.from_pb(request.article),
+            FieldMask.from_pb(request.update_mask),
+            context).to_pb()
 
-    @iam_util.assert_resource_owner('{name}')
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('name')
     def DeleteArticle(self, request, context):
-        article = ModelArticle.from_name(request.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.article_handler.delete_article(article, handler_context).to_pb()
+        return self.article_handler.delete(ModelArticle.from_name(request.name), context).to_pb()
 
     # binaries
-    @iam_util.assert_resource_owner('{parent}')
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('parent')
     def CreateBinary(self, request, context):
-        parent, binary = request.parent, ModelBinary.from_pb(request.binary)
-        package = ModelPackage.from_name(parent)
-        handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
-        created_binary = self.binary_handler.create_binary(
-            parent, binary, handler_context)
-        return created_binary.to_pb()
+        return self.binary_handler.create(
+            request.parent,
+            ModelBinary.from_pb(request.binary),
+            context).to_pb()
 
+    @GrpcAbortOnExcep
     def ListBinaries(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
         binaries, next_page_token = self.binary_handler.list_binaries(
             request=request,
-            handler_context=handler_context,
+            handler_context=context,
         )
         return pb.ListBinariesResponse(
             binaries=[binary.to_pb() for binary in binaries],
             next_page_token=next_page_token,
         )
 
-    @iam_util.assert_login
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('binary.name')
     def UpdateBinary(self, request, context):
-        binary, update_mask = ModelBinary.from_pb(
-            request.binary), FieldMask.from_pb(request.update_mask)
-        package = ModelPackage.from_name(
-            str(ResourceName.from_str(binary.name).parent))
-        handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
-        return self.binary_handler.update_binary(binary, update_mask, handler_context).to_pb()
+        return self.binary_handler.update(ModelBinary.from_pb(request.binary),
+                                          FieldMask.from_pb(
+                                              request.update_mask),
+                                          context).to_pb()
 
+    @GrpcAbortOnExcep
     def DeleteBinary(self, request, context):
-        binary = ModelBinary.from_name(request.name)
-        package = ModelPackage.from_name(
-            str(ResourceName.from_str(binary.name).parent))
-        handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user.user_id == package.author_id or handler_context.user.user_type == 'admin', '权限验证失败'
-        return self.binary_handler.delete_binary(binary, handler_context).to_pb()
+        return self.binary_handler.delete(request.name, context).to_pb()
 
+    @GrpcAbortOnExcep
     def DownloadBinary(self, request, context):
-        binary = ModelBinary.from_name(request.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.binary_handler.download_binary(binary, handler_context).to_pb()
+        return self.binary_handler.download_binary(ModelBinary.from_name(request.name), context).to_pb()
 
     # Comments
+    @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateComment(self, request, context):
-        parent, comment = request.parent, ModelComment.from_pb(request.comment)
-        handler_context = HandlerContext.from_service_context(context)
-        created_comment = self.comment_handler.create_comment(
-            parent, comment, handler_context)
-        return created_comment.to_pb()
+        return self.comment_handler.create(
+            request.parent,
+            ModelComment.from_pb(request.comment), context).to_pb()
 
+    @GrpcAbortOnExcep
     def ListComments(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
-        comments, next_page_token = self.comment_handler.list_comments(
-            request=request,
-            handler_context=handler_context,
+        comments, next_page_token = self.comment_handler.list(
+            list_options=ListOptions.from_request(request),
+            handler_context=context,
         )
         return pb.ListCommentsResponse(
             comments=[comment.to_pb() for comment in comments],
             next_page_token=next_page_token,
         )
 
-    @iam_util.assert_login
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('comment.name', bypass="set(request.update_mask.paths) <= {'upvote_count'}")
     def UpdateComment(self, request, context):
-        update_comment, update_mask = ModelComment.from_pb(request.comment), \
-            FieldMask.from_pb(request.update_mask)
-        comment = ModelComment.from_name(request.comment.name)
-        handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user.user_id == comment.author_id or handler_context.user.user_type == 'admin' or update_mask.paths == {
-            'upvote_count'}, '权限验证失败'
-        return self.comment_handler.update_comment(comment, update_comment, update_mask, handler_context).to_pb()
+        return self.comment_handler.update(
+            ModelComment.from_pb(request.comment),
+            FieldMask.from_pb(request.update_mask),
+            context).to_pb()
 
-    @iam_util.assert_resource_owner('{name}')
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('name')
     def DeleteComment(self, request, context):
-        comment = ModelComment.from_name(request.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.comment_handler.delete_comment(comment, handler_context).to_pb()
+        return self.comment_handler.delete(request.name, context).to_pb()
 
     # Reply
+    @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateReply(self, request, context):
-        parent, reply = request.parent, ModelReply.from_pb(request.reply)
-        handler_context = HandlerContext.from_service_context(context)
-        created_reply = self.reply_handler.create_reply(
-            parent, reply, handler_context)
-        return created_reply.to_pb()
+        return self.reply_handler.create(
+            request.parent, ModelReply.from_pb(request.reply), context).to_pb()
 
-    @iam_util.assert_login
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('reply.name', bypass="set(request.update_mask.paths) <= {'upvote_count'}")
     def UpdateReply(self, request, context):
-        update_reply, update_mask = ModelReply.from_pb(request.reply), \
-            FieldMask.from_pb(request.update_mask)
-        reply = ModelReply.from_name(request.reply.name)
-        handler_context = HandlerContext.from_service_context(context)
-        assert handler_context.user.user_id == reply.author_id or handler_context.user.user_type == 'admin' or update_mask.paths == {
-            'upvote_count'}, '权限验证失败'
-        return self.reply_handler.update_reply(reply, update_reply, update_mask, handler_context).to_pb()
+        return self.reply_handler.update(
+            ModelReply.from_pb(request.reply),
+            FieldMask.from_pb(request.update_mask),
+            context).to_pb()
 
-    @iam_util.assert_resource_owner('{name}')
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('name')
     def DeleteReply(self, request, context):
-        reply = ModelReply.from_name(request.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.reply_handler.delete_reply(reply, handler_context).to_pb()
+        return self.reply_handler.delete(request.name, context).to_pb()
 
     # Thread
+    @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateThread(self, request, context):
-        parent, thread = request.parent, ModelThread.from_pb(request.thread)
-        handler_context = HandlerContext.from_service_context(context)
-        created_thread = self.thread_handler.create_thread(
-            parent, thread, handler_context)
+        created_thread = self.thread_handler.create(
+            request.parent, ModelThread.from_pb(request.thread), context)
         return created_thread.to_pb()
 
+    @GrpcAbortOnExcep
     def GetThread(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
-        return self.thread_handler.get_thread(request.name, handler_context).to_pb()
+        return self.thread_handler.get(request.name, context).to_pb()
 
+    @GrpcAbortOnExcep
     def ListThreads(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
         threads, next_page_token = self.thread_handler.list_threads(
-            request=request,
-            handler_context=handler_context,
+            list_options=ListOptions.from_request(request),
+            handler_context=context,
         )
         return pb.ListThreadsResponse(
             threads=[thread.to_pb() for thread in threads],
             next_page_token=next_page_token,
         )
 
-    @iam_util.assert_resource_owner('{thread.name}')
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('thread.name')
     def UpdateThread(self, request, context):
-        update_thread, update_mask = ModelThread.from_pb(request.thread), \
-            FieldMask.from_pb(request.update_mask)
+        update_mask = FieldMask.from_pb(request.update_mask)
         thread = ModelThread.from_name(request.thread.name)
-        handler_context = HandlerContext.from_service_context(context)
         if 'pinned' in update_mask.paths:
-            if not handler_context.user or not (handler_context.user.is_admin() or find_resource(ResourceName.from_str(thread.name).parent).author_id == handler_context.user.user_id):
-                context.abort(PermissionDenied().code,
-                              PermissionDenied().message)
-        return self.thread_handler.update_thread(thread, update_thread, update_mask, handler_context).to_pb()
+            if not context.user or not (context.user.is_admin() or find_resource(ResourceName.from_str(thread.name).parent).author_id == context.user.user_id):
+                raise PermissionDenied()
+        return self.thread_handler.update(ModelThread.from_pb(request.thread),
+                                          update_mask,
+                                          context).to_pb()
 
-    @iam_util.assert_resource_owner('{name}')
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('name')
     def DeleteThread(self, request, context):
-        thread = ModelThread.from_name(request.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.thread_handler.delete_thread(thread, handler_context).to_pb()
+        return self.thread_handler.delete(request.name, context).to_pb()
 
+    @GrpcAbortOnExcep
     # TODO: Only allow a user list notifications send to that user.
     def ListNotifications(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
-        notifications, next_page_token = self.notification_handler.list_notifications(
-            request=request,
-            handler_context=handler_context,
+        notifications, next_page_token = self.notification_handler.list(
+            list_options=ListOptions.from_request(request),
+            handler_context=context,
         )
         return pb.ListNotificationsResponse(
             notifications=[notification.to_pb()
@@ -283,33 +261,32 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     # @iam_util.assert_resource_owner('{notification.name}.receiver_id')
+    @GrpcAbortOnExcep
     def UpdateNotification(self, request, context):
-        source, update_mask = ModelNotification.from_pb(
-            request.notification), request.update_mask
-        dest = ModelNotification.from_name(request.notification.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.notification_handler.update_notification(source, dest, update_mask, handler_context).to_pb()
+        return self.notification_handler.update(
+            ModelNotification.from_pb(request.notification),
+            FieldMask.from_pb(request.update_mask),
+            context).to_pb()
 
     # Tags
+    @GrpcAbortOnExcep
     @iam_util.assert_admin
     def CreateTag(self, request, context):
-        parent, tag = request.parent, ModelTag.from_pb(request.tag)
-        handler_context = HandlerContext.from_service_context(context)
-        created_tag = self.tag_handler.create_tag(
-            parent, tag, handler_context)
-        return created_tag.to_pb()
+        return self.tag_handler.create(
+            request.parent,
+            ModelTag.from_pb(request.tag),
+            context).to_pb()
 
+    @GrpcAbortOnExcep
     @iam_util.assert_admin
     def DeleteTag(self, request, context):
-        tag = ModelTag.from_name(request.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.tag_handler.delete_tag(tag, handler_context).to_pb()
+        return self.tag_handler.delete(request.name, context).to_pb()
 
+    @GrpcAbortOnExcep
     def ListTags(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
-        tags, next_page_token = self.tag_handler.list_tags(
-            request=request,
-            handler_context=handler_context,
+        tags, next_page_token = self.tag_handler.list(
+            list_options=ListOptions.from_request(request),
+            handler_context=context,
         )
         return pb.ListTagsResponse(
             tags=[tag.to_pb() for tag in tags],
@@ -317,77 +294,72 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     # package
+    @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreatePackage(self, request, context):
-        parent, package = request.parent, ModelPackage.from_pb(request.package)
-        handler_context = HandlerContext.from_service_context(context)
-        created_package = self.package_handler.create_package(
-            parent, package, handler_context)
-        return created_package.to_pb()
+        return self.package_handler.create(
+            request.parent, ModelPackage.from_pb(request.package), context).to_pb()
 
+    @GrpcAbortOnExcep
     def GetPackage(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
-        return self.package_handler.get_package(request.name, handler_context).to_pb()
+        return self.package_handler.get(request.name, context).to_pb()
 
     @GrpcAbortOnExcep
     def ListPackages(self, request, context):
         # (TODO): BEGIN - Remove model migration logic.
-        if not ModelUser.list(ListOptions(parent=''))[0]:
+        if not ModelUser.list(ListOptions(parent='', page_size=1))[0]:
             for user in User.list(10000, ''):
                 ModelUser.from_v1(user).backfill()
         # END
-        handler_context = HandlerContext.from_service_context(context)
-        packages, next_page_token = self.package_handler.list_packages(
-            request=request,
-            handler_context=handler_context,
+        packages, next_page_token = self.package_handler.list(
+            list_options=ListOptions.from_request(request),
+            handler_context=context,
         )
-        ret = pb.ListPackagesResponse(
+        return pb.ListPackagesResponse(
             packages=[package.to_pb() for package in packages],
             next_page_token=next_page_token,
         )
-        return ret
 
-    @iam_util.assert_resource_owner(user_id_pattern='{package.name}',
+    @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner(resource_name_path='package.name',
                                     bypass="set(request.update_mask.paths) <= {'like_count', 'dislike_count'}")
     def UpdatePackage(self, request, context):
-        update_package, update_mask = ModelPackage.from_pb(request.package), \
-            FieldMask.from_pb(request.update_mask)
-        package = ModelPackage.from_name(request.package.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.package_handler.update_package(package, update_package, update_mask, handler_context).to_pb()
+        return self.package_handler.update(
+            ModelPackage.from_pb(request.package),
+            FieldMask.from_pb(
+                request.update_mask),
+            context).to_pb()
 
     @GrpcAbortOnExcep
     @iam_util.assert_admin
     def DeletePackage(self, request, context):
-        package = ModelPackage.from_name(request.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.package_handler.delete_package(package, handler_context).to_pb()
+        return self.package_handler.delete(request.name, context).to_pb()
 
+    @GrpcAbortOnExcep
     def SearchPackages(self, request, context):
         return self.package_handler.search_packages(request, context)
 
     # activities
+    @GrpcAbortOnExcep
     def ListActivities(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
-        activities, next_page_token = self.activity_handler.list_activities(
-            request=request,
-            handler_context=handler_context,
+        activities, next_page_token = self.activity_handler.list(
+            list_options=ListOptions.from_request(request),
+            handler_context=context,
         )
         return pb.ListActivitiesResponse(
-            activities=list(activities),
+            activities=activities,
             next_page_token=next_page_token,
         )
 
     # users
     @GrpcAbortOnExcep
     def CreateUser(self, request, context):
-        parent, user, = request.parent, ModelUser.from_pb(request.user)
-        handler_context = HandlerContext.from_service_context(context)
+        parent, user = request.parent, ModelUser.from_pb(request.user)
         if not verify_code(user.email, request.verification_code):
             raise Unauthenticated(message='邮箱未经验证')
         user.hashed_password = hash_password(request.password)
         created_user, session = self.user_handler.create_user(
-            parent, user, handler_context)
+            parent, user, context)
         return pb.CreateUserResponse(
             user=created_user.to_pb(),
             sid=session.sid,
@@ -399,10 +371,9 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     @GrpcAbortOnExcep
     def ListUsers(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
         users, next_page_token = self.user_handler.list(
             list_options=ListOptions.from_request(request),
-            handler_context=handler_context,
+            handler_context=context,
         )
         return pb.ListUsersResponse(
             users=[user.to_pb() for user in users],
@@ -412,31 +383,25 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_user('user.user_id')
     def UpdateUser(self, request, context):
-        update_user, update_mask = ModelUser.from_pb(request.user), \
-            FieldMask.from_pb(request.update_mask)
+        update_mask = FieldMask.from_pb(request.update_mask)
         # `password` has to be updated via API `UpdatePassword`
         update_mask.paths -= set('password')
-        handler_context = HandlerContext.from_service_context(context)
-        return self.user_handler.update(update_user, update_mask, handler_context).to_pb()
+        return self.user_handler.update(ModelUser.from_pb(request.user),
+                                        update_mask, context).to_pb()
 
     @GrpcAbortOnExcep
     def SignIn(self, request, context):
-        try:
-            if is_email(request.identity):
-                user = get_user_by_email(request.identity)
-            else:
-                user = get_user_by_username(request.identity)
-            password = request.password
-            handler_context = HandlerContext.from_service_context(context)
-            user, sid = self.user_handler.sign_in(
-                user, password, handler_context)
-            return pb.SignInResponse(
-                user=user.to_pb(),
-                sid=sid,
-            )
-        except Excep as e:
-            logger.debug(e, exc_info=True)
-            context.abort(code=e.code, details=e.message)
+        if is_email(request.identity):
+            user = get_user_by_email(request.identity)
+        else:
+            user = get_user_by_username(request.identity)
+        password = request.password
+        user, sid = self.user_handler.sign_in(
+            user, password, context)
+        return pb.SignInResponse(
+            user=user.to_pb(),
+            sid=sid,
+        )
 
     @GrpcAbortOnExcep
     def SignOut(self, request, context):
@@ -454,19 +419,15 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             if not verify_code(update_user.email, request.verification_code):
                 raise Unauthenticated(message='验证码不正确')
         else:
-            try:
-                current_user = iam_util.load_user(context)
-            except Unauthenticated as e:
-                context.abort(code=e.code, details=str(e))
+            current_user = iam_util.load_user(context)
             if current_user.user_id != update_user.user_id:
-                context.abort(code=Unauthenticated().code,
-                              details=Unauthenticated().message)
+                raise Unauthenticated()
         validate_password(request.password)
 
         update_user.hashed_password = hash_password(request.password)
-        update_mask = FieldMask({'hashed_password'})
-        return self.user_handler.update(update_user, update_mask,
-                                        handler_context).to_pb()
+        return self.user_handler.update(
+            update_user, FieldMask({'hashed_password'}),
+            handler_context).to_pb()
 
     @GrpcAbortOnExcep
     def SendVerificationCode(self, request, context):
@@ -505,7 +466,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     # image
 
-    @iam_util.assert_resource_owner('{parent}')
+    @iam_util.assert_resource_owner('parent')
     def CreateImage(self, request, context):
         return self.image_handler.create_image(request, context)
 

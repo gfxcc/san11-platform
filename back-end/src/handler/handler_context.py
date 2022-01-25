@@ -13,7 +13,7 @@ from .model.model_user import ModelUser
 
 @attr.s(auto_attribs=True)
 class HandlerContext:
-    user: Optional[ModelUser]
+    user: ModelUser
     service_context: Optional[grpc.ServicerContext]
 
     @classmethod

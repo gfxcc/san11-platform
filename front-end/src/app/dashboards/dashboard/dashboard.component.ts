@@ -72,8 +72,6 @@ export class DashboardComponent implements OnInit {
 
   loadPackages(request: ListPackagesRequest): void {
     // this._eventEmiter.sendMessage({ categoryId: request.categoryId });
-
-    console.log(request);
     this.san11pkService.listPackages(request).subscribe(
       resp => {
         this.packages = resp.packages

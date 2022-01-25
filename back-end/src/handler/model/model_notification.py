@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import datetime
+from typing import List, Tuple
 
 import attr
 from handler.model.base import Attrib, InitModel, ModelBase
+from handler.model.base.base_db import ListOptions
 
 from ..protos import san11_platform_pb2 as pb
 
@@ -42,3 +44,10 @@ class ModelNotification(ModelBase):
         default=True,
     )
 
+    @classmethod
+    def from_name(cls, name: str) -> ModelNotification:
+        return super().from_name(name)
+
+    @classmethod
+    def list(cls, list_options: ListOptions) -> Tuple[List[ModelNotification], str]:
+        return super().list(list_options)

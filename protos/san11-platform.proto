@@ -395,13 +395,26 @@ message UpdatePasswordRequest {
 }
 
 message ListUsersRequest {
-  int64 page_size = 1;
-  string page_token = 2;
+  // Supported values:
+  // `categories/xxx/packages/xxx`
+  // `website`
+  string parent = 1;
+  int64 page_size = 2;
+  string page_token = 3;
+
+  // Values should be a comma separated list of fields. For example: "foo,bar".
+  // The default sorting order is ascending. To specify descending order for a
+  // field, users append a " desc" suffix;
+  //   for example: "foo desc, bar".
+  string order_by = 4;
+
+  // Support syntax like `field_name = value`
+  string filter = 5;
 }
 
 message ListUsersResponse {
   repeated User users = 1;
-  string page_token = 2;
+  string next_page_token = 2;
 }
 
 message SendVerificationCodeRequest { string email = 1; }

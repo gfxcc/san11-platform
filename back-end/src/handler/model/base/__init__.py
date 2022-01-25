@@ -139,7 +139,7 @@ class HandlerBase(ABC):
     def update(self, update_resource: Type[ModelBase], update_mask: FieldMask, handler_context: Type[Context]) -> Type[ModelBase]:
         ...
 
-    def delete(self, request, handler_context) -> Type[ModelBase]:
+    def delete(self, name: str, handler_context: Type[Context]) -> Type[ModelBase]:
         ...
 
 

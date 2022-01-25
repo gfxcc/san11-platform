@@ -1,9 +1,11 @@
 import logging
 import os
 
-from handler.model.base import FieldMask, merge_resource
+from handler.handler_context import HandlerContext
+from handler.model.base import FieldMask, HandlerBase, merge_resource
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
+from handler.model.model_user import ModelUser
 from handler.model.user import User
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify
@@ -17,9 +19,9 @@ from .util.time_util import get_now
 logger = logging.getLogger(os.path.basename(__file__))
 
 
-class ReplyHandler:
-    def create_reply(self, parent: str, reply: ModelReply,
-                     handler_context) -> ModelReply:
+class ReplyHandler(HandlerBase):
+    def create(self, parent: str, reply: ModelReply,
+               handler_context: HandlerContext) -> ModelReply:
         user_id = handler_context.user.user_id
         reply.author_id = user_id
         grand_parent = find_resource(ResourceName.from_str(parent).parent)
@@ -36,15 +38,15 @@ class ReplyHandler:
             notify(
                 sender_id=user_id,
                 receiver_id=thread.author_id,
-                content=f'{User.from_id(user_id).username} 回复了 你的评论',
+                content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了 你的评论",
                 link=thread.name,
                 image_preview='',
             )
         reply.create(parent=parent, user_id=user_id)
         return reply
 
-    def update_reply(self, base_reply: ModelReply, update_reply: ModelReply, update_mask: FieldMask,
-                     handler_context) -> ModelReply:
+    def update(self, update_reply: ModelReply, update_mask: FieldMask,
+               handler_context: HandlerContext) -> ModelReply:
         # Value of update_count.upvote_count is 1 if upvote event is emitted.
         # Using 1 rather than precomputed count from client side to avoid race condition
         #   where multiple upvote event is emiited at the same time.
@@ -52,7 +54,7 @@ class ReplyHandler:
         #   explicitly later.
         sanitized_update_mask = FieldMask(
             set(update_mask.paths) - {'upvote_count'})
-        reply = merge_resource(base_resource=base_reply,
+        reply = merge_resource(base_resource=ModelReply.from_name(update_reply.name),
                                update_request=update_reply,
                                field_mask=sanitized_update_mask)
         user_id = handler_context.user.user_id
@@ -73,8 +75,8 @@ class ReplyHandler:
         reply.update(user_id=user_id)
         return reply
 
-    def delete_reply(self, reply: ModelReply,
-                     handler_context) -> ModelReply:
+    def delete(self, name: str, handler_context: HandlerContext) -> ModelReply:
+        reply = ModelReply.from_name(name)
         grandparent = find_resource(
             ResourceName.from_str(reply.name).parent.parent)
         if isinstance(grandparent, ModelThread):

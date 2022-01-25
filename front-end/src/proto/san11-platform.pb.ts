@@ -8256,8 +8256,11 @@ export class ListUsersRequest implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: ListUsersRequest) {
+    _instance.parent = _instance.parent || '';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
+    _instance.orderBy = _instance.orderBy || '';
+    _instance.filter = _instance.filter || '';
   }
 
   /**
@@ -8274,10 +8277,19 @@ export class ListUsersRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.pageSize = _reader.readInt64String();
+          _instance.parent = _reader.readString();
           break;
         case 2:
+          _instance.pageSize = _reader.readInt64String();
+          break;
+        case 3:
           _instance.pageToken = _reader.readString();
+          break;
+        case 4:
+          _instance.orderBy = _reader.readString();
+          break;
+        case 5:
+          _instance.filter = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -8296,16 +8308,28 @@ export class ListUsersRequest implements GrpcMessage {
     _instance: ListUsersRequest,
     _writer: BinaryWriter
   ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
     if (_instance.pageSize) {
-      _writer.writeInt64String(1, _instance.pageSize);
+      _writer.writeInt64String(2, _instance.pageSize);
     }
     if (_instance.pageToken) {
-      _writer.writeString(2, _instance.pageToken);
+      _writer.writeString(3, _instance.pageToken);
+    }
+    if (_instance.orderBy) {
+      _writer.writeString(4, _instance.orderBy);
+    }
+    if (_instance.filter) {
+      _writer.writeString(5, _instance.filter);
     }
   }
 
+  private _parent?: string;
   private _pageSize?: string;
   private _pageToken?: string;
+  private _orderBy?: string;
+  private _filter?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8313,9 +8337,18 @@ export class ListUsersRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListUsersRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
+    this.orderBy = _value.orderBy;
+    this.filter = _value.filter;
     ListUsersRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
   }
   get pageSize(): string | undefined {
     return this._pageSize;
@@ -8328,6 +8361,18 @@ export class ListUsersRequest implements GrpcMessage {
   }
   set pageToken(value: string | undefined) {
     this._pageToken = value;
+  }
+  get orderBy(): string | undefined {
+    return this._orderBy;
+  }
+  set orderBy(value: string | undefined) {
+    this._orderBy = value;
+  }
+  get filter(): string | undefined {
+    return this._filter;
+  }
+  set filter(value: string | undefined) {
+    this._filter = value;
   }
 
   /**
@@ -8345,8 +8390,11 @@ export class ListUsersRequest implements GrpcMessage {
    */
   toObject(): ListUsersRequest.AsObject {
     return {
+      parent: this.parent,
       pageSize: this.pageSize,
-      pageToken: this.pageToken
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 
@@ -8367,8 +8415,11 @@ export class ListUsersRequest implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): ListUsersRequest.AsProtobufJSON {
     return {
+      parent: this.parent,
       pageSize: this.pageSize,
-      pageToken: this.pageToken
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
     };
   }
 }
@@ -8377,16 +8428,22 @@ export module ListUsersRequest {
    * Standard JavaScript object representation for ListUsersRequest
    */
   export interface AsObject {
+    parent?: string;
     pageSize?: string;
     pageToken?: string;
+    orderBy?: string;
+    filter?: string;
   }
 
   /**
    * Protobuf JSON representation for ListUsersRequest
    */
   export interface AsProtobufJSON {
+    parent?: string;
     pageSize?: string;
     pageToken?: string;
+    orderBy?: string;
+    filter?: string;
   }
 }
 
@@ -8415,7 +8472,7 @@ export class ListUsersResponse implements GrpcMessage {
    */
   static refineValues(_instance: ListUsersResponse) {
     _instance.users = _instance.users || [];
-    _instance.pageToken = _instance.pageToken || '';
+    _instance.nextPageToken = _instance.nextPageToken || '';
   }
 
   /**
@@ -8440,7 +8497,7 @@ export class ListUsersResponse implements GrpcMessage {
           (_instance.users = _instance.users || []).push(messageInitializer1);
           break;
         case 2:
-          _instance.pageToken = _reader.readString();
+          _instance.nextPageToken = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -8466,13 +8523,13 @@ export class ListUsersResponse implements GrpcMessage {
         User.serializeBinaryToWriter
       );
     }
-    if (_instance.pageToken) {
-      _writer.writeString(2, _instance.pageToken);
+    if (_instance.nextPageToken) {
+      _writer.writeString(2, _instance.nextPageToken);
     }
   }
 
   private _users?: User[];
-  private _pageToken?: string;
+  private _nextPageToken?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8481,7 +8538,7 @@ export class ListUsersResponse implements GrpcMessage {
   constructor(_value?: RecursivePartial<ListUsersResponse.AsObject>) {
     _value = _value || {};
     this.users = (_value.users || []).map(m => new User(m));
-    this.pageToken = _value.pageToken;
+    this.nextPageToken = _value.nextPageToken;
     ListUsersResponse.refineValues(this);
   }
   get users(): User[] | undefined {
@@ -8490,11 +8547,11 @@ export class ListUsersResponse implements GrpcMessage {
   set users(value: User[] | undefined) {
     this._users = value;
   }
-  get pageToken(): string | undefined {
-    return this._pageToken;
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
   }
-  set pageToken(value: string | undefined) {
-    this._pageToken = value;
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
   }
 
   /**
@@ -8513,7 +8570,7 @@ export class ListUsersResponse implements GrpcMessage {
   toObject(): ListUsersResponse.AsObject {
     return {
       users: (this.users || []).map(m => m.toObject()),
-      pageToken: this.pageToken
+      nextPageToken: this.nextPageToken
     };
   }
 
@@ -8535,7 +8592,7 @@ export class ListUsersResponse implements GrpcMessage {
   ): ListUsersResponse.AsProtobufJSON {
     return {
       users: (this.users || []).map(m => m.toProtobufJSON(options)),
-      pageToken: this.pageToken
+      nextPageToken: this.nextPageToken
     };
   }
 }
@@ -8545,7 +8602,7 @@ export module ListUsersResponse {
    */
   export interface AsObject {
     users?: User.AsObject[];
-    pageToken?: string;
+    nextPageToken?: string;
   }
 
   /**
@@ -8553,7 +8610,7 @@ export module ListUsersResponse {
    */
   export interface AsProtobufJSON {
     users?: User.AsProtobufJSON[] | null;
-    pageToken?: string;
+    nextPageToken?: string;
   }
 }
 

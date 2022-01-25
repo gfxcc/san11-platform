@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import List, Tuple
+from typing import Iterable, List, Tuple
 
 import attr
 from google.protobuf import message
@@ -163,3 +163,6 @@ def get_user_by_username(username: str) -> ModelUser:
     if not users:
         raise NotFound(message='用户不存在')
     return users[0]
+
+def get_admins() -> Iterable[ModelUser]:
+    return ModelUser.list(ListOptions(parent='', filter=f'type={pb.User.UserType.ADMIN}'))[0]
