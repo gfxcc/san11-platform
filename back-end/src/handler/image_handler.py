@@ -3,11 +3,11 @@ import os
 import uuid
 
 from handler.model.model_package import ModelPackage
+from handler.model.model_user import ModelUser
 
 from .common.image import Image
 from .common.url import Url
 from .model.resource import get_image_url
-from .model.user import User
 from .protos import san11_platform_pb2
 from .util import gcs
 
@@ -30,13 +30,14 @@ class ImageHandler:
                 package.image_urls.append(image.url)
                 package.update()
             elif parent.type == 'users':
-                user = User.from_id(parent.id)
+                user = ModelUser.from_name(f'users/{parent.id}')
                 if user.image_url:
                     try:
                         Image.from_url(user.image_url).delete()
                     except Exception as err:
                         logger.error(f'Failed to delete image: {err}')
-                user.set_image(image)
+                user.image_url = image.url
+                user.update(user_id=user.user_id)
             else:
                 raise Exception(f'Invalid parent: {parent}')
 
