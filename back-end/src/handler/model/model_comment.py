@@ -53,3 +53,7 @@ class ModelComment(ModelBase, TrackLifecycle):
         for reply in ModelReply.list(ListOptions(parent=self.name))[0]:
             reply.delete()
         super().delete(user_id=user_id)
+
+    @classmethod
+    def from_name(cls, name: str) -> ModelComment:
+        return super().from_name(name)

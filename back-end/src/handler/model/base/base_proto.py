@@ -18,6 +18,8 @@ logger = logging.getLogger(os.path.basename(__file__))
 _MODEL_T = TypeVar('_MODEL_T')
 _PROTO_T = TypeVar('_PROTO_T')
 
+_SUB_PROTO_MODEL_BASE_T = TypeVar('_SUB_PROTO_MODEL_BASE_T', bound='ProtoModelBase')
+
 
 class ProtoConverter(Generic[_MODEL_T, _PROTO_T]):
     '''Convert attribute between value and proto_value'''
@@ -76,10 +78,11 @@ class ProtoModelBase(ABC):
     _PROTO_FIELDS: Iterable[attr.Attribute] = []
 
     @classmethod
-    def from_pb(cls, proto_model: message.Message) -> ProtoModelBase:
+    def from_pb(cls, proto_model: message.Message) -> _SUB_PROTO_MODEL_BASE_T:
         properties = {}
         for attribute in attr.fields(cls):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
+                properties[attribute.name] = None
                 continue
             path = _get_proto_path(attribute)
             converter: ProtoConverter = attribute.metadata[base_core.PROTO_CONVERTER]

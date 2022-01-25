@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import datetime
-from typing import Optional
+from typing import List, Optional, Tuple
 
 import attr
 from handler.model.base.base_db import ListOptions
@@ -69,3 +71,11 @@ class ModelThread(ModelBase, TrackLifecycle):
         for comment in ModelComment.list(ListOptions(parent=self.name))[0]:
             comment.delete()
         super().delete(user_id=user_id)
+
+    @classmethod
+    def from_name(cls, name: str) -> ModelThread:
+        return super().from_name(name)
+
+    @classmethod
+    def list(cls, list_options: ListOptions) -> Tuple[List[ModelThread], str]:
+        return super().list(list_options)

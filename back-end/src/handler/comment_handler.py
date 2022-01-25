@@ -1,13 +1,15 @@
 import imp
 import logging
 import os
-from typing import Iterable, Tuple
+from typing import Iterable, List, Tuple
 
-from handler.common.field_mask import FieldMask, merge_resource
+from handler.handler_context import HandlerContext
+from handler.model.base import FieldMask, HandlerBase, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_comment import ModelComment
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
+from handler.model.model_user import ModelUser
 from handler.model.user import User
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify, send_message
@@ -20,9 +22,8 @@ from .util.time_util import get_now
 logger = logging.getLogger(os.path.basename(__file__))
 
 
-class CommentHandler:
-    def create_comment(self, parent: str, comment: ModelComment,
-                       handler_context) -> ModelComment:
+class CommentHandler(HandlerBase):
+    def create(self, parent: str, comment: ModelComment, handler_context: HandlerContext) -> ModelComment:
         user_id = handler_context.user.user_id
         comment.author_id = user_id
         parent_obj = find_resource(parent)
@@ -42,14 +43,18 @@ class CommentHandler:
             notify(
                 sender_id=user_id,
                 receiver_id=thread.author_id,
-                content=f'{User.from_id(user_id).username} 评论了 {thread.subject}',
+                content=f"{ModelUser.from_name(f'users/{user_id}').username} 评论了 {thread.subject}",
                 link=thread.name,
                 image_preview='',
             )
         return comment
 
-    def update_comment(self, base_comment: ModelComment, update_comment: ModelComment, update_mask: FieldMask,
-                       handler_context) -> ModelComment:
+    def list(self, list_options: ListOptions,
+             handler_context: HandlerContext) -> Tuple[List[ModelComment], str]:
+        return ModelComment.list(list_options=list_options)
+
+    def update(self, update_comment: ModelComment, update_mask: FieldMask,
+               handler_context: HandlerContext) -> ModelComment:
         # Value of update_count.upvote_count is 1 if upvote event is emitted.
         # Using 1 rather than precomputed count from client side to avoid race condition
         #   where multiple upvote event is emiited at the same time.
@@ -57,7 +62,7 @@ class CommentHandler:
         #   explicitly later.
         sanitized_update_mask = FieldMask(
             set(update_mask.paths) - {'upvote_count'})
-        comment = merge_resource(base_resource=base_comment,
+        comment = merge_resource(base_resource=ModelComment.from_name(update_comment.name),
                                  update_request=update_comment,
                                  field_mask=sanitized_update_mask)
         user_id = handler_context.user.user_id
@@ -79,15 +84,10 @@ class CommentHandler:
         comment.update(user_id=user_id)
         return comment
 
-    def list_comments(self, request,
-                      handler_context) -> Tuple[Iterable[ModelComment], str]:
-        list_options = ListOptions.from_request(request)
-        return ModelComment.list(list_options=list_options)
-
-    def delete_comment(self, comment: ModelComment,
-                       handler_context) -> ModelComment:
-        parent = find_resource(ResourceName.from_str(comment.name).parent)
-        replies = ModelReply.list(ListOptions(parent=self.name))[0]
+    def delete(self, name: str, handler_context: HandlerContext) -> ModelComment:
+        comment = ModelComment.from_name(name)
+        parent = find_resource(ResourceName.from_str(name).parent)
+        replies = ModelReply.list(ListOptions(parent=name))[0]
         if isinstance(parent, ModelThread):
             thread = parent
             thread.comment_count -= 1

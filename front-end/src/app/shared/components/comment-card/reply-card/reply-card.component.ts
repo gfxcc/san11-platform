@@ -1,16 +1,13 @@
-import { Output, EventEmitter, Component, OnInit, Input, Inject, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Comment, DeleteReplyRequest, FieldMask, UpdateReplyRequest, User } from "../../../../../proto/san11-platform.pb";
-
-import { GetUserRequest } from "../../../../../proto/san11-platform.pb";
-import { San11PlatformServiceService } from "../../../../service/san11-platform-service.service";
+import { getAge } from 'src/app/utils/time_util';
+import { DeleteReplyRequest, FieldMask, GetUserRequest, Reply, UpdateReplyRequest, User } from "../../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../../common/notification.service";
+import { San11PlatformServiceService } from "../../../../service/san11-platform-service.service";
 import { getFullUrl } from '../../../../utils/resrouce_util';
-import { Reply } from "../../../../../proto/san11-platform.pb";
 import { isAdmin } from "../../../../utils/user_util";
 
-import { increment } from '../../../../utils/number_util';
-import { getAge } from 'src/app/utils/time_util';
+
 
 
 
@@ -41,7 +38,9 @@ export class ReplyCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.san11pkService.getUser(new GetUserRequest({ userId: this.reply.authorId })).subscribe(
+    this.san11pkService.getUser(new GetUserRequest({
+      name: `users/${this.reply.authorId}`,
+    })).subscribe(
       user => {
         this.user = user;
         this.userImage = getFullUrl(this.user.imageUrl);

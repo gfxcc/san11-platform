@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Iterable, Optional, Tuple
+from typing import Iterable, List, Optional, Tuple
 
 from handler.model.base.base_db import ListOptions
 from handler.model.model_activity import ModelActivity
@@ -54,14 +54,13 @@ def _get_resource_view(name: str) -> Optional[pb.ResourceView]:
 
 
 class ActivityHandler:
-    def list_activities(self, request, handler_context) -> Tuple[Iterable[pb.Activity], str]:
+    def list(self, list_options: ListOptions, handler_context) -> Tuple[List[pb.Activity], str]:
         # # (TODO): BEGIN = Remove logic for model migration.
         # if not ModelActivity.list(ListOptions(parent='users/1'))[0]:
         #     for activity in Activity.list(page_size=1000, page_token=''):
         #         new_model = ModelActivity.from_v1(activity)
         #         new_model.create(parent=f'users/{activity.user_id}')
         # # END
-        list_options = ListOptions.from_request(request)
         activities, next_page_token = ModelActivity.list(list_options)
         enriched_activities = map(lambda x:
                                   pb.Activity(
@@ -71,4 +70,4 @@ class ActivityHandler:
                                       resource_view=_get_resource_view(
                                           x.resource_name),
                                   ), activities)
-        return enriched_activities, next_page_token
+        return list(enriched_activities), next_page_token

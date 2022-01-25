@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import datetime
 import logging
 import os
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Tuple
 
 import attr
+from handler.model.base.base_db import ListOptions
 
 from ..protos import san11_platform_pb2 as pb
 from ..util import gcs
@@ -158,6 +161,14 @@ class ModelBinary(ModelBase, TrackLifecycle):
             gcs.delete_resource(self.file.uri)
             self.size = ''
 
-    def delete(self, **kwargs) -> None:
+    def delete(self, user_id: Optional[int] = None) -> None:
         self.remove_resource()
-        super(ModelBinary, self).delete(**kwargs)
+        return super(ModelBinary, self).delete(user_id=user_id)
+
+    @classmethod
+    def from_name(cls, name: str) -> ModelBinary:
+        return super().from_name(name)
+
+    @classmethod
+    def list(cls, list_options: ListOptions) -> Tuple[List[ModelBinary], str]:
+        return super().list(list_options)

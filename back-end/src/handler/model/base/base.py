@@ -1,68 +1,9 @@
-'''
-A model is an internal representation of a resource. 
-In most case, a resource could exists in 3 differnt layers.
-        Layer           | Data state        | file sample
-    --------------------+-------------------+---------------
-    Grpc layer          | protobuff message | san11_platform_pb2.py (generated)
-    Logic/Handler layer | ModelBase         | handler/xxxx_handler.py
-    Data layer          | Db schema         | base_db.py
-
-# Dependency
-
-    ┌───────┐
- ┌──┤base.py├─────────┐
- │  └───┬───┘         │
- │      │             │
- │      │             │
- │  ┌───▼──────┐      │
- │  │base_db.py├────┐ │
- │  └───┬──────┘    │ │
- │      │           │ │
- │      │           │ │
- │  ┌───▼─────────┐ │ │
- │  │base_proto.py│◄┘ │
- │  └───┬─────────┘   │
- │      │             │
- │      │             │
- │  ┌───▼────────┐    │
- └──►base_core.py│◄◄──┘
-    └────────────┘
-```
-
-# Usage:
-
-@InitModel(
-    ...
-)
-@attr.s
-class MyModel(ModelBase):
-    first_attr = Attrib(
-        ...
-    )
-    ...
-
-## OneOf field
-Fields in oneOf field should be listed in Model as flat fields.
-
-E.g. 
-    OneOf resource = {
-        string uri = 1;
-        int64 id = 2;
-    }
-    
-    =>>
-
-    uri = Attrib(...)
-    id = Attrib()
-'''
 import datetime
-from typing import Any, Callable, Dict, List, Optional, TypeVar
+from typing import Any, Callable, Dict, List, Optional, TypedDict, TypeVar
 
 import attr
 
 from . import base_core, base_db, base_proto
-
-MODEL_T = TypeVar('MODEL_T', bound='ModelBase')
 
 
 def Attrib(
@@ -137,6 +78,7 @@ def Attrib(
 
 
 MODELS = {}
+COLLECTION_TO_MODEL = {}
 
 
 def InitModel(
@@ -147,5 +89,6 @@ def InitModel(
         base_db.init_db_model(cls, db_table)
         base_proto.init_proto_model(cls, proto_class)
         MODELS[cls.__name__] = cls
+        COLLECTION_TO_MODEL[db_table] = cls
         return cls
     return wraps

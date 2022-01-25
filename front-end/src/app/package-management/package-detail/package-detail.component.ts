@@ -433,7 +433,9 @@ export class PackageDetailComponent implements OnInit {
       this.images.push(new ImageItem({ src: '../../../assets/images/upload.jpg', thumb: '../../../assets/images/upload.jpg' }));
     }
 
-    this.san11pkService.getUser(new GetUserRequest({ userId: this.package.authorId })).subscribe(
+    this.san11pkService.getUser(new GetUserRequest({
+      name: `users/${this.package.authorId}`,
+    })).subscribe(
       user => {
         this.author = user;
         this.authorImageUrl = getFullUrl(this.author.imageUrl);
@@ -445,7 +447,7 @@ export class PackageDetailComponent implements OnInit {
 
     this.san11pkService.listActivities(new ListActivitiesRequest({
       parent: `users/${loadUser().userId}`,
-      filter: `resource_name=${this.package.name}`,
+      filter: `resource_name="${this.package.name}"`,
     })).subscribe(
       (resp: ListActivitiesResponse) => {
         resp.activities.forEach(activity => {

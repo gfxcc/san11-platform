@@ -1,10 +1,10 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
-import { SendVerificationCodeRequest, UpdatePasswordRequest, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
+import { SendVerificationCodeRequest, SignInRequest, UpdatePasswordRequest, User, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
 import { NotificationService } from "../../common/notification.service";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { saveUser } from '../../utils/user_util';
@@ -27,7 +27,7 @@ export class SigninComponent implements OnInit {
   timeToResend: number;
   timeToResendText: string;
 
-  userId: string;
+  user: User;
 
   basicInfoForm: FormGroup;
   emailVerificationForm: FormGroup;
@@ -89,9 +89,12 @@ export class SigninComponent implements OnInit {
   }
   //
 
-  onSignIn(signInForm: NgForm) {
-
-    this.san11PlatformServiceService.signIn(signInForm.value).subscribe(
+  onSignIn(input) {
+// signInForm.value
+    this.san11PlatformServiceService.signIn(new SignInRequest({
+      identity: input.identity,
+      password: input.password
+    })).subscribe(
       resp => {
 
         this.notificationService.success('登陆成功');
@@ -104,7 +107,7 @@ export class SigninComponent implements OnInit {
         });
       },
       error => {
-        this.notificationService.warn(error.statusMessage);
+        this.notificationService.warn(`登录失败: ${error.statusMessage}`);
       }
     );
   }
@@ -164,7 +167,11 @@ export class SigninComponent implements OnInit {
     this.san11PlatformServiceService.verifyEmail(request).subscribe(
       (resp: VerifyEmailResponse) => {
         if (resp.ok) {
-          this.userId = resp.userId;
+          if (resp.user == undefined) {
+            this.notificationService.warn('找不到匹配用户');
+            return
+          }
+          this.user = resp.user;
           stepper.next();
         } else {
           this.notificationService.warn('验证码不正确');
@@ -178,7 +185,7 @@ export class SigninComponent implements OnInit {
 
   onUpdatePassword() {
     this.san11PlatformServiceService.updatePassword(new UpdatePasswordRequest({
-      userId: this.userId,
+      name: this.user.name,
       password: this.password.value,
       verificationCode: this.verificationCode.value
     })).subscribe(

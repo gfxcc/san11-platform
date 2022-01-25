@@ -5,7 +5,7 @@ import { San11PlatformServiceService } from "../service/san11-platform-service.s
 
 
 export function isAdmin(): boolean {
-    return localStorage.getItem('userType') === 'admin';
+    return localStorage.getItem('userType') === User.UserType[User.UserType.ADMIN];
 }
 
 export function getUserUrl(user: User): string {
@@ -14,13 +14,13 @@ export function getUserUrl(user: User): string {
 
 export function signedIn(): boolean {
     const user = loadUser();
-    return user.userId != '0' && user.username != '' && user.imageUrl != '' && user.userType != '';
+    return user.userId != '0' && user.username != '';
 }
 
 export function saveUser(user: User) {
     localStorage.setItem('userId', user.userId);
     localStorage.setItem('username', user.username);
-    localStorage.setItem('userType', user.userType);
+    localStorage.setItem('userType', User.UserType[user.type]);
     localStorage.setItem('userImageUrl', user.imageUrl);
 }
 
@@ -34,10 +34,10 @@ export function clearUser() {
 
 export function loadUser(): User {
     return new User({
-        username: localStorage.getItem('username'),
         userId: localStorage.getItem('userId'),
+        username: localStorage.getItem('username'),
+        type: User.UserType[localStorage.getItem('userType')],
         imageUrl: localStorage.getItem('userImageUrl'),
-        userType: localStorage.getItem('userType')
     });
 }
 

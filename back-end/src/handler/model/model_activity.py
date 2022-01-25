@@ -75,7 +75,7 @@ class ModelActivity(base_db.DbModelBase, base_proto.ProtoModelBase):
 def search_activity(parent: str, action: Action, resource_name: str) -> Optional[ModelActivity]:
     activities = ModelActivity.list(
         base_db.ListOptions(parent=parent,
-                    filter=f"action={action.value} AND resource_name={resource_name}")
+                    filter=f"action={action.value} AND resource_name=\"{resource_name}\"")
     )[0]
     if not activities:
         return None

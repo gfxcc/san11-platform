@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
 import { openInNewTab } from 'src/app/utils/url_util';
-import { ListNotificationsRequest, ListNotificationsResponse, Notification, UpdateNotificationRequest, User } from '../../../../proto/san11-platform.pb';
+import { ListNotificationsRequest, ListNotificationsResponse, Notification, SignOutRequest, UpdateNotificationRequest, User } from '../../../../proto/san11-platform.pb';
 import { NotificationService } from '../../../common/notification.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { clearUser, isAdmin, loadUser, signedIn } from '../../../utils/user_util';
@@ -95,7 +95,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onSignOut() {
-    this.san11pkService.signOut(localStorage.getItem('userId')).subscribe(
+    this.san11pkService.signOut(new SignOutRequest({})).subscribe(
     );
 
     clearUser();

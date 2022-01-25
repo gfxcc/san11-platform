@@ -13,39 +13,48 @@
                         <mat-card-content>
                             <mat-form-field class="input-field">
                                 <input matInput placeholder="用户名" autocomplete="off" formControlName="username">
-                                <mat-error *ngIf="username.errors?.minlength && username.touched" align="end">
+                                <mat-error *ngIf="username.errors?.minlength &&
+                                    username.touched" align="end">
                                     至少需要6个字符
                                 </mat-error>
-                                <mat-error *ngIf="username.errors?.maxlength && username.touched" align="end">
+                                <mat-error *ngIf="username.errors?.maxlength &&
+                                    username.touched" align="end">
                                     不得超过32个字符
                                 </mat-error>
-                                <mat-error *ngIf="username.errors?.pattern && username.touched" align="end">
-                                    不能使用 空格
+                                <mat-error *ngIf="username.errors?.pattern &&
+                                    username.touched" align="end">
+                                    不能使用 空格, @
                                 </mat-error>
-                                <mat-error *ngIf="username.errors?.invalidNewUser && username.touched" align="end">
+                                <mat-error *ngIf="username.errors?.invalidNewUser &&
+                                    username.touched" align="end">
                                     {{username.errors.invalidNewUser}}
                                 </mat-error>
                             </mat-form-field>
 
                             <mat-form-field class="input-field">
                                 <input matInput type="password" placeholder="密码" autocomplete="off" formControlName="password">
-                                <mat-error *ngIf="password.errors?.minlength && password.touched" align="end">
+                                <mat-error *ngIf="password.errors?.minlength &&
+                                    password.touched" align="end">
                                     至少需要6个字符
                                 </mat-error>
-                                <mat-error *ngIf="password.errors?.maxlength && password.touched" align="end">
+                                <mat-error *ngIf="password.errors?.maxlength &&
+                                    password.touched" align="end">
                                     不得超过32个字符
                                 </mat-error>
-                                <mat-error *ngIf="password.errors?.pattern && password.touched" align="end">
+                                <mat-error *ngIf="password.errors?.pattern &&
+                                    password.touched" align="end">
                                     只能包含 英文字母大小写 数字 - _
                                 </mat-error>
                             </mat-form-field>
 
                             <mat-form-field class="input-field">
                                 <input matInput type="email" autocomplete="email" placeholder="邮箱" formControlName="email">
-                                <mat-error *ngIf="email.errors?.email && email.touched" align="end">
+                                <mat-error *ngIf="email.errors?.email &&
+                                    email.touched" align="end">
                                     格式不正确
                                 </mat-error>
-                                <mat-error *ngIf="email.errors?.invalidNewUser && email.touched" align="end">
+                                <mat-error *ngIf="email.errors?.invalidNewUser
+                                    && email.touched" align="end">
                                     {{email.errors.invalidNewUser}}
                                 </mat-error>
                             </mat-form-field>
@@ -62,18 +71,23 @@
                         <p>
                             我们发送了一封邮件到 {{email.value}}, 请输入其中的 验证码
                         </p>
-                        <form class="example-form" [formGroup]="emailVerificationForm">
-                            <mat-form-field appearance="standard" style="width: 100%;">
-                                <mat-label>验证码</mat-label>
-                                <input matInput autocomplete="off" formControlName="verificationCode">
+                        <form class="example-form" [formGroup]="emailVerificationForm" (ngSubmit)="onValidateEmail(stepper)">
+                            <mat-form-field class="input-field">
+                                <input matInput autocomplete="off" placeholder="验证码" formControlName="verificationCode">
+                                <mat-error *ngIf="verificationCode.errors?.invalidNewUser
+                                    && verificationCode.touched" align="end">
+                                    {{verificationCode.errors.invalidNewUser}}
+                                </mat-error>
                             </mat-form-field>
+
+                            <div style="display: flex;">
+                                <button mat-button matStepperPrevious>上一步</button>
+                                <button mat-button matStepperNext [disabled]="!emailVerificationForm.valid" type="submit">下一步</button>
+                                <span class="example-spacer"></span>
+                                <button mat-stroked-button [disabled]="this.timeToResend> 0" color="primary" (click)="onResendVerificationCodeClick()">重新发送
+                                    {{timeToResendText}}</button>
+                            </div>
                         </form>
-                    </div>
-                    <div style="display: flex;">
-                        <button mat-button matStepperPrevious>上一步</button>
-                        <button mat-button (click)="onValidateEmail(stepper)">下一步</button>
-                        <span class="example-spacer"></span>
-                        <button mat-stroked-button [disabled]="this.timeToResend > 0" color="primary" (click)="onResendVerificationCodeClick()">重新发送 {{timeToResendText}}</button>
                     </div>
                 </ng-template>
             </mat-step>

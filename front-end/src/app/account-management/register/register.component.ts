@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
-import { SendVerificationCodeRequest, SignUpRequest, User, VerifyEmailRequest, VerifyEmailResponse } from '../../../proto/san11-platform.pb';
+import { CreateUserRequest, CreateUserResponse, SendVerificationCodeRequest, User, VerifyEmailRequest, VerifyEmailResponse } from '../../../proto/san11-platform.pb';
 import { NotificationService } from "../../common/notification.service";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { saveUser } from "../../utils/user_util";
@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
           Validators.required,
           Validators.minLength(4),
           Validators.maxLength(32),
-          Validators.pattern(/^[^\s]*$/)],
+          Validators.pattern(/^[^\s@]*$/)],
         [
           NewUserValidators.username(this.san11pkService),
         ]],
@@ -63,9 +63,13 @@ export class RegisterComponent implements OnInit {
     });
 
     this.emailVerificationForm = this.formBuilder.group({
-      verificationCode: ['', [
-        Validators.required
-      ]]
+      verificationCode: ['',
+        [
+          Validators.required,
+        ],
+        [
+          NewUserValidators.verification_code(this.san11pkService, this.email),
+        ]]
     });
   }
 
@@ -83,7 +87,7 @@ export class RegisterComponent implements OnInit {
   }
 
   get verificationCode() {
-    return this.emailVerificationForm.get('verificationCode')
+    return this.emailVerificationForm.get('verificationCode');
   }
   //
 
@@ -94,20 +98,18 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
-    const request = new SignUpRequest({
+    const request = new CreateUserRequest({
       user: new User({
         username: this.username.value,
         email: this.email.value,
-        imageUrl: null
       }),
       password: this.password.value,
       verificationCode: this.verificationCode.value
     });
 
-    this.san11pkService.signUp(request).subscribe(
-      resp => {
+    this.san11pkService.createUser(request).subscribe(
+      (resp: CreateUserResponse) => {
         this.notificationService.success('注册成功');
-
         localStorage.setItem('sid', resp.sid);
         saveUser(resp.user);
 
@@ -116,7 +118,7 @@ export class RegisterComponent implements OnInit {
         });
       },
       error => {
-        this.notificationService.warn(error.statusMessage);
+        this.notificationService.warn(`注册失败: ${error.statusMessage}`);
       }
     );
   }
@@ -149,7 +151,6 @@ export class RegisterComponent implements OnInit {
       email: this.email.value,
       verificationCode: this.verificationCode.value
     });
-    console.log(request);
     this.san11pkService.verifyEmail(request).subscribe(
       (resp: VerifyEmailResponse) => {
         if (resp.ok) {
@@ -157,6 +158,9 @@ export class RegisterComponent implements OnInit {
         } else {
           this.notificationService.warn('验证码不正确');
         }
+      },
+      error => {
+        this.notificationService.warn(`验证失败: ${error.statusMessage}`);
       }
     );
   }

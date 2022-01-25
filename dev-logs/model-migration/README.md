@@ -122,3 +122,28 @@ CREATE TABLE activities (
     PRIMARY KEY (parent, resource_id)
 );
 ```
+
+# User
+
+Started    |
+-----------|
+01/22/2022 |
+
+## DB
+1. Rename current table to `users_legacy`.
+```
+ALTER TABLE users
+    RENAME TO users_legacy;
+```
+
+2. Create new table `user`.
+```
+CREATE TABLE users (
+    parent text NOT NULL,
+    resource_id serial NOT NULL,
+
+    data json,
+    
+    PRIMARY KEY (parent, resource_id)
+);
+```

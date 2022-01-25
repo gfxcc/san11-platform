@@ -3,6 +3,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { getCategoryId } from 'src/app/utils/package_util';
+import { isAdmin } from 'src/app/utils/user_util';
 import { DeletePackageRequest, GetUserRequest, Package, ResourceState, User } from '../../../proto/san11-platform.pb';
 import { NotificationService } from "../../common/notification.service";
 import { DownloadService } from "../../service/download.service";
@@ -53,7 +54,9 @@ export class PackageCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.san11PlatformServiceService.getUser(new GetUserRequest({ userId: this.package.authorId })).subscribe(
+    this.san11PlatformServiceService.getUser(new GetUserRequest({
+      name: `users/${this.package.authorId}`,
+    })).subscribe(
       user => {
         this.author = user;
         this.authorName = user.username;
@@ -83,7 +86,7 @@ export class PackageCardComponent implements OnInit {
   }
 
   isAdmin() {
-    return localStorage.getItem('userType') === 'admin';
+    return isAdmin();
   }
 
   isAuthor() {

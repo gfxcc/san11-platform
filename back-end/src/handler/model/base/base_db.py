@@ -7,7 +7,8 @@ import logging
 import os
 import re
 from abc import ABC
-from typing import Any, Dict, Generic, Iterable, Optional, Tuple, TypeVar
+from typing import (Any, Dict, Generic, Iterable, List, Optional, Tuple, Type,
+                    TypeVar)
 
 import attr
 from handler.model.base import base_proto
@@ -83,6 +84,12 @@ def parse_filter(cls: type, filter: str) -> Dict:
         if not segment:
             continue
         k, v = map(str.strip, segment.split('='))
+        if match := re.fullmatch(r'"(?P<value>.+)"', v):
+            v = match['value']
+        else:
+            # (TODO): In postgres, ->> return text
+            v = v
+
         # To support fields not in proto message.
         if k not in proto2db:
             kwargs[k] = v
@@ -121,6 +128,7 @@ def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
 
 @attr.s(auto_attribs=True)
 class ListOptions:
+    # (TODO): Split this class into a separate file.
     '''
     Field name in `order_by`, `filter` is proto_name.
     '''
@@ -238,8 +246,8 @@ class DbModelBase(ABC):
             run_sql_with_param(sql, params)
             # Update NextVal
             auto_adjust_resource_id_next_val(db_table)
-        self.update(update_update_time=False)
         logger.debug(f'CREATED: {self}')
+        self.update(update_update_time=False)
 
     @classmethod
     def from_name(cls, name: str) -> _SUB_DB_MODEL_T:
@@ -258,7 +266,7 @@ class DbModelBase(ABC):
         return cls.from_data(resp[0])
 
     @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[Iterable[_SUB_DB_MODEL_T], str]:
+    def list(cls, list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
         # prepare default value for mutable fields.
         if not list_options.order_by:
             order_by_fields = [('create_time', 'DESC')]
