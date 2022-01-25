@@ -466,6 +466,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     # image
 
+    @GrpcAbortOnExcep
     @iam_util.assert_resource_owner('parent')
     def CreateImage(self, request, context):
         return self.image_handler.create_image(request, context)
