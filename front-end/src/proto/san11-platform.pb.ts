@@ -12,7 +12,7 @@ import {
 import { BinaryReader, BinaryWriter, ByteSource } from 'google-protobuf';
 import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
 export enum ResourceState {
-  RESOURCE_STATE_UNDEFINE = 0,
+  RESOURCE_STATE_UNSPECIFIED = 0,
   NORMAL = 1,
   UNDER_REVIEW = 2,
   HIDDEN = 3,
@@ -20,7 +20,7 @@ export enum ResourceState {
   DELETED = 5
 }
 export enum Action {
-  UNDEFINED_ACTION = 0,
+  ACTION_UNSPECIFIED = 0,
   CREATE = 1,
   DELETE = 2,
   UPDATE = 3,
@@ -11133,7 +11133,10 @@ export class CreateSubscriptionRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: CreateSubscriptionRequest) {}
+  static refineValues(_instance: CreateSubscriptionRequest) {
+    _instance.parent = _instance.parent || '';
+    _instance.subscription = _instance.subscription || undefined;
+  }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -11148,6 +11151,16 @@ export class CreateSubscriptionRequest implements GrpcMessage {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
+          _instance.subscription = new Subscription();
+          _reader.readMessage(
+            _instance.subscription,
+            Subscription.deserializeBinaryFromReader
+          );
+          break;
         default:
           _reader.skipField();
       }
@@ -11164,7 +11177,21 @@ export class CreateSubscriptionRequest implements GrpcMessage {
   static serializeBinaryToWriter(
     _instance: CreateSubscriptionRequest,
     _writer: BinaryWriter
-  ) {}
+  ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
+    if (_instance.subscription) {
+      _writer.writeMessage(
+        2,
+        _instance.subscription as any,
+        Subscription.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _parent?: string;
+  private _subscription?: Subscription;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11172,7 +11199,23 @@ export class CreateSubscriptionRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<CreateSubscriptionRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
+    this.subscription = _value.subscription
+      ? new Subscription(_value.subscription)
+      : undefined;
     CreateSubscriptionRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
+  }
+  get subscription(): Subscription | undefined {
+    return this._subscription;
+  }
+  set subscription(value: Subscription | undefined) {
+    this._subscription = value;
   }
 
   /**
@@ -11189,7 +11232,10 @@ export class CreateSubscriptionRequest implements GrpcMessage {
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
   toObject(): CreateSubscriptionRequest.AsObject {
-    return {};
+    return {
+      parent: this.parent,
+      subscription: this.subscription ? this.subscription.toObject() : undefined
+    };
   }
 
   /**
@@ -11208,19 +11254,30 @@ export class CreateSubscriptionRequest implements GrpcMessage {
     // @ts-ignore
     options?: ToProtobufJSONOptions
   ): CreateSubscriptionRequest.AsProtobufJSON {
-    return {};
+    return {
+      parent: this.parent,
+      subscription: this.subscription
+        ? this.subscription.toProtobufJSON(options)
+        : null
+    };
   }
 }
 export module CreateSubscriptionRequest {
   /**
    * Standard JavaScript object representation for CreateSubscriptionRequest
    */
-  export interface AsObject {}
+  export interface AsObject {
+    parent?: string;
+    subscription?: Subscription.AsObject;
+  }
 
   /**
    * Protobuf JSON representation for CreateSubscriptionRequest
    */
-  export interface AsProtobufJSON {}
+  export interface AsProtobufJSON {
+    parent?: string;
+    subscription?: Subscription.AsProtobufJSON | null;
+  }
 }
 
 /**
@@ -11246,7 +11303,13 @@ export class ListSubscriptionsRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: ListSubscriptionsRequest) {}
+  static refineValues(_instance: ListSubscriptionsRequest) {
+    _instance.parent = _instance.parent || '';
+    _instance.pageSize = _instance.pageSize || '0';
+    _instance.pageToken = _instance.pageToken || '';
+    _instance.orderBy = _instance.orderBy || '';
+    _instance.filter = _instance.filter || '';
+  }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -11261,6 +11324,21 @@ export class ListSubscriptionsRequest implements GrpcMessage {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.parent = _reader.readString();
+          break;
+        case 2:
+          _instance.pageSize = _reader.readInt64String();
+          break;
+        case 3:
+          _instance.pageToken = _reader.readString();
+          break;
+        case 4:
+          _instance.orderBy = _reader.readString();
+          break;
+        case 5:
+          _instance.filter = _reader.readString();
+          break;
         default:
           _reader.skipField();
       }
@@ -11277,7 +11355,29 @@ export class ListSubscriptionsRequest implements GrpcMessage {
   static serializeBinaryToWriter(
     _instance: ListSubscriptionsRequest,
     _writer: BinaryWriter
-  ) {}
+  ) {
+    if (_instance.parent) {
+      _writer.writeString(1, _instance.parent);
+    }
+    if (_instance.pageSize) {
+      _writer.writeInt64String(2, _instance.pageSize);
+    }
+    if (_instance.pageToken) {
+      _writer.writeString(3, _instance.pageToken);
+    }
+    if (_instance.orderBy) {
+      _writer.writeString(4, _instance.orderBy);
+    }
+    if (_instance.filter) {
+      _writer.writeString(5, _instance.filter);
+    }
+  }
+
+  private _parent?: string;
+  private _pageSize?: string;
+  private _pageToken?: string;
+  private _orderBy?: string;
+  private _filter?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11285,7 +11385,42 @@ export class ListSubscriptionsRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListSubscriptionsRequest.AsObject>) {
     _value = _value || {};
+    this.parent = _value.parent;
+    this.pageSize = _value.pageSize;
+    this.pageToken = _value.pageToken;
+    this.orderBy = _value.orderBy;
+    this.filter = _value.filter;
     ListSubscriptionsRequest.refineValues(this);
+  }
+  get parent(): string | undefined {
+    return this._parent;
+  }
+  set parent(value: string | undefined) {
+    this._parent = value;
+  }
+  get pageSize(): string | undefined {
+    return this._pageSize;
+  }
+  set pageSize(value: string | undefined) {
+    this._pageSize = value;
+  }
+  get pageToken(): string | undefined {
+    return this._pageToken;
+  }
+  set pageToken(value: string | undefined) {
+    this._pageToken = value;
+  }
+  get orderBy(): string | undefined {
+    return this._orderBy;
+  }
+  set orderBy(value: string | undefined) {
+    this._orderBy = value;
+  }
+  get filter(): string | undefined {
+    return this._filter;
+  }
+  set filter(value: string | undefined) {
+    this._filter = value;
   }
 
   /**
@@ -11302,7 +11437,13 @@ export class ListSubscriptionsRequest implements GrpcMessage {
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
   toObject(): ListSubscriptionsRequest.AsObject {
-    return {};
+    return {
+      parent: this.parent,
+      pageSize: this.pageSize,
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
+    };
   }
 
   /**
@@ -11321,19 +11462,37 @@ export class ListSubscriptionsRequest implements GrpcMessage {
     // @ts-ignore
     options?: ToProtobufJSONOptions
   ): ListSubscriptionsRequest.AsProtobufJSON {
-    return {};
+    return {
+      parent: this.parent,
+      pageSize: this.pageSize,
+      pageToken: this.pageToken,
+      orderBy: this.orderBy,
+      filter: this.filter
+    };
   }
 }
 export module ListSubscriptionsRequest {
   /**
    * Standard JavaScript object representation for ListSubscriptionsRequest
    */
-  export interface AsObject {}
+  export interface AsObject {
+    parent?: string;
+    pageSize?: string;
+    pageToken?: string;
+    orderBy?: string;
+    filter?: string;
+  }
 
   /**
    * Protobuf JSON representation for ListSubscriptionsRequest
    */
-  export interface AsProtobufJSON {}
+  export interface AsProtobufJSON {
+    parent?: string;
+    pageSize?: string;
+    pageToken?: string;
+    orderBy?: string;
+    filter?: string;
+  }
 }
 
 /**
@@ -11359,7 +11518,10 @@ export class ListSubscriptionsResponse implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: ListSubscriptionsResponse) {}
+  static refineValues(_instance: ListSubscriptionsResponse) {
+    _instance.subscriptions = _instance.subscriptions || [];
+    _instance.nextPageToken = _instance.nextPageToken || '';
+  }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -11374,6 +11536,19 @@ export class ListSubscriptionsResponse implements GrpcMessage {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
+        case 1:
+          const messageInitializer1 = new Subscription();
+          _reader.readMessage(
+            messageInitializer1,
+            Subscription.deserializeBinaryFromReader
+          );
+          (_instance.subscriptions = _instance.subscriptions || []).push(
+            messageInitializer1
+          );
+          break;
+        case 2:
+          _instance.nextPageToken = _reader.readString();
+          break;
         default:
           _reader.skipField();
       }
@@ -11390,7 +11565,21 @@ export class ListSubscriptionsResponse implements GrpcMessage {
   static serializeBinaryToWriter(
     _instance: ListSubscriptionsResponse,
     _writer: BinaryWriter
-  ) {}
+  ) {
+    if (_instance.subscriptions && _instance.subscriptions.length) {
+      _writer.writeRepeatedMessage(
+        1,
+        _instance.subscriptions as any,
+        Subscription.serializeBinaryToWriter
+      );
+    }
+    if (_instance.nextPageToken) {
+      _writer.writeString(2, _instance.nextPageToken);
+    }
+  }
+
+  private _subscriptions?: Subscription[];
+  private _nextPageToken?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11398,7 +11587,23 @@ export class ListSubscriptionsResponse implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<ListSubscriptionsResponse.AsObject>) {
     _value = _value || {};
+    this.subscriptions = (_value.subscriptions || []).map(
+      m => new Subscription(m)
+    );
+    this.nextPageToken = _value.nextPageToken;
     ListSubscriptionsResponse.refineValues(this);
+  }
+  get subscriptions(): Subscription[] | undefined {
+    return this._subscriptions;
+  }
+  set subscriptions(value: Subscription[] | undefined) {
+    this._subscriptions = value;
+  }
+  get nextPageToken(): string | undefined {
+    return this._nextPageToken;
+  }
+  set nextPageToken(value: string | undefined) {
+    this._nextPageToken = value;
   }
 
   /**
@@ -11415,7 +11620,10 @@ export class ListSubscriptionsResponse implements GrpcMessage {
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
   toObject(): ListSubscriptionsResponse.AsObject {
-    return {};
+    return {
+      subscriptions: (this.subscriptions || []).map(m => m.toObject()),
+      nextPageToken: this.nextPageToken
+    };
   }
 
   /**
@@ -11434,19 +11642,30 @@ export class ListSubscriptionsResponse implements GrpcMessage {
     // @ts-ignore
     options?: ToProtobufJSONOptions
   ): ListSubscriptionsResponse.AsProtobufJSON {
-    return {};
+    return {
+      subscriptions: (this.subscriptions || []).map(m =>
+        m.toProtobufJSON(options)
+      ),
+      nextPageToken: this.nextPageToken
+    };
   }
 }
 export module ListSubscriptionsResponse {
   /**
    * Standard JavaScript object representation for ListSubscriptionsResponse
    */
-  export interface AsObject {}
+  export interface AsObject {
+    subscriptions?: Subscription.AsObject[];
+    nextPageToken?: string;
+  }
 
   /**
    * Protobuf JSON representation for ListSubscriptionsResponse
    */
-  export interface AsProtobufJSON {}
+  export interface AsProtobufJSON {
+    subscriptions?: Subscription.AsProtobufJSON[] | null;
+    nextPageToken?: string;
+  }
 }
 
 /**
@@ -11472,7 +11691,10 @@ export class UpdateSubscriptionRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: UpdateSubscriptionRequest) {}
+  static refineValues(_instance: UpdateSubscriptionRequest) {
+    _instance.subscription = _instance.subscription || undefined;
+    _instance.updateMask = _instance.updateMask || undefined;
+  }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -11487,6 +11709,20 @@ export class UpdateSubscriptionRequest implements GrpcMessage {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.subscription = new Subscription();
+          _reader.readMessage(
+            _instance.subscription,
+            Subscription.deserializeBinaryFromReader
+          );
+          break;
+        case 2:
+          _instance.updateMask = new FieldMask();
+          _reader.readMessage(
+            _instance.updateMask,
+            FieldMask.deserializeBinaryFromReader
+          );
+          break;
         default:
           _reader.skipField();
       }
@@ -11503,7 +11739,25 @@ export class UpdateSubscriptionRequest implements GrpcMessage {
   static serializeBinaryToWriter(
     _instance: UpdateSubscriptionRequest,
     _writer: BinaryWriter
-  ) {}
+  ) {
+    if (_instance.subscription) {
+      _writer.writeMessage(
+        1,
+        _instance.subscription as any,
+        Subscription.serializeBinaryToWriter
+      );
+    }
+    if (_instance.updateMask) {
+      _writer.writeMessage(
+        2,
+        _instance.updateMask as any,
+        FieldMask.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _subscription?: Subscription;
+  private _updateMask?: FieldMask;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11511,7 +11765,25 @@ export class UpdateSubscriptionRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<UpdateSubscriptionRequest.AsObject>) {
     _value = _value || {};
+    this.subscription = _value.subscription
+      ? new Subscription(_value.subscription)
+      : undefined;
+    this.updateMask = _value.updateMask
+      ? new FieldMask(_value.updateMask)
+      : undefined;
     UpdateSubscriptionRequest.refineValues(this);
+  }
+  get subscription(): Subscription | undefined {
+    return this._subscription;
+  }
+  set subscription(value: Subscription | undefined) {
+    this._subscription = value;
+  }
+  get updateMask(): FieldMask | undefined {
+    return this._updateMask;
+  }
+  set updateMask(value: FieldMask | undefined) {
+    this._updateMask = value;
   }
 
   /**
@@ -11528,7 +11800,12 @@ export class UpdateSubscriptionRequest implements GrpcMessage {
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
   toObject(): UpdateSubscriptionRequest.AsObject {
-    return {};
+    return {
+      subscription: this.subscription
+        ? this.subscription.toObject()
+        : undefined,
+      updateMask: this.updateMask ? this.updateMask.toObject() : undefined
+    };
   }
 
   /**
@@ -11547,19 +11824,32 @@ export class UpdateSubscriptionRequest implements GrpcMessage {
     // @ts-ignore
     options?: ToProtobufJSONOptions
   ): UpdateSubscriptionRequest.AsProtobufJSON {
-    return {};
+    return {
+      subscription: this.subscription
+        ? this.subscription.toProtobufJSON(options)
+        : null,
+      updateMask: this.updateMask
+        ? this.updateMask.toProtobufJSON(options)
+        : null
+    };
   }
 }
 export module UpdateSubscriptionRequest {
   /**
    * Standard JavaScript object representation for UpdateSubscriptionRequest
    */
-  export interface AsObject {}
+  export interface AsObject {
+    subscription?: Subscription.AsObject;
+    updateMask?: FieldMask.AsObject;
+  }
 
   /**
    * Protobuf JSON representation for UpdateSubscriptionRequest
    */
-  export interface AsProtobufJSON {}
+  export interface AsProtobufJSON {
+    subscription?: Subscription.AsProtobufJSON | null;
+    updateMask?: FieldMask.AsProtobufJSON | null;
+  }
 }
 
 /**
@@ -11585,7 +11875,9 @@ export class DeleteSubscriptionRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: DeleteSubscriptionRequest) {}
+  static refineValues(_instance: DeleteSubscriptionRequest) {
+    _instance.name = _instance.name || '';
+  }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
@@ -11600,6 +11892,9 @@ export class DeleteSubscriptionRequest implements GrpcMessage {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.name = _reader.readString();
+          break;
         default:
           _reader.skipField();
       }
@@ -11616,7 +11911,13 @@ export class DeleteSubscriptionRequest implements GrpcMessage {
   static serializeBinaryToWriter(
     _instance: DeleteSubscriptionRequest,
     _writer: BinaryWriter
-  ) {}
+  ) {
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
+    }
+  }
+
+  private _name?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11624,7 +11925,14 @@ export class DeleteSubscriptionRequest implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<DeleteSubscriptionRequest.AsObject>) {
     _value = _value || {};
+    this.name = _value.name;
     DeleteSubscriptionRequest.refineValues(this);
+  }
+  get name(): string | undefined {
+    return this._name;
+  }
+  set name(value: string | undefined) {
+    this._name = value;
   }
 
   /**
@@ -11641,7 +11949,9 @@ export class DeleteSubscriptionRequest implements GrpcMessage {
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
   toObject(): DeleteSubscriptionRequest.AsObject {
-    return {};
+    return {
+      name: this.name
+    };
   }
 
   /**
@@ -11660,19 +11970,183 @@ export class DeleteSubscriptionRequest implements GrpcMessage {
     // @ts-ignore
     options?: ToProtobufJSONOptions
   ): DeleteSubscriptionRequest.AsProtobufJSON {
-    return {};
+    return {
+      name: this.name
+    };
   }
 }
 export module DeleteSubscriptionRequest {
   /**
    * Standard JavaScript object representation for DeleteSubscriptionRequest
    */
-  export interface AsObject {}
+  export interface AsObject {
+    name?: string;
+  }
 
   /**
    * Protobuf JSON representation for DeleteSubscriptionRequest
    */
-  export interface AsProtobufJSON {}
+  export interface AsProtobufJSON {
+    name?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.UnSubscribeRequest
+ */
+export class UnSubscribeRequest implements GrpcMessage {
+  static id = 'routeguide.UnSubscribeRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UnSubscribeRequest();
+    UnSubscribeRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UnSubscribeRequest) {
+    _instance.subscribedResource = _instance.subscribedResource || '';
+    _instance.subscriberId = _instance.subscriberId || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UnSubscribeRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.subscribedResource = _reader.readString();
+          break;
+        case 2:
+          _instance.subscriberId = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UnSubscribeRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UnSubscribeRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.subscribedResource) {
+      _writer.writeString(1, _instance.subscribedResource);
+    }
+    if (_instance.subscriberId) {
+      _writer.writeInt64String(2, _instance.subscriberId);
+    }
+  }
+
+  private _subscribedResource?: string;
+  private _subscriberId?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UnSubscribeRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UnSubscribeRequest.AsObject>) {
+    _value = _value || {};
+    this.subscribedResource = _value.subscribedResource;
+    this.subscriberId = _value.subscriberId;
+    UnSubscribeRequest.refineValues(this);
+  }
+  get subscribedResource(): string | undefined {
+    return this._subscribedResource;
+  }
+  set subscribedResource(value: string | undefined) {
+    this._subscribedResource = value;
+  }
+  get subscriberId(): string | undefined {
+    return this._subscriberId;
+  }
+  set subscriberId(value: string | undefined) {
+    this._subscriberId = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UnSubscribeRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UnSubscribeRequest.AsObject {
+    return {
+      subscribedResource: this.subscribedResource,
+      subscriberId: this.subscriberId
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UnSubscribeRequest.AsProtobufJSON {
+    return {
+      subscribedResource: this.subscribedResource,
+      subscriberId: this.subscriberId
+    };
+  }
+}
+export module UnSubscribeRequest {
+  /**
+   * Standard JavaScript object representation for UnSubscribeRequest
+   */
+  export interface AsObject {
+    subscribedResource?: string;
+    subscriberId?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for UnSubscribeRequest
+   */
+  export interface AsProtobufJSON {
+    subscribedResource?: string;
+    subscriberId?: string;
+  }
 }
 
 /**
@@ -12696,6 +13170,7 @@ export class User implements GrpcMessage {
     _instance.imageUrl = _instance.imageUrl || '';
     _instance.website = _instance.website || '';
     _instance.userId = _instance.userId || '0';
+    _instance.subscriberCount = _instance.subscriberCount || '0';
   }
 
   /**
@@ -12728,6 +13203,9 @@ export class User implements GrpcMessage {
           break;
         case 7:
           _instance.userId = _reader.readInt64String();
+          break;
+        case 8:
+          _instance.subscriberCount = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -12764,6 +13242,9 @@ export class User implements GrpcMessage {
     if (_instance.userId) {
       _writer.writeInt64String(7, _instance.userId);
     }
+    if (_instance.subscriberCount) {
+      _writer.writeInt64String(8, _instance.subscriberCount);
+    }
   }
 
   private _name?: string;
@@ -12773,6 +13254,7 @@ export class User implements GrpcMessage {
   private _imageUrl?: string;
   private _website?: string;
   private _userId?: string;
+  private _subscriberCount?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -12787,6 +13269,7 @@ export class User implements GrpcMessage {
     this.imageUrl = _value.imageUrl;
     this.website = _value.website;
     this.userId = _value.userId;
+    this.subscriberCount = _value.subscriberCount;
     User.refineValues(this);
   }
   get name(): string | undefined {
@@ -12831,6 +13314,12 @@ export class User implements GrpcMessage {
   set userId(value: string | undefined) {
     this._userId = value;
   }
+  get subscriberCount(): string | undefined {
+    return this._subscriberCount;
+  }
+  set subscriberCount(value: string | undefined) {
+    this._subscriberCount = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -12853,7 +13342,8 @@ export class User implements GrpcMessage {
       type: this.type,
       imageUrl: this.imageUrl,
       website: this.website,
-      userId: this.userId
+      userId: this.userId,
+      subscriberCount: this.subscriberCount
     };
   }
 
@@ -12880,7 +13370,8 @@ export class User implements GrpcMessage {
       type: User.UserType[this.type ?? 0],
       imageUrl: this.imageUrl,
       website: this.website,
-      userId: this.userId
+      userId: this.userId,
+      subscriberCount: this.subscriberCount
     };
   }
 }
@@ -12896,6 +13387,7 @@ export module User {
     imageUrl?: string;
     website?: string;
     userId?: string;
+    subscriberCount?: string;
   }
 
   /**
@@ -12909,9 +13401,10 @@ export module User {
     imageUrl?: string;
     website?: string;
     userId?: string;
+    subscriberCount?: string;
   }
   export enum UserType {
-    USER_TYPE_UNDEFINED = 0,
+    USER_TYPE_UNSPECIFIED = 0,
     ADMIN = 1,
     REGULAR = 11
   }
@@ -15994,7 +16487,7 @@ export class Subscription implements GrpcMessage {
    */
   static refineValues(_instance: Subscription) {
     _instance.name = _instance.name || '';
-    _instance.subscriberId = _instance.subscriberId || '';
+    _instance.subscriberId = _instance.subscriberId || '0';
     _instance.createTime = _instance.createTime || undefined;
     _instance.updateTime = _instance.updateTime || undefined;
     _instance.type = _instance.type || 0;
@@ -16017,7 +16510,7 @@ export class Subscription implements GrpcMessage {
           _instance.name = _reader.readString();
           break;
         case 2:
-          _instance.subscriberId = _reader.readString();
+          _instance.subscriberId = _reader.readInt64String();
           break;
         case 3:
           _instance.createTime = new googleProtobuf000.Timestamp();
@@ -16057,7 +16550,7 @@ export class Subscription implements GrpcMessage {
       _writer.writeString(1, _instance.name);
     }
     if (_instance.subscriberId) {
-      _writer.writeString(2, _instance.subscriberId);
+      _writer.writeInt64String(2, _instance.subscriberId);
     }
     if (_instance.createTime) {
       _writer.writeMessage(
@@ -16207,7 +16700,7 @@ export module Subscription {
     type?: string;
   }
   export enum SubscribeType {
-    SUBSCRIBE_TYPE_UNDEFINE = 0,
+    SUBSCRIBE_TYPE_UNSPECIFIED = 0,
     ALL = 1
   }
 }

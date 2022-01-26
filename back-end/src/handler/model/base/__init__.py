@@ -89,26 +89,28 @@ from .common import FieldMask
 _SUB_MODEL_BASE_T = TypeVar('_SUB_MODEL_BASE_T', bound='ModelBase')
 
 # TODO: integrate TrackLifecycle
+
+
 class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
-    def create(self, parent: str, user_id: Optional[int] = None) -> None:
+    def create(self, parent: str, user_id: Optional[int] = None, create_activity: bool = True) -> None:
         base_db.DbModelBase.create(self, parent)
-        if isinstance(self, TrackLifecycle) and user_id:
+        if isinstance(self, TrackLifecycle) and user_id and create_activity:
             ModelActivity(name='',
                           create_time=get_now(),
                           action=Action.CREATE.value,
                           resource_name=self.name).create(parent=f'users/{user_id}')
 
-    def update(self, update_update_time: bool = True, user_id: Optional[int] = None) -> None:
+    def update(self, update_update_time: bool = True, user_id: Optional[int] = None, create_activity: bool = True) -> None:
         base_db.DbModelBase.update(self, update_update_time=update_update_time)
-        if isinstance(self, TrackLifecycle) and user_id:
+        if isinstance(self, TrackLifecycle) and user_id and create_activity:
             ModelActivity(name='',
                           create_time=get_now(),
                           action=Action.UPDATE.value,
                           resource_name=self.name).create(parent=f'users/{user_id}')
 
-    def delete(self, user_id: Optional[int] = None) -> None:
+    def delete(self, user_id: Optional[int] = None, create_activity: bool = True) -> None:
         base_db.DbModelBase.delete(self)
-        if isinstance(self, TrackLifecycle) and user_id:
+        if isinstance(self, TrackLifecycle) and user_id and create_activity:
             ModelActivity(name='',
                           create_time=get_now(),
                           action=Action.DELETE.value,

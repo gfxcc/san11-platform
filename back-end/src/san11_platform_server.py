@@ -11,6 +11,7 @@ import grpc
 from google.protobuf import message
 
 import iam_util
+from handler import handler_context
 from handler.activity_handler import ActivityHandler
 from handler.admin_handler import AdminHandler
 from handler.article_handler import ArticleHandler
@@ -40,6 +41,7 @@ from handler.package_handler import PackageHandler
 from handler.protos import san11_platform_pb2 as pb
 from handler.protos import san11_platform_pb2_grpc
 from handler.reply_handler import ReplyHandler
+from handler.subscription_handler import SubscriptionHandler
 from handler.tag_handler import TagHandler
 from handler.thread_handler import ThreadHandler
 from handler.user_handler import UserHandler
@@ -309,11 +311,6 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     @GrpcAbortOnExcep
     def ListPackages(self, request, context):
-        # (TODO): BEGIN - Remove model migration logic.
-        # if not ModelUser.list(ListOptions(parent='', page_size=1))[0]:
-        #     for user in User.list(10000, ''):
-        #         ModelUser.from_v1(user).backfill()
-        # END
         packages, next_page_token = self.package_handler.list(
             list_options=ListOptions.from_request(request),
             handler_context=context,
@@ -353,42 +350,44 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             activities=activities,
             next_page_token=next_page_token,
         )
-    # Subscription
 
+    # Subscription
+    @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateSubscriptioin(self, request, context):
-        parent, sub = request.parent, ModelSubscription.from_pb(request.thread)
-        handler_context = HandlerContext.from_service_context(context)
-        created_sub = self.subscription_handler.create_subscription(
-            parent, sub, handler_context)
-        return created_sub.to_pb()
+        return self.subscription_handler.create(
+            request.parent, ModelSubscription.from_pb(request.subscription), context).to_pb()
 
+    @GrpcAbortOnExcep
     def ListSubscriptioins(self, request, context):
-        handler_context = HandlerContext.from_service_context(context)
-        subs, next_page_token = self.subscription_handler.list_subscriptions(
-            request=request,
-            handler_context=handler_context,
+        subs, next_page_token = self.subscription_handler.list(
+            list_options=ListOptions.from_request(request),
+            handler_context=context,
         )
-        return pb.ListThreadsResponse(
+        return pb.ListSubscriptionsResponse(
             subscriptions=[subscription.to_pb() for subscription in subs],
             next_page_token=next_page_token,
         )
 
+    @GrpcAbortOnExcep
     def UpdateSubscriptioin(self, request, context):
-        update_sub, update_mask = ModelSubscription.from_pb(request.subscription), \
-            FieldMask.from_pb(request.update_mask)
-        sub = ModelSubscription.from_name(request.subscription.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.subscription_handler.update_subscription(sub,
-                                                             update_sub,
-                                                             update_mask,
-                                                             handler_context).to_pb()
+        return self.subscription_handler.update(
+            ModelSubscription.from_pb(request),
+            FieldMask.from_pb(request.update_mask),
+            context).to_pb()
 
+    @GrpcAbortOnExcep
     def DeleteSubscriptioin(self, request, context):
-        sub = ModelSubscription.from_name(request.name)
-        handler_context = HandlerContext.from_service_context(context)
-        return self.subscription_handler.delete_subscription(sub,
-                                                             handler_context).to_pb()
+        return self.subscription_handler.delete(request.name,
+                                                context).to_pb()
+                                            
+    @GrpcAbortOnExcep
+    def UnSubscribe(self, request, context):
+        self.subscription_handler.unsubscribe(
+            request.subscribed_resource, 
+            request.subscriber_id,
+            context)
+        return pb.Status(code=0)
 
     # users
     @GrpcAbortOnExcep

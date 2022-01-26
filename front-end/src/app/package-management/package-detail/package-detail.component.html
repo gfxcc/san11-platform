@@ -101,7 +101,7 @@
                         </a>
                     </div>
 
-                    <div *ngIf="false" class="icon-button">
+                    <div class="icon-button">
                         <a matTooltip="分享 (未开放)" class="toggle-button-render
                             disabled-text">
                             <button mat-icon-button class="button-svg">
@@ -121,7 +121,7 @@
                         </a>
                     </div>
 
-                    <div *ngIf="false" class="icon-button">
+                    <div class="icon-button">
                         <a matTooltip="收藏 (未开放)" class="toggle-button-render
                             disabled-text">
                             <button mat-icon-button class="button-svg" [disabled]="true">
@@ -198,7 +198,7 @@
                         </a>
                         <div class="upload-info">
                             <a class="author-name clickable" [matTooltip]="this.author.username" [href]="&quot;users/&quot;+this.author.userId">{{this.author.username}}</a>
-                            <div *ngIf="false" class="author-sub-count">30.1k subscribers
+                            <div class="author-sub-count">{{this.author.subscriberCount}} subscribers
                             </div>
                         </div>
 
@@ -206,9 +206,8 @@
                     <div style="flex-grow: 1;">
                     </div>
                     <div class="subscribe-section">
-                        <button [disabled]="true" class="subscribe-button" mat-flat-button [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{subscribed?'退订':'订阅
-                            (未开放)'}}</button>
-                        <div *ngIf="subscribed" class="icon-button" style="margin-left: .5rem !important;">
+                        <button class="subscribe-button" mat-flat-button [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{subscribed?'退订':'订阅'}}</button>
+                        <!-- <div *ngIf="subscribed" class="icon-button" style="margin-left: .5rem !important;">
                             <a class="toggle-button-render disabled-text">
                                 <button mat-icon-button class="button-svg" (click)="onNotification()">
                                     <svg *ngIf="notificationEnabled" viewBox="0
@@ -255,7 +254,7 @@
                                                 class="style-scope yt-icon"></path></g></svg>
                                 </button>
                             </a>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>

@@ -85,11 +85,17 @@ service RouteGuide {
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
 
   // Subscription
+  // This API is idempotent. 
   rpc CreateSubscriptioin(CreateSubscriptionRequest) returns (Subscription) {}
   rpc ListSubscriptioins(ListSubscriptionsRequest)
       returns (ListSubscriptionsResponse) {}
   rpc UpdateSubscriptioin(UpdateSubscriptionRequest) returns (Subscription) {}
   rpc DeleteSubscriptioin(DeleteSubscriptionRequest) returns (Subscription) {}
+  // A utility API to 
+  // 1. locate a subscription by `parent` second in field `name`, `subscriber_id`.
+  // 2. delete that subscription.
+  // This API is idempotent. 
+  rpc UnSubscribe(UnSubscribeRequest) returns (Status) {}
 }
 
 // package related
@@ -530,23 +536,47 @@ message GetStatisticRequest { string date = 1; }
 message GetAdminMessageRequest {}
 
 message CreateSubscriptionRequest {
-
+  // E.g. ``, `users/123`
+  string parent = 1;
+  Subscription subscription = 2;
 }
 
 message ListSubscriptionsRequest {
+  // Supported values:
+  // `users/123`
+  string parent = 1;
+  int64 page_size = 2;
+  string page_token = 3;
 
+  // Values should be a comma separated list of fields. For example: "foo,bar".
+  // The default sorting order is ascending. To specify descending order for a
+  // field, users append a " desc" suffix;
+  //   for example: "foo desc, bar".
+  string order_by = 4;
+
+  // Support syntax like `field_name = value`
+  string filter = 5;
 }
 
 message ListSubscriptionsResponse {
-
+  repeated Subscription subscriptions = 1;
+  string next_page_token = 2;
 }
 
 message UpdateSubscriptionRequest {
-
+  Subscription subscription = 1;
+  FieldMask update_mask = 2;
 }
 
 message DeleteSubscriptionRequest {
+  // E.g. `user/123/subscriptions/567`
+  string name = 1;
+}
 
+message UnSubscribeRequest {
+  // The name of the resource being subscribed. E.g. `users/123`.
+  string subscribed_resource = 1;
+  int64 subscriber_id = 2;
 }
 
 // Types
@@ -612,9 +642,10 @@ message User {
   // use cases. 
   // [ OUTPUT_ONLY ]
   int64 user_id = 7;
+  int64 subscriber_count = 8;
 
   enum UserType {
-    USER_TYPE_UNDEFINED = 0;
+    USER_TYPE_UNSPECIFIED = 0;
 
     ADMIN = 1;
 
@@ -747,7 +778,7 @@ message Subscription {
   // subscribed.
   string name = 1;
   // `user_id` of the user who should receive notifications.
-  string subscriber_id = 2;
+  int64 subscriber_id = 2;
   //
   // [ OUTPUT_ONLY ]
   google.protobuf.Timestamp create_time = 3;
@@ -758,7 +789,7 @@ message Subscription {
   SubscribeType type = 5;
 
   enum SubscribeType {
-    SUBSCRIBE_TYPE_UNDEFINE = 0;
+    SUBSCRIBE_TYPE_UNSPECIFIED = 0;
 
     // Receive notification on all events.
     ALL = 1;
@@ -770,7 +801,7 @@ message Subscription {
 message FieldMask { repeated string paths = 1; }
 
 enum ResourceState {
-  RESOURCE_STATE_UNDEFINE = 0;
+  RESOURCE_STATE_UNSPECIFIED = 0;
 
   NORMAL = 1;           // publish accessable
   UNDER_REVIEW = 2;     // Only visiable to admin and author
@@ -780,7 +811,7 @@ enum ResourceState {
 }
 
 enum Action {
-  UNDEFINED_ACTION = 0;
+  ACTION_UNSPECIFIED = 0;
 
   CREATE = 1;
   DELETE = 2;

@@ -1146,6 +1146,27 @@ export class RouteGuideClient {
         requestClass: thisProto.DeleteSubscriptionRequest,
         responseClass: thisProto.Subscription
       });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UnSubscribe
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.Status>>
+     */
+    unSubscribe: (
+      requestData: thisProto.UnSubscribeRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.Status>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UnSubscribe',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UnSubscribeRequest,
+        responseClass: thisProto.Status
+      });
     }
   };
 
@@ -2002,6 +2023,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.Subscription> {
     return this.$raw
       .deleteSubscriptioin(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UnSubscribe
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.Status>
+   */
+  unSubscribe(
+    requestData: thisProto.UnSubscribeRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.Status> {
+    return this.$raw
+      .unSubscribe(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

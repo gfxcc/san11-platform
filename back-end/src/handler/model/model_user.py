@@ -73,24 +73,15 @@ class ModelUser(ModelBase, TrackLifecycle):
         type=str,
         is_proto_field=False,
     )
+    subscriber_count = Attrib(
+        type=int,
+    )
 
     def to_pb(self) -> message.Message:
-        # Field `user_id` only exist in public proto for easy access. 
+        # Field `user_id` only exist in public proto for easy access.
         ret = super().to_pb()
         setattr(ret, 'user_id', self.user_id)
         return ret
-
-    @classmethod
-    def from_v1(cls, legacy_model):
-        return cls(
-            name=f'users/{legacy_model.user_id}',
-            username=legacy_model.username,
-            email=normalize_email(legacy_model.email),
-            type=1 if legacy_model.user_type == 'admin' else 11,
-            image_url=legacy_model.image_url or 'users/default_avatar.jpg',
-            website=legacy_model.website,
-            hashed_password=hash_password(legacy_model._get_password()),
-        )
 
     @classmethod
     def from_pb(cls, proto_model: message.Message) -> ModelUser:
@@ -106,10 +97,11 @@ class ModelUser(ModelBase, TrackLifecycle):
 
     def is_admin(self) -> bool:
         return self.type == pb.User.UserType.ADMIN
-    
+
     @property
     def user_id(self) -> int:
         return ResourceName.from_str(self.name).resource_id
+
 
 def validate_email(email: str) -> None:
     '''
@@ -163,6 +155,7 @@ def get_user_by_username(username: str) -> ModelUser:
     if not users:
         raise NotFound(message='用户不存在')
     return users[0]
+
 
 def get_admins() -> Iterable[ModelUser]:
     return ModelUser.list(ListOptions(parent='', filter=f'type={pb.User.UserType.ADMIN}'))[0]
