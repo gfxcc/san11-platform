@@ -9,7 +9,9 @@ from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
 from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
+from handler.model.model_subscription import ModelSubscription
 from handler.model.model_thread import ModelThread
+from handler.model.model_user import ModelUser
 from handler.model.resource import ResourceView
 from handler.util.name_util import ResourceName
 
@@ -46,6 +48,9 @@ def _get_resource_view(name: str) -> Optional[pb.ResourceView]:
         elif isinstance(resource, ModelPackage):
             resource_view = ResourceView(
                 name=resource.name, display_name=resource.package_name, description='', image_url=resource.image_urls[0] if resource.image_urls else '')
+        elif isinstance(resource, ModelUser):
+            resource_view = ResourceView(
+                name=resource.name, display_name=resource.username, description='', image_url=resource.image_url)
         else:
             resource_view = None
     except Exception:

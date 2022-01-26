@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 // import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
 // import Image from '@ckeditor/ckeditor5-image/src/image';
 import { ImageItem } from 'ng-gallery';
-import { Action, CreateImageRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListTagsRequest, Package, ResourceState, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, Package, ResourceState, Status, Subscription, Tag, UnSubscribeRequest, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 // import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
@@ -16,7 +16,7 @@ import { MyUploadAdapter } from '../../service/cke-upload-adapter';
 import { EventEmiterService } from "../../service/event-emiter.service";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { UploadService } from '../../service/upload.service';
-import { increment } from '../../utils/number_util';
+import { decrement, increment } from '../../utils/number_util';
 import { getCategoryId, getPackageUrl } from "../../utils/package_util";
 import { getFullUrl, parseName } from "../../utils/resrouce_util";
 import { getUserUrl, isAdmin, loadUser, signedIn } from "../../utils/user_util";
@@ -433,18 +433,32 @@ export class PackageDetailComponent implements OnInit {
       this.images.push(new ImageItem({ src: '../../../assets/images/upload.jpg', thumb: '../../../assets/images/upload.jpg' }));
     }
 
-    this.san11pkService.getUser(new GetUserRequest({
-      name: `users/${this.package.authorId}`,
+    this.loadAuthor();
+
+    this.setLikeAndDislikeStatus();
+    this.setSubscriptionStatus();
+  }
+
+  setSubscriptionStatus() {
+    if (!signedIn()) {
+      return;
+    }
+    this.san11pkService.listSubscription(new ListSubscriptionsRequest({
+      parent: `users/${this.package.authorId}`,
+      filter: `subscriber_id=${loadUser().userId}`,
     })).subscribe(
-      user => {
-        this.author = user;
-        this.authorImageUrl = getFullUrl(this.author.imageUrl);
-      },
-      error => {
-        this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
+      (resp: ListSubscriptionsResponse) => {
+        console.log(resp);
+        if (resp.subscriptions.length > 0) {
+          this.subscribed = true;
+        }
+      }, error => {
+        this.notificationService.warn(`载入订阅状态失败: ${error.statusMessage}`);
       }
     );
+  }
 
+  setLikeAndDislikeStatus() {
     this.san11pkService.listActivities(new ListActivitiesRequest({
       parent: `users/${loadUser().userId}`,
       filter: `resource_name="${this.package.name}"`,
@@ -456,7 +470,7 @@ export class PackageDetailComponent implements OnInit {
           } else if (activity.action === Action.DISLIKE) {
             this.disliked = true;
           }
-        });        
+        });
       },
       error => {
 
@@ -701,9 +715,34 @@ export class PackageDetailComponent implements OnInit {
       return;
     }
     if (this.subscribed) {
+      this.san11pkService.unSubscribe(new UnSubscribeRequest({
+        subscribedResource: this.author.name,
+        subscriberId: loadUser().userId,
+      })).subscribe(
+        (resp: Status) => {
+          this.author.subscriberCount = decrement(this.author.subscriberCount);
+          this.notificationService.success('退订成功');
+        }, error => {
+          this.notificationService.warn(`退订失败: ${error.statusMessage}`);
+        }
+      );
+
       this.subscribed = false;
       this.notificationEnabled = false;
     } else {
+      this.san11pkService.createSubscription(new CreateSubscriptionRequest({
+        parent: this.author.name,
+        subscription: new Subscription({
+          type: Subscription.SubscribeType.ALL,
+        }),
+      })).subscribe(
+        (sub: Subscription) => {
+          this.author.subscriberCount = increment(this.author.subscriberCount);
+          this.notificationService.success(`订阅成功`);
+        }, error => {
+          this.notificationService.warn(`订阅失败: ${error.statusMessage}`);
+        }
+      );
       this.subscribed = true;
     }
   }
@@ -723,6 +762,21 @@ export class PackageDetailComponent implements OnInit {
     }
 
 
+  }
+
+
+  loadAuthor() {
+    this.san11pkService.getUser(new GetUserRequest({
+      name: `users/${this.package.authorId}`,
+    })).subscribe(
+      user => {
+        this.author = user;
+        this.authorImageUrl = getFullUrl(this.author.imageUrl);
+      },
+      error => {
+        this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
+      }
+    );
   }
 
 

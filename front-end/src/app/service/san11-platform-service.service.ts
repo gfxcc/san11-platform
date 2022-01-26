@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { GrpcMetadata } from '@ngx-grpc/common';
 import { Observable, Subscription } from 'rxjs';
 import { Cacheable } from 'ts-cacheable';
-import { AdminMessage, Article, Binary, Comment, CreateArticleRequest, CreateBinaryRequest, CreateCommentRequest, CreateImageRequest, CreatePackageRequest, CreateReplyRequest, CreateTagRequest, CreateThreadRequest, CreateUserRequest, CreateUserResponse, DeleteArticleRequest, DeleteBinaryRequest, DeleteCommentRequest, DeletePackageRequest, DeleteReplyRequest, DeleteTagRequest, DeleteThreadRequest, DownloadBinaryRequest, Empty, GetArticleRequest, GetPackageRequest, GetStatisticRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListCommentsRequest, ListCommentsResponse, ListNotificationsRequest, ListNotificationsResponse, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, ListTagsResponse, ListThreadsRequest, ListThreadsResponse, ListUsersRequest, ListUsersResponse, Notification, Package, Reply, SearchPackagesRequest, SearchPackagesResponse, SendVerificationCodeRequest, SignInRequest, SignInResponse, SignOutRequest, Statistic, Status, Tag, Thread, UpdateArticleRequest, UpdateBinaryRequest, UpdateCommentRequest, UpdateNotificationRequest, UpdatePackageRequest, UpdatePasswordRequest, UpdateReplyRequest, UpdateThreadRequest, UpdateUserRequest, Url, User, ValidateNewUserRequest, VerifyEmailRequest, VerifyEmailResponse } from '../../proto/san11-platform.pb';
+import * as pb from '../../proto/san11-platform.pb';
+import { AdminMessage, Article, Binary, Comment, CreateArticleRequest, CreateBinaryRequest, CreateCommentRequest, CreateImageRequest, CreatePackageRequest, CreateReplyRequest, CreateSubscriptionRequest, CreateTagRequest, CreateThreadRequest, CreateUserRequest, CreateUserResponse, DeleteArticleRequest, DeleteBinaryRequest, DeleteCommentRequest, DeletePackageRequest, DeleteReplyRequest, DeleteTagRequest, DeleteThreadRequest, DownloadBinaryRequest, Empty, GetArticleRequest, GetPackageRequest, GetStatisticRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListCommentsRequest, ListCommentsResponse, ListNotificationsRequest, ListNotificationsResponse, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, ListTagsResponse, ListThreadsRequest, ListThreadsResponse, ListUsersRequest, ListUsersResponse, Notification, Package, Reply, SearchPackagesRequest, SearchPackagesResponse, SendVerificationCodeRequest, SignInRequest, SignInResponse, SignOutRequest, Statistic, Status, Tag, Thread, UpdateArticleRequest, UpdateBinaryRequest, UpdateCommentRequest, UpdateNotificationRequest, UpdatePackageRequest, UpdatePasswordRequest, UpdateReplyRequest, UpdateThreadRequest, UpdateUserRequest, Url, User, ValidateNewUserRequest, VerifyEmailRequest, VerifyEmailResponse } from '../../proto/san11-platform.pb';
 import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
 
 
@@ -220,6 +221,27 @@ export class San11PlatformServiceService {
 
   listTags(request: ListTagsRequest): Observable<ListTagsResponse> {
     return this.severClient.listTags(request, this.getMetadata());
+  }
+
+  // subscriptions
+  createSubscription(request: CreateSubscriptionRequest): Observable<pb.Subscription> {
+    return this.severClient.createSubscriptioin(request, this.getMetadata());
+  }
+
+  listSubscription(request: pb.ListSubscriptionsRequest): Observable<pb.ListSubscriptionsResponse> {
+    return this.severClient.listSubscriptioins(request, this.getMetadata());
+  }
+
+  updateSubscription(request: pb.UpdateSubscriptionRequest): Observable<pb.Subscription> {
+    return this.severClient.updateSubscriptioin(request, this.getMetadata());
+  }
+
+  deleteSubscription(request: pb.DeleteSubscriptionRequest): Observable<pb.Subscription> {
+    return this.severClient.deleteSubscriptioin(request, this.getMetadata());
+  }
+
+  unSubscribe(request: pb.UnSubscribeRequest): Observable<pb.Status> {
+    return this.severClient.unSubscribe(request, this.getMetadata());
   }
 
   // UTILS
