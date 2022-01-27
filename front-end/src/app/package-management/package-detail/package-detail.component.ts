@@ -731,7 +731,7 @@ export class PackageDetailComponent implements OnInit {
       this.notificationEnabled = false;
     } else {
       this.san11pkService.createSubscription(new CreateSubscriptionRequest({
-        parent: this.author.name,
+        parent: `users/${this.package.authorId}`,
         subscription: new Subscription({
           type: Subscription.SubscribeType.ALL,
         }),
