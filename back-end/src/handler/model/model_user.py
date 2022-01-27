@@ -153,7 +153,7 @@ def get_user_by_username(username: str) -> ModelUser:
     users = ModelUser.list(ListOptions(
         parent='', filter=f'username=\"{username}\"'))[0]
     if not users:
-        raise NotFound(message='用户不存在')
+        raise NotFound(message=f'找不到用户{username}')
     return users[0]
 
 

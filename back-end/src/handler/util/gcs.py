@@ -2,6 +2,7 @@ import logging
 import os
 
 from google.cloud import storage
+from handler.common.env import Env, get_env
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -48,7 +49,7 @@ def disk_usage_under(prefix: str) -> int:
     '''
     Return size of all resources with give prefix under CANONICAL_BUCKET
     '''
-    if os.environ.get('STAGE') == 'DEV':
+    if get_env() == Env.DEV:
         logger.debug(f'Skip gcs operations in env: DEV')
         return 0
     storage_client = storage.Client()
@@ -58,7 +59,7 @@ def disk_usage_under(prefix: str) -> int:
 
 
 def get_file_size(bucket_name: str, filename: str) -> int:
-    if os.environ.get('STAGE') == 'DEV':
+    if get_env() == Env.DEV:
         logger.debug(f'Skip gcs operations in env: DEV')
         return 0
     storage_client = storage.Client()
@@ -72,14 +73,14 @@ def delete_resource(filename: str) -> None:
 
 
 def delete_tmp_resource(filename: str) -> None:
-    if os.environ.get('STAGE') == 'DEV':
+    if get_env() == Env.DEV:
         logger.debug(f'Skip gcs operations in env: DEV')
         return
     _delete_file(TMP_BUCKET, filename)
 
 
 def delete_folder(folder_path: str) -> None:
-    if os.environ.get('STAGE') == 'DEV':
+    if get_env() == Env.DEV:
         logger.debug(f'Skip gcs operations in env: DEV')
         return
     _delete_folder(CANONICAL_BUCKET, folder_path)

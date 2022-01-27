@@ -1,7 +1,10 @@
 import logging
 import os
+from email import message
 from typing import Iterable, List, Tuple, Type
 
+from handler.common.env import Env, get_env
+from handler.common.exception import PermissionDenied
 from handler.handler_context import HandlerContext
 from handler.model.activity import Action
 from handler.model.base import (Context, FieldMask, HandlerBase, ModelBase,
@@ -10,32 +13,35 @@ from handler.model.base.base_db import ListOptions
 from handler.model.model_activity import ModelActivity, search_activity
 from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
+from handler.model.model_subscription import ModelSubscription
 from handler.model.model_thread import ModelThread
-from handler.model.model_user import get_admins
+from handler.model.model_user import ModelUser, get_admins
+from handler.util.state_util import on_approve
 from handler.util.time_util import get_now
 
 from .common.image import Image
 from .protos import san11_platform_pb2 as pb
-from .util.notifier import Notifier, send_message
+from .util.notifier import Notifier, notify, send_message
 
 logger = logging.getLogger(os.path.basename(__file__))
 
 
 class PackageHandler(HandlerBase):
     def create(self, parent: str, package: ModelPackage, handler_context: HandlerContext) -> ModelPackage:
-        assert handler_context.user
         package.author_id = handler_context.user.user_id
         package.state = pb.ResourceState.UNDER_REVIEW
         package.create(parent=parent, user_id=handler_context.user.user_id)
-        try:
-            notifer = Notifier()
-            for admin in get_admins():
-                notifer.send_email(
-                    admin.email, '新工具待审核', f'[{package.package_name}] 已被 {handler_context.user.username} 创建。请审核。')
-                send_message(package.author_id, admin.user_id,
-                             f'{handler_context.user.username} 创建了 {package.package_name}. 请审核.', package.name, '')
-        except Exception as err:
-            logger.error(f'Failed to notify admin: {err}')
+        # Post creation actions
+        if get_env() == Env.PROD:
+            try:
+                notifer = Notifier()
+                for admin in get_admins():
+                    notifer.send_email(
+                        admin.email, '【新内容】待审核', f'[{package.package_name}] 已被 {handler_context.user.username} 创建。请审核。')
+                    send_message(package.author_id, admin.user_id,
+                                 f'{handler_context.user.username} 创建了 {package.package_name}. 请审核.', package.name, '')
+            except Exception as err:
+                logger.error(f'Failed to notify admin: {err}')
         return package
 
     def get(self, name: str, handler_context: HandlerContext) -> ModelPackage:
@@ -71,16 +77,12 @@ class PackageHandler(HandlerBase):
         return packages, next_page_token
 
     def update(self, update_package: ModelPackage, update_mask: FieldMask, handler_context: HandlerContext) -> ModelPackage:
-        # Remove `like_count`, `dislike_count` from update_mask here and handle the count update
-        #   explicitly later.
-        sanitized_update_mask = FieldMask(
-            set(update_mask.paths) - {'like_count', 'dislike_count'})
-        base_package = ModelPackage.from_name(update_package.name)
-        package = merge_resource(base_resource=base_package,
-                                 update_request=update_package,
-                                 field_mask=sanitized_update_mask)
-        user_id = handler_context.user.user_id
-
+        def verify_permission_on_update(curr: ModelPackage, dest: ModelPackage, update_mask: FieldMask) -> None:
+            if on_approve(curr.state, dest.state):
+                # Approve new package
+                if not handler_context.user.is_admin():
+                    raise PermissionDenied(message='审核通过新工具需要管理员权限')
+        
         def toggle_like_dislike(user_id: int, action: Action, package: ModelPackage):
             action2field = {
                 Action.LIKE: 'like_count',
@@ -93,8 +95,8 @@ class PackageHandler(HandlerBase):
                 setattr(package, action2field[action], getattr(
                     package, action2field[action]) - 1)
             else:
-                ModelActivity(name='', create_time=get_now(),
-                              action=action.value, resource_name=package.name).create(parent=f'users/{user_id}')
+                ModelActivity('', get_now(), action.value, package.name).create(
+                    parent=f'users/{user_id}')
                 setattr(package, action2field[action], getattr(
                     package, action2field[action]) + 1)
 
@@ -105,6 +107,20 @@ class PackageHandler(HandlerBase):
                     act2.delete()
                     setattr(package, action2field[reversed_action], getattr(
                         package, action2field[reversed_action]) - 1)
+
+
+        base_package = ModelPackage.from_name(update_package.name)
+        if update_mask.has('state'):
+            verify_permission_on_update(base_package, update_package, update_mask)
+        
+        # Remove `like_count`, `dislike_count` from update_mask here and handle the count update
+        #   explicitly later.
+        sanitized_update_mask = FieldMask(
+            set(update_mask.paths) - {'like_count', 'dislike_count'})
+        package = merge_resource(base_resource=base_package,
+                                 update_request=update_package,
+                                 field_mask=sanitized_update_mask)
+        user_id = handler_context.user.user_id
 
         if update_mask.has('like_count'):
             toggle_like_dislike(user_id, Action.LIKE, package)
@@ -127,6 +143,18 @@ class PackageHandler(HandlerBase):
             package.update(update_update_time=False)
         else:
             package.update(user_id=user_id)
+        
+
+        # notify all subscribers
+        author = ModelUser.from_name(f'users/{package.author_id}')
+        for sub in ModelSubscription.list(ListOptions(parent=author.name))[0]:
+            notify(
+                sender_id=author.user_id,
+                receiver_id=sub.subscriber_id,
+                content=f'【新内容】{author.username} 发布了 {package.package_name}',
+                link=package.name,
+                image_preview=package.image_urls[0] if package.image_urls else '',
+            )
         return package
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelPackage:
