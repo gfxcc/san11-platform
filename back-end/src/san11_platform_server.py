@@ -61,8 +61,8 @@ def GrpcAbortOnExcep(func: RpcFunc):
         try:
             return func(this, request, HandlerContext.from_service_context(context))
         except Excep as err:
-            logger.debug(err, exc_info=True)
-            logger.debug(f'context={context}')
+            logger.warning(err, exc_info=True)
+            logger.warning(f'context={context}')
             context.abort(code=err.code, details=err.message)
     return wrapper
 
