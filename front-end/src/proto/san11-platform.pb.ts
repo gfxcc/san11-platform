@@ -13171,6 +13171,8 @@ export class User implements GrpcMessage {
     _instance.website = _instance.website || '';
     _instance.userId = _instance.userId || '0';
     _instance.subscriberCount = _instance.subscriberCount || '0';
+    _instance.createTime = _instance.createTime || undefined;
+    _instance.updateTime = _instance.updateTime || undefined;
   }
 
   /**
@@ -13206,6 +13208,20 @@ export class User implements GrpcMessage {
           break;
         case 8:
           _instance.subscriberCount = _reader.readInt64String();
+          break;
+        case 9:
+          _instance.createTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.createTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 10:
+          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.updateTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
           break;
         default:
           _reader.skipField();
@@ -13245,6 +13261,20 @@ export class User implements GrpcMessage {
     if (_instance.subscriberCount) {
       _writer.writeInt64String(8, _instance.subscriberCount);
     }
+    if (_instance.createTime) {
+      _writer.writeMessage(
+        9,
+        _instance.createTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
+    if (_instance.updateTime) {
+      _writer.writeMessage(
+        10,
+        _instance.updateTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
   }
 
   private _name?: string;
@@ -13255,6 +13285,8 @@ export class User implements GrpcMessage {
   private _website?: string;
   private _userId?: string;
   private _subscriberCount?: string;
+  private _createTime?: googleProtobuf000.Timestamp;
+  private _updateTime?: googleProtobuf000.Timestamp;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -13270,6 +13302,12 @@ export class User implements GrpcMessage {
     this.website = _value.website;
     this.userId = _value.userId;
     this.subscriberCount = _value.subscriberCount;
+    this.createTime = _value.createTime
+      ? new googleProtobuf000.Timestamp(_value.createTime)
+      : undefined;
+    this.updateTime = _value.updateTime
+      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      : undefined;
     User.refineValues(this);
   }
   get name(): string | undefined {
@@ -13320,6 +13358,18 @@ export class User implements GrpcMessage {
   set subscriberCount(value: string | undefined) {
     this._subscriberCount = value;
   }
+  get createTime(): googleProtobuf000.Timestamp | undefined {
+    return this._createTime;
+  }
+  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._createTime = value;
+  }
+  get updateTime(): googleProtobuf000.Timestamp | undefined {
+    return this._updateTime;
+  }
+  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._updateTime = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -13343,7 +13393,9 @@ export class User implements GrpcMessage {
       imageUrl: this.imageUrl,
       website: this.website,
       userId: this.userId,
-      subscriberCount: this.subscriberCount
+      subscriberCount: this.subscriberCount,
+      createTime: this.createTime ? this.createTime.toObject() : undefined,
+      updateTime: this.updateTime ? this.updateTime.toObject() : undefined
     };
   }
 
@@ -13371,7 +13423,13 @@ export class User implements GrpcMessage {
       imageUrl: this.imageUrl,
       website: this.website,
       userId: this.userId,
-      subscriberCount: this.subscriberCount
+      subscriberCount: this.subscriberCount,
+      createTime: this.createTime
+        ? this.createTime.toProtobufJSON(options)
+        : null,
+      updateTime: this.updateTime
+        ? this.updateTime.toProtobufJSON(options)
+        : null
     };
   }
 }
@@ -13388,6 +13446,8 @@ export module User {
     website?: string;
     userId?: string;
     subscriberCount?: string;
+    createTime?: googleProtobuf000.Timestamp.AsObject;
+    updateTime?: googleProtobuf000.Timestamp.AsObject;
   }
 
   /**
@@ -13402,6 +13462,8 @@ export module User {
     website?: string;
     userId?: string;
     subscriberCount?: string;
+    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
   }
   export enum UserType {
     USER_TYPE_UNSPECIFIED = 0,

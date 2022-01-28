@@ -599,6 +599,7 @@ class RouteGuideServicer(object):
 
     def CreateSubscriptioin(self, request, context):
         """Subscription
+        This API is idempotent. 
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

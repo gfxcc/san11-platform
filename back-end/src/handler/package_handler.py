@@ -82,7 +82,7 @@ class PackageHandler(HandlerBase):
                 # Approve new package
                 if not handler_context.user.is_admin():
                     raise PermissionDenied(message='审核通过新工具需要管理员权限')
-        
+
         def toggle_like_dislike(user_id: int, action: Action, package: ModelPackage):
             action2field = {
                 Action.LIKE: 'like_count',
@@ -108,11 +108,11 @@ class PackageHandler(HandlerBase):
                     setattr(package, action2field[reversed_action], getattr(
                         package, action2field[reversed_action]) - 1)
 
-
         base_package = ModelPackage.from_name(update_package.name)
         if update_mask.has('state'):
-            verify_permission_on_update(base_package, update_package, update_mask)
-        
+            verify_permission_on_update(
+                base_package, update_package, update_mask)
+
         # Remove `like_count`, `dislike_count` from update_mask here and handle the count update
         #   explicitly later.
         sanitized_update_mask = FieldMask(
@@ -143,18 +143,18 @@ class PackageHandler(HandlerBase):
             package.update(update_update_time=False)
         else:
             package.update(user_id=user_id)
-        
 
         # notify all subscribers
         author = ModelUser.from_name(f'users/{package.author_id}')
-        for sub in ModelSubscription.list(ListOptions(parent=author.name))[0]:
-            notify(
-                sender_id=author.user_id,
-                receiver_id=sub.subscriber_id,
-                content=f'【新内容】{author.username} 发布了 {package.package_name}',
-                link=package.name,
-                image_preview=package.image_urls[0] if package.image_urls else '',
-            )
+        if on_approve(base_package.state, update_package.state):
+            for sub in ModelSubscription.list(ListOptions(parent=author.name))[0]:
+                notify(
+                    sender_id=author.user_id,
+                    receiver_id=sub.subscriber_id,
+                    content=f'【新内容】{author.username} 发布了 {package.package_name}',
+                    link=package.name,
+                    image_preview=package.image_urls[0] if package.image_urls else '',
+                )
         return package
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelPackage:

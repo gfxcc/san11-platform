@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 import re
 from typing import Iterable, List, Tuple
 
@@ -76,6 +77,12 @@ class ModelUser(ModelBase, TrackLifecycle):
     subscriber_count = Attrib(
         type=int,
     )
+    create_time = Attrib(
+        type=datetime.datetime,
+    )
+    update_time = Attrib(
+        type=datetime.datetime,
+    )
 
     def to_pb(self) -> message.Message:
         # Field `user_id` only exist in public proto for easy access.
@@ -145,7 +152,7 @@ def get_user_by_email(email: str) -> ModelUser:
     users = ModelUser.list(ListOptions(
         parent='', filter=f'email=\"{email}\"'))[0]
     if not users:
-        raise NotFound(message='用户不存在')
+        raise NotFound(message=f'找不到注册邮箱为 {email} 的用户')
     return users[0]
 
 
@@ -153,7 +160,7 @@ def get_user_by_username(username: str) -> ModelUser:
     users = ModelUser.list(ListOptions(
         parent='', filter=f'username=\"{username}\"'))[0]
     if not users:
-        raise NotFound(message=f'找不到用户{username}')
+        raise NotFound(message=f'找不到用户名为 {username} 的用户')
     return users[0]
 
 

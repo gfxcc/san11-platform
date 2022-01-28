@@ -643,6 +643,8 @@ message User {
   // [ OUTPUT_ONLY ]
   int64 user_id = 7;
   int64 subscriber_count = 8;
+  google.protobuf.Timestamp create_time = 9; // OUTPUT_ONLY
+  google.protobuf.Timestamp update_time = 10; // OUTPUT_ONLY
 
   enum UserType {
     USER_TYPE_UNSPECIFIED = 0;
