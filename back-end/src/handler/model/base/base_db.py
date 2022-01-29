@@ -266,7 +266,7 @@ class DbModelBase(ABC):
         return cls.from_data(resp[0])
 
     @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
+    def list(cls, list_options: ListOptions) -> Tuple[Iterable[_SUB_DB_MODEL_T], str]:
         # prepare default value for mutable fields.
         if not list_options.order_by:
             order_by_fields = [('create_time', 'DESC')]
@@ -312,7 +312,7 @@ class DbModelBase(ABC):
         next_page_options = copy.copy(list_options)
         next_page_options.watermark = offset + len(resp)
 
-        return [cls.from_data(data[0]) for data in resp], next_page_options.to_token()
+        return (cls.from_data(data[0]) for data in resp), next_page_options.to_token()
 
     @classmethod
     def from_data(cls, data: Dict):

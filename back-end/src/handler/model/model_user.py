@@ -99,7 +99,7 @@ class ModelUser(ModelBase, TrackLifecycle):
         return super().from_name(name)
 
     @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List[ModelUser], str]:
+    def list(cls, list_options: ListOptions) -> Tuple[Iterable[ModelUser], str]:
         return super().list(list_options)
 
     def is_admin(self) -> bool:

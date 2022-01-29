@@ -85,16 +85,17 @@ service RouteGuide {
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
 
   // Subscription
-  // This API is idempotent. 
+  // This API is idempotent.
   rpc CreateSubscriptioin(CreateSubscriptionRequest) returns (Subscription) {}
   rpc ListSubscriptioins(ListSubscriptionsRequest)
       returns (ListSubscriptionsResponse) {}
   rpc UpdateSubscriptioin(UpdateSubscriptionRequest) returns (Subscription) {}
   rpc DeleteSubscriptioin(DeleteSubscriptionRequest) returns (Subscription) {}
-  // A utility API to 
-  // 1. locate a subscription by `parent` second in field `name`, `subscriber_id`.
+  // A utility API to
+  // 1. locate a subscription by `parent` second in field `name`,
+  // `subscriber_id`.
   // 2. delete that subscription.
-  // This API is idempotent. 
+  // This API is idempotent.
   rpc UnSubscribe(UnSubscribeRequest) returns (Status) {}
 }
 
@@ -402,7 +403,7 @@ message UpdateUserRequest {
 
 message UpdatePasswordRequest {
   // Field `name` in User. E.g. `users/123`.
-  string name = 1; 
+  string name = 1;
   string password = 2;
   string verification_code = 3;
 }
@@ -442,9 +443,7 @@ message VerifyEmailResponse {
   User user = 2;
 }
 
-message ValidateNewUserRequest {
-  User user = 1;
-}
+message ValidateNewUserRequest { User user = 1; }
 
 // activities related
 message ListActivitiesRequest {
@@ -612,7 +611,8 @@ message Binary {
 
   int64 binary_id = 1;
   int64 package_id = 2;
-  string url = 3; // OUTPUT_ONLY;
+  // [ OUTPUT_ONLY ]
+  string url = 3;
   int64 download_count = 4;
   Version version = 5;
   string description = 6;
@@ -637,16 +637,18 @@ message User {
   UserType type = 4;
   string image_url = 5;
   string website = 6;
-  // This is OUTPUT_ONLY field parsed from `name`.
+  // This field is parsed from `name`.
   // Field `name` should be preferred when possible. Should be used for legacy
-  // use cases. 
+  // use cases.
   // [ OUTPUT_ONLY ]
   int64 user_id = 7;
   int64 subscriber_count = 8;
-  google.protobuf.Timestamp create_time = 9; // OUTPUT_ONLY
-  google.protobuf.Timestamp update_time = 10; // OUTPUT_ONLY
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp create_time = 9;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp update_time = 10
 
-  enum UserType {
+      enum UserType {
     USER_TYPE_UNSPECIFIED = 0;
 
     ADMIN = 1;
@@ -674,13 +676,17 @@ message Thread {
   string subject = 2;
   string content = 3;
   int64 author_id = 4;
-  google.protobuf.Timestamp create_time = 5; // OUTPUT_ONLY
-  google.protobuf.Timestamp update_time = 6; // OUTPUT_ONLY
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp create_time = 5;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp update_time = 6;
   ResourceState state = 7;
   repeated string tags = 8;
   bool pinned = 9;
-  google.protobuf.Timestamp latest_commented_time = 10; // OUTPUT_ONLY
-  int64 latest_commenter_id = 11;                       // OUTPUT_ONLY
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp latest_commented_time = 10;
+  // [ OUTPUT_ONLY ]
+  int64 latest_commenter_id = 11;
 
   int64 view_count = 21;
   int64 like_count = 22;
@@ -697,8 +703,8 @@ message Comment {
   string text = 5;
   int64 author_id = 6;
   int64 upvote_count = 7;
-  //
-  repeated Reply replies = 8; // OUTPUT_ONLY
+  // [ OUTPUT_ONLY ]
+  repeated Reply replies = 8;
   // The index of the comment within its parent. The first index is 1.
   int64 index = 9;
 }
@@ -732,14 +738,20 @@ message Activity {
 }
 
 message Notification {
-  string name = 1;     // Resource name. E.g. 'users/123/notifications/12345'
-  int64 sender_id = 2; // OUTPUT_ONLY
-  google.protobuf.Timestamp create_time = 3; // OUTPUT_ONLY
-  google.protobuf.Timestamp update_time = 4; // OUTPUT_ONLY
+  string name = 1; // Resource name. E.g. 'users/123/notifications/12345'
+  // [ OUTPUT_ONLY ]
+  int64 sender_id = 2;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp create_time = 3;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp update_time = 4;
   bool unread = 5;
-  string content = 6;       // OUTPUT_ONLY
-  string image_preview = 7; // OUTPUT_ONLY
-  string link = 8;          // OUTPUT_ONLY
+  // [ OUTPUT_ONLY ]
+  string content = 6;
+  // [ OUTPUT_ONLY ]
+  string image_preview = 7;
+  // [ OUTPUT_ONLY ]
+  string link = 8;
 }
 
 message ResourceView {
@@ -754,8 +766,10 @@ message Article {
   string subject = 2;
   string content = 3;
   int64 author_id = 4;
-  google.protobuf.Timestamp create_time = 5; // OUTPUT_ONLY
-  google.protobuf.Timestamp update_time = 6; // OUTPUT_ONLY
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp create_time = 5;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp update_time = 6;
   ResourceState state = 7;
   repeated string tags = 8;
 
