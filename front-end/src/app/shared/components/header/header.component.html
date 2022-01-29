@@ -40,19 +40,21 @@
 
         <mat-menu #manageAccounts="matMenu">
             <div class="message-panel-header">
-                <h5 style="margin-left: 16px;">
-                    消息
-                </h5>
+                <p>
+                    通知
+                </p>
             </div>
             <div class="message-panel-placeholder" *ngIf="notifications.length === 0">
                 <p>
-                    空信箱
+                    没有未读通知
                 </p>
             </div>
             <ng-template [matMenuContent]="notifications">
                 <ng-container *ngFor="let notification of notifications; let i = index">
-                    <button mat-menu-item (click)="openNotification(notification, i)">
+                    <button mat-menu-item (click)="openNotification(notification, i)" class="notification-button">
+                        <p class="notification-card">
                         {{notification.content}}
+                        </p>
                     </button>
                 </ng-container>
             </ng-template>

@@ -8,14 +8,19 @@ from handler.model.model_user import ModelUser
 from handler.util.time_util import get_now
 
 
-def get_earlist_activity(user: ModelUser) -> Optional[ModelActivity]:
+def _get_earlist_activity(user: ModelUser) -> Optional[ModelActivity]:
     activities = ModelActivity.list(ListOptions(parent=user.name, order_by='create_time'))[0]
     return next(activities, None)
 
 def backfill_user_create_update_time():
+    '''
+    Traverse table `users` and set fields `create_time`, `update_time` to the
+    `create_time` of earlist activity created by given user or current time if 
+    no activity is found.
+    '''
     users = ModelUser.list(ListOptions(parent=''))[0]
     for i, user in enumerate(users):
-        activity = get_earlist_activity(user)
+        activity = _get_earlist_activity(user)
         user.create_time = activity.create_time if activity else get_now()
         user.update_time = user.create_time
         user.update(update_update_time=False)

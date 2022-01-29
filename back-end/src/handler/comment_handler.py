@@ -36,8 +36,8 @@ class CommentHandler(HandlerBase):
             comment.index = thread.comment_count
         comment.create(parent=parent, user_id=user_id)
 
-        # Send notification
-        # (TODO): Add support for articles.
+        # Post creation
+        # 1. Send notification to thread author
         if isinstance(parent_obj, ModelThread):
             thread = parent_obj
             notify(

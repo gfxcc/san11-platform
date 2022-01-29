@@ -240,7 +240,8 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         update_mask = FieldMask.from_pb(request.update_mask)
         thread = ModelThread.from_name(request.thread.name)
         if 'pinned' in update_mask.paths:
-            if not context.user or not (context.user.is_admin() or find_resource(ResourceName.from_str(thread.name).parent).author_id == context.user.user_id):
+            if not context.user or not (context.user.is_admin() or
+                                        find_resource(ResourceName.from_str(thread.name).parent).author_id == context.user.user_id):
                 raise PermissionDenied()
         return self.thread_handler.update(ModelThread.from_pb(request.thread),
                                           update_mask,
@@ -379,11 +380,11 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def DeleteSubscriptioin(self, request, context):
         return self.subscription_handler.delete(request.name,
                                                 context).to_pb()
-                                            
+
     @GrpcAbortOnExcep
     def UnSubscribe(self, request, context):
         self.subscription_handler.unsubscribe(
-            request.subscribed_resource, 
+            request.subscribed_resource,
             request.subscriber_id,
             context)
         return pb.Status(code=0)

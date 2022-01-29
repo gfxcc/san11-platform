@@ -9,10 +9,6 @@ happened on resources being subscribed.
 Notifications should be sent on following events.
 * The user create a new resource. (e.g. Package, Binary, Thread, Comment, Reply)
 
-## Packages
-Notifications should be sent on following events.
-* A new binary is created under the package.
-
 # Implementation
 
 ## Proto

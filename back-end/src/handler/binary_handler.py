@@ -7,8 +7,11 @@ from handler.handler_context import HandlerContext
 from handler.model.base import FieldMask, HandlerBase, merge_resource
 from handler.model.base.base_db import ListOptions
 from handler.model.model_binary import File, ModelBinary
+from handler.model.model_subscription import ModelSubscription
+from handler.model.model_user import ModelUser
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.name_util import ResourceName
+from handler.util.notifier import notify
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .model.model_activity import ModelActivity
@@ -64,6 +67,18 @@ class BinaryHandler(HandlerBase):
             raise InvalidArgument(
                 'Either `file` or `download_method` has be specified.')
         binary.create(parent=parent, user_id=handler_context.user.user_id)
+        # Post creation
+        # notify all subscribers
+        author = ModelUser.from_name(f'users/{handler_context.user.user_id}')
+        package = ModelPackage.from_name(parent)
+        for sub in ModelSubscription.list(ListOptions(parent=author.name))[0]:
+            notify(
+                sender_id=author.user_id,
+                receiver_id=sub.subscriber_id,
+                content=f'【新版本】{author.username} 更新了 {package.package_name} {binary.version}',
+                link=package.name,
+                image_preview=package.image_urls[0] if package.image_urls else '',
+            )
         return binary
 
     def update(self, update_binary: ModelBinary, update_mask: FieldMask, handler_context: HandlerContext) -> ModelBinary:

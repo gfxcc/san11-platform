@@ -104,6 +104,11 @@ mat-badge-medium.mat-badge-above .mat-badge-content {
     min-width: 200px;
 }
 
+.message-panel-header>p {
+    margin: .5rem 1rem;
+    font-size: 1.4rem;
+}
+
 .message-panel-placeholder {
     min-height: 5rem;
     display: flex;
@@ -113,4 +118,15 @@ mat-badge-medium.mat-badge-above .mat-badge-content {
 
 .message-panel-placeholder p {
     color: grey;
+}
+
+.notification-button {
+    height: auto !important;
+}
+
+.notification-card {
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.5rem;
+    font-size: 1.25rem;
 }
