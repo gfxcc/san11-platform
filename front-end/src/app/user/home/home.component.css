@@ -38,3 +38,13 @@
     margin-top: 22px;
     width: 100%;
 }
+
+.author-sub-count {
+    color: #606060;
+    margin-right: 4px;
+    text-transform: none;
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 1rem;
+    line-height: 1.8rem;
+    font-weight: 400;
+}

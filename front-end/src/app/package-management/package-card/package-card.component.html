@@ -5,18 +5,23 @@
                 <img [hidden]="this.hideAuthorImage" [src]="this.authorImage" (load)="this.hideAuthorImage = false;" class="author-image">
             </div>
             <mat-card-title>
-                <p>{{package.packageName}}</p>
+
+                <span>
+                    {{package.packageName}}
+                </span>
+
+                <div [hidden]="! (isAdmin() && package.state!=1)">
+                    <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
+                </div>
             </mat-card-title>
 
-            <span class="example-spacer"></span>
 
-            <div [hidden]="! (isAdmin() && package.state!=1)">
-                <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
-            </div>
-
-            <mat-card-subtitle>{{authorName}}</mat-card-subtitle>
+            <mat-card-subtitle>
+                {{authorName}}
+            </mat-card-subtitle>
 
         </mat-card-header>
+
 
         <div class="screenshot">
             <div [hidden]="!this.hideScreenshot" class="animated-background screenshot"></div>
@@ -29,5 +34,6 @@
                 {{package.description}}
             </p>
         </mat-card-content> -->
+
     </mat-card>
 </div>

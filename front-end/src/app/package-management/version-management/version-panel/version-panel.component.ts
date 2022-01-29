@@ -144,6 +144,13 @@ export class VersionPanelComponent implements OnInit {
 
         this.tabs = this.tags.map(tag => { return { tag: tag }; });
         this.configDataSource();
+        // Set tabSelectedIndex to the first enabled tab.
+        for (let i = 0; i != this.tabs.length; ++i) {
+          if (!this.tabs[i].disabled) {
+            this.tabSelectedIndex = i;
+            break;
+          }
+        }
       },
       error => {
         this.notificationService.warn(`获取版本列表失败: ${error.statusMessage}`);
@@ -153,11 +160,12 @@ export class VersionPanelComponent implements OnInit {
 
   configDataSource() {
     this.tabs.forEach(tab => {
-      tab.dataSource = new MatTableDataSource(this.binaries.filter((binary: Binary) => binary.tag === tab.tag));
+      const binaries = this.binaries.filter((binary: Binary) => binary.tag === tab.tag)
+      tab.dataSource = new MatTableDataSource(binaries);
+      tab.disabled = binaries.length === 0;
       // tab.dataSource.paginator = this.paginator;
     });
 
-    // this.dataSource.paginator = this.paginator;
   }
 
   onDescription(binary: Binary) {

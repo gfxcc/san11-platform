@@ -16,7 +16,7 @@ import { San11PlatformServiceService } from '../../service/san11-platform-servic
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  packages: Package[] = [];
+  packages: Package[];
 
   constructor(
     private notificationService: NotificationService,

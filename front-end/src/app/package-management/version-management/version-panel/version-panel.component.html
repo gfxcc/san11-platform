@@ -14,7 +14,7 @@
 
 <mat-tab-group dynamicHeight [(selectedIndex)]="this.tabSelectedIndex" class="shadow-border" style="margin-top: -44px; ">
     <div *ngFor="let tab of tabs">
-        <mat-tab [label]="tab.tag">
+        <mat-tab [label]="tab.tag" [disabled]="tab.disabled">
             <div>
                 <table mat-table [dataSource]="tab.dataSource" class="" style="width: 100%;">
                     <!--- Note that these columns can be defined in any order.

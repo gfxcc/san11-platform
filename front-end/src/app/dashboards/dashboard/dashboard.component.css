@@ -2,6 +2,7 @@
 
 .grid {
     padding-top: 10px;
+    min-height: 200px;
     display: grid;
     grid-template-columns: repeat(auto-fill, 350px);
     grid-auto-rows: auto;
@@ -23,4 +24,15 @@
 .module:hover {
     background-color: #eee;
     color: #607d8b;
+}
+
+.dashboard-placeholder {
+    min-height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: grey;
+    font-size: 2rem;
+    font-weight: 500;
+    font-style: italic;
 }

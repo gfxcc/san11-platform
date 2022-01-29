@@ -4,3 +4,9 @@
         </app-article-card>
     </a>
 </div>
+
+<div *ngIf="articles?.length === 0" class="dashboard-placeholder">
+    <p>
+        空空如也
+    </p>
+</div>

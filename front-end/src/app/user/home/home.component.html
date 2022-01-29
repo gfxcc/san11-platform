@@ -7,7 +7,7 @@
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadUserAvatar(imageInput)">
             <div style="display: flex; flex-direction: column; justify-content: center; height: 80px;">
                 <div class="title">{{user.username}}</div>
-                <div>{{user.email}}</div>
+                <div class="author-sub-count">{{user.subscriberCount}} subscribers</div>
             </div>
 
             <span class="example-spacer"></span>

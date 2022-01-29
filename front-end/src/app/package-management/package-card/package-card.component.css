@@ -44,12 +44,16 @@ mat-card-content {
     float: right;
 }
 
-mat-card-title p {
-    overflow-y: auto;
-    white-space: pre-wrap;
-    word-break: break-all;
-    max-height: 28px;
-    margin: 0%;
+mat-card-title {
+    margin: 0;
+    display: grid;
+    grid-auto-flow: column;
+}
+
+mat-card-title>span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 mat-card-content p {
