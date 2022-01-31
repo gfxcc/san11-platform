@@ -57,7 +57,9 @@ class UserHandler(HandlerBase):
         if user.image_url != base_user.image_url:
             if base_user.image_url:
                 try:
-                    Image.from_url(base_user.image_url).delete()
+                    img = Image.from_url(base_user.image_url)
+                    if img.url != 'users/default_avatar.jpg':
+                        img.delete()
                 except Exception as err:
                     logger.error(
                         f'Failed to delete {base_user.image_url}: {err}')
