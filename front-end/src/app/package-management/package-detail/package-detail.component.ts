@@ -715,6 +715,9 @@ export class PackageDetailComponent implements OnInit {
       return;
     }
     if (this.subscribed) {
+      if (!confirm('确定要退订吗?')){
+        return;
+      }
       this.san11pkService.unSubscribe(new UnSubscribeRequest({
         subscribedResource: this.author.name,
         subscriberId: loadUser().userId,
