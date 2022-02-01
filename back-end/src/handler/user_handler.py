@@ -1,28 +1,26 @@
 import logging
 import os
-from typing import Iterable, List, Optional, Tuple, Type
+from typing import List, Optional, Tuple
 
-from handler.auths import session
 from handler.handler_context import HandlerContext
 from handler.model.base import (FieldMask, HandlerBase, ModelBase,
                                 merge_resource)
 from handler.model.base.base_db import ListOptions
 from handler.model.model_user import (ModelUser, get_user_by_email,
                                       validate_email, validate_new_user,
-                                      validate_password, validate_username)
-from handler.protos import san11_platform_pb2 as pb
-from handler.util.user_util import (hash_password, normalize_email,
-                                    verify_password)
+                                      validate_username)
+from handler.util.user_util import verify_password
 
 from .auths import Session
-from .common.exception import (AlreadyExists, InvalidArgument, NotFound,
-                               PermissionDenied, Unauthenticated)
+from .common.exception import NotFound, Unauthenticated
 from .common.image import Image
-from .model.user import User, generate_verification_code, verify_code
-from .protos import san11_platform_pb2
+from .model.user import generate_verification_code, verify_code
 from .util.notifier import Notifier
 
 logger = logging.getLogger(os.path.basename(__file__))
+
+
+DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
 
 class UserHandler(HandlerBase):
@@ -34,7 +32,7 @@ class UserHandler(HandlerBase):
 
     def create(self, parent: str, user: ModelUser,
                handler_context: HandlerContext) -> ModelUser:
-        user.image_url = 'users/default_avatar.jpg'
+        user.image_url = DEFAULT_USER_AVATAR
         validate_new_user(user)
         user.create(parent)
         return user
@@ -55,11 +53,9 @@ class UserHandler(HandlerBase):
         user: ModelUser = merge_resource(
             base_user, update_resource, update_mask)
         if user.image_url != base_user.image_url:
-            if base_user.image_url:
+            if base_user.image_url and base_user.image_url != DEFAULT_USER_AVATAR:
                 try:
-                    img = Image.from_url(base_user.image_url)
-                    if img.url != 'users/default_avatar.jpg':
-                        img.delete()
+                    Image.from_url(base_user.image_url).delete()
                 except Exception as err:
                     logger.error(
                         f'Failed to delete {base_user.image_url}: {err}')
