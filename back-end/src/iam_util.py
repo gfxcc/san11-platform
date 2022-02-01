@@ -44,7 +44,7 @@ def assert_login(func: ServerHandlerType):
     @functools.wraps(func)
     def iam_wrapper(this, request, context):
         if context.user is None:
-            raise Unauthenticated()
+            raise Unauthenticated(message='未验证的用户，请尝试重新登录')
         return func(this, request, context)
     return iam_wrapper
 
