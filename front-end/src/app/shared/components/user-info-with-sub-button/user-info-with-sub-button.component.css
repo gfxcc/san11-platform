@@ -1,0 +1,50 @@
+.container {
+    width: 100%;
+    display: flex;
+}
+
+.user-info-section {
+    display: flex;
+}
+
+.text-info-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.text-info {
+}
+
+.user-name {
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 1.4em;
+    line-height: 1.25em;
+    font-weight: 500;
+}
+
+.user-image {
+    background-size: cover;
+    width: 4.8em;
+    height: 4.8em;
+    border-radius: 50%;
+    margin-right: 16px;
+}
+
+.user-sub-count {
+    color: #606060;
+    margin-right: 4px;
+    text-transform: none;
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 1em;
+    line-height: 1.8em;
+    font-weight: 400;
+}
+
+.subscribe-section {
+    display: grid;
+    align-content: center;
+}
+
+.subscribe-button {
+    height: fit-content;
+}

@@ -238,41 +238,9 @@
     padding-bottom: 16px;
 }
 
-.top-row {
+.user-info-with-sub-button {
     margin-bottom: 12px;
     padding-top: 16px;
-    display: flex;
-}
-
-.package-owner-render {
-    display: flex;
-}
-
-.upload-info {}
-
-.author-name {
-    font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1.2rem;
-    line-height: 2rem;
-    font-weight: 500;
-}
-
-.author-sub-count {
-    color: #606060;
-    margin-right: 4px;
-    text-transform: none;
-    font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1rem;
-    line-height: 1.8rem;
-    font-weight: 400;
-}
-
-.subscribe-section {
-    display: flex;
-}
-
-.subscribe-button {
-    height: fit-content;
 }
 
 .package-description-section {

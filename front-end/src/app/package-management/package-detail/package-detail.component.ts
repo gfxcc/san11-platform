@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 // import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
 // import Image from '@ckeditor/ckeditor5-image/src/image';
 import { ImageItem } from 'ng-gallery';
-import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, Package, ResourceState, Status, Subscription, Tag, UnSubscribeRequest, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { Action, CreateImageRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListTagsRequest, Package, ResourceState, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 // import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
@@ -16,7 +16,7 @@ import { MyUploadAdapter } from '../../service/cke-upload-adapter';
 import { EventEmiterService } from "../../service/event-emiter.service";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { UploadService } from '../../service/upload.service';
-import { decrement, increment } from '../../utils/number_util';
+import { increment } from '../../utils/number_util';
 import { getCategoryId, getPackageUrl } from "../../utils/package_util";
 import { getFullUrl, parseName } from "../../utils/resrouce_util";
 import { getUserUrl, isAdmin, loadUser, signedIn } from "../../utils/user_util";
@@ -44,8 +44,6 @@ export class PackageDetailComponent implements OnInit {
   packageId: string;
   package: Package;
   author: User = new User({});
-  hideAuthorImage = true;
-  authorImageUrl: string;
 
   packageNameUpdated = false;
   loading;
@@ -71,8 +69,6 @@ export class PackageDetailComponent implements OnInit {
   descFolded = true;
   liked = false;
   disliked = false;
-  subscribed = false;
-  notificationEnabled = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -436,26 +432,6 @@ export class PackageDetailComponent implements OnInit {
     this.loadAuthor();
 
     this.setLikeAndDislikeStatus();
-    this.setSubscriptionStatus();
-  }
-
-  setSubscriptionStatus() {
-    if (!signedIn()) {
-      return;
-    }
-    this.san11pkService.listSubscription(new ListSubscriptionsRequest({
-      parent: `users/${this.package.authorId}`,
-      filter: `subscriber_id=${loadUser().userId}`,
-    })).subscribe(
-      (resp: ListSubscriptionsResponse) => {
-        console.log(resp);
-        if (resp.subscriptions.length > 0) {
-          this.subscribed = true;
-        }
-      }, error => {
-        this.notificationService.warn(`载入订阅状态失败: ${error.statusMessage}`);
-      }
-    );
   }
 
   setLikeAndDislikeStatus() {
@@ -476,10 +452,6 @@ export class PackageDetailComponent implements OnInit {
 
       }
     );
-  }
-
-  onAuthorClick() {
-    this.router.navigate(['users', this.package.authorId]);
   }
 
   // admin
@@ -709,55 +681,6 @@ export class PackageDetailComponent implements OnInit {
     this.toggleAction('dislike_count');
   }
 
-  onSubscribe() {
-    if (!signedIn()) {
-      this.notificationService.warn('请登录');
-      return;
-    }
-    if (this.subscribed) {
-      if (!confirm('确定要退订吗?')){
-        return;
-      }
-      this.san11pkService.unSubscribe(new UnSubscribeRequest({
-        subscribedResource: this.author.name,
-        subscriberId: loadUser().userId,
-      })).subscribe(
-        (resp: Status) => {
-          this.author.subscriberCount = decrement(this.author.subscriberCount);
-          this.notificationService.success('退订成功');
-        }, error => {
-          this.notificationService.warn(`退订失败: ${error.statusMessage}`);
-        }
-      );
-
-      this.subscribed = false;
-      this.notificationEnabled = false;
-    } else {
-      this.san11pkService.createSubscription(new CreateSubscriptionRequest({
-        parent: `users/${this.package.authorId}`,
-        subscription: new Subscription({
-          type: Subscription.SubscribeType.ALL,
-        }),
-      })).subscribe(
-        (sub: Subscription) => {
-          this.author.subscriberCount = increment(this.author.subscriberCount);
-          this.notificationService.success(`订阅成功`);
-        }, error => {
-          this.notificationService.warn(`订阅失败: ${error.statusMessage}`);
-        }
-      );
-      this.subscribed = true;
-    }
-  }
-
-  onNotification() {
-    if (this.notificationEnabled) {
-      this.notificationEnabled = false;
-    } else {
-      this.notificationEnabled = true;
-    }
-  }
-
   onReport() {
     if (!signedIn()) {
       this.notificationService.warn('请登录');
@@ -767,14 +690,12 @@ export class PackageDetailComponent implements OnInit {
 
   }
 
-
   loadAuthor() {
     this.san11pkService.getUser(new GetUserRequest({
       name: `users/${this.package.authorId}`,
     })).subscribe(
       user => {
         this.author = user;
-        this.authorImageUrl = getFullUrl(this.author.imageUrl);
       },
       error => {
         this.notificationService.warn('无法获取作者信息:' + error.statusMessage);

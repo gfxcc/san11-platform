@@ -1,29 +1,26 @@
 <div class="top">
-    <div class="user-section">
+    <!-- <div class="user-section">
         <div>
             <button mat-button (click)="onAvatarClick()" class="author-image">
                 <img [src]="userImageUrl" class="author-image">
             </button>
-            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadUserAvatar(imageInput)">
+            <input type="file" accept="image/*" hidden="true" #imageInput
+                (change)="onUploadUserAvatar(imageInput)">
         </div>
 
         <div class="top-right">
-            <div class="text-info">
-                <div class="title">{{user.username}}</div>
-                <div class="author-sub-count">{{user.subscriberCount}} subscribers</div>
-            </div>
-
-            <div class="subscribe-section">
-                <button class="subscribe-button" mat-flat-button [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{subscribed?'退订':'订阅'}}</button>
-            </div>
         </div>
-
-
-    </div>
+    </div> -->
+    <app-user-info-with-sub-button class="user-section"
+        [user]="this.user">
+    </app-user-info-with-sub-button>
 </div>
 
-<mat-tab-group class="tab-groups" mat-align-tabs="center" (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedIndex">
-    <mat-tab *ngFor="let tab of tabs" [label]="tab.label" [disabled]="tab.disabled"></mat-tab>
+<mat-tab-group class="tab-groups" mat-align-tabs="center"
+    (selectedTabChange)="selectedTabChange($event)"
+    [(selectedIndex)]="selectedIndex">
+    <mat-tab *ngFor="let tab of tabs" [label]="tab.label"
+        [disabled]="tab.disabled"></mat-tab>
 </mat-tab-group>
 
 <div class="bottom">

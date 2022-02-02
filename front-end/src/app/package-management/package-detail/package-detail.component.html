@@ -4,19 +4,27 @@
         <div class="heading show-border-dev">
             <span class="example-spacer"></span>
 
-            <button mat-stroked-button color="primary" *ngIf="this.packageNameUpdated" (click)="onUpdateTitle()" style="height: 36px;">更新</button>
+            <button mat-stroked-button color="primary"
+                *ngIf="this.packageNameUpdated" (click)="onUpdateTitle()"
+                style="height: 36px;">更新</button>
 
         </div>
 
         <div class="image-gallery">
-            <gallery class="gallery" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free" [counter]="false" slidingDirection="vertical" [nav]="false" (itemClick)="onGalleryItemClick($event)" [autoPlay]="false" [playerInterval]="5000" #gallery></gallery>
+            <gallery class="gallery" [items]="images" [thumb]="true"
+                thumbPosition="left" thumbMode="free" [counter]="false"
+                slidingDirection="vertical" [nav]="false"
+                (itemClick)="onGalleryItemClick($event)" [autoPlay]="false"
+                [playerInterval]="5000" #gallery></gallery>
 
-            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
+            <input type="file" accept="image/*" hidden="true" #imageInput
+                (change)="onUploadScreenshot(imageInput)">
         </div>
 
         <div class="info-container">
             <h1 style="margin: 0;">
-                <div #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;">
+                <div #packageNameTitle class="title"
+                    (focus)="this.packageNameUpdated=true;">
                     {{this.package.packageName}} </div>
             </h1>
             <div class="info-content">
@@ -39,7 +47,8 @@
 
                 <div class="top-level-buttons">
                     <div class="icon-button">
-                        <a matTooltip="我要点赞" class="toggle-button-render" (click)="onToggleLike()">
+                        <a matTooltip="我要点赞" class="toggle-button-render"
+                            (click)="onToggleLike()">
                             <button mat-icon-button class="button-svg">
                                 <svg *ngIf="!liked" viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
@@ -71,7 +80,8 @@
                         </a>
                     </div>
                     <div class="icon-button">
-                        <a matTooltip="不喜欢" class="toggle-button-render" (click)="onToggleDislike()">
+                        <a matTooltip="不喜欢" class="toggle-button-render"
+                            (click)="onToggleDislike()">
                             <button mat-icon-button class="button-svg">
                                 <svg *ngIf="!disliked" viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
@@ -124,7 +134,8 @@
                     <div class="icon-button">
                         <a matTooltip="收藏 (未开放)" class="toggle-button-render
                             disabled-text">
-                            <button mat-icon-button class="button-svg" [disabled]="true">
+                            <button mat-icon-button class="button-svg"
+                                [disabled]="true">
                                 <svg viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -142,7 +153,8 @@
 
                     <div class="icon-button">
                         <a matTooltip="更多" class="toggle-button-render">
-                            <button mat-icon-button class="button-svg" [matMenuTriggerFor]="menu">
+                            <button mat-icon-button class="button-svg"
+                                [matMenuTriggerFor]="menu">
                                 <svg viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -158,7 +170,8 @@
                             </button>
                             <mat-menu #menu="matMenu">
                                 <button mat-menu-item style="display: flex;
-                                    align-items: center;" (click)="onReport()" [disabled]="true">
+                                    align-items: center;" (click)="onReport()"
+                                    [disabled]="true">
                                     <div style="width: 24px; height: 24px;">
                                         <svg viewBox="0 0 24 24"
                                             preserveAspectRatio="xMidYMid
@@ -190,84 +203,31 @@
 
         <div class="meta-content">
             <div class="container">
-                <div class="top-row">
-                    <div class="package-owner-render">
+                <app-user-info-with-sub-button class="user-info-with-sub-button"
+                    [user]="this.author">
+                </app-user-info-with-sub-button>
 
-                        <a [href]="&quot;users/&quot;+this.author.userId">
-                            <img [hidden]="this.hideAuthorImage" [src]="this.authorImageUrl" (load)="this.hideAuthorImage= false;" class="author-image">
-                        </a>
-                        <div class="upload-info">
-                            <a class="author-name clickable" [matTooltip]="this.author.username" [href]="&quot;users/&quot;+this.author.userId">{{this.author.username}}</a>
-                            <div class="author-sub-count">{{this.author.subscriberCount}} subscribers
-                            </div>
-                        </div>
-
-                    </div>
-                    <div style="flex-grow: 1;">
-                    </div>
-                    <div class="subscribe-section">
-                        <button class="subscribe-button" mat-flat-button [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{subscribed?'退订':'订阅'}}</button>
-                        <!-- <div *ngIf="subscribed" class="icon-button" style="margin-left: .5rem !important;">
-                            <a class="toggle-button-render disabled-text">
-                                <button mat-icon-button class="button-svg" (click)="onNotification()">
-                                    <svg *ngIf="notificationEnabled" viewBox="0
-                                        0 24 24" preserveAspectRatio="xMidYMid
-                                        meet" focusable="false"
-                                        style="pointer-events: none; display:
-                                        block; width: 100%; height: 100%;"
-                                        class="style-scope yt-icon"><g
-                                            class="style-scope yt-icon"><path
-                                                d="M21.5
-                                                8.99992H19.5V8.80992C19.5
-                                                6.89992 18.39 5.18991 16.6
-                                                4.32991L17.47 2.52991C19.96
-                                                3.71991 21.5 6.12992 21.5
-                                                8.80992V8.99992ZM4.5 8.80992C4.5
-                                                6.89992 5.61 5.18991 7.4
-                                                4.32991L6.53 2.52991C4.04
-                                                3.71991 2.5 6.12992 2.5
-                                                8.80992V8.99992H4.5V8.80992ZM12
-                                                21.9999C13.1 21.9999 14 21.0999
-                                                14 19.9999H10C10 21.0999 10.9
-                                                21.9999 12 21.9999ZM20
-                                                17.3499V18.9999H4V17.3499L6
-                                                15.4699V10.3199C6 7.39991 7.56
-                                                5.09992 10 4.33992V3.95991C10
-                                                2.53991 11.49 1.45991 12.99
-                                                2.19991C13.64 2.51991 14 3.22991
-                                                14 3.95991V4.34991C16.44 5.09991
-                                                18 7.40991 18 10.3299V15.4799L20
-                                                17.3499Z" class="style-scope
-                                                yt-icon"></path></g></svg>
-                                    <svg *ngIf="!notificationEnabled" viewBox="0
-                                        0 24 24" preserveAspectRatio="xMidYMid
-                                        meet" focusable="false"
-                                        style="pointer-events: none; display:
-                                        block; width: 100%; height: 100%;"
-                                        class="style-scope yt-icon"><g
-                                            class="style-scope yt-icon"><path
-                                                d="M10,20h4c0,1.1-0.9,2-2,2S10,21.1,10,20z
-                                                M20,17.35V19H4v-1.65l2-1.88v-5.15c0-2.92,1.56-5.22,4-5.98V3.96
-                                                c0-1.42,1.49-2.5,2.99-1.76C13.64,2.52,14,3.23,14,3.96l0,0.39c2.44,0.75,4,3.06,4,5.98v5.15L20,17.35z
-                                                M19,17.77l-2-1.88v-5.47
-                                                c0-2.47-1.19-4.36-3.13-5.1c-1.26-0.53-2.64-0.5-3.84,0.03C8.15,6.11,7,7.99,7,10.42v5.47l-2,1.88V18h14V17.77z"
-                                                class="style-scope yt-icon"></path></g></svg>
-                                </button>
-                            </a>
-                        </div> -->
-                    </div>
-
-                </div>
                 <div class="package-description-section">
-                    <div #description id="description-container" [class.desc-folded]="descFolded && !descEditor_updated" [class.desc-full]="!(descFolded &&
+                    <div #description id="description-container"
+                        [class.desc-folded]="descFolded && !descEditor_updated"
+                        [class.desc-full]="!(descFolded &&
                         !descEditor_updated)">
-                        <ckeditor #description [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
+                        <ckeditor #description [data]="this.descEditor_data"
+                            [editor]="descEditor"
+                            (ready)="onDescEditorReady($event)"
+                            (change)="onDescEditorChange($event)"
+                            [disabled]="this.descEditor_disabled"
+                            [config]="this.descEditor_config"></ckeditor>
                     </div>
                     <div *ngIf="!descEditor_updated">
-                        <span id="more-button" *ngIf="descFolded" (click)="this.descFolded= false;" class="more-button">更多</span>
+                        <span id="more-button" *ngIf="descFolded"
+                            (click)="this.descFolded= false;"
+                            class="more-button">更多</span>
                         <!-- <span id="more-button" *ngIf="!descFolded" (click)="this.descFolded = true;" class="more-button">折叠</span> -->
                     </div>
-                    <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()" class="update-button">更新</button>
+                    <button *ngIf="this.descEditor_updated" mat-stroked-button
+                        color="primary" (click)="onUpdateDesc()"
+                        class="update-button">更新</button>
                 </div>
 
             </div>
@@ -277,15 +237,19 @@
         <div style="margin-bottom: 5px;">
             <!-- <div class="heading-1">标签</div> -->
             <mat-chip-list #chipList>
-                <mat-chip *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
+                <mat-chip *ngFor="let tag of this.package.tags"
+                    selectable="false" [removable]="this.tagCanEdit"
+                    (removed)="removeTag(tag)">
                     {{tag.tagName}}
                     <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
                 </mat-chip>
 
                 <mat-form-field *ngIf="tagCanEdit">
                     <mat-label>新标签...</mat-label>
-                    <mat-select required (selectionChange)="newTagSelected($event.value)">
-                        <mat-option *ngFor="let tag of this.allTags" [value]="tag">
+                    <mat-select required
+                        (selectionChange)="newTagSelected($event.value)">
+                        <mat-option *ngFor="let tag of this.allTags"
+                            [value]="tag">
                             {{tag.tagName}}
                         </mat-option>
                     </mat-select>
@@ -304,8 +268,10 @@
             <div *ngIf="(isAdmin() || isAuthor())" class="package-controller
                 top-border show-border-dev">
                 <div class="admin-zone" *ngIf="isAdmin()">
-                    <button mat-button mat-stroked-button color="accent" *ngIf="this.package.state===2" (click)="onApprove()">通过审核</button>
-                    <button mat-button mat-stroked-button color="accent" *ngIf="this.package.state===1 ||
+                    <button mat-button mat-stroked-button color="accent"
+                        *ngIf="this.package.state===2" (click)="onApprove()">通过审核</button>
+                    <button mat-button mat-stroked-button color="accent"
+                        *ngIf="this.package.state===1 ||
                         this.package.state===3" (click)="onFlipHide()">{{this.package.state===3
                         ? '取消隐藏' : '隐藏'}}</button>
                 </div>
@@ -318,7 +284,8 @@
                     <span class="example-spacer"></span>
                     <!-- dangerous zone -->
                     <div class="">
-                        <button class="button" mat-stroked-button color="warn" (click)="onDelete()">删除</button>
+                        <button class="button" mat-stroked-button color="warn"
+                            (click)="onDelete()">删除</button>
                     </div>
 
                 </div>
@@ -326,7 +293,8 @@
         </div>
 
         <div class="version-info show-border-dev">
-            <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)">
+            <app-version-panel [package]="this.package"
+                (downloadEvent)="onChildDownload($event)">
             </app-version-panel>
         </div>
 

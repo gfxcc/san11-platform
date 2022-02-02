@@ -1,30 +1,32 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { UserCardComponent } from './components/user-card/user-card.component'
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { AngularMaterialModule } from '../angular-material.module';
-import { HeaderComponent } from './components/header/header.component';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CreateNewComponent } from './components/create-new/create-new.component';
-import { MatTabsModule } from '@angular/material/tabs';
-import { CommentBoardComponent } from './components/comment-board/comment-board.component';
-import { CommentCardComponent } from './components/comment-card/comment-card.component';
-import { ReplyCardComponent } from './components/comment-card/reply-card/reply-card.component';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
-import { DiscussionComponent } from './components/discussion/discussion.component';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ForumRoutingModule } from '../forum/forum-routing.module';
-import { ThreadCardComponent } from './components/discussion/thread-card/thread-card.component';
-import { ThreadDetailComponent } from './components/discussion/thread-detail/thread-detail.component';
-import { CreateThreadComponent } from './components/discussion/create-thread/create-thread.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
+import { AngularMaterialModule } from '../angular-material.module';
+import { ForumRoutingModule } from '../forum/forum-routing.module';
+import { CommentBoardComponent } from './components/comment-board/comment-board.component';
+import { CommentCardComponent } from './components/comment-card/comment-card.component';
+import { ReplyCardComponent } from './components/comment-card/reply-card/reply-card.component';
+import { CreateNewComponent } from './components/create-new/create-new.component';
+import { CreateThreadComponent } from './components/discussion/create-thread/create-thread.component';
+import { DiscussionComponent } from './components/discussion/discussion.component';
+import { ThreadCardComponent } from './components/discussion/thread-card/thread-card.component';
+import { ThreadDetailComponent } from './components/discussion/thread-detail/thread-detail.component';
+import { HeaderComponent } from './components/header/header.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
+import { UserCardComponent } from './components/user-card/user-card.component';
+import { UserInfoWithSubButtonComponent } from './components/user-info-with-sub-button/user-info-with-sub-button.component';
+import { FullUrlPipe } from './pipes/full-url.pipe';
 
 
 
@@ -41,6 +43,8 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     ThreadCardComponent,
     ThreadDetailComponent,
     CreateThreadComponent,
+    UserInfoWithSubButtonComponent,
+    FullUrlPipe,
   ],
   imports: [
     CommonModule,
@@ -65,6 +69,9 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     CommentBoardComponent,
     CommentCardComponent,
     DiscussionComponent,
+    UserInfoWithSubButtonComponent,
+    // Pipes
+    FullUrlPipe,
   ]
 })
 export class SharedModule { }

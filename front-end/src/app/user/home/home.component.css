@@ -15,10 +15,7 @@
 
 .user-section {
     padding: 20px 0 8px 0;
-    /* width: 60%; */
-    /* min-width: 300px;
-    max-width: 1400px; */
-    display: flex;
+    font-size: 1.2rem;
     width: 80%;
     max-width: 700px;
 }
@@ -49,21 +46,4 @@
     font-size: 1rem;
     line-height: 1.8rem;
     font-weight: 400;
-}
-
-.text-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 80px;
-    flex-grow: 1;
-}
-
-.subscribe-section {
-    display: grid;
-    align-content: center;
-}
-
-.subscribe-button {
-    height: fit-content;
 }
