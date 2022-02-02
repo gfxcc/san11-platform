@@ -270,6 +270,10 @@
     margin-top: 8px;
 }
 
+
+.discussion-section {
+}
+
 @media (max-width: 40rem) {
     .top-section {
         flex-direction: column;

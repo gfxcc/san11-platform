@@ -299,7 +299,10 @@
         </div>
 
         <!-- <app-comment-board [parent]="this.getPackageUrl()" [package]="this.package" class="comment-section"></app-comment-board> -->
-        <app-discussion [parent]="this.package.name"></app-discussion>
+        <div style="height: 900px;">
+            <app-discussion [parent]="this.package.name"
+                class="discussion-section"></app-discussion>
+        </div>
 
     </div>
 </div>
