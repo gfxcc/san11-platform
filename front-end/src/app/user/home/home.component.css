@@ -20,15 +20,6 @@
     max-width: 700px;
 }
 
-.author-image {
-    padding: 0;
-    width: 80px;
-    height: 80px;
-    background-size: cover;
-    border-radius: 50%;
-    margin-right: 10px
-}
-
 .top-right {
     flex-grow: 1;
     display: flex;

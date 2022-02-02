@@ -1,15 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { v4 as uuid } from 'uuid';
-import { CreateImageRequest, User } from '../../../proto/san11-platform.pb';
+import { User } from '../../../proto/san11-platform.pb';
 import { LoadingComponent } from '../../common/components/loading/loading.component';
-import { GlobalConstants } from '../../common/global-constants';
 import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { UploadService } from '../../service/upload.service';
 import { getFullUrl } from '../../utils/resrouce_util';
-import { getUserUrl, loadUser } from '../../utils/user_util';
 
 @Component({
   selector: 'app-home',
@@ -95,49 +92,6 @@ export class HomeComponent implements OnInit {
   selectedTabChange(event: { index: number }) {
     const link = this.tabs[event.index].link;
     this.router.navigate(link, { relativeTo: this.route, state: { user: this.user } });
-  }
-
-  onAvatarClick() {
-    console.log('click');
-    if (this.user.userId != loadUser().userId) {
-      return;
-    }
-
-    if (confirm('要更换头像吗?')) {
-      this.imageInputElement.nativeElement.click();
-    }
-  }
-
-  onUploadUserAvatar(imageInput) {
-    const image = imageInput.files[0];
-    if (image.size > GlobalConstants.maxImageSize) {
-      alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize / 1024 / 1024).toString() + 'MB');
-      return;
-    }
-
-    this.loading = this.dialog.open(LoadingComponent);
-
-    const parent = getUserUrl(this.user);
-    const filename = `${parent}/images/${uuid()}.jpeg`
-    this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
-      if (upload.state === 'DONE') {
-        this.san11pkService.createImage(new CreateImageRequest({
-          parent: parent,
-          url: filename
-        })).subscribe(
-          url => {
-            this.user.imageUrl = url.url;
-
-            this.notificationService.success('图片上传成功');
-            this.loading.close();
-          },
-          error => {
-            this.notificationService.warn('上传截图失败: ' + error.statusMessage);
-            this.loading.close();
-          }
-        );
-      }
-    });
   }
 
 }

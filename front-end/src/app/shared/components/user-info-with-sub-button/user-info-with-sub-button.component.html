@@ -1,14 +1,20 @@
 <div class="container">
     <div class="user-info-section">
 
-        <a [href]="this.user.name">
-            <img [hidden]="this.hideAvatar" [src]="this.user.imageUrl | fullUrl"
-                (load)="this.hideAvatar=false;" class="user-image">
-        </a>
+        <div>
+            <button mat-button (click)="onAvatarClick()" class="user-image">
+                <img [hidden]="this.hideAvatar" [src]="this.user.imageUrl |
+                    fullUrl"
+                    (load)="this.hideAvatar=false;" class="user-image">
+            </button>
+            <input type="file" accept="image/*" hidden="true" #imageInput
+                (change)="onUploadUserAvatar(imageInput)">
+        </div>
+
         <div class="text-info-wrapper">
             <div class="text-info">
                 <a class="user-name clickable" [matTooltip]="this.user.username"
-                    [href]="&quot;users/&quot;+this.user.userId">{{this.user.username}}</a>
+                    [href]="this.user.name">{{this.user.username}}</a>
                 <div class="user-sub-count">{{this.user.subscriberCount}}
                     subscribers
                 </div>
