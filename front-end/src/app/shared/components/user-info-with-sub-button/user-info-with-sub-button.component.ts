@@ -7,7 +7,7 @@ import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { decrement, increment } from 'src/app/utils/number_util';
-import { getUserUrl, loadUser, signedIn } from 'src/app/utils/user_util';
+import { getUserUrl, loadUser, saveUser, signedIn } from 'src/app/utils/user_util';
 import { CreateImageRequest, CreateSubscriptionRequest, ListSubscriptionsRequest, ListSubscriptionsResponse, Status, Subscription, UnSubscribeRequest, User } from 'src/proto/san11-platform.pb';
 import { v4 as uuid } from 'uuid';
 
@@ -137,6 +137,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
         })).subscribe(
           url => {
             this.user.imageUrl = url.url;
+            saveUser(this.user);
 
             this.notificationService.success('图片上传成功');
             this.loading.close();
