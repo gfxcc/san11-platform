@@ -1,15 +1,16 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { decrement, increment } from 'src/app/utils/number_util';
 import { v4 as uuid } from 'uuid';
-import { CreateImageRequest, User } from '../../../proto/san11-platform.pb';
+import { CreateImageRequest, CreateSubscriptionRequest, Status, Subscription, UnSubscribeRequest, User } from '../../../proto/san11-platform.pb';
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
 import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { UploadService } from '../../service/upload.service';
 import { getFullUrl } from '../../utils/resrouce_util';
-import { getUserUrl, loadUser } from '../../utils/user_util';
+import { getUserUrl, loadUser, signedIn } from '../../utils/user_util';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,8 @@ export class HomeComponent implements OnInit {
   loading: MatDialogRef<LoadingComponent>;
   user: User;
   selectedIndex = 0;
+  subscribed = false;
+  notificationEnabled = true;
 
   tabs = [
     {
@@ -140,4 +143,44 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  onSubscribe() {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+      return;
+    }
+    if (this.subscribed) {
+      if (!confirm('确定要退订吗?')){
+        return;
+      }
+      this.san11pkService.unSubscribe(new UnSubscribeRequest({
+        subscribedResource: this.user.name,
+        subscriberId: loadUser().userId,
+      })).subscribe(
+        (resp: Status) => {
+          this.user.subscriberCount = decrement(this.user.subscriberCount);
+          this.notificationService.success('退订成功');
+        }, error => {
+          this.notificationService.warn(`退订失败: ${error.statusMessage}`);
+        }
+      );
+
+      this.subscribed = false;
+      this.notificationEnabled = false;
+    } else {
+      this.san11pkService.createSubscription(new CreateSubscriptionRequest({
+        parent: this.user.name,
+        subscription: new Subscription({
+          type: Subscription.SubscribeType.ALL,
+        }),
+      })).subscribe(
+        (sub: Subscription) => {
+          this.user.subscriberCount = increment(this.user.subscriberCount);
+          this.notificationService.success(`订阅成功`);
+        }, error => {
+          this.notificationService.warn(`订阅失败: ${error.statusMessage}`);
+        }
+      );
+      this.subscribed = true;
+    }
+  }
 }
