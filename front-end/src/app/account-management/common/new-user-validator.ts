@@ -1,6 +1,6 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, debounceTime, map } from 'rxjs/operators';
 import { Status, User, ValidateNewUserRequest, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
@@ -17,7 +17,10 @@ export class NewUserValidators {
                     (status) => {
                         return (status.code === '0' || control.value === originalValue) ? null : { invalidNewUser: status.message };
                     },
-                )
+                ),
+                catchError(err => {
+                    return of({ invalidNewUser: err.statusMessage });
+                }),
             );
         };
     }
@@ -31,7 +34,10 @@ export class NewUserValidators {
                 })
             })).pipe(
                 debounceTime(500),
-                map((status: Status) => (status.code === '0' || control.value === originalValue) ? null : { invalidNewUser: status.message })
+                map((status: Status) => (status.code === '0' || control.value === originalValue) ? null : { invalidNewUser: status.message }),
+                catchError(err => {
+                    return of({ invalidNewUser: err.statusMessage });
+                }),
             );
         };
     }
@@ -43,7 +49,10 @@ export class NewUserValidators {
                 verificationCode: control.value,
             })).pipe(
                 debounceTime(500),
-                map((resp: VerifyEmailResponse) => (resp.ok === true || control.value === originalValue) ? null : { invalidNewUser: '验证码不正确' })
+                map((resp: VerifyEmailResponse) => (resp.ok === true || control.value === originalValue) ? null : { invalidNewUser: '验证码不正确' }),
+                catchError(err => {
+                    return of({ invalidNewUser: err.statusMessage });
+                }),
             );
         };
     }

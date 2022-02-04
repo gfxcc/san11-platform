@@ -651,9 +651,13 @@ message User {
       enum UserType {
     USER_TYPE_UNSPECIFIED = 0;
 
+    // System maintainer
     ADMIN = 1;
+    TESTER = 2;
 
+    // Customers
     REGULAR = 11;
+
   }
 }
 

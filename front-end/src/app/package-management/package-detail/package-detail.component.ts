@@ -103,13 +103,7 @@ export class PackageDetailComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-
-    // this.authroNameElement.nativeElement.className = 'clickable';
-    // this.authroNameElement.nativeElement.onclick = () => {
-
-    // };
     if (this.isAuthor()) {
-      // this.packageNameElement.nativeElement.className = 'clickable title';
       this.packageNameElement.nativeElement.contentEditable = true;
     }
   }
