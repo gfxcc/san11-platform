@@ -473,23 +473,31 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     @GrpcAbortOnExcep
     def VerifyEmail(self, request, context):
-        ok, user = self.user_handler.verify_email(
-            request.email, request.verification_code, context)
-        ret = pb.VerifyEmailResponse(
-            ok=ok,
-        )
-        if user:
-            getattr(ret, 'user').CopyFrom(user.to_pb())
+        ret = pb.VerifyEmailResponse()
+        try:
+            ok, user = self.user_handler.verify_email(
+                request.email, request.verification_code, context)
+            ret = pb.VerifyEmailResponse(
+                ok=ok,
+            )
+            setattr(ret, 'ok', ok)
+            if user:
+                getattr(ret, 'user').CopyFrom(user.to_pb())
+        except Unauthenticated as err:
+            setattr(ret, 'ok', False)
         return ret
 
     @GrpcAbortOnExcep
     def ValidateNewUser(self, request, context):
-        user = ModelUser.from_pb(request.user)
-        if user.email:
-            validate_email(user.email)
-        if user.username:
-            validate_username(user.username)
-        return pb.Status(code=0, message='')
+        try:
+            user = ModelUser.from_pb(request.user)
+            if user.email:
+                validate_email(user.email)
+            if user.username:
+                validate_username(user.username)
+            return pb.Status(code=0, message='')
+        except (AlreadyExists, InvalidArgument) as err:
+            return pb.Status(code=err.code, message=err.message)
 
     #############
     # Old model #

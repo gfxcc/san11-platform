@@ -86,7 +86,7 @@ class UserHandler(HandlerBase):
 
     def verify_email(self, email: str, verification_code: str, context) -> Tuple[bool, Optional[ModelUser]]:
         if not verify_code(email, verification_code):
-            raise Unauthenticated(message='验证码不正确')
+            raise Unauthenticated('验证码不正确')
         try:
             user = get_user_by_email(email)
         except NotFound:
