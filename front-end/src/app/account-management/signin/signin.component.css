@@ -8,7 +8,9 @@
     display: none;
 }
 
-.card-wrapper {}
+.card-wrapper {
+    min-height: calc(100vh - var(--header-height));
+}
 
 .card {
     max-width: 400px;

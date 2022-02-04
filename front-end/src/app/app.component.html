@@ -1,12 +1,11 @@
 <app-header (toggleSideBarForMe)="sideBarToggler($event)"></app-header>
 
-<mat-drawer-container>
-    <mat-drawer mode="side" [opened]="sideBarOpen">
+<mat-sidenav-container>
+    <mat-sidenav #sidenav [mode]="sideBarMode" [(opened)]="sideBarOpen"
+        [fixedInViewport]="true">
         <app-sidebar></app-sidebar>
-    </mat-drawer>
-    <mat-drawer-content>
-        <!-- <div class="content-section"> -->
+    </mat-sidenav>
+    <mat-sidenav-content>
         <router-outlet (activate)="onActivate($event)"></router-outlet>
-        <!-- </div> -->
-    </mat-drawer-content>
-</mat-drawer-container>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
   // To auto hide sidebar on mobile.
   sideBarOpen = !window.matchMedia('(max-width: 40rem)').matches;
+  sideBarMode = window.matchMedia('(max-width: 40rem)').matches ? 'over' : 'side'
 
   constructor(
     private dialog: MatDialog,
@@ -25,6 +26,7 @@ export class AppComponent {
 
   sideBarToggler(event) {
     this.sideBarOpen = !this.sideBarOpen;
+    
   }
 
   onActivate(elementRef) {

@@ -6,9 +6,9 @@ from handler.handler_context import HandlerContext
 from handler.model.base import (FieldMask, HandlerBase, ModelBase,
                                 merge_resource)
 from handler.model.base.base_db import ListOptions
-from handler.model.model_user import (ModelUser, get_user_by_email,
-                                      validate_email, validate_new_user,
-                                      validate_username)
+from handler.model.model_user import (DEFAULT_USER_AVATAR, ModelUser,
+                                      get_user_by_email, validate_email,
+                                      validate_new_user, validate_username)
 from handler.util.user_util import verify_password
 
 from .auths import Session
@@ -18,9 +18,6 @@ from .model.user import generate_verification_code, verify_code
 from .util.notifier import Notifier
 
 logger = logging.getLogger(os.path.basename(__file__))
-
-
-DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
 
 class UserHandler(HandlerBase):

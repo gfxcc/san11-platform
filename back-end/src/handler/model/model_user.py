@@ -16,6 +16,8 @@ from handler.util.user_util import hash_password, is_email, normalize_email
 from ..protos import san11_platform_pb2 as pb
 from .base import Attrib, InitModel, ModelBase
 
+DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
+
 
 class EmailProtoConverter(ProtoConverter):
     '''

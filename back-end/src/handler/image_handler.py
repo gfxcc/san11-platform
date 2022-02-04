@@ -3,7 +3,7 @@ import os
 import uuid
 
 from handler.model.model_package import ModelPackage
-from handler.model.model_user import ModelUser
+from handler.model.model_user import DEFAULT_USER_AVATAR, ModelUser
 
 from .common.image import Image
 from .common.url import Url
@@ -31,7 +31,7 @@ class ImageHandler:
                 package.update()
             elif parent.type == 'users':
                 user = ModelUser.from_name(f'users/{parent.id}')
-                if user.image_url:
+                if user.image_url and user.image_url != DEFAULT_USER_AVATAR:
                     try:
                         Image.from_url(user.image_url).delete()
                     except Exception as err:
