@@ -24,6 +24,7 @@ mat-sidenav-content {
     margin-top: var(--header-height);
     padding: 0 .5rem;
     min-height: calc(100vh - var(--header-height));
+    overflow: hidden;
 }
 
 @media (max-width: 40rem) {
