@@ -10,7 +10,7 @@ import { GlobalConstants } from "src/app/common/global-constants";
 import { NotificationService } from "src/app/common/notification.service";
 import { DownloadService } from "src/app/service/download.service";
 import { San11PlatformServiceService } from "src/app/service/san11-platform-service.service";
-import { getBinaryFilename, version2str } from "src/app/utils/binary_util";
+import { getBinaryDisplayName, getBinaryFilename, version2str } from "src/app/utils/binary_util";
 import { increment } from "src/app/utils/number_util";
 import { signedIn } from "src/app/utils/user_util";
 import { Binary, DownloadBinaryRequest, FieldMask, Package, UpdateBinaryRequest } from "src/proto/san11-platform.pb";
@@ -166,7 +166,8 @@ export class BranchComponent {
                             });
 
                             this.downloadSub = undefined;
-                            saveAs(result.body, filename);
+                            const fileDisplayName = getBinaryDisplayName(this.package, binary);
+                            saveAs(result.body, fileDisplayName);
                             this.binaryOnDownload.downloadCount = increment(this.binaryOnDownload.downloadCount);
                         }
                     },
