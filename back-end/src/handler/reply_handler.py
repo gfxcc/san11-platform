@@ -37,7 +37,7 @@ class ReplyHandler(HandlerBase):
             comment = find_resource(ResourceName.from_str(parent))
             notify(
                 sender_id=user_id,
-                receiver_id=thread.author_id,
+                receiver_id=comment.author_id,
                 content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了 你的评论",
                 link=thread.name,
                 image_preview='',
