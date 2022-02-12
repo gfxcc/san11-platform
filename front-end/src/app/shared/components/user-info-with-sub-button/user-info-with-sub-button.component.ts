@@ -48,7 +48,6 @@ export class UserInfoWithSubButtonComponent implements OnInit {
       filter: `subscriber_id=${loadUser().userId}`,
     })).subscribe(
       (resp: ListSubscriptionsResponse) => {
-        console.log(resp);
         if (resp.subscriptions.length > 0) {
           this.subscribed = true;
         }

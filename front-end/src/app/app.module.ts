@@ -27,6 +27,7 @@ import { AuthorDialog, CreatePackageComponent } from './package-management/creat
 import { DeleteDialog, PackageCardComponent } from './package-management/package-card/package-card.component';
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 import { CreateNewVersionComponent } from "./package-management/version-management/create-new-version/create-new-version.component";
+import { BranchComponent } from './package-management/version-management/version-panel/branch/branch.component';
 import { VersionPanelComponent } from './package-management/version-management/version-panel/version-panel.component';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from "./user/user.module";
@@ -52,6 +53,7 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
     LoadingComponent,
     PackageDetailComponent,
     VersionPanelComponent,
+    BranchComponent,
     CreateNewVersionComponent,
     TextDialogComponent,
     TextInputDialogComponent,

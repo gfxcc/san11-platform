@@ -2,12 +2,15 @@
     <button mat-icon-button (click)="toggleSideBar()">
         <mat-icon>menu</mat-icon>
     </button>
-    <span class="website-title clickable" (click)="this.router.navigate([&quot;/&quot;]);">San11 分享平台</span>
+    <span class="website-title clickable"
+        (click)="this.router.navigate([&quot;/&quot;]);">San11 分享平台</span>
     <span class="example-spacer"></span>
 
     <div id="search-bar" class="search-bar-container">
         <div class="search-bar-input-wrapper">
-            <input #searchInput [(ngModel)]="this.searchQuery" type="text" spellcheck="false" autocomplete="off" placeholder="搜索 ..." (ngModelChange)="this.searchChanged()" class="search-input">
+            <input #searchInput [(ngModel)]="this.searchQuery" type="text"
+                spellcheck="false" autocomplete="off" placeholder="搜索 ..."
+                (ngModelChange)="this.searchChanged()" class="search-input">
             <span matTooltip="支持 工具名" class="help-icon"></span>
         </div>
     </div>
@@ -21,20 +24,23 @@
         <span [matBadge]="this.today_visit_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日访问</span>
         <span [matBadge]="this.today_download_count" matBadgeSize="medium" matBadgeColor="accent" matBadgePosition="above after" class="statistic">今日下载</span>
     </div> -->
-
     <span class="example-spacer"></span>
 
     <div *ngIf="this.user === undefined">
         <a mat-button (click)="onSignInClick()">登陆</a>
         <a mat-button mat-raised-button (click)="onSignUpClick()">注册</a>
     </div>
-    <div *ngIf="this.user != undefined" style="height: 100%; display: inline-flex; align-items: center;">
+    <div *ngIf="this.user != undefined" style="height: 100%; display:
+        inline-flex; align-items: center;">
         <!-- <button mat-button [matMenuTriggerFor]="manageAccounts"
                            [matMenuTriggerData]="menuItems">
             {{activeUser.Name}}
         </button> -->
-
-        <button mat-icon-button [matBadge]="(this.notifications === undefined || this.notifications.length == 0) ? undefined : this.notifications.length" matBadgeColor="warn" matBadgeSize="small" [matMenuTriggerFor]="manageAccounts" [matMenuTriggerData]="menuItems">
+        <button mat-icon-button [matBadge]="(this.notifications === undefined ||
+            this.notifications.length == 0) ? undefined :
+            this.notifications.length" matBadgeColor="warn" matBadgeSize="small"
+            [matMenuTriggerFor]="manageAccounts"
+            [matMenuTriggerData]="menuItems">
             <mat-icon>notifications</mat-icon>
         </button>
 
@@ -44,16 +50,20 @@
                     通知
                 </p>
             </div>
-            <div class="message-panel-placeholder" *ngIf="notifications.length === 0">
+            <div class="message-panel-placeholder" *ngIf="notifications.length
+                === 0">
                 <p>
                     没有未读通知
                 </p>
             </div>
             <ng-template [matMenuContent]="notifications">
-                <ng-container *ngFor="let notification of notifications; let i = index">
-                    <button mat-menu-item (click)="openNotification(notification, i)" class="notification-button">
+                <ng-container *ngFor="let notification of notifications; let i=
+                    index">
+                    <button mat-menu-item
+                        (click)="openNotification(notification, i)"
+                        class="notification-button">
                         <p class="notification-card">
-                        {{notification.content}}
+                            {{notification.content}}
                         </p>
                     </button>
                 </ng-container>

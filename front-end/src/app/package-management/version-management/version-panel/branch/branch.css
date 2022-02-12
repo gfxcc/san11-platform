@@ -1,0 +1,7 @@
+.align-right {
+    text-align: right;
+}
+
+.actions-sections {
+    display: flex;
+}

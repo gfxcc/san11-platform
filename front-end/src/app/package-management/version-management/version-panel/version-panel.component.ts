@@ -1,10 +1,10 @@
 import { HttpEventType } from "@angular/common/http";
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from "@angular/material/paginator";
 import { saveAs } from 'file-saver';
 import { Subscription } from 'rxjs';
-import { Binary, DeleteBinaryRequest, DownloadBinaryRequest, FieldMask, ListBinariesRequest, Package, UpdateBinaryRequest, Version as PbVersion } from "../../../../proto/san11-platform.pb";
+import { Binary, DeleteBinaryRequest, DownloadBinaryRequest, FieldMask, ListBinariesRequest, ListBinariesResponse, Package, UpdateBinaryRequest, Version as PbVersion } from "../../../../proto/san11-platform.pb";
 import { TextDialogComponent } from "../../../common/components/text-dialog/text-dialog.component";
 import { GlobalConstants } from "../../../common/global-constants";
 import { NotificationService } from "../../../common/notification.service";
@@ -17,19 +17,8 @@ import { getCategoryId, getPackageUrl } from "../../../utils/package_util";
 import { getAcceptFileType } from "../../../utils/resrouce_util";
 import { isAdmin, signedIn } from '../../../utils/user_util';
 import { CreateNewVersionComponent } from "../create-new-version/create-new-version.component";
+import { Branch } from "./branch/branch.component";
 
-
-
-// export interface BinaryElement {
-//   version: string;
-//   date: string;
-//   downloadcount: number;
-//   binaryid: string;
-//   packageid: string;
-//   url: string;
-//   description: string;
-//   string tag = 8;
-// }
 @Component({
   selector: 'app-version-panel',
   templateUrl: './version-panel.component.html',
@@ -38,24 +27,15 @@ import { CreateNewVersionComponent } from "../create-new-version/create-new-vers
 export class VersionPanelComponent implements OnInit {
   @Input() package: Package;
   @Output() downloadEvent = new EventEmitter();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   displayedColumns: string[] = ['version', 'createTime', 'size', 'downloadCount', 'actions'];
-
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  binaries: Binary[];
-  dataSource: MatTableDataSource<Binary>;
-  binaries_2_0: MatTableDataSource<Binary>;
-  binaries_1_3: MatTableDataSource<Binary>;
   binaryOnDownload: Binary;
 
   downloadProgress: Number;
   downloadProgressBar = false;
-  tabs = [];
+  branchs: Branch[];
   tabSelectedIndex = 0;
-  tags: string[];
-
-  updateElement;
-
 
   downloadSub: Subscription;
 
@@ -79,93 +59,54 @@ export class VersionPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.fetchBinaries();
-
-    if (isAdmin() || this.isAuthor()) {
-      this.updateElement = true;
-    } else {
-      this.updateElement = false;
-    }
+    this.loadBinaries();
   }
 
-
-  getVersionStr(binary: Binary): string {
-    return version2str(binary.version);
+  loadBinaries() {
+    this.binaryService.listBinaries(new ListBinariesRequest({
+      parent: this.package.name
+    })).subscribe(
+      (resp: ListBinariesResponse) => {
+        this.branchs = ConvertToBranchs(resp.binaries, getCategoryId(this.package.name));
+        // Set tabSelectedIndex to the first enabled tab.
+        for (let i = 0; i != this.branchs.length; ++i) {
+          if (!this.branchs[i].disabled) {
+            this.tabSelectedIndex = i;
+            break;
+          }
+        }
+      },
+      (error) => {
+        this.notificationService.warn(`载入版本列表失败: ${error.statusMessage}`);
+      }
+    );
   }
 
   onUpdate() {
-    const selectedTab = this.tabs[this.tabSelectedIndex];
+    const selectedTab = this.branchs[this.tabSelectedIndex];
     let latestVersions = {};
-    this.tabs.forEach(tab => {
-      latestVersions[tab.tag] = tab.dataSource.data.length > 0 ? tab.dataSource.data[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" });
+    this.branchs.forEach(branch => {
+      latestVersions[branch.name] = branch.binaries.length > 0 ? branch.binaries[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" });
     });
     const categoryId = getCategoryId(this.package.name).toString();
     this.dialog.open(CreateNewVersionComponent, {
       disableClose: true,
       data: {
         latestVersions: latestVersions,
-        acceptFileType: getAcceptFileType(categoryId, selectedTab.tag),
+        acceptFileType: getAcceptFileType(categoryId, selectedTab.name),
         parent: getPackageUrl(this.package),
         categoryId: categoryId,
-        tag: selectedTab.tag,
-        tags: Array.from(this.tags)
+        tag: selectedTab.name,
+        tags: this.branchs.map(x => x.name),
       }
     }).afterClosed().subscribe(
       data => {
         if (data != undefined) {
           // new version is created
-          this.fetchBinaries();
+          this.loadBinaries();
         }
       }
     );
-
-  }
-
-  fetchBinaries() {
-    this.binaryService.listBinaries(new ListBinariesRequest({
-      parent: this.package.name
-    })).subscribe(
-      resp => {
-        this.binaries = resp.binaries;
-
-        let tags = new Set<string>();
-        this.binaries.forEach(binary => {
-          tags.add(binary.tag);
-        });
-        this.tags = Array.from(tags);
-
-        if (getCategoryId(this.package.name) === 1) {
-          this.tags = ['SIRE 2', 'SIRE 1']
-        }
-        if (this.tags.length === 0) {
-          this.tags = ['默认'];
-        }
-
-        this.tabs = this.tags.map(tag => { return { tag: tag }; });
-        this.configDataSource();
-        // Set tabSelectedIndex to the first enabled tab.
-        for (let i = 0; i != this.tabs.length; ++i) {
-          if (!this.tabs[i].disabled) {
-            this.tabSelectedIndex = i;
-            break;
-          }
-        }
-      },
-      error => {
-        this.notificationService.warn(`获取版本列表失败: ${error.statusMessage}`);
-      }
-    );
-  }
-
-  configDataSource() {
-    this.tabs.forEach(tab => {
-      const binaries = this.binaries.filter((binary: Binary) => binary.tag === tab.tag)
-      tab.dataSource = new MatTableDataSource(binaries);
-      tab.disabled = binaries.length === 0;
-      // tab.dataSource.paginator = this.paginator;
-    });
-
   }
 
   onDescription(binary: Binary) {
@@ -173,11 +114,11 @@ export class VersionPanelComponent implements OnInit {
       data: {
         title: "更新日志",
         content: binary.description,
-        editable: this.isAuthor(),
+        editable: this.hasEditPermission,
       }
     }).afterClosed().subscribe(
       data => {
-        if (this.isAuthor() && data && data.data != binary.description) {
+        if (this.hasEditPermission && data && data.data != binary.description) {
           const request = new UpdateBinaryRequest({
             binary: new Binary({
               name: binary.name,
@@ -191,7 +132,6 @@ export class VersionPanelComponent implements OnInit {
           this.san11pkService.updateBinary(request).subscribe(
             binary => {
               this.notificationService.success('更新成功');
-              this.fetchBinaries();
             },
             error => {
               this.notificationService.warn(`更新失败: ${error.statusMessage}`)
@@ -301,7 +241,7 @@ export class VersionPanelComponent implements OnInit {
     })).subscribe(
       resp => {
         this.notificationService.success('卸载成功');
-        this.fetchBinaries();
+        this.loadBinaries();
       },
       error => {
         this.notificationService.warn('卸载失败:' + error.statusMessage);
@@ -318,7 +258,7 @@ export class VersionPanelComponent implements OnInit {
     })).subscribe(
       empty => {
         this.notificationService.success('成功删除');
-        this.fetchBinaries();
+        this.loadBinaries();
       },
       error => {
         this.notificationService.warn('删除失败:' + error.statusMessage);
@@ -327,11 +267,54 @@ export class VersionPanelComponent implements OnInit {
 
   }
 
-  isAdmin() {
-    return isAdmin();
+  get hasEditPermission() {
+    return isAdmin() || this.package.authorId === localStorage.getItem('userId');
+  }
+}
+
+// 
+function ConvertToBranchs(binaries: Binary[], categoryId: number) {
+  let branchs: Branch[];
+
+  if (categoryId === 1) {
+    branchs = [
+      {
+        name: 'SIRE 2',
+        binaries: [],
+        disabled: false,
+      },
+      {
+        name: 'SIRE 1',
+        binaries: [],
+        disabled: false,
+      },
+    ]
+  } else {
+    let branchNames = new Set<string>();
+    binaries.forEach(binary => {
+      branchNames.add(binary.tag);
+    });
+
+    if (branchNames.size === 0) {
+      branchs = [
+        {
+          name: '默认',
+          binaries: [],
+          disabled: false,
+        }
+      ];
+    } else {
+      branchs = Array.from(branchNames).map(name => {
+        return { name: name, binaries: [], disabled: false };
+      });
+    }
   }
 
-  isAuthor() {
-    return this.package.authorId === localStorage.getItem('userId');
-  }
+  // bucket binaries into each branchs  
+  branchs.forEach(branch => {
+    const selected = binaries.filter((binary: Binary) => binary.tag === branch.name);
+    branch.binaries = selected;
+    branch.disabled = selected.length === 0;
+  });
+  return branchs;
 }

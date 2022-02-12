@@ -16,17 +16,3 @@
     margin-right: 5px;
     z-index: 99;
 }
-
-.example-spacer {
-    flex: 1 1 auto;
-}
-
-.align-right {
-    text-align: right;
-}
-
-.actions-sections {
-    display: flex;
-}
-
-.update-text {}
