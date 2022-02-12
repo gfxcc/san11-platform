@@ -112,11 +112,6 @@ export class BranchComponent {
             return;
         }
 
-        // if (this.downloadSub != undefined) {
-        //     this.notificationService.warn(`下载中 ${this.downloadProgress}%... `);
-        //     return;
-        // }
-
         this.downloadProgress = 0;
         this.binaryOnDownload = binary;
         this.san11pkService.downloadBinary(new DownloadBinaryRequest({
