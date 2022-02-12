@@ -19,7 +19,10 @@
     class="shadow-border" style="margin-top: -44px;">
     <div *ngFor="let branch of branchs">
         <mat-tab [label]="branch.name" [disabled]="branch.disabled">
-            <branch [branch]="branch" [editorPermission]="hasEditPermission">
+            <branch [branch]="branch" [package]="package"
+                [editorPermission]="hasEditPermission"
+                (reload)="this.loadBinaries()"
+                (updateDownloadProgress)="this.updateDownloadProgress($event)">
             </branch>
         </mat-tab>
     </div>
