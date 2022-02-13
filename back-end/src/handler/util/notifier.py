@@ -8,8 +8,6 @@ from apiclient import errors
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from handler.model.model_notification import ModelNotification
-from handler.model.user import User
-from handler.protos.san11_platform_pb2 import Activity
 from handler.util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))

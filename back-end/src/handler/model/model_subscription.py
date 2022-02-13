@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 
 import attr
 from handler.common.exception import NotFound

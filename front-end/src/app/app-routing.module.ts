@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { SigninComponent } from './account-management/signin/signin.component'
-import { RegisterComponent } from './account-management/register/register.component'
-import { CreatePackageComponent } from './package-management/create-package/create-package.component'
-
+import { RegisterComponent } from './account-management/register/register.component';
+import { SigninComponent } from './account-management/signin/signin.component';
+import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { MessageBoardComponent } from "./dashboards/message-board/message-board.component";
-import { DashboardComponent } from './dashboards/dashboard/dashboard.component'
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 import { PackageResolverService } from "./package-management/package-detail/package-resolver.service";
-import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
 import { CreateNewComponent } from './shared/components/create-new/create-new.component';
 import { ThreadDetailComponent } from './shared/components/discussion/thread-detail/thread-detail.component';
 import { ThreadResolverService } from './shared/components/discussion/thread-detail/thread-resolver.service';
+import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
+
+
 
 
 
@@ -33,7 +32,21 @@ const routes: Routes = [
   {
     path: 'categories/:categoryId/packages/:packageId/threads/:threadId',
     component: ThreadDetailComponent,
-    resolve: { thread: ThreadResolverService }
+    resolve: { thread: ThreadResolverService },
+    children: [
+      {
+        path: 'comments/:commentId',
+        component: ThreadDetailComponent,
+        resolve: { thread: ThreadResolverService },
+        children: [
+          {
+            path: 'replies/:replyId',
+            component: ThreadDetailComponent,
+            resolve: { thread: ThreadResolverService },
+          }
+        ],
+      },
+    ],
   },
   {
     path: 'categories/:categoryId',
