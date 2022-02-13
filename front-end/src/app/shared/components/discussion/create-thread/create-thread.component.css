@@ -1,0 +1,22 @@
+.container {
+    min-width: 600px;
+}
+
+.context-wrapper {
+    /* min-height: 200px; */
+}
+
+.ck.ck-editor__editable_inline {
+    min-height: 200px;
+}
+
+.actions {
+    display: flex;
+    width: 100%;
+}
+
+@media (max-width: 40rem) {
+    .container {
+        min-width: 200px;
+    }
+}

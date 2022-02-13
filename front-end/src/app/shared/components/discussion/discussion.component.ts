@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
-import { CreateThreadRequest, ListThreadsRequest, ListThreadsResponse, Thread } from 'src/proto/san11-platform.pb';
-import { TextInputDialogComponent } from '../text-input-dialog/text-input-dialog.component';
+import { ListThreadsRequest, ListThreadsResponse, Thread } from 'src/proto/san11-platform.pb';
+import { CreateThreadComponent } from './create-thread/create-thread.component';
 
 @Component({
   selector: 'app-discussion',
@@ -68,57 +68,13 @@ export class DiscussionComponent implements OnInit {
         console.log(`获取讨论列表失败: ${error.statusMessage}.`);
       }
     );
-    // // simulate remote connection with a timeout
-    // setTimeout(() => {
-    //   //load data of required page
-
-
-    //   let loadedProducts = this.products.slice(
-    //     event.first,
-    //     event.first + event.rows
-    //   );
-
-    //   //populate page of virtual cars
-    //   Array.prototype.splice.apply(this.virtualThreads, [
-    //     ...[event.first, event.rows],
-    //     ...loadedProducts
-    //   ]);
-
-    //   //trigger change detection
-    //   this.virtualThreads = [...this.virtualThreads];
-    // }, 1000);
   }
 
   createThread() {
-    this.dialog.open(TextInputDialogComponent, {
+    this.dialog.open(CreateThreadComponent, {
       data: {
-        title: '新帖子',
-        inputTitle: '标题',
-        preSetText: ''
+        parent: this.parent,
       }
-    }).afterClosed().subscribe(
-      data => {
-        if (data) {
-          const subject = data.data;
-          this._createThread(this.parent, subject);
-        }
-      }
-    );
-  }
-
-  _createThread(parent: string, subject: string) {
-    this.san11pkService.createThread(new CreateThreadRequest({
-      parent: parent,
-      thread: new Thread({
-        subject: subject,
-      })
-    })).subscribe(
-      (resp: Thread) => {
-        this.router.navigate([resp.name])
-      },
-      error => {
-        this.notificationService.warn(`创建失败: ${error.statusMessage}.`)
-      }
-    );
+    });
   }
 }

@@ -1,6 +1,5 @@
-import { ViewChild, ElementRef, Component, OnInit, Inject } from '@angular/core';
-
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 export interface TextData {
@@ -14,14 +13,9 @@ export interface TextData {
   styleUrls: ['./text-input-dialog.component.css']
 })
 export class TextInputDialogComponent implements OnInit {
-
   title: string;
   inputTitle: string;
   preSetText: string;
-
-
-
-  mainForm;
 
   constructor(
     public dialogRef: MatDialogRef<TextInputDialogComponent>,
@@ -32,11 +26,10 @@ export class TextInputDialogComponent implements OnInit {
     this.preSetText = data.preSetText;
   }
 
-  
   ngOnInit(): void {
   }
 
   onSubmit(form) {
-    this.dialogRef.close({data: form.value.input});
+    this.dialogRef.close({ data: form.value.input });
   }
 }

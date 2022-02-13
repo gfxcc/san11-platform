@@ -1,13 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
-// import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
-// import Image from '@ckeditor/ckeditor5-image/src/image';
 import { ImageItem } from 'ng-gallery';
 import { Action, CreateImageRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListTagsRequest, Package, ResourceState, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
-// import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
@@ -20,10 +15,6 @@ import { increment } from '../../utils/number_util';
 import { getCategoryId, getPackageUrl } from "../../utils/package_util";
 import { getFullUrl, parseName } from "../../utils/resrouce_util";
 import { getUserUrl, isAdmin, loadUser, signedIn } from "../../utils/user_util";
-
-
-
-
 
 
 export interface DialogData {

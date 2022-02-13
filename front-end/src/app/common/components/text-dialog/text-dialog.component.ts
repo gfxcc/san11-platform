@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
+
+
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export interface TextData {
@@ -89,15 +89,6 @@ export class TextDialogComponent implements OnInit {
           'tableProperties'
         ]
       },
-      // mention: {
-      //   feeds: [
-      //     {
-      //       marker: '@',
-      //       feed: this.getUsernameFeedItems.bind(this),
-      //       minimumCharacters: 1,
-      //     }
-      //   ]
-      // },
       licenseKey: '',
     };
   }

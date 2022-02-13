@@ -3,12 +3,15 @@
 </mat-card-header>
 
 
-<form class="form" #createVersionForm='ngForm' (ngSubmit)="onCreateBinary(createVersionForm)">
+<form class="form" #createVersionForm='ngForm'
+    (ngSubmit)="onCreateBinary(createVersionForm)">
     <mat-card-content>
         <div style="margin-top: 10px;">
             <mat-form-field style="width: 100%;">
                 <mat-label>分支</mat-label>
-                <mat-select required (selectionChange)="newTagSelected($event.value)" [(value)]="this.tag">
+                <mat-select required
+                    (selectionChange)="newTagSelected($event.value)"
+                    [(value)]="this.tag">
                     <mat-option *ngFor="let tag of this.tags" [value]="tag">
                         {{tag}}
                     </mat-option>
@@ -18,7 +21,9 @@
 
         <mat-form-field class="form-field">
             <mat-label>更新类型</mat-label>
-            <mat-select required name="updateType" (selectionChange)="onVersionSelectorUpdate($event.value)" [(value)]="this.updateType">
+            <mat-select required name="updateType"
+                (selectionChange)="onVersionSelectorUpdate($event.value)"
+                [(value)]="this.updateType">
                 <mat-option value="major">major</mat-option>
                 <mat-option value="minor">minor</mat-option>
                 <mat-option value="patch">patch</mat-option>
@@ -29,19 +34,30 @@
 
         <div class="version-section">
             <mat-form-field class="version-field" floatLabel="always">
-                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" placeholder="major" [value]="this.newVersion.major.toString()" #majorInput name="majorInput" (change)="updateMajor(majorInput)" />
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;"
+                    placeholder="major"
+                    [value]="this.newVersion.major.toString()" #majorInput
+                    name="majorInput" (change)="updateMajor(majorInput)" />
             </mat-form-field>
-            <mat-form-field class=" version-field " floatLabel="always ">
-                <input matInput [disabled]="this.updateType!=&quot;custom&quot; " placeholder="minor " [value]="this.newVersion.minor.toString() " #minorInput name="minorInput" (change)="updateMinor(minorInput)" />
+            <mat-form-field class="version-field"floatLabel="always">
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;"placeholder="minor"[value]="this.newVersion.minor.toString()"#minorInput
+                    name="minorInput" (change)="updateMinor(minorInput)" />
             </mat-form-field>
             <mat-form-field class="version-field" floatLabel="always">
-                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" placeholder="patch" [value]="this.newVersion.patch.toString()" #patchInput name="patchInput" (change)="updatePatch(patchInput)" />
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;"
+                    placeholder="patch"
+                    [value]="this.newVersion.patch.toString()" #patchInput
+                    name="patchInput" (change)="updatePatch(patchInput)" />
             </mat-form-field>
         </div>
 
         <mat-label>更新日志</mat-label>
         <div class="bottom-bord">
-            <ckeditor ngModel required name="updateDesc" [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [config]="this.descEditor_config"></ckeditor>
+            <ckeditor ngModel required name="updateDesc"
+                [data]="this.descEditor_data" [editor]="descEditor"
+                (ready)="onDescEditorReady($event)"
+                (change)="onDescEditorChange($event)"
+                [config]="this.descEditor_config"></ckeditor>
         </div>
 
     </mat-card-content>
@@ -50,30 +66,44 @@
 
     <div class="upload-section">
         <div style="display: flex;">
-            <input hidden #fileInput type="file" [accept]="acceptFileType" ngModel required name="fileInput" (change)="selectFile(fileInput.files)">
-            <button type="button" mat-raised-button (click)="fileInput.click()" style="text-overflow: ellipsis; overflow:hidden; white-space:nowrap; margin-right: 10px; flex-shrink: 1;">
+            <input hidden #fileInput type="file" [accept]="acceptFileType"
+                ngModel required name="fileInput"
+                (change)="selectFile(fileInput.files)">
+            <button type="button" mat-raised-button (click)="fileInput.click()"
+                style="text-overflow: ellipsis; overflow:hidden;
+                white-space:nowrap; margin-right: 10px; flex-shrink: 1;">
                 {{ file ? file.name : '选择文件' }}
             </button>
             <span class="example-spacer"></span>
-            <button [disabled]="!(this.file != undefined && this.upload === undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()" style="display: inline-block; flex-shrink: 0;">
-                {{this.upload ? (this.upload.state != 'DONE' ? this.speed.toFixed(1) + this.unit: '已上传') : '上传'}}
+            <button [disabled]="!(this.file != undefined && this.upload ===
+                undefined)" type="button" mat-stroked-button color="primary"
+                (click)="uploadTmpFile()" style="display: inline-block;
+                flex-shrink: 0;">
+                {{this.upload ? (this.upload.state != 'DONE' ?
+                this.speed.toFixed(1) + this.unit: '已上传') : '上传'}}
             </button>
 
         </div>
-        <mat-progress-bar *ngIf="upload" [mode]="upload.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="upload.progress" style="margin-top: 3px; height: 2px;">
+        <mat-progress-bar *ngIf="upload" [mode]="upload.state == 'PENDING' ?
+            'buffer' : 'determinate'" [value]="upload.progress"
+            style="margin-top: 3px; height: 2px;">
         </mat-progress-bar>
-        <mat-slide-toggle style="margin-top: 5px;" [checked]="this.autoCreateChecked" color='primary' (change)="onAutoCreateAfterUpload($event)">上传完成后自动创建</mat-slide-toggle>
+        <mat-slide-toggle style="margin-top: 5px;"
+            [checked]="this.autoCreateChecked" color='primary'
+            (change)="onAutoCreateAfterUpload($event)">上传完成后自动创建</mat-slide-toggle>
     </div>
 
     <!-- <div *ngIf="this.categoryId===&quot;1&quot; && this.file != undefined">
         <mat-slide-toggle ngModel color='primary' name="sireAutoConvertToggle" matTooltip="必须未加密">系统自动转换并发布到SIRE {{this.convertedSireVersion}}</mat-slide-toggle>
     </div> -->
-
     <p></p>
     <div class="actions">
 
         <span class="example-spacer"></span>
-        <button mat-stroked-button type="button" (click)="onCancel()" color="accent" style="margin-right: 5px">取消</button>
-        <button [disabled]="!(createVersionForm.valid && this.upload && this.upload.state===&quot;DONE&quot;)" type="submit" mat-stroked-button color="primary">创建</button>
+        <button mat-stroked-button type="button" (click)="onCancel()"
+            color="accent" style="margin-right: 5px">取消</button>
+        <button [disabled]="!(createVersionForm.valid && this.upload &&
+            this.upload.state===&quot;DONE&quot;)" type="submit"
+            mat-stroked-button color="primary">创建</button>
     </div>
 </form>

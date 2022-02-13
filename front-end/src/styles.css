@@ -24,6 +24,10 @@ body {
     /* background: #F9F9F9; */
 }
 
+.ck-editor__editable {
+    min-height: 150px;
+}
+
 .title {
     font-size: 1.8rem;
     font-weight: 400;
