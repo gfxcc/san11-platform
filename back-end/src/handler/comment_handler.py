@@ -1,6 +1,7 @@
 import imp
 import logging
 import os
+import re
 from typing import Iterable, List, Tuple
 
 from handler.handler_context import HandlerContext
@@ -25,6 +26,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 class CommentHandler(HandlerBase):
     def create(self, parent: str, comment: ModelComment, handler_context: HandlerContext) -> ModelComment:
         user_id = handler_context.user.user_id
+        username = ModelUser.from_name(f'users/{user_id}').username
         comment.author_id = user_id
         parent_obj = find_resource(parent)
         if isinstance(parent_obj, ModelThread):
@@ -43,8 +45,21 @@ class CommentHandler(HandlerBase):
             notify(
                 sender_id=user_id,
                 receiver_id=thread.author_id,
-                content=f"{ModelUser.from_name(f'users/{user_id}').username} 评论了 {thread.subject}",
-                link=thread.name,
+                content=f"{username} 评论了 {thread.subject}",
+                link=comment.name,
+                image_preview='',
+            )
+        # 2. Send notification to user be @
+        # (TODO): wrapper this into a func so that it can be reused by reply, thread.
+        content = comment.text
+        # A sample of @user element `<a class="mention" href="users/73">@一笑悬命</a>`
+        pattern = r'<a [^>]* href="users/(?P<user_id>[0-9]+)">@(?P<username>[^<]+)</a>'
+        for at_user_id, at_username in re.findall(pattern, content):
+            notify(
+                sender_id=user_id,
+                receiver_id=at_user_id,
+                content=f"{username} 在评论中提到了你",
+                link=comment.name,
                 image_preview='',
             )
         return comment
