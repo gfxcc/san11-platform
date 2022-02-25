@@ -7,7 +7,7 @@ A web platform to share San11 related tools
 
 ### Install Dependencies
 ```
-$ sudo apt-get update && apt-get install docker docker-compose -y
+$ sudo apt-get update && sudo apt-get install docker docker-compose -y
 $ sudo systemctl start docker
 $ sudo usermod -aG docker ${USER}
 $ su -s ${USER}
