@@ -86,11 +86,11 @@ def assert_resource_owner(resource_name_path: str, bypass: Optional[str] = None)
         @functools.wraps(func)
         def iam_wrapper(this, request, context):
             current_user = context.user
-            if not current_user.is_admin() and (bypass is None or eval(bypass) == False):
+            if not ((current_user and current_user.is_admin()) or (bypass and eval(bypass) == True)):
                 cur = request
                 for segment in resource_name_path.split('.'):
                     cur = getattr(cur, segment)
-                
+
                 name = ResourceName.from_str(cur)
                 try:
                     while name:
