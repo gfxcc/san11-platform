@@ -5,3 +5,11 @@
 .actions-sections {
     display: flex;
 }
+
+
+@media (max-width: 40rem) {
+    .actions-sections {
+        display: grid;
+        columns: 1;
+    }
+}

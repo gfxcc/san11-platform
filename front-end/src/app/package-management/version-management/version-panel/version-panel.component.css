@@ -16,3 +16,9 @@
     margin-right: 5px;
     z-index: 99;
 }
+
+@media (max-width: 40rem) {
+    .update-button {
+        display: none;
+    }
+}
