@@ -45,7 +45,6 @@ def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
 
 
 class BinaryHandler(HandlerBase):
-
     def create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
         if binary.file:
             file: File = binary.file

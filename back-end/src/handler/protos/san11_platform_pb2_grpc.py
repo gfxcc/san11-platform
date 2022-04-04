@@ -599,7 +599,7 @@ class RouteGuideServicer(object):
 
     def CreateSubscriptioin(self, request, context):
         """Subscription
-        This API is idempotent. 
+        This API is idempotent.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -624,10 +624,11 @@ class RouteGuideServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def UnSubscribe(self, request, context):
-        """A utility API to 
-        1. locate a subscription by `parent` second in field `name`, `subscriber_id`.
+        """A utility API to
+        1. locate a subscription by `parent` second in field `name`,
+        `subscriber_id`.
         2. delete that subscription.
-        This API is idempotent. 
+        This API is idempotent.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

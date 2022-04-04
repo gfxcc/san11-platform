@@ -12778,7 +12778,6 @@ export class Binary implements GrpcMessage {
   static refineValues(_instance: Binary) {
     _instance.binaryId = _instance.binaryId || '0';
     _instance.packageId = _instance.packageId || '0';
-    _instance.url = _instance.url || '';
     _instance.downloadCount = _instance.downloadCount || '0';
     _instance.version = _instance.version || undefined;
     _instance.description = _instance.description || '';
@@ -12804,9 +12803,6 @@ export class Binary implements GrpcMessage {
           break;
         case 2:
           _instance.packageId = _reader.readInt64String();
-          break;
-        case 3:
-          _instance.url = _reader.readString();
           break;
         case 4:
           _instance.downloadCount = _reader.readInt64String();
@@ -12863,9 +12859,6 @@ export class Binary implements GrpcMessage {
     if (_instance.packageId) {
       _writer.writeInt64String(2, _instance.packageId);
     }
-    if (_instance.url) {
-      _writer.writeString(3, _instance.url);
-    }
     if (_instance.downloadCount) {
       _writer.writeInt64String(4, _instance.downloadCount);
     }
@@ -12908,7 +12901,6 @@ export class Binary implements GrpcMessage {
 
   private _binaryId?: string;
   private _packageId?: string;
-  private _url?: string;
   private _downloadCount?: string;
   private _version?: Version;
   private _description?: string;
@@ -12930,7 +12922,6 @@ export class Binary implements GrpcMessage {
     _value = _value || {};
     this.binaryId = _value.binaryId;
     this.packageId = _value.packageId;
-    this.url = _value.url;
     this.downloadCount = _value.downloadCount;
     this.version = _value.version ? new Version(_value.version) : undefined;
     this.description = _value.description;
@@ -12954,12 +12945,6 @@ export class Binary implements GrpcMessage {
   }
   set packageId(value: string | undefined) {
     this._packageId = value;
-  }
-  get url(): string | undefined {
-    return this._url;
-  }
-  set url(value: string | undefined) {
-    this._url = value;
   }
   get downloadCount(): string | undefined {
     return this._downloadCount;
@@ -13050,7 +13035,6 @@ export class Binary implements GrpcMessage {
     return {
       binaryId: this.binaryId,
       packageId: this.packageId,
-      url: this.url,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toObject() : undefined,
       description: this.description,
@@ -13083,7 +13067,6 @@ export class Binary implements GrpcMessage {
     return {
       binaryId: this.binaryId,
       packageId: this.packageId,
-      url: this.url,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toProtobufJSON(options) : null,
       description: this.description,
@@ -13104,7 +13087,6 @@ export module Binary {
   export interface AsObject {
     binaryId?: string;
     packageId?: string;
-    url?: string;
     downloadCount?: string;
     version?: Version.AsObject;
     description?: string;
@@ -13123,7 +13105,6 @@ export module Binary {
   export interface AsProtobufJSON {
     binaryId?: string;
     packageId?: string;
-    url?: string;
     downloadCount?: string;
     version?: Version.AsProtobufJSON | null;
     description?: string;
@@ -13468,6 +13449,7 @@ export module User {
   export enum UserType {
     USER_TYPE_UNSPECIFIED = 0,
     ADMIN = 1,
+    TESTER = 2,
     REGULAR = 11
   }
 }
@@ -16382,6 +16364,7 @@ export class File implements GrpcMessage {
   static refineValues(_instance: File) {
     _instance.filename = _instance.filename || '';
     _instance.ext = _instance.ext || '';
+    _instance.server = _instance.server || '';
     _instance.uri = _instance.uri || '';
   }
 
@@ -16400,6 +16383,9 @@ export class File implements GrpcMessage {
           break;
         case 2:
           _instance.ext = _reader.readString();
+          break;
+        case 4:
+          _instance.server = _reader.readString();
           break;
         case 3:
           _instance.uri = _reader.readString();
@@ -16424,6 +16410,9 @@ export class File implements GrpcMessage {
     if (_instance.ext) {
       _writer.writeString(2, _instance.ext);
     }
+    if (_instance.server) {
+      _writer.writeString(4, _instance.server);
+    }
     if (_instance.uri) {
       _writer.writeString(3, _instance.uri);
     }
@@ -16431,6 +16420,7 @@ export class File implements GrpcMessage {
 
   private _filename?: string;
   private _ext?: string;
+  private _server?: string;
   private _uri?: string;
 
   /**
@@ -16441,6 +16431,7 @@ export class File implements GrpcMessage {
     _value = _value || {};
     this.filename = _value.filename;
     this.ext = _value.ext;
+    this.server = _value.server;
     this.uri = _value.uri;
     File.refineValues(this);
   }
@@ -16455,6 +16446,12 @@ export class File implements GrpcMessage {
   }
   set ext(value: string | undefined) {
     this._ext = value;
+  }
+  get server(): string | undefined {
+    return this._server;
+  }
+  set server(value: string | undefined) {
+    this._server = value;
   }
   get uri(): string | undefined {
     return this._uri;
@@ -16480,6 +16477,7 @@ export class File implements GrpcMessage {
     return {
       filename: this.filename,
       ext: this.ext,
+      server: this.server,
       uri: this.uri
     };
   }
@@ -16503,6 +16501,7 @@ export class File implements GrpcMessage {
     return {
       filename: this.filename,
       ext: this.ext,
+      server: this.server,
       uri: this.uri
     };
   }
@@ -16514,6 +16513,7 @@ export module File {
   export interface AsObject {
     filename?: string;
     ext?: string;
+    server?: string;
     uri?: string;
   }
 
@@ -16523,6 +16523,7 @@ export module File {
   export interface AsProtobufJSON {
     filename?: string;
     ext?: string;
+    server?: string;
     uri?: string;
   }
 }

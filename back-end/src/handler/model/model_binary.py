@@ -66,6 +66,7 @@ class File:
     filename: str
     ext: str
     uri: str
+    server: str = ''
 
 
 class FileProtoConverter(ProtoConverter):
@@ -75,6 +76,7 @@ class FileProtoConverter(ProtoConverter):
         return pb.File(
             filename=value.filename,
             ext=value.ext,
+            server=value.server,
             uri=value.uri,
         )
 
@@ -84,6 +86,7 @@ class FileProtoConverter(ProtoConverter):
         return File(
             filename=proto_value.filename,
             ext=proto_value.ext,
+            server=proto_value.server,
             uri=proto_value.uri,
         )
 
@@ -149,11 +152,6 @@ class ModelBinary(ModelBase, TrackLifecycle):
         type=datetime.datetime,
         proto_converter=LegacyDatetimeProtoConverter(),
         default=get_now(),
-    )
-    # DEPRECATED
-    url = Attrib(
-        type=str,
-        deprecated=True,
     )
 
     def remove_resource(self) -> None:

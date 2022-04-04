@@ -38,7 +38,6 @@ class SubscriptionHandler(HandlerBase):
         return sub
 
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelSubscription], str]:
-        logger.debug(list_options)
         subs, next_page_token = ModelSubscription.list(list_options)
         return subs, next_page_token
 

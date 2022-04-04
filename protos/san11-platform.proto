@@ -611,8 +611,6 @@ message Binary {
 
   int64 binary_id = 1;
   int64 package_id = 2;
-  // [ OUTPUT_ONLY ]
-  string url = 3;
   int64 download_count = 4;
   Version version = 5;
   string description = 6;
@@ -646,9 +644,9 @@ message User {
   // [ OUTPUT_ONLY ]
   google.protobuf.Timestamp create_time = 9;
   // [ OUTPUT_ONLY ]
-  google.protobuf.Timestamp update_time = 10
+  google.protobuf.Timestamp update_time = 10;
 
-      enum UserType {
+  enum UserType {
     USER_TYPE_UNSPECIFIED = 0;
 
     // System maintainer
@@ -657,7 +655,6 @@ message User {
 
     // Customers
     REGULAR = 11;
-
   }
 }
 
@@ -787,6 +784,10 @@ message File {
   // Please note `.` is considered part of the extension.
   // E.g. `.txt`, `.png`, `.rar`, `.zip`
   string ext = 2;
+  // The file server hosting the file.
+  // E.g. `https://storage.googleapis.com/san11-resources`
+  //      `https://san11-resources.s3.ap-east-1.amazonaws.com`
+  string server = 4;
   // Unique resource identifier
   // E.g. categories/123/packags/456/binaries/eafsdfewasdfdfsaasdffda
   string uri = 3;
