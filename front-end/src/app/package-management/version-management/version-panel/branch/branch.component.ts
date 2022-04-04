@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { saveAs } from 'file-saver';
 import { Subscription } from "rxjs";
 import { TextDialogComponent } from "src/app/common/components/text-dialog/text-dialog.component";
+import { GlobalConstants } from "src/app/common/global-constants";
 import { NotificationService } from "src/app/common/notification.service";
 import { DownloadService } from "src/app/service/download.service";
 import { San11PlatformServiceService } from "src/app/service/san11-platform-service.service";
@@ -117,7 +118,7 @@ export class BranchComponent {
             name: this.binaryOnDownload.name
         })).subscribe(
             binary => {
-                const fileUrl = binary.file.server + '/' + binary.file.uri;
+                const fileUrl = GlobalConstants.fileServerUrl + '/' + binary.file.uri;
                 const filename = getBinaryFilename(this.package, binary);
 
                 this.prevTime = new Date().getTime();

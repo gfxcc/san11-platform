@@ -66,7 +66,7 @@ class File:
     filename: str
     ext: str
     uri: str
-    server: str = ''
+    server: int = 0
 
 
 class FileProtoConverter(ProtoConverter):
@@ -131,7 +131,6 @@ class ModelBinary(ModelBase, TrackLifecycle):
     size = Attrib(
         type=str,
     )
-
     # BEGINNING - OneOf field resource
     file = Attrib(
         type=File,
@@ -142,7 +141,6 @@ class ModelBinary(ModelBase, TrackLifecycle):
         type=str,
     )
     # END
-
     create_time = Attrib(
         type=datetime.datetime,
         proto_converter=LegacyDatetimeProtoConverter(),

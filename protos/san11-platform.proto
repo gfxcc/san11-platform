@@ -785,12 +785,16 @@ message File {
   // E.g. `.txt`, `.png`, `.rar`, `.zip`
   string ext = 2;
   // The file server hosting the file.
-  // E.g. `https://storage.googleapis.com/san11-resources`
-  //      `https://san11-resources.s3.ap-east-1.amazonaws.com`
-  string server = 4;
+  Server server = 4;
   // Unique resource identifier
   // E.g. categories/123/packags/456/binaries/eafsdfewasdfdfsaasdffda
   string uri = 3;
+
+  enum Server {
+    SERVER_UNSPECIFIED = 0;
+    GCLOUD = 1;
+    AWS = 2;
+  }
 }
 
 message Subscription {

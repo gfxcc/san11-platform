@@ -16364,7 +16364,7 @@ export class File implements GrpcMessage {
   static refineValues(_instance: File) {
     _instance.filename = _instance.filename || '';
     _instance.ext = _instance.ext || '';
-    _instance.server = _instance.server || '';
+    _instance.server = _instance.server || 0;
     _instance.uri = _instance.uri || '';
   }
 
@@ -16385,7 +16385,7 @@ export class File implements GrpcMessage {
           _instance.ext = _reader.readString();
           break;
         case 4:
-          _instance.server = _reader.readString();
+          _instance.server = _reader.readEnum();
           break;
         case 3:
           _instance.uri = _reader.readString();
@@ -16411,7 +16411,7 @@ export class File implements GrpcMessage {
       _writer.writeString(2, _instance.ext);
     }
     if (_instance.server) {
-      _writer.writeString(4, _instance.server);
+      _writer.writeEnum(4, _instance.server);
     }
     if (_instance.uri) {
       _writer.writeString(3, _instance.uri);
@@ -16420,7 +16420,7 @@ export class File implements GrpcMessage {
 
   private _filename?: string;
   private _ext?: string;
-  private _server?: string;
+  private _server?: File.Server;
   private _uri?: string;
 
   /**
@@ -16447,10 +16447,10 @@ export class File implements GrpcMessage {
   set ext(value: string | undefined) {
     this._ext = value;
   }
-  get server(): string | undefined {
+  get server(): File.Server | undefined {
     return this._server;
   }
-  set server(value: string | undefined) {
+  set server(value: File.Server | undefined) {
     this._server = value;
   }
   get uri(): string | undefined {
@@ -16501,7 +16501,7 @@ export class File implements GrpcMessage {
     return {
       filename: this.filename,
       ext: this.ext,
-      server: this.server,
+      server: File.Server[this.server ?? 0],
       uri: this.uri
     };
   }
@@ -16513,7 +16513,7 @@ export module File {
   export interface AsObject {
     filename?: string;
     ext?: string;
-    server?: string;
+    server?: File.Server;
     uri?: string;
   }
 
@@ -16525,6 +16525,11 @@ export module File {
     ext?: string;
     server?: string;
     uri?: string;
+  }
+  export enum Server {
+    SERVER_UNSPECIFIED = 0,
+    GCLOUD = 1,
+    AWS = 2
   }
 }
 
