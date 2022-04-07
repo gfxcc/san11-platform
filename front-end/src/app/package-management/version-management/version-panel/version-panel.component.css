@@ -11,10 +11,10 @@
     display: flex;
 }
 
-.head>.button {
+.head > .update-button {
     margin-top: 2px;
     margin-right: 5px;
-    z-index: 99;
+    z-index: 1000;
 }
 
 @media (max-width: 40rem) {
