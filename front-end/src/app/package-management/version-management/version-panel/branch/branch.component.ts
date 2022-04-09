@@ -152,6 +152,7 @@ export class BranchComponent {
                                 speed: this.speed,
                                 unit: this.unit,
                             });
+                            console.log(`downloading: ${percentDone}%.`);
                         }
                         if (result.type === HttpEventType.Response) {
                             this.updateDownloadProgress.emit({
@@ -159,10 +160,13 @@ export class BranchComponent {
                                 speed: this.speed,
                                 unit: this.unit,
                             });
+                            console.log(`download is finished.`);
 
                             this.downloadSub = undefined;
                             const fileDisplayName = getBinaryDisplayName(this.package, binary);
+                            console.log(`Going to save downloaded file as ${fileDisplayName}.`);
                             saveAs(result.body, fileDisplayName);
+                            console.log(`downloaded file is saved.`);
                             this.binaryOnDownload.downloadCount = increment(this.binaryOnDownload.downloadCount);
                         }
                     },
