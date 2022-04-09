@@ -11,3 +11,5 @@ google-auth-httplib2
 google-auth-oauthlib
 attr
 bcrypt
+# AWS SDK
+boto3

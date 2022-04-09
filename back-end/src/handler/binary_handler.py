@@ -3,6 +3,9 @@ import os
 import uuid
 from typing import Iterable, List, Tuple
 
+from src.handler.util.file_server import (BucketClass, FileServerType,
+                                          get_file_server)
+
 from handler.handler_context import HandlerContext
 from handler.model.base import FieldMask, HandlerBase, merge_resource
 from handler.model.base.base_db import ListOptions
@@ -32,20 +35,20 @@ def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
 class BinaryHandler(HandlerBase):
     def create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
         if binary.file:
-            file_server = Gcs() if binary.file.server == 1 else S3()
+            file_server = get_file_server(FileServerType(binary.file.server))
             file: File = binary.file
 
-            if file_server.get_file_size(file_server.temp_bucket, file.filename) + file_server.get_folder_size(file_server.resource_bucket, parent) > PACKAGE_SIZE_LIMIT:
-                file_server.delete_file(file_server.temp_bucket, file.filename)
+            if file_server.get_file_size(BucketClass.TEMP, file.uri) + file_server.get_folder_size(BucketClass.REGULAR, parent) > PACKAGE_SIZE_LIMIT:
+                file_server.delete_file(BucketClass.TEMP, file.uri)
                 raise ResourceExhausted(
                     message=f'工具存储空间 {gcs.PACKAGE_LIMIT_GB}GB 已用完，请考虑删除历史版本.')
 
             binary.size = human_readable(
-                precision=2, byte=file_server.get_file_size(file_server.temp_bucket, file.uri))
+                precision=2, byte=file_server.get_file_size(BucketClass.TEMP, file.uri))
             canonical_uri = generate_binary_canonical_uri(parent, binary)
             # move resource from tmp location to canonical bucket
-            file_server.move_file(file_server.temp_bucket, file.uri,
-                                  file_server.resource_bucket, canonical_uri)
+            file_server.move_file(BucketClass.TEMP, file.uri,
+                                  BucketClass.REGULAR, canonical_uri)
             file.uri = canonical_uri
         elif binary.download_method:
             raise Unimplemented()
@@ -83,6 +86,7 @@ class BinaryHandler(HandlerBase):
 
     def delete(self, name: str, handler_context) -> ModelBinary:
         binary = ModelBinary.from_name(name)
+
         binary.delete(user_id=handler_context.user.user_id)
         return binary
 
