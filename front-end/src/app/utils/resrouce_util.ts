@@ -1,9 +1,26 @@
 
+import { File } from "src/proto/san11-platform.pb";
 import { GlobalConstants } from "../common/global-constants";
 
 
 export function getFullUrl(url: string): string {
     return GlobalConstants.fileServerUrl + '/' + url;
+}
+
+export function getFileUrl(file: File): string {
+    let serverUrl: string;
+    switch (file.server) {
+        case File.Server.GCS:
+            serverUrl = 'https://storage.googleapis.com/san11-resources';
+            break;
+        case File.Server.AWS_S3:
+            serverUrl = 'https://san11-resources.s3.ap-east-1.amazonaws.com';
+            break;
+        default:
+            console.log(`ERROR: unsupported File.Server: ${file.server}`);
+            break;
+    }
+    return `${serverUrl}/${file.uri}`;
 }
 
 

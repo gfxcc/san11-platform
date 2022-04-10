@@ -199,10 +199,8 @@ class S3(FileServer):
     def get_folder_size(self, bucket_class: BucketClass, path: str) -> int:
         bucket = self._get_client().Bucket(self.get_bucket_name(bucket_class))
         total_size = 0
-
         for obj in bucket.objects.filter(Prefix=path):
             total_size = total_size + obj.size
-
         return total_size
 
     def delete_folder(self, bucket_class: BucketClass, path: str) -> None:

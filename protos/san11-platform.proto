@@ -792,8 +792,10 @@ message File {
 
   enum Server {
     SERVER_UNSPECIFIED = 0;
-    GCLOUD = 1;
-    AWS = 2;
+    // Google Cloud Storage
+    GCS = 1;
+    // AWS S3
+    AWS_S3 = 2;
   }
 }
 

@@ -7,7 +7,7 @@ from typing import Dict, List, Optional, Tuple
 
 import attr
 from handler.model.base.base_db import ListOptions
-from src.handler.util.file_server import FileServerType, get_file_server
+from handler.util.file_server import FileServerType, get_file_server
 
 from ..protos import san11_platform_pb2 as pb
 from ..util import gcs

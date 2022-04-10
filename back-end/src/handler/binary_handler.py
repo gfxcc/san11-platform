@@ -3,9 +3,6 @@ import os
 import uuid
 from typing import Iterable, List, Tuple
 
-from src.handler.util.file_server import (BucketClass, FileServerType,
-                                          get_file_server)
-
 from handler.handler_context import HandlerContext
 from handler.model.base import FieldMask, HandlerBase, merge_resource
 from handler.model.base.base_db import ListOptions
@@ -13,9 +10,10 @@ from handler.model.model_binary import File, ModelBinary
 from handler.model.model_subscription import ModelSubscription
 from handler.model.model_user import ModelUser
 from handler.protos import san11_platform_pb2 as pb
+from handler.util.file_server import (PACKAGE_SIZE_LIMIT, S3, BucketClass,
+                                      FileServerType, Gcs, get_file_server)
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify
-from util.file_server import PACKAGE_SIZE_LIMIT, S3, Gcs
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .model.model_activity import ModelActivity

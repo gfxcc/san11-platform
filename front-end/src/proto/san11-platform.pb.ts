@@ -16528,8 +16528,8 @@ export module File {
   }
   export enum Server {
     SERVER_UNSPECIFIED = 0,
-    GCLOUD = 1,
-    AWS = 2
+    GCS = 1,
+    AWS_S3 = 2
   }
 }
 
