@@ -10,6 +10,8 @@ from handler.model.model_binary import File, ModelBinary
 from handler.model.model_subscription import ModelSubscription
 from handler.model.model_user import ModelUser
 from handler.protos import san11_platform_pb2 as pb
+from handler.util.file_server import (PACKAGE_SIZE_LIMIT, S3, BucketClass,
+                                      FileServerType, Gcs, get_file_server)
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify
 
@@ -24,22 +26,6 @@ from .util.time_util import get_now
 logger = logging.getLogger(os.path.basename(__file__))
 
 
-def check_per_package_size(target_location: str, tmp_file: str):
-    '''
-    Returns:
-        True: if size of target_location will not exceed PACKAGE_LIMIT_GB after
-            tmp_file be moved under target_location.
-    '''
-    assert tmp_file.startswith(
-        target_location), f'tmp_file is not under target_location: tmp_file={tmp_file}, target_location={target_location}'
-    binary_size = gcs.get_file_size(gcs.TMP_BUCKET, tmp_file)
-    expected_disk_usage = binary_size + \
-        gcs.disk_usage_under(target_location)
-    if expected_disk_usage > gcs.PACKAGE_LIMIT_GB * 1024 * 1024 * 1024:
-        return False
-    return True
-
-
 def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
     return f'{parent}/binaries/{binary.version}-{uuid.uuid1()}{binary.file.ext}'
 
@@ -47,18 +33,20 @@ def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
 class BinaryHandler(HandlerBase):
     def create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
         if binary.file:
+            file_server = get_file_server(FileServerType(binary.file.server))
             file: File = binary.file
-            if not check_per_package_size(parent, file.uri):
-                gcs.delete_tmp_resource(file.uri)
+
+            if file_server.get_file_size(BucketClass.TEMP, file.uri) + file_server.get_folder_size(BucketClass.REGULAR, parent) > PACKAGE_SIZE_LIMIT:
+                file_server.delete_file(BucketClass.TEMP, file.uri)
                 raise ResourceExhausted(
                     message=f'工具存储空间 {gcs.PACKAGE_LIMIT_GB}GB 已用完，请考虑删除历史版本.')
 
             binary.size = human_readable(
-                precision=2, byte=gcs.get_file_size(gcs.TMP_BUCKET, file.uri))
+                precision=2, byte=file_server.get_file_size(BucketClass.TEMP, file.uri))
             canonical_uri = generate_binary_canonical_uri(parent, binary)
             # move resource from tmp location to canonical bucket
-            gcs.move_file(gcs.TMP_BUCKET, file.uri,
-                          gcs.CANONICAL_BUCKET, canonical_uri)
+            file_server.move_file(BucketClass.TEMP, file.uri,
+                                  BucketClass.REGULAR, canonical_uri)
             file.uri = canonical_uri
         elif binary.download_method:
             raise Unimplemented()
@@ -96,6 +84,7 @@ class BinaryHandler(HandlerBase):
 
     def delete(self, name: str, handler_context) -> ModelBinary:
         binary = ModelBinary.from_name(name)
+
         binary.delete(user_id=handler_context.user.user_id)
         return binary
 

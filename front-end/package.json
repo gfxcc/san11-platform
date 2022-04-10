@@ -34,6 +34,7 @@
     "@ngx-grpc/well-known-types": "^2.0.4",
     "@types/uuid": "^8.3.0",
     "angular-material": "^1.2.2",
+    "aws-sdk": "^2.1111.0",
     "core-js": "^3.8.3",
     "file-saver": "^2.0.5",
     "google-protobuf": "^3.15.0",

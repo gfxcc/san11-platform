@@ -1,25 +1,24 @@
-import { Component, OnInit, Input, Inject, ElementRef, ViewChild } from '@angular/core';
-import { isNumeric } from 'rxjs/util/isNumeric';
-
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { version } from 'process';
-import { v4 as uuid } from 'uuid'
-
-import * as Editor from "../../../common/components/ckeditor/ckeditor";
-
-import { CreateBinaryRequest, Version, Binary, UploadBinaryRequest, File } from "../../../../proto/san11-platform.pb";
-import { version2str } from "../../../utils/binary_util";
-import { increment } from "../../../utils/number_util";
-import { GlobalConstants } from "../../../common/global-constants";
-import { LoadingComponent } from "../../../common/components/loading/loading.component";
-import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
-import { NotificationService } from "../../../common/notification.service";
-import { TextData, TextInputDialogComponent } from "../../../common/components/text-input-dialog/text-input-dialog.component";
-
-import { UploadService } from "../../../service/upload.service";
-import { Upload } from '../../../service/upload';
-import { Subscription } from 'rxjs';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as S3 from 'aws-sdk/clients/s3';
+import { Subscription } from 'rxjs';
+import { isAdmin } from 'src/app/utils/user_util';
+import { v4 as uuid } from 'uuid';
+import { Binary, CreateBinaryRequest, File, Version } from "../../../../proto/san11-platform.pb";
+import * as Editor from "../../../common/components/ckeditor/ckeditor";
+import { LoadingComponent } from "../../../common/components/loading/loading.component";
+import { TextInputDialogComponent } from "../../../common/components/text-input-dialog/text-input-dialog.component";
+import { GlobalConstants } from "../../../common/global-constants";
+import { NotificationService } from "../../../common/notification.service";
+import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
+import { Upload } from '../../../service/upload';
+import { UploadService } from "../../../service/upload.service";
+import { increment } from "../../../utils/number_util";
+
+
+
+
 
 
 export interface VersionData {
@@ -76,6 +75,7 @@ export class CreateNewVersionComponent implements OnInit {
   unit: string = "Mbps";
 
   autoCreateChecked = false;
+  useAwsS3 = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: VersionData,
@@ -109,6 +109,10 @@ export class CreateNewVersionComponent implements OnInit {
 
   ngOnInit(): void {
     this.onVersionSelectorUpdate(this.updateType);
+  }
+
+  get showExperimentalRegion() {
+    return isAdmin();
   }
 
   // Desc-BEGIN
@@ -226,31 +230,79 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   uploadTmpFile(): void {
+    this.upload = {
+      state: 'PENDING',
+      progress: 0,
+      loaded: 0,
+      total: 0
+    };
     const filename = `${this.parent}/binaries/${uuid()}`;
     this.tmpUrl = filename;
     this.prevTime = new Date().getTime();
     this.oldbytes = 0;
-    this.uploadSub = this.uploadService.upload(this.file, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
-      console.log(upload);
+    if (!this.useAwsS3) {
+      console.debug('use GCS');
+      this.uploadSub = this.uploadService.upload(this.file, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
 
-      this.upload = upload;
-      this.bytesReceied = upload.loaded / 1000000;
-      this.currTime = new Date().getTime();
-      this.speed =
-        (this.bytesReceied - this.oldbytes) /
-        ((this.currTime - this.prevTime) / 1000);
-      if (this.speed < 1) {
-        this.unit = "KB/S";
-        this.speed *= 1000;
-      } else this.unit = "MB/S";
+        this.updateProgress(upload);
 
-      this.prevTime = this.currTime;
-      this.oldbytes = this.bytesReceied;
+        if (upload.state === 'DONE' && this.autoCreateChecked) {
+          this.createForm.ngSubmit.emit();
+        }
+      });
+    } else {
+      console.debug('use AWS S3');
+      const contentType = this.file.type;
+      const bucket = new S3(
+        {
+          region: 'ap-east-1',
+          // An anonymous user without any privilege.
+          accessKeyId: 'AKIAY2GXL5CGRVMXA4VS',
+          secretAccessKey: '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',
+        }
+      );
+      const params = {
+        Bucket: GlobalConstants.tmpBucket,
+        Key: filename,
+        Body: this.file,
+        ContentType: contentType
+      };
+      bucket.upload(params).on('httpUploadProgress', (upload) => {
+        this.updateProgress({
+          state: 'IN_PROGRESS',
+          progress: upload.loaded * 100 / upload.total,
+          loaded: upload.loaded,
+          total: upload.total
+        });
+      }).send((err, data) => {
+        if (err) {
+          console.log('There was an error uploading your file: ', err);
+          return false;
+        }
+        this.upload.state = 'DONE';
+        if (this.autoCreateChecked) {
+          this.createForm.ngSubmit.emit();
+        }
+      });
+    }
+  }
 
-      if (upload.state === 'DONE' && this.autoCreateChecked) {
-        this.createForm.ngSubmit.emit();
-      }
-    });
+  updateProgress(upload: Upload) {
+    console.log(upload);
+
+    this.upload = upload;
+    this.bytesReceied = upload.loaded / 1000000;
+    this.currTime = new Date().getTime();
+    this.speed =
+      (this.bytesReceied - this.oldbytes) /
+      ((this.currTime - this.prevTime) / 1000);
+    if (this.speed < 1) {
+      this.unit = "KB/S";
+      this.speed *= 1000;
+    } else this.unit = "MB/S";
+
+    this.prevTime = this.currTime;
+    this.oldbytes = this.bytesReceied;
   }
 
   onCreateBinary(createVersionForm) {
@@ -266,6 +318,7 @@ export class CreateNewVersionComponent implements OnInit {
         // filename is OUTPUT_ONLY
         ext: ext,
         uri: this.tmpUrl,
+        server: this.useAwsS3 ? File.Server.AWS_S3 : File.Server.GCS,
       }),
     });
 
@@ -345,8 +398,6 @@ export class CreateNewVersionComponent implements OnInit {
     this.dialogRef.close({ data: 'updated' });
   }
 
-
-
   updateMajor(input) {
     const pendingVersoin = new Version({ major: input.value, minor: this.newVersion.minor, patch: this.newVersion.patch });
     if (!this.validateVersion(pendingVersoin)) {
@@ -377,25 +428,13 @@ export class CreateNewVersionComponent implements OnInit {
 
   validateVersion(version: Version) {
     if (isNaN(Number(version.major)) || isNaN(Number(version.minor)) || isNaN(Number(version.patch))) {
+      console.debug("version is not a number: ${version}");
       return false;
     }
-
-    if (Number(version.major) < Number(this.latestVersion.major)
-      || Number(version.minor) < Number(this.latestVersion.minor)
-      || Number(version.patch) < Number(this.latestVersion.patch)
-    ) {
+    if (Number(version.major) < 1 || Number(version.minor) < 0 || Number(version.patch) < 0) {
       return false;
     }
-
-    if (Number(version.major) === Number(this.latestVersion.major)
-      && Number(version.minor) === Number(this.latestVersion.minor)
-      && Number(version.patch) === Number(this.latestVersion.patch)
-    ) {
-      return false;
-    }
-
-    return true;
-
+    return [version.major, version.minor, version.patch] > [this.latestVersion.major, this.latestVersion.minor, this.latestVersion.patch];
   }
 
   isFirstTimeUpload(version: Version): boolean {
@@ -418,4 +457,9 @@ export class CreateNewVersionComponent implements OnInit {
       }
     }
   }
+
+  onUseAwsS3Toggled(event) {
+    this.useAwsS3 = event.checked;
+  }
 }
+

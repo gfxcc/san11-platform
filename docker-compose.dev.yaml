@@ -11,7 +11,8 @@ services:
       - ./back-end/utils:/utils
       - ../credentials:/credentials
     environment:
-      NOTIFIER_SERVICE_ACCOUNT_FILE: '../credentials/san11-platform-notifier.json'
+      NOTIFIER_SERVICE_ACCOUNT_FILE: '/credentials/san11-platform-notifier.json'
+      AWS_CREDENTIALS_FILE: '/credentials/aws-backend.json'
       DB_HOST: db
       STAGE: DEV
     command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py", "--verbose"]
