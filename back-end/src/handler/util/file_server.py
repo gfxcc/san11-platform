@@ -197,20 +197,26 @@ class S3(FileServer):
         logger.debug(f'({filename}) is deleted from bucket {bucket_class}')
 
     def get_folder_size(self, bucket_class: BucketClass, path: str) -> int:
-        bucket = self._get_client().Bucket(self.get_bucket_name(bucket_class))
+        bucket = self._get_resource().Bucket(self.get_bucket_name(bucket_class))
         total_size = 0
         for obj in bucket.objects.filter(Prefix=path):
             total_size = total_size + obj.size
         return total_size
 
     def delete_folder(self, bucket_class: BucketClass, path: str) -> None:
-        bucket = self._get_client().Bucket(self.get_bucket_name(bucket_class))
+        bucket = self._get_resource().Bucket(self.get_bucket_name(bucket_class))
         bucket.objects.filter(Prefix=path).delete()
 
     def _get_client(self):
         return boto3.client('s3', aws_access_key_id=self.creds.access_key_id,
                             aws_secret_access_key=self.creds.secret_access_key,
                             region_name='ap-east-1')
+
+    def _get_resource(self):
+        return boto3.resource('s3', aws_access_key_id=self.creds.access_key_id,
+                            aws_secret_access_key=self.creds.secret_access_key,
+                            region_name='ap-east-1')
+
 
 
 def get_file_server(server_type: FileServerType = FileServerType.GCS) -> FileServer:
