@@ -73,6 +73,7 @@ export class CreateNewVersionComponent implements OnInit {
   bytesReceied: number = 0;
   oldbytes: number = 0;
   unit: string = "Mbps";
+  SPEED_UPDATE_DELTA_RATE = 0.2;
 
   autoCreateChecked = false;
   useAwsS3 = false;
@@ -296,10 +297,18 @@ export class CreateNewVersionComponent implements OnInit {
     this.speed =
       (this.bytesReceied - this.oldbytes) /
       ((this.currTime - this.prevTime) / 1000);
-    if (this.speed < 1) {
+
+    let speed =
+      (this.bytesReceied - this.oldbytes) /
+      ((this.currTime - this.prevTime) / 1000); // mb/second
+    if (speed < 1) {
       this.unit = "KB/S";
-      this.speed *= 1000;
+      speed *= 1000;
     } else this.unit = "MB/S";
+
+    if (Math.abs(this.speed - speed) / Math.max(this.speed, 1) > this.SPEED_UPDATE_DELTA_RATE) {
+      this.speed = speed;
+    }
 
     this.prevTime = this.currTime;
     this.oldbytes = this.bytesReceied;
