@@ -4,12 +4,13 @@ import uuid
 
 from handler.model.model_package import ModelPackage
 from handler.model.model_user import DEFAULT_USER_AVATAR, ModelUser
+from handler.util.file_server import (BucketClass, FileServerType,
+                                      get_file_server)
 
 from .common.image import Image
 from .common.url import Url
 from .model.resource import get_image_url
 from .protos import san11_platform_pb2
-from .util import gcs
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -21,7 +22,11 @@ class ImageHandler:
 
         url = get_image_url(
             request.parent, f'{uuid.uuid1()}.jpeg', request.in_description)
-        gcs.move_file(gcs.TMP_BUCKET, request.url, gcs.CANONICAL_BUCKET, url)
+
+        # TODO: Switch to AWS S3
+        file_server = get_file_server(FileServerType.GCS)
+        file_server.move_file(BucketClass.TEMP, request.url,
+                              BucketClass.REGULAR, url)
         image = Image(url)
 
         if not request.in_description:

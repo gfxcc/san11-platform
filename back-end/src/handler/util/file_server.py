@@ -219,7 +219,7 @@ class S3(FileServer):
 
 
 
-def get_file_server(server_type: FileServerType = FileServerType.GCS) -> FileServer:
+def get_file_server(server_type: FileServerType = FileServerType.S3) -> FileServer:
     if server_type == FileServerType.GCS:
         return Gcs()
     elif server_type == FileServerType.S3:
