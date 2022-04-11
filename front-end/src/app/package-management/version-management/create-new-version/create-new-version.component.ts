@@ -76,7 +76,7 @@ export class CreateNewVersionComponent implements OnInit {
   SPEED_UPDATE_DELTA_RATE = 0.2;
 
   autoCreateChecked = false;
-  useAwsS3 = false;
+  useAwsS3 = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: VersionData,
