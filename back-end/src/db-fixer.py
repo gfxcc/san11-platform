@@ -34,7 +34,7 @@ def backfill_binaries_file_server():
     binaries = ModelBinary.list(ListOptions(parent=None))[0]
     for i, binary in enumerate(binaries):
         if binary.file:
-            binary.file.server = 1
+            binary.file.server = 2
         binary.update(update_update_time=False)
         print(
             f'Progress idx-{i}: updated {binary}')
