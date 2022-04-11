@@ -39,7 +39,7 @@ export class BranchComponent {
 
 
     binaryOnDownload: Binary;
-    downloadSub: Subscription;
+    downloadSub: Subscription | null = null;
     downloadProgress: number;
     startTime: any;
     endTime: any;
@@ -111,6 +111,10 @@ export class BranchComponent {
             this.notificationService.warn('请登录');
             return;
         }
+        if (this.downloadSub != null) {
+            this.notificationService.warn(`正在下载 (${this.downloadProgress}%)...请耐心等待当前下载完成.`);
+            return;
+        }
 
         this.downloadProgress = 0;
         this.binaryOnDownload = binary;
@@ -168,11 +172,13 @@ export class BranchComponent {
                             saveAs(result.body, fileDisplayName);
                             console.log(`downloaded file is saved.`);
                             this.binaryOnDownload.downloadCount = increment(this.binaryOnDownload.downloadCount);
+                            this.downloadSub = null;
                         }
                     },
                     error => {
                         this.downloadSub = undefined;
                         this.notificationService.warn('下载失败: ' + error.name);
+                        this.downloadSub = null;
                     }
                 );
             },
