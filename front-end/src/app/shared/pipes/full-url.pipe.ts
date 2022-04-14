@@ -10,6 +10,6 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 })
 export class FullUrlPipe implements PipeTransform {
   transform(uri: string, args?: any): string {
-      return GlobalConstants.fileServerUrl + '/' + uri;
+      return GlobalConstants.imgServerUrl + '/' + uri;
   }
 }
