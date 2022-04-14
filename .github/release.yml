@@ -1,0 +1,24 @@
+# .github/release.yml
+
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+      - internal
+    authors:
+      - octocat
+  categories:
+    - title: 🎉 新功能
+      labels:
+        - breaking-change
+        - new-feature
+    - title: ✨ 用户体验优化
+      labels:
+        - ui/ux
+        - enhancement
+    - title: 🛠 Bug修复
+      labels:
+        - bug-fix
+    - title: Other Changes
+      labels:
+        - "*"
