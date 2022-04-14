@@ -3,6 +3,9 @@ import os
 from email import message
 from typing import Iterable, List, Tuple, Type
 
+from src.handler.util.file_server import (BucketClass, FileServerType,
+                                          get_file_server)
+
 from handler.common.env import Env, get_env
 from handler.common.exception import PermissionDenied
 from handler.handler_context import HandlerContext
@@ -178,6 +181,10 @@ class PackageHandler(HandlerBase):
             except Exception as err:
                 logger.error(f'Failed to delete {thread} under {self}: {err}')
 
+        get_file_server(FileServerType.GCS).delete_folder(
+            BucketClass.REGULAR, package.name)
+        get_file_server(FileServerType.S3).delete_folder(
+            BucketClass.REGULAR, package.name)
         package.delete(user_id=handler_context.user.user_id)
         return package
 
