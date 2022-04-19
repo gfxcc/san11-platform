@@ -66,8 +66,10 @@ def parse_filter(cls: type, filter: str) -> Dict:
     (TODO): Support HAS (:) operation.
     Input:
         cls: class of resource class.
-        filter: E.g. "create_time > '2021-07-20 10:43:28.313033+08:00'"
-            "author_id = 123 AND state = 1"
+        filter: E.g. `create_time > '2021-07-20 10:43:28.313033+08:00'`
+            `author_id = 123 AND state = 1`
+            `package_name ~= "三国"`
+
             ONLY SUPPORT AND OPERATION
     Returns parsed key, value parse as a dictionary.
     '''
@@ -130,11 +132,16 @@ def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
 class ListOptions:
     # (TODO): Split this class into a separate file.
     '''
+    Args:
+        parent: set to `None` to omit this fields.
+        order_by: ...
+        filter: ...
+            `*text*` for fuzzy match
     Field name in `order_by`, `filter` is proto_name.
     '''
     DEFAULT_PAGE_SIZE = 10000
 
-    parent: str
+    parent: Optional[str]
     page_size: int = 10000
     watermark: str = attr.Factory(str)
     order_by: str = attr.Factory(str)

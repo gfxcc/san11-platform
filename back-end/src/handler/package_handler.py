@@ -1,10 +1,7 @@
 import logging
 import os
 from email import message
-from typing import Iterable, List, Tuple, Type
-
-from src.handler.util.file_server import (BucketClass, FileServerType,
-                                          get_file_server)
+from typing import Iterable, List, Optional, Tuple, Type, Union
 
 from handler.common.env import Env, get_env
 from handler.common.exception import PermissionDenied
@@ -19,6 +16,8 @@ from handler.model.model_package import ModelPackage
 from handler.model.model_subscription import ModelSubscription
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser, get_admins
+from handler.util.file_server import (BucketClass, FileServerType,
+                                      get_file_server)
 from handler.util.state_util import on_approve
 from handler.util.time_util import get_now
 
@@ -27,6 +26,26 @@ from .protos import san11_platform_pb2 as pb
 from .util.notifier import Notifier, notify, send_message
 
 logger = logging.getLogger(os.path.basename(__file__))
+
+
+def filter_packages_based_on_requester(packages: Iterable[ModelPackage],
+                                       requester: Optional[ModelUser]) -> List[ModelPackage]:
+    if requester is None:
+        # Most users (including anonymous users) should only see packages in
+        # `NORMAL` state.
+        packages = list(filter(lambda x: x.state in [
+            pb.ResourceState.NORMAL], packages))
+    else:
+        # Admin user can see all packages.
+        # Users who also publish packages will also see packages they published
+        # in `HIDDEN`, `UNDER_REVIEW` state.
+        packages = list(filter(lambda x: requester.type == pb.User.UserType.ADMIN or
+                               x.state == pb.ResourceState.NORMAL or
+                               (x.author_id == requester.user_id and
+                                x.state in [pb.ResourceState.HIDDEN,
+                                            pb.ResourceState.UNDER_REVIEW]),
+                               packages))
+    return packages
 
 
 class PackageHandler(HandlerBase):
@@ -51,33 +70,12 @@ class PackageHandler(HandlerBase):
         return ModelPackage.from_name(name)
 
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelPackage], str]:
-        # (TODO): BEGIN - Remove logic for model migration
-        # if not ModelPackage.list(ListOptions(parent='categories/1'))[0]:
-        #     for package in Package.list(page_size=1000, page_token=''):
-        #         new_model = ModelPackage.from_v1(package)
-        #         new_model.backfill()
-        # - END
         # (TODO): Due to ListOptions.filter does not support `OR` operation, we
         # will do list without any filter and hide content later manually.
         # This should be replaced with different `filter` expression later when
         # possible.
         packages, next_page_token = ModelPackage.list(list_options)
-        if handler_context.user is None:
-            # Most users (including anonymous users) should only see packages in
-            # `NORMAL` state.
-            packages = list(filter(lambda x: x.state in [
-                pb.ResourceState.NORMAL], packages))
-        else:
-            # Admin user can see all packages.
-            # Users who also publish packages will also see packages they published
-            # in `HIDDEN`, `UNDER_REVIEW` state.
-            packages = list(filter(lambda x: handler_context.user.type == pb.User.UserType.ADMIN or
-                                   x.state == pb.ResourceState.NORMAL or
-                                   (x.author_id == handler_context.user.user_id and
-                                    x.state in [pb.ResourceState.HIDDEN,
-                                                pb.ResourceState.UNDER_REVIEW]),
-                                   packages))
-        return packages, next_page_token
+        return filter_packages_based_on_requester(packages, handler_context.user), next_page_token
 
     def update(self, update_package: ModelPackage, update_mask: FieldMask, handler_context: HandlerContext) -> ModelPackage:
         def verify_permission_on_update(curr: ModelPackage, dest: ModelPackage, update_mask: FieldMask) -> None:
@@ -190,4 +188,8 @@ class PackageHandler(HandlerBase):
 
     def search_packages(self, request, context):
         # (TODO): Reimplement this with ModelPackage
+        # packages, next_page_token = ModelPackage.list(list_options=ListOptions(
+        #     parent=None,
+        #     filter=request.query,
+        # ))
         return pb.SearchPackagesResponse()
