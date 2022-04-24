@@ -160,19 +160,6 @@ class DbModelBase(ABC):
     def list(cls, list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
         db_table = cls._DB_TABLE
 
-        # # prepare default value for mutable fields.
-        # if not list_options.order_by:
-        #     order_by_fields = [('create_time', 'DESC')]
-        # else:
-        #     order_by_fields = parse_order_by(cls, list_options.order_by)
-
-        # if order_by_fields:
-        #     order_statement = f'ORDER BY ' + \
-        #         ','.join(
-        #             f"data->>'{field_name}' {order}" for field_name, order in order_by_fields)
-        # else:
-        #     order_statement = ''
-
         order_statement = cls._LIST_OPTIONS_ADAPTOR.gen_order_by(list_options)
         where_statement, params = cls._LIST_OPTIONS_ADAPTOR.gen_where(
             list_options)
