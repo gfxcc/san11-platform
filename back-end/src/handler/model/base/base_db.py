@@ -160,10 +160,13 @@ class DbModelBase(ABC):
     def list(cls, list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
         db_table = cls._DB_TABLE
 
-        order_statement = cls._LIST_OPTIONS_ADAPTOR.gen_order_by(list_options)
-        where_statement, params = cls._LIST_OPTIONS_ADAPTOR.gen_where(
-            list_options)
-        limit_statement = cls._LIST_OPTIONS_ADAPTOR.gen_limit(list_options)
+        try:
+            order_statement = cls._LIST_OPTIONS_ADAPTOR.gen_order_by(list_options)
+            where_statement, params = cls._LIST_OPTIONS_ADAPTOR.gen_where(
+                list_options)
+            limit_statement = cls._LIST_OPTIONS_ADAPTOR.gen_limit(list_options)
+        except ValueError:
+            raise InvalidArgument(message=f'Invalid list_options: {list_options}')
 
         sql = f"SELECT data FROM {db_table} {where_statement} {order_statement} {limit_statement}"
         resp = run_sql_with_param_and_fetch_all(sql, params)

@@ -1,4 +1,6 @@
 # Referring https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
+from dataclasses import dataclass
+
 import attr
 
 
@@ -9,49 +11,49 @@ class Excep(Exception):
     code: int = 0
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class Unauthenticated(Excep):
     message: str = '未验证的用户'
     code: int = 16
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class PermissionDenied(Excep):
     message: str = '权限不足'
     code: int = 7
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class AlreadyExists(Excep):
     message: str = '资源已存在'
     code: int = 6
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class NotFound(Excep):
     message: str = '找不到资源'
     code: int = 5
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class InvalidArgument(Excep):
     message: str = '不合法的参数'
     code: int = 3
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class FailedPrecondition(Excep):
     message: str = '条件不满足'
     code: int = 9
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class ResourceExhausted(Excep):
     message: str = '资源不足'
     code: int = 8
 
 
-@attr.s(auto_attribs=True)
+@dataclass
 class Unimplemented(Excep):
     message: str = '尚未开放'
     code: int = 12

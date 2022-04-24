@@ -53,13 +53,17 @@ logger = logging.getLogger(os.path.basename(__file__))
 RpcFunc = Callable[[Any, Any, Any], Any]
 
 
+def is_production() -> bool:
+    return os.environ.get('PRODUCTION') == 'true'
+
+
 def GrpcAbortOnExcep(func: RpcFunc):
     @functools.wraps(func)
     def wrapper(this, request: message.Message, context: grpc.ServicerContext):
         try:
             return func(this, request, HandlerContext.from_service_context(context))
         except Excep as err:
-            logger.warning(err, exc_info=True)
+            logger.warning(err, exc_info=(not is_production()))
             logger.warning(f'context={context}')
             context.abort(code=err.code, details=err.message)
     return wrapper
@@ -336,10 +340,14 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     @GrpcAbortOnExcep
     def SearchPackages(self, request, context):
-        packages, next_page_token = self.package_handler.list(
-            list_options=ListOptions(None, 100, 0, '', f'package_name = "*{request.query}*"'),
-            handler_context=context,
-        )
+        try:
+            packages, next_page_token = self.package_handler.list(
+                list_options=ListOptions(None, 100, 0, '', f'package_name = "*{request.query}*"'),
+                handler_context=context,
+            )
+        except Excep as e:
+            logger.warning(f'Failures encountered in SearchPackage, due to invalid input: {e}')
+            return pb.SearchPackagesResponse()
         return pb.SearchPackagesResponse(packages=[package.to_pb() for package in packages])
         
 
