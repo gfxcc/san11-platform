@@ -153,7 +153,7 @@ def validate_new_user(user: ModelUser) -> None:
 
 def get_user_by_email(email: str) -> ModelUser:
     users = ModelUser.list(ListOptions(
-        parent='', filter=f'email=\"{email}\"'))[0]
+        parent=None, filter=f'email=\"{email}\"'))[0]
     if not users:
         raise NotFound(message=f'找不到注册邮箱为 {email} 的用户')
     return users[0]
@@ -161,7 +161,7 @@ def get_user_by_email(email: str) -> ModelUser:
 
 def get_user_by_username(username: str) -> ModelUser:
     users = ModelUser.list(ListOptions(
-        parent='', filter=f'username=\"{username}\"'))[0]
+        parent=None, filter=f'username=\"{username}\"'))[0]
     if not users:
         raise NotFound(message=f'找不到用户名为 {username} 的用户')
     return users[0]
