@@ -5,7 +5,7 @@ from typing import Optional
 
 import attr
 from google.protobuf import message
-from handler.model.base.base_db import ListOptions
+from handler.model.base import ListOptions
 from handler.model.model_activity import TrackLifecycle
 from handler.model.model_comment import ModelComment
 
@@ -71,4 +71,3 @@ class ModelArticle(ModelBase, TrackLifecycle):
     @classmethod
     def from_pb(cls, proto_model: message.Message) -> ModelArticle:
         return super().from_pb(proto_model)
-

@@ -3,9 +3,8 @@ import os
 from typing import List, Optional, Tuple
 
 from handler.handler_context import HandlerContext
-from handler.model.base import (FieldMask, HandlerBase, ModelBase,
+from handler.model.base import (FieldMask, HandlerBase, ListOptions, ModelBase,
                                 merge_resource)
-from handler.model.base.base_db import ListOptions
 from handler.model.model_user import (DEFAULT_USER_AVATAR, ModelUser,
                                       get_user_by_email, validate_email,
                                       validate_new_user, validate_username)

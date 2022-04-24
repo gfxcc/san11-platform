@@ -1,8 +1,6 @@
-import logging
-import os
 from typing import Optional
 
-from handler.model.base.base_db import ListOptions
+from handler.model.base import ListOptions
 from handler.model.model_activity import ModelActivity
 from handler.model.model_binary import ModelBinary
 from handler.model.model_user import ModelUser
@@ -10,7 +8,8 @@ from handler.util.time_util import get_now
 
 
 def _get_earlist_activity(user: ModelUser) -> Optional[ModelActivity]:
-    activities = ModelActivity.list(ListOptions(parent=user.name, order_by='create_time'))[0]
+    activities = ModelActivity.list(ListOptions(
+        parent=user.name, order_by='create_time'))[0]
     return next(activities, None)
 
 

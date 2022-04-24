@@ -4,8 +4,7 @@ import datetime
 from typing import List, Tuple
 
 import attr
-from handler.model.base import Attrib, InitModel, ModelBase
-from handler.model.base.base_db import ListOptions
+from handler.model.base import Attrib, InitModel, ListOptions, ModelBase
 
 from ..protos import san11_platform_pb2 as pb
 

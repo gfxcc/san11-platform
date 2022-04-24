@@ -1,9 +1,11 @@
+import logging
 import os
 from typing import Dict, Iterable, List, Tuple
 
 import psycopg2
 from psycopg2.pool import ThreadedConnectionPool
 
+logger = logging.getLogger(os.path.basename(__file__))
 # class DbConnect:
 #     def __init__(self):
 #         self.conn = psycopg2.connect(host=os.environ['DB_HOST'], database=os.environ['DB_NAME'],
@@ -19,6 +21,7 @@ from psycopg2.pool import ThreadedConnectionPool
 #         self.conn.autocommit = True
 
 # DB_CONN = DbConnect()
+
 
 MIN_CONNECTION = 10
 MAX_CONNECTION = 200
@@ -48,6 +51,8 @@ def run_sql_with_param(sql: str, param: Dict) -> None:
 
 
 def run_sql_with_param_and_fetch_all(sql: str, param: Dict, transaction: bool = False) -> List[Tuple]:
+    logger.debug(sql)
+    logger.debug(param)
     db_conn = pgpool().getconn()
     try:
         if not transaction:

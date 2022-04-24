@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit {
           parent: `categories/${ap.params['categoryId']}`,
         })
         if (ap.qparams['tagId'] != undefined) {
-          request.filter = `tags=${ap.qparams['tagId']}`;
+          request.filter = `tags : "${ap.qparams['tagId']}"`;
         }
         this.loadPackages(request);
       } else if (userId != undefined) {
@@ -100,6 +100,7 @@ export class DashboardComponent implements OnInit {
 
 
   searchPackages(query: string): void {
+    console.log('in search');
     this.san11pkService.searchPackages(query, 0, '').subscribe(
       resp => {
         this.packages = resp.packages;

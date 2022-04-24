@@ -18,6 +18,6 @@ utest:
 
 .PHONY: regen
 regen:
-	python3 -m grpc_tools.protoc -I$(PROTO_PATH) --python_out=$(OUTPUT_PATH) --grpc_python_out=$(OUTPUT_PATH) $(PROTO_FILES)
+	$(PY) -m grpc_tools.protoc -I$(PROTO_PATH) --python_out=$(OUTPUT_PATH) --grpc_python_out=$(OUTPUT_PATH) --mypy_out=$(OUTPUT_PATH) $(PROTO_FILES)
 	# A workaround due to https://github.com/protocolbuffers/protobuf/issues/1491
 	gsed -i -E 's/^import.*_pb2/from . \0/' $(OUTPUT_PATH)/*.py

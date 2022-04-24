@@ -4,9 +4,8 @@ from typing import Iterable, List, Tuple
 
 from handler.common.exception import NotFound, PermissionDenied
 from handler.handler_context import HandlerContext
-from handler.model.base import HandlerBase, merge_resource
-from handler.model.base.base_db import ListOptions
-from handler.model.base.common import FieldMask
+from handler.model.base import (FieldMask, HandlerBase, ListOptions,
+                                merge_resource)
 from handler.model.model_subscription import (ModelSubscription,
                                               find_subscription)
 from handler.model.model_user import ModelUser
@@ -21,12 +20,13 @@ class SubscriptionHandler(HandlerBase):
     def create(self, parent: str, sub: ModelSubscription,
                handler_context: HandlerContext) -> ModelSubscription:
         try:
-            subscription = find_subscription(parent, handler_context.user.user_id)
+            subscription = find_subscription(
+                parent, handler_context.user.user_id)
         except NotFound:
             pass
         else:
             return subscription
-        
+
         sub.subscriber_id = handler_context.user.user_id
         sub.create(parent=parent, user_id=handler_context.user.user_id)
 
@@ -59,7 +59,8 @@ class SubscriptionHandler(HandlerBase):
         if subscriber_id != handler_context.user.user_id:
             raise PermissionDenied()
         try:
-            subscription = find_subscription(subscribed_resource, subscriber_id)
+            subscription = find_subscription(
+                subscribed_resource, subscriber_id)
         except NotFound:
             return
         target = find_resource(subscribed_resource)
@@ -67,4 +68,3 @@ class SubscriptionHandler(HandlerBase):
             target.subscriber_count -= 1
             target.update(update_update_time=False)
         subscription.delete()
-        

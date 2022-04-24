@@ -2,7 +2,7 @@ import logging
 import os
 from typing import Iterable, List, Optional, Tuple
 
-from handler.model.base.base_db import ListOptions
+from handler.model.base import ListOptions
 from handler.model.model_activity import ModelActivity
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary

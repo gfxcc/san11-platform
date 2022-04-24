@@ -7,7 +7,8 @@ from typing import Iterable, List, Tuple
 import attr
 from google.protobuf import message
 from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
-from handler.model.base.base_db import DbConverter, ListOptions
+from handler.model.base import ListOptions
+from handler.model.base.base_db import DbConverter
 from handler.model.base.base_proto import ProtoConverter
 from handler.model.model_activity import TrackLifecycle
 from handler.util.name_util import ResourceName
