@@ -10,7 +10,7 @@ services:
       - ./back-end/utils:/utils
       - ../credentials:/credentials
     environment:
-      PRODUCTION: true
+      PRODUCTION: 'true'
       NOTIFIER_SERVICE_ACCOUNT_FILE: '/credentials/san11-platform-notifier.json'
       AWS_CREDENTIALS_FILE: '/credentials/aws-backend.json'
       DB_HOST: db
