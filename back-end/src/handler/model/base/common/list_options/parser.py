@@ -11,20 +11,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 _FILTER_ITEM_PATTERN = r'(?P<field_name>\w+) ?(?P<comp_op>=|!=|<|>|<=|>=|:) ?(?P<value>("[\w */@.]+"|[0-9.]+|true|false))'
 
-# def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
-#     '''
-#     Input:
-#         cls: class of resource class.
-#     Returns:
-#         parsed_order_by: [[field_name, order], [field_name, order]].
-#             E.g. [('create_time', 'desc'), ('download_count', '')]
-#     '''
-#     proto2db = {}
-#     for attribute in attr.fields(cls):
-#         if not (base_proto._is_proto_field(attribute) and _is_db_field(attribute)):
-#             continue
-#         proto2db[base_proto._get_proto_path(
-#             attribute)] = _get_db_path(attribute)
+
 class OrderOptions(Enum):
     ASCENDING = 1
     DESCENDING = auto()
@@ -36,7 +23,6 @@ class OrderOptions(Enum):
             return 'DESC'
         else:
             raise ValueError('Unsupported OrderOptions')
-
 
 
 @dataclass
@@ -56,21 +42,11 @@ class OrderByItem:
                 continue
             segment = segment.strip()
             field_name = segment.split()[0]
-            order = OrderOptions.DESCENDING if segment.upper().endswith(' DESC') else OrderOptions.ASCENDING
+            order = OrderOptions.DESCENDING if segment.upper().endswith(
+                ' DESC') else OrderOptions.ASCENDING
             ret.append(cls(field_name, order))
 
         return ret
-
-
-# def parse_filter(cls: type, filter: str) -> Dict:
-#     '''
-#     '''
-#     proto2db = {}
-#     for attribute in attr.fields(cls):
-#         if not (base_proto._is_proto_field(attribute) and _is_db_field(attribute)):
-#             continue
-#         proto2db[base_proto._get_proto_path(
-#             attribute)] = _get_db_path(attribute)
 
 
 class Comp_Op(Enum):
@@ -173,7 +149,7 @@ class FilterItem:
             value = False
         else:
             value = int(value)
-        
+
         return cls(
             field_name=field_name,
             comp_op=comp_op,
