@@ -16,6 +16,7 @@ from .parser import FilterExpr, OrderByItem
 
 logger = logging.getLogger(os.path.basename(__file__))
 DEFAULT_PAGE_SIZE = 10000
+DEFAULT_ORDER_BY = 'create_time DESC'
 
 
 @dataclass
@@ -54,7 +55,7 @@ class ListOptions:
         '''
         parent = request.parent
         page_size = request.page_size or DEFAULT_PAGE_SIZE
-        order_by = request.order_by
+        order_by = request.order_by or DEFAULT_ORDER_BY
         filter = request.filter
 
         def get_watermark(page_token: str) -> int:

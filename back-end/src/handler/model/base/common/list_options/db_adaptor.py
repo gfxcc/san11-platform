@@ -80,15 +80,18 @@ class PostgresAdaptor(DbAdaptor):
                     return f"(data->'{field_name}')::jsonb ? %({field_name})s"
                 else:
                     if isinstance(value, bool):
-                        params[field_name] = value
-                        return f"(data->>'{field_name}')::boolean = %({field_name})s"
+                        field_part = f"(data->>'{field_name}')::boolean"
+                    elif isinstance(value, int):
+                        field_part = f"(data->>'{field_name}')::int"
+                    else:
+                        field_part = f"data->>'{field_name}'"
                     if isinstance(value, str) and self.FUZZY_MATCH_PATTERN in value:
                         value = value.replace('*', '%')
                         comp_op_str = 'LIKE'
                     else:
                         comp_op_str = str(item.comp_op)
                     params[field_name] = value
-                    return f"data->>'{field_name}' {comp_op_str} %({field_name})s"
+                    return f"{field_part} {comp_op_str} %({field_name})s"
             statement = ''
             for sub_expr in expr.value:
                 if sub_expr.logic_op:
