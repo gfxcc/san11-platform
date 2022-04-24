@@ -9,7 +9,7 @@ from typing import List, Optional, Tuple, Union
 
 logger = logging.getLogger(os.path.basename(__file__))
 
-_FILTER_ITEM_PATTERN = r'(?P<field_name>\w+) ?(?P<comp_op>=|!=|<|>|<=|>=|:) ?(?P<value>("[\w */]+"|[0-9.]+|true|false))'
+_FILTER_ITEM_PATTERN = r'(?P<field_name>\w+) ?(?P<comp_op>=|!=|<|>|<=|>=|:) ?(?P<value>("[\w */@.]+"|[0-9.]+|true|false))'
 
 # def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
 #     '''

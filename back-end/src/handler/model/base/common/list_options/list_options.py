@@ -43,8 +43,8 @@ class ListOptions:
     parent: Optional[str]
     page_size: int = DEFAULT_PAGE_SIZE
     watermark: int = 0
-    order_by: str = attr.Factory(str)
-    filter: str = attr.Factory(str)
+    order_by: str = ''
+    filter: str = ''
 
     @classmethod
     def from_request(cls, request):

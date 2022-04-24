@@ -125,7 +125,7 @@ def validate_email(email: str) -> None:
     # Allow admin to reuse email for new account for testing.
     if email == ADMIN_EMAIL:
         return
-    if ModelUser.list(ListOptions(parent='', filter=f'email=\"{email}\"'))[0]:
+    if ModelUser.list(ListOptions(parent=None, filter=f'email=\"{email}\"'))[0]:
         raise AlreadyExists("邮箱已被使用")
 
 
@@ -142,7 +142,7 @@ def validate_username(username: str) -> None:
     '''
     if not re.fullmatch(r'[^ @]{4,32}', username):
         raise InvalidArgument("用户名要求: [长度] 4-32 [字符] 不包含 空格, @")
-    if ModelUser.list(ListOptions(parent='', filter=f'username=\"{username}\"'))[0]:
+    if ModelUser.list(ListOptions(parent=None, filter=f'username="{username}"'))[0]:
         raise AlreadyExists(f'用户名 {username} 已被使用')
 
 
@@ -168,4 +168,4 @@ def get_user_by_username(username: str) -> ModelUser:
 
 
 def get_admins() -> Iterable[ModelUser]:
-    return ModelUser.list(ListOptions(parent='', filter=f'type={pb.User.UserType.ADMIN}'))[0]
+    return ModelUser.list(ListOptions(parent=None, filter=f'type={pb.User.UserType.ADMIN}'))[0]

@@ -19,7 +19,7 @@ def backfill_user_create_update_time():
     `create_time` of earlist activity created by given user or current time if 
     no activity is found.
     '''
-    users = ModelUser.list(ListOptions(parent=''))[0]
+    users = ModelUser.list(ListOptions(parent=None))[0]
     for i, user in enumerate(users):
         activity = _get_earlist_activity(user)
         user.create_time = activity.create_time if activity else get_now()
