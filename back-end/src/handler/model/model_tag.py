@@ -4,8 +4,7 @@ from typing import List, Optional, Tuple
 
 import attr
 from handler.db.db_util import run_sql_with_param_and_fetch_one
-from handler.model.base import Attrib, InitModel, ModelBase
-from handler.model.base.base_db import ListOptions
+from handler.model.base import Attrib, InitModel, ListOptions, ModelBase
 from handler.model.model_activity import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb

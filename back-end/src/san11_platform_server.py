@@ -20,8 +20,7 @@ from handler.common.exception import *
 from handler.general_handler import GeneralHandler
 from handler.handler_context import HandlerContext
 from handler.image_handler import ImageHandler
-from handler.model.base.base_db import ListOptions
-from handler.model.base.common import FieldMask
+from handler.model.base import FieldMask, ListOptions
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
@@ -337,7 +336,12 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
 
     @GrpcAbortOnExcep
     def SearchPackages(self, request, context):
-        return self.package_handler.search_packages(request, context)
+        packages, next_page_token = self.package_handler.list(
+            list_options=ListOptions(None, 100, 0, '', f'package_name = "*{request.query}*"'),
+            handler_context=context,
+        )
+        return pb.SearchPackagesResponse(packages=[package.to_pb() for package in packages])
+        
 
     # activities
     @GrpcAbortOnExcep

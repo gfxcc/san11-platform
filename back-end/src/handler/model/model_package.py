@@ -8,7 +8,7 @@ from typing import List, Optional, Tuple
 import attr
 from google.protobuf import message
 from handler.common.exception import NotFound
-from handler.model.base.base_db import ListOptions
+from handler.model.base import ListOptions
 from handler.model.model_tag import ModelTag
 
 from ..protos import san11_platform_pb2 as pb

@@ -7,6 +7,7 @@ import logging
 import os
 import re
 from abc import ABC
+from dataclasses import dataclass
 from typing import (Any, Dict, Generic, Iterable, List, Optional, Tuple, Type,
                     TypeVar)
 
@@ -22,6 +23,7 @@ from ...db.db_util import (auto_adjust_resource_id_next_val,
 from ...protos import san11_platform_pb2 as pb
 from ...util.time_util import get_now
 from . import base_core
+from .common.list_options import FieldTrait, ListOptions, PostgresAdaptor
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -60,126 +62,7 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
         return value.astimezone(datetime.timezone.utc)
 
 
-def parse_filter(cls: type, filter: str) -> Dict:
-    '''
-    (TODO): Support OR (OR) operation.
-    (TODO): Support HAS (:) operation.
-    Input:
-        cls: class of resource class.
-        filter: E.g. `create_time > '2021-07-20 10:43:28.313033+08:00'`
-            `author_id = 123 AND state = 1`
-            `package_name ~= "三国"`
-
-            ONLY SUPPORT AND OPERATION
-    Returns parsed key, value parse as a dictionary.
-    '''
-    proto2db = {}
-    for attribute in attr.fields(cls):
-        if not (base_proto._is_proto_field(attribute) and _is_db_field(attribute)):
-            continue
-        proto2db[base_proto._get_proto_path(
-            attribute)] = _get_db_path(attribute)
-
-    kwargs = {}
-    segments = map(str.strip, re.split('AND | OR', filter))
-    for segment in segments:
-        if not segment:
-            continue
-        k, v = map(str.strip, segment.split('='))
-        if match := re.fullmatch(r'"(?P<value>.+)"', v):
-            v = match['value']
-        else:
-            # (TODO): In postgres, ->> return text
-            v = v
-
-        # To support fields not in proto message.
-        if k not in proto2db:
-            kwargs[k] = v
-        else:
-            kwargs[proto2db[k]] = v
-    return kwargs
-
-
-def parse_order_by(cls: type, order_by: str) -> Iterable[Tuple[str, str]]:
-    '''
-    Input:
-        cls: class of resource class.
-        order_by: E.g. "create_time", "create_time desc, download_count"
-    Returns:
-        parsed_order_by: [[field_name, order], [field_name, order]].
-            E.g. [('create_time', 'desc'), ('download_count', '')]
-    '''
-    proto2db = {}
-    for attribute in attr.fields(cls):
-        if not (base_proto._is_proto_field(attribute) and _is_db_field(attribute)):
-            continue
-        proto2db[base_proto._get_proto_path(
-            attribute)] = _get_db_path(attribute)
-
-    ret = []
-    for segment in order_by.split(','):
-        if not segment:
-            continue
-        segment = segment.strip().lower()
-        field_name = segment.split()[0]
-        order = 'DESC' if segment.endswith(' desc') else ''
-        ret.append((field_name, order))
-
-    return ret
-
-
-@attr.s(auto_attribs=True)
-class ListOptions:
-    # (TODO): Split this class into a separate file.
-    '''
-    Args:
-        parent: set to `None` to omit this fields.
-        order_by: ...
-        filter: ...
-            `*text*` for fuzzy match
-    Field name in `order_by`, `filter` is proto_name.
-    '''
-    DEFAULT_PAGE_SIZE = 10000
-
-    parent: Optional[str]
-    page_size: int = 10000
-    watermark: str = attr.Factory(str)
-    order_by: str = attr.Factory(str)
-    filter: str = attr.Factory(str)
-
-    @classmethod
-    def from_request(cls, request):
-        def get_watermark(page_token: str) -> str:
-            if not page_token:
-                return ''
-            try:
-                prev_option: pb.PaginationOption = pb.PaginationOption.ParseFromString(
-                    page_token)
-                if prev_option.parent != parent or prev_option.filter != filter or prev_option.order_by != order_by:
-                    raise InvalidArgument(f'Invalid page_token')
-                return prev_option.watermark
-            except Exception:
-                j = json.loads(page_token)
-                return j['watermark']
-
-        watermark = get_watermark(request.page_token)
-        return cls(parent=request.parent,
-                   page_size=request.page_size or cls.DEFAULT_PAGE_SIZE,
-                   watermark=watermark,
-                   order_by=request.order_by,
-                   filter=request.filter)
-
-    def to_token(self) -> str:
-        return str(pb.PaginationOption(
-            parent=self.parent,
-            page_size=self.page_size,
-            watermark=self.watermark,
-            order_by=self.order_by,
-            filter=self.filter,
-        ).SerializeToString())
-
-
-@attr.s(auto_attribs=True)
+@dataclass
 class DbField:
     name: str
     converter: DbConverter
@@ -191,7 +74,8 @@ class DbField:
 class DbModelBase(ABC):
     _DB_TABLE: str = ''
     _DB_FIELDS_DICT: Dict[str, DbField]
-    _SERIAL_ID: Optional[DbField] = None
+    _SERIAL_ID: DbField
+    _LIST_OPTIONS_ADAPTOR: PostgresAdaptor
 
     def is_exist(self):
         '''
@@ -274,50 +158,31 @@ class DbModelBase(ABC):
 
     @classmethod
     def list(cls, list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
-        # prepare default value for mutable fields.
-        if not list_options.order_by:
-            order_by_fields = [('create_time', 'DESC')]
-        else:
-            order_by_fields = parse_order_by(cls, list_options.order_by)
-
-        kwargs = parse_filter(cls, list_options.filter)
-
         db_table = cls._DB_TABLE
-        # TODO: Remove special logic for data migration.
-        if list_options.parent is None:
-            predicate_statement = ' '
-        else:
-            predicate_statement = 'WHERE parent=%(parent)s'
-            if kwargs:
-                wheres = []
-                for key in kwargs:
-                    db_field = cls._DB_FIELDS_DICT[key]
-                    db_path = db_field.name
-                    if db_field.repeated:
-                        # https://www.postgresql.org/docs/9.5/functions-json.html
-                        wheres.append(
-                            f"(data->'{db_path}')::jsonb ? %({db_path})s")
-                    else:
-                        wheres.append(f"data->>'{db_path}'=%({db_path})s")
-                predicate_statement += ' AND ' + ' AND '.join(wheres)
 
-        if order_by_fields:
-            order_statement = f'ORDER BY ' + \
-                ','.join(
-                    f"data->>'{field_name}' {order}" for field_name, order in order_by_fields)
-        else:
-            order_statement = ''
+        # # prepare default value for mutable fields.
+        # if not list_options.order_by:
+        #     order_by_fields = [('create_time', 'DESC')]
+        # else:
+        #     order_by_fields = parse_order_by(cls, list_options.order_by)
 
-        limit, offset = list_options.page_size, int(
-            list_options.watermark) if list_options.watermark else 0
-        size_statement = f'LIMIT {limit} OFFSET {offset}'
-        sql = f"SELECT data FROM {db_table} {predicate_statement} {order_statement} {size_statement}"
-        params = kwargs.copy()
-        params['parent'] = list_options.parent
+        # if order_by_fields:
+        #     order_statement = f'ORDER BY ' + \
+        #         ','.join(
+        #             f"data->>'{field_name}' {order}" for field_name, order in order_by_fields)
+        # else:
+        #     order_statement = ''
+
+        order_statement = cls._LIST_OPTIONS_ADAPTOR.gen_order_by(list_options)
+        where_statement, params = cls._LIST_OPTIONS_ADAPTOR.gen_where(
+            list_options)
+        limit_statement = cls._LIST_OPTIONS_ADAPTOR.gen_limit(list_options)
+
+        sql = f"SELECT data FROM {db_table} {where_statement} {order_statement} {limit_statement}"
         resp = run_sql_with_param_and_fetch_all(sql, params)
 
         next_page_options = copy.copy(list_options)
-        next_page_options.watermark = offset + len(resp)
+        next_page_options.watermark = list_options.watermark + len(resp)
 
         return [cls.from_data(data[0]) for data in resp], next_page_options.to_token()
 
@@ -430,6 +295,11 @@ def init_db_model(cls: type, db_table: str) -> None:
         )
         db_fields[db_path] = field
     cls._DB_FIELDS_DICT = db_fields
+
+    fields_trait = {}
+    for k, v in db_fields.items():
+        fields_trait[k] = FieldTrait(k, v.repeated, v.type)
+    cls._LIST_OPTIONS_ADAPTOR = PostgresAdaptor(fields_trait)
 
 
 def _get_db_path(attribute: attr.Attribute) -> str:

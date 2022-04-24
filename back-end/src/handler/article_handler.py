@@ -3,8 +3,8 @@ import os
 from typing import Iterable, List, Tuple
 
 from handler.handler_context import HandlerContext
-from handler.model.base import FieldMask, HandlerBase, merge_resource
-from handler.model.base.base_db import ListOptions
+from handler.model.base import (FieldMask, HandlerBase, ListOptions,
+                                merge_resource)
 from handler.model.model_article import ModelArticle
 
 from .protos import san11_platform_pb2 as pb

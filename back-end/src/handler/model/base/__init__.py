@@ -79,12 +79,15 @@ import attr
 from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
+# Export sections
 from .base import Attrib, InitModel
 from .base_core import is_repeated
-from .base_db import DbConverter, ListOptions
-from .base_proto import (DatetimeProtoConverter, LegacyDatetimeProtoConverter,
-                         ProtoConverter)
-from .common import FieldMask
+from .base_db import DbConverter  # noqa
+from .base_proto import DatetimeProtoConverter  # noqa
+from .base_proto import ProtoConverter  # noqa
+from .base_proto import LegacyDatetimeProtoConverter
+from .common.field_mask import FieldMask  # noqa
+from .common.list_options import ListOptions  # noqa
 
 _SUB_MODEL_BASE_T = TypeVar('_SUB_MODEL_BASE_T', bound='ModelBase')
 

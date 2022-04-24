@@ -4,8 +4,7 @@ import datetime
 from typing import Optional
 
 import attr
-from handler.model.base import Attrib, InitModel, ModelBase
-from handler.model.base.base_db import ListOptions
+from handler.model.base import Attrib, InitModel, ListOptions, ModelBase
 from handler.model.model_activity import TrackLifecycle
 from handler.model.model_reply import ModelReply
 

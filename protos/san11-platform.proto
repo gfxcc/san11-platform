@@ -823,7 +823,9 @@ message Subscription {
   }
 }
 
+//
 // Utilities
+//
 
 message FieldMask { repeated string paths = 1; }
 
@@ -855,13 +857,3 @@ enum Action {
   DOWNLOAD = 21;
 }
 
-// This is an internal utility message being used to generate page_token.
-message PaginationOption {
-  string parent = 1;
-  int64 page_size = 2;
-  // To indicate where were left from previous list. Could be offset other more
-  // sophisticated info.
-  int64 watermark = 3;
-  string order_by = 4;
-  string filter = 5;
-}

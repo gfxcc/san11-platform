@@ -4,8 +4,8 @@ import uuid
 from typing import Iterable, List, Tuple
 
 from handler.handler_context import HandlerContext
-from handler.model.base import FieldMask, HandlerBase, merge_resource
-from handler.model.base.base_db import ListOptions
+from handler.model.base import (FieldMask, HandlerBase, ListOptions,
+                                merge_resource)
 from handler.model.model_binary import File, ModelBinary
 from handler.model.model_subscription import ModelSubscription
 from handler.model.model_user import ModelUser

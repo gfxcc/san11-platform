@@ -4,7 +4,7 @@ import datetime
 from typing import List, Optional, Tuple
 
 import attr
-from handler.model.base.base_db import ListOptions
+from handler.model.base import ListOptions
 from handler.model.model_activity import TrackLifecycle
 from handler.model.model_comment import ModelComment
 

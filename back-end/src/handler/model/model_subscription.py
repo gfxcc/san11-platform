@@ -5,8 +5,7 @@ from typing import List, Tuple
 
 import attr
 from handler.common.exception import NotFound
-from handler.model.base import Attrib, InitModel, ModelBase
-from handler.model.base.base_db import ListOptions
+from handler.model.base import Attrib, InitModel, ListOptions, ModelBase
 from handler.model.model_activity import ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
