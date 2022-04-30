@@ -16,6 +16,7 @@ from handler.admin_handler import AdminHandler
 from handler.article_handler import ArticleHandler
 from handler.binary_handler import BinaryHandler
 from handler.comment_handler import CommentHandler
+from handler.common.env import Env, get_env
 from handler.common.exception import *
 from handler.general_handler import GeneralHandler
 from handler.handler_context import HandlerContext
@@ -63,7 +64,7 @@ def GrpcAbortOnExcep(func: RpcFunc):
         try:
             return func(this, request, HandlerContext.from_service_context(context))
         except Excep as err:
-            logger.warning(err, exc_info=(not is_production()))
+            logger.warning(err, exc_info=get_env() != Env.PROD)
             logger.warning(f'context={context}')
             context.abort(code=err.code, details=err.message)
     return wrapper
@@ -342,16 +343,18 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     def SearchPackages(self, request, context):
         try:
             packages, next_page_token = self.package_handler.list(
-                list_options=ListOptions(None, 100, 0, '', f'package_name = "*{request.query}*"'),
+                list_options=ListOptions(
+                    None, 100, 0, '', f'package_name = "*{request.query}*"'),
                 handler_context=context,
             )
         except Excep as e:
-            logger.warning(f'Failures encountered in SearchPackage, due to invalid input: {e}')
+            logger.warning(
+                f'Failures encountered in SearchPackage, due to invalid input: {e}')
             return pb.SearchPackagesResponse()
         return pb.SearchPackagesResponse(packages=[package.to_pb() for package in packages])
-        
 
     # activities
+
     @GrpcAbortOnExcep
     def ListActivities(self, request, context):
         activities, next_page_token = self.activity_handler.list(
