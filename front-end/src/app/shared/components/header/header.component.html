@@ -78,8 +78,14 @@
         </button>
 
         <mat-menu #menu="matMenu" xPosition="before">
-            <button mat-menu-item (click)="onUserDetail()">账户详情</button>
-            <button mat-menu-item (click)="onSignOut()">登出</button>
+            <button mat-menu-item (click)="onUserDetail()">
+                <mat-icon>account_circle</mat-icon>
+                <span>账户详情</span>
+            </button>
+            <button mat-menu-item (click)="onSignOut()">
+                <mat-icon>logout</mat-icon>
+                <span>登出</span>
+            </button>
         </mat-menu>
     </div>
 </mat-toolbar>
