@@ -7,7 +7,7 @@ export class GlobalConstants {
     public static imgServerUrl: string = 'https://storage.googleapis.com/san11-resources';
 
     public static maxBinarySize: number = 10 * 1024 * 1024 * 1024; // 10GB
-    public static maxImageSize: number = 5 * 1024 * 1024; // 5MB
+    public static maxImageSize: number = 10 * 1024 * 1024; // 10MB
 
     public static tmpBucket = 'san11-tmp';
     public static resourceBucket = 'san11-resources';
