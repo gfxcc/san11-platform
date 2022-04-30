@@ -34,10 +34,8 @@ export class AccountInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.route.data.subscribe(
       (data) => {
-
         if (data.user) {
           this.user = data.user;
 
@@ -72,7 +70,6 @@ export class AccountInfoComponent implements OnInit {
               Validators.required
             ]]
           });
-
         }
       }
     );

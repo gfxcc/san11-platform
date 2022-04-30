@@ -26,7 +26,6 @@ export class AppComponent {
 
   sideBarToggler(event) {
     this.sideBarOpen = !this.sideBarOpen;
-    
   }
 
   onActivate(elementRef) {

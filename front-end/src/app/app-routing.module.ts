@@ -12,9 +12,6 @@ import { ThreadResolverService } from './shared/components/discussion/thread-det
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
 
 
-
-
-
 const routes: Routes = [
   { path: '', redirectTo: '/categories/1', pathMatch: 'full' },
 

@@ -104,6 +104,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['users', userId]);
   }
 
+  onSettings() {
+    this.router.navigate(['settings']);
+  }
+
   onSignOut() {
     this.san11pkService.signOut(new SignOutRequest({})).subscribe(
     );

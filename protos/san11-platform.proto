@@ -827,6 +827,28 @@ message Subscription {
   }
 }
 
+message Settings {
+  repeated PreferenceGroup group = 1;
+
+  message PreferenceGroup {
+    string name = 1;
+    string display_name = 2;
+    string description = 3;
+    repeated Preference preference = 4;
+  }
+
+  message Preference {
+    string name = 1;
+    string display_name = 2;
+    string description = 3;
+    oneof value {
+      bool bool_value = 4;
+      int32 int_value = 5;
+      string string_value = 6;
+    }
+  }
+}
+
 //
 // Utilities
 //

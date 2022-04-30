@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;
+    height: calc(100vh - var(--header-height));
+    ;
+    padding-top: 1rem;
+    margin-left: -10px;
+    justify-content: stretch;
+    background-color: white;
+    border-right: solid 1px var(--border-color);
+}
+
+.top-sidebar {
+    padding-left: 20px;
+    color: rgb(170 170 170);
+    font-size: 1.6em;
+    font-weight: 500;
+}
+
+.content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.content {
+    max-width: 1080px;
+}
