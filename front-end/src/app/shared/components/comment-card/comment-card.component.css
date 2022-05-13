@@ -87,3 +87,18 @@
     margin-left: 5px;
     height: 32px;
 }
+
+@media (max-width: 40rem) {
+    .main {
+        padding: 6px;
+    }
+
+    .author-section {
+        padding: 6px;
+    }
+
+    .author-image {
+        width: 40px;
+        height: 40px;
+    }
+}

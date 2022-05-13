@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div *ngIf="this.comment.replies.length!=0" style="margin-top: 5px; margin-right: 50px;">
+        <div *ngIf="this.comment.replies.length!=0" style="margin-top: 5px; margin-right: 10px;">
             <ng-container *ngFor="let reply of this.comment.replies">
                 <app-reply-card [reply]="reply" [resourceOwnerId]="this.resourceOwnerId" class="reply-card" (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply()"></app-reply-card>
             </ng-container>
