@@ -3,7 +3,7 @@
         <!-- <div class="example-spacer"></div> -->
 
         <mat-form-field appearance="fill">
-            <mat-label>排序规则</mat-label>
+            <mat-label>排序优先</mat-label>
             <mat-select [(value)]="selectedOrder"
                 (selectionChange)="onOrderChanged($event)">
                 <mat-option [value]="option.value" *ngFor="let option of

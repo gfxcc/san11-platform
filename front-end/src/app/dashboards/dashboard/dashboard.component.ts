@@ -21,10 +21,10 @@ export class DashboardComponent implements OnInit {
   listRequest: ListPackagesRequest = undefined;
 
   orderOptions: OrderOption[] = [
-    { value: 'update_time DESC', viewValue: '最新更新' },
-    { value: 'create_time DESC', viewValue: '最新创建' },
-    // { value: '', viewValue: '讨论热度' },
-    { value: 'download_count DESC', viewValue: '最多下载' },
+    { value: 'update_time DESC', viewValue: '更新时间' },
+    { value: 'create_time DESC', viewValue: '创建时间' },
+    { value: 'like_count DESC', viewValue: '点赞量' },
+    { value: 'download_count DESC', viewValue: '下载量' },
   ];
   selectedOrder = this.orderOptions[0].value;
 
