@@ -1,17 +1,19 @@
-/* DashboardComponent's private CSS styles */
+
+.container {
+    margin-top: 10px;
+}
 
 .grid {
-    padding-top: 10px;
     min-height: 200px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, 350px);
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     grid-auto-rows: auto;
-    place-content: center;
+    place-content: left;
     /* overflow-x: none; */
     /* overflow-y: scroll; */
 }
 
-.col-1-4 {
+.card {
     float: left;
     /* width: 350px; */
     margin: 10px;

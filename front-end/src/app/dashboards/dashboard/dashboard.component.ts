@@ -7,9 +7,10 @@ import { NotificationService } from "../../common/notification.service";
 import { EventEmiterService } from "../../service/event-emiter.service";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
-
-
-
+export interface OrderOption {
+  value: string,
+  viewValue: string,
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -17,6 +18,15 @@ import { San11PlatformServiceService } from '../../service/san11-platform-servic
 })
 export class DashboardComponent implements OnInit {
   packages: Package[];
+  listRequest: ListPackagesRequest = undefined;
+
+  orderOptions: OrderOption[] = [
+    { value: 'update_time DESC', viewValue: '最新更新' },
+    { value: 'create_time DESC', viewValue: '最新创建' },
+    // { value: '', viewValue: '讨论热度' },
+    { value: 'download_count DESC', viewValue: '最多下载' },
+  ];
+  selectedOrder = this.orderOptions[0].value;
 
   constructor(
     private notificationService: NotificationService,
@@ -53,13 +63,14 @@ export class DashboardComponent implements OnInit {
       if (query != undefined) {
         this.searchPackages(query);
       } else if (categoryId != undefined) {
-        let request = new ListPackagesRequest({
+        this.listRequest = new ListPackagesRequest({
           parent: `categories/${ap.params['categoryId']}`,
+          orderBy: this.selectedOrder,
         })
         if (ap.qparams['tagId'] != undefined) {
-          request.filter = `tags : "${ap.qparams['tagId']}"`;
+          this.listRequest.filter = `tags : "${ap.qparams['tagId']}"`;
         }
-        this.loadPackages(request);
+        this.loadPackages();
       } else if (userId != undefined) {
         // TODO: Reimplement this with SearchPackage.
         this.packages = [];
@@ -70,9 +81,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  loadPackages(request: ListPackagesRequest): void {
+  loadPackages(): void {
     // this._eventEmiter.sendMessage({ categoryId: request.categoryId });
-    this.san11pkService.listPackages(request).subscribe(
+    this.san11pkService.listPackages(this.listRequest).subscribe(
       resp => {
         this.packages = resp.packages
       },
@@ -85,7 +96,8 @@ export class DashboardComponent implements OnInit {
   loadPackagesInCate(userId: string, category: number) {
     this.san11pkService.listPackages(new ListPackagesRequest({
       parent: `categories/${category.toString()}`,
-      filter: `author_id=${userId}`
+      filter: `author_id=${userId}`,
+      orderBy: this.selectedOrder,
     })).subscribe(
       resp => {
         resp.packages.forEach(p => {
@@ -110,5 +122,10 @@ export class DashboardComponent implements OnInit {
       }
     );
 
+  }
+
+  onOrderChanged(event) {
+    this.listRequest.orderBy = this.selectedOrder;
+    this.loadPackages()
   }
 }

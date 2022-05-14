@@ -143,6 +143,10 @@ body {
     flex: 1 1 auto;
 }
 
+.space-holder {
+    flex: 1 1 auto;
+}
+
 
 /* .clickable {
     color: #3f51b5;
