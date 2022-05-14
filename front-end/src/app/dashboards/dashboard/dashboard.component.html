@@ -15,7 +15,9 @@
 
     <div class="grid">
         <a *ngFor="let package of packages" class="card">
-            <app-package-card [package]="package" class="module"></app-package-card>
+            <div style="display: flex; align-items: center;">
+                <app-package-card [package]="package" class="module"></app-package-card>
+            </div>
         </a>
     </div>
 </div>

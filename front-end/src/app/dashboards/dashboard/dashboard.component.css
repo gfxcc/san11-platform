@@ -15,12 +15,12 @@
 
 .card {
     float: left;
-    /* width: 350px; */
     margin: 10px;
 }
 
 .module {
     border-radius: 2px;
+    width: 350px;
 }
 
 .module:hover {
