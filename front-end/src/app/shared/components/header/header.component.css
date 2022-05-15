@@ -94,10 +94,6 @@ h5 {
     font-weight: bold;
 }
 
-mat-badge-medium.mat-badge-above .mat-badge-content {
-    top: -3px;
-}
-
 .message-panel-header {
     border-bottom: 1px solid rgb(0, 0, 0, 0.1);
     min-width: 200px;

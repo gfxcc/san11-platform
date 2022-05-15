@@ -36,12 +36,12 @@
                            [matMenuTriggerData]="menuItems">
             {{activeUser.Name}}
         </button> -->
-        <button mat-icon-button [matBadge]="(this.notifications === undefined ||
-            this.notifications.length == 0) ? undefined :
-            this.notifications.length" matBadgeColor="warn" matBadgeSize="small"
-            [matMenuTriggerFor]="manageAccounts"
+        <button mat-icon-button [matMenuTriggerFor]="manageAccounts"
             [matMenuTriggerData]="menuItems">
-            <mat-icon>notifications</mat-icon>
+            <mat-icon [matBadge]="(this.notifications === undefined ||
+                this.notifications.length == 0) ? undefined :
+                this.notifications.length" matBadgeColor="warn"
+                matBadgeSize="small">notifications</mat-icon>
         </button>
 
         <mat-menu #manageAccounts="matMenu">
