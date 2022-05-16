@@ -10,5 +10,5 @@
 }
 
 ::ng-deep mat-card-header {
-    display: initial !important;
+    /* display: initial !important; */
 }
