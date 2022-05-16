@@ -64,12 +64,12 @@ export class HeaderComponent implements OnInit {
         this.notifications = resp.notifications;
       },
       error => {
-        
+
       }
     );
   }
 
-  openNotification(notification: Notification, index: number) {
+  markReaded(notification: Notification) {
     this.san11pkService.updateNotification(new UpdateNotificationRequest({
       notification: new Notification({
         name: notification.name,
@@ -79,10 +79,19 @@ export class HeaderComponent implements OnInit {
         paths: ['unread'],
       }),
     })).subscribe();
-    // this.router.navigate();
+  }
 
+  openNotification(notification: Notification, index: number) {
+    this.markReaded(notification)
     openInNewTab(this.router, notification.link)
     this.notifications.splice(index, 1);
+  }
+
+  onClearAll() {
+    this.notifications.forEach(notification => {
+      this.markReaded(notification);
+    });
+    this.notifications = [];
   }
 
   searchChanged() {

@@ -43,7 +43,7 @@
                 matBadgeSize="small">notifications</mat-icon>
         </button>
 
-        <mat-menu #manageAccounts="matMenu" >
+        <mat-menu #manageAccounts="matMenu">
             <div class="message-panel-header">
                 <p>
                     通知
@@ -68,6 +68,12 @@
                     </button>
                 </ng-container>
             </ng-template>
+
+            <button *ngIf="notifications.length > 0" mat-menu-item style="text-align: center;"
+                (click)="onClearAll()">
+                <mat-icon>clear_all</mat-icon>
+                <span>全部清空</span>
+            </button>
         </mat-menu>
 
         <span style="width: 20px;"></span>
