@@ -106,7 +106,7 @@ export class TimelineComponent implements OnInit {
     };
 
     return {
-      'displayName': `${action} ${activity.resourceView ? activity.resourceView.displayName : '已删除'}`,
+      'displayName': `【${action}】 ${activity.resourceView ? activity.resourceView.displayName : '已删除'}`,
       'description': activity.resourceView ? activity.resourceView.description : '',
       'createTime': activity.createTime,
       'icon': icon,

@@ -77,6 +77,7 @@ mat-card-header {
     0% {
         background-position: -468px 0
     }
+
     100% {
         background-position: 468px 0
     }
@@ -93,19 +94,6 @@ mat-card-header {
     background-size: 800px 104px;
 }
 
-.callout {
-    border: none;
-    transition-duration: .5s;
-    border-radius: 4px;
-    background: transparent;
-}
-
-.callout:hover {
-    /* background-color: rgba(0, 0, 0, 0.139); */
-    cursor: pointer;
-    box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
-    /* cursor: pointer; */
-}
 
 .mat-card-actions {
     margin-bottom: 0px;

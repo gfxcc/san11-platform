@@ -1,8 +1,9 @@
-<div class="callout" (click)="onClick()">
+<div class="clickable-card" (click)="onClick()">
     <mat-card class="package-card">
         <mat-card-header>
             <div mat-card-avatar class="author-image">
-                <img [hidden]="this.hideAuthorImage" [src]="this.authorImage" (load)="this.hideAuthorImage = false;" class="author-image">
+                <img [hidden]="this.hideAuthorImage" [src]="this.authorImage"
+                    (load)="this.hideAuthorImage= false;" class="author-image">
             </div>
             <mat-card-title>
 
@@ -24,9 +25,12 @@
 
 
         <div class="screenshot">
-            <div [hidden]="!this.hideScreenshot" class="animated-background screenshot"></div>
+            <div [hidden]="!this.hideScreenshot" class="animated-background
+                screenshot"></div>
 
-            <img [hidden]="this.hideScreenshot" [src]="screenshot" (load)="this.hideScreenshot = false;" class="screenshot mat-card-image">
+            <img [hidden]="this.hideScreenshot" [src]="screenshot"
+                (load)="this.hideScreenshot= false;" class="screenshot
+                mat-card-image">
         </div>
 
         <!-- <mat-card-content>
@@ -34,6 +38,5 @@
                 {{package.description}}
             </p>
         </mat-card-content> -->
-
     </mat-card>
 </div>

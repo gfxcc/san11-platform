@@ -248,5 +248,13 @@ body {
     /* margin-right: 24px; */
 }
 
-@media (max-width: 40rem) {
+.clickable-card {
+    transition-duration: .5s;
+    border-radius: 4px;
+    background: transparent;
+}
+
+.clickable-card:hover {
+    cursor: pointer;
+    box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
 }
