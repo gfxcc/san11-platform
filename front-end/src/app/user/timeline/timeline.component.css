@@ -9,6 +9,10 @@
     z-index: 1;
 }
 
-::ng-deep mat-card-header {
-    /* display: initial !important; */
+.alternate-align-card {
+    display: block !important;
+}
+
+::ng-deep .alternate-align-card>.mat-card-header {
+    display: initial !important;
 }
