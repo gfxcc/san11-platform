@@ -62,9 +62,10 @@
                     <button mat-menu-item
                         (click)="openNotification(notification, i)"
                         class="notification-button">
-                        <p class="notification-card">
+                        <!-- <p class="notification-card">
                             {{notification.content}}
-                        </p>
+                        </p> -->
+                        <app-notification-card [notification]="notification"></app-notification-card>
                     </button>
                 </ng-container>
             </ng-template>

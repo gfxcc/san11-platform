@@ -12,14 +12,11 @@ import { GetUserRequest, ResourceState, Thread, User } from 'src/proto/san11-pla
   styleUrls: ['./thread-card.component.css']
 })
 export class ThreadCardComponent implements OnInit {
-
   @Input() thread: Thread;
   coverImage: string = null;
   user: User;
   latestCommenter: User;
-
   notMobile = !window.matchMedia('(max-width: 40rem)').matches;
-
 
   constructor(
     private notificationService: NotificationService,
