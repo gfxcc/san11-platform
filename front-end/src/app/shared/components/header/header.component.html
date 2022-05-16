@@ -30,8 +30,7 @@
         <a mat-button (click)="onSignInClick()">登陆</a>
         <a mat-button mat-raised-button (click)="onSignUpClick()">注册</a>
     </div>
-    <div *ngIf="this.user != undefined" style="height: 100%; display:
-        inline-flex; align-items: center;">
+    <div *ngIf="this.user != undefined" class="control-panel">
         <!-- <button mat-button [matMenuTriggerFor]="manageAccounts"
                            [matMenuTriggerData]="menuItems">
             {{activeUser.Name}}
@@ -44,7 +43,7 @@
                 matBadgeSize="small">notifications</mat-icon>
         </button>
 
-        <mat-menu #manageAccounts="matMenu" class="message-menu">
+        <mat-menu #manageAccounts="matMenu" >
             <div class="message-panel-header">
                 <p>
                     通知
@@ -69,7 +68,6 @@
                     </button>
                 </ng-container>
             </ng-template>
-
         </mat-menu>
 
         <span style="width: 20px;"></span>

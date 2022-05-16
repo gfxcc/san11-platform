@@ -94,9 +94,16 @@ h5 {
     font-weight: bold;
 }
 
-::ng-deep .message-menu>.mat-menu-panel {
-    max-width: 480px;
+.control-panel {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
 }
+
+::ng-deep .mat-menu-panel {
+    max-width: 480px !important;
+}
+
 .message-panel-header {
     border-bottom: 1px solid rgb(0, 0, 0, 0.1);
     min-width: 200px;
