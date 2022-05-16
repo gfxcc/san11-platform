@@ -4,5 +4,15 @@
             class="user-avatar">
     </div>
 
-    <p>{{notification.content}}</p>
+    <div class="details-section">
+        <div class="content">{{notification.content}}</div>
+        <div class="metadata">
+            {{age}}
+        </div>
+    </div>
+
+    <div *ngIf="notification.imagePreview">
+        <img [src]="preview"
+            class="preview">
+    </div>
 </div>

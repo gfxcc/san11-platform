@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
+import { getAge } from 'src/app/utils/time_util';
 import { GetUserRequest, Notification, User } from 'src/proto/san11-platform.pb';
 
 @Component({
@@ -35,5 +36,13 @@ export class NotificationCardComponent implements OnInit {
 
   get senderAvatar() {
     return getFullUrl(this.sender?.imageUrl);
+  }
+
+  get preview() {
+    return getFullUrl(this.notification.imagePreview);
+  }
+
+  get age() {
+    return getAge(this.notification.createTime);
   }
 }

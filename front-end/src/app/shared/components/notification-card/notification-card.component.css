@@ -1,5 +1,33 @@
 .wrapper {
     display: flex;
+    padding: 16px 16px 16px 0;
+}
+
+
+.details-section {
+    max-width: 250px;
+}
+
+.content {
+    margin-bottom: 8px;
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 1rem;
+    line-height: 2rem;
+    font-weight: 400;
+    max-height: 12rem;
+    overflow: hidden;
+    display: block;
+    display: box;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.metadata {
+    color: #aaa;
+    line-height: 26px;
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
 }
 
 .avatar-wrapper {
@@ -13,4 +41,9 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
+}
+
+.preview {
+    width: 85px;
+    height: 65px;
 }
