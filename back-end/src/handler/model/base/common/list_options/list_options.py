@@ -15,7 +15,7 @@ from .pagination_option_pb2 import PaginationOption
 from .parser import FilterExpr, OrderByItem
 
 logger = logging.getLogger(os.path.basename(__file__))
-DEFAULT_PAGE_SIZE = 10000
+DEFAULT_PAGE_SIZE = 1000
 DEFAULT_ORDER_BY = 'create_time DESC'
 
 
@@ -72,7 +72,7 @@ class ListOptions:
                 return int(j['watermark'])
 
         watermark = get_watermark(request.page_token)
-        return cls(parent=parent,
+        return cls(parent=parent or None, # Skip parent if it is ''.
                    page_size=page_size,
                    watermark=watermark,
                    order_by=order_by,

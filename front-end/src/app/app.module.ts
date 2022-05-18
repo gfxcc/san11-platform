@@ -10,6 +10,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { GrpcCoreModule } from '@ngx-grpc/core';
 import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
 import { GalleryModule } from 'ng-gallery';
+import { TimelineModule } from 'primeng/timeline';
 import { RegisterComponent } from './account-management/register/register.component';
 import { SigninComponent } from './account-management/signin/signin.component';
 import { BasicInfoComponent } from './account-management/user-detail/basic-info/basic-info.component';
@@ -79,6 +80,7 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
     SharedModule,
     UserModule,
     ForumModule,
+    TimelineModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
