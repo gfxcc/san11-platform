@@ -14,6 +14,7 @@ from handler.util.file_server import (PACKAGE_SIZE_LIMIT, S3, BucketClass,
                                       FileServerType, Gcs, get_file_server)
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify
+from handler.util.resource_parser import find_resource
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .model.model_activity import ModelActivity
@@ -62,10 +63,12 @@ class BinaryHandler(HandlerBase):
             notify(
                 sender_id=author.user_id,
                 receiver_id=sub.subscriber_id,
-                content=f'【新版本】{author.username} 更新了 {package.package_name} {binary.version}',
+                content=f'{author.username} 更新了 {package.package_name} {binary.version}',
                 link=package.name,
                 image_preview=package.image_urls[0] if package.image_urls else '',
             )
+        # Update the `update_time` in package.
+        find_resource(parent).update()
         return binary
 
     def update(self, update_binary: ModelBinary, update_mask: FieldMask, handler_context: HandlerContext) -> ModelBinary:
