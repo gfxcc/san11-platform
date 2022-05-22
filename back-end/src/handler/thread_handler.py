@@ -9,6 +9,7 @@ from handler.model.model_article import ModelArticle
 from handler.model.model_package import ModelPackage
 from handler.model.user import User
 from handler.util import gcs
+from handler.util.html_util import get_text_from_html
 from handler.util.notifier import notify
 from handler.util.resource_parser import find_resource
 
@@ -25,6 +26,7 @@ class ThreadHandler(HandlerBase):
         thread.create(parent=parent, user_id=handler_context.user.user_id)
 
         # Send notification
+        # TODO: Skip notification if the parent is not a resource.
         try:
             parent_obj = find_resource(parent)
             assert isinstance(parent_obj, ModelPackage) or isinstance(
@@ -32,7 +34,7 @@ class ThreadHandler(HandlerBase):
             notify(
                 sender_id=thread.author_id,
                 receiver_id=parent_obj.author_id,
-                content=f'{User.from_id(thread.author_id).username} 评论了 {parent_obj.package_name if isinstance(parent_obj, ModelPackage) else parent_obj.subject}',
+                content=f'{User.from_id(thread.author_id).username} 评论了 {parent_obj.package_name if isinstance(parent_obj, ModelPackage) else parent_obj.subject}: {thread.subject}',
                 link=thread.name,
                 image_preview='',
             )

@@ -62,10 +62,8 @@ def GrpcAbortOnExcep(func: RpcFunc):
     @functools.wraps(func)
     def wrapper(this, request: message.Message, context: grpc.ServicerContext):
         try:
-            logger.debug(request)
             ret = func(this, request,
                        HandlerContext.from_service_context(context))
-            logger.debug(ret)
             return ret
         except Excep as err:
             logger.warning(err, exc_info=get_env() != Env.PROD)

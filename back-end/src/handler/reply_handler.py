@@ -7,6 +7,7 @@ from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
 from handler.model.user import User
+from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify
 from handler.util.resource_parser import find_resource
@@ -38,7 +39,7 @@ class ReplyHandler(HandlerBase):
             notify(
                 sender_id=user_id,
                 receiver_id=comment.author_id,
-                content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了 你的评论",
+                content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了: {get_text_from_html(reply.text)}",
                 link=thread.name,
                 image_preview='',
             )
