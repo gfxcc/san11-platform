@@ -112,8 +112,6 @@ export class BranchComponent {
             name: binary.name
         })).subscribe(
             binary => {
-                console.log(binary);
-
                 saveAs(binary.file.url, binary.file.filename);
             },
             error => {

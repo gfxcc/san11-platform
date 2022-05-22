@@ -13,3 +13,4 @@ attr
 bcrypt
 # AWS SDK
 boto3
+html2text

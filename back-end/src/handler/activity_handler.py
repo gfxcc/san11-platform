@@ -1,6 +1,8 @@
 import logging
 import os
-from typing import Iterable, List, Optional, Tuple
+from typing import List, Optional, Tuple
+
+import html2text
 
 from handler.model.base import ListOptions
 from handler.model.model_activity import ModelActivity
@@ -9,19 +11,22 @@ from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
 from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
-from handler.model.model_subscription import ModelSubscription
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
 from handler.model.resource import ResourceView
 from handler.util.name_util import ResourceName
 
-from .common.exception import NotFound
-from .model.activity import Activity
 from .protos import san11_platform_pb2 as pb
 from .util.resource_parser import find_resource
 from .util.time_util import get_age
 
 logger = logging.getLogger(os.path.basename(__file__))
+
+
+def _get_text_from_html(html: str) -> str:
+    h = html2text.HTML2Text()
+    h.ignore_links = True
+    return h.handle(html)
 
 
 def _get_resource_view(name: str) -> Optional[pb.ResourceView]:
@@ -35,13 +40,13 @@ def _get_resource_view(name: str) -> Optional[pb.ResourceView]:
             resource_view.display_name = f'{resource_view.display_name}-{resource.version}'
         elif isinstance(resource, ModelThread):
             resource_view = ResourceView(
-                name=resource.name, display_name=resource.subject, description='', image_url=None)
+                name=resource.name, display_name=resource.subject, description=_get_text_from_html(resource.content), image_url=None)
         elif isinstance(resource, ModelComment):
             resource_view = ResourceView(
-                name=resource.name, display_name='评论', description='', image_url=None)
+                name=resource.name, display_name='评论', description=_get_text_from_html(resource.text), image_url=None)
         elif isinstance(resource, ModelReply):
             resource_view = ResourceView(
-                name=resource.name, display_name='回复', description='', image_url=None)
+                name=resource.name, display_name='回复', description=_get_text_from_html(resource.text), image_url=None)
         elif isinstance(resource, ModelArticle):
             resource_view = ResourceView(
                 name=resource.name, display_name=resource.subject, description='', image_url=None)
