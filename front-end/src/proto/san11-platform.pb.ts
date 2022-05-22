@@ -16366,6 +16366,7 @@ export class File implements GrpcMessage {
     _instance.ext = _instance.ext || '';
     _instance.server = _instance.server || 0;
     _instance.uri = _instance.uri || '';
+    _instance.url = _instance.url || '';
   }
 
   /**
@@ -16389,6 +16390,9 @@ export class File implements GrpcMessage {
           break;
         case 3:
           _instance.uri = _reader.readString();
+          break;
+        case 5:
+          _instance.url = _reader.readString();
           break;
         default:
           _reader.skipField();
@@ -16416,12 +16420,16 @@ export class File implements GrpcMessage {
     if (_instance.uri) {
       _writer.writeString(3, _instance.uri);
     }
+    if (_instance.url) {
+      _writer.writeString(5, _instance.url);
+    }
   }
 
   private _filename?: string;
   private _ext?: string;
   private _server?: File.Server;
   private _uri?: string;
+  private _url?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -16433,6 +16441,7 @@ export class File implements GrpcMessage {
     this.ext = _value.ext;
     this.server = _value.server;
     this.uri = _value.uri;
+    this.url = _value.url;
     File.refineValues(this);
   }
   get filename(): string | undefined {
@@ -16459,6 +16468,12 @@ export class File implements GrpcMessage {
   set uri(value: string | undefined) {
     this._uri = value;
   }
+  get url(): string | undefined {
+    return this._url;
+  }
+  set url(value: string | undefined) {
+    this._url = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -16478,7 +16493,8 @@ export class File implements GrpcMessage {
       filename: this.filename,
       ext: this.ext,
       server: this.server,
-      uri: this.uri
+      uri: this.uri,
+      url: this.url
     };
   }
 
@@ -16502,7 +16518,8 @@ export class File implements GrpcMessage {
       filename: this.filename,
       ext: this.ext,
       server: File.Server[this.server ?? 0],
-      uri: this.uri
+      uri: this.uri,
+      url: this.url
     };
   }
 }
@@ -16515,6 +16532,7 @@ export module File {
     ext?: string;
     server?: File.Server;
     uri?: string;
+    url?: string;
   }
 
   /**
@@ -16525,6 +16543,7 @@ export module File {
     ext?: string;
     server?: string;
     uri?: string;
+    url?: string;
   }
   export enum Server {
     SERVER_UNSPECIFIED = 0,

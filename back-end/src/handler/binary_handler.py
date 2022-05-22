@@ -92,11 +92,8 @@ class BinaryHandler(HandlerBase):
         return binary
 
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
-        binary.download_count += 1
-        binary.update()
         # website statistic
-        Statistic.load_today().increment_download()
-        # Package statistic
+        Statistic.load_today().increment_download()  # Package statistic
         package = ModelPackage.from_name(str(ResourceName.from_str(
             binary.name).parent))
         package.download_count += 1
@@ -108,4 +105,14 @@ class BinaryHandler(HandlerBase):
             ).create(parent=f'users/{handler_context.user.user_id}')
         except Exception:
             pass
+
+        binary.download_count += 1
+        binary.update()
+
+        # Populate url for download.
+        file = binary.file
+        filename = f'{package.package_name}-{binary.version}{file.ext}'
+        binary.file.url = get_file_server(
+            FileServerType(file.server)).get_url(BucketClass.REGULAR, file.uri, filename)
+        logger.debug(binary.file.url)
         return binary

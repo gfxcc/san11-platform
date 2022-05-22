@@ -1996,6 +1996,7 @@ class File(google.protobuf.message.Message):
     EXT_FIELD_NUMBER: builtins.int
     SERVER_FIELD_NUMBER: builtins.int
     URI_FIELD_NUMBER: builtins.int
+    URL_FIELD_NUMBER: builtins.int
     filename: typing.Text
     """E.g. `血色衣冠-安装包`"""
 
@@ -2012,14 +2013,21 @@ class File(google.protobuf.message.Message):
     E.g. categories/123/packags/456/binaries/eafsdfewasdfdfsaasdffda
     """
 
+    url: typing.Text
+    """[ OUTPUT_ONLY ]
+    E.g. `https://xxxx`
+    next tag: 6
+    """
+
     def __init__(self,
         *,
         filename: typing.Text = ...,
         ext: typing.Text = ...,
         server: global___File.Server.ValueType = ...,
         uri: typing.Text = ...,
+        url: typing.Text = ...,
         ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["ext",b"ext","filename",b"filename","server",b"server","uri",b"uri"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["ext",b"ext","filename",b"filename","server",b"server","uri",b"uri","url",b"url"]) -> None: ...
 global___File = File
 
 class Subscription(google.protobuf.message.Message):

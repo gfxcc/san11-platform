@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import logging
 import os
+import urllib.parse
 from abc import ABC, abstractproperty
 from enum import Enum
+from typing import Optional
 
 import boto3
 from google.cloud import storage
@@ -42,6 +44,13 @@ class FileServer(ABC):
     def get_file_size(self, bucket_class: BucketClass, filename: str) -> int:
         '''
         Get the size of the file in `bytes`.
+        '''
+        ...
+
+    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str]) -> str:
+        '''
+        Get a url could be used to download the file.
+        The url may expire after certain time.
         '''
         ...
 
@@ -100,6 +109,9 @@ class Gcs(FileServer):
         if not blob:
             raise NotFound()
         return blob.size or 0
+
+    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str]) -> str:
+        return f'https://storage.googleapis.com/{self.get_bucket_name(bucket_class)}/{uri}'
 
     def move_file(self, src_bucket_class: BucketClass, src: str, dest_bucket_class: BucketClass, dest: str) -> None:
         if get_env() == Env.DEV:
@@ -171,6 +183,20 @@ class S3(FileServer):
                                             ObjectAttributes=['ObjectSize'])
         return meta['ObjectSize']
 
+    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str]) -> str:
+        params = {
+            'Bucket': self.get_bucket_name(bucket_class),
+            'Key': uri,
+        }
+        if filename:
+            params[
+                'ResponseContentDisposition'] = f'attachment; filename ="{urllib.parse.quote(filename)}"'
+        url = self._get_client().generate_presigned_url(
+            ClientMethod='get_object',
+            Params=params,
+            ExpiresIn=600)  # expires in 10 minutes
+        return url
+
     def move_file(self, src_bucket_class: BucketClass, src: str, dest_bucket_class: BucketClass, dest: str) -> None:
         client = self._get_client()
         client.copy_object(
@@ -210,13 +236,12 @@ class S3(FileServer):
     def _get_client(self):
         return boto3.client('s3', aws_access_key_id=self.creds.access_key_id,
                             aws_secret_access_key=self.creds.secret_access_key,
-                            region_name='ap-east-1')
+                            region_name='ap-east-1', config=boto3.session.Config(s3={'addressing_style': 'virtual'}))
 
     def _get_resource(self):
         return boto3.resource('s3', aws_access_key_id=self.creds.access_key_id,
-                            aws_secret_access_key=self.creds.secret_access_key,
-                            region_name='ap-east-1')
-
+                              aws_secret_access_key=self.creds.secret_access_key,
+                              region_name='ap-east-1')
 
 
 def get_file_server(server_type: FileServerType = FileServerType.S3) -> FileServer:

@@ -789,6 +789,10 @@ message File {
   // Unique resource identifier
   // E.g. categories/123/packags/456/binaries/eafsdfewasdfdfsaasdffda
   string uri = 3;
+  // [ OUTPUT_ONLY ]
+  // E.g. `https://xxxx`
+  string url = 5;
+  // next tag: 6
 
   enum Server {
     SERVER_UNSPECIFIED = 0;
@@ -856,4 +860,3 @@ enum Action {
   // misc
   DOWNLOAD = 21;
 }
-

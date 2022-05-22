@@ -65,9 +65,10 @@ class VersionDbConverter(DbConverter):
 
 @attr.s(auto_attribs=True)
 class File:
-    filename: str
     ext: str
     uri: str
+    filename: str = ''
+    url: str = ''
     server: int = 0
 
 
@@ -80,6 +81,7 @@ class FileProtoConverter(ProtoConverter):
             ext=value.ext,
             server=value.server,
             uri=value.uri,
+            url=value.url,
         )
 
     def to_model(self, proto_value: Optional[pb.File]) -> Optional[File]:
@@ -90,6 +92,7 @@ class FileProtoConverter(ProtoConverter):
             ext=proto_value.ext,
             server=proto_value.server,
             uri=proto_value.uri,
+            url=proto_value.url,
         )
 
 

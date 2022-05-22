@@ -17,10 +17,6 @@ import { UploadService } from "../../../service/upload.service";
 import { increment } from "../../../utils/number_util";
 
 
-
-
-
-
 export interface VersionData {
   latestVersions,
   acceptFileType: string,
