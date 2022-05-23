@@ -11,6 +11,7 @@ from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify
 from handler.util.resource_parser import find_resource
+from handler.util.resource_view import ResourceViewVisitor
 
 from .common.exception import NotFound
 from .model.activity import Activity
@@ -36,12 +37,13 @@ class ReplyHandler(HandlerBase):
         if isinstance(grand_parent, ModelThread):
             thread = grand_parent
             comment = find_resource(ResourceName.from_str(parent))
+            view = ResourceViewVisitor().visit(thread)
             notify(
                 sender_id=user_id,
                 receiver_id=comment.author_id,
-                content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了: {get_text_from_html(reply.text)}",
-                link=thread.name,
-                image_preview='',
+                content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了 {get_text_from_html(comment.text)}: {get_text_from_html(reply.text)}",
+                link=view.name,
+                image_preview=view.image_url,
             )
         reply.create(parent=parent, user_id=user_id)
         return reply

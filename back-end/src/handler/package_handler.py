@@ -18,6 +18,7 @@ from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser, get_admins
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
+from handler.util.resource_view import ResourceViewVisitor
 from handler.util.state_util import on_approve
 from handler.util.time_util import get_now
 
@@ -54,16 +55,17 @@ class PackageHandler(HandlerBase):
         package.state = pb.ResourceState.UNDER_REVIEW
         package.create(parent=parent, user_id=handler_context.user.user_id)
         # Post creation actions
-        if get_env() == Env.PROD:
-            try:
-                notifer = Notifier()
-                for admin in get_admins():
+        try:
+            notifer = Notifier()
+            view = ResourceViewVisitor().visit(package)
+            for admin in get_admins():
+                notify(sender_id=package.author_id, receiver_id=admin.user_id,
+                       content=f'【待审核】{handler_context.user.username} 创建了 {view.display_name}。', link=view.name, image_preview=view.image_url)
+                if get_env() == Env.PROD:
                     notifer.send_email(
                         admin.email, '【新内容】待审核', f'[{package.package_name}] 已被 {handler_context.user.username} 创建。请审核。')
-                    send_message(package.author_id, admin.user_id,
-                                 f'{handler_context.user.username} 创建了 {package.package_name}. 请审核.', package.name, '')
-            except Exception as err:
-                logger.error(f'Failed to notify admin: {err}')
+        except Exception as err:
+            logger.error(f'Failed to notify admin: {err}')
         return package
 
     def get(self, name: str, handler_context: HandlerContext) -> ModelPackage:
@@ -147,14 +149,15 @@ class PackageHandler(HandlerBase):
 
         # notify all subscribers
         author = ModelUser.from_name(f'users/{package.author_id}')
+        view = ResourceViewVisitor().visit(package)
         if on_approve(base_package.state, update_package.state):
             for sub in ModelSubscription.list(ListOptions(parent=author.name))[0]:
                 notify(
                     sender_id=author.user_id,
                     receiver_id=sub.subscriber_id,
-                    content=f'【新内容】{author.username} 发布了 {package.package_name}',
-                    link=package.name,
-                    image_preview=package.image_urls[0] if package.image_urls else '',
+                    content=f'{author.username} 发布了 {view.display_name}',
+                    link=view.name,
+                    image_preview=view.image_url,
                 )
         return package
 

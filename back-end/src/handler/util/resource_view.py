@@ -8,20 +8,24 @@ from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
 from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName
+from handler.util.resource_parser import find_resource
 
 from ..common.visitor import visitor
 from ..protos import san11_platform_pb2 as pb
 
 
 class ResourceViewVisitor:
-    @visitor(ModelPackage)
-    def visit(self, resource: ModelPackage) -> pb.ResourceView:
+    def _visit_package(self, resource: ModelPackage) -> pb.ResourceView:
         return pb.ResourceView(
             name=resource.name,
             display_name=resource.package_name,
             description='',
             image_url=resource.image_urls[0] if resource.image_urls else '',
         )
+
+    @visitor(ModelPackage)
+    def visit(self, resource: ModelPackage) -> pb.ResourceView:
+        return self._visit_package(resource)
 
     @visitor(ModelBinary)
     def visit(self, resource: ModelBinary) -> pb.ResourceView:
@@ -36,11 +40,19 @@ class ResourceViewVisitor:
 
     @visitor(ModelThread)
     def visit(self, resource: ModelThread) -> pb.ResourceView:
+        image_url = None
+        try:
+            parent_obj = find_resource(
+                ResourceName.from_str(resource.name).parent)
+            if isinstance(parent_obj, ModelPackage):
+                image_url = self._visit_package(parent_obj).image_url
+        except:
+            ...
         return pb.ResourceView(
             name=resource.name,
             display_name=resource.subject,
             description=get_text_from_html(resource.content),
-            image_url=None,
+            image_url=image_url,
         )
 
     @visitor(ModelComment)

@@ -6,6 +6,7 @@
 
 .details-section {
     max-width: 250px;
+    flex-grow: 1;
 }
 
 .content {

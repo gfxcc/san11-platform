@@ -12,6 +12,7 @@ from handler.util import gcs
 from handler.util.html_util import get_text_from_html
 from handler.util.notifier import notify
 from handler.util.resource_parser import find_resource
+from handler.util.resource_view import ResourceViewVisitor
 
 from .model.model_thread import ModelThread
 from .protos import san11_platform_pb2 as pb
@@ -28,15 +29,14 @@ class ThreadHandler(HandlerBase):
         # Send notification
         # TODO: Skip notification if the parent is not a resource.
         try:
-            parent_obj = find_resource(parent)
-            assert isinstance(parent_obj, ModelPackage) or isinstance(
-                parent_obj, ModelArticle)
+            parent_resource = find_resource(parent)
+            view = ResourceViewVisitor().visit(parent_resource)
             notify(
                 sender_id=thread.author_id,
-                receiver_id=parent_obj.author_id,
-                content=f'{User.from_id(thread.author_id).username} 评论了 {parent_obj.package_name if isinstance(parent_obj, ModelPackage) else parent_obj.subject}: {thread.subject}',
-                link=thread.name,
-                image_preview='',
+                receiver_id=parent_resource.author_id,
+                content=f'{User.from_id(thread.author_id).username} 评论了 {view.display_name}: {thread.subject}',
+                link=view.name,
+                image_preview=view.image_url,
             )
         except Exception as err:
             logger.warning(f'failed to notify user: {err}')

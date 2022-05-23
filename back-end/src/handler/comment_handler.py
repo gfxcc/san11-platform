@@ -16,6 +16,7 @@ from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify, send_message
 from handler.util.resource_parser import find_resource
+from handler.util.resource_view import ResourceViewVisitor
 
 from .common.exception import NotFound
 from .model.activity import Action, Activity
@@ -43,12 +44,13 @@ class CommentHandler(HandlerBase):
         # 1. Send notification to thread author
         if isinstance(parent_obj, ModelThread):
             thread = parent_obj
+            view = ResourceViewVisitor().visit(thread)
             notify(
                 sender_id=user_id,
                 receiver_id=thread.author_id,
-                content=f"{username} 评论了 {thread.subject}: {get_text_from_html(thread.content)}",
-                link=comment.name,
-                image_preview='',
+                content=f"{username} 评论了 {view.display_name}: {get_text_from_html(thread.content)}",
+                link=view.name,
+                image_preview=view.image_url,
             )
         # 2. Send notification to user be @
         # (TODO): wrapper this into a func so that it can be reused by reply, thread.
