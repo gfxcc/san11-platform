@@ -59,6 +59,7 @@ export class HeaderComponent implements OnInit {
   loadNotifications() {
     this.san11pkService.listNotifications(new ListNotificationsRequest({
       parent: `users/${this.user.userId}`,
+      filter: 'unread=true',
     })).subscribe(
       (resp: ListNotificationsResponse) => {
         this.notifications = resp.notifications;
