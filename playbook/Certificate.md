@@ -10,5 +10,5 @@ san11pk.org use [Let's Encrypt](https://letsencrypt.org/) to generate certificat
 sudo certbot certonly --standalone
 
 sudo cp -L /etc/letsencrypt/live/san11pk.org/fullchain.pem ~/credentials/san11pk.crt
-sudo cp -L /etc/letsencrypt/live/san11pk.org/privkey.pem ~/~/credentials/san11pk-private-key.key
+sudo cp -L /etc/letsencrypt/live/san11pk.org/privkey.pem ~/credentials/san11pk-private-key.key
 ```
