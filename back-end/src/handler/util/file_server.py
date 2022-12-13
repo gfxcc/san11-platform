@@ -18,7 +18,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 # Limits
-PACKAGE_SIZE_LIMIT = 10 * 1024 * 1024 * 1024  # 10 GB
+PACKAGE_SIZE_LIMIT = 20 * 1024 * 1024 * 1024  # 20 GB
 
 
 class BucketClass(Enum):
