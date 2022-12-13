@@ -12,7 +12,7 @@ TMP_BUCKET = 'san11-tmp'
 CANONICAL_BUCKET = 'san11-resources'
 
 # Limits
-PACKAGE_LIMIT_GB = 10
+PACKAGE_LIMIT_GB = 20
 
 
 def move_file(src_bucket_name: str, src_filename: str, dest_bucket_name: str, dest_filename: str) -> None:
