@@ -68,6 +68,10 @@ service RouteGuide {
   rpc ValidateNewUser(ValidateNewUserRequest) returns (Status) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (User) {}
 
+  // User Settings
+  rpc GetSettings(GetSettingsRequest) returns (Settings) {}
+  rpc UpdateSettings(UpdateSettingsRequest) returns (Settings) {}
+
   // Activities reltead
   rpc ListActivities(ListActivitiesRequest) returns (ListActivitiesResponse) {}
 
@@ -444,6 +448,16 @@ message VerifyEmailResponse {
 }
 
 message ValidateNewUserRequest { User user = 1; }
+
+message GetSettingsRequest {
+  // E.g. `users/123`
+  string name = 1;
+}
+
+message UpdateSettingsRequest {
+  Settings settings = 1;
+  FieldMask update_mask = 2;
+}
 
 // activities related
 message ListActivitiesRequest {
@@ -828,25 +842,43 @@ message Subscription {
 }
 
 message Settings {
-  repeated PreferenceGroup group = 1;
+  NotificationSetting notification = 1;
 
-  message PreferenceGroup {
-    string name = 1;
-    string display_name = 2;
-    string description = 3;
-    repeated Preference preference = 4;
+  message NotificationSetting {
+    // Send me emails on enabled notifications.
+    bool send_emails = 1;
+
+    // Notify me on activities on subscripted users.
+    bool subscriptions = 11;
+    // Notify me on new recommended content.
+    bool recommendations = 12;
+    // Notify me on others mention me.
+    bool mentions = 13;
+    // Notify me on new threads on my packages.
+    bool threads = 14;
+    // Notify me on new comments to my thread.
+    bool comments = 15;
+    // Notify me on new replies to my comments.
+    bool replies = 16;
   }
 
-  message Preference {
-    string name = 1;
-    string display_name = 2;
-    string description = 3;
-    oneof value {
-      bool bool_value = 4;
-      int32 int_value = 5;
-      string string_value = 6;
-    }
-  }
+  // message PreferenceGroup {
+  //   string name = 1;
+  //   string display_name = 2;
+  //   string description = 3;
+  //   repeated Preference preference = 4;
+  // }
+
+  // message Preference {
+  //   string name = 1;
+  //   string display_name = 2;
+  //   string description = 3;
+  //   oneof value {
+  //     bool bool_value = 4;
+  //     int32 int_value = 5;
+  //     string string_value = 6;
+  //   }
+  // }
 }
 
 //

@@ -1,20 +1,38 @@
 .top {
     padding-top: 48px;
-    display: flex;
     border-bottom: 1px solid var(--border-color);
 }
 
-#name.page-introduction {
+.page-introduction {
     font-family: "Roboto", "Arial", sans-serif;
     font-size: 1.6rem;
     line-height: 2.2rem;
     font-weight: 500;
 }
 
-#title.page-introduction {
+.page-introduction {
     margin: 40px 0 12px 0;
     font-family: "Roboto", "Arial", sans-serif;
     font-size: 2.4rem;
     line-height: 3.2rem;
     font-weight: 400;
+}
+
+.section {
+    padding: 20px 0;
+    display: flex;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: row;
+}
+
+.settings-options-renderer {
+    width: 160px;
+    min-width: 160px;
+    margin-right: 56px;
+    color: var(--yt-spec-text-primary);
+    font-family: "Roboto","Arial",sans-serif;
+    font-size: 1.4rem;
+    line-height: 2rem;
+    font-weight: 500;
 }

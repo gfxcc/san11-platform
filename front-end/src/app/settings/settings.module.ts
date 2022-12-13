@@ -6,6 +6,7 @@ import { AccountInfoComponent } from './account-info/account-info.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings/settings.component';
+import { SwitchComponent } from './shared-componants/switch/switch.component';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { SettingsComponent } from './settings/settings.component';
     SettingsComponent,
     AccountInfoComponent,
     NotificationsComponent,
+    SwitchComponent,
   ],
   imports: [
     CommonModule,
