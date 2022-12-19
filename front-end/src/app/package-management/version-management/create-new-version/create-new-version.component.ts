@@ -311,7 +311,7 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onCreateBinary(createVersionForm) {
-
+    // Pattern for a tailing substring which start with `.` and does not contain `.` after the first char.
     const re = /(?:(\.[^.]+))?$/;
     const ext = re.exec(this.file.name)[1];
 

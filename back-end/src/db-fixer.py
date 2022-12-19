@@ -1,3 +1,4 @@
+import re
 from typing import Optional
 
 from handler.model.base import ListOptions
@@ -39,8 +40,21 @@ def backfill_binaries_file_server():
             f'Progress idx-{i}: updated {binary}')
 
 
+def backfill_binary_file_ext():
+    binaries = ModelBinary.list(ListOptions(parent=None))[0]
+    for i, binary in enumerate(binaries):
+        file = binary.file
+        if not file:
+            continue
+        if file.ext:
+            continue
+        if new_ext := re.search(r'.[^.]+$', file.uri):
+            print(f'Assigning {new_ext} to {file}')
+            file.ext = new_ext
+        # binary.update(update_update_time=False)
+
 def main():
-    backfill_binaries_file_server()
+    backfill_binary_file_ext()
 
 
 if __name__ == "__main__":
