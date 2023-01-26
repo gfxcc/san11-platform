@@ -1563,6 +1563,7 @@ class User(google.protobuf.message.Message):
     SUBSCRIBER_COUNT_FIELD_NUMBER: builtins.int
     CREATE_TIME_FIELD_NUMBER: builtins.int
     UPDATE_TIME_FIELD_NUMBER: builtins.int
+    SETTINGS_FIELD_NUMBER: builtins.int
     name: typing.Text
     username: typing.Text
     email: typing.Text
@@ -1585,6 +1586,8 @@ class User(google.protobuf.message.Message):
     def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
         """[ OUTPUT_ONLY ]"""
         pass
+    @property
+    def settings(self) -> global___UserSettings: ...
     def __init__(self,
         *,
         name: typing.Text = ...,
@@ -1597,9 +1600,10 @@ class User(google.protobuf.message.Message):
         subscriber_count: builtins.int = ...,
         create_time: typing.Optional[google.protobuf.timestamp_pb2.Timestamp] = ...,
         update_time: typing.Optional[google.protobuf.timestamp_pb2.Timestamp] = ...,
+        settings: typing.Optional[global___UserSettings] = ...,
         ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["create_time",b"create_time","update_time",b"update_time"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["create_time",b"create_time","email",b"email","image_url",b"image_url","name",b"name","subscriber_count",b"subscriber_count","type",b"type","update_time",b"update_time","user_id",b"user_id","username",b"username","website",b"website"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["create_time",b"create_time","settings",b"settings","update_time",b"update_time"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["create_time",b"create_time","email",b"email","image_url",b"image_url","name",b"name","settings",b"settings","subscriber_count",b"subscriber_count","type",b"type","update_time",b"update_time","user_id",b"user_id","username",b"username","website",b"website"]) -> None: ...
 global___User = User
 
 class Version(google.protobuf.message.Message):
@@ -2089,6 +2093,61 @@ class Subscription(google.protobuf.message.Message):
     def HasField(self, field_name: typing_extensions.Literal["create_time",b"create_time","update_time",b"update_time"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing_extensions.Literal["create_time",b"create_time","name",b"name","subscriber_id",b"subscriber_id","type",b"type","update_time",b"update_time"]) -> None: ...
 global___Subscription = Subscription
+
+class UserSettings(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    class NotificationSetting(google.protobuf.message.Message):
+        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+        SEND_EMAILS_FIELD_NUMBER: builtins.int
+        SUBSCRIPTIONS_FIELD_NUMBER: builtins.int
+        RECOMMENDATIONS_FIELD_NUMBER: builtins.int
+        MENTIONS_FIELD_NUMBER: builtins.int
+        THREADS_FIELD_NUMBER: builtins.int
+        COMMENTS_FIELD_NUMBER: builtins.int
+        REPLIES_FIELD_NUMBER: builtins.int
+        send_emails: builtins.bool
+        """Send me emails on enabled notifications."""
+
+        subscriptions: builtins.bool
+        """Notify me on activities on subscripted users."""
+
+        recommendations: builtins.bool
+        """Notify me on new recommended content."""
+
+        mentions: builtins.bool
+        """Notify me on others mention me."""
+
+        threads: builtins.bool
+        """Notify me on new threads on my packages."""
+
+        comments: builtins.bool
+        """Notify me on new comments to my thread."""
+
+        replies: builtins.bool
+        """Notify me on new replies to my comments."""
+
+        def __init__(self,
+            *,
+            send_emails: builtins.bool = ...,
+            subscriptions: builtins.bool = ...,
+            recommendations: builtins.bool = ...,
+            mentions: builtins.bool = ...,
+            threads: builtins.bool = ...,
+            comments: builtins.bool = ...,
+            replies: builtins.bool = ...,
+            ) -> None: ...
+        def ClearField(self, field_name: typing_extensions.Literal["comments",b"comments","mentions",b"mentions","recommendations",b"recommendations","replies",b"replies","send_emails",b"send_emails","subscriptions",b"subscriptions","threads",b"threads"]) -> None: ...
+
+    NOTIFICATION_FIELD_NUMBER: builtins.int
+    @property
+    def notification(self) -> global___UserSettings.NotificationSetting: ...
+    def __init__(self,
+        *,
+        notification: typing.Optional[global___UserSettings.NotificationSetting] = ...,
+        ) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["notification",b"notification"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["notification",b"notification"]) -> None: ...
+global___UserSettings = UserSettings
 
 class FieldMask(google.protobuf.message.Message):
     """

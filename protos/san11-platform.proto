@@ -68,10 +68,6 @@ service RouteGuide {
   rpc ValidateNewUser(ValidateNewUserRequest) returns (Status) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns (User) {}
 
-  // User Settings
-  rpc GetSettings(GetSettingsRequest) returns (Settings) {}
-  rpc UpdateSettings(UpdateSettingsRequest) returns (Settings) {}
-
   // Activities reltead
   rpc ListActivities(ListActivitiesRequest) returns (ListActivitiesResponse) {}
 
@@ -449,16 +445,6 @@ message VerifyEmailResponse {
 
 message ValidateNewUserRequest { User user = 1; }
 
-message GetSettingsRequest {
-  // E.g. `users/123`
-  string name = 1;
-}
-
-message UpdateSettingsRequest {
-  Settings settings = 1;
-  FieldMask update_mask = 2;
-}
-
 // activities related
 message ListActivitiesRequest {
   // Supported values:
@@ -660,6 +646,8 @@ message User {
   // [ OUTPUT_ONLY ]
   google.protobuf.Timestamp update_time = 10;
 
+  UserSettings settings = 11;
+
   enum UserType {
     USER_TYPE_UNSPECIFIED = 0;
 
@@ -841,7 +829,7 @@ message Subscription {
   }
 }
 
-message Settings {
+message UserSettings {
   NotificationSetting notification = 1;
 
   message NotificationSetting {
@@ -861,24 +849,6 @@ message Settings {
     // Notify me on new replies to my comments.
     bool replies = 16;
   }
-
-  // message PreferenceGroup {
-  //   string name = 1;
-  //   string display_name = 2;
-  //   string description = 3;
-  //   repeated Preference preference = 4;
-  // }
-
-  // message Preference {
-  //   string name = 1;
-  //   string display_name = 2;
-  //   string description = 3;
-  //   oneof value {
-  //     bool bool_value = 4;
-  //     int32 int_value = 5;
-  //     string string_value = 6;
-  //   }
-  // }
 }
 
 //

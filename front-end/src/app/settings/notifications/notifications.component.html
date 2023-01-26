@@ -4,10 +4,6 @@
             <div class="page-introduction">
                 消息通知
             </div>
-
-            <div class="page-introduction">
-                选择获取通知的方式
-            </div>
         </div>
     </div>
 
@@ -15,13 +11,47 @@
     <div class="section">
         <div class="settings-options-renderer">偏好</div>
 
-        <div class="content">
-
-            <div class="options">
-                <app-switch></app-switch>
-
+        <div class="section-content">
+            <div class="switch-box">
+                <mat-slide-toggle
+                    [(ngModel)]="user.settings.notification.subscriptions"
+                    (change)="updateSetting()">订阅</mat-slide-toggle>
+            </div>
+            <div class="switch-box">
+                <mat-slide-toggle
+                    [(ngModel)]="user.settings.notification.recommendations"
+                    (change)="updateSetting()">推荐</mat-slide-toggle>
+            </div>
+            <div class="switch-box">
+                <mat-slide-toggle
+                    [(ngModel)]="user.settings.notification.mentions"
+                    (change)="updateSetting()">@我</mat-slide-toggle>
+            </div>
+            <div class="switch-box">
+                <mat-slide-toggle
+                    [(ngModel)]="user.settings.notification.threads"
+                    (change)="updateSetting()">新讨论</mat-slide-toggle>
+            </div>
+            <div class="switch-box">
+                <mat-slide-toggle
+                    [(ngModel)]="user.settings.notification.comments"
+                    (change)="updateSetting()">新评论</mat-slide-toggle>
+            </div>
+            <div class="switch-box">
+                <mat-slide-toggle
+                    [(ngModel)]="user.settings.notification.replies"
+                    (change)="updateSetting()">新回复</mat-slide-toggle>
             </div>
         </div>
+    </div>
 
+    <div class="section">
+        <div class="settings-options-renderer">邮件通知</div>
+
+        <div class="switch-box">
+            <mat-slide-toggle
+                [(ngModel)]="user.settings.notification.sendEmails"
+                (change)="updateSetting()">通过邮件接收通知</mat-slide-toggle>
+        </div>
     </div>
 </div>

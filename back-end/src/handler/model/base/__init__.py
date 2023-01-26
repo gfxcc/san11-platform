@@ -76,6 +76,7 @@ from copy import deepcopy
 from typing import List, Optional, Tuple, Type, TypeVar
 
 import attr
+
 from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
@@ -118,6 +119,11 @@ class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
                           create_time=get_now(),
                           action=Action.DELETE.value,
                           resource_name=self.name).create(parent=f'users/{user_id}')
+
+
+class NestedModel(base_proto.ProtoModelBase):
+    '''A nested model which only exist as a submessage of another model.'''
+    ...
 
 
 class Context(ABC):

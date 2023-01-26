@@ -74,11 +74,14 @@ class ProtoField:
 
 
 class ProtoModelBase(ABC):
-    _PROTO_CLASS = None
+    _PROTO_CLASS: type
     _PROTO_FIELDS: Iterable[attr.Attribute] = []
 
     @classmethod
     def from_pb(cls, proto_model: message.Message) -> _SUB_PROTO_MODEL_BASE_T:
+        '''
+        Construct a data model from its protobuf message representation.
+        '''
         properties = {}
         for attribute in attr.fields(cls):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
@@ -88,16 +91,15 @@ class ProtoModelBase(ABC):
             converter: ProtoConverter = attribute.metadata[base_core.PROTO_CONVERTER]
             field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
             proto_value = _get_by_path(proto_model, path, field_descriptor)
-            if base_core.is_repeated(attribute):
-                properties[attribute.name] = [
-                    converter.to_model(item) for item in proto_value]
-            else:
-                properties[attribute.name] = converter.to_model(proto_value)
+            properties[attribute.name] = _attribute_from_pb(attribute, proto_value)
             # frm, to = proto_value, properties[attribute.name]
             # logger.debug(f'In _prepare_data: {type(frm)}({frm}) -> {type(to)}({to})')
         return cls(**properties)
 
     def to_pb(self) -> message.Message:
+        '''
+        Returns the data model's protobuf representation.
+        '''
         proto_model = self._PROTO_CLASS()
         for attribute in attr.fields(type(self)):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
@@ -135,6 +137,18 @@ def init_proto_model(cls: type, proto_class) -> None:
         if not attribute.metadata[base_core.IS_PROTO_FIELD]:
             continue
 
+def _attribute_pb_converter(attribute: attr.Attribute) -> ProtoConverter:
+    converter: ProtoConverter = attribute.metadata[base_core.PROTO_CONVERTER]
+    return converter or PassThroughConverter()
+
+def _attribute_from_proto(attribute: attr.Attribute, proto_value: Any) -> Any:
+    converter = _attribute_pb_converter(attribute)
+
+    if base_core.is_repeated(attribute):
+        return [
+            converter.to_model(item) for item in proto_value]
+    else:
+        return converter.to_model(proto_value)
 
 def _attribute_to_proto(attribute: attr.Attribute, model_value: Any) -> Any:
     converter: ProtoConverter = attribute.metadata.get(

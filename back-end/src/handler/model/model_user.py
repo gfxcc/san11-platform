@@ -8,6 +8,7 @@ from typing import Iterable, List, Tuple, Union
 
 import attr
 from google.protobuf import message
+
 from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
 from handler.model.base import ListOptions
 from handler.model.base.base_db import DbConverter
@@ -17,7 +18,7 @@ from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
 
 from ..protos import san11_platform_pb2 as pb
-from .base import Attrib, InitModel, ModelBase
+from .base import Attrib, InitModel, ModelBase, NestedModel
 
 DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
@@ -119,6 +120,14 @@ class EmailDbConverter(DbConverter):
     def to_model(self, proto_value: str) -> str:
         return normalize_email(proto_value)
 
+@InitModel(
+    db_table=None,
+    proto_class=pb.UserSettings
+)
+@attr.s
+class UserSettings(NestedModel):
+    ...
+
 
 @InitModel(
     db_table='users',
@@ -160,6 +169,11 @@ class ModelUser(ModelBase, TrackLifecycle):
     )
     update_time = Attrib(
         type=datetime.datetime,
+    )
+    settings = Attrib(
+        type=pb.Settings,
+        proto_converter=...,
+        db_converter=...,
     )
 
     def to_pb(self) -> message.Message:

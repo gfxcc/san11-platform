@@ -19,6 +19,7 @@ const routes: Routes = [
       {
         path: 'notifications',
         component: NotificationsComponent,
+        resolve: { user: UserResolver },
       },
     ]
   }
