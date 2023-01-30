@@ -101,6 +101,9 @@ class ProtoModelBase(ABC):
         properties = {}
         for attribute in attr.fields(cls):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
+                # None proto field still needs to be set to initiazlie the
+                # model properly.
+                properties[attribute.name] = None
                 continue
             path = _get_proto_path(attribute)
             proto_value = _get_by_path(proto_model, path, proto_model.DESCRIPTOR.fields_by_name[path])
@@ -187,7 +190,7 @@ def _set_by_path(proto: message.Message, path: str, proto_value: Any) -> None:
 
 
 def _get_proto_path(attribute: attr.Attribute) -> str:
-    return attribute.metadata[base_core.PROTO_PATH] or attribute.name
+    return attribute.metadata.get(base_core.PROTO_PATH, attribute.name)
 
 
 def _is_proto_field(attribute: attr.Attribute) -> bool:

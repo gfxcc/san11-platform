@@ -95,7 +95,10 @@ class DbModelBase(ABC):
             if not attribute.metadata.get(base_core.IS_DB_FIELD):
                 continue
             name, db_field_path = attribute.name, _get_db_path(attribute)
-            obj_args[name] = _attribute_from_db(attribute, db_value.get(db_field_path))
+            # Handle the case where db_value itself is None. This could happen
+            # on nested message.
+            field_value = db_value.get(db_field_path) if db_value else None
+            obj_args[name] = _attribute_from_db(attribute, field_value)
         ret = cls(**obj_args)
         logger.debug(f'{cls.__name__}.from_db({json.dumps(db_value)}) -> {ret}')
         return ret
@@ -289,7 +292,7 @@ def init_db_model(cls: type, db_table: str) -> None:
 
 
 def _get_db_path(attribute: attr.Attribute) -> str:
-    return attribute.metadata[base_core.DB_PATH] or attribute.name
+    return attribute.metadata.get(base_core.DB_PATH, attribute.name)
 
 
 def _is_db_field(attribute: attr.Attribute) -> bool:

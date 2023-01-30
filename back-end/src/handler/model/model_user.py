@@ -23,77 +23,77 @@ from .base import Attrib, InitModel, ModelBase, NestedAttrib, NestedModel
 DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
 
-@dataclass
-class Preference:
-    name: str
-    display_name: str
-    description: str
-    value: Union[str, int, bool]
+# @dataclass
+# class Preference:
+#     name: str
+#     display_name: str
+#     description: str
+#     value: Union[str, int, bool]
 
 
-@dataclass
-class PreferenceGroup:
-    name: str
-    display_name: str
-    description: str
-    preferences: List[Preference]
+# @dataclass
+# class PreferenceGroup:
+#     name: str
+#     display_name: str
+#     description: str
+#     preferences: List[Preference]
 
 
-@dataclass
-class Settings:
-    groups: List[PreferenceGroup]
+# @dataclass
+# class Settings:
+#     groups: List[PreferenceGroup]
 
-    @classmethod
-    def default(cls) -> Settings:
-        return cls(
-            groups=[
-                PreferenceGroup(
-                    name='general',
-                    display_name='通用',
-                    description='管理通知选项',
-                    preferences=[
-                        Preference(
-                            name='subscriptions',
-                            display_name='订阅',
-                            description='获取 - 已【订阅】内容的更新',
-                            value=True,
-                        ),
-                        Preference(
-                            name='activities_on_my_resources',
-                            display_name='我的作品',
-                            description='获取 - 关于我的【作品】的活动。如【评论】',
-                            value=True,
-                        ),
-                        Preference(
-                            name='replies',
-                            display_name='回复',
-                            description='获取 - 对我的【评论】的【回复】',
-                            value=True,
-                        ),
-                        Preference(
-                            name='mentions',
-                            display_name='@我',
-                            description='获取 - @我的消息',
-                            value=True,
-                        ),
-                    ]
-                ),
-                PreferenceGroup(
-                    name='email',
-                    display_name='邮件通知',
-                    description='',
-                    preferences=[
-                        Preference(
-                            name='receive_email',
-                            display_name='接收邮件通知',
-                            description='将通知以邮件的方式发送',
-                            value=True,
-                        ),
-                    ]
-                ),
-            ]
-        )
-        ...
+#     @classmethod
+#     def default(cls) -> Settings:
+#         return cls(
+#             groups=[
+#                 PreferenceGroup(
+#                     name='general',
+#                     display_name='通用',
+#                     description='管理通知选项',
+#                     preferences=[
+#                         Preference(
+#                             name='subscriptions',
+#                             display_name='订阅',
+#                             description='获取 - 已【订阅】内容的更新',
+#                             value=True,
+#                         ),
+#                         Preference(
+#                             name='activities_on_my_resources',
+#                             display_name='我的作品',
+#                             description='获取 - 关于我的【作品】的活动。如【评论】',
+#                             value=True,
+#                         ),
+#                         Preference(
+#                             name='replies',
+#                             display_name='回复',
+#                             description='获取 - 对我的【评论】的【回复】',
+#                             value=True,
+#                         ),
+#                         Preference(
+#                             name='mentions',
+#                             display_name='@我',
+#                             description='获取 - @我的消息',
+#                             value=True,
+#                         ),
+#                     ]
+#                 ),
+#                 PreferenceGroup(
+#                     name='email',
+#                     display_name='邮件通知',
+#                     description='',
+#                     preferences=[
+#                         Preference(
+#                             name='receive_email',
+#                             display_name='接收邮件通知',
+#                             description='将通知以邮件的方式发送',
+#                             value=True,
+#                         ),
+#                     ]
+#                 ),
+#             ]
+#         )
+#         ...
 
 
 class EmailProtoConverter(ProtoConverter):
@@ -120,13 +120,45 @@ class EmailDbConverter(DbConverter):
     def to_model(self, proto_value: str) -> str:
         return normalize_email(proto_value)
 
+
+@InitModel(
+    db_table=None,
+    proto_class=pb.UserSettings.NotificationSetting
+)
+@attr.s
+class NotificationSettings(NestedModel):
+    send_emails = Attrib(
+        type=bool
+    )
+    subscriptions = Attrib(
+        type=bool
+    )
+    recommendations = Attrib(
+        type=bool
+    )
+    mentions = Attrib(
+        type=bool
+    )
+    threads = Attrib(
+        type=bool
+    )
+    comments = Attrib(
+        type=bool
+    )
+    replies = Attrib(
+        type=bool
+    )
+
+
 @InitModel(
     db_table=None,
     proto_class=pb.UserSettings
 )
 @attr.s
 class UserSettings(NestedModel):
-    ...
+    notification = NestedAttrib(
+        nested_type=NotificationSettings
+    )
 
 
 @InitModel(
@@ -149,7 +181,7 @@ class ModelUser(ModelBase, TrackLifecycle):
         db_converter=EmailDbConverter(),
     )
     type = Attrib(
-        type=int,  # TODO
+        type=int,
     )
     image_url = Attrib(
         type=str,
