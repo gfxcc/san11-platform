@@ -8,10 +8,11 @@ import os
 import re
 from abc import ABC
 from dataclasses import dataclass
-from typing import (Any, Dict, Generic, Iterable, List, Optional, Tuple, Type,
-                    TypeVar)
+from typing import (Any, Callable, Dict, Generic, Iterable, List, Optional,
+                    Tuple, Type, TypeVar)
 
 import attr
+
 from handler.model.base import base_proto
 from handler.util.name_util import ResourceName
 
@@ -29,7 +30,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 _MODEL_T = TypeVar('_MODEL_T')
 _DB_MODEL_T = TypeVar('_DB_MODEL_T')
-_SUB_DB_MODEL_T = TypeVar('_SUB_DB_MODEL_T', bound='DbModelBase')
+_SUB_DB_MODEL_T = TypeVar('_SUB_DB_MODEL_T', bound='DbModel')
 
 
 class DbConverter(Generic[_MODEL_T, _DB_MODEL_T]):
@@ -61,6 +62,21 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
     def from_model(self, value: datetime.datetime) -> datetime.datetime:
         return value.astimezone(datetime.timezone.utc)
 
+@attr.define
+class NestedDbConverter(DbConverter):
+    from_model_exec: Callable[[Any], Any] = lambda x: x
+    to_model_exec: Callable[[Any], Any] = lambda x: x
+
+    def from_model(self, value: _MODEL_T) -> _DB_MODEL_T:
+        return self.from_model_exec(value)
+    
+    def to_model(self, proto_value: _DB_MODEL_T) -> _MODEL_T:
+        return self.to_model_exec(proto_value)
+
+
+def build_nested_converter(cls: type):
+    return NestedDbConverter(from_model_exec=lambda v: v.to_db(), to_model_exec=cls.from_db)
+
 
 @dataclass
 class DbField:
@@ -72,6 +88,30 @@ class DbField:
 
 
 class DbModelBase(ABC):
+    @classmethod
+    def from_db(cls, db_value: Dict) -> _SUB_DB_MODEL_T:
+        obj_args = {}
+        for attribute in attr.fields(cls):
+            if not attribute.metadata.get(base_core.IS_DB_FIELD):
+                continue
+            name, db_field_path = attribute.name, _get_db_path(attribute)
+            obj_args[name] = _attribute_from_db(attribute, db_value.get(db_field_path))
+        ret = cls(**obj_args)
+        logger.debug(f'{cls.__name__}.from_db({json.dumps(db_value)}) -> {ret}')
+        return ret
+    
+    def to_db(self) -> Dict:
+        data = {}
+        for attribute in attr.fields(type(self)):
+            if not attribute.metadata[base_core.IS_DB_FIELD]:
+                continue
+            name, db_field_path = attribute.name, _get_db_path(attribute)
+            data[db_field_path] = _attribute_to_data(attribute, getattr(self, name))
+        logger.debug(f'{type(self).__name__}.to_db({self}) -> {data}')
+        return data
+
+
+class DbModel(DbModelBase):
     _DB_TABLE: str = ''
     _DB_FIELDS_DICT: Dict[str, DbField]
     _SERIAL_ID: DbField
@@ -115,7 +155,7 @@ class DbModelBase(ABC):
             return '/'.join(map(str, segments))
 
         db_table = self._DB_TABLE
-        data = self._prepare_data()
+        data = self.to_db()
         if resource_id is None:
             sql = f"INSERT INTO {db_table} (parent, data) VALUES (%(parent)s, %(data)s) RETURNING resource_id"
             params = {
@@ -154,19 +194,21 @@ class DbModelBase(ABC):
         if not resp:
             raise NotFound(
                 message=f'{params} can not be found in table={db_table}')
-        return cls.from_data(resp[0])
+        return cls.from_db(resp[0])
 
     @classmethod
     def list(cls, list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
         db_table = cls._DB_TABLE
 
         try:
-            order_statement = cls._LIST_OPTIONS_ADAPTOR.gen_order_by(list_options)
+            order_statement = cls._LIST_OPTIONS_ADAPTOR.gen_order_by(
+                list_options)
             where_statement, params = cls._LIST_OPTIONS_ADAPTOR.gen_where(
                 list_options)
             limit_statement = cls._LIST_OPTIONS_ADAPTOR.gen_limit(list_options)
         except ValueError:
-            raise InvalidArgument(message=f'Invalid list_options: {list_options}')
+            raise InvalidArgument(
+                message=f'Invalid list_options: {list_options}')
 
         sql = f"SELECT data FROM {db_table} {where_statement} {order_statement} {limit_statement}"
         resp = run_sql_with_param_and_fetch_all(sql, params)
@@ -174,30 +216,14 @@ class DbModelBase(ABC):
         next_page_options = copy.copy(list_options)
         next_page_options.watermark = list_options.watermark + len(resp)
 
-        return [cls.from_data(data[0]) for data in resp], next_page_options.to_token()
-
-    @classmethod
-    def from_data(cls, data: Dict):
-        def populate_default(value, type):
-            if value is None and type in [str, int, bool]:
-                return type()
-            return value
-        obj_args = {}
-        for field in cls._DB_FIELDS_DICT.values():
-            if field.repeated:
-                obj_args[field.model_path] = [populate_default(field.converter.to_model(item), field.type)
-                                              for item in data.get(field.name, None)]
-            else:
-                obj_args[field.model_path] = populate_default(field.converter.to_model(
-                    data.get(field.name, None)), field.type)
-        return cls(**obj_args)
+        return [cls.from_db(data[0]) for data in resp], next_page_options.to_token()
 
     def update(self, update_update_time: bool = True) -> None:
         if update_update_time:
             self.update_time = get_now()
 
         db_table = self._DB_TABLE
-        data = self._prepare_data()
+        data = self.to_db()
         db_fields_name = ['parent', 'resource_id', 'data']
         parent, resource_id = self._parse_name(self.name)
         sql = f"UPDATE {db_table} SET data=%(data)s WHERE parent=%(parent)s AND resource_id=%(resource_id)s"
@@ -241,22 +267,6 @@ class DbModelBase(ABC):
         self._create(parent=str(name.parent),
                      resource_id=name.resource_id)
 
-    def _prepare_data(self) -> Dict:
-        '''
-        Construct the field `data` which will be stored in DB.
-        '''
-        data = {}
-        for field in self._DB_FIELDS_DICT.values():
-            if field.repeated:
-                data[field.name] = [field.converter.from_model(item)
-                                    for item in getattr(self, field.model_path)]
-            else:
-                data[field.name] = field.converter.from_model(
-                    getattr(self, field.model_path))
-            # frm, to = getattr(self, field.model_path), data[field.name]
-            # logger.debug(f'In _prepare_data: {type(frm)}({frm}) -> {type(to)}({to})')
-        return data
-
     @classmethod
     def _parse_name(cls, name: str) -> Tuple[str, int]:
         NAME_PATTERN = r'((?P<parent>.+)/)?(?P<collection>[a-zA-Z0-9]+)/(?P<resource_id>[0-9]+)'
@@ -269,26 +279,12 @@ class DbModelBase(ABC):
 
 def init_db_model(cls: type, db_table: str) -> None:
     cls._DB_TABLE = db_table
-    pkeys = []
-    db_fields = {}
+    fields_trait = {}
     for attribute in attr.fields(cls):
         if not attribute.metadata[base_core.IS_DB_FIELD]:
             continue
-        converter: DbConverter = attribute.metadata[base_core.DB_CONVERTER]
-        db_path = _get_db_path(attribute)
-        field = DbField(
-            name=db_path,
-            converter=converter,
-            model_path=attribute.name,
-            repeated=base_core.is_repeated(attribute),
-            type=attribute.type,
-        )
-        db_fields[db_path] = field
-    cls._DB_FIELDS_DICT = db_fields
-
-    fields_trait = {}
-    for k, v in db_fields.items():
-        fields_trait[k] = FieldTrait(k, v.repeated, v.type)
+        name, is_repeated, type = _get_db_path(attribute), base_core.is_repeated(attribute), attribute.type
+        fields_trait[name] = FieldTrait(name, is_repeated, type)
     cls._LIST_OPTIONS_ADAPTOR = PostgresAdaptor(fields_trait)
 
 
@@ -298,3 +294,27 @@ def _get_db_path(attribute: attr.Attribute) -> str:
 
 def _is_db_field(attribute: attr.Attribute) -> bool:
     return attribute.metadata[base_core.IS_DB_FIELD]
+
+
+def _attribute_from_db(attribute: attr.Attribute, value: Any):
+    # TODO: document why a default value is needed.
+    def populate_default(value, type):
+        if value is None and type in [str, int, bool]:
+            return type()
+        return value
+    converter: DbConverter = attribute.metadata[base_core.DB_CONVERTER]
+    if base_core.is_repeated(attribute):
+        return [populate_default(converter.to_model(item), attribute.type)
+                for item in (value or [])]
+    else:
+        return populate_default(converter.to_model(
+            value), attribute.type)
+
+
+def _attribute_to_data(attribute: attr.Attribute, value: Any):
+    converter = attribute.metadata[base_core.DB_CONVERTER]
+    if base_core.is_repeated(attribute):
+        return [converter.from_model(item)
+                for item in value]
+    else:
+        return converter.from_model(value)

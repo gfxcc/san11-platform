@@ -42,9 +42,10 @@ def Attrib(
             The data model of a table should be: (pkey1, pkey2, ..., data_in_json)
 
         # General section
+        nested_type: The python class of the nested type.
         deprecated: The field will be excluded from proto and db layer.
     '''
-    if type is None:
+    if type is None and nested_type is None:
         raise ValueError(f'`type` must be specified')
     metadata = metadata or {}
 
@@ -73,10 +74,32 @@ def Attrib(
     metadata[base_core.REPEATED] = repeated
     if repeated:
         type = List[type]
+    
+    if nested_type:
+        metadata[base_core.NESTED_TYPE] = nested_type
 
     if deprecated:
         kwargs['default'] = None
     return attr.ib(metadata=metadata, type=type, **kwargs)
+
+
+def NestedAttrib(nested_type: type, **kwargs) -> attr.Attribute:
+    '''
+    Provide a nested attribute.
+    E.g. The UserSettings fields in the following User message.
+    message User {
+        int64 user_id = 1;
+        UserSettings settings = 2;
+
+        message UserSettings {
+            ...
+        }
+    }
+    '''
+    return Attrib(nested_type=nested_type,
+                  proto_converter=base_proto.build_nested_converter(nested_type),
+                  db_converter=base_db.build_nested_converter(nested_type),
+                  **kwargs)
 
 
 MODELS = {}
@@ -88,9 +111,9 @@ def InitModel(
     proto_class: Optional[Any],
 ) -> Callable:
     def wraps(cls):
-        if issubclass(cls, base_db.DbModelBase):
+        if issubclass(cls, base_db.DbModel):
             if not db_table:
-                raise ValueError('db_table is required for subclass of DbModelBase')
+                raise ValueError('db_table is required for subclass of DbModel')
             base_db.init_db_model(cls, db_table)
         if issubclass(cls, base_proto.ProtoModelBase):
             base_proto.init_proto_model(cls, proto_class)

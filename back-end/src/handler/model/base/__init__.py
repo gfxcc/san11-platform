@@ -81,7 +81,7 @@ from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
 # Export sections
-from .base import Attrib, InitModel
+from .base import Attrib, InitModel, NestedAttrib
 from .base_core import is_repeated
 from .base_db import DbConverter  # noqa
 from .base_proto import DatetimeProtoConverter  # noqa
@@ -95,9 +95,9 @@ _SUB_MODEL_BASE_T = TypeVar('_SUB_MODEL_BASE_T', bound='ModelBase')
 # TODO: integrate TrackLifecycle
 
 
-class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
+class ModelBase(base_db.DbModel, base_proto.ProtoModelBase):
     def create(self, parent: str, user_id: Optional[int] = None, create_activity: bool = True) -> None:
-        base_db.DbModelBase.create(self, parent)
+        base_db.DbModel.create(self, parent)
         if isinstance(self, TrackLifecycle) and user_id and create_activity:
             ModelActivity(name='',
                           create_time=get_now(),
@@ -105,7 +105,7 @@ class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
                           resource_name=self.name).create(parent=f'users/{user_id}')
 
     def update(self, update_update_time: bool = True, user_id: Optional[int] = None, create_activity: bool = True) -> None:
-        base_db.DbModelBase.update(self, update_update_time=update_update_time)
+        base_db.DbModel.update(self, update_update_time=update_update_time)
         if isinstance(self, TrackLifecycle) and user_id and create_activity:
             ModelActivity(name='',
                           create_time=get_now(),
@@ -113,7 +113,7 @@ class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
                           resource_name=self.name).create(parent=f'users/{user_id}')
 
     def delete(self, user_id: Optional[int] = None, create_activity: bool = True) -> None:
-        base_db.DbModelBase.delete(self)
+        base_db.DbModel.delete(self)
         if isinstance(self, TrackLifecycle) and user_id and create_activity:
             ModelActivity(name='',
                           create_time=get_now(),
@@ -121,7 +121,7 @@ class ModelBase(base_db.DbModelBase, base_proto.ProtoModelBase):
                           resource_name=self.name).create(parent=f'users/{user_id}')
 
 
-class NestedModel(base_proto.ProtoModelBase):
+class NestedModel(base_proto.ProtoModelBase, base_db.DbModelBase):
     '''A nested model which only exist as a submessage of another model.'''
     ...
 

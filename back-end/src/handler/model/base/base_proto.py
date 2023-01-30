@@ -4,7 +4,7 @@ import datetime
 import logging
 import os
 from abc import ABC
-from typing import Any, Generic, Iterable, TypeVar
+from typing import Any, Callable, Generic, Iterable, TypeVar
 
 import attr
 from google.protobuf import descriptor, message, timestamp_pb2
@@ -66,6 +66,22 @@ class LegacyDatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_p
         return get_age(value)
 
 
+@attr.define
+class NestedProtoConverter(ProtoConverter):
+    from_model_exec: Callable[[Any], Any] = lambda x: x
+    to_model_exec: Callable[[Any], Any] = lambda x: x
+
+    def from_model(self, value: _MODEL_T) -> _PROTO_T:
+        return self.from_model_exec(value)
+    
+    def to_model(self, proto_value: _PROTO_T) -> _MODEL_T:
+        return self.to_model_exec(proto_value)
+
+
+def build_nested_converter(cls: type):
+    return NestedProtoConverter(from_model_exec=lambda v: v.to_pb(), to_model_exec=cls.from_pb)
+
+
 @attr.s(auto_attribs=True)
 class ProtoField:
     name: str
@@ -85,15 +101,10 @@ class ProtoModelBase(ABC):
         properties = {}
         for attribute in attr.fields(cls):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
-                properties[attribute.name] = None
                 continue
             path = _get_proto_path(attribute)
-            converter: ProtoConverter = attribute.metadata[base_core.PROTO_CONVERTER]
-            field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
-            proto_value = _get_by_path(proto_model, path, field_descriptor)
+            proto_value = _get_by_path(proto_model, path, proto_model.DESCRIPTOR.fields_by_name[path])
             properties[attribute.name] = _attribute_from_pb(attribute, proto_value)
-            # frm, to = proto_value, properties[attribute.name]
-            # logger.debug(f'In _prepare_data: {type(frm)}({frm}) -> {type(to)}({to})')
         return cls(**properties)
 
     def to_pb(self) -> message.Message:
@@ -138,10 +149,10 @@ def init_proto_model(cls: type, proto_class) -> None:
             continue
 
 def _attribute_pb_converter(attribute: attr.Attribute) -> ProtoConverter:
-    converter: ProtoConverter = attribute.metadata[base_core.PROTO_CONVERTER]
+    converter: ProtoConverter = attribute.metadata.get(base_core.PROTO_CONVERTER)
     return converter or PassThroughConverter()
 
-def _attribute_from_proto(attribute: attr.Attribute, proto_value: Any) -> Any:
+def _attribute_from_pb(attribute: attr.Attribute, proto_value: Any) -> Any:
     converter = _attribute_pb_converter(attribute)
 
     if base_core.is_repeated(attribute):

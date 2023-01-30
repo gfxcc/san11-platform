@@ -45,7 +45,7 @@ class Action(Enum):
     proto_class=pb.Activity,
 )
 @attr.s
-class ModelActivity(base_db.DbModelBase, base_proto.ProtoModelBase):
+class ModelActivity(base_db.DbModel, base_proto.ProtoModelBase):
     # Resource name. It is `{parent}/activities/{resource_id}`
     # E.g. `activities/12345`
     name = Attrib(

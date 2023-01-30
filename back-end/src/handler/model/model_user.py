@@ -18,7 +18,7 @@ from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
 
 from ..protos import san11_platform_pb2 as pb
-from .base import Attrib, InitModel, ModelBase, NestedModel
+from .base import Attrib, InitModel, ModelBase, NestedAttrib, NestedModel
 
 DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
@@ -170,10 +170,8 @@ class ModelUser(ModelBase, TrackLifecycle):
     update_time = Attrib(
         type=datetime.datetime,
     )
-    settings = Attrib(
-        type=pb.Settings,
-        proto_converter=...,
-        db_converter=...,
+    settings = NestedAttrib(
+        nested_type=UserSettings,
     )
 
     def to_pb(self) -> message.Message:
