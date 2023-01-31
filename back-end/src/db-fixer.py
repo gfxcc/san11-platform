@@ -4,7 +4,8 @@ from typing import Optional
 from handler.model.base import ListOptions
 from handler.model.model_activity import ModelActivity
 from handler.model.model_binary import ModelBinary
-from handler.model.model_user import ModelUser
+from handler.model.model_user import (ModelUser, NotificationSettings,
+                                      UserSettings)
 from handler.util.time_util import get_now
 
 
@@ -30,6 +31,19 @@ def backfill_user_create_update_time():
             f'Progress idx-{i}: set {user.username}\'s create_time to {user.create_time}')
 
 
+def backfill_user_settings():
+    '''
+    Traverse table `users` and set fields `settings`
+    '''
+    users = ModelUser.list(ListOptions(parent=None))[0]
+    for i, user in enumerate(users):
+        user.settings = UserSettings(notification=NotificationSettings(
+            send_emails=True, subscriptions=True, recommendations=True, mentions=True, threads=True, comments=True, replies=True))
+        user.update(update_update_time=False)
+        print(
+            f'Progress idx-{i}: set {user.username}\'s settings to {user.settings}')
+
+
 def backfill_binaries_file_server():
     binaries = ModelBinary.list(ListOptions(parent=None))[0]
     for i, binary in enumerate(binaries):
@@ -53,8 +67,9 @@ def backfill_binary_file_ext():
             file.ext = new_ext
         # binary.update(update_update_time=False)
 
+
 def main():
-    backfill_binary_file_ext()
+    backfill_user_settings()
 
 
 if __name__ == "__main__":
