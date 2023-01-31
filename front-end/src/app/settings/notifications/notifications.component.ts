@@ -28,7 +28,6 @@ export class NotificationsComponent implements OnInit {
     this.route.data.subscribe(
       (data) => {
         this.user = data.user;
-        console.log(data);
       }
     );
   }
@@ -39,14 +38,12 @@ export class NotificationsComponent implements OnInit {
     const request = new UpdateUserRequest({
       user: this.user,
       updateMask: new FieldMask({
-        paths: ['settings.notifications'],
+        paths: ['settings'],
       })
     });
     this.san11pkService.updateUser(request).subscribe(
       (user: User) => {
         this.notificationService.success('更新成功');
-
-        console.log(user);
       },
       error => {
         this.notificationService.warn(`更新失败: ${error.statusMessage}`)

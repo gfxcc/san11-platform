@@ -14,33 +14,57 @@
         <div class="section-content">
             <div class="switch-box">
                 <mat-slide-toggle
-                    [(ngModel)]="user.settings.notification.subscriptions"
-                    (change)="updateSetting()">订阅</mat-slide-toggle>
-            </div>
-            <div class="switch-box">
-                <mat-slide-toggle
+                    color="primary"
                     [(ngModel)]="user.settings.notification.recommendations"
                     (change)="updateSetting()">推荐</mat-slide-toggle>
+                <div class="switch-description">
+                    获取 - 系统推荐的内容
+                </div>
             </div>
             <div class="switch-box">
                 <mat-slide-toggle
+                    color="primary"
+                    [(ngModel)]="user.settings.notification.subscriptions"
+                    (change)="updateSetting()">订阅</mat-slide-toggle>
+                <div class="switch-description">
+                    获取 - 已【订阅】内容的更新
+                </div>
+            </div>
+            <div class="switch-box">
+                <mat-slide-toggle
+                    color="primary"
                     [(ngModel)]="user.settings.notification.mentions"
                     (change)="updateSetting()">@我</mat-slide-toggle>
+                <div class="switch-description">
+                    获取 - @我的消息
+                </div>
             </div>
             <div class="switch-box">
                 <mat-slide-toggle
+                    color="primary"
                     [(ngModel)]="user.settings.notification.threads"
                     (change)="updateSetting()">新讨论</mat-slide-toggle>
+                <div class="switch-description">
+                    获取 - 我的【作品】下的新【讨论】
+                </div>
             </div>
             <div class="switch-box">
                 <mat-slide-toggle
+                    color="primary"
                     [(ngModel)]="user.settings.notification.comments"
                     (change)="updateSetting()">新评论</mat-slide-toggle>
+                <div class="switch-description">
+                    获取 - 相关新【评论】
+                </div>
             </div>
             <div class="switch-box">
                 <mat-slide-toggle
+                    color="primary"
                     [(ngModel)]="user.settings.notification.replies"
                     (change)="updateSetting()">新回复</mat-slide-toggle>
+                <div class="switch-description">
+                    获取 - 相关新【回复】
+                </div>
             </div>
         </div>
     </div>
@@ -50,8 +74,12 @@
 
         <div class="switch-box">
             <mat-slide-toggle
+                color="primary"
                 [(ngModel)]="user.settings.notification.sendEmails"
                 (change)="updateSetting()">通过邮件接收通知</mat-slide-toggle>
+            <div class="switch-description">
+                将通知以邮件的方式发送
+            </div>
         </div>
     </div>
 </div>

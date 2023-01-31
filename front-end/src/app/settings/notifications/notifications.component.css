@@ -57,3 +57,23 @@
 .switch-box {
     padding: 10px;
 }
+
+.switch-description {
+    padding-left: 44px;
+}
+
+@media (max-width: 40rem) {
+    .section {
+        display: contents;
+    }
+
+    .section::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        width: 100%;
+        border-top: 1px solid var(--border-color);
+    }
+}

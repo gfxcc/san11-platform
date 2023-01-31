@@ -63,12 +63,14 @@ def Attrib(
 
     metadata[base_core.IS_PROTO_FIELD] = is_proto_field
     if is_proto_field:
-        metadata[base_core.PROTO_PATH] = proto_path
+        if proto_path:
+            metadata[base_core.PROTO_PATH] = proto_path
         metadata[base_core.PROTO_CONVERTER] = proto_converter
 
     metadata[base_core.IS_DB_FIELD] = is_db_field
     if is_db_field:
-        metadata[base_core.DB_PATH] = db_path
+        if db_path:
+            metadata[base_core.DB_PATH] = db_path
         metadata[base_core.DB_CONVERTER] = db_converter
 
     metadata[base_core.REPEATED] = repeated
