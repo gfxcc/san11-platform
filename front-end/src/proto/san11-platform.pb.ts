@@ -13154,6 +13154,7 @@ export class User implements GrpcMessage {
     _instance.subscriberCount = _instance.subscriberCount || '0';
     _instance.createTime = _instance.createTime || undefined;
     _instance.updateTime = _instance.updateTime || undefined;
+    _instance.settings = _instance.settings || undefined;
   }
 
   /**
@@ -13202,6 +13203,13 @@ export class User implements GrpcMessage {
           _reader.readMessage(
             _instance.updateTime,
             googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 11:
+          _instance.settings = new UserSettings();
+          _reader.readMessage(
+            _instance.settings,
+            UserSettings.deserializeBinaryFromReader
           );
           break;
         default:
@@ -13256,6 +13264,13 @@ export class User implements GrpcMessage {
         googleProtobuf000.Timestamp.serializeBinaryToWriter
       );
     }
+    if (_instance.settings) {
+      _writer.writeMessage(
+        11,
+        _instance.settings as any,
+        UserSettings.serializeBinaryToWriter
+      );
+    }
   }
 
   private _name?: string;
@@ -13268,6 +13283,7 @@ export class User implements GrpcMessage {
   private _subscriberCount?: string;
   private _createTime?: googleProtobuf000.Timestamp;
   private _updateTime?: googleProtobuf000.Timestamp;
+  private _settings?: UserSettings;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -13288,6 +13304,9 @@ export class User implements GrpcMessage {
       : undefined;
     this.updateTime = _value.updateTime
       ? new googleProtobuf000.Timestamp(_value.updateTime)
+      : undefined;
+    this.settings = _value.settings
+      ? new UserSettings(_value.settings)
       : undefined;
     User.refineValues(this);
   }
@@ -13351,6 +13370,12 @@ export class User implements GrpcMessage {
   set updateTime(value: googleProtobuf000.Timestamp | undefined) {
     this._updateTime = value;
   }
+  get settings(): UserSettings | undefined {
+    return this._settings;
+  }
+  set settings(value: UserSettings | undefined) {
+    this._settings = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -13376,7 +13401,8 @@ export class User implements GrpcMessage {
       userId: this.userId,
       subscriberCount: this.subscriberCount,
       createTime: this.createTime ? this.createTime.toObject() : undefined,
-      updateTime: this.updateTime ? this.updateTime.toObject() : undefined
+      updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
+      settings: this.settings ? this.settings.toObject() : undefined
     };
   }
 
@@ -13410,7 +13436,8 @@ export class User implements GrpcMessage {
         : null,
       updateTime: this.updateTime
         ? this.updateTime.toProtobufJSON(options)
-        : null
+        : null,
+      settings: this.settings ? this.settings.toProtobufJSON(options) : null
     };
   }
 }
@@ -13429,6 +13456,7 @@ export module User {
     subscriberCount?: string;
     createTime?: googleProtobuf000.Timestamp.AsObject;
     updateTime?: googleProtobuf000.Timestamp.AsObject;
+    settings?: UserSettings.AsObject;
   }
 
   /**
@@ -13445,6 +13473,7 @@ export module User {
     subscriberCount?: string;
     createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
     updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    settings?: UserSettings.AsProtobufJSON | null;
   }
   export enum UserType {
     USER_TYPE_UNSPECIFIED = 0,
@@ -16789,6 +16818,407 @@ export module Subscription {
   export enum SubscribeType {
     SUBSCRIBE_TYPE_UNSPECIFIED = 0,
     ALL = 1
+  }
+}
+
+/**
+ * Message implementation for routeguide.UserSettings
+ */
+export class UserSettings implements GrpcMessage {
+  static id = 'routeguide.UserSettings';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UserSettings();
+    UserSettings.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UserSettings) {
+    _instance.notification = _instance.notification || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UserSettings,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.notification = new UserSettings.NotificationSetting();
+          _reader.readMessage(
+            _instance.notification,
+            UserSettings.NotificationSetting.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UserSettings.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UserSettings,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.notification) {
+      _writer.writeMessage(
+        1,
+        _instance.notification as any,
+        UserSettings.NotificationSetting.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _notification?: UserSettings.NotificationSetting;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UserSettings to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UserSettings.AsObject>) {
+    _value = _value || {};
+    this.notification = _value.notification
+      ? new UserSettings.NotificationSetting(_value.notification)
+      : undefined;
+    UserSettings.refineValues(this);
+  }
+  get notification(): UserSettings.NotificationSetting | undefined {
+    return this._notification;
+  }
+  set notification(value: UserSettings.NotificationSetting | undefined) {
+    this._notification = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UserSettings.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UserSettings.AsObject {
+    return {
+      notification: this.notification ? this.notification.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UserSettings.AsProtobufJSON {
+    return {
+      notification: this.notification
+        ? this.notification.toProtobufJSON(options)
+        : null
+    };
+  }
+}
+export module UserSettings {
+  /**
+   * Standard JavaScript object representation for UserSettings
+   */
+  export interface AsObject {
+    notification?: UserSettings.NotificationSetting.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for UserSettings
+   */
+  export interface AsProtobufJSON {
+    notification?: UserSettings.NotificationSetting.AsProtobufJSON | null;
+  }
+
+  /**
+   * Message implementation for routeguide.NotificationSetting
+   */
+  export class NotificationSetting implements GrpcMessage {
+    static id = 'routeguide.NotificationSetting';
+
+    /**
+     * Deserialize binary data to message
+     * @param instance message instance
+     */
+    static deserializeBinary(bytes: ByteSource) {
+      const instance = new NotificationSetting();
+      NotificationSetting.deserializeBinaryFromReader(
+        instance,
+        new BinaryReader(bytes)
+      );
+      return instance;
+    }
+
+    /**
+     * Check all the properties and set default protobuf values if necessary
+     * @param _instance message instance
+     */
+    static refineValues(_instance: NotificationSetting) {
+      _instance.sendEmails = _instance.sendEmails || false;
+      _instance.subscriptions = _instance.subscriptions || false;
+      _instance.recommendations = _instance.recommendations || false;
+      _instance.mentions = _instance.mentions || false;
+      _instance.threads = _instance.threads || false;
+      _instance.comments = _instance.comments || false;
+      _instance.replies = _instance.replies || false;
+    }
+
+    /**
+     * Deserializes / reads binary message into message instance using provided binary reader
+     * @param _instance message instance
+     * @param _reader binary reader instance
+     */
+    static deserializeBinaryFromReader(
+      _instance: NotificationSetting,
+      _reader: BinaryReader
+    ) {
+      while (_reader.nextField()) {
+        if (_reader.isEndGroup()) break;
+
+        switch (_reader.getFieldNumber()) {
+          case 1:
+            _instance.sendEmails = _reader.readBool();
+            break;
+          case 11:
+            _instance.subscriptions = _reader.readBool();
+            break;
+          case 12:
+            _instance.recommendations = _reader.readBool();
+            break;
+          case 13:
+            _instance.mentions = _reader.readBool();
+            break;
+          case 14:
+            _instance.threads = _reader.readBool();
+            break;
+          case 15:
+            _instance.comments = _reader.readBool();
+            break;
+          case 16:
+            _instance.replies = _reader.readBool();
+            break;
+          default:
+            _reader.skipField();
+        }
+      }
+
+      NotificationSetting.refineValues(_instance);
+    }
+
+    /**
+     * Serializes a message to binary format using provided binary reader
+     * @param _instance message instance
+     * @param _writer binary writer instance
+     */
+    static serializeBinaryToWriter(
+      _instance: NotificationSetting,
+      _writer: BinaryWriter
+    ) {
+      if (_instance.sendEmails) {
+        _writer.writeBool(1, _instance.sendEmails);
+      }
+      if (_instance.subscriptions) {
+        _writer.writeBool(11, _instance.subscriptions);
+      }
+      if (_instance.recommendations) {
+        _writer.writeBool(12, _instance.recommendations);
+      }
+      if (_instance.mentions) {
+        _writer.writeBool(13, _instance.mentions);
+      }
+      if (_instance.threads) {
+        _writer.writeBool(14, _instance.threads);
+      }
+      if (_instance.comments) {
+        _writer.writeBool(15, _instance.comments);
+      }
+      if (_instance.replies) {
+        _writer.writeBool(16, _instance.replies);
+      }
+    }
+
+    private _sendEmails?: boolean;
+    private _subscriptions?: boolean;
+    private _recommendations?: boolean;
+    private _mentions?: boolean;
+    private _threads?: boolean;
+    private _comments?: boolean;
+    private _replies?: boolean;
+
+    /**
+     * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+     * @param _value initial values object or instance of NotificationSetting to deeply clone from
+     */
+    constructor(_value?: RecursivePartial<NotificationSetting.AsObject>) {
+      _value = _value || {};
+      this.sendEmails = _value.sendEmails;
+      this.subscriptions = _value.subscriptions;
+      this.recommendations = _value.recommendations;
+      this.mentions = _value.mentions;
+      this.threads = _value.threads;
+      this.comments = _value.comments;
+      this.replies = _value.replies;
+      NotificationSetting.refineValues(this);
+    }
+    get sendEmails(): boolean | undefined {
+      return this._sendEmails;
+    }
+    set sendEmails(value: boolean | undefined) {
+      this._sendEmails = value;
+    }
+    get subscriptions(): boolean | undefined {
+      return this._subscriptions;
+    }
+    set subscriptions(value: boolean | undefined) {
+      this._subscriptions = value;
+    }
+    get recommendations(): boolean | undefined {
+      return this._recommendations;
+    }
+    set recommendations(value: boolean | undefined) {
+      this._recommendations = value;
+    }
+    get mentions(): boolean | undefined {
+      return this._mentions;
+    }
+    set mentions(value: boolean | undefined) {
+      this._mentions = value;
+    }
+    get threads(): boolean | undefined {
+      return this._threads;
+    }
+    set threads(value: boolean | undefined) {
+      this._threads = value;
+    }
+    get comments(): boolean | undefined {
+      return this._comments;
+    }
+    set comments(value: boolean | undefined) {
+      this._comments = value;
+    }
+    get replies(): boolean | undefined {
+      return this._replies;
+    }
+    set replies(value: boolean | undefined) {
+      this._replies = value;
+    }
+
+    /**
+     * Serialize message to binary data
+     * @param instance message instance
+     */
+    serializeBinary() {
+      const writer = new BinaryWriter();
+      NotificationSetting.serializeBinaryToWriter(this, writer);
+      return writer.getResultBuffer();
+    }
+
+    /**
+     * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+     */
+    toObject(): NotificationSetting.AsObject {
+      return {
+        sendEmails: this.sendEmails,
+        subscriptions: this.subscriptions,
+        recommendations: this.recommendations,
+        mentions: this.mentions,
+        threads: this.threads,
+        comments: this.comments,
+        replies: this.replies
+      };
+    }
+
+    /**
+     * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+     */
+    toJSON() {
+      return this.toObject();
+    }
+
+    /**
+     * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+     * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+     * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+     */
+    toProtobufJSON(
+      // @ts-ignore
+      options?: ToProtobufJSONOptions
+    ): NotificationSetting.AsProtobufJSON {
+      return {
+        sendEmails: this.sendEmails,
+        subscriptions: this.subscriptions,
+        recommendations: this.recommendations,
+        mentions: this.mentions,
+        threads: this.threads,
+        comments: this.comments,
+        replies: this.replies
+      };
+    }
+  }
+  export module NotificationSetting {
+    /**
+     * Standard JavaScript object representation for NotificationSetting
+     */
+    export interface AsObject {
+      sendEmails?: boolean;
+      subscriptions?: boolean;
+      recommendations?: boolean;
+      mentions?: boolean;
+      threads?: boolean;
+      comments?: boolean;
+      replies?: boolean;
+    }
+
+    /**
+     * Protobuf JSON representation for NotificationSetting
+     */
+    export interface AsProtobufJSON {
+      sendEmails?: boolean;
+      subscriptions?: boolean;
+      recommendations?: boolean;
+      mentions?: boolean;
+      threads?: boolean;
+      comments?: boolean;
+      replies?: boolean;
+    }
   }
 }
 

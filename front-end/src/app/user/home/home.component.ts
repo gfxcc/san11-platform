@@ -36,11 +36,6 @@ export class HomeComponent implements OnInit {
       link: ['timeline'],
       disabled: false
     },
-    {
-      label: '账户信息',
-      link: ['accountInfo'],
-      disabled: false
-    },
     // {
     //   label: '关于',
     //   link: ['about']
@@ -57,10 +52,10 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.route.data.subscribe(
       (data) => {
         if (data.user) {
+          console.log(data);
           this.user = data.user;
           // this.selectedTabChange({ index: 0 });
         }
@@ -74,9 +69,6 @@ export class HomeComponent implements OnInit {
         break;
       case 'timeline':
         this.selectedIndex = 1;
-        break;
-      case 'accountInfo':
-        this.selectedIndex = 2;
         break;
       default:
         this.selectedIndex = 0;
@@ -93,5 +85,4 @@ export class HomeComponent implements OnInit {
     const link = this.tabs[event.index].link;
     this.router.navigate(link, { relativeTo: this.route, state: { user: this.user } });
   }
-
 }

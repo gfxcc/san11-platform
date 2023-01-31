@@ -30,16 +30,10 @@ import { PackageDetailComponent } from "./package-management/package-detail/pack
 import { CreateNewVersionComponent } from "./package-management/version-management/create-new-version/create-new-version.component";
 import { BranchComponent } from './package-management/version-management/version-panel/branch/branch.component';
 import { VersionPanelComponent } from './package-management/version-management/version-panel/version-panel.component';
+import { SettingsModule } from './settings/settings.module';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from "./user/user.module";
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
-
-
-
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -81,6 +75,7 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
     UserModule,
     ForumModule,
     TimelineModule,
+    SettingsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

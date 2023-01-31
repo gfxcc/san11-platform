@@ -1,4 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --accent-color: rgb(204, 0, 0);
+    --lightest-gray: rgb(244, 244, 244);
+    --light-gray: rgb(144, 144, 144);
+    --medium-gray: rgb(96, 96, 96);
+    --dark-gray: rgb(13, 13, 13);
+    --header-height: 64px;
+    --animation-duration: 200ms;
+    --animation-timing-curve: ease-in-out;
+    --border-color: rgba(0, 0, 0, .12);
+}
 
 html,
 body {
@@ -258,3 +269,4 @@ body {
     cursor: pointer;
     box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
 }
+/* @media (max-width: 40rem) {} */

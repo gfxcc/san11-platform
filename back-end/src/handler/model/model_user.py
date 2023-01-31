@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import datetime
 import re
-from typing import Iterable, List, Tuple
+from dataclasses import dataclass
+from dis import dis
+from typing import Iterable, List, Tuple, Union
 
 import attr
 from google.protobuf import message
+
 from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
 from handler.model.base import ListOptions
 from handler.model.base.base_db import DbConverter
@@ -15,7 +18,7 @@ from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
 
 from ..protos import san11_platform_pb2 as pb
-from .base import Attrib, InitModel, ModelBase
+from .base import Attrib, InitModel, ModelBase, NestedAttrib, NestedModel
 
 DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
@@ -46,6 +49,46 @@ class EmailDbConverter(DbConverter):
 
 
 @InitModel(
+    db_table=None,
+    proto_class=pb.UserSettings.NotificationSetting
+)
+@attr.s
+class NotificationSettings(NestedModel):
+    send_emails = Attrib(
+        type=bool
+    )
+    subscriptions = Attrib(
+        type=bool
+    )
+    recommendations = Attrib(
+        type=bool
+    )
+    mentions = Attrib(
+        type=bool
+    )
+    threads = Attrib(
+        type=bool
+    )
+    comments = Attrib(
+        type=bool
+    )
+    replies = Attrib(
+        type=bool
+    )
+
+
+@InitModel(
+    db_table=None,
+    proto_class=pb.UserSettings
+)
+@attr.s
+class UserSettings(NestedModel):
+    notification = NestedAttrib(
+        nested_type=NotificationSettings
+    )
+
+
+@InitModel(
     db_table='users',
     proto_class=pb.User,
 )
@@ -65,7 +108,7 @@ class ModelUser(ModelBase, TrackLifecycle):
         db_converter=EmailDbConverter(),
     )
     type = Attrib(
-        type=int,  # TODO
+        type=int,
     )
     image_url = Attrib(
         type=str,
@@ -85,6 +128,9 @@ class ModelUser(ModelBase, TrackLifecycle):
     )
     update_time = Attrib(
         type=datetime.datetime,
+    )
+    settings = NestedAttrib(
+        nested_type=UserSettings,
     )
 
     def to_pb(self) -> message.Message:

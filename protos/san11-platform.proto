@@ -646,6 +646,8 @@ message User {
   // [ OUTPUT_ONLY ]
   google.protobuf.Timestamp update_time = 10;
 
+  UserSettings settings = 11;
+
   enum UserType {
     USER_TYPE_UNSPECIFIED = 0;
 
@@ -824,6 +826,28 @@ message Subscription {
 
     // Receive notification on all events.
     ALL = 1;
+  }
+}
+
+message UserSettings {
+  NotificationSetting notification = 1;
+
+  message NotificationSetting {
+    // Send me emails on enabled notifications.
+    bool send_emails = 1;
+
+    // Notify me on activities on subscripted users.
+    bool subscriptions = 11;
+    // Notify me on new recommended content.
+    bool recommendations = 12;
+    // Notify me on others mention me.
+    bool mentions = 13;
+    // Notify me on new threads on my packages.
+    bool threads = 14;
+    // Notify me on new comments to my thread.
+    bool comments = 15;
+    // Notify me on new replies to my comments.
+    bool replies = 16;
   }
 }
 

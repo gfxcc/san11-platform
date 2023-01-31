@@ -21,4 +21,5 @@ RUN apt-get update -y && \
 RUN python3.8 -m pip install grpcio grpcio-tools
 
 COPY ./requirements.txt /tmp/requirements.txt
+RUN python3.8 -m pip install --upgrade pip
 RUN python3.8 -m pip install -r /tmp/requirements.txt
