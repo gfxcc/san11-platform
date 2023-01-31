@@ -8,6 +8,8 @@ from handler.model.model_user import (ModelUser, NotificationSettings,
                                       UserSettings)
 from handler.util.time_util import get_now
 
+MAX_RESOURCE_COUNT = 100000000000
+
 
 def _get_earlist_activity(user: ModelUser) -> Optional[ModelActivity]:
     activities = ModelActivity.list(ListOptions(
@@ -35,7 +37,8 @@ def backfill_user_settings():
     '''
     Traverse table `users` and set fields `settings`
     '''
-    users = ModelUser.list(ListOptions(parent=None))[0]
+    users = ModelUser.list(ListOptions(
+        parent=None, page_size=MAX_RESOURCE_COUNT))[0]
     for i, user in enumerate(users):
         user.settings = UserSettings(notification=NotificationSettings(
             send_emails=True, subscriptions=True, recommendations=True, mentions=True, threads=True, comments=True, replies=True))
