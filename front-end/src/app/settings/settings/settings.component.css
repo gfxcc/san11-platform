@@ -3,6 +3,7 @@
 }
 
 .sidebar {
+    min-width: 150px;
     width: 200px;
     height: calc(100vh - var(--header-height));
     ;
