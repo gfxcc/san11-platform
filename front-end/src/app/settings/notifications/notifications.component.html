@@ -75,8 +75,8 @@
         <div class="switch-box">
             <mat-slide-toggle
                 color="primary"
-                [(ngModel)]="user.settings.notification.sendEmails"
-                (change)="updateSetting()">通过邮件接收通知</mat-slide-toggle>
+                disabled="true"
+                (change)="updateSetting()">通过邮件接收通知 (未开放)</mat-slide-toggle>
             <div class="switch-description">
                 将通知以邮件的方式发送
             </div>
