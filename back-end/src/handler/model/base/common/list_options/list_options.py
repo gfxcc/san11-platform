@@ -17,6 +17,8 @@ from .parser import FilterExpr, OrderByItem
 logger = logging.getLogger(os.path.basename(__file__))
 DEFAULT_PAGE_SIZE = 1000
 DEFAULT_ORDER_BY = 'create_time DESC'
+# A huge number to fetch all result
+MAX_PAGE_SIZE = 99999999999999
 
 
 @dataclass
@@ -72,7 +74,7 @@ class ListOptions:
                 return int(j['watermark'])
 
         watermark = get_watermark(request.page_token)
-        return cls(parent=parent or None, # Skip parent if it is ''.
+        return cls(parent=parent or None,  # Skip parent if it is ''.
                    page_size=page_size,
                    watermark=watermark,
                    order_by=order_by,
@@ -86,9 +88,9 @@ class ListOptions:
             order_by=self.order_by,
             filter=self.filter,
         ).SerializeToString())
-    
+
     def parse_order_by(self) -> List[OrderByItem]:
         ...
-    
+
     def parse_filter(self) -> FilterExpr:
         ...

@@ -100,7 +100,7 @@ class DbModelBase(ABC):
             field_value = db_value.get(db_field_path) if db_value else None
             obj_args[name] = _attribute_from_db(attribute, field_value)
         ret = cls(**obj_args)
-        logger.debug(f'{cls.__name__}.from_db({json.dumps(db_value)}) -> {ret}')
+        # logger.debug(f'{cls.__name__}.from_db({json.dumps(db_value)}) -> {ret}')
         return ret
     
     def to_db(self) -> Dict:
@@ -110,7 +110,7 @@ class DbModelBase(ABC):
                 continue
             name, db_field_path = attribute.name, _get_db_path(attribute)
             data[db_field_path] = _attribute_to_data(attribute, getattr(self, name))
-        logger.debug(f'{type(self).__name__}.to_db({self}) -> {data}')
+        # logger.debug(f'{type(self).__name__}.to_db({self}) -> {data}')
         return data
 
 
@@ -209,9 +209,9 @@ class DbModel(DbModelBase):
             where_statement, params = cls._LIST_OPTIONS_ADAPTOR.gen_where(
                 list_options)
             limit_statement = cls._LIST_OPTIONS_ADAPTOR.gen_limit(list_options)
-        except ValueError:
+        except ValueError as err:
             raise InvalidArgument(
-                message=f'Invalid list_options: {list_options}')
+                message=f'Invalid list_options = {list_options}: {err}')
 
         sql = f"SELECT data FROM {db_table} {where_statement} {order_statement} {limit_statement}"
         resp = run_sql_with_param_and_fetch_all(sql, params)

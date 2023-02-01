@@ -88,7 +88,7 @@ from .base_proto import DatetimeProtoConverter  # noqa
 from .base_proto import ProtoConverter  # noqa
 from .base_proto import LegacyDatetimeProtoConverter
 from .common.field_mask import FieldMask  # noqa
-from .common.list_options import ListOptions  # noqa
+from .common.list_options import MAX_PAGE_SIZE, ListOptions  # noqa
 
 _SUB_MODEL_BASE_T = TypeVar('_SUB_MODEL_BASE_T', bound='ModelBase')
 

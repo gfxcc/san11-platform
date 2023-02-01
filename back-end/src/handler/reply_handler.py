@@ -38,13 +38,15 @@ class ReplyHandler(HandlerBase):
             thread = grand_parent
             comment = find_resource(ResourceName.from_str(parent))
             view = ResourceViewVisitor().visit(thread)
-            notify(
-                sender_id=user_id,
-                receiver_id=comment.author_id,
-                content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了 {get_text_from_html(comment.text)}: {get_text_from_html(reply.text)}",
-                link=view.name,
-                image_preview=view.image_url,
-            )
+            receiver = ModelUser.from_name(f'users/{comment.author_id}')
+            if receiver.settings.notification.replies:
+                notify(
+                    sender_id=user_id,
+                    receiver_id=receiver.user_id,
+                    content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了 {get_text_from_html(comment.text)}: {get_text_from_html(reply.text)}",
+                    link=view.name,
+                    image_preview=view.image_url,
+                )
         reply.create(parent=parent, user_id=user_id)
         return reply
 

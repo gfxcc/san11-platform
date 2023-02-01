@@ -45,26 +45,30 @@ class CommentHandler(HandlerBase):
         if isinstance(parent_obj, ModelThread):
             thread = parent_obj
             view = ResourceViewVisitor().visit(thread)
-            notify(
-                sender_id=user_id,
-                receiver_id=thread.author_id,
-                content=f"{username} 评论了 {view.display_name}: {get_text_from_html(thread.content)}",
-                link=view.name,
-                image_preview=view.image_url,
-            )
+            receiver = ModelUser.from_name(f'users/{thread.author_id}')
+            if receiver.settings.notification.comments:
+                notify(
+                    sender_id=user_id,
+                    receiver_id=receiver.user_id,
+                    content=f"{username} 评论了 {view.display_name}: {get_text_from_html(thread.content)}",
+                    link=view.name,
+                    image_preview=view.image_url,
+                )
         # 2. Send notification to user be @
         # (TODO): wrapper this into a func so that it can be reused by reply, thread.
         content = comment.text
         # A sample of @user element `<a class="mention" href="users/73">@一笑悬命</a>`
         pattern = r'<a [^>]* href="users/(?P<user_id>[0-9]+)">@(?P<username>[^<]+)</a>'
         for at_user_id, at_username in re.findall(pattern, content):
-            notify(
-                sender_id=user_id,
-                receiver_id=at_user_id,
-                content=f"{username} 在评论中提到了你",
-                link=comment.name,
-                image_preview='',
-            )
+            receiver = ModelUser.from_name(f'users/{at_user_id}')
+            if receiver.settings.notification.mentions:
+                notify(
+                    sender_id=user_id,
+                    receiver_id=receiver.user_id,
+                    content=f"{username} 在评论中提到了你",
+                    link=comment.name,
+                    image_preview='',
+                )
         return comment
 
     def list(self, list_options: ListOptions,

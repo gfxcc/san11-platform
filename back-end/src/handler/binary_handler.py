@@ -4,8 +4,8 @@ import uuid
 from typing import Iterable, List, Tuple
 
 from handler.handler_context import HandlerContext
-from handler.model.base import (FieldMask, HandlerBase, ListOptions,
-                                merge_resource)
+from handler.model.base import (MAX_PAGE_SIZE, FieldMask, HandlerBase,
+                                ListOptions, merge_resource)
 from handler.model.model_binary import File, ModelBinary
 from handler.model.model_subscription import ModelSubscription
 from handler.model.model_user import ModelUser
@@ -56,17 +56,7 @@ class BinaryHandler(HandlerBase):
                 'Either `file` or `download_method` has be specified.')
         binary.create(parent=parent, user_id=handler_context.user.user_id)
         # Post creation
-        # notify all subscribers
-        author = ModelUser.from_name(f'users/{handler_context.user.user_id}')
-        package = ModelPackage.from_name(parent)
-        for sub in ModelSubscription.list(ListOptions(parent=author.name))[0]:
-            notify(
-                sender_id=author.user_id,
-                receiver_id=sub.subscriber_id,
-                content=f'{author.username} 更新了 {package.package_name} {binary.version}',
-                link=package.name,
-                image_preview=package.image_urls[0] if package.image_urls else '',
-            )
+        _notify_subscribed_users(ModelPackage.from_name(parent), binary)
         # Update the `update_time` in package.
         find_resource(parent).update()
         return binary
@@ -116,3 +106,21 @@ class BinaryHandler(HandlerBase):
             FileServerType(file.server)).get_url(BucketClass.REGULAR, file.uri, filename)
         logger.debug(binary.file.url)
         return binary
+
+
+def _notify_subscribed_users(package: ModelPackage, binary: ModelBinary):
+    '''
+    Notify subscribied users a new version of the package is released.
+    '''
+    author = ModelUser.from_name(f'users/{package.author_id}')
+    for sub in ModelSubscription.list(ListOptions(parent=author.name, page_size=MAX_PAGE_SIZE))[0]:
+        subscriber = ModelUser.from_name(f'users/{sub.subscriber_id}')
+        if not subscriber.settings.notification.subscriptions:
+            continue
+        notify(
+            sender_id=author.user_id,
+            receiver_id=sub.subscriber_id,
+            content=f'{author.username} 更新了 {package.package_name} {binary.version}',
+            link=package.name,
+            image_preview=package.image_urls[0] if package.image_urls else '',
+        )

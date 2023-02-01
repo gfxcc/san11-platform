@@ -179,8 +179,7 @@ export class San11PlatformServiceService {
     return this.severClient.getAdminMessage(request, this.getMetadata());
   }
 
-  listUsers(): Observable<ListUsersResponse> {
-    const request = new ListUsersRequest({});
+  listUsers(request: ListUsersRequest): Observable<ListUsersResponse> {
     return this.severClient.listUsers(request, this.getMetadata());
   }
 

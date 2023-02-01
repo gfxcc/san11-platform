@@ -7,6 +7,7 @@ from handler.model.base import (FieldMask, HandlerBase, ListOptions,
                                 merge_resource)
 from handler.model.model_article import ModelArticle
 from handler.model.model_package import ModelPackage
+from handler.model.model_user import ModelUser
 from handler.model.user import User
 from handler.util import gcs
 from handler.util.html_util import get_text_from_html
@@ -31,13 +32,16 @@ class ThreadHandler(HandlerBase):
         try:
             parent_resource = find_resource(parent)
             view = ResourceViewVisitor().visit(parent_resource)
-            notify(
-                sender_id=thread.author_id,
-                receiver_id=parent_resource.author_id,
-                content=f'{User.from_id(thread.author_id).username} 评论了 {view.display_name}: {thread.subject}',
-                link=view.name,
-                image_preview=view.image_url,
-            )
+            receiver = ModelUser.from_name(
+                f'users/{parent_resource.author_id}')
+            if receiver.settings.notification.threads:
+                notify(
+                    sender_id=thread.author_id,
+                    receiver_id=parent_resource.author_id,
+                    content=f'{User.from_id(thread.author_id).username} 评论了 {view.display_name}: {thread.subject}',
+                    link=thread.name,
+                    image_preview=view.image_url,
+                )
         except Exception as err:
             logger.warning(f'failed to notify user: {err}')
         return thread

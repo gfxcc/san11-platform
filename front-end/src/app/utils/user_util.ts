@@ -1,7 +1,4 @@
-import { Observable } from "rxjs";
-import { map } from 'rxjs/operators';
-import { ListUsersResponse, User } from "../../proto/san11-platform.pb";
-import { San11PlatformServiceService } from "../service/san11-platform-service.service";
+import { User } from "../../proto/san11-platform.pb";
 
 
 export function isAdmin(): boolean {
@@ -39,32 +36,4 @@ export function loadUser(): User {
         type: User.UserType[localStorage.getItem('userType')],
         imageUrl: localStorage.getItem('userImageUrl'),
     });
-}
-
-export function getUsernameFeeds(san11PkService: San11PlatformServiceService): string[] | Observable<string[]> {
-    const cachedUserameFeeds = loadCacheUsernameFeeds();
-    if (cachedUserameFeeds != null) {
-        return cachedUserameFeeds;
-    }
-
-    return san11PkService.listUsers().pipe(
-        map((resp: ListUsersResponse) => {
-            const usernames = resp.users.map((user: User) => `@${user.username}`);
-            cacheUsernameFeeds(usernames);
-            return usernames;
-        })
-    );
-}
-
-function cacheUsernameFeeds(usernames: string[]) {
-    const cacheStr = usernames.join('|');
-    localStorage.setItem('usernameFeeds', cacheStr);
-}
-
-function loadCacheUsernameFeeds(): null | string[] {
-    const cachedUserames = localStorage.getItem('usernameFeeds');
-    if (cachedUserames != null) {
-        return cachedUserames.split('|');
-    }
-    return null;
 }

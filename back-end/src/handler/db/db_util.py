@@ -51,8 +51,6 @@ def run_sql_with_param(sql: str, param: Dict) -> None:
 
 
 def run_sql_with_param_and_fetch_all(sql: str, param: Dict, transaction: bool = False) -> List[Tuple]:
-    logger.debug(sql)
-    logger.debug(param)
     db_conn = pgpool().getconn()
     try:
         if not transaction:

@@ -83,7 +83,7 @@ class NotificationSettings(NestedModel):
 )
 @attr.s
 class UserSettings(NestedModel):
-    notification = NestedAttrib(
+    notification: NotificationSettings = NestedAttrib(
         nested_type=NotificationSettings
     )
 
@@ -129,7 +129,7 @@ class ModelUser(ModelBase, TrackLifecycle):
     update_time = Attrib(
         type=datetime.datetime,
     )
-    settings = NestedAttrib(
+    settings: UserSettings = NestedAttrib(
         nested_type=UserSettings,
     )
 
