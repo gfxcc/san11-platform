@@ -10,15 +10,15 @@ const routes: Routes = [
     path: 'settings',
     component: SettingsComponent,
     children: [
-      { path: '', redirectTo: 'account', pathMatch: 'prefix' },
-      {
-        path: 'account',
-        component: AccountInfoComponent,
-        resolve: { user: UserResolver },
-      },
+      { path: '', redirectTo: 'notifications', pathMatch: 'prefix' },
       {
         path: 'notifications',
         component: NotificationsComponent,
+        resolve: { user: UserResolver },
+      },
+      {
+        path: 'account',
+        component: AccountInfoComponent,
         resolve: { user: UserResolver },
       },
     ]
