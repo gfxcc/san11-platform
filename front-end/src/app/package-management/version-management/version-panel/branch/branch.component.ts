@@ -10,7 +10,7 @@ import { San11PlatformServiceService } from "src/app/service/san11-platform-serv
 import { version2str } from "src/app/utils/binary_util";
 import { increment } from "src/app/utils/number_util";
 import { signedIn } from "src/app/utils/user_util";
-import { Binary, DownloadBinaryRequest, FieldMask, Package, UpdateBinaryRequest } from "src/proto/san11-platform.pb";
+import { Binary, DeleteBinaryRequest, DownloadBinaryRequest, FieldMask, Package, UpdateBinaryRequest } from "src/proto/san11-platform.pb";
 
 
 export interface Branch {
@@ -133,9 +133,25 @@ export class BranchComponent {
         })).subscribe();
     }
 
+    onDelete(binary: Binary) {
+        if (!confirm('确定要删除 ' + version2str(binary.version) + ' 吗?')) {
+            return;
+        }
+        this.san11pkService.deleteBinary(new DeleteBinaryRequest({
+            name: binary.name
+        })).subscribe(
+            empty => {
+                this.notificationService.success('删除成功');
+                this.reload.emit();
+            },
+            error => {
+                this.notificationService.warn('删除失败:' + error.statusMessage);
+            }
+        );
+    }
 
     onOffload(binary: Binary) {
-        if (!confirm('确定要 ' + version2str(binary.version) + ' 的文件资源吗? (只清除资源，版本将会保留)')) {
+        if (!confirm('确定要卸载 ' + version2str(binary.version) + ' 的文件资源吗? (只清除资源，版本将会保留)')) {
             return;
         }
         this.san11pkService.updateBinary(new UpdateBinaryRequest({

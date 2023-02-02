@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from "@angular/material/paginator";
-import { Binary, DeleteBinaryRequest, ListBinariesRequest, ListBinariesResponse, Package, Version as PbVersion } from "../../../../proto/san11-platform.pb";
+import { Binary, ListBinariesRequest, ListBinariesResponse, Package, Version as PbVersion } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 import { BinaryService } from "../../../service/binary-service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
-import { version2str } from "../../../utils/binary_util";
 import { getCategoryId, getPackageUrl } from "../../../utils/package_util";
 import { getAcceptFileType } from "../../../utils/resrouce_util";
 import { isAdmin } from '../../../utils/user_util';
@@ -90,24 +89,6 @@ export class VersionPanelComponent implements OnInit {
         }
       }
     );
-  }
-
-  onDelete(binary: Binary) {
-    if (!confirm('确定要删除 ' + version2str(binary.version) + ' 吗?')) {
-      return;
-    }
-    this.san11pkService.deleteBinary(new DeleteBinaryRequest({
-      name: binary.name
-    })).subscribe(
-      empty => {
-        this.notificationService.success('成功删除');
-        this.loadBinaries();
-      },
-      error => {
-        this.notificationService.warn('删除失败:' + error.statusMessage);
-      }
-    );
-
   }
 
   get hasEditPermission() {
