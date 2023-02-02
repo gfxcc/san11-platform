@@ -9,10 +9,11 @@ from typing import Optional
 
 import boto3
 from google.cloud import storage
+from requests import delete
+
 from handler.common.credentials import get_aws_credentials
 from handler.common.env import Env, get_env
 from handler.common.exception import NotFound
-from requests import delete
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -234,9 +235,15 @@ class S3(FileServer):
         bucket.objects.filter(Prefix=path).delete()
 
     def _get_client(self):
-        return boto3.client('s3', aws_access_key_id=self.creds.access_key_id,
+        # TODO: This is a workaround due to https://github.com/boto/boto3/issues/3015
+        s3 = boto3.client('s3', aws_access_key_id=self.creds.access_key_id,
                             aws_secret_access_key=self.creds.secret_access_key,
                             region_name='ap-east-1', config=boto3.session.Config(s3={'addressing_style': 'virtual'}))
+        endpointUrl = s3.meta.endpoint_url
+        return boto3.client('s3', aws_access_key_id=self.creds.access_key_id,
+                            aws_secret_access_key=self.creds.secret_access_key,
+                            region_name='ap-east-1', config=boto3.session.Config(s3={'addressing_style': 'virtual'}),
+                            endpoint_url=endpointUrl)
 
     def _get_resource(self):
         return boto3.resource('s3', aws_access_key_id=self.creds.access_key_id,
