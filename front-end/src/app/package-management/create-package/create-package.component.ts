@@ -8,11 +8,6 @@ import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
 
-
-
-
-
-
 @Component({
   selector: 'app-create-package',
   templateUrl: './create-package.component.html',
