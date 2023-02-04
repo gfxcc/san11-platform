@@ -6,6 +6,7 @@ import { ListNotificationsRequest, ListNotificationsResponse, Notification, Sign
 import { NotificationService } from '../../../common/notification.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { clearUser, isAdmin, loadUser, signedIn } from '../../../utils/user_util';
+import { SidenavService } from '../sidebar/sidenav.service';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,7 @@ export class HeaderComponent implements OnInit {
     public router: Router,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private sidenav: SidenavService,
   ) {
 
   }
@@ -82,6 +84,11 @@ export class HeaderComponent implements OnInit {
     })).subscribe();
   }
 
+  onClickIcon() {
+    this.sidenav.open();
+    this.router.navigate(['/']);
+  }
+
   openNotification(notification: Notification, index: number) {
     this.markReaded(notification)
     openInNewTab(this.router, notification.link)
@@ -105,6 +112,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onSettings() {
+    this.sidenav.close();
     this.router.navigate(['settings']);
   }
 
