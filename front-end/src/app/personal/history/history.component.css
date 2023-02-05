@@ -1,0 +1,18 @@
+.custom-marker {
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.alternate-align-card {
+    display: block !important;
+}
+
+::ng-deep .alternate-align-card>.mat-card-header {
+    display: initial !important;
+}

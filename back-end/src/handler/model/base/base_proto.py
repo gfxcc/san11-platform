@@ -6,7 +6,7 @@ import os
 from abc import ABC
 from typing import Any, Callable, Generic, Iterable, TypeVar
 
-import attr
+import attrs
 from google.protobuf import descriptor, message, timestamp_pb2
 
 from ...util.time_util import datetime_to_str, get_age, get_now
@@ -68,7 +68,7 @@ class LegacyDatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_p
         return get_age(value)
 
 
-@attr.define
+@attrs.define
 class NestedProtoConverter(ProtoConverter):
     from_model_exec: Callable[[Any], Any] = lambda x: x
     to_model_exec: Callable[[Any], Any] = lambda x: x
@@ -84,7 +84,7 @@ def build_nested_converter(cls: type):
     return NestedProtoConverter(from_model_exec=lambda v: v.to_pb(), to_model_exec=cls.from_pb)
 
 
-@attr.s(auto_attribs=True)
+@attrs.define(auto_attribs=True)
 class ProtoField:
     name: str
     converter: ProtoConverter
@@ -93,7 +93,7 @@ class ProtoField:
 
 class ProtoModelBase(ABC):
     _PROTO_CLASS: type
-    _PROTO_FIELDS: Iterable[attr.Attribute] = []
+    _PROTO_FIELDS: Iterable[attrs.Attribute] = []
 
     @classmethod
     def from_pb(cls, proto_model: message.Message) -> _SUB_PROTO_MODEL_BASE_T:
@@ -101,7 +101,7 @@ class ProtoModelBase(ABC):
         Construct a data model from its protobuf message representation.
         '''
         properties = {}
-        for attribute in attr.fields(cls):
+        for attribute in attrs.fields(cls):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
                 # None proto field still needs to be set to initiazlie the
                 # model properly.
@@ -119,7 +119,7 @@ class ProtoModelBase(ABC):
         Returns the data model's protobuf representation.
         '''
         proto_model = self._PROTO_CLASS()
-        for attribute in attr.fields(type(self)):
+        for attribute in attrs.fields(type(self)):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
                 continue
             model_value = getattr(self, attribute.name)
@@ -151,18 +151,18 @@ class ProtoModelBase(ABC):
 
 def init_proto_model(cls: type, proto_class) -> None:
     cls._PROTO_CLASS = proto_class
-    for attribute in attr.fields(cls):
+    for attribute in attrs.fields(cls):
         if not attribute.metadata[base_core.IS_PROTO_FIELD]:
             continue
 
 
-def _attribute_pb_converter(attribute: attr.Attribute) -> ProtoConverter:
+def _attribute_pb_converter(attribute: attrs.Attribute) -> ProtoConverter:
     converter: ProtoConverter = attribute.metadata.get(
         base_core.PROTO_CONVERTER)
     return converter or PassThroughConverter()
 
 
-def _attribute_from_pb(attribute: attr.Attribute, proto_value: Any) -> Any:
+def _attribute_from_pb(attribute: attrs.Attribute, proto_value: Any) -> Any:
     converter = _attribute_pb_converter(attribute)
 
     if base_core.is_repeated(attribute):
@@ -172,7 +172,7 @@ def _attribute_from_pb(attribute: attr.Attribute, proto_value: Any) -> Any:
         return converter.to_model(proto_value)
 
 
-def _attribute_to_proto(attribute: attr.Attribute, model_value: Any) -> Any:
+def _attribute_to_proto(attribute: attrs.Attribute, model_value: Any) -> Any:
     converter: ProtoConverter = _attribute_pb_converter(attribute)
     if attribute.metadata[base_core.REPEATED]:
         ret = [converter.from_model(v) for v in model_value]
@@ -196,9 +196,9 @@ def _set_by_path(proto: message.Message, path: str, proto_value: Any) -> None:
     pass
 
 
-def _get_proto_path(attribute: attr.Attribute) -> str:
+def _get_proto_path(attribute: attrs.Attribute) -> str:
     return attribute.metadata.get(base_core.PROTO_PATH, attribute.name)
 
 
-def _is_proto_field(attribute: attr.Attribute) -> bool:
+def _is_proto_field(attribute: attrs.Attribute) -> bool:
     return attribute.metadata[base_core.IS_PROTO_FIELD]

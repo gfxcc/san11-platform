@@ -48,7 +48,7 @@ In most case, a resource could exists in 3 differnt layers.
 @InitModel(
     ...
 )
-@attr.s
+@attrs.define
 class MyModel(ModelBase):
     first_attr = Attrib(
         ...
@@ -75,14 +75,15 @@ from abc import ABC
 from copy import deepcopy
 from typing import List, Optional, Tuple, Type, TypeVar
 
-import attr
+import attrs
 
 from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
 # Export sections
-from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
-                   NestedAttrib, StrAttrib)
+from .base import (Attrib, BoolAttrib, BoolListAttrib, DatetimeAttrib,
+                   DatetimeListAttrib, InitModel, IntAttrib, IntListAttrib,
+                   NestedAttrib, StrAttrib, StrListAttrib)
 from .base_core import is_repeated
 from .base_db import DbConverter  # noqa
 from .base_proto import DatetimeProtoConverter  # noqa
@@ -161,7 +162,7 @@ def merge_resource(base_resource: _SUB_MODEL_BASE_T,
     if isinstance(base_resource, ModelBase) and isinstance(update_request, ModelBase):
         updated_resource = deepcopy(base_resource)
         for path in field_mask.paths:
-            if is_repeated(attr.fields_dict(type(base_resource))[path]):
+            if is_repeated(attrs.fields_dict(type(base_resource))[path]):
                 getattr(updated_resource, path)[
                     :] = getattr(update_request, path)
             else:

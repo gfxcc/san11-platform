@@ -1,9 +1,9 @@
-from __future__ import annotations
-
 import datetime
 
-import attr
-from handler.model.base import Attrib, InitModel, ModelBase
+import attrs
+
+from handler.model.base import (Attrib, DatetimeAttrib, InitModel, IntAttrib,
+                                ModelBase, StrAttrib)
 from handler.model.model_activity import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
@@ -13,29 +13,17 @@ from ..protos import san11_platform_pb2 as pb
     db_table='replies',
     proto_class=pb.Reply,
 )
-@attr.s
+@attrs.define
 class ModelReply(ModelBase, TrackLifecycle):
     # Resource name. It is `{parent}/replies/{resource_id}/`
     # E.g. `categories/123/packages/456/comments/789/replies/234`
-    name = Attrib(
-        type=str,
-    )
-    author_id = Attrib(
-        type=int,
-    )
-    text = Attrib(
-        type=str,
-    )
-    create_time = Attrib(
-        type=datetime.datetime,
-    )
-    update_time = Attrib(
-        type=datetime.datetime,
-    )
-    upvote_count = Attrib(
-        type=int,
-    )
+    name: str = StrAttrib()
+    author_id: int = IntAttrib()
+    text: str = StrAttrib()
+    create_time: datetime.datetime = DatetimeAttrib()
+    update_time: datetime.datetime = DatetimeAttrib()
+    upvote_count: int = IntAttrib()
 
     @classmethod
-    def from_name(cls, name: str) -> ModelReply:
+    def from_name(cls, name: str) -> 'ModelReply':
         return super().from_name(name)

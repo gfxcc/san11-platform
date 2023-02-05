@@ -1148,108 +1148,108 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UnSubscribe
+     * Unary RPC for /routeguide.RouteGuide/CreateLegacySubscription
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.LegacySubscription>>
+     */
+    createLegacySubscription: (
+      requestData: thisProto.CreateLegacySubscriptionRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.LegacySubscription>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/CreateLegacySubscription',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.CreateLegacySubscriptionRequest,
+        responseClass: thisProto.LegacySubscription
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/ListLegacySubscriptioins
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ListLegacySubscriptionsResponse>>
+     */
+    listLegacySubscriptioins: (
+      requestData: thisProto.ListLegacySubscriptionsRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ListLegacySubscriptionsResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ListLegacySubscriptioins',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ListLegacySubscriptionsRequest,
+        responseClass: thisProto.ListLegacySubscriptionsResponse
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UpdateLegacySubscription
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.LegacySubscription>>
+     */
+    updateLegacySubscription: (
+      requestData: thisProto.UpdateLegacySubscriptionRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.LegacySubscription>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/UpdateLegacySubscription',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateLegacySubscriptionRequest,
+        responseClass: thisProto.LegacySubscription
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/DeleteLegacySubscription
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.LegacySubscription>>
+     */
+    deleteLegacySubscription: (
+      requestData: thisProto.DeleteLegacySubscriptionRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.LegacySubscription>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/DeleteLegacySubscription',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.DeleteLegacySubscriptionRequest,
+        responseClass: thisProto.LegacySubscription
+      });
+    },
+    /**
+     * Unary RPC for /routeguide.RouteGuide/UnLegacySubscribe
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
      * @returns Observable<GrpcEvent<thisProto.Status>>
      */
-    unSubscribe: (
-      requestData: thisProto.UnSubscribeRequest,
+    unLegacySubscribe: (
+      requestData: thisProto.UnLegacySubscribeRequest,
       requestMetadata = new GrpcMetadata()
     ): Observable<GrpcEvent<thisProto.Status>> => {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UnSubscribe',
+        path: '/routeguide.RouteGuide/UnLegacySubscribe',
         requestData,
         requestMetadata,
-        requestClass: thisProto.UnSubscribeRequest,
+        requestClass: thisProto.UnLegacySubscribeRequest,
         responseClass: thisProto.Status
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/CreateCollection
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Collection>>
-     */
-    createCollection: (
-      requestData: thisProto.CreateCollectionRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Collection>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/CreateCollection',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.CreateCollectionRequest,
-        responseClass: thisProto.Collection
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/ListCollections
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.ListCollectionsResponse>>
-     */
-    listCollections: (
-      requestData: thisProto.ListCollectionsRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.ListCollectionsResponse>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/ListCollections',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.ListCollectionsRequest,
-        responseClass: thisProto.ListCollectionsResponse
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateCollection
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Collection>>
-     */
-    updateCollection: (
-      requestData: thisProto.UpdateCollectionRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Collection>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/UpdateCollection',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.UpdateCollectionRequest,
-        responseClass: thisProto.Collection
-      });
-    },
-    /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteCollection
-     *
-     * @param requestMessage Request message
-     * @param requestMetadata Request metadata
-     * @returns Observable<GrpcEvent<thisProto.Collection>>
-     */
-    deleteCollection: (
-      requestData: thisProto.DeleteCollectionRequest,
-      requestMetadata = new GrpcMetadata()
-    ): Observable<GrpcEvent<thisProto.Collection>> => {
-      return this.handler.handle({
-        type: GrpcCallType.unary,
-        client: this.client,
-        path: '/routeguide.RouteGuide/DeleteCollection',
-        requestData,
-        requestMetadata,
-        requestClass: thisProto.DeleteCollectionRequest,
-        responseClass: thisProto.Collection
       });
     }
   };
@@ -2111,82 +2111,82 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UnSubscribe
+   * Unary RPC for /routeguide.RouteGuide/CreateLegacySubscription
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.LegacySubscription>
+   */
+  createLegacySubscription(
+    requestData: thisProto.CreateLegacySubscriptionRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.LegacySubscription> {
+    return this.$raw
+      .createLegacySubscription(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/ListLegacySubscriptioins
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ListLegacySubscriptionsResponse>
+   */
+  listLegacySubscriptioins(
+    requestData: thisProto.ListLegacySubscriptionsRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ListLegacySubscriptionsResponse> {
+    return this.$raw
+      .listLegacySubscriptioins(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UpdateLegacySubscription
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.LegacySubscription>
+   */
+  updateLegacySubscription(
+    requestData: thisProto.UpdateLegacySubscriptionRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.LegacySubscription> {
+    return this.$raw
+      .updateLegacySubscription(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/DeleteLegacySubscription
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.LegacySubscription>
+   */
+  deleteLegacySubscription(
+    requestData: thisProto.DeleteLegacySubscriptionRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.LegacySubscription> {
+    return this.$raw
+      .deleteLegacySubscription(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary RPC for /routeguide.RouteGuide/UnLegacySubscribe
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
    * @returns Observable<thisProto.Status>
    */
-  unSubscribe(
-    requestData: thisProto.UnSubscribeRequest,
+  unLegacySubscribe(
+    requestData: thisProto.UnLegacySubscribeRequest,
     requestMetadata = new GrpcMetadata()
   ): Observable<thisProto.Status> {
     return this.$raw
-      .unSubscribe(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/CreateCollection
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Collection>
-   */
-  createCollection(
-    requestData: thisProto.CreateCollectionRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Collection> {
-    return this.$raw
-      .createCollection(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/ListCollections
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.ListCollectionsResponse>
-   */
-  listCollections(
-    requestData: thisProto.ListCollectionsRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.ListCollectionsResponse> {
-    return this.$raw
-      .listCollections(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateCollection
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Collection>
-   */
-  updateCollection(
-    requestData: thisProto.UpdateCollectionRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Collection> {
-    return this.$raw
-      .updateCollection(requestData, requestMetadata)
-      .pipe(throwStatusErrors(), takeMessages());
-  }
-
-  /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteCollection
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<thisProto.Collection>
-   */
-  deleteCollection(
-    requestData: thisProto.DeleteCollectionRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<thisProto.Collection> {
-    return this.$raw
-      .deleteCollection(requestData, requestMetadata)
+      .unLegacySubscribe(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

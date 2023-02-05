@@ -7,7 +7,7 @@ from handler.handler_context import HandlerContext
 from handler.model.base import (MAX_PAGE_SIZE, FieldMask, HandlerBase,
                                 ListOptions, merge_resource)
 from handler.model.model_binary import File, ModelBinary
-from handler.model.model_subscription import ModelSubscription
+from handler.model.model_legacy_subscription import ModelLegacySubscription
 from handler.model.model_user import ModelUser
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.file_server import (PACKAGE_SIZE_LIMIT, S3, BucketClass,
@@ -113,7 +113,7 @@ def _notify_subscribed_users(package: ModelPackage, binary: ModelBinary):
     Notify subscribied users a new version of the package is released.
     '''
     author = ModelUser.from_name(f'users/{package.author_id}')
-    for sub in ModelSubscription.list(ListOptions(parent=author.name, page_size=MAX_PAGE_SIZE))[0]:
+    for sub in ModelLegacySubscription.list(ListOptions(parent=author.name, page_size=MAX_PAGE_SIZE))[0]:
         subscriber = ModelUser.from_name(f'users/{sub.subscriber_id}')
         if not subscriber.settings.notification.subscriptions:
             continue

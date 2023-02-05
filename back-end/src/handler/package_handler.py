@@ -12,8 +12,8 @@ from handler.model.base import (Context, FieldMask, HandlerBase, ModelBase,
 from handler.model.base.base_db import ListOptions
 from handler.model.model_activity import ModelActivity, search_activity
 from handler.model.model_binary import ModelBinary
+from handler.model.model_legacy_subscription import ModelLegacySubscription
 from handler.model.model_package import ModelPackage
-from handler.model.model_subscription import ModelSubscription
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser, get_admins
 from handler.util.file_server import (BucketClass, FileServerType,
@@ -151,7 +151,7 @@ class PackageHandler(HandlerBase):
         author = ModelUser.from_name(f'users/{package.author_id}')
         view = ResourceViewVisitor().visit(package)
         if on_approve(base_package.state, update_package.state):
-            for sub in ModelSubscription.list(ListOptions(parent=author.name))[0]:
+            for sub in ModelLegacySubscription.list(ListOptions(parent=author.name))[0]:
                 notify(
                     sender_id=author.user_id,
                     receiver_id=sub.subscriber_id,

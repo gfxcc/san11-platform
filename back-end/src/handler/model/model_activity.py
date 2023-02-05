@@ -1,8 +1,8 @@
 import datetime
 from enum import Enum
-from typing import Optional
+from typing import Mapping, Optional
 
-import attr
+import attrs
 
 from ..protos import san11_platform_pb2 as pb
 from ..util.time_util import get_now
@@ -45,7 +45,7 @@ class Action(Enum):
     db_table='activities',
     proto_class=pb.Activity,
 )
-@attr.s
+@attrs.define
 class ModelActivity(base_db.DbModel, base_proto.ProtoModelBase):
     # Resource name. It is `{parent}/activities/{resource_id}`
     # E.g. `activities/12345`
@@ -53,15 +53,6 @@ class ModelActivity(base_db.DbModel, base_proto.ProtoModelBase):
     create_time: datetime.datetime = DatetimeAttrib()
     action: int = IntAttrib()
     resource_name: str = StrAttrib(is_proto_field=False)
-
-    @classmethod
-    def from_v1(cls, legacy_model):
-        return cls(
-            name='',
-            create_time=legacy_model.create_time,
-            action=legacy_model.action.value,
-            resource_name=legacy_model.resource_name,
-        )
 
 
 def search_activity(parent: str, action: Action, resource_name: str) -> Optional[ModelActivity]:

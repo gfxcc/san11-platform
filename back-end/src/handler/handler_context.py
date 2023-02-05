@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-import attr
+import attrs
 import grpc
 
 from handler.auths.session import Session
@@ -11,7 +11,7 @@ from handler.common.exception import NotFound, Unauthenticated
 from .model.model_user import ModelUser
 
 
-@attr.s(auto_attribs=True)
+@attrs.define(auto_attribs=True)
 class HandlerContext:
     user: ModelUser
     service_context: Optional[grpc.ServicerContext]

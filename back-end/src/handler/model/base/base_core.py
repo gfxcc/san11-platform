@@ -1,4 +1,4 @@
-import attr
+import attrs
 
 # For Attrib
 IS_PROTO_FIELD = 'PROTO_MODEL_DB__IS_PROTO_FIELD'
@@ -11,5 +11,5 @@ REPEATED = 'PROTO_MODEL_DB__REPEATED'
 NESTED_TYPE = 'PROTO_MODEL_DB__NESTED_TYPE'
 
 
-def is_repeated(attribute: attr.Attribute) -> bool:
+def is_repeated(attribute: attrs.Attribute) -> bool:
     return attribute.metadata[REPEATED]

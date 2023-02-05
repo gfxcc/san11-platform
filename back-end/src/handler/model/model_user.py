@@ -1,14 +1,11 @@
-from __future__ import annotations
-
 import datetime
 import re
 from dataclasses import dataclass
 from dis import dis
 from typing import Iterable, List, Tuple, Union
 
-import attr
+import attrs
 from google.protobuf import message
-from plugins.subscribable import Subscribable
 
 from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
 from handler.model.base import ListOptions
@@ -54,7 +51,7 @@ class EmailDbConverter(DbConverter):
     db_table=None,
     proto_class=pb.UserSettings.NotificationSetting
 )
-@attr.s
+@attrs.define
 class NotificationSettings(NestedModel):
     send_emails: bool = BoolAttrib()
     subscriptions: bool = BoolAttrib()
@@ -69,7 +66,7 @@ class NotificationSettings(NestedModel):
     db_table=None,
     proto_class=pb.UserSettings
 )
-@attr.s
+@attrs.define
 class UserSettings(NestedModel):
     notification: NotificationSettings = NestedAttrib(
         nested_type=NotificationSettings
@@ -80,8 +77,8 @@ class UserSettings(NestedModel):
     db_table='users',
     proto_class=pb.User,
 )
-@attr.s
-class ModelUser(ModelBase, TrackLifecycle, Subscribable):
+@attrs.define
+class ModelUser(ModelBase, TrackLifecycle):
     # Resource name. It is `{parent}/users/{user_id}`
     # E.g. `users/12345`
     name: str = StrAttrib()
@@ -94,7 +91,7 @@ class ModelUser(ModelBase, TrackLifecycle, Subscribable):
     image_url: str = StrAttrib()
     website: str = StrAttrib()
     hashed_password: str = StrAttrib(is_proto_field=False)
-    # subscriber_count: int = IntAttrib()
+    subscriber_count: int = IntAttrib()
     create_time: datetime.datetime = DatetimeAttrib()
     update_time: datetime.datetime = DatetimeAttrib()
     settings: UserSettings = NestedAttrib(
@@ -108,15 +105,15 @@ class ModelUser(ModelBase, TrackLifecycle, Subscribable):
         return ret
 
     @classmethod
-    def from_pb(cls, proto_model: message.Message) -> ModelUser:
+    def from_pb(cls, proto_model: message.Message) -> 'ModelUser':
         return super().from_pb(proto_model)
 
     @classmethod
-    def from_name(cls, name: str) -> ModelUser:
+    def from_name(cls, name: str) -> 'ModelUser':
         return super().from_name(name)
 
     @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List[ModelUser], str]:
+    def list(cls, list_options: ListOptions) -> Tuple[List['ModelUser'], str]:
         return super().list(list_options)
 
     def is_admin(self) -> bool:

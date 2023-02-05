@@ -29,7 +29,8 @@ export enum Action {
   UPVOTE = 12,
   SUBSCRIBE = 13,
   DISLIKE = 14,
-  DOWNLOAD = 21
+  DOWNLOAD = 21,
+  COLLECT = 22
 }
 /**
  * Message implementation for routeguide.CreatePackageRequest
@@ -11992,18 +11993,18 @@ export module DeleteSubscriptionRequest {
 }
 
 /**
- * Message implementation for routeguide.UnSubscribeRequest
+ * Message implementation for routeguide.CreateLegacySubscriptionRequest
  */
-export class UnSubscribeRequest implements GrpcMessage {
-  static id = 'routeguide.UnSubscribeRequest';
+export class CreateLegacySubscriptionRequest implements GrpcMessage {
+  static id = 'routeguide.CreateLegacySubscriptionRequest';
 
   /**
    * Deserialize binary data to message
    * @param instance message instance
    */
   static deserializeBinary(bytes: ByteSource) {
-    const instance = new UnSubscribeRequest();
-    UnSubscribeRequest.deserializeBinaryFromReader(
+    const instance = new CreateLegacySubscriptionRequest();
+    CreateLegacySubscriptionRequest.deserializeBinaryFromReader(
       instance,
       new BinaryReader(bytes)
     );
@@ -12014,167 +12015,9 @@ export class UnSubscribeRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: UnSubscribeRequest) {
-    _instance.subscribedResource = _instance.subscribedResource || '';
-    _instance.subscriberId = _instance.subscriberId || '0';
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(
-    _instance: UnSubscribeRequest,
-    _reader: BinaryReader
-  ) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.subscribedResource = _reader.readString();
-          break;
-        case 2:
-          _instance.subscriberId = _reader.readInt64String();
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    UnSubscribeRequest.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(
-    _instance: UnSubscribeRequest,
-    _writer: BinaryWriter
-  ) {
-    if (_instance.subscribedResource) {
-      _writer.writeString(1, _instance.subscribedResource);
-    }
-    if (_instance.subscriberId) {
-      _writer.writeInt64String(2, _instance.subscriberId);
-    }
-  }
-
-  private _subscribedResource?: string;
-  private _subscriberId?: string;
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of UnSubscribeRequest to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<UnSubscribeRequest.AsObject>) {
-    _value = _value || {};
-    this.subscribedResource = _value.subscribedResource;
-    this.subscriberId = _value.subscriberId;
-    UnSubscribeRequest.refineValues(this);
-  }
-  get subscribedResource(): string | undefined {
-    return this._subscribedResource;
-  }
-  set subscribedResource(value: string | undefined) {
-    this._subscribedResource = value;
-  }
-  get subscriberId(): string | undefined {
-    return this._subscriberId;
-  }
-  set subscriberId(value: string | undefined) {
-    this._subscriberId = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    UnSubscribeRequest.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): UnSubscribeRequest.AsObject {
-    return {
-      subscribedResource: this.subscribedResource,
-      subscriberId: this.subscriberId
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): UnSubscribeRequest.AsProtobufJSON {
-    return {
-      subscribedResource: this.subscribedResource,
-      subscriberId: this.subscriberId
-    };
-  }
-}
-export module UnSubscribeRequest {
-  /**
-   * Standard JavaScript object representation for UnSubscribeRequest
-   */
-  export interface AsObject {
-    subscribedResource?: string;
-    subscriberId?: string;
-  }
-
-  /**
-   * Protobuf JSON representation for UnSubscribeRequest
-   */
-  export interface AsProtobufJSON {
-    subscribedResource?: string;
-    subscriberId?: string;
-  }
-}
-
-/**
- * Message implementation for routeguide.CreateCollectionRequest
- */
-export class CreateCollectionRequest implements GrpcMessage {
-  static id = 'routeguide.CreateCollectionRequest';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new CreateCollectionRequest();
-    CreateCollectionRequest.deserializeBinaryFromReader(
-      instance,
-      new BinaryReader(bytes)
-    );
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: CreateCollectionRequest) {
+  static refineValues(_instance: CreateLegacySubscriptionRequest) {
     _instance.parent = _instance.parent || '';
-    _instance.collection = _instance.collection || undefined;
+    _instance.subscription = _instance.subscription || undefined;
   }
 
   /**
@@ -12183,7 +12026,7 @@ export class CreateCollectionRequest implements GrpcMessage {
    * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    _instance: CreateCollectionRequest,
+    _instance: CreateLegacySubscriptionRequest,
     _reader: BinaryReader
   ) {
     while (_reader.nextField()) {
@@ -12194,10 +12037,10 @@ export class CreateCollectionRequest implements GrpcMessage {
           _instance.parent = _reader.readString();
           break;
         case 2:
-          _instance.collection = new Collection();
+          _instance.subscription = new Subscription();
           _reader.readMessage(
-            _instance.collection,
-            Collection.deserializeBinaryFromReader
+            _instance.subscription,
+            Subscription.deserializeBinaryFromReader
           );
           break;
         default:
@@ -12205,7 +12048,7 @@ export class CreateCollectionRequest implements GrpcMessage {
       }
     }
 
-    CreateCollectionRequest.refineValues(_instance);
+    CreateLegacySubscriptionRequest.refineValues(_instance);
   }
 
   /**
@@ -12214,35 +12057,37 @@ export class CreateCollectionRequest implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(
-    _instance: CreateCollectionRequest,
+    _instance: CreateLegacySubscriptionRequest,
     _writer: BinaryWriter
   ) {
     if (_instance.parent) {
       _writer.writeString(1, _instance.parent);
     }
-    if (_instance.collection) {
+    if (_instance.subscription) {
       _writer.writeMessage(
         2,
-        _instance.collection as any,
-        Collection.serializeBinaryToWriter
+        _instance.subscription as any,
+        Subscription.serializeBinaryToWriter
       );
     }
   }
 
   private _parent?: string;
-  private _collection?: Collection;
+  private _subscription?: Subscription;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of CreateCollectionRequest to deeply clone from
+   * @param _value initial values object or instance of CreateLegacySubscriptionRequest to deeply clone from
    */
-  constructor(_value?: RecursivePartial<CreateCollectionRequest.AsObject>) {
+  constructor(
+    _value?: RecursivePartial<CreateLegacySubscriptionRequest.AsObject>
+  ) {
     _value = _value || {};
     this.parent = _value.parent;
-    this.collection = _value.collection
-      ? new Collection(_value.collection)
+    this.subscription = _value.subscription
+      ? new Subscription(_value.subscription)
       : undefined;
-    CreateCollectionRequest.refineValues(this);
+    CreateLegacySubscriptionRequest.refineValues(this);
   }
   get parent(): string | undefined {
     return this._parent;
@@ -12250,11 +12095,11 @@ export class CreateCollectionRequest implements GrpcMessage {
   set parent(value: string | undefined) {
     this._parent = value;
   }
-  get collection(): Collection | undefined {
-    return this._collection;
+  get subscription(): Subscription | undefined {
+    return this._subscription;
   }
-  set collection(value: Collection | undefined) {
-    this._collection = value;
+  set subscription(value: Subscription | undefined) {
+    this._subscription = value;
   }
 
   /**
@@ -12263,17 +12108,17 @@ export class CreateCollectionRequest implements GrpcMessage {
    */
   serializeBinary() {
     const writer = new BinaryWriter();
-    CreateCollectionRequest.serializeBinaryToWriter(this, writer);
+    CreateLegacySubscriptionRequest.serializeBinaryToWriter(this, writer);
     return writer.getResultBuffer();
   }
 
   /**
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
-  toObject(): CreateCollectionRequest.AsObject {
+  toObject(): CreateLegacySubscriptionRequest.AsObject {
     return {
       parent: this.parent,
-      collection: this.collection ? this.collection.toObject() : undefined
+      subscription: this.subscription ? this.subscription.toObject() : undefined
     };
   }
 
@@ -12292,46 +12137,46 @@ export class CreateCollectionRequest implements GrpcMessage {
   toProtobufJSON(
     // @ts-ignore
     options?: ToProtobufJSONOptions
-  ): CreateCollectionRequest.AsProtobufJSON {
+  ): CreateLegacySubscriptionRequest.AsProtobufJSON {
     return {
       parent: this.parent,
-      collection: this.collection
-        ? this.collection.toProtobufJSON(options)
+      subscription: this.subscription
+        ? this.subscription.toProtobufJSON(options)
         : null
     };
   }
 }
-export module CreateCollectionRequest {
+export module CreateLegacySubscriptionRequest {
   /**
-   * Standard JavaScript object representation for CreateCollectionRequest
+   * Standard JavaScript object representation for CreateLegacySubscriptionRequest
    */
   export interface AsObject {
     parent?: string;
-    collection?: Collection.AsObject;
+    subscription?: Subscription.AsObject;
   }
 
   /**
-   * Protobuf JSON representation for CreateCollectionRequest
+   * Protobuf JSON representation for CreateLegacySubscriptionRequest
    */
   export interface AsProtobufJSON {
     parent?: string;
-    collection?: Collection.AsProtobufJSON | null;
+    subscription?: Subscription.AsProtobufJSON | null;
   }
 }
 
 /**
- * Message implementation for routeguide.ListCollectionsRequest
+ * Message implementation for routeguide.ListLegacySubscriptionsRequest
  */
-export class ListCollectionsRequest implements GrpcMessage {
-  static id = 'routeguide.ListCollectionsRequest';
+export class ListLegacySubscriptionsRequest implements GrpcMessage {
+  static id = 'routeguide.ListLegacySubscriptionsRequest';
 
   /**
    * Deserialize binary data to message
    * @param instance message instance
    */
   static deserializeBinary(bytes: ByteSource) {
-    const instance = new ListCollectionsRequest();
-    ListCollectionsRequest.deserializeBinaryFromReader(
+    const instance = new ListLegacySubscriptionsRequest();
+    ListLegacySubscriptionsRequest.deserializeBinaryFromReader(
       instance,
       new BinaryReader(bytes)
     );
@@ -12342,7 +12187,7 @@ export class ListCollectionsRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: ListCollectionsRequest) {
+  static refineValues(_instance: ListLegacySubscriptionsRequest) {
     _instance.parent = _instance.parent || '';
     _instance.pageSize = _instance.pageSize || '0';
     _instance.pageToken = _instance.pageToken || '';
@@ -12356,7 +12201,7 @@ export class ListCollectionsRequest implements GrpcMessage {
    * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    _instance: ListCollectionsRequest,
+    _instance: ListLegacySubscriptionsRequest,
     _reader: BinaryReader
   ) {
     while (_reader.nextField()) {
@@ -12383,7 +12228,7 @@ export class ListCollectionsRequest implements GrpcMessage {
       }
     }
 
-    ListCollectionsRequest.refineValues(_instance);
+    ListLegacySubscriptionsRequest.refineValues(_instance);
   }
 
   /**
@@ -12392,7 +12237,7 @@ export class ListCollectionsRequest implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(
-    _instance: ListCollectionsRequest,
+    _instance: ListLegacySubscriptionsRequest,
     _writer: BinaryWriter
   ) {
     if (_instance.parent) {
@@ -12420,16 +12265,18 @@ export class ListCollectionsRequest implements GrpcMessage {
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of ListCollectionsRequest to deeply clone from
+   * @param _value initial values object or instance of ListLegacySubscriptionsRequest to deeply clone from
    */
-  constructor(_value?: RecursivePartial<ListCollectionsRequest.AsObject>) {
+  constructor(
+    _value?: RecursivePartial<ListLegacySubscriptionsRequest.AsObject>
+  ) {
     _value = _value || {};
     this.parent = _value.parent;
     this.pageSize = _value.pageSize;
     this.pageToken = _value.pageToken;
     this.orderBy = _value.orderBy;
     this.filter = _value.filter;
-    ListCollectionsRequest.refineValues(this);
+    ListLegacySubscriptionsRequest.refineValues(this);
   }
   get parent(): string | undefined {
     return this._parent;
@@ -12468,14 +12315,14 @@ export class ListCollectionsRequest implements GrpcMessage {
    */
   serializeBinary() {
     const writer = new BinaryWriter();
-    ListCollectionsRequest.serializeBinaryToWriter(this, writer);
+    ListLegacySubscriptionsRequest.serializeBinaryToWriter(this, writer);
     return writer.getResultBuffer();
   }
 
   /**
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
-  toObject(): ListCollectionsRequest.AsObject {
+  toObject(): ListLegacySubscriptionsRequest.AsObject {
     return {
       parent: this.parent,
       pageSize: this.pageSize,
@@ -12500,7 +12347,7 @@ export class ListCollectionsRequest implements GrpcMessage {
   toProtobufJSON(
     // @ts-ignore
     options?: ToProtobufJSONOptions
-  ): ListCollectionsRequest.AsProtobufJSON {
+  ): ListLegacySubscriptionsRequest.AsProtobufJSON {
     return {
       parent: this.parent,
       pageSize: this.pageSize,
@@ -12510,9 +12357,9 @@ export class ListCollectionsRequest implements GrpcMessage {
     };
   }
 }
-export module ListCollectionsRequest {
+export module ListLegacySubscriptionsRequest {
   /**
-   * Standard JavaScript object representation for ListCollectionsRequest
+   * Standard JavaScript object representation for ListLegacySubscriptionsRequest
    */
   export interface AsObject {
     parent?: string;
@@ -12523,7 +12370,7 @@ export module ListCollectionsRequest {
   }
 
   /**
-   * Protobuf JSON representation for ListCollectionsRequest
+   * Protobuf JSON representation for ListLegacySubscriptionsRequest
    */
   export interface AsProtobufJSON {
     parent?: string;
@@ -12535,18 +12382,18 @@ export module ListCollectionsRequest {
 }
 
 /**
- * Message implementation for routeguide.ListCollectionsResponse
+ * Message implementation for routeguide.ListLegacySubscriptionsResponse
  */
-export class ListCollectionsResponse implements GrpcMessage {
-  static id = 'routeguide.ListCollectionsResponse';
+export class ListLegacySubscriptionsResponse implements GrpcMessage {
+  static id = 'routeguide.ListLegacySubscriptionsResponse';
 
   /**
    * Deserialize binary data to message
    * @param instance message instance
    */
   static deserializeBinary(bytes: ByteSource) {
-    const instance = new ListCollectionsResponse();
-    ListCollectionsResponse.deserializeBinaryFromReader(
+    const instance = new ListLegacySubscriptionsResponse();
+    ListLegacySubscriptionsResponse.deserializeBinaryFromReader(
       instance,
       new BinaryReader(bytes)
     );
@@ -12557,8 +12404,8 @@ export class ListCollectionsResponse implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: ListCollectionsResponse) {
-    _instance.collections = _instance.collections || [];
+  static refineValues(_instance: ListLegacySubscriptionsResponse) {
+    _instance.subscriptions = _instance.subscriptions || [];
     _instance.nextPageToken = _instance.nextPageToken || '';
   }
 
@@ -12568,7 +12415,7 @@ export class ListCollectionsResponse implements GrpcMessage {
    * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    _instance: ListCollectionsResponse,
+    _instance: ListLegacySubscriptionsResponse,
     _reader: BinaryReader
   ) {
     while (_reader.nextField()) {
@@ -12576,12 +12423,12 @@ export class ListCollectionsResponse implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          const messageInitializer1 = new Collection();
+          const messageInitializer1 = new LegacySubscription();
           _reader.readMessage(
             messageInitializer1,
-            Collection.deserializeBinaryFromReader
+            LegacySubscription.deserializeBinaryFromReader
           );
-          (_instance.collections = _instance.collections || []).push(
+          (_instance.subscriptions = _instance.subscriptions || []).push(
             messageInitializer1
           );
           break;
@@ -12593,7 +12440,7 @@ export class ListCollectionsResponse implements GrpcMessage {
       }
     }
 
-    ListCollectionsResponse.refineValues(_instance);
+    ListLegacySubscriptionsResponse.refineValues(_instance);
   }
 
   /**
@@ -12602,14 +12449,14 @@ export class ListCollectionsResponse implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(
-    _instance: ListCollectionsResponse,
+    _instance: ListLegacySubscriptionsResponse,
     _writer: BinaryWriter
   ) {
-    if (_instance.collections && _instance.collections.length) {
+    if (_instance.subscriptions && _instance.subscriptions.length) {
       _writer.writeRepeatedMessage(
         1,
-        _instance.collections as any,
-        Collection.serializeBinaryToWriter
+        _instance.subscriptions as any,
+        LegacySubscription.serializeBinaryToWriter
       );
     }
     if (_instance.nextPageToken) {
@@ -12617,24 +12464,28 @@ export class ListCollectionsResponse implements GrpcMessage {
     }
   }
 
-  private _collections?: Collection[];
+  private _subscriptions?: LegacySubscription[];
   private _nextPageToken?: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of ListCollectionsResponse to deeply clone from
+   * @param _value initial values object or instance of ListLegacySubscriptionsResponse to deeply clone from
    */
-  constructor(_value?: RecursivePartial<ListCollectionsResponse.AsObject>) {
+  constructor(
+    _value?: RecursivePartial<ListLegacySubscriptionsResponse.AsObject>
+  ) {
     _value = _value || {};
-    this.collections = (_value.collections || []).map(m => new Collection(m));
+    this.subscriptions = (_value.subscriptions || []).map(
+      m => new LegacySubscription(m)
+    );
     this.nextPageToken = _value.nextPageToken;
-    ListCollectionsResponse.refineValues(this);
+    ListLegacySubscriptionsResponse.refineValues(this);
   }
-  get collections(): Collection[] | undefined {
-    return this._collections;
+  get subscriptions(): LegacySubscription[] | undefined {
+    return this._subscriptions;
   }
-  set collections(value: Collection[] | undefined) {
-    this._collections = value;
+  set subscriptions(value: LegacySubscription[] | undefined) {
+    this._subscriptions = value;
   }
   get nextPageToken(): string | undefined {
     return this._nextPageToken;
@@ -12649,16 +12500,16 @@ export class ListCollectionsResponse implements GrpcMessage {
    */
   serializeBinary() {
     const writer = new BinaryWriter();
-    ListCollectionsResponse.serializeBinaryToWriter(this, writer);
+    ListLegacySubscriptionsResponse.serializeBinaryToWriter(this, writer);
     return writer.getResultBuffer();
   }
 
   /**
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
-  toObject(): ListCollectionsResponse.AsObject {
+  toObject(): ListLegacySubscriptionsResponse.AsObject {
     return {
-      collections: (this.collections || []).map(m => m.toObject()),
+      subscriptions: (this.subscriptions || []).map(m => m.toObject()),
       nextPageToken: this.nextPageToken
     };
   }
@@ -12678,44 +12529,46 @@ export class ListCollectionsResponse implements GrpcMessage {
   toProtobufJSON(
     // @ts-ignore
     options?: ToProtobufJSONOptions
-  ): ListCollectionsResponse.AsProtobufJSON {
+  ): ListLegacySubscriptionsResponse.AsProtobufJSON {
     return {
-      collections: (this.collections || []).map(m => m.toProtobufJSON(options)),
+      subscriptions: (this.subscriptions || []).map(m =>
+        m.toProtobufJSON(options)
+      ),
       nextPageToken: this.nextPageToken
     };
   }
 }
-export module ListCollectionsResponse {
+export module ListLegacySubscriptionsResponse {
   /**
-   * Standard JavaScript object representation for ListCollectionsResponse
+   * Standard JavaScript object representation for ListLegacySubscriptionsResponse
    */
   export interface AsObject {
-    collections?: Collection.AsObject[];
+    subscriptions?: LegacySubscription.AsObject[];
     nextPageToken?: string;
   }
 
   /**
-   * Protobuf JSON representation for ListCollectionsResponse
+   * Protobuf JSON representation for ListLegacySubscriptionsResponse
    */
   export interface AsProtobufJSON {
-    collections?: Collection.AsProtobufJSON[] | null;
+    subscriptions?: LegacySubscription.AsProtobufJSON[] | null;
     nextPageToken?: string;
   }
 }
 
 /**
- * Message implementation for routeguide.UpdateCollectionRequest
+ * Message implementation for routeguide.UpdateLegacySubscriptionRequest
  */
-export class UpdateCollectionRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateCollectionRequest';
+export class UpdateLegacySubscriptionRequest implements GrpcMessage {
+  static id = 'routeguide.UpdateLegacySubscriptionRequest';
 
   /**
    * Deserialize binary data to message
    * @param instance message instance
    */
   static deserializeBinary(bytes: ByteSource) {
-    const instance = new UpdateCollectionRequest();
-    UpdateCollectionRequest.deserializeBinaryFromReader(
+    const instance = new UpdateLegacySubscriptionRequest();
+    UpdateLegacySubscriptionRequest.deserializeBinaryFromReader(
       instance,
       new BinaryReader(bytes)
     );
@@ -12726,8 +12579,8 @@ export class UpdateCollectionRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: UpdateCollectionRequest) {
-    _instance.collection = _instance.collection || undefined;
+  static refineValues(_instance: UpdateLegacySubscriptionRequest) {
+    _instance.subscription = _instance.subscription || undefined;
     _instance.updateMask = _instance.updateMask || undefined;
   }
 
@@ -12737,7 +12590,7 @@ export class UpdateCollectionRequest implements GrpcMessage {
    * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    _instance: UpdateCollectionRequest,
+    _instance: UpdateLegacySubscriptionRequest,
     _reader: BinaryReader
   ) {
     while (_reader.nextField()) {
@@ -12745,10 +12598,10 @@ export class UpdateCollectionRequest implements GrpcMessage {
 
       switch (_reader.getFieldNumber()) {
         case 1:
-          _instance.collection = new Collection();
+          _instance.subscription = new Subscription();
           _reader.readMessage(
-            _instance.collection,
-            Collection.deserializeBinaryFromReader
+            _instance.subscription,
+            Subscription.deserializeBinaryFromReader
           );
           break;
         case 2:
@@ -12763,7 +12616,7 @@ export class UpdateCollectionRequest implements GrpcMessage {
       }
     }
 
-    UpdateCollectionRequest.refineValues(_instance);
+    UpdateLegacySubscriptionRequest.refineValues(_instance);
   }
 
   /**
@@ -12772,14 +12625,14 @@ export class UpdateCollectionRequest implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(
-    _instance: UpdateCollectionRequest,
+    _instance: UpdateLegacySubscriptionRequest,
     _writer: BinaryWriter
   ) {
-    if (_instance.collection) {
+    if (_instance.subscription) {
       _writer.writeMessage(
         1,
-        _instance.collection as any,
-        Collection.serializeBinaryToWriter
+        _instance.subscription as any,
+        Subscription.serializeBinaryToWriter
       );
     }
     if (_instance.updateMask) {
@@ -12791,28 +12644,30 @@ export class UpdateCollectionRequest implements GrpcMessage {
     }
   }
 
-  private _collection?: Collection;
+  private _subscription?: Subscription;
   private _updateMask?: FieldMask;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of UpdateCollectionRequest to deeply clone from
+   * @param _value initial values object or instance of UpdateLegacySubscriptionRequest to deeply clone from
    */
-  constructor(_value?: RecursivePartial<UpdateCollectionRequest.AsObject>) {
+  constructor(
+    _value?: RecursivePartial<UpdateLegacySubscriptionRequest.AsObject>
+  ) {
     _value = _value || {};
-    this.collection = _value.collection
-      ? new Collection(_value.collection)
+    this.subscription = _value.subscription
+      ? new Subscription(_value.subscription)
       : undefined;
     this.updateMask = _value.updateMask
       ? new FieldMask(_value.updateMask)
       : undefined;
-    UpdateCollectionRequest.refineValues(this);
+    UpdateLegacySubscriptionRequest.refineValues(this);
   }
-  get collection(): Collection | undefined {
-    return this._collection;
+  get subscription(): Subscription | undefined {
+    return this._subscription;
   }
-  set collection(value: Collection | undefined) {
-    this._collection = value;
+  set subscription(value: Subscription | undefined) {
+    this._subscription = value;
   }
   get updateMask(): FieldMask | undefined {
     return this._updateMask;
@@ -12827,16 +12682,18 @@ export class UpdateCollectionRequest implements GrpcMessage {
    */
   serializeBinary() {
     const writer = new BinaryWriter();
-    UpdateCollectionRequest.serializeBinaryToWriter(this, writer);
+    UpdateLegacySubscriptionRequest.serializeBinaryToWriter(this, writer);
     return writer.getResultBuffer();
   }
 
   /**
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
-  toObject(): UpdateCollectionRequest.AsObject {
+  toObject(): UpdateLegacySubscriptionRequest.AsObject {
     return {
-      collection: this.collection ? this.collection.toObject() : undefined,
+      subscription: this.subscription
+        ? this.subscription.toObject()
+        : undefined,
       updateMask: this.updateMask ? this.updateMask.toObject() : undefined
     };
   }
@@ -12856,10 +12713,10 @@ export class UpdateCollectionRequest implements GrpcMessage {
   toProtobufJSON(
     // @ts-ignore
     options?: ToProtobufJSONOptions
-  ): UpdateCollectionRequest.AsProtobufJSON {
+  ): UpdateLegacySubscriptionRequest.AsProtobufJSON {
     return {
-      collection: this.collection
-        ? this.collection.toProtobufJSON(options)
+      subscription: this.subscription
+        ? this.subscription.toProtobufJSON(options)
         : null,
       updateMask: this.updateMask
         ? this.updateMask.toProtobufJSON(options)
@@ -12867,37 +12724,37 @@ export class UpdateCollectionRequest implements GrpcMessage {
     };
   }
 }
-export module UpdateCollectionRequest {
+export module UpdateLegacySubscriptionRequest {
   /**
-   * Standard JavaScript object representation for UpdateCollectionRequest
+   * Standard JavaScript object representation for UpdateLegacySubscriptionRequest
    */
   export interface AsObject {
-    collection?: Collection.AsObject;
+    subscription?: Subscription.AsObject;
     updateMask?: FieldMask.AsObject;
   }
 
   /**
-   * Protobuf JSON representation for UpdateCollectionRequest
+   * Protobuf JSON representation for UpdateLegacySubscriptionRequest
    */
   export interface AsProtobufJSON {
-    collection?: Collection.AsProtobufJSON | null;
+    subscription?: Subscription.AsProtobufJSON | null;
     updateMask?: FieldMask.AsProtobufJSON | null;
   }
 }
 
 /**
- * Message implementation for routeguide.DeleteCollectionRequest
+ * Message implementation for routeguide.DeleteLegacySubscriptionRequest
  */
-export class DeleteCollectionRequest implements GrpcMessage {
-  static id = 'routeguide.DeleteCollectionRequest';
+export class DeleteLegacySubscriptionRequest implements GrpcMessage {
+  static id = 'routeguide.DeleteLegacySubscriptionRequest';
 
   /**
    * Deserialize binary data to message
    * @param instance message instance
    */
   static deserializeBinary(bytes: ByteSource) {
-    const instance = new DeleteCollectionRequest();
-    DeleteCollectionRequest.deserializeBinaryFromReader(
+    const instance = new DeleteLegacySubscriptionRequest();
+    DeleteLegacySubscriptionRequest.deserializeBinaryFromReader(
       instance,
       new BinaryReader(bytes)
     );
@@ -12908,7 +12765,7 @@ export class DeleteCollectionRequest implements GrpcMessage {
    * Check all the properties and set default protobuf values if necessary
    * @param _instance message instance
    */
-  static refineValues(_instance: DeleteCollectionRequest) {
+  static refineValues(_instance: DeleteLegacySubscriptionRequest) {
     _instance.name = _instance.name || '';
   }
 
@@ -12918,7 +12775,7 @@ export class DeleteCollectionRequest implements GrpcMessage {
    * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    _instance: DeleteCollectionRequest,
+    _instance: DeleteLegacySubscriptionRequest,
     _reader: BinaryReader
   ) {
     while (_reader.nextField()) {
@@ -12933,7 +12790,7 @@ export class DeleteCollectionRequest implements GrpcMessage {
       }
     }
 
-    DeleteCollectionRequest.refineValues(_instance);
+    DeleteLegacySubscriptionRequest.refineValues(_instance);
   }
 
   /**
@@ -12942,7 +12799,7 @@ export class DeleteCollectionRequest implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(
-    _instance: DeleteCollectionRequest,
+    _instance: DeleteLegacySubscriptionRequest,
     _writer: BinaryWriter
   ) {
     if (_instance.name) {
@@ -12954,12 +12811,14 @@ export class DeleteCollectionRequest implements GrpcMessage {
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of DeleteCollectionRequest to deeply clone from
+   * @param _value initial values object or instance of DeleteLegacySubscriptionRequest to deeply clone from
    */
-  constructor(_value?: RecursivePartial<DeleteCollectionRequest.AsObject>) {
+  constructor(
+    _value?: RecursivePartial<DeleteLegacySubscriptionRequest.AsObject>
+  ) {
     _value = _value || {};
     this.name = _value.name;
-    DeleteCollectionRequest.refineValues(this);
+    DeleteLegacySubscriptionRequest.refineValues(this);
   }
   get name(): string | undefined {
     return this._name;
@@ -12974,14 +12833,14 @@ export class DeleteCollectionRequest implements GrpcMessage {
    */
   serializeBinary() {
     const writer = new BinaryWriter();
-    DeleteCollectionRequest.serializeBinaryToWriter(this, writer);
+    DeleteLegacySubscriptionRequest.serializeBinaryToWriter(this, writer);
     return writer.getResultBuffer();
   }
 
   /**
    * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
    */
-  toObject(): DeleteCollectionRequest.AsObject {
+  toObject(): DeleteLegacySubscriptionRequest.AsObject {
     return {
       name: this.name
     };
@@ -13002,25 +12861,183 @@ export class DeleteCollectionRequest implements GrpcMessage {
   toProtobufJSON(
     // @ts-ignore
     options?: ToProtobufJSONOptions
-  ): DeleteCollectionRequest.AsProtobufJSON {
+  ): DeleteLegacySubscriptionRequest.AsProtobufJSON {
     return {
       name: this.name
     };
   }
 }
-export module DeleteCollectionRequest {
+export module DeleteLegacySubscriptionRequest {
   /**
-   * Standard JavaScript object representation for DeleteCollectionRequest
+   * Standard JavaScript object representation for DeleteLegacySubscriptionRequest
    */
   export interface AsObject {
     name?: string;
   }
 
   /**
-   * Protobuf JSON representation for DeleteCollectionRequest
+   * Protobuf JSON representation for DeleteLegacySubscriptionRequest
    */
   export interface AsProtobufJSON {
     name?: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.UnLegacySubscribeRequest
+ */
+export class UnLegacySubscribeRequest implements GrpcMessage {
+  static id = 'routeguide.UnLegacySubscribeRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UnLegacySubscribeRequest();
+    UnLegacySubscribeRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UnLegacySubscribeRequest) {
+    _instance.subscribedResource = _instance.subscribedResource || '';
+    _instance.subscriberId = _instance.subscriberId || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UnLegacySubscribeRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.subscribedResource = _reader.readString();
+          break;
+        case 2:
+          _instance.subscriberId = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UnLegacySubscribeRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UnLegacySubscribeRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.subscribedResource) {
+      _writer.writeString(1, _instance.subscribedResource);
+    }
+    if (_instance.subscriberId) {
+      _writer.writeInt64String(2, _instance.subscriberId);
+    }
+  }
+
+  private _subscribedResource?: string;
+  private _subscriberId?: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UnLegacySubscribeRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UnLegacySubscribeRequest.AsObject>) {
+    _value = _value || {};
+    this.subscribedResource = _value.subscribedResource;
+    this.subscriberId = _value.subscriberId;
+    UnLegacySubscribeRequest.refineValues(this);
+  }
+  get subscribedResource(): string | undefined {
+    return this._subscribedResource;
+  }
+  set subscribedResource(value: string | undefined) {
+    this._subscribedResource = value;
+  }
+  get subscriberId(): string | undefined {
+    return this._subscriberId;
+  }
+  set subscriberId(value: string | undefined) {
+    this._subscriberId = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UnLegacySubscribeRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UnLegacySubscribeRequest.AsObject {
+    return {
+      subscribedResource: this.subscribedResource,
+      subscriberId: this.subscriberId
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UnLegacySubscribeRequest.AsProtobufJSON {
+    return {
+      subscribedResource: this.subscribedResource,
+      subscriberId: this.subscriberId
+    };
+  }
+}
+export module UnLegacySubscribeRequest {
+  /**
+   * Standard JavaScript object representation for UnLegacySubscribeRequest
+   */
+  export interface AsObject {
+    subscribedResource?: string;
+    subscriberId?: string;
+  }
+
+  /**
+   * Protobuf JSON representation for UnLegacySubscribeRequest
+   */
+  export interface AsProtobufJSON {
+    subscribedResource?: string;
+    subscriberId?: string;
   }
 }
 
@@ -17246,220 +17263,6 @@ export module Article {
 }
 
 /**
- * Message implementation for routeguide.Collection
- */
-export class Collection implements GrpcMessage {
-  static id = 'routeguide.Collection';
-
-  /**
-   * Deserialize binary data to message
-   * @param instance message instance
-   */
-  static deserializeBinary(bytes: ByteSource) {
-    const instance = new Collection();
-    Collection.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
-    return instance;
-  }
-
-  /**
-   * Check all the properties and set default protobuf values if necessary
-   * @param _instance message instance
-   */
-  static refineValues(_instance: Collection) {
-    _instance.name = _instance.name || '';
-    _instance.artifactName = _instance.artifactName || '';
-    _instance.createTime = _instance.createTime || undefined;
-    _instance.updateTime = _instance.updateTime || undefined;
-  }
-
-  /**
-   * Deserializes / reads binary message into message instance using provided binary reader
-   * @param _instance message instance
-   * @param _reader binary reader instance
-   */
-  static deserializeBinaryFromReader(
-    _instance: Collection,
-    _reader: BinaryReader
-  ) {
-    while (_reader.nextField()) {
-      if (_reader.isEndGroup()) break;
-
-      switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.name = _reader.readString();
-          break;
-        case 2:
-          _instance.artifactName = _reader.readString();
-          break;
-        case 5:
-          _instance.createTime = new googleProtobuf000.Timestamp();
-          _reader.readMessage(
-            _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
-          );
-          break;
-        case 6:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
-          _reader.readMessage(
-            _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
-          );
-          break;
-        default:
-          _reader.skipField();
-      }
-    }
-
-    Collection.refineValues(_instance);
-  }
-
-  /**
-   * Serializes a message to binary format using provided binary reader
-   * @param _instance message instance
-   * @param _writer binary writer instance
-   */
-  static serializeBinaryToWriter(_instance: Collection, _writer: BinaryWriter) {
-    if (_instance.name) {
-      _writer.writeString(1, _instance.name);
-    }
-    if (_instance.artifactName) {
-      _writer.writeString(2, _instance.artifactName);
-    }
-    if (_instance.createTime) {
-      _writer.writeMessage(
-        5,
-        _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
-      );
-    }
-    if (_instance.updateTime) {
-      _writer.writeMessage(
-        6,
-        _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
-      );
-    }
-  }
-
-  private _name?: string;
-  private _artifactName?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
-
-  /**
-   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param _value initial values object or instance of Collection to deeply clone from
-   */
-  constructor(_value?: RecursivePartial<Collection.AsObject>) {
-    _value = _value || {};
-    this.name = _value.name;
-    this.artifactName = _value.artifactName;
-    this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
-      : undefined;
-    this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
-      : undefined;
-    Collection.refineValues(this);
-  }
-  get name(): string | undefined {
-    return this._name;
-  }
-  set name(value: string | undefined) {
-    this._name = value;
-  }
-  get artifactName(): string | undefined {
-    return this._artifactName;
-  }
-  set artifactName(value: string | undefined) {
-    this._artifactName = value;
-  }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
-    return this._createTime;
-  }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
-    this._createTime = value;
-  }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
-    return this._updateTime;
-  }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
-    this._updateTime = value;
-  }
-
-  /**
-   * Serialize message to binary data
-   * @param instance message instance
-   */
-  serializeBinary() {
-    const writer = new BinaryWriter();
-    Collection.serializeBinaryToWriter(this, writer);
-    return writer.getResultBuffer();
-  }
-
-  /**
-   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
-   */
-  toObject(): Collection.AsObject {
-    return {
-      name: this.name,
-      artifactName: this.artifactName,
-      createTime: this.createTime ? this.createTime.toObject() : undefined,
-      updateTime: this.updateTime ? this.updateTime.toObject() : undefined
-    };
-  }
-
-  /**
-   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
-   */
-  toJSON() {
-    return this.toObject();
-  }
-
-  /**
-   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
-   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
-   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
-   */
-  toProtobufJSON(
-    // @ts-ignore
-    options?: ToProtobufJSONOptions
-  ): Collection.AsProtobufJSON {
-    return {
-      name: this.name,
-      artifactName: this.artifactName,
-      createTime: this.createTime
-        ? this.createTime.toProtobufJSON(options)
-        : null,
-      updateTime: this.updateTime
-        ? this.updateTime.toProtobufJSON(options)
-        : null
-    };
-  }
-}
-export module Collection {
-  /**
-   * Standard JavaScript object representation for Collection
-   */
-  export interface AsObject {
-    name?: string;
-    artifactName?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
-  }
-
-  /**
-   * Protobuf JSON representation for Collection
-   */
-  export interface AsProtobufJSON {
-    name?: string;
-    artifactName?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-  }
-}
-
-/**
  * Message implementation for routeguide.File
  */
 export class File implements GrpcMessage {
@@ -17692,7 +17495,7 @@ export class Subscription implements GrpcMessage {
    */
   static refineValues(_instance: Subscription) {
     _instance.name = _instance.name || '';
-    _instance.subscriberId = _instance.subscriberId || '0';
+    _instance.target = _instance.target || '';
     _instance.createTime = _instance.createTime || undefined;
     _instance.updateTime = _instance.updateTime || undefined;
     _instance.type = _instance.type || 0;
@@ -17715,7 +17518,7 @@ export class Subscription implements GrpcMessage {
           _instance.name = _reader.readString();
           break;
         case 2:
-          _instance.subscriberId = _reader.readInt64String();
+          _instance.target = _reader.readString();
           break;
         case 3:
           _instance.createTime = new googleProtobuf000.Timestamp();
@@ -17754,8 +17557,8 @@ export class Subscription implements GrpcMessage {
     if (_instance.name) {
       _writer.writeString(1, _instance.name);
     }
-    if (_instance.subscriberId) {
-      _writer.writeInt64String(2, _instance.subscriberId);
+    if (_instance.target) {
+      _writer.writeString(2, _instance.target);
     }
     if (_instance.createTime) {
       _writer.writeMessage(
@@ -17777,7 +17580,7 @@ export class Subscription implements GrpcMessage {
   }
 
   private _name?: string;
-  private _subscriberId?: string;
+  private _target?: string;
   private _createTime?: googleProtobuf000.Timestamp;
   private _updateTime?: googleProtobuf000.Timestamp;
   private _type?: Subscription.SubscribeType;
@@ -17789,7 +17592,7 @@ export class Subscription implements GrpcMessage {
   constructor(_value?: RecursivePartial<Subscription.AsObject>) {
     _value = _value || {};
     this.name = _value.name;
-    this.subscriberId = _value.subscriberId;
+    this.target = _value.target;
     this.createTime = _value.createTime
       ? new googleProtobuf000.Timestamp(_value.createTime)
       : undefined;
@@ -17805,11 +17608,11 @@ export class Subscription implements GrpcMessage {
   set name(value: string | undefined) {
     this._name = value;
   }
-  get subscriberId(): string | undefined {
-    return this._subscriberId;
+  get target(): string | undefined {
+    return this._target;
   }
-  set subscriberId(value: string | undefined) {
-    this._subscriberId = value;
+  set target(value: string | undefined) {
+    this._target = value;
   }
   get createTime(): googleProtobuf000.Timestamp | undefined {
     return this._createTime;
@@ -17846,7 +17649,7 @@ export class Subscription implements GrpcMessage {
   toObject(): Subscription.AsObject {
     return {
       name: this.name,
-      subscriberId: this.subscriberId,
+      target: this.target,
       createTime: this.createTime ? this.createTime.toObject() : undefined,
       updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
       type: this.type
@@ -17871,7 +17674,7 @@ export class Subscription implements GrpcMessage {
   ): Subscription.AsProtobufJSON {
     return {
       name: this.name,
-      subscriberId: this.subscriberId,
+      target: this.target,
       createTime: this.createTime
         ? this.createTime.toProtobufJSON(options)
         : null,
@@ -17888,7 +17691,7 @@ export module Subscription {
    */
   export interface AsObject {
     name?: string;
-    subscriberId?: string;
+    target?: string;
     createTime?: googleProtobuf000.Timestamp.AsObject;
     updateTime?: googleProtobuf000.Timestamp.AsObject;
     type?: Subscription.SubscribeType;
@@ -17896,6 +17699,249 @@ export module Subscription {
 
   /**
    * Protobuf JSON representation for Subscription
+   */
+  export interface AsProtobufJSON {
+    name?: string;
+    target?: string;
+    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    type?: string;
+  }
+  export enum SubscribeType {
+    SUBSCRIBE_TYPE_UNSPECIFIED = 0,
+    ALL = 1
+  }
+}
+
+/**
+ * Message implementation for routeguide.LegacySubscription
+ */
+export class LegacySubscription implements GrpcMessage {
+  static id = 'routeguide.LegacySubscription';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new LegacySubscription();
+    LegacySubscription.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: LegacySubscription) {
+    _instance.name = _instance.name || '';
+    _instance.subscriberId = _instance.subscriberId || '0';
+    _instance.createTime = _instance.createTime || undefined;
+    _instance.updateTime = _instance.updateTime || undefined;
+    _instance.type = _instance.type || 0;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: LegacySubscription,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.name = _reader.readString();
+          break;
+        case 2:
+          _instance.subscriberId = _reader.readInt64String();
+          break;
+        case 3:
+          _instance.createTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.createTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 4:
+          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.updateTime,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
+          break;
+        case 5:
+          _instance.type = _reader.readEnum();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    LegacySubscription.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: LegacySubscription,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.name) {
+      _writer.writeString(1, _instance.name);
+    }
+    if (_instance.subscriberId) {
+      _writer.writeInt64String(2, _instance.subscriberId);
+    }
+    if (_instance.createTime) {
+      _writer.writeMessage(
+        3,
+        _instance.createTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
+    if (_instance.updateTime) {
+      _writer.writeMessage(
+        4,
+        _instance.updateTime as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
+    }
+    if (_instance.type) {
+      _writer.writeEnum(5, _instance.type);
+    }
+  }
+
+  private _name?: string;
+  private _subscriberId?: string;
+  private _createTime?: googleProtobuf000.Timestamp;
+  private _updateTime?: googleProtobuf000.Timestamp;
+  private _type?: LegacySubscription.SubscribeType;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of LegacySubscription to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<LegacySubscription.AsObject>) {
+    _value = _value || {};
+    this.name = _value.name;
+    this.subscriberId = _value.subscriberId;
+    this.createTime = _value.createTime
+      ? new googleProtobuf000.Timestamp(_value.createTime)
+      : undefined;
+    this.updateTime = _value.updateTime
+      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      : undefined;
+    this.type = _value.type;
+    LegacySubscription.refineValues(this);
+  }
+  get name(): string | undefined {
+    return this._name;
+  }
+  set name(value: string | undefined) {
+    this._name = value;
+  }
+  get subscriberId(): string | undefined {
+    return this._subscriberId;
+  }
+  set subscriberId(value: string | undefined) {
+    this._subscriberId = value;
+  }
+  get createTime(): googleProtobuf000.Timestamp | undefined {
+    return this._createTime;
+  }
+  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._createTime = value;
+  }
+  get updateTime(): googleProtobuf000.Timestamp | undefined {
+    return this._updateTime;
+  }
+  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+    this._updateTime = value;
+  }
+  get type(): LegacySubscription.SubscribeType | undefined {
+    return this._type;
+  }
+  set type(value: LegacySubscription.SubscribeType | undefined) {
+    this._type = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    LegacySubscription.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): LegacySubscription.AsObject {
+    return {
+      name: this.name,
+      subscriberId: this.subscriberId,
+      createTime: this.createTime ? this.createTime.toObject() : undefined,
+      updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
+      type: this.type
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): LegacySubscription.AsProtobufJSON {
+    return {
+      name: this.name,
+      subscriberId: this.subscriberId,
+      createTime: this.createTime
+        ? this.createTime.toProtobufJSON(options)
+        : null,
+      updateTime: this.updateTime
+        ? this.updateTime.toProtobufJSON(options)
+        : null,
+      type: LegacySubscription.SubscribeType[this.type ?? 0]
+    };
+  }
+}
+export module LegacySubscription {
+  /**
+   * Standard JavaScript object representation for LegacySubscription
+   */
+  export interface AsObject {
+    name?: string;
+    subscriberId?: string;
+    createTime?: googleProtobuf000.Timestamp.AsObject;
+    updateTime?: googleProtobuf000.Timestamp.AsObject;
+    type?: LegacySubscription.SubscribeType;
+  }
+
+  /**
+   * Protobuf JSON representation for LegacySubscription
    */
   export interface AsProtobufJSON {
     name?: string;

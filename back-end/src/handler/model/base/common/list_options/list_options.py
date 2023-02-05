@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Dict, List, Optional, Tuple, Union
 
-import attr
+import attrs
 
 from .....common.exception import InvalidArgument
 from .pagination_option_pb2 import PaginationOption

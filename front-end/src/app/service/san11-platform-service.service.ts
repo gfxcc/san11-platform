@@ -239,8 +239,26 @@ export class San11PlatformServiceService {
     return this.severClient.deleteSubscription(request, this.getMetadata());
   }
 
-  unSubscribe(request: pb.UnSubscribeRequest): Observable<pb.Status> {
-    return this.severClient.unSubscribe(request, this.getMetadata());
+
+  // LegacySubscriptions
+  createLegacySubscription(request: pb.CreateLegacySubscriptionRequest): Observable<pb.LegacySubscription> {
+    return this.severClient.createLegacySubscription(request, this.getMetadata());
+  }
+
+  listLegacySubscription(request: pb.ListLegacySubscriptionsRequest): Observable<pb.ListLegacySubscriptionsResponse> {
+    return this.severClient.listLegacySubscriptioins(request, this.getMetadata());
+  }
+
+  updateLegacySubscription(request: pb.UpdateLegacySubscriptionRequest): Observable<pb.LegacySubscription> {
+    return this.severClient.updateLegacySubscription(request, this.getMetadata());
+  }
+
+  deleteLegacySubscription(request: pb.DeleteLegacySubscriptionRequest): Observable<pb.LegacySubscription> {
+    return this.severClient.deleteLegacySubscription(request, this.getMetadata());
+  }
+
+  unLegacySubscribe(request: pb.UnLegacySubscribeRequest): Observable<pb.Status> {
+    return this.severClient.unLegacySubscribe(request, this.getMetadata());
   }
 
   // UTILS

@@ -21,14 +21,15 @@ from handler.common.exception import *
 from handler.general_handler import GeneralHandler
 from handler.handler_context import HandlerContext
 from handler.image_handler import ImageHandler
+from handler.legacy_subscription_handler import LegacySubscriptionHandler
 from handler.model.base import FieldMask, ListOptions
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
+from handler.model.model_legacy_subscription import ModelLegacySubscription
 from handler.model.model_notification import ModelNotification
 from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
-from handler.model.model_subscription import ModelSubscription
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import (ModelUser, get_user_by_email,
@@ -40,7 +41,6 @@ from handler.package_handler import PackageHandler
 from handler.protos import san11_platform_pb2 as pb
 from handler.protos import san11_platform_pb2_grpc
 from handler.reply_handler import ReplyHandler
-from handler.subscription_handler import SubscriptionHandler
 from handler.tag_handler import TagHandler
 from handler.thread_handler import ThreadHandler
 from handler.user_handler import UserHandler
@@ -96,7 +96,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         self.article_handler = ArticleHandler()
         self.thread_handler = ThreadHandler()
         self.notification_handler = NotificationHandler()
-        self.subscription_handler = SubscriptionHandler()
+        self.legacy_subscription_handler = LegacySubscriptionHandler()
     #############
     # New model #
     #############
@@ -380,36 +380,36 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # Subscription
     @GrpcAbortOnExcep
     @iam_util.assert_login
-    def CreateSubscription(self, request, context):
-        return self.subscription_handler.create(
-            request.parent, ModelSubscription.from_pb(request.subscription), context).to_pb()
+    def CreateLegacySubscription(self, request, context):
+        return self.legacy_subscription_handler.create(
+            request.parent, ModelLegacySubscription.from_pb(request.subscription), context).to_pb()
 
     @GrpcAbortOnExcep
-    def ListSubscriptioins(self, request, context):
-        subs, next_page_token = self.subscription_handler.list(
+    def ListLegacySubscriptioins(self, request, context):
+        subs, next_page_token = self.legacy_subscription_handler.list(
             list_options=ListOptions.from_request(request),
             handler_context=context,
         )
-        return pb.ListSubscriptionsResponse(
+        return pb.ListLegacySubscriptionsResponse(
             subscriptions=[subscription.to_pb() for subscription in subs],
             next_page_token=next_page_token,
         )
 
     @GrpcAbortOnExcep
-    def UpdateSubscription(self, request, context):
-        return self.subscription_handler.update(
-            ModelSubscription.from_pb(request),
+    def UpdateLegacySubscription(self, request, context):
+        return self.legacy_subscription_handler.update(
+            ModelLegacySubscription.from_pb(request),
             FieldMask.from_pb(request.update_mask),
             context).to_pb()
 
     @GrpcAbortOnExcep
-    def DeleteSubscription(self, request, context):
-        return self.subscription_handler.delete(request.name,
-                                                context).to_pb()
+    def DeleteLegacySubscription(self, request, context):
+        return self.legacy_subscription_handler.delete(request.name,
+                                                       context).to_pb()
 
     @GrpcAbortOnExcep
-    def UnSubscribe(self, request, context):
-        self.subscription_handler.unsubscribe(
+    def UnLegacySubscribe(self, request, context):
+        self.legacy_subscription_handler.unsubscribe(
             request.subscribed_resource,
             request.subscriber_id,
             context)

@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from typing import (Any, Callable, Dict, Generic, Iterable, List, Optional,
                     Tuple, Type, TypeVar)
 
-import attr
+import attrs
 
 from handler.model.base import base_proto
 from handler.util.name_util import ResourceName
@@ -63,7 +63,7 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
         return value.astimezone(datetime.timezone.utc)
 
 
-@attr.define
+@attrs.define
 class NestedDbConverter(DbConverter):
     from_model_exec: Callable[[Any], Any] = lambda x: x
     to_model_exec: Callable[[Any], Any] = lambda x: x
@@ -92,7 +92,7 @@ class DbModelBase(ABC):
     @classmethod
     def from_db(cls, db_value: Dict) -> _SUB_DB_MODEL_T:
         obj_args = {}
-        for attribute in attr.fields(cls):
+        for attribute in attrs.fields(cls):
             if not attribute.metadata.get(base_core.IS_DB_FIELD):
                 continue
             name, db_field_path = attribute.name, _get_db_path(attribute)
@@ -106,7 +106,7 @@ class DbModelBase(ABC):
 
     def to_db(self) -> Dict:
         data = {}
-        for attribute in attr.fields(type(self)):
+        for attribute in attrs.fields(type(self)):
             if not attribute.metadata[base_core.IS_DB_FIELD]:
                 continue
             name, db_field_path = attribute.name, _get_db_path(attribute)
@@ -299,7 +299,7 @@ class DbModel(DbModelBase):
 def init_db_model(cls: type, db_table: str) -> None:
     cls._DB_TABLE = db_table
     fields_trait = {}
-    for attribute in attr.fields(cls):
+    for attribute in attrs.fields(cls):
         if not attribute.metadata[base_core.IS_DB_FIELD]:
             continue
         name, is_repeated, type = _get_db_path(
@@ -308,15 +308,15 @@ def init_db_model(cls: type, db_table: str) -> None:
     cls._LIST_OPTIONS_ADAPTOR = PostgresAdaptor(fields_trait)
 
 
-def _get_db_path(attribute: attr.Attribute) -> str:
+def _get_db_path(attribute: attrs.Attribute) -> str:
     return attribute.metadata.get(base_core.DB_PATH, attribute.name)
 
 
-def _is_db_field(attribute: attr.Attribute) -> bool:
+def _is_db_field(attribute: attrs.Attribute) -> bool:
     return attribute.metadata[base_core.IS_DB_FIELD]
 
 
-def _attribute_from_db(attribute: attr.Attribute, value: Any):
+def _attribute_from_db(attribute: attrs.Attribute, value: Any):
     # TODO: document why a default value is needed.
     def populate_default(value, type):
         if value is None and type in [str, int, bool]:
@@ -331,7 +331,7 @@ def _attribute_from_db(attribute: attr.Attribute, value: Any):
             value), attribute.type)
 
 
-def _attribute_to_data(attribute: attr.Attribute, value: Any):
+def _attribute_to_data(attribute: attrs.Attribute, value: Any):
     converter = _attribute_db_converter(attribute)
     if base_core.is_repeated(attribute):
         return [converter.from_model(item)
@@ -340,6 +340,6 @@ def _attribute_to_data(attribute: attr.Attribute, value: Any):
         return converter.from_model(value)
 
 
-def _attribute_db_converter(attribute: attr.Attribute) -> DbConverter:
+def _attribute_db_converter(attribute: attrs.Attribute) -> DbConverter:
     converter: DbConverter = attribute.metadata.get(base_core.DB_CONVERTER)
     return converter or PassThroughConverter()

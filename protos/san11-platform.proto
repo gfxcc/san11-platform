@@ -85,25 +85,25 @@ service RouteGuide {
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
 
   // Subscription
-  // This API is idempotent.
   rpc CreateSubscription(CreateSubscriptionRequest) returns (Subscription) {}
   rpc ListSubscriptioins(ListSubscriptionsRequest)
       returns (ListSubscriptionsResponse) {}
   rpc UpdateSubscription(UpdateSubscriptionRequest) returns (Subscription) {}
   rpc DeleteSubscription(DeleteSubscriptionRequest) returns (Subscription) {}
+
+  // LegacySubscription
+  // This API is idempotent.
+  rpc CreateLegacySubscription(CreateLegacySubscriptionRequest) returns (LegacySubscription) {}
+  rpc ListLegacySubscriptioins(ListLegacySubscriptionsRequest)
+      returns (ListLegacySubscriptionsResponse) {}
+  rpc UpdateLegacySubscription(UpdateLegacySubscriptionRequest) returns (LegacySubscription) {}
+  rpc DeleteLegacySubscription(DeleteLegacySubscriptionRequest) returns (LegacySubscription) {}
   // A utility API to
   // 1. locate a subscription by `parent` second in field `name`,
   // `subscriber_id`.
   // 2. delete that subscription.
   // This API is idempotent.
-  rpc UnSubscribe(UnSubscribeRequest) returns (Status) {}
-
-  // Collections
-  rpc CreateCollection(CreateCollectionRequest) returns (Collection) {}
-  rpc ListCollections(ListCollectionsRequest)
-      returns (ListCollectionsResponse) {}
-  rpc UpdateCollection(UpdateCollectionRequest) returns (Collection) {}
-  rpc DeleteCollection(DeleteCollectionRequest) returns (Collection) {}
+  rpc UnLegacySubscribe(UnLegacySubscribeRequest) returns (Status) {}
 }
 
 // package related
@@ -541,6 +541,7 @@ message GetStatisticRequest { string date = 1; }
 
 message GetAdminMessageRequest {}
 
+// Subscription messages
 message CreateSubscriptionRequest {
   // E.g. ``, `users/123`
   string parent = 1;
@@ -579,19 +580,13 @@ message DeleteSubscriptionRequest {
   string name = 1;
 }
 
-message UnSubscribeRequest {
-  // The name of the resource being subscribed. E.g. `users/123`.
-  string subscribed_resource = 1;
-  int64 subscriber_id = 2;
-}
-
-message CreateCollectionRequest {
+message CreateLegacySubscriptionRequest {
   // E.g. ``, `users/123`
   string parent = 1;
-  Collection collection = 2;
+  Subscription subscription = 2;
 }
 
-message ListCollectionsRequest {
+message ListLegacySubscriptionsRequest {
   // Supported values:
   // `users/123`
   string parent = 1;
@@ -608,19 +603,25 @@ message ListCollectionsRequest {
   string filter = 5;
 }
 
-message ListCollectionsResponse {
-  repeated Collection collections = 1;
+message ListLegacySubscriptionsResponse {
+  repeated LegacySubscription subscriptions = 1;
   string next_page_token = 2;
 }
 
-message UpdateCollectionRequest {
-  Collection collection = 1;
+message UpdateLegacySubscriptionRequest {
+  Subscription subscription = 1;
   FieldMask update_mask = 2;
 }
 
-message DeleteCollectionRequest {
-  // E.g. `user/123/collections/567`
+message DeleteLegacySubscriptionRequest {
+  // E.g. `user/123/subscriptions/567`
   string name = 1;
+}
+
+message UnLegacySubscribeRequest {
+  // The name of the resource being subscribed. E.g. `users/123`.
+  string subscribed_resource = 1;
+  int64 subscriber_id = 2;
 }
 
 // Types
@@ -849,17 +850,18 @@ message File {
   }
 }
 
-message GeneralSubscription {
-  // Name of the collection is composed by `{owner_user_id}/collections/{resource_id}`
-  // E.g. `users/123/collections/123456`
+message Subscription {
+  // Name of the subscriptions is composed by `{parent}/subscriptions/{resource_id}`
+  // `parent` used to be the 
+  // E.g. `users/123/subscriptions/123456`
   string name = 1;
-  // The name of the collected artifact.
-  // E.g. `categories/1/packages/2`
-  string artifact_name = 2;
+  // The name of the subscribed target.
+  // E.g. `categories/1/packages/2`, `users/1234`
+  string target = 2;
   // [ OUTPUT_ONLY ]
-  google.protobuf.Timestamp create_time = 5;
+  google.protobuf.Timestamp create_time = 3;
   // [ OUTPUT_ONLY ]
-  google.protobuf.Timestamp update_time = 6;
+  google.protobuf.Timestamp update_time = 4;
 
   SubscribeType type = 5;
 
@@ -871,7 +873,7 @@ message GeneralSubscription {
   }
 }
 
-message Subscription {
+message LegacySubscription {
   // The `parent` is the resource being subscribed.
   // For name `users/123/subscriptions/1`, `users/123` is the resource being
   // subscribed.

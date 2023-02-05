@@ -5,7 +5,8 @@ import os
 import re
 from typing import Tuple, Union
 
-import attr
+import attrs
+
 from handler.common.exception import InvalidArgument
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -22,7 +23,7 @@ def _parse_name(name: str) -> Tuple[str, str, int]:
     return match['parent'] or '', match['collection'], int(match['resource_id'])
 
 
-@attr.s(auto_attribs=True)
+@attrs.define(auto_attribs=True)
 class ResourceName:
     parent : ResourceName
     collection : str
