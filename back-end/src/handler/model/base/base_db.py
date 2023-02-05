@@ -16,7 +16,7 @@ import attr
 from handler.model.base import base_proto
 from handler.util.name_util import ResourceName
 
-from ...common.exception import InvalidArgument, NotFound
+from ...common.exception import FailedPrecondition, InvalidArgument, NotFound
 from ...db.db_util import (auto_adjust_resource_id_next_val,
                            run_sql_with_param,
                            run_sql_with_param_and_fetch_all,
@@ -62,6 +62,7 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
     def from_model(self, value: datetime.datetime) -> datetime.datetime:
         return value.astimezone(datetime.timezone.utc)
 
+
 @attr.define
 class NestedDbConverter(DbConverter):
     from_model_exec: Callable[[Any], Any] = lambda x: x
@@ -69,7 +70,7 @@ class NestedDbConverter(DbConverter):
 
     def from_model(self, value: _MODEL_T) -> _DB_MODEL_T:
         return self.from_model_exec(value)
-    
+
     def to_model(self, proto_value: _DB_MODEL_T) -> _MODEL_T:
         return self.to_model_exec(proto_value)
 
@@ -102,14 +103,15 @@ class DbModelBase(ABC):
         ret = cls(**obj_args)
         # logger.debug(f'{cls.__name__}.from_db({json.dumps(db_value)}) -> {ret}')
         return ret
-    
+
     def to_db(self) -> Dict:
         data = {}
         for attribute in attr.fields(type(self)):
             if not attribute.metadata[base_core.IS_DB_FIELD]:
                 continue
             name, db_field_path = attribute.name, _get_db_path(attribute)
-            data[db_field_path] = _attribute_to_data(attribute, getattr(self, name))
+            data[db_field_path] = _attribute_to_data(
+                attribute, getattr(self, name))
         # logger.debug(f'{type(self).__name__}.to_db({self}) -> {data}')
         return data
 
@@ -221,6 +223,20 @@ class DbModel(DbModelBase):
 
         return [cls.from_db(data[0]) for data in resp], next_page_options.to_token()
 
+    @classmethod
+    def find(cls, parent: Optional[str], filter: str) -> _SUB_DB_MODEL_T:
+        '''
+        Find a specific item.
+        Raise exception if none or multiple matched items are found.
+        '''
+        list_option = ListOptions(parent=parent, filter=filter)
+        items, _ = cls.list(list_option)
+        if not items:
+            raise NotFound()
+        elif len(items) > 1:
+            raise FailedPrecondition()
+        return items[0]
+
     def update(self, update_update_time: bool = True) -> None:
         if update_update_time:
             self.update_time = get_now()
@@ -286,7 +302,8 @@ def init_db_model(cls: type, db_table: str) -> None:
     for attribute in attr.fields(cls):
         if not attribute.metadata[base_core.IS_DB_FIELD]:
             continue
-        name, is_repeated, type = _get_db_path(attribute), base_core.is_repeated(attribute), attribute.type
+        name, is_repeated, type = _get_db_path(
+            attribute), base_core.is_repeated(attribute), attribute.type
         fields_trait[name] = FieldTrait(name, is_repeated, type)
     cls._LIST_OPTIONS_ADAPTOR = PostgresAdaptor(fields_trait)
 
@@ -305,7 +322,7 @@ def _attribute_from_db(attribute: attr.Attribute, value: Any):
         if value is None and type in [str, int, bool]:
             return type()
         return value
-    converter: DbConverter = attribute.metadata[base_core.DB_CONVERTER]
+    converter: DbConverter = _attribute_db_converter(attribute)
     if base_core.is_repeated(attribute):
         return [populate_default(converter.to_model(item), attribute.type)
                 for item in (value or [])]
@@ -315,9 +332,14 @@ def _attribute_from_db(attribute: attr.Attribute, value: Any):
 
 
 def _attribute_to_data(attribute: attr.Attribute, value: Any):
-    converter = attribute.metadata[base_core.DB_CONVERTER]
+    converter = _attribute_db_converter(attribute)
     if base_core.is_repeated(attribute):
         return [converter.from_model(item)
                 for item in value]
     else:
         return converter.from_model(value)
+
+
+def _attribute_db_converter(attribute: attr.Attribute) -> DbConverter:
+    converter: DbConverter = attribute.metadata.get(base_core.DB_CONVERTER)
+    return converter or PassThroughConverter()

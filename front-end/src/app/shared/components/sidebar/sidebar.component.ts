@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
   personalModules = [
     { value: '21', text: '主页', link: ['/home'], icon: 'home' },
     { value: '22', text: '订阅', link: ['/subscriptions'], icon: 'subscriptions' },
-    { value: '23', text: '收藏', link: ['/library'], icon: 'collections_bookmark' },
+    { value: '23', text: '收藏', link: ['/collections'], icon: 'collections_bookmark' },
     { value: '24', text: '我的足迹', link: ['/history'], icon: 'history' },
   ]
 
@@ -106,14 +106,14 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.name } });
   }
 
+  onClickSidenav(item) {
+    this.router.navigate(item.link);
+  }
+
   onCategoryLabelClick(category) {
     this.selectedCategory = category.value;
     this.router.navigate(category.link);
     this.loadTags();
-  }
-
-  onAdminLabelClick(adminModule) {
-    this.router.navigate(adminModule.link);
   }
 
   onClickCreateTool() {

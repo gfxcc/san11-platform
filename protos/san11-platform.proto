@@ -86,17 +86,24 @@ service RouteGuide {
 
   // Subscription
   // This API is idempotent.
-  rpc CreateSubscriptioin(CreateSubscriptionRequest) returns (Subscription) {}
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (Subscription) {}
   rpc ListSubscriptioins(ListSubscriptionsRequest)
       returns (ListSubscriptionsResponse) {}
-  rpc UpdateSubscriptioin(UpdateSubscriptionRequest) returns (Subscription) {}
-  rpc DeleteSubscriptioin(DeleteSubscriptionRequest) returns (Subscription) {}
+  rpc UpdateSubscription(UpdateSubscriptionRequest) returns (Subscription) {}
+  rpc DeleteSubscription(DeleteSubscriptionRequest) returns (Subscription) {}
   // A utility API to
   // 1. locate a subscription by `parent` second in field `name`,
   // `subscriber_id`.
   // 2. delete that subscription.
   // This API is idempotent.
   rpc UnSubscribe(UnSubscribeRequest) returns (Status) {}
+
+  // Collections
+  rpc CreateCollection(CreateCollectionRequest) returns (Collection) {}
+  rpc ListCollections(ListCollectionsRequest)
+      returns (ListCollectionsResponse) {}
+  rpc UpdateCollection(UpdateCollectionRequest) returns (Collection) {}
+  rpc DeleteCollection(DeleteCollectionRequest) returns (Collection) {}
 }
 
 // package related
@@ -578,8 +585,45 @@ message UnSubscribeRequest {
   int64 subscriber_id = 2;
 }
 
-// Types
+message CreateCollectionRequest {
+  // E.g. ``, `users/123`
+  string parent = 1;
+  Collection collection = 2;
+}
 
+message ListCollectionsRequest {
+  // Supported values:
+  // `users/123`
+  string parent = 1;
+  int64 page_size = 2;
+  string page_token = 3;
+
+  // Values should be a comma separated list of fields. For example: "foo,bar".
+  // The default sorting order is ascending. To specify descending order for a
+  // field, users append a " desc" suffix;
+  //   for example: "foo desc, bar".
+  string order_by = 4;
+
+  // Support syntax like `field_name = value`
+  string filter = 5;
+}
+
+message ListCollectionsResponse {
+  repeated Collection collections = 1;
+  string next_page_token = 2;
+}
+
+message UpdateCollectionRequest {
+  Collection collection = 1;
+  FieldMask update_mask = 2;
+}
+
+message DeleteCollectionRequest {
+  // E.g. `user/123/collections/567`
+  string name = 1;
+}
+
+// Types
 message Empty {}
 
 message Status {
@@ -805,6 +849,28 @@ message File {
   }
 }
 
+message GeneralSubscription {
+  // Name of the collection is composed by `{owner_user_id}/collections/{resource_id}`
+  // E.g. `users/123/collections/123456`
+  string name = 1;
+  // The name of the collected artifact.
+  // E.g. `categories/1/packages/2`
+  string artifact_name = 2;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp create_time = 5;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp update_time = 6;
+
+  SubscribeType type = 5;
+
+  enum SubscribeType {
+    SUBSCRIBE_TYPE_UNSPECIFIED = 0;
+
+    // Receive notification on all events.
+    ALL = 1;
+  }
+}
+
 message Subscription {
   // The `parent` is the resource being subscribed.
   // For name `users/123/subscriptions/1`, `users/123` is the resource being
@@ -883,4 +949,5 @@ enum Action {
 
   // misc
   DOWNLOAD = 21;
+  COLLECT = 22;
 }

@@ -81,7 +81,8 @@ from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
 # Export sections
-from .base import Attrib, InitModel, NestedAttrib
+from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
+                   NestedAttrib, StrAttrib)
 from .base_core import is_repeated
 from .base_db import DbConverter  # noqa
 from .base_proto import DatetimeProtoConverter  # noqa

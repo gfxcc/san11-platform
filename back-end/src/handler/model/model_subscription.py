@@ -4,8 +4,10 @@ import datetime
 from typing import List, Tuple
 
 import attr
+
 from handler.common.exception import NotFound
-from handler.model.base import Attrib, InitModel, ListOptions, ModelBase
+from handler.model.base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel,
+                                IntAttrib, ListOptions, ModelBase, StrAttrib)
 from handler.model.model_activity import ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
@@ -20,21 +22,11 @@ from ..protos import san11_platform_pb2 as pb
 class ModelSubscription(ModelBase, TrackLifecycle):
     # Resource name. It is `{parent}/subscriptions/{subscription_id}/`
     # E.g. `users/123/subscriptions/456`
-    name = Attrib(
-        type=str,
-    )
-    subscriber_id = Attrib(
-        type=int,
-    )
-    create_time = Attrib(
-        type=datetime.datetime,
-    )
-    update_time = Attrib(
-        type=datetime.datetime,
-    )
-    type = Attrib(
-        type=int,
-    )
+    name: str = StrAttrib()
+    subscriber_id: int = IntAttrib()
+    create_time: datetime.datetime = DatetimeAttrib()
+    update_time: datetime.datetime = DatetimeAttrib()
+    type: int = IntAttrib()
 
     def create(self, parent: str, user_id: int) -> None:
         ret = super().create(parent, user_id, False)

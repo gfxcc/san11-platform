@@ -42,18 +42,18 @@ class SubscriptionHandler(HandlerBase):
         return subs, next_page_token
 
     def update(self,
-               update_sub: ModelSubscription,
+               update_resource: ModelSubscription,
                update_mask: FieldMask,
-               handler_context) -> ModelSubscription:
-        sub: ModelSubscription = merge_resource(
-            ModelSubscription.from_name(update_sub.name), update_sub, update_mask)
-        sub.update(handler_context.user.user_id)
-        return sub
+               handler_context: HandlerContext) -> ModelSubscription:
+        resource: ModelSubscription = merge_resource(
+            ModelSubscription.from_name(update_resource.name), update_resource, update_mask)
+        resource.update(user_id=handler_context.user.user_id)
+        return resource
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelSubscription:
-        sub = ModelSubscription.from_name(name)
-        sub.delete(handler_context.user.user_id)
-        return sub
+        resource: ModelSubscription = ModelSubscription.from_name(name)
+        resource.delete(handler_context.user.user_id)
+        return resource
 
     def unsubscribe(self, subscribed_resource: str, subscriber_id: int, handler_context: HandlerContext) -> None:
         if subscriber_id != handler_context.user.user_id:

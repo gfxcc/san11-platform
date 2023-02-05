@@ -55,7 +55,6 @@ export class HomeComponent implements OnInit {
     this.route.data.subscribe(
       (data) => {
         if (data.user) {
-          console.log(data);
           this.user = data.user;
           // this.selectedTabChange({ index: 0 });
         }

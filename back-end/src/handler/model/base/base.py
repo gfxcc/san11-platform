@@ -45,8 +45,6 @@ def Attrib(
         nested_type: The python class of the nested type.
         deprecated: The field will be excluded from proto and db layer.
     '''
-    if type is None and nested_type is None:
-        raise ValueError(f'`type` must be specified')
     metadata = metadata or {}
 
     passthrough_types = [int, str, bool]
@@ -76,7 +74,7 @@ def Attrib(
     metadata[base_core.REPEATED] = repeated
     if repeated:
         type = List[type]
-    
+
     if nested_type:
         metadata[base_core.NESTED_TYPE] = nested_type
 
@@ -85,7 +83,7 @@ def Attrib(
     return attr.ib(metadata=metadata, type=type, **kwargs)
 
 
-def NestedAttrib(nested_type: type, **kwargs) -> attr.Attribute:
+def NestedAttrib(nested_type: type, **kwargs) -> attr.ib:
     '''
     Provide a nested attribute.
     E.g. The UserSettings fields in the following User message.
@@ -99,9 +97,36 @@ def NestedAttrib(nested_type: type, **kwargs) -> attr.Attribute:
     }
     '''
     return Attrib(nested_type=nested_type,
-                  proto_converter=base_proto.build_nested_converter(nested_type),
+                  proto_converter=base_proto.build_nested_converter(
+                      nested_type),
                   db_converter=base_db.build_nested_converter(nested_type),
                   **kwargs)
+
+
+def BoolAttrib(**kwargs) -> attr.ib:
+    return Attrib(
+        **kwargs,
+    )
+
+
+def IntAttrib(**kwargs) -> attr.ib:
+    return Attrib(
+        **kwargs,
+    )
+
+
+def StrAttrib(**kwargs) -> attr.ib:
+    return Attrib(
+        **kwargs,
+    )
+
+
+def DatetimeAttrib(**kwargs) -> attr.ib:
+    return Attrib(
+        proto_converter=base_proto.DatetimeProtoConverter(),
+        db_converter=base_db.DatetimeDbConverter(),
+        **kwargs,
+    )
 
 
 MODELS = {}
@@ -115,7 +140,8 @@ def InitModel(
     def wraps(cls):
         if issubclass(cls, base_db.DbModel):
             if not db_table:
-                raise ValueError('db_table is required for subclass of DbModel')
+                raise ValueError(
+                    'db_table is required for subclass of DbModel')
             base_db.init_db_model(cls, db_table)
         if issubclass(cls, base_proto.ProtoModelBase):
             base_proto.init_proto_model(cls, proto_class)

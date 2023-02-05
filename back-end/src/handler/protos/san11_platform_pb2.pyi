@@ -1632,6 +1632,119 @@ class UnSubscribeRequest(google.protobuf.message.Message):
 global___UnSubscribeRequest = UnSubscribeRequest
 
 @typing_extensions.final
+class CreateCollectionRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    PARENT_FIELD_NUMBER: builtins.int
+    COLLECTION_FIELD_NUMBER: builtins.int
+    parent: builtins.str
+    """E.g. ``, `users/123`"""
+    @property
+    def collection(self) -> global___Collection: ...
+    def __init__(
+        self,
+        *,
+        parent: builtins.str = ...,
+        collection: global___Collection | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["collection", b"collection"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["collection", b"collection", "parent", b"parent"]) -> None: ...
+
+global___CreateCollectionRequest = CreateCollectionRequest
+
+@typing_extensions.final
+class ListCollectionsRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    PARENT_FIELD_NUMBER: builtins.int
+    PAGE_SIZE_FIELD_NUMBER: builtins.int
+    PAGE_TOKEN_FIELD_NUMBER: builtins.int
+    ORDER_BY_FIELD_NUMBER: builtins.int
+    FILTER_FIELD_NUMBER: builtins.int
+    parent: builtins.str
+    """Supported values:
+    `users/123`
+    """
+    page_size: builtins.int
+    page_token: builtins.str
+    order_by: builtins.str
+    """Values should be a comma separated list of fields. For example: "foo,bar".
+    The default sorting order is ascending. To specify descending order for a
+    field, users append a " desc" suffix;
+      for example: "foo desc, bar".
+    """
+    filter: builtins.str
+    """Support syntax like `field_name = value`"""
+    def __init__(
+        self,
+        *,
+        parent: builtins.str = ...,
+        page_size: builtins.int = ...,
+        page_token: builtins.str = ...,
+        order_by: builtins.str = ...,
+        filter: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["filter", b"filter", "order_by", b"order_by", "page_size", b"page_size", "page_token", b"page_token", "parent", b"parent"]) -> None: ...
+
+global___ListCollectionsRequest = ListCollectionsRequest
+
+@typing_extensions.final
+class ListCollectionsResponse(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    COLLECTIONS_FIELD_NUMBER: builtins.int
+    NEXT_PAGE_TOKEN_FIELD_NUMBER: builtins.int
+    @property
+    def collections(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Collection]: ...
+    next_page_token: builtins.str
+    def __init__(
+        self,
+        *,
+        collections: collections.abc.Iterable[global___Collection] | None = ...,
+        next_page_token: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["collections", b"collections", "next_page_token", b"next_page_token"]) -> None: ...
+
+global___ListCollectionsResponse = ListCollectionsResponse
+
+@typing_extensions.final
+class UpdateCollectionRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    COLLECTION_FIELD_NUMBER: builtins.int
+    UPDATE_MASK_FIELD_NUMBER: builtins.int
+    @property
+    def collection(self) -> global___Collection: ...
+    @property
+    def update_mask(self) -> global___FieldMask: ...
+    def __init__(
+        self,
+        *,
+        collection: global___Collection | None = ...,
+        update_mask: global___FieldMask | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["collection", b"collection", "update_mask", b"update_mask"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["collection", b"collection", "update_mask", b"update_mask"]) -> None: ...
+
+global___UpdateCollectionRequest = UpdateCollectionRequest
+
+@typing_extensions.final
+class DeleteCollectionRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    NAME_FIELD_NUMBER: builtins.int
+    name: builtins.str
+    """E.g. `user/123/collections/567`"""
+    def __init__(
+        self,
+        *,
+        name: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["name", b"name"]) -> None: ...
+
+global___DeleteCollectionRequest = DeleteCollectionRequest
+
+@typing_extensions.final
 class Empty(google.protobuf.message.Message):
     """Types"""
 
@@ -2240,6 +2353,41 @@ class Article(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "content", b"content", "create_time", b"create_time", "like_count", b"like_count", "name", b"name", "state", b"state", "subject", b"subject", "tags", b"tags", "update_time", b"update_time", "view_count", b"view_count"]) -> None: ...
 
 global___Article = Article
+
+@typing_extensions.final
+class Collection(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    NAME_FIELD_NUMBER: builtins.int
+    ARTIFACT_NAME_FIELD_NUMBER: builtins.int
+    CREATE_TIME_FIELD_NUMBER: builtins.int
+    UPDATE_TIME_FIELD_NUMBER: builtins.int
+    name: builtins.str
+    """Name of the collection is composed by `{owner_user_id}/collections/{resource_id}`
+    E.g. `users/123/collections/123456`
+    """
+    artifact_name: builtins.str
+    """The name of the collected artifact.
+    E.g. `categories/1/packages/2`
+    """
+    @property
+    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
+        """[ OUTPUT_ONLY ]"""
+    @property
+    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
+        """[ OUTPUT_ONLY ]"""
+    def __init__(
+        self,
+        *,
+        name: builtins.str = ...,
+        artifact_name: builtins.str = ...,
+        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["artifact_name", b"artifact_name", "create_time", b"create_time", "name", b"name", "update_time", b"update_time"]) -> None: ...
+
+global___Collection = Collection
 
 @typing_extensions.final
 class File(google.protobuf.message.Message):

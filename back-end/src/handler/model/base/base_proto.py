@@ -18,7 +18,8 @@ logger = logging.getLogger(os.path.basename(__file__))
 _MODEL_T = TypeVar('_MODEL_T')
 _PROTO_T = TypeVar('_PROTO_T')
 
-_SUB_PROTO_MODEL_BASE_T = TypeVar('_SUB_PROTO_MODEL_BASE_T', bound='ProtoModelBase')
+_SUB_PROTO_MODEL_BASE_T = TypeVar(
+    '_SUB_PROTO_MODEL_BASE_T', bound='ProtoModelBase')
 
 
 class ProtoConverter(Generic[_MODEL_T, _PROTO_T]):
@@ -41,6 +42,7 @@ class PassThroughConverter(ProtoConverter[Any, Any]):
 
 class DatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Timestamp]):
     def to_model(self, proto_value: timestamp_pb2.Timestamp) -> datetime.datetime:
+        # Set value to now() if the datetime type field is uninitialized.
         if proto_value == timestamp_pb2.Timestamp():
             return get_now()
         return proto_value.ToDatetime()
@@ -73,7 +75,7 @@ class NestedProtoConverter(ProtoConverter):
 
     def from_model(self, value: _MODEL_T) -> _PROTO_T:
         return self.from_model_exec(value)
-    
+
     def to_model(self, proto_value: _PROTO_T) -> _MODEL_T:
         return self.to_model_exec(proto_value)
 
@@ -106,8 +108,10 @@ class ProtoModelBase(ABC):
                 properties[attribute.name] = None
                 continue
             path = _get_proto_path(attribute)
-            proto_value = _get_by_path(proto_model, path, proto_model.DESCRIPTOR.fields_by_name[path])
-            properties[attribute.name] = _attribute_from_pb(attribute, proto_value)
+            proto_value = _get_by_path(
+                proto_model, path, proto_model.DESCRIPTOR.fields_by_name[path])
+            properties[attribute.name] = _attribute_from_pb(
+                attribute, proto_value)
         return cls(**properties)
 
     def to_pb(self) -> message.Message:
@@ -151,9 +155,12 @@ def init_proto_model(cls: type, proto_class) -> None:
         if not attribute.metadata[base_core.IS_PROTO_FIELD]:
             continue
 
+
 def _attribute_pb_converter(attribute: attr.Attribute) -> ProtoConverter:
-    converter: ProtoConverter = attribute.metadata.get(base_core.PROTO_CONVERTER)
+    converter: ProtoConverter = attribute.metadata.get(
+        base_core.PROTO_CONVERTER)
     return converter or PassThroughConverter()
+
 
 def _attribute_from_pb(attribute: attr.Attribute, proto_value: Any) -> Any:
     converter = _attribute_pb_converter(attribute)
@@ -164,9 +171,9 @@ def _attribute_from_pb(attribute: attr.Attribute, proto_value: Any) -> Any:
     else:
         return converter.to_model(proto_value)
 
+
 def _attribute_to_proto(attribute: attr.Attribute, model_value: Any) -> Any:
-    converter: ProtoConverter = attribute.metadata.get(
-        base_core.PROTO_CONVERTER, PassThroughConverter())
+    converter: ProtoConverter = _attribute_pb_converter(attribute)
     if attribute.metadata[base_core.REPEATED]:
         ret = [converter.from_model(v) for v in model_value]
     else:

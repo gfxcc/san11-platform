@@ -8,6 +8,7 @@ from typing import Iterable, List, Tuple, Union
 
 import attr
 from google.protobuf import message
+from plugins.subscribable import Subscribable
 
 from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
 from handler.model.base import ListOptions
@@ -18,7 +19,8 @@ from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
 
 from ..protos import san11_platform_pb2 as pb
-from .base import Attrib, InitModel, ModelBase, NestedAttrib, NestedModel
+from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
+                   ModelBase, NestedAttrib, NestedModel, StrAttrib)
 
 DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
@@ -54,27 +56,13 @@ class EmailDbConverter(DbConverter):
 )
 @attr.s
 class NotificationSettings(NestedModel):
-    send_emails = Attrib(
-        type=bool
-    )
-    subscriptions = Attrib(
-        type=bool
-    )
-    recommendations = Attrib(
-        type=bool
-    )
-    mentions = Attrib(
-        type=bool
-    )
-    threads = Attrib(
-        type=bool
-    )
-    comments = Attrib(
-        type=bool
-    )
-    replies = Attrib(
-        type=bool
-    )
+    send_emails: bool = BoolAttrib()
+    subscriptions: bool = BoolAttrib()
+    recommendations: bool = BoolAttrib()
+    mentions: bool = BoolAttrib()
+    threads: bool = BoolAttrib()
+    comments: bool = BoolAttrib()
+    replies: bool = BoolAttrib()
 
 
 @InitModel(
@@ -93,42 +81,22 @@ class UserSettings(NestedModel):
     proto_class=pb.User,
 )
 @attr.s
-class ModelUser(ModelBase, TrackLifecycle):
+class ModelUser(ModelBase, TrackLifecycle, Subscribable):
     # Resource name. It is `{parent}/users/{user_id}`
     # E.g. `users/12345`
-    name = Attrib(
-        type=str,
-    )
-    username = Attrib(
-        type=str,
-    )
-    email = Attrib(
-        type=str,
+    name: str = StrAttrib()
+    username: str = StrAttrib()
+    email: str = StrAttrib(
         proto_converter=EmailProtoConverter(),
         db_converter=EmailDbConverter(),
     )
-    type = Attrib(
-        type=int,
-    )
-    image_url = Attrib(
-        type=str,
-    )
-    website = Attrib(
-        type=str,
-    )
-    hashed_password = Attrib(
-        type=str,
-        is_proto_field=False,
-    )
-    subscriber_count = Attrib(
-        type=int,
-    )
-    create_time = Attrib(
-        type=datetime.datetime,
-    )
-    update_time = Attrib(
-        type=datetime.datetime,
-    )
+    type: int = IntAttrib()
+    image_url: str = StrAttrib()
+    website: str = StrAttrib()
+    hashed_password: str = StrAttrib(is_proto_field=False)
+    # subscriber_count: int = IntAttrib()
+    create_time: datetime.datetime = DatetimeAttrib()
+    update_time: datetime.datetime = DatetimeAttrib()
     settings: UserSettings = NestedAttrib(
         nested_type=UserSettings,
     )

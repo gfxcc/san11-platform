@@ -380,7 +380,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # Subscription
     @GrpcAbortOnExcep
     @iam_util.assert_login
-    def CreateSubscriptioin(self, request, context):
+    def CreateSubscription(self, request, context):
         return self.subscription_handler.create(
             request.parent, ModelSubscription.from_pb(request.subscription), context).to_pb()
 
@@ -396,14 +396,14 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     @GrpcAbortOnExcep
-    def UpdateSubscriptioin(self, request, context):
+    def UpdateSubscription(self, request, context):
         return self.subscription_handler.update(
             ModelSubscription.from_pb(request),
             FieldMask.from_pb(request.update_mask),
             context).to_pb()
 
     @GrpcAbortOnExcep
-    def DeleteSubscriptioin(self, request, context):
+    def DeleteSubscription(self, request, context):
         return self.subscription_handler.delete(request.name,
                                                 context).to_pb()
 

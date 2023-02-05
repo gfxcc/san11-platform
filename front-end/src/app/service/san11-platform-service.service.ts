@@ -224,7 +224,7 @@ export class San11PlatformServiceService {
 
   // subscriptions
   createSubscription(request: CreateSubscriptionRequest): Observable<pb.Subscription> {
-    return this.severClient.createSubscriptioin(request, this.getMetadata());
+    return this.severClient.createSubscription(request, this.getMetadata());
   }
 
   listSubscription(request: pb.ListSubscriptionsRequest): Observable<pb.ListSubscriptionsResponse> {
@@ -232,11 +232,11 @@ export class San11PlatformServiceService {
   }
 
   updateSubscription(request: pb.UpdateSubscriptionRequest): Observable<pb.Subscription> {
-    return this.severClient.updateSubscriptioin(request, this.getMetadata());
+    return this.severClient.updateSubscription(request, this.getMetadata());
   }
 
   deleteSubscription(request: pb.DeleteSubscriptionRequest): Observable<pb.Subscription> {
-    return this.severClient.deleteSubscriptioin(request, this.getMetadata());
+    return this.severClient.deleteSubscription(request, this.getMetadata());
   }
 
   unSubscribe(request: pb.UnSubscribeRequest): Observable<pb.Status> {

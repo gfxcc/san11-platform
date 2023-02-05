@@ -7,7 +7,7 @@ import attr
 from ..protos import san11_platform_pb2 as pb
 from ..util.time_util import get_now
 from .base import base_db, base_proto
-from .base.base import Attrib, InitModel
+from .base.base import Attrib, DatetimeAttrib, InitModel, IntAttrib, StrAttrib
 
 
 class TrackLifecycle:
@@ -31,6 +31,7 @@ class Action(Enum):
     DISLIKE = 14
     # misc
     DOWNLOAD = 21
+    COLLECT = 22
 
     @classmethod
     def from_pb(cls, pb_obj: pb.Action):
@@ -48,19 +49,10 @@ class Action(Enum):
 class ModelActivity(base_db.DbModel, base_proto.ProtoModelBase):
     # Resource name. It is `{parent}/activities/{resource_id}`
     # E.g. `activities/12345`
-    name = Attrib(
-        type=str,
-    )
-    create_time = Attrib(
-        type=datetime.datetime,
-    )
-    action = Attrib(
-        type=int,
-    )
-    resource_name = Attrib(
-        type=str,
-        is_proto_field=False,
-    )
+    name: str = StrAttrib()
+    create_time: datetime.datetime = DatetimeAttrib()
+    action: int = IntAttrib()
+    resource_name: str = StrAttrib(is_proto_field=False)
 
     @classmethod
     def from_v1(cls, legacy_model):
@@ -75,7 +67,7 @@ class ModelActivity(base_db.DbModel, base_proto.ProtoModelBase):
 def search_activity(parent: str, action: Action, resource_name: str) -> Optional[ModelActivity]:
     activities = ModelActivity.list(
         base_db.ListOptions(parent=parent,
-                    filter=f"action={action.value} AND resource_name=\"{resource_name}\"")
+                            filter=f"action={action.value} AND resource_name=\"{resource_name}\"")
     )[0]
     if not activities:
         return None

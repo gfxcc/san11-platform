@@ -18,14 +18,13 @@
 <div class="category-section">
 
     <mat-selection-list #categoryNav [multiple]="false">
-        <mat-list-option *ngFor="let category of personalModules"
-            [value]="category"
-            [selected]="category.value===this.selectedCategory"
-            (click)="onCategoryLabelClick(category)">
+        <mat-list-option *ngFor="let item of personalModules"
+            [value]="item"
+            (click)="onClickSidenav(item)">
             <div class="nav-link">
-                <span style="margin-left: 10px;"> <mat-icon>{{category.icon}}</mat-icon>
+                <span style="margin-left: 10px;"> <mat-icon>{{item.icon}}</mat-icon>
                 </span>
-                <span style="margin-left: 10px;">{{category.text}}</span>
+                <span style="margin-left: 10px;">{{item.text}}</span>
             </div>
         </mat-list-option>
 
@@ -59,7 +58,7 @@
 
         <div *ngIf="this.isAdmin()">
             <mat-list-option *ngFor="let adminModule of adminModules"
-                [value]="adminModule" (click)="onAdminLabelClick(adminModule)">
+                [value]="adminModule" (click)="onClickSidenav(adminModule)">
                 <div class="nav-link">
                     <span style="margin-left: 10px;"> <mat-icon>{{adminModule.icon}}</mat-icon>
                     </span>
