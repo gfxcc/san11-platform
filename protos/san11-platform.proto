@@ -862,15 +862,6 @@ message Subscription {
   google.protobuf.Timestamp create_time = 3;
   // [ OUTPUT_ONLY ]
   google.protobuf.Timestamp update_time = 4;
-
-  SubscribeType type = 5;
-
-  enum SubscribeType {
-    SUBSCRIBE_TYPE_UNSPECIFIED = 0;
-
-    // Receive notification on all events.
-    ALL = 1;
-  }
 }
 
 message LegacySubscription {

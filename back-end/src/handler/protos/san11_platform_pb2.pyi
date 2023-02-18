@@ -2420,26 +2420,10 @@ global___File = File
 class Subscription(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    class _SubscribeType:
-        ValueType = typing.NewType("ValueType", builtins.int)
-        V: typing_extensions.TypeAlias = ValueType
-
-    class _SubscribeTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Subscription._SubscribeType.ValueType], builtins.type):  # noqa: F821
-        DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-        SUBSCRIBE_TYPE_UNSPECIFIED: Subscription._SubscribeType.ValueType  # 0
-        ALL: Subscription._SubscribeType.ValueType  # 1
-        """Receive notification on all events."""
-
-    class SubscribeType(_SubscribeType, metaclass=_SubscribeTypeEnumTypeWrapper): ...
-    SUBSCRIBE_TYPE_UNSPECIFIED: Subscription.SubscribeType.ValueType  # 0
-    ALL: Subscription.SubscribeType.ValueType  # 1
-    """Receive notification on all events."""
-
     NAME_FIELD_NUMBER: builtins.int
     TARGET_FIELD_NUMBER: builtins.int
     CREATE_TIME_FIELD_NUMBER: builtins.int
     UPDATE_TIME_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
     name: builtins.str
     """Name of the subscriptions is composed by `{parent}/subscriptions/{resource_id}`
     `parent` used to be the 
@@ -2455,7 +2439,6 @@ class Subscription(google.protobuf.message.Message):
     @property
     def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
         """[ OUTPUT_ONLY ]"""
-    type: global___Subscription.SubscribeType.ValueType
     def __init__(
         self,
         *,
@@ -2463,10 +2446,9 @@ class Subscription(google.protobuf.message.Message):
         target: builtins.str = ...,
         create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
         update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        type: global___Subscription.SubscribeType.ValueType = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "name", b"name", "target", b"target", "type", b"type", "update_time", b"update_time"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "name", b"name", "target", b"target", "update_time", b"update_time"]) -> None: ...
 
 global___Subscription = Subscription
 

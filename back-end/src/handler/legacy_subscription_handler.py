@@ -52,7 +52,7 @@ class LegacySubscriptionHandler(HandlerBase):
                handler_context: HandlerContext) -> ModelLegacySubscription:
         resource: ModelLegacySubscription = merge_resource(
             ModelLegacySubscription.from_name(update_resource.name), update_resource, update_mask)
-        resource.update(user_id=handler_context.user.user_id)
+        resource.update(actor_info=handler_context.user.user_id)
         return resource
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelLegacySubscription:
@@ -65,12 +65,13 @@ class LegacySubscriptionHandler(HandlerBase):
         if subscriber_id != handler_context.user.user_id:
             raise PermissionDenied()
         try:
-            subscription = find_subscription(
+            subscription: ModelLegacySubscription = find_subscription(
                 subscribed_resource, subscriber_id)
         except NotFound:
+            logger.info('Received delete reuqest on non-exist subscription')
             return
         target = find_resource(subscribed_resource)
         if isinstance(target, ModelUser):
             target.subscriber_count -= 1
             target.update(update_update_time=False)
-        subscription.delete()
+        subscription.delete(actor_info=None)

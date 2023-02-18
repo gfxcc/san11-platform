@@ -6,7 +6,7 @@ import attrs
 from handler.common.exception import NotFound
 from handler.model.base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel,
                                 IntAttrib, ListOptions, ModelBase, StrAttrib)
-from handler.model.model_activity import ModelActivity, TrackLifecycle
+from handler.model.plugins.tracklifecycle import ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
 from ..protos import san11_platform_pb2 as pb
@@ -17,7 +17,7 @@ from ..protos import san11_platform_pb2 as pb
     proto_class=pb.LegacySubscription,
 )
 @attrs.define
-class ModelLegacySubscription(ModelBase, TrackLifecycle):
+class ModelLegacySubscription(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/subscriptions/{subscription_id}/`
     # E.g. `users/123/subscriptions/456`
     name: str = StrAttrib()
@@ -29,7 +29,7 @@ class ModelLegacySubscription(ModelBase, TrackLifecycle):
                                  'PROTO_MODEL_DB__IS_PROTO_FIELD': False, 'PROTO_MODEL_DB__IS_DB_FIELD': False}, default=1)
 
     def create(self, parent: str, user_id: int) -> None:
-        ret = super().create(parent, user_id, False)
+        ret = super().create(parent, actor_info=None)
         ModelActivity(name='',
                       create_time=get_now(),
                       action=pb.Action.SUBSCRIBE,

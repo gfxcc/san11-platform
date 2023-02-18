@@ -1,5 +1,6 @@
 import logging
 import os
+import uuid
 from typing import List, Optional, Tuple
 
 from handler.handler_context import HandlerContext
@@ -13,9 +14,10 @@ from handler.util.user_util import verify_password
 from .auths import Session
 from .common.exception import NotFound, Unauthenticated
 from .common.image import Image
-from .model.user import generate_verification_code, verify_code
+from .db.db_util import run_sql_with_param, run_sql_with_param_and_fetch_one
 from .util.notifier import Notifier
 
+VERIFICATION_CODES_TABLE = 'verification_codes'
 logger = logging.getLogger(os.path.basename(__file__))
 
 
@@ -59,7 +61,7 @@ class UserHandler(HandlerBase):
             validate_username(user.username)
         if user.email != base_user.email:
             validate_email(user.email)
-        user.update(user_id=user.user_id)
+        user.update(actor_info=user.user_id)
         return user
 
     def sign_in(self, user: ModelUser, password: str, handler_context: HandlerContext) -> Tuple[ModelUser, str]:
@@ -91,3 +93,44 @@ class UserHandler(HandlerBase):
         except NotFound:
             user = None
         return True, user
+
+
+def generate_verification_code(email: str) -> str:
+    '''
+    Generate a verification_code and persist it into DB.
+    '''
+    sql = f'DELETE FROM {VERIFICATION_CODES_TABLE} WHERE email=%(email)s'
+    run_sql_with_param(sql, {
+        'email': email
+    })
+
+    verification_code = str(uuid.uuid1())
+    sql = f'INSERT INTO {VERIFICATION_CODES_TABLE} (email, code) VALUES (%(email)s, %(code)s)'
+    run_sql_with_param(sql, {
+        'email': email,
+        'code': verification_code
+    })
+    return verification_code
+
+
+def get_code(email: str) -> str:
+    sql = f'SELECT code FROM {VERIFICATION_CODES_TABLE} WHERE email=%(email)s'
+    resp = run_sql_with_param_and_fetch_one(sql, {
+        'email': email,
+    })
+    if not resp:
+        raise NotFound(f'Verification code for email {email} is not found.')
+    return str(resp[0])
+
+
+def verify_code(email: str, code: str) -> bool:
+    '''
+    Return:
+        True: if email and code match to existing record.
+        False: anything else. 
+    '''
+    try:
+        code_in_system = get_code(email)
+    except NotFound:
+        return False
+    return code_in_system == code

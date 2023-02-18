@@ -35,7 +35,6 @@ from handler.model.model_thread import ModelThread
 from handler.model.model_user import (ModelUser, get_user_by_email,
                                       get_user_by_username, validate_email,
                                       validate_password, validate_username)
-from handler.model.user import verify_code
 from handler.notification_handler import NotificationHandler
 from handler.package_handler import PackageHandler
 from handler.protos import san11_platform_pb2 as pb

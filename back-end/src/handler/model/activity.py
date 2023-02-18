@@ -3,11 +3,12 @@ import os
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Union
 
+from handler.model.plugins.tracklifecycle import Action
+
 from ..common.exception import NotFound
 from ..db import (get_db_fields_placeholder_str, get_db_fields_str,
                   run_sql_with_param, run_sql_with_param_and_fetch_all,
                   run_sql_with_param_and_fetch_one)
-from .model_activity import Action
 
 logger = logging.getLogger(os.path.basename(__file__))
 

@@ -4,7 +4,7 @@ import attrs
 
 from handler.model.base import (Attrib, DatetimeAttrib, InitModel, IntAttrib,
                                 ModelBase, StrAttrib)
-from handler.model.model_activity import TrackLifecycle
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
 
@@ -14,7 +14,7 @@ from ..protos import san11_platform_pb2 as pb
     proto_class=pb.Reply,
 )
 @attrs.define
-class ModelReply(ModelBase, TrackLifecycle):
+class ModelReply(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/replies/{resource_id}/`
     # E.g. `categories/123/packages/456/comments/789/replies/234`
     name: str = StrAttrib()

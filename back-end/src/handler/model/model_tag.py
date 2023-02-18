@@ -6,7 +6,7 @@ import attrs
 from handler.db.db_util import run_sql_with_param_and_fetch_one
 from handler.model.base import (Attrib, BoolAttrib, InitModel, ListOptions,
                                 ModelBase, StrAttrib)
-from handler.model.model_activity import TrackLifecycle
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
 
@@ -16,15 +16,12 @@ from ..protos import san11_platform_pb2 as pb
     proto_class=pb.Tag,
 )
 @attrs.define
-class ModelTag(ModelBase, TrackLifecycle):
+class ModelTag(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/tags/{tag_id}/`
     # E.g. `categories/123/tags/456`
     name: str = StrAttrib()
     tag_name: str = StrAttrib()
     mutable: bool = BoolAttrib()
-
-    def delete(self, user_id: Optional[int] = None) -> None:
-        return super().delete(user_id)
 
     @classmethod
     def from_id(cls, id: int):

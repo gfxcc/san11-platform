@@ -9,12 +9,12 @@ from google.protobuf import message
 from handler.common.exception import NotFound
 from handler.model.base import ListOptions
 from handler.model.model_tag import ModelTag
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
 from .base import (Attrib, DatetimeAttrib, DbConverter, InitModel, IntAttrib,
                    LegacyDatetimeProtoConverter, ModelBase, ProtoConverter,
                    StrAttrib, StrListAttrib)
-from .model_activity import TrackLifecycle
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -45,7 +45,7 @@ class TagDbConverter(DbConverter):
     proto_class=pb.Package,
 )
 @attrs.define
-class ModelPackage(ModelBase, TrackLifecycle):
+class ModelPackage(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/packages/{package_id}`
     # E.g. `categories/1/packages/123`
     name: str = StrAttrib()
@@ -68,18 +68,3 @@ class ModelPackage(ModelBase, TrackLifecycle):
     download_count: int = IntAttrib()
     like_count: int = IntAttrib()
     dislike_count: int = IntAttrib()
-
-    def delete(self, user_id: Optional[int] = None) -> None:
-        return super().delete(user_id)
-
-    @classmethod
-    def from_pb(cls, proto_model: message.Message) -> 'ModelPackage':
-        return super().from_pb(proto_model)
-
-    @classmethod
-    def from_name(cls, name: str) -> 'ModelPackage':
-        return super().from_name(name)
-
-    @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List['ModelPackage'], str]:
-        return super().list(list_options)

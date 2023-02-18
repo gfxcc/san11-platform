@@ -15,7 +15,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 class ArticleHandler(HandlerBase):
     def create(self, parent: str, article: ModelArticle, handler_context: HandlerContext) -> ModelArticle:
         article.author_id = handler_context.user.user_id
-        article.create(parent=parent, user_id=handler_context.user.user_id)
+        article.create(parent=parent, actor_info=handler_context.user.user_id)
         return article
 
     def get(self, name: str, handler_context: HandlerContext) -> ModelArticle:
@@ -37,9 +37,9 @@ class ArticleHandler(HandlerBase):
     def update(self, update_article: ModelArticle, update_mask: FieldMask, handler_context: HandlerContext) -> ModelArticle:
         article: ModelArticle = merge_resource(
             ModelArticle.from_name(update_article.name), update_article, update_mask)
-        article.update(user_id=handler_context.user.user_id)
+        article.update(actor_info=handler_context.user.user_id)
         return article
 
     def delete(self, article: ModelArticle, handler_context: HandlerContext) -> ModelArticle:
-        article.delete(user_id=handler_context.user.user_id)
+        article.delete(actor_info=handler_context.user.user_id)
         return article

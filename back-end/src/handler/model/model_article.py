@@ -5,8 +5,8 @@ import attrs
 from google.protobuf import message
 
 from handler.model.base import ListOptions
-from handler.model.model_activity import TrackLifecycle
 from handler.model.model_comment import ModelComment
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
 from ..util.time_util import get_now
@@ -19,7 +19,7 @@ from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
     proto_class=pb.Article,
 )
 @attrs.define
-class ModelArticle(ModelBase, TrackLifecycle):
+class ModelArticle(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/articles/{article_id}`
     # E.g. `articles/12345`
     name: str = StrAttrib()
@@ -33,13 +33,10 @@ class ModelArticle(ModelBase, TrackLifecycle):
     create_time: datetime.datetime = DatetimeAttrib()
     update_time: datetime.datetime = DatetimeAttrib()
 
-    def update(self, update_update_time: bool = True, user_id: Optional[int] = None) -> None:
-        return super().update(update_update_time, user_id)
-
-    def delete(self, user_id: Optional[int] = None) -> None:
+    def delete(self, actor_info: Optional[int] = None) -> None:
         for comment in ModelComment.list(ListOptions(parent=self.name))[0]:
             comment.delete()
-        super().delete(user_id=user_id)
+        super().delete(actor_info=actor_info)
 
     @classmethod
     def from_name(cls, name: str) -> 'ModelArticle':

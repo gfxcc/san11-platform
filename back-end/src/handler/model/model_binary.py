@@ -6,6 +6,7 @@ from typing import Dict, List, Optional, Tuple
 import attrs
 
 from handler.model.base import ListOptions
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
 
@@ -13,9 +14,8 @@ from ..protos import san11_platform_pb2 as pb
 from ..util import gcs
 from ..util.time_util import get_now
 from .base import (Attrib, DatetimeAttrib, DbConverter, InitModel, IntAttrib,
-                   LegacyDatetimeProtoConverter, ModelBase, ProtoConverter,
-                   StrAttrib)
-from .model_activity import TrackLifecycle
+                   LegacyDatetimeProtoConverter, ModelBase, NestedAttrib,
+                   ProtoConverter, StrAttrib)
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -113,11 +113,12 @@ class FileDbConverter(DbConverter):
     proto_class=pb.Binary,
 )
 @attrs.define
-class ModelBinary(ModelBase, TrackLifecycle):
+class ModelBinary(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/packages/{package_id}`
     # E.g. `categories/1/packages/123/binaries/1`
     name: str = StrAttrib()
     download_count: int = IntAttrib()
+    # TODO: Migrate to `NestedAttrib`
     version: Version = Attrib(
         proto_converter=VersionProtoConverter(),
         db_converter=VersionDbConverter(),
@@ -126,6 +127,7 @@ class ModelBinary(ModelBase, TrackLifecycle):
     tag: str = StrAttrib()
     size: str = StrAttrib()
     # BEGINNING - OneOf field resource
+    # TODO: Migrate to `NestedAttrib`
     file: File = Attrib(
         proto_converter=FileProtoConverter(),
         db_converter=FileDbConverter(),
@@ -145,9 +147,9 @@ class ModelBinary(ModelBase, TrackLifecycle):
             server.delete_file(BucketClass.REGULAR, self.file.uri)
             self.size = ''
 
-    def delete(self, user_id: Optional[int] = None) -> None:
+    def delete(self, actor_info: Optional[int] = None) -> None:
         self.remove_resource()
-        return super(ModelBinary, self).delete(user_id=user_id)
+        return super(ModelBinary, self).delete(actor_info=actor_info)
 
     @classmethod
     def from_name(cls, name: str) -> 'ModelBinary':

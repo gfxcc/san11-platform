@@ -6,7 +6,7 @@ from handler.model.base import FieldMask, HandlerBase, merge_resource
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
-from handler.model.user import User
+from handler.model.plugins.tracklifecycle import Action
 from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify
@@ -15,7 +15,6 @@ from handler.util.resource_view import ResourceViewVisitor
 
 from .common.exception import NotFound
 from .model.activity import Activity
-from .model.model_activity import Action
 from .util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -47,7 +46,7 @@ class ReplyHandler(HandlerBase):
                     link=view.name,
                     image_preview=view.image_url,
                 )
-        reply.create(parent=parent, user_id=user_id)
+        reply.create(parent=parent, actor_info=user_id)
         return reply
 
     def update(self, update_reply: ModelReply, update_mask: FieldMask,
@@ -77,7 +76,7 @@ class ReplyHandler(HandlerBase):
                 activity.delete()
                 reply.upvote_count -= 1
 
-        reply.update(user_id=user_id)
+        reply.update(actor_info=user_id)
         return reply
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelReply:
@@ -87,5 +86,5 @@ class ReplyHandler(HandlerBase):
         if isinstance(grandparent, ModelThread):
             grandparent.reply_count -= 1
             grandparent.update(update_update_time=False)
-        reply.delete(user_id=handler_context.user.user_id)
+        reply.delete(actor_info=handler_context.user.user_id)
         return reply

@@ -4,8 +4,8 @@ from typing import List, Optional, Tuple
 import attrs
 
 from handler.model.base import ListOptions
-from handler.model.model_activity import TrackLifecycle
 from handler.model.model_comment import ModelComment
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
 from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
@@ -17,7 +17,7 @@ from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
     proto_class=pb.Thread,
 )
 @attrs.define
-class ModelThread(ModelBase, TrackLifecycle):
+class ModelThread(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/threads/{thread_id}`
     # E.g. `threads/12345`
     name: str = StrAttrib()
@@ -39,4 +39,4 @@ class ModelThread(ModelBase, TrackLifecycle):
     def delete(self, user_id: Optional[int] = None) -> None:
         for comment in ModelComment.list(ListOptions(parent=self.name))[0]:
             comment.delete()
-        super().delete(user_id=user_id)
+        super().delete(actor_info=user_id)

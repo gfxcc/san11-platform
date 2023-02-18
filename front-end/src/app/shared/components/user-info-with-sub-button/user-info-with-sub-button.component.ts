@@ -8,7 +8,7 @@ import { San11PlatformServiceService } from 'src/app/service/san11-platform-serv
 import { UploadService } from 'src/app/service/upload.service';
 import { decrement, increment } from 'src/app/utils/number_util';
 import { getUserUrl, loadUser, saveUser, signedIn } from 'src/app/utils/user_util';
-import { CreateImageRequest, CreateLegacySubscriptionRequest, LegacySubscription, ListLegacySubscriptionsRequest, ListLegacySubscriptionsResponse, Status, Subscription, UnLegacySubscribeRequest, User } from 'src/proto/san11-platform.pb';
+import { CreateImageRequest, CreateLegacySubscriptionRequest, LegacySubscription, ListLegacySubscriptionsRequest, ListLegacySubscriptionsResponse, Status, UnLegacySubscribeRequest, User } from 'src/proto/san11-platform.pb';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -49,6 +49,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
       filter: `subscriber_id=${loadUser().userId}`,
     })).subscribe(
       (resp: ListLegacySubscriptionsResponse) => {
+        console.log(resp);
         if (resp.subscriptions.length > 0) {
           this.subscribed = true;
         }
@@ -84,8 +85,8 @@ export class UserInfoWithSubButtonComponent implements OnInit {
     } else {
       this.san11pkService.createLegacySubscription(new CreateLegacySubscriptionRequest({
         parent: this.user.name,
-        subscription: new Subscription({
-          type: Subscription.SubscribeType.ALL,
+        subscription: new LegacySubscription({
+          type: LegacySubscription.SubscribeType.ALL,
         }),
       })).subscribe(
         (sub: LegacySubscription) => {

@@ -52,6 +52,8 @@ class Session:
         try:
             user_id, expiration = run_sql_with_param_and_fetch_one(sql, {
                                                                    'sid': sid})
+            assert isinstance(user_id, int)
+            assert isinstance(expiration, int)
         except Exception as err:
             raise NotFound(f'Failed to find session: sid={sid}') from err
         obj = cls(sid, user_id, expiration)
@@ -69,6 +71,8 @@ class Session:
         try:
             sid, expiration = run_sql_with_param_and_fetch_one(
                 sql, {'user_id': user_id})
+            assert isinstance(sid, str)
+            assert isinstance(expiration, int)
         except Exception:
             raise NotFound(
                 message=f'Failed to find session: user_id={user_id}')

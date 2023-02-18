@@ -17498,7 +17498,6 @@ export class Subscription implements GrpcMessage {
     _instance.target = _instance.target || '';
     _instance.createTime = _instance.createTime || undefined;
     _instance.updateTime = _instance.updateTime || undefined;
-    _instance.type = _instance.type || 0;
   }
 
   /**
@@ -17533,9 +17532,6 @@ export class Subscription implements GrpcMessage {
             _instance.updateTime,
             googleProtobuf000.Timestamp.deserializeBinaryFromReader
           );
-          break;
-        case 5:
-          _instance.type = _reader.readEnum();
           break;
         default:
           _reader.skipField();
@@ -17574,16 +17570,12 @@ export class Subscription implements GrpcMessage {
         googleProtobuf000.Timestamp.serializeBinaryToWriter
       );
     }
-    if (_instance.type) {
-      _writer.writeEnum(5, _instance.type);
-    }
   }
 
   private _name?: string;
   private _target?: string;
   private _createTime?: googleProtobuf000.Timestamp;
   private _updateTime?: googleProtobuf000.Timestamp;
-  private _type?: Subscription.SubscribeType;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -17599,7 +17591,6 @@ export class Subscription implements GrpcMessage {
     this.updateTime = _value.updateTime
       ? new googleProtobuf000.Timestamp(_value.updateTime)
       : undefined;
-    this.type = _value.type;
     Subscription.refineValues(this);
   }
   get name(): string | undefined {
@@ -17626,12 +17617,6 @@ export class Subscription implements GrpcMessage {
   set updateTime(value: googleProtobuf000.Timestamp | undefined) {
     this._updateTime = value;
   }
-  get type(): Subscription.SubscribeType | undefined {
-    return this._type;
-  }
-  set type(value: Subscription.SubscribeType | undefined) {
-    this._type = value;
-  }
 
   /**
    * Serialize message to binary data
@@ -17651,8 +17636,7 @@ export class Subscription implements GrpcMessage {
       name: this.name,
       target: this.target,
       createTime: this.createTime ? this.createTime.toObject() : undefined,
-      updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
-      type: this.type
+      updateTime: this.updateTime ? this.updateTime.toObject() : undefined
     };
   }
 
@@ -17680,8 +17664,7 @@ export class Subscription implements GrpcMessage {
         : null,
       updateTime: this.updateTime
         ? this.updateTime.toProtobufJSON(options)
-        : null,
-      type: Subscription.SubscribeType[this.type ?? 0]
+        : null
     };
   }
 }
@@ -17694,7 +17677,6 @@ export module Subscription {
     target?: string;
     createTime?: googleProtobuf000.Timestamp.AsObject;
     updateTime?: googleProtobuf000.Timestamp.AsObject;
-    type?: Subscription.SubscribeType;
   }
 
   /**
@@ -17705,11 +17687,6 @@ export module Subscription {
     target?: string;
     createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
     updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    type?: string;
-  }
-  export enum SubscribeType {
-    SUBSCRIBE_TYPE_UNSPECIFIED = 0,
-    ALL = 1
   }
 }
 

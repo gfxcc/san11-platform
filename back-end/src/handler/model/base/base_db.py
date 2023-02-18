@@ -183,7 +183,7 @@ class DbModel(DbModelBase):
             # Update NextVal
             auto_adjust_resource_id_next_val(db_table)
         logger.debug(f'CREATED: {self}')
-        self.update(update_update_time=False)
+        DbModel.update(self, update_update_time=False)
 
     @classmethod
     def from_name(cls, name: str) -> _SUB_DB_MODEL_T:
@@ -290,7 +290,10 @@ class DbModel(DbModelBase):
     def _parse_name(cls, name: str) -> Tuple[str, int]:
         NAME_PATTERN = r'((?P<parent>.+)/)?(?P<collection>[a-zA-Z0-9]+)/(?P<resource_id>[0-9]+)'
         match = re.fullmatch(NAME_PATTERN, name)
-        if not match or match['collection'] != cls._DB_TABLE:
+        # Table name should equal to `collection` in most case.
+        # However, it is also possible that table name is suffixed with `_legacy`
+        # due to data migration.
+        if not match or match['collection'] not in cls._DB_TABLE:
             raise ValueError(
                 f'{name} is not a valid resource name in {cls._DB_TABLE}')
         return match['parent'] or '', int(match['resource_id'])
