@@ -280,31 +280,6 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.DeleteSubscriptionRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Subscription.FromString,
                 )
-        self.CreateLegacySubscription = channel.unary_unary(
-                '/routeguide.RouteGuide/CreateLegacySubscription',
-                request_serializer=san11__platform__pb2.CreateLegacySubscriptionRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.LegacySubscription.FromString,
-                )
-        self.ListLegacySubscriptioins = channel.unary_unary(
-                '/routeguide.RouteGuide/ListLegacySubscriptioins',
-                request_serializer=san11__platform__pb2.ListLegacySubscriptionsRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.ListLegacySubscriptionsResponse.FromString,
-                )
-        self.UpdateLegacySubscription = channel.unary_unary(
-                '/routeguide.RouteGuide/UpdateLegacySubscription',
-                request_serializer=san11__platform__pb2.UpdateLegacySubscriptionRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.LegacySubscription.FromString,
-                )
-        self.DeleteLegacySubscription = channel.unary_unary(
-                '/routeguide.RouteGuide/DeleteLegacySubscription',
-                request_serializer=san11__platform__pb2.DeleteLegacySubscriptionRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.LegacySubscription.FromString,
-                )
-        self.UnLegacySubscribe = channel.unary_unary(
-                '/routeguide.RouteGuide/UnLegacySubscribe',
-                request_serializer=san11__platform__pb2.UnLegacySubscribeRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Status.FromString,
-                )
 
 
 class RouteGuideServicer(object):
@@ -642,43 +617,6 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateLegacySubscription(self, request, context):
-        """LegacySubscription
-        This API is idempotent.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ListLegacySubscriptioins(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UpdateLegacySubscription(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeleteLegacySubscription(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UnLegacySubscribe(self, request, context):
-        """A utility API to
-        1. locate a subscription by `parent` second in field `name`,
-        `subscriber_id`.
-        2. delete that subscription.
-        This API is idempotent.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_RouteGuideServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -946,31 +884,6 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.DeleteSubscription,
                     request_deserializer=san11__platform__pb2.DeleteSubscriptionRequest.FromString,
                     response_serializer=san11__platform__pb2.Subscription.SerializeToString,
-            ),
-            'CreateLegacySubscription': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateLegacySubscription,
-                    request_deserializer=san11__platform__pb2.CreateLegacySubscriptionRequest.FromString,
-                    response_serializer=san11__platform__pb2.LegacySubscription.SerializeToString,
-            ),
-            'ListLegacySubscriptioins': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListLegacySubscriptioins,
-                    request_deserializer=san11__platform__pb2.ListLegacySubscriptionsRequest.FromString,
-                    response_serializer=san11__platform__pb2.ListLegacySubscriptionsResponse.SerializeToString,
-            ),
-            'UpdateLegacySubscription': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateLegacySubscription,
-                    request_deserializer=san11__platform__pb2.UpdateLegacySubscriptionRequest.FromString,
-                    response_serializer=san11__platform__pb2.LegacySubscription.SerializeToString,
-            ),
-            'DeleteLegacySubscription': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteLegacySubscription,
-                    request_deserializer=san11__platform__pb2.DeleteLegacySubscriptionRequest.FromString,
-                    response_serializer=san11__platform__pb2.LegacySubscription.SerializeToString,
-            ),
-            'UnLegacySubscribe': grpc.unary_unary_rpc_method_handler(
-                    servicer.UnLegacySubscribe,
-                    request_deserializer=san11__platform__pb2.UnLegacySubscribeRequest.FromString,
-                    response_serializer=san11__platform__pb2.Status.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1881,90 +1794,5 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteSubscription',
             san11__platform__pb2.DeleteSubscriptionRequest.SerializeToString,
             san11__platform__pb2.Subscription.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def CreateLegacySubscription(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateLegacySubscription',
-            san11__platform__pb2.CreateLegacySubscriptionRequest.SerializeToString,
-            san11__platform__pb2.LegacySubscription.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def ListLegacySubscriptioins(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListLegacySubscriptioins',
-            san11__platform__pb2.ListLegacySubscriptionsRequest.SerializeToString,
-            san11__platform__pb2.ListLegacySubscriptionsResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UpdateLegacySubscription(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateLegacySubscription',
-            san11__platform__pb2.UpdateLegacySubscriptionRequest.SerializeToString,
-            san11__platform__pb2.LegacySubscription.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def DeleteLegacySubscription(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteLegacySubscription',
-            san11__platform__pb2.DeleteLegacySubscriptionRequest.SerializeToString,
-            san11__platform__pb2.LegacySubscription.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UnLegacySubscribe(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UnLegacySubscribe',
-            san11__platform__pb2.UnLegacySubscribeRequest.SerializeToString,
-            san11__platform__pb2.Status.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

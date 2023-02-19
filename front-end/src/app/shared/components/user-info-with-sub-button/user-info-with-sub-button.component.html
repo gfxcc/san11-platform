@@ -27,7 +27,7 @@
     </div>
     <div class="subscribe-section">
         <button class="subscribe-button" mat-flat-button
-            [color]="subscribed?'':'warn'" (click)="onSubscribe()">{{this.subscribed?'退订':'订阅'}}</button>
+            [color]="subscription?'':'warn'" (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>
         <!-- <div *ngIf="subscribed" class="icon-button" style="margin-left: .5rem !important;">
             <a class="toggle-button-render disabled-text">
                 <button mat-icon-button class="button-svg" (click)="onNotification()">

@@ -9,7 +9,7 @@
     ```
     CREATE TABLE subscriptions (
         parent text NOT NULL,
-        resource_id int NOT NULL,
+        resource_id serial NOT NULL,
 
         data json,
     

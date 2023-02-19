@@ -14,7 +14,7 @@ import { UploadService } from '../../service/upload.service';
 import { increment } from '../../utils/number_util';
 import { getCategoryId, getPackageUrl } from "../../utils/package_util";
 import { getFullUrl, parseName } from "../../utils/resrouce_util";
-import { getUserUrl, isAdmin, loadUser, signedIn } from "../../utils/user_util";
+import { getUserUri, isAdmin, loadUser, signedIn } from "../../utils/user_util";
 
 
 export interface DialogData {
@@ -167,7 +167,7 @@ export class PackageDetailComponent implements OnInit {
           id: `@${user.username}`,
           userId: user.userId,
           username: user.username,
-          link: getUserUrl(user),
+          link: getUserUri(user),
         })
       );
     });

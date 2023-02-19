@@ -81,8 +81,11 @@ def backfill_subscriptions():
         ListOptions(parent=None))[0]
     for i, legacy_sub in enumerate(legacy_subs):
         target = str(ResourceName.from_str(legacy_sub.name).parent)
-        sub = ModelSubscription(target=target)
+        sub = ModelSubscription(name='',
+                                target=target, create_time=get_now(), update_time=get_now())
         sub.create(parent=f'users/{legacy_sub.subscriber_id}')
+        print(
+            f'Progress {i}/{len(legacy_subs)}')
 
 
 def parse_args():
@@ -94,7 +97,7 @@ def parse_args():
 
 
 def main():
-    backfill_user_settings()
+    backfill_subscriptions()
 
 
 if __name__ == "__main__":

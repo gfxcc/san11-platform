@@ -5,7 +5,7 @@ export function isAdmin(): boolean {
     return localStorage.getItem('userType') === User.UserType[User.UserType.ADMIN];
 }
 
-export function getUserUrl(user: User): string {
+export function getUserUri(user: User): string {
     return 'users/' + user.userId;
 }
 
