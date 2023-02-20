@@ -1,4 +1,6 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { UploadService } from 'src/app/service/upload.service';
 import { getUserUri, signedIn } from 'src/app/utils/user_util';
@@ -8,8 +10,6 @@ import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { increment } from "../../../utils/number_util";
 import { getFullUrl } from "../../../utils/resrouce_util";
-
-
 
 
 @Component({
@@ -45,10 +45,15 @@ export class CommentBoardComponent implements OnInit {
   descEditor_onFocus = false;
   userFeeds;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private uploadService: UploadService,
+    private activatedRoute: ActivatedRoute,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
   ) {
 
     this.authorId = localStorage.getItem('userId');
@@ -87,6 +92,19 @@ export class CommentBoardComponent implements OnInit {
 
     this.loadComments();
     this.configDescEditor();
+  }
+
+  scrollToFragment() {
+    const fragment = this.activatedRoute.snapshot.fragment;
+    if (fragment) {
+      const targetElement = this.elementRef.nativeElement.querySelector(`#${fragment}`);
+      if (targetElement) {
+        this.renderer.setProperty(targetElement, 'scrollTop', 0);
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        targetElement.classList.add('highlighted');
+      }
+    }
   }
 
   configDescEditor() {
@@ -234,6 +252,10 @@ export class CommentBoardComponent implements OnInit {
       resp => {
         this.comments = resp.comments;
         this.commentCount = this.computeCommentCount(this.comments);
+
+        setTimeout(() => {
+          this.scrollToFragment();
+        }, 0);
       },
       error => {
         this.notificationService.warn('获取评论列表失败: ' + error.statusMessage);

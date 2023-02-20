@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { DefaultUrlSerializer, Router, UrlTree } from '@angular/router';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
@@ -20,6 +20,7 @@ export class HistoryComponent implements OnInit {
 
   events: any[];
   loading;
+
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
@@ -122,8 +123,8 @@ export class HistoryComponent implements OnInit {
   }
 
   onDetailClick(event) {
-    console.log(event.link);
-    this.router.navigate(event.link.split('/'));
+    const urlTree: UrlTree = new DefaultUrlSerializer().parse(event.link);
+    this.router.navigateByUrl(urlTree);
   }
 
 }

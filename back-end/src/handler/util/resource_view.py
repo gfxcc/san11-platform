@@ -58,8 +58,9 @@ class ResourceViewVisitor:
 
     @visitor(ModelComment)
     def visit(self, resource: ModelComment) -> pb.ResourceView:
+        name = ResourceName.from_str(resource.name)
         return pb.ResourceView(
-            name=resource.name,
+            name=f'{name.parent}#comment-{resource.index}',
             display_name='评论',
             description=get_text_from_html(resource.text),
             image_url=None,
@@ -67,8 +68,12 @@ class ResourceViewVisitor:
 
     @visitor(ModelReply)
     def visit(self, resource: ModelReply) -> pb.ResourceView:
+        reply_name = ResourceName.from_str(resource.name)
+        comment_name = reply_name.parent
+        comment: ModelComment = find_resource(comment_name)
+        thread_name = reply_name.parent
         return pb.ResourceView(
-            name=resource.name,
+            name=f'{thread_name}#comment-{comment.index}',
             display_name='回复',
             description=get_text_from_html(resource.text),
             image_url=None,
