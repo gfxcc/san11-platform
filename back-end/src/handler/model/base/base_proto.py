@@ -4,7 +4,7 @@ import datetime
 import logging
 import os
 from abc import ABC
-from typing import Any, Callable, Generic, Iterable, TypeVar
+from typing import Any, Callable, Generic, Iterable, Type, TypeVar
 
 import attrs
 from google.protobuf import descriptor, message, timestamp_pb2
@@ -80,7 +80,7 @@ class NestedProtoConverter(ProtoConverter):
         return self.to_model_exec(proto_value)
 
 
-def build_nested_converter(cls: type):
+def build_nested_converter(cls: Type[_SUB_PROTO_MODEL_BASE_T]):
     return NestedProtoConverter(from_model_exec=lambda v: v.to_pb(), to_model_exec=cls.from_pb)
 
 
@@ -96,7 +96,7 @@ class ProtoModelBase(ABC):
     _PROTO_FIELDS: Iterable[attrs.Attribute] = []
 
     @classmethod
-    def from_pb(cls, proto_model: message.Message) -> _SUB_PROTO_MODEL_BASE_T:
+    def from_pb(cls: Type[_SUB_PROTO_MODEL_BASE_T], proto_model: message.Message) -> _SUB_PROTO_MODEL_BASE_T:
         '''
         Construct a data model from its protobuf message representation.
         '''
@@ -149,7 +149,7 @@ class ProtoModelBase(ABC):
         return proto_model
 
 
-def init_proto_model(cls: type, proto_class) -> None:
+def init_proto_model(cls: Type[_SUB_PROTO_MODEL_BASE_T], proto_class) -> None:
     cls._PROTO_CLASS = proto_class
     for attribute in attrs.fields(cls):
         if not attribute.metadata[base_core.IS_PROTO_FIELD]:
@@ -158,7 +158,7 @@ def init_proto_model(cls: type, proto_class) -> None:
 
 def _attribute_pb_converter(attribute: attrs.Attribute) -> ProtoConverter:
     converter: ProtoConverter = attribute.metadata.get(
-        base_core.PROTO_CONVERTER)
+        base_core.PROTO_CONVERTER)  # type: ignore
     return converter or PassThroughConverter()
 
 

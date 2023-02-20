@@ -3,3 +3,9 @@
 <div *ngFor="let sub of subscriptions">
     {{sub.name}}
 </div>
+
+---
+
+<div *ngFor="let act of activities">
+    {{act.name}} - {{act.resourceView?.name}}
+</div>

@@ -25,9 +25,9 @@ def _parse_name(name: str) -> Tuple[str, str, int]:
 
 @attrs.define(auto_attribs=True)
 class ResourceName:
-    parent : ResourceName
-    collection : str
-    resource_id : int
+    parent: ResourceName
+    collection: str
+    resource_id: int
 
     def __str__(self) -> str:
         cur = f'{self.collection}/{self.resource_id}'
@@ -41,5 +41,14 @@ class ResourceName:
         try:
             parent = ResourceName.from_str(parent_str)
         except InvalidArgument:
+            # TODO: remove all logic rely on `from_str` return a str.
             parent = parent_str
         return cls(parent=parent, collection=collection, resource_id=resource_id)
+
+
+def get_parent(name: str) -> str:
+    '''
+    A utility func to get parent part of a resourec name.
+    '''
+    return str(ResourceName.from_str(name).parent)
+

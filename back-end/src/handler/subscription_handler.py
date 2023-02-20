@@ -4,12 +4,14 @@ from typing import Iterable, List, Tuple
 
 import attrs
 
-from handler.common.exception import NotFound, PermissionDenied
+from handler.common.exception import (InvalidArgument, NotFound,
+                                      PermissionDenied)
 from handler.handler_context import HandlerContext
 from handler.model.base import (FieldMask, HandlerBase, ListOptions,
                                 merge_resource)
 from handler.model.model_user import ModelUser
-from handler.model.plugins.subscribable import ModelSubscription
+from handler.model.plugins.subscribable import ModelSubscription, Subscribable
+from handler.util.name_util import ResourceName
 from handler.util.resource_parser import find_resource
 
 from .protos import san11_platform_pb2 as pb
@@ -21,8 +23,9 @@ class SubscriptionHandler(HandlerBase):
     def create(self, parent: str, sub: ModelSubscription,
                handler_context: HandlerContext) -> ModelSubscription:
         target = find_resource(sub.target)
-        sub.create(parent)
-        return sub
+        if not isinstance(target, Subscribable):
+            raise InvalidArgument('目标无法被订阅')
+        return target.subscribe(parent)
 
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelSubscription], str]:
         for a in attrs.fields(ModelSubscription):
@@ -41,7 +44,10 @@ class SubscriptionHandler(HandlerBase):
         return resource
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelSubscription:
-        resource: ModelSubscription = ModelSubscription.from_name(
-            name)
-        resource.delete(handler_context.user.user_id)
-        return resource
+        sub: ModelSubscription = ModelSubscription.from_name(name)
+        target = find_resource(sub.target)
+        logger.debug(target)
+        if not isinstance(target, Subscribable):
+            raise InvalidArgument('目标无法被订阅')
+        target.unsubscribe(str(ResourceName.from_str(sub.name).parent))
+        return sub

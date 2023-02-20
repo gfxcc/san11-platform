@@ -94,6 +94,11 @@ export class HistoryComponent implements OnInit {
         icon = 'notifications';
         color = '#FBBE04';
         break;
+      case Action.UNSUBSCRIBE:
+        action = '退订';
+        icon = 'unsubscribe';
+        color = '#EA4333';
+        break;
       case Action.DISLIKE:
         action = '反对';
         icon = 'thumb_down';

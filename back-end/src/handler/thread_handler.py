@@ -68,7 +68,7 @@ class ThreadHandler(HandlerBase):
         thread.update(handler_context.user.user_id)
         return thread
 
-    def delete(self, name: str, handler_context) -> ModelThread:
+    def delete(self, name: str, handler_context: HandlerContext) -> ModelThread:
         thread = ModelThread.from_name(name)
         gcs.delete_folder(thread.name)
         thread.delete(handler_context.user.user_id)

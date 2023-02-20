@@ -186,7 +186,7 @@ class DbModel(DbModelBase):
         DbModel.update(self, update_update_time=False)
 
     @classmethod
-    def from_name(cls, name: str) -> _SUB_DB_MODEL_T:
+    def from_name(cls: Type[_SUB_DB_MODEL_T], name: str) -> _SUB_DB_MODEL_T:
         db_table = cls._DB_TABLE
         parent, resource_id = cls._parse_name(name)
         predicate = ' AND '.join(
@@ -202,7 +202,7 @@ class DbModel(DbModelBase):
         return cls.from_db(resp[0])
 
     @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
+    def list(cls: Type[_SUB_DB_MODEL_T], list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
         db_table = cls._DB_TABLE
 
         try:

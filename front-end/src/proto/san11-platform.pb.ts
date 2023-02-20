@@ -28,6 +28,7 @@ export enum Action {
   LIKE = 11,
   UPVOTE = 12,
   SUBSCRIBE = 13,
+  UNSUBSCRIBE = 15,
   DISLIKE = 14,
   DOWNLOAD = 21,
   COLLECT = 22

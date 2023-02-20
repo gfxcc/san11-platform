@@ -4,10 +4,14 @@ from typing import Iterable, List, Tuple
 import attrs
 
 from handler.common.exception import NotFound, PermissionDenied
-from handler.model.base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel,
-                                IntAttrib, ListOptions, ModelBase, StrAttrib)
+from handler.util.name_util import ResourceName, get_parent
+from handler.util.time_util import get_now
 
 from ...protos import san11_platform_pb2 as pb
+from ..base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
+                    ListOptions, ModelBase, StrAttrib)
+from ..base.common.list_options.list_options import MAX_PAGE_SIZE
+from .tracklifecycle import Action, ModelActivity
 
 
 @InitModel(
@@ -23,6 +27,15 @@ class ModelSubscription(ModelBase):
     target: str = StrAttrib()
     create_time: datetime.datetime = DatetimeAttrib()
     update_time: datetime.datetime = DatetimeAttrib()
+
+    @classmethod
+    def new(cls, target: str) -> 'ModelSubscription':
+        return cls(name='', target=target,
+                   create_time=get_now(), update_time=get_now())
+
+    @property
+    def subscriber_name(self) -> str:
+        return get_parent(self.name)
 
 
 @attrs.define
@@ -48,13 +61,17 @@ class Subscribable:
             # Already subscribed. Return the existing subscription.
             return sub
 
-        sub = ModelSubscription(target=self.name)
+        sub = ModelSubscription.new(self.name)
         sub.create(parent=subscriber_name, actor_info=subscriber_name)
         self.subscriber_count += 1
         self.update(update_update_time=False)
+
+        ModelActivity(name='', create_time=get_now(
+        ), action=Action.SUBSCRIBE.value, resource_name=self.name).create(subscriber_name)
+
         return sub
 
-    def unscribe(self, subscriber_name: str) -> None:
+    def unsubscribe(self, subscriber_name: str) -> None:
         '''
         Args:
             subscriber_name: The name of the actor which unsubscribe to this subscibable.
@@ -73,3 +90,15 @@ class Subscribable:
         sub.delete(actor_info=subscriber_name)
         self.subscriber_count -= 1
         self.update(update_update_time=False)
+
+        ModelActivity(name='', create_time=get_now(
+        ), action=Action.UNSUBSCRIBE.value, resource_name=self.name).create(subscriber_name)
+
+
+def list_subscriptions(target: str) -> Iterable[ModelSubscription]:
+    '''
+    A utility func to list all subscriptions against a specific target.
+    '''
+    subs = ModelSubscription.list(ListOptions(
+        parent=None, page_size=MAX_PAGE_SIZE, watermark=0, order_by='', filter=f'target="{target}"'))[0]
+    return subs

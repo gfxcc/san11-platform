@@ -67,6 +67,7 @@ class _ActionEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTyp
     """social"""
     UPVOTE: _Action.ValueType  # 12
     SUBSCRIBE: _Action.ValueType  # 13
+    UNSUBSCRIBE: _Action.ValueType  # 15
     DISLIKE: _Action.ValueType  # 14
     DOWNLOAD: _Action.ValueType  # 21
     """misc"""
@@ -83,6 +84,7 @@ LIKE: Action.ValueType  # 11
 """social"""
 UPVOTE: Action.ValueType  # 12
 SUBSCRIBE: Action.ValueType  # 13
+UNSUBSCRIBE: Action.ValueType  # 15
 DISLIKE: Action.ValueType  # 14
 DOWNLOAD: Action.ValueType  # 21
 """misc"""

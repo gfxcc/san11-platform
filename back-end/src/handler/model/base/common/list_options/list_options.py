@@ -37,6 +37,7 @@ class ListOptions:
             Supported `OPERATIONS` including 
                 - `=`, `>`, `>=`, `<`, `<=` 
                 - `~=`: if the `value` is a substring of given `field`.
+
             E.g. 
                 - `create_time > '2021-07-20 10:43:28.313033+08:00'`.  
                 - `author_id = 123 AND state = 1`

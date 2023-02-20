@@ -11,6 +11,7 @@ from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
 from handler.model.base import ListOptions
 from handler.model.base.base_db import DbConverter
 from handler.model.base.base_proto import ProtoConverter
+from handler.model.plugins.subscribable import Subscribable
 from handler.model.plugins.tracklifecycle import TrackLifecycle
 from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
@@ -78,7 +79,7 @@ class UserSettings(NestedModel):
     proto_class=pb.User,
 )
 @attrs.define
-class ModelUser(TrackLifecycle, ModelBase):
+class ModelUser(Subscribable, TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/users/{user_id}`
     # E.g. `users/12345`
     name: str = StrAttrib()
@@ -98,23 +99,15 @@ class ModelUser(TrackLifecycle, ModelBase):
         nested_type=UserSettings,
     )
 
+    @classmethod
+    def from_user_id(cls, user_id: int) -> 'ModelUser':
+        return cls.from_name(f'users/{user_id}')
+
     def to_pb(self) -> message.Message:
         # Field `user_id` only exist in public proto for easy access.
         ret = super().to_pb()
         setattr(ret, 'user_id', self.user_id)
         return ret
-
-    @classmethod
-    def from_pb(cls, proto_model: message.Message) -> 'ModelUser':
-        return super().from_pb(proto_model)
-
-    @classmethod
-    def from_name(cls, name: str) -> 'ModelUser':
-        return super().from_name(name)
-
-    @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List['ModelUser'], str]:
-        return super().list(list_options)
 
     def is_admin(self) -> bool:
         return self.type == pb.User.UserType.ADMIN

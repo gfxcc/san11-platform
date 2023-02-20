@@ -36,7 +36,7 @@ class ModelThread(TrackLifecycle, ModelBase):
     create_time: datetime.datetime = DatetimeAttrib()
     update_time: datetime.datetime = DatetimeAttrib()
 
-    def delete(self, user_id: Optional[int] = None) -> None:
+    def delete(self, actor_info: Optional[int] = None) -> None:
         for comment in ModelComment.list(ListOptions(parent=self.name))[0]:
             comment.delete()
-        super().delete(actor_info=user_id)
+        super().delete(actor_info=actor_info)

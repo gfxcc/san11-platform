@@ -25,7 +25,6 @@ from handler.model.base import FieldMask, ListOptions
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
-from handler.model.model_legacy_subscription import ModelLegacySubscription
 from handler.model.model_notification import ModelNotification
 from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
@@ -396,14 +395,14 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     @GrpcAbortOnExcep
-    def UpdateLegacySubscription(self, request, context):
+    def UpdateSubscription(self, request, context):
         return self.subscription_handler.update(
-            ModelLegacySubscription.from_pb(request),
+            ModelSubscription.from_pb(request),
             FieldMask.from_pb(request.update_mask),
             context).to_pb()
 
     @GrpcAbortOnExcep
-    def DeleteLegacySubscription(self, request, context):
+    def DeleteSubscription(self, request, context):
         return self.subscription_handler.delete(request.name,
                                                 context).to_pb()
 

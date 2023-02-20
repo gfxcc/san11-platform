@@ -36,21 +36,18 @@ export class UserInfoWithSubButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.setSubscriptionStatus();
-    console.log(this.user);
   }
 
   setSubscriptionStatus() {
     if (!signedIn()) {
       return;
     }
+
     this.san11pkService.listSubscription(new ListSubscriptionsRequest({
       parent: `users/${loadUser().userId}`,
       filter: `target="users/${this.user.userId}"`,
     })).subscribe(
       (resp: ListSubscriptionsResponse) => {
-        console.log(this.user);
-        console.log(resp);
-        console.log(this.subscription);
         if (resp.subscriptions.length > 0) {
           this.subscription = resp.subscriptions[0];
         }
