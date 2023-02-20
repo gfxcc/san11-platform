@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, DefaultUrlSerializer, Router, UrlTree } from '@angular/router';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
@@ -46,7 +46,7 @@ export class TimelineComponent implements OnInit {
           return this.activityToEvent(activity);
         });
         this.loading.close();
-      }, 
+      },
       error => {
         this.notificationService.warn(`获取时间线失败: ${error.statusMessage}`)
         this.loading.close();
@@ -122,8 +122,8 @@ export class TimelineComponent implements OnInit {
   }
 
   onDetailClick(event) {
-    console.log(event.link);
-    this.router.navigate(event.link.split('/'));
+    const urlTree: UrlTree = new DefaultUrlSerializer().parse(event.link);
+    this.router.navigateByUrl(urlTree);
   }
 
 }
