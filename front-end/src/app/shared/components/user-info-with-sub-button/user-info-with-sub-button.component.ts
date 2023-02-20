@@ -7,8 +7,8 @@ import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { decrement, increment } from 'src/app/utils/number_util';
-import { getUserUrl, loadUser, saveUser, signedIn } from 'src/app/utils/user_util';
-import { CreateImageRequest, CreateSubscriptionRequest, ListSubscriptionsRequest, ListSubscriptionsResponse, Status, Subscription, UnSubscribeRequest, User } from 'src/proto/san11-platform.pb';
+import { getUserUri, loadUser, saveUser, signedIn } from 'src/app/utils/user_util';
+import { CreateImageRequest, CreateSubscriptionRequest, DeleteSubscriptionRequest, ListSubscriptionsRequest, ListSubscriptionsResponse, Subscription, User } from 'src/proto/san11-platform.pb';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -23,8 +23,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
 
   loading;
   hideAvatar = true;
-  subscribed = false;
-  notificationEnabled = false;
+  subscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,13 +42,14 @@ export class UserInfoWithSubButtonComponent implements OnInit {
     if (!signedIn()) {
       return;
     }
+
     this.san11pkService.listSubscription(new ListSubscriptionsRequest({
-      parent: this.user.name,
-      filter: `subscriber_id=${loadUser().userId}`,
+      parent: `users/${loadUser().userId}`,
+      filter: `target="users/${this.user.userId}"`,
     })).subscribe(
       (resp: ListSubscriptionsResponse) => {
         if (resp.subscriptions.length > 0) {
-          this.subscribed = true;
+          this.subscription = resp.subscriptions[0];
         }
       }, error => {
         this.notificationService.warn(`载入订阅状态失败: ${error.statusMessage}`);
@@ -62,47 +62,36 @@ export class UserInfoWithSubButtonComponent implements OnInit {
       this.notificationService.warn('请登录');
       return;
     }
-    if (this.subscribed) {
+    if (this.subscription != undefined) {
       if (!confirm('确定要退订吗?')) {
         return;
       }
-      this.san11pkService.unSubscribe(new UnSubscribeRequest({
-        subscribedResource: this.user.name,
-        subscriberId: loadUser().userId,
+      this.san11pkService.deleteSubscription(new DeleteSubscriptionRequest({
+        name: this.subscription.name
       })).subscribe(
-        (resp: Status) => {
+        (resp: Subscription) => {
           this.user.subscriberCount = decrement(this.user.subscriberCount);
+          this.subscription = undefined;
           this.notificationService.success('退订成功');
         }, error => {
           this.notificationService.warn(`退订失败: ${error.statusMessage}`);
         }
       );
-
-      this.subscribed = false;
-      this.notificationEnabled = false;
     } else {
       this.san11pkService.createSubscription(new CreateSubscriptionRequest({
-        parent: this.user.name,
+        parent: getUserUri(loadUser()),
         subscription: new Subscription({
-          type: Subscription.SubscribeType.ALL,
+          target: getUserUri(this.user),
         }),
       })).subscribe(
         (sub: Subscription) => {
           this.user.subscriberCount = increment(this.user.subscriberCount);
+          this.subscription = sub;
           this.notificationService.success(`订阅成功`);
         }, error => {
           this.notificationService.warn(`订阅失败: ${error.statusMessage}`);
         }
       );
-      this.subscribed = true;
-    }
-  }
-
-  onNotification() {
-    if (this.notificationEnabled) {
-      this.notificationEnabled = false;
-    } else {
-      this.notificationEnabled = true;
     }
   }
 
@@ -126,7 +115,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
 
     this.loading = this.dialog.open(LoadingComponent);
 
-    const parent = getUserUrl(this.user);
+    const parent = getUserUri(this.user);
     const filename = `${parent}/images/${uuid()}.jpeg`
     this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
       if (upload.state === 'DONE') {

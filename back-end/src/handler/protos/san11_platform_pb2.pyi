@@ -67,9 +67,11 @@ class _ActionEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTyp
     """social"""
     UPVOTE: _Action.ValueType  # 12
     SUBSCRIBE: _Action.ValueType  # 13
+    UNSUBSCRIBE: _Action.ValueType  # 15
     DISLIKE: _Action.ValueType  # 14
     DOWNLOAD: _Action.ValueType  # 21
     """misc"""
+    COLLECT: _Action.ValueType  # 22
 
 class Action(_Action, metaclass=_ActionEnumTypeWrapper): ...
 
@@ -82,9 +84,11 @@ LIKE: Action.ValueType  # 11
 """social"""
 UPVOTE: Action.ValueType  # 12
 SUBSCRIBE: Action.ValueType  # 13
+UNSUBSCRIBE: Action.ValueType  # 15
 DISLIKE: Action.ValueType  # 14
 DOWNLOAD: Action.ValueType  # 21
 """misc"""
+COLLECT: Action.ValueType  # 22
 global___Action = Action
 
 @typing_extensions.final
@@ -1501,6 +1505,8 @@ global___GetAdminMessageRequest = GetAdminMessageRequest
 
 @typing_extensions.final
 class CreateSubscriptionRequest(google.protobuf.message.Message):
+    """Subscription messages"""
+
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     PARENT_FIELD_NUMBER: builtins.int
@@ -1611,25 +1617,6 @@ class DeleteSubscriptionRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal["name", b"name"]) -> None: ...
 
 global___DeleteSubscriptionRequest = DeleteSubscriptionRequest
-
-@typing_extensions.final
-class UnSubscribeRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    SUBSCRIBED_RESOURCE_FIELD_NUMBER: builtins.int
-    SUBSCRIBER_ID_FIELD_NUMBER: builtins.int
-    subscribed_resource: builtins.str
-    """The name of the resource being subscribed. E.g. `users/123`."""
-    subscriber_id: builtins.int
-    def __init__(
-        self,
-        *,
-        subscribed_resource: builtins.str = ...,
-        subscriber_id: builtins.int = ...,
-    ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["subscribed_resource", b"subscribed_resource", "subscriber_id", b"subscriber_id"]) -> None: ...
-
-global___UnSubscribeRequest = UnSubscribeRequest
 
 @typing_extensions.final
 class Empty(google.protobuf.message.Message):
@@ -2303,19 +2290,55 @@ global___File = File
 class Subscription(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    NAME_FIELD_NUMBER: builtins.int
+    TARGET_FIELD_NUMBER: builtins.int
+    CREATE_TIME_FIELD_NUMBER: builtins.int
+    UPDATE_TIME_FIELD_NUMBER: builtins.int
+    name: builtins.str
+    """Name of the subscriptions is composed by `{parent}/subscriptions/{resource_id}`
+    `parent` used to be the 
+    E.g. `users/123/subscriptions/123456`
+    """
+    target: builtins.str
+    """The name of the subscribed target.
+    E.g. `categories/1/packages/2`, `users/1234`
+    """
+    @property
+    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
+        """[ OUTPUT_ONLY ]"""
+    @property
+    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
+        """[ OUTPUT_ONLY ]"""
+    def __init__(
+        self,
+        *,
+        name: builtins.str = ...,
+        target: builtins.str = ...,
+        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "name", b"name", "target", b"target", "update_time", b"update_time"]) -> None: ...
+
+global___Subscription = Subscription
+
+@typing_extensions.final
+class LegacySubscription(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
     class _SubscribeType:
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _SubscribeTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Subscription._SubscribeType.ValueType], builtins.type):  # noqa: F821
+    class _SubscribeTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[LegacySubscription._SubscribeType.ValueType], builtins.type):  # noqa: F821
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-        SUBSCRIBE_TYPE_UNSPECIFIED: Subscription._SubscribeType.ValueType  # 0
-        ALL: Subscription._SubscribeType.ValueType  # 1
+        SUBSCRIBE_TYPE_UNSPECIFIED: LegacySubscription._SubscribeType.ValueType  # 0
+        ALL: LegacySubscription._SubscribeType.ValueType  # 1
         """Receive notification on all events."""
 
     class SubscribeType(_SubscribeType, metaclass=_SubscribeTypeEnumTypeWrapper): ...
-    SUBSCRIBE_TYPE_UNSPECIFIED: Subscription.SubscribeType.ValueType  # 0
-    ALL: Subscription.SubscribeType.ValueType  # 1
+    SUBSCRIBE_TYPE_UNSPECIFIED: LegacySubscription.SubscribeType.ValueType  # 0
+    ALL: LegacySubscription.SubscribeType.ValueType  # 1
     """Receive notification on all events."""
 
     NAME_FIELD_NUMBER: builtins.int
@@ -2340,7 +2363,7 @@ class Subscription(google.protobuf.message.Message):
         """
         [ OUTPUT_ONLY ]
         """
-    type: global___Subscription.SubscribeType.ValueType
+    type: global___LegacySubscription.SubscribeType.ValueType
     """"""
     def __init__(
         self,
@@ -2349,12 +2372,12 @@ class Subscription(google.protobuf.message.Message):
         subscriber_id: builtins.int = ...,
         create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
         update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        type: global___Subscription.SubscribeType.ValueType = ...,
+        type: global___LegacySubscription.SubscribeType.ValueType = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "name", b"name", "subscriber_id", b"subscriber_id", "type", b"type", "update_time", b"update_time"]) -> None: ...
 
-global___Subscription = Subscription
+global___LegacySubscription = LegacySubscription
 
 @typing_extensions.final
 class UserSettings(google.protobuf.message.Message):

@@ -18,8 +18,25 @@ export class SidebarComponent implements OnInit {
   @ViewChild('categoryNav') categoryNav;
 
   categories = GlobalConstants.categories;
-  webModules = GlobalConstants.webModules;
-  adminModules = GlobalConstants.adminModules;
+
+  personalModules = [
+    // { value: '21', text: '主页', link: ['/home'], icon: 'home' },
+    // { value: '22', text: '订阅', link: ['/subscriptions'], icon: 'subscriptions' },
+    // { value: '23', text: '收藏', link: ['/collections'], icon: 'collections_bookmark' },
+    { value: '24', text: '我的足迹', link: ['/history'], icon: 'history' },
+  ]
+
+  webModules = [
+    { value: '11', text: '讨论区', link: ['/discussion'], icon: 'forum' },
+    { value: '12', text: '专栏文章', link: ['/articles'], icon: 'sticky_note_2' },
+    { value: '13', text: '留言板', link: ['/message-board'], icon: 'note_alt' },
+  ]
+
+  adminModules = [
+    {
+      value: '1', text: '管理员', link: ['/admin-message-board'], icon: 'admin_panel_settings',
+    }
+  ]
 
   selectedCategory = undefined;
   tags: Tag[] = [];
@@ -89,14 +106,14 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.name } });
   }
 
+  onClickSidenav(item) {
+    this.router.navigate(item.link);
+  }
+
   onCategoryLabelClick(category) {
     this.selectedCategory = category.value;
     this.router.navigate(category.link);
     this.loadTags();
-  }
-
-  onAdminLabelClick(adminModule) {
-    this.router.navigate(adminModule.link);
   }
 
   onClickCreateTool() {

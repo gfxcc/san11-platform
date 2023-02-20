@@ -10,6 +10,7 @@ google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
 attr
+attrs
 # bcrypt requires a rust toolchain since v4.0. Install v3.x.x to avoid such a dependency.
 bcrypt==3.2.2
 # AWS SDK

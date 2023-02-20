@@ -1,7 +1,7 @@
 # Referring https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
 from dataclasses import dataclass
 
-import attr
+import attrs
 
 
 class Excep(Exception):

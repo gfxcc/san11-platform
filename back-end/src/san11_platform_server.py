@@ -28,13 +28,12 @@ from handler.model.model_comment import ModelComment
 from handler.model.model_notification import ModelNotification
 from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
-from handler.model.model_subscription import ModelSubscription
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import (ModelUser, get_user_by_email,
                                       get_user_by_username, validate_email,
                                       validate_password, validate_username)
-from handler.model.user import verify_code
+from handler.model.plugins.subscribable import ModelSubscription
 from handler.notification_handler import NotificationHandler
 from handler.package_handler import PackageHandler
 from handler.protos import san11_platform_pb2 as pb
@@ -380,7 +379,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     # Subscription
     @GrpcAbortOnExcep
     @iam_util.assert_login
-    def CreateSubscriptioin(self, request, context):
+    def CreateSubscription(self, request, context):
         return self.subscription_handler.create(
             request.parent, ModelSubscription.from_pb(request.subscription), context).to_pb()
 
@@ -396,24 +395,16 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     @GrpcAbortOnExcep
-    def UpdateSubscriptioin(self, request, context):
+    def UpdateSubscription(self, request, context):
         return self.subscription_handler.update(
             ModelSubscription.from_pb(request),
             FieldMask.from_pb(request.update_mask),
             context).to_pb()
 
     @GrpcAbortOnExcep
-    def DeleteSubscriptioin(self, request, context):
+    def DeleteSubscription(self, request, context):
         return self.subscription_handler.delete(request.name,
                                                 context).to_pb()
-
-    @GrpcAbortOnExcep
-    def UnSubscribe(self, request, context):
-        self.subscription_handler.unsubscribe(
-            request.subscribed_resource,
-            request.subscriber_id,
-            context)
-        return pb.Status(code=0)
 
     # users
     @GrpcAbortOnExcep

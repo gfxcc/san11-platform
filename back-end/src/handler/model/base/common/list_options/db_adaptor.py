@@ -2,7 +2,7 @@ import logging
 import os
 from abc import ABC, abstractclassmethod
 from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 # TODO: Split common into a separate lib
 from .....common.exception import InvalidArgument
@@ -16,10 +16,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 class FieldTrait:
     name: str
     is_repeated: bool
-    type: type
+    type: Any
 
 
-def _cast_json_field(field_name: str, field_type: type) -> str:
+def _cast_json_field(field_name: str, field_type: Any) -> str:
     if field_type is bool:
         field_part = f"(data->>'{field_name}')::boolean"
     elif field_type is int:
@@ -30,7 +30,6 @@ def _cast_json_field(field_name: str, field_type: type) -> str:
 
 
 class DbAdaptor(ABC):
-
     def __init__(self, db_fields_dict: Dict[str, FieldTrait]):
         self._db_fields_dict = db_fields_dict
 
@@ -108,7 +107,6 @@ class PostgresAdaptor(DbAdaptor):
                 statement += f'({gen(sub_expr)})'
             return statement
         if list_options.filter:
-            logger.debug(list_options)
             parts.append(gen(FilterExpr.from_str(list_options.filter)))
 
         if not parts:

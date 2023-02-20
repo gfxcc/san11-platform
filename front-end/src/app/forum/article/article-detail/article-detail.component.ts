@@ -7,7 +7,7 @@ import { San11PlatformServiceService } from 'src/app/service/san11-platform-serv
 import { UploadService } from 'src/app/service/upload.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
-import { getUserUrl, isAdmin, loadUser } from 'src/app/utils/user_util';
+import { getUserUri, isAdmin, loadUser } from 'src/app/utils/user_util';
 import { Article, DeleteArticleRequest, GetUserRequest, ListUsersRequest, ResourceState, UpdateArticleRequest, User } from 'src/proto/san11-platform.pb';
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 
@@ -134,7 +134,7 @@ export class ArticleDetailComponent implements OnInit {
           id: `@${user.username}`,
           userId: user.userId,
           username: user.username,
-          link: getUserUrl(user),
+          link: getUserUri(user),
         })
       );
     });

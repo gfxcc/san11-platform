@@ -9,7 +9,6 @@ from handler.util.file_server import (BucketClass, FileServerType,
 
 from .common.image import Image
 from .common.url import Url
-from .model.resource import get_image_url
 from .protos import san11_platform_pb2
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -42,8 +41,13 @@ class ImageHandler:
                     except Exception as err:
                         logger.error(f'Failed to delete image: {err}')
                 user.image_url = image.url
-                user.update(user_id=user.user_id)
+                user.update(actor_info=user.user_id)
             else:
                 raise Exception(f'Invalid parent: {parent}')
 
         return san11_platform_pb2.Url(url=image.url)
+
+
+def get_image_url(parent: str, filename: str, in_description: bool) -> str:
+    sub_path = 'images' if not in_description else 'images/desc'
+    return f'{parent}/{sub_path}/{filename}'

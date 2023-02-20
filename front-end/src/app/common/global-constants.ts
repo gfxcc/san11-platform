@@ -20,15 +20,4 @@ export class GlobalConstants {
         { value: '3', text: 'MOD', link: ['/categories', 3], icon: 'auto_fix_high' },
     ];
 
-    public static webModules = [
-        { value: '11', text: '讨论区', link: ['/discussion'], icon: 'forum' },
-        { value: '12', text: '专栏文章', link: ['/articles'], icon: 'sticky_note_2' },
-        { value: '13', text: '留言板', link: ['/message-board'], icon: 'note_alt' },
-    ]
-
-    public static adminModules = [
-        {
-            value: '1', text: '管理员', link: ['/admin-message-board'], icon: 'admin_panel_settings',
-        }
-    ]
 }

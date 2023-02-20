@@ -11,12 +11,12 @@ from dataclasses import dataclass
 from typing import (Any, Callable, Dict, Generic, Iterable, List, Optional,
                     Tuple, Type, TypeVar)
 
-import attr
+import attrs
 
 from handler.model.base import base_proto
 from handler.util.name_util import ResourceName
 
-from ...common.exception import InvalidArgument, NotFound
+from ...common.exception import FailedPrecondition, InvalidArgument, NotFound
 from ...db.db_util import (auto_adjust_resource_id_next_val,
                            run_sql_with_param,
                            run_sql_with_param_and_fetch_all,
@@ -62,14 +62,15 @@ class DatetimeDbConverter(DbConverter[datetime.datetime, str]):
     def from_model(self, value: datetime.datetime) -> datetime.datetime:
         return value.astimezone(datetime.timezone.utc)
 
-@attr.define
+
+@attrs.define
 class NestedDbConverter(DbConverter):
     from_model_exec: Callable[[Any], Any] = lambda x: x
     to_model_exec: Callable[[Any], Any] = lambda x: x
 
     def from_model(self, value: _MODEL_T) -> _DB_MODEL_T:
         return self.from_model_exec(value)
-    
+
     def to_model(self, proto_value: _DB_MODEL_T) -> _MODEL_T:
         return self.to_model_exec(proto_value)
 
@@ -91,7 +92,7 @@ class DbModelBase(ABC):
     @classmethod
     def from_db(cls, db_value: Dict) -> _SUB_DB_MODEL_T:
         obj_args = {}
-        for attribute in attr.fields(cls):
+        for attribute in attrs.fields(cls):
             if not attribute.metadata.get(base_core.IS_DB_FIELD):
                 continue
             name, db_field_path = attribute.name, _get_db_path(attribute)
@@ -102,14 +103,15 @@ class DbModelBase(ABC):
         ret = cls(**obj_args)
         # logger.debug(f'{cls.__name__}.from_db({json.dumps(db_value)}) -> {ret}')
         return ret
-    
+
     def to_db(self) -> Dict:
         data = {}
-        for attribute in attr.fields(type(self)):
+        for attribute in attrs.fields(type(self)):
             if not attribute.metadata[base_core.IS_DB_FIELD]:
                 continue
             name, db_field_path = attribute.name, _get_db_path(attribute)
-            data[db_field_path] = _attribute_to_data(attribute, getattr(self, name))
+            data[db_field_path] = _attribute_to_data(
+                attribute, getattr(self, name))
         # logger.debug(f'{type(self).__name__}.to_db({self}) -> {data}')
         return data
 
@@ -181,10 +183,10 @@ class DbModel(DbModelBase):
             # Update NextVal
             auto_adjust_resource_id_next_val(db_table)
         logger.debug(f'CREATED: {self}')
-        self.update(update_update_time=False)
+        DbModel.update(self, update_update_time=False)
 
     @classmethod
-    def from_name(cls, name: str) -> _SUB_DB_MODEL_T:
+    def from_name(cls: Type[_SUB_DB_MODEL_T], name: str) -> _SUB_DB_MODEL_T:
         db_table = cls._DB_TABLE
         parent, resource_id = cls._parse_name(name)
         predicate = ' AND '.join(
@@ -200,7 +202,7 @@ class DbModel(DbModelBase):
         return cls.from_db(resp[0])
 
     @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
+    def list(cls: Type[_SUB_DB_MODEL_T], list_options: ListOptions) -> Tuple[List[_SUB_DB_MODEL_T], str]:
         db_table = cls._DB_TABLE
 
         try:
@@ -220,6 +222,20 @@ class DbModel(DbModelBase):
         next_page_options.watermark = list_options.watermark + len(resp)
 
         return [cls.from_db(data[0]) for data in resp], next_page_options.to_token()
+
+    @classmethod
+    def find(cls, parent: Optional[str], filter: str) -> _SUB_DB_MODEL_T:
+        '''
+        Find a specific item.
+        Raise exception if none or multiple matched items are found.
+        '''
+        list_option = ListOptions(parent=parent, filter=filter)
+        items, _ = cls.list(list_option)
+        if not items:
+            raise NotFound()
+        elif len(items) > 1:
+            raise FailedPrecondition()
+        return items[0]
 
     def update(self, update_update_time: bool = True) -> None:
         if update_update_time:
@@ -274,7 +290,10 @@ class DbModel(DbModelBase):
     def _parse_name(cls, name: str) -> Tuple[str, int]:
         NAME_PATTERN = r'((?P<parent>.+)/)?(?P<collection>[a-zA-Z0-9]+)/(?P<resource_id>[0-9]+)'
         match = re.fullmatch(NAME_PATTERN, name)
-        if not match or match['collection'] != cls._DB_TABLE:
+        # Table name should equal to `collection` in most case.
+        # However, it is also possible that table name is suffixed with `_legacy`
+        # due to data migration.
+        if not match or match['collection'] not in cls._DB_TABLE:
             raise ValueError(
                 f'{name} is not a valid resource name in {cls._DB_TABLE}')
         return match['parent'] or '', int(match['resource_id'])
@@ -283,29 +302,30 @@ class DbModel(DbModelBase):
 def init_db_model(cls: type, db_table: str) -> None:
     cls._DB_TABLE = db_table
     fields_trait = {}
-    for attribute in attr.fields(cls):
+    for attribute in attrs.fields(cls):
         if not attribute.metadata[base_core.IS_DB_FIELD]:
             continue
-        name, is_repeated, type = _get_db_path(attribute), base_core.is_repeated(attribute), attribute.type
+        name, is_repeated, type = _get_db_path(
+            attribute), base_core.is_repeated(attribute), attribute.type
         fields_trait[name] = FieldTrait(name, is_repeated, type)
     cls._LIST_OPTIONS_ADAPTOR = PostgresAdaptor(fields_trait)
 
 
-def _get_db_path(attribute: attr.Attribute) -> str:
+def _get_db_path(attribute: attrs.Attribute) -> str:
     return attribute.metadata.get(base_core.DB_PATH, attribute.name)
 
 
-def _is_db_field(attribute: attr.Attribute) -> bool:
+def _is_db_field(attribute: attrs.Attribute) -> bool:
     return attribute.metadata[base_core.IS_DB_FIELD]
 
 
-def _attribute_from_db(attribute: attr.Attribute, value: Any):
+def _attribute_from_db(attribute: attrs.Attribute, value: Any):
     # TODO: document why a default value is needed.
     def populate_default(value, type):
         if value is None and type in [str, int, bool]:
             return type()
         return value
-    converter: DbConverter = attribute.metadata[base_core.DB_CONVERTER]
+    converter: DbConverter = _attribute_db_converter(attribute)
     if base_core.is_repeated(attribute):
         return [populate_default(converter.to_model(item), attribute.type)
                 for item in (value or [])]
@@ -314,10 +334,15 @@ def _attribute_from_db(attribute: attr.Attribute, value: Any):
             value), attribute.type)
 
 
-def _attribute_to_data(attribute: attr.Attribute, value: Any):
-    converter = attribute.metadata[base_core.DB_CONVERTER]
+def _attribute_to_data(attribute: attrs.Attribute, value: Any):
+    converter = _attribute_db_converter(attribute)
     if base_core.is_repeated(attribute):
         return [converter.from_model(item)
                 for item in value]
     else:
         return converter.from_model(value)
+
+
+def _attribute_db_converter(attribute: attrs.Attribute) -> DbConverter:
+    converter: DbConverter = attribute.metadata.get(base_core.DB_CONVERTER)
+    return converter or PassThroughConverter()

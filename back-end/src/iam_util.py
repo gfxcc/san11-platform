@@ -10,7 +10,6 @@ from handler.auths.session import Session
 from handler.common.exception import (NotFound, PermissionDenied,
                                       Unauthenticated)
 from handler.model.model_user import ModelUser
-from handler.model.user import User
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.name_util import ResourceName
 from handler.util.resource_parser import find_resource

@@ -260,8 +260,8 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.GetAdminMessageRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.AdminMessage.FromString,
                 )
-        self.CreateSubscriptioin = channel.unary_unary(
-                '/routeguide.RouteGuide/CreateSubscriptioin',
+        self.CreateSubscription = channel.unary_unary(
+                '/routeguide.RouteGuide/CreateSubscription',
                 request_serializer=san11__platform__pb2.CreateSubscriptionRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Subscription.FromString,
                 )
@@ -270,20 +270,15 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.ListSubscriptionsRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.ListSubscriptionsResponse.FromString,
                 )
-        self.UpdateSubscriptioin = channel.unary_unary(
-                '/routeguide.RouteGuide/UpdateSubscriptioin',
+        self.UpdateSubscription = channel.unary_unary(
+                '/routeguide.RouteGuide/UpdateSubscription',
                 request_serializer=san11__platform__pb2.UpdateSubscriptionRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Subscription.FromString,
                 )
-        self.DeleteSubscriptioin = channel.unary_unary(
-                '/routeguide.RouteGuide/DeleteSubscriptioin',
+        self.DeleteSubscription = channel.unary_unary(
+                '/routeguide.RouteGuide/DeleteSubscription',
                 request_serializer=san11__platform__pb2.DeleteSubscriptionRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.Subscription.FromString,
-                )
-        self.UnSubscribe = channel.unary_unary(
-                '/routeguide.RouteGuide/UnSubscribe',
-                request_serializer=san11__platform__pb2.UnSubscribeRequest.SerializeToString,
-                response_deserializer=san11__platform__pb2.Status.FromString,
                 )
 
 
@@ -597,9 +592,8 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateSubscriptioin(self, request, context):
+    def CreateSubscription(self, request, context):
         """Subscription
-        This API is idempotent.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -611,25 +605,14 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateSubscriptioin(self, request, context):
+    def UpdateSubscription(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeleteSubscriptioin(self, request, context):
+    def DeleteSubscription(self, request, context):
         """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UnSubscribe(self, request, context):
-        """A utility API to
-        1. locate a subscription by `parent` second in field `name`,
-        `subscriber_id`.
-        2. delete that subscription.
-        This API is idempotent.
-        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -882,8 +865,8 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.GetAdminMessageRequest.FromString,
                     response_serializer=san11__platform__pb2.AdminMessage.SerializeToString,
             ),
-            'CreateSubscriptioin': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateSubscriptioin,
+            'CreateSubscription': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateSubscription,
                     request_deserializer=san11__platform__pb2.CreateSubscriptionRequest.FromString,
                     response_serializer=san11__platform__pb2.Subscription.SerializeToString,
             ),
@@ -892,20 +875,15 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     request_deserializer=san11__platform__pb2.ListSubscriptionsRequest.FromString,
                     response_serializer=san11__platform__pb2.ListSubscriptionsResponse.SerializeToString,
             ),
-            'UpdateSubscriptioin': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateSubscriptioin,
+            'UpdateSubscription': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateSubscription,
                     request_deserializer=san11__platform__pb2.UpdateSubscriptionRequest.FromString,
                     response_serializer=san11__platform__pb2.Subscription.SerializeToString,
             ),
-            'DeleteSubscriptioin': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteSubscriptioin,
+            'DeleteSubscription': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteSubscription,
                     request_deserializer=san11__platform__pb2.DeleteSubscriptionRequest.FromString,
                     response_serializer=san11__platform__pb2.Subscription.SerializeToString,
-            ),
-            'UnSubscribe': grpc.unary_unary_rpc_method_handler(
-                    servicer.UnSubscribe,
-                    request_deserializer=san11__platform__pb2.UnSubscribeRequest.FromString,
-                    response_serializer=san11__platform__pb2.Status.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1752,7 +1730,7 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def CreateSubscriptioin(request,
+    def CreateSubscription(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1762,7 +1740,7 @@ class RouteGuide(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateSubscriptioin',
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/CreateSubscription',
             san11__platform__pb2.CreateSubscriptionRequest.SerializeToString,
             san11__platform__pb2.Subscription.FromString,
             options, channel_credentials,
@@ -1786,7 +1764,7 @@ class RouteGuide(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def UpdateSubscriptioin(request,
+    def UpdateSubscription(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1796,14 +1774,14 @@ class RouteGuide(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateSubscriptioin',
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UpdateSubscription',
             san11__platform__pb2.UpdateSubscriptionRequest.SerializeToString,
             san11__platform__pb2.Subscription.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def DeleteSubscriptioin(request,
+    def DeleteSubscription(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1813,25 +1791,8 @@ class RouteGuide(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteSubscriptioin',
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/DeleteSubscription',
             san11__platform__pb2.DeleteSubscriptionRequest.SerializeToString,
             san11__platform__pb2.Subscription.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UnSubscribe(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/UnSubscribe',
-            san11__platform__pb2.UnSubscribeRequest.SerializeToString,
-            san11__platform__pb2.Status.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

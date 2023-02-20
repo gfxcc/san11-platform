@@ -1,24 +1,24 @@
-from __future__ import annotations
-
 import datetime
 import re
 from dataclasses import dataclass
 from dis import dis
 from typing import Iterable, List, Tuple, Union
 
-import attr
+import attrs
 from google.protobuf import message
 
 from handler.common.exception import AlreadyExists, InvalidArgument, NotFound
 from handler.model.base import ListOptions
 from handler.model.base.base_db import DbConverter
 from handler.model.base.base_proto import ProtoConverter
-from handler.model.model_activity import TrackLifecycle
+from handler.model.plugins.subscribable import Subscribable
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
 
 from ..protos import san11_platform_pb2 as pb
-from .base import Attrib, InitModel, ModelBase, NestedAttrib, NestedModel
+from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
+                   ModelBase, NestedAttrib, NestedModel, StrAttrib)
 
 DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
 
@@ -52,36 +52,22 @@ class EmailDbConverter(DbConverter):
     db_table=None,
     proto_class=pb.UserSettings.NotificationSetting
 )
-@attr.s
+@attrs.define
 class NotificationSettings(NestedModel):
-    send_emails = Attrib(
-        type=bool
-    )
-    subscriptions = Attrib(
-        type=bool
-    )
-    recommendations = Attrib(
-        type=bool
-    )
-    mentions = Attrib(
-        type=bool
-    )
-    threads = Attrib(
-        type=bool
-    )
-    comments = Attrib(
-        type=bool
-    )
-    replies = Attrib(
-        type=bool
-    )
+    send_emails: bool = BoolAttrib()
+    subscriptions: bool = BoolAttrib()
+    recommendations: bool = BoolAttrib()
+    mentions: bool = BoolAttrib()
+    threads: bool = BoolAttrib()
+    comments: bool = BoolAttrib()
+    replies: bool = BoolAttrib()
 
 
 @InitModel(
     db_table=None,
     proto_class=pb.UserSettings
 )
-@attr.s
+@attrs.define
 class UserSettings(NestedModel):
     notification: NotificationSettings = NestedAttrib(
         nested_type=NotificationSettings
@@ -92,64 +78,36 @@ class UserSettings(NestedModel):
     db_table='users',
     proto_class=pb.User,
 )
-@attr.s
-class ModelUser(ModelBase, TrackLifecycle):
+@attrs.define
+class ModelUser(Subscribable, TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/users/{user_id}`
     # E.g. `users/12345`
-    name = Attrib(
-        type=str,
-    )
-    username = Attrib(
-        type=str,
-    )
-    email = Attrib(
-        type=str,
+    name: str = StrAttrib()
+    username: str = StrAttrib()
+    email: str = StrAttrib(
         proto_converter=EmailProtoConverter(),
         db_converter=EmailDbConverter(),
     )
-    type = Attrib(
-        type=int,
-    )
-    image_url = Attrib(
-        type=str,
-    )
-    website = Attrib(
-        type=str,
-    )
-    hashed_password = Attrib(
-        type=str,
-        is_proto_field=False,
-    )
-    subscriber_count = Attrib(
-        type=int,
-    )
-    create_time = Attrib(
-        type=datetime.datetime,
-    )
-    update_time = Attrib(
-        type=datetime.datetime,
-    )
+    type: int = IntAttrib()
+    image_url: str = StrAttrib()
+    website: str = StrAttrib()
+    hashed_password: str = StrAttrib(is_proto_field=False)
+    subscriber_count: int = IntAttrib()
+    create_time: datetime.datetime = DatetimeAttrib()
+    update_time: datetime.datetime = DatetimeAttrib()
     settings: UserSettings = NestedAttrib(
         nested_type=UserSettings,
     )
+
+    @classmethod
+    def from_user_id(cls, user_id: int) -> 'ModelUser':
+        return cls.from_name(f'users/{user_id}')
 
     def to_pb(self) -> message.Message:
         # Field `user_id` only exist in public proto for easy access.
         ret = super().to_pb()
         setattr(ret, 'user_id', self.user_id)
         return ret
-
-    @classmethod
-    def from_pb(cls, proto_model: message.Message) -> ModelUser:
-        return super().from_pb(proto_model)
-
-    @classmethod
-    def from_name(cls, name: str) -> ModelUser:
-        return super().from_name(name)
-
-    @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List[ModelUser], str]:
-        return super().list(list_options)
 
     def is_admin(self) -> bool:
         return self.type == pb.User.UserType.ADMIN

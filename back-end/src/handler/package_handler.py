@@ -10,14 +10,15 @@ from handler.model.activity import Action
 from handler.model.base import (Context, FieldMask, HandlerBase, ModelBase,
                                 merge_resource)
 from handler.model.base.base_db import ListOptions
-from handler.model.model_activity import ModelActivity, search_activity
 from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
-from handler.model.model_subscription import ModelSubscription
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser, get_admins
+from handler.model.plugins.subscribable import list_subscriptions
+from handler.model.plugins.tracklifecycle import ModelActivity, search_activity
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
+from handler.util.name_util import get_parent
 from handler.util.resource_view import ResourceViewVisitor
 from handler.util.state_util import on_approve
 from handler.util.time_util import get_now
@@ -53,7 +54,7 @@ class PackageHandler(HandlerBase):
     def create(self, parent: str, package: ModelPackage, handler_context: HandlerContext) -> ModelPackage:
         package.author_id = handler_context.user.user_id
         package.state = pb.ResourceState.UNDER_REVIEW
-        package.create(parent=parent, user_id=handler_context.user.user_id)
+        package.create(parent=parent, actor_info=handler_context.user.user_id)
         # Post creation actions
         try:
             notifer = Notifier()
@@ -145,16 +146,21 @@ class PackageHandler(HandlerBase):
         if is_visitor:
             package.update(update_update_time=False)
         else:
-            package.update(user_id=user_id)
+            package.update(actor_info=user_id)
 
         # notify all subscribers
         author = ModelUser.from_name(f'users/{package.author_id}')
         view = ResourceViewVisitor().visit(package)
-        if on_approve(base_package.state, update_package.state):
-            for sub in ModelSubscription.list(ListOptions(parent=author.name))[0]:
+
+        if on_approve(
+                pb.ResourceState.DESCRIPTOR.values_by_number(
+                    base_package.state),
+                pb.ResourceState.DESCRIPTOR.values_by_number(update_package.state)):
+            for sub in list_subscriptions(author.name):
+                subscriber = ModelUser.from_name(sub.subscriber_name)
                 notify(
                     sender_id=author.user_id,
-                    receiver_id=sub.subscriber_id,
+                    receiver_id=subscriber.user_id,
                     content=f'{author.username} 发布了 {view.display_name}',
                     link=view.name,
                     image_preview=view.image_url,
@@ -171,14 +177,14 @@ class PackageHandler(HandlerBase):
 
         for binary in ModelBinary.list(ListOptions(parent=package.name))[0]:
             try:
-                binary.delete(user_id=handler_context.user.user_id)
+                binary.delete(actor_info=handler_context.user.user_id)
             except Exception as err:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
 
         for thread in ModelThread.list(ListOptions(parent=package.name))[0]:
             try:
-                thread.delete(user_id=handler_context.user.user_id)
+                thread.delete(actor_info=handler_context.user.user_id)
             except Exception as err:
                 logger.error(f'Failed to delete {thread} under {self}: {err}')
 
@@ -186,7 +192,7 @@ class PackageHandler(HandlerBase):
             BucketClass.REGULAR, package.name)
         get_file_server(FileServerType.S3).delete_folder(
             BucketClass.REGULAR, package.name)
-        package.delete(user_id=handler_context.user.user_id)
+        package.delete(actor_info=handler_context.user.user_id)
         return package
 
     def search_packages(self, request, context):

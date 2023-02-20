@@ -85,18 +85,11 @@ service RouteGuide {
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
 
   // Subscription
-  // This API is idempotent.
-  rpc CreateSubscriptioin(CreateSubscriptionRequest) returns (Subscription) {}
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (Subscription) {}
   rpc ListSubscriptioins(ListSubscriptionsRequest)
       returns (ListSubscriptionsResponse) {}
-  rpc UpdateSubscriptioin(UpdateSubscriptionRequest) returns (Subscription) {}
-  rpc DeleteSubscriptioin(DeleteSubscriptionRequest) returns (Subscription) {}
-  // A utility API to
-  // 1. locate a subscription by `parent` second in field `name`,
-  // `subscriber_id`.
-  // 2. delete that subscription.
-  // This API is idempotent.
-  rpc UnSubscribe(UnSubscribeRequest) returns (Status) {}
+  rpc UpdateSubscription(UpdateSubscriptionRequest) returns (Subscription) {}
+  rpc DeleteSubscription(DeleteSubscriptionRequest) returns (Subscription) {}
 }
 
 // package related
@@ -534,6 +527,7 @@ message GetStatisticRequest { string date = 1; }
 
 message GetAdminMessageRequest {}
 
+// Subscription messages
 message CreateSubscriptionRequest {
   // E.g. ``, `users/123`
   string parent = 1;
@@ -572,14 +566,7 @@ message DeleteSubscriptionRequest {
   string name = 1;
 }
 
-message UnSubscribeRequest {
-  // The name of the resource being subscribed. E.g. `users/123`.
-  string subscribed_resource = 1;
-  int64 subscriber_id = 2;
-}
-
 // Types
-
 message Empty {}
 
 message Status {
@@ -806,6 +793,20 @@ message File {
 }
 
 message Subscription {
+  // Name of the subscriptions is composed by `{parent}/subscriptions/{resource_id}`
+  // `parent` used to be the 
+  // E.g. `users/123/subscriptions/123456`
+  string name = 1;
+  // The name of the subscribed target.
+  // E.g. `categories/1/packages/2`, `users/1234`
+  string target = 2;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp create_time = 3;
+  // [ OUTPUT_ONLY ]
+  google.protobuf.Timestamp update_time = 4;
+}
+
+message LegacySubscription {
   // The `parent` is the resource being subscribed.
   // For name `users/123/subscriptions/1`, `users/123` is the resource being
   // subscribed.
@@ -879,8 +880,10 @@ enum Action {
   LIKE = 11;
   UPVOTE = 12;
   SUBSCRIBE = 13;
+  UNSUBSCRIBE = 15;
   DISLIKE = 14;
 
   // misc
   DOWNLOAD = 21;
+  COLLECT = 22;
 }

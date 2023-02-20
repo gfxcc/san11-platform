@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { UploadService } from 'src/app/service/upload.service';
-import { getUserUrl, signedIn } from 'src/app/utils/user_util';
+import { getUserUri, signedIn } from 'src/app/utils/user_util';
 import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, ListUsersRequest, Package, User } from "../../../../proto/san11-platform.pb";
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { NotificationService } from "../../../common/notification.service";
@@ -187,7 +187,7 @@ export class CommentBoardComponent implements OnInit {
           id: `@${user.username}`,
           userId: user.userId,
           username: user.username,
-          link: getUserUrl(user),
+          link: getUserUri(user),
         })
       );
     });

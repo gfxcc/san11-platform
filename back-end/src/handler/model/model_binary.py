@@ -1,21 +1,21 @@
-from __future__ import annotations
-
 import datetime
 import logging
 import os
 from typing import Dict, List, Optional, Tuple
 
-import attr
+import attrs
+
 from handler.model.base import ListOptions
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
 
 from ..protos import san11_platform_pb2 as pb
 from ..util import gcs
 from ..util.time_util import get_now
-from .base import (Attrib, DbConverter, InitModel,
-                   LegacyDatetimeProtoConverter, ModelBase, ProtoConverter)
-from .model_activity import TrackLifecycle
+from .base import (Attrib, DatetimeAttrib, DbConverter, InitModel, IntAttrib,
+                   LegacyDatetimeProtoConverter, ModelBase, NestedAttrib,
+                   ProtoConverter, StrAttrib)
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -63,7 +63,7 @@ class VersionDbConverter(DbConverter):
         return Version.from_str(db_value)
 
 
-@attr.s(auto_attribs=True)
+@attrs.define(auto_attribs=True)
 class File:
     ext: str
     uri: str
@@ -100,7 +100,7 @@ class FileDbConverter(DbConverter):
     def from_model(self, value: Optional[File]) -> Optional[Dict]:
         if value is None:
             return None
-        return attr.asdict(value)
+        return attrs.asdict(value)
 
     def to_model(self, db_value: Optional[Dict]) -> Optional[File]:
         if db_value is None:
@@ -112,49 +112,33 @@ class FileDbConverter(DbConverter):
     db_table='binaries',
     proto_class=pb.Binary,
 )
-@attr.s
-class ModelBinary(ModelBase, TrackLifecycle):
+@attrs.define
+class ModelBinary(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/packages/{package_id}`
     # E.g. `categories/1/packages/123/binaries/1`
-    name = Attrib(
-        type=str,
-    )
-    download_count = Attrib(
-        type=int,
-    )
-    version = Attrib(
-        type=Version,
+    name: str = StrAttrib()
+    download_count: int = IntAttrib()
+    # TODO: Migrate to `NestedAttrib`
+    version: Version = Attrib(
         proto_converter=VersionProtoConverter(),
         db_converter=VersionDbConverter(),
     )
-    description = Attrib(
-        type=str,
-    )
-    tag = Attrib(
-        type=str,
-    )
-    size = Attrib(
-        type=str,
-    )
+    description: str = StrAttrib()
+    tag: str = StrAttrib()
+    size: str = StrAttrib()
     # BEGINNING - OneOf field resource
-    file = Attrib(
-        type=File,
+    # TODO: Migrate to `NestedAttrib`
+    file: File = Attrib(
         proto_converter=FileProtoConverter(),
         db_converter=FileDbConverter(),
     )
-    download_method = Attrib(
-        type=str,
-    )
+    download_method: str = StrAttrib()
     # END
-    create_time = Attrib(
-        type=datetime.datetime,
+    create_time: datetime.datetime = DatetimeAttrib(
         proto_converter=LegacyDatetimeProtoConverter(),
-        default=get_now(),
     )
-    update_time = Attrib(
-        type=datetime.datetime,
+    update_time: datetime.datetime = DatetimeAttrib(
         proto_converter=LegacyDatetimeProtoConverter(),
-        default=get_now(),
     )
 
     def remove_resource(self) -> None:
@@ -163,14 +147,14 @@ class ModelBinary(ModelBase, TrackLifecycle):
             server.delete_file(BucketClass.REGULAR, self.file.uri)
             self.size = ''
 
-    def delete(self, user_id: Optional[int] = None) -> None:
+    def delete(self, actor_info: Optional[int] = None) -> None:
         self.remove_resource()
-        return super(ModelBinary, self).delete(user_id=user_id)
+        return super(ModelBinary, self).delete(actor_info=actor_info)
 
     @classmethod
-    def from_name(cls, name: str) -> ModelBinary:
+    def from_name(cls, name: str) -> 'ModelBinary':
         return super().from_name(name)
 
     @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List[ModelBinary], str]:
+    def list(cls, list_options: ListOptions) -> Tuple[List['ModelBinary'], str]:
         return super().list(list_options)

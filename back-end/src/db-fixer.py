@@ -1,11 +1,16 @@
+import argparse
 import re
-from typing import Optional
+from typing import List, Optional
 
 from handler.model.base import ListOptions
-from handler.model.model_activity import ModelActivity
 from handler.model.model_binary import ModelBinary
+from handler.model.model_legacy_subscription import ModelLegacySubscription
 from handler.model.model_user import (ModelUser, NotificationSettings,
                                       UserSettings)
+from handler.model.plugins.subscribable import ModelSubscription
+from handler.model.plugins.tracklifecycle import ModelActivity
+from handler.util.name_util import ResourceName
+from handler.util.resource_parser import parse_resource_name
 from handler.util.time_util import get_now
 
 MAX_RESOURCE_COUNT = 100000000000
@@ -71,8 +76,28 @@ def backfill_binary_file_ext():
         # binary.update(update_update_time=False)
 
 
+def backfill_subscriptions():
+    legacy_subs: List[ModelLegacySubscription] = ModelLegacySubscription.list(
+        ListOptions(parent=None))[0]
+    for i, legacy_sub in enumerate(legacy_subs):
+        target = str(ResourceName.from_str(legacy_sub.name).parent)
+        sub = ModelSubscription(name='',
+                                target=target, create_time=get_now(), update_time=get_now())
+        sub.create(parent=f'users/{legacy_sub.subscriber_id}')
+        print(
+            f'Progress {i}/{len(legacy_subs)}')
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Db-fixer')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='verbose mode')
+    args = parser.parse_args()
+    return args
+
+
 def main():
-    backfill_user_settings()
+    backfill_subscriptions()
 
 
 if __name__ == "__main__":

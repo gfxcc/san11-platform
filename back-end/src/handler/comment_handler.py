@@ -11,7 +11,6 @@ from handler.model.model_comment import ModelComment
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
-from handler.model.user import User
 from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify, send_message
@@ -38,7 +37,7 @@ class CommentHandler(HandlerBase):
             thread.latest_commenter_id = user_id
             thread.update(update_update_time=False)
             comment.index = thread.comment_count
-        comment.create(parent=parent, user_id=user_id)
+        comment.create(parent=parent, actor_info=user_id)
 
         # Post creation
         # 1. Send notification to thread author
@@ -103,7 +102,7 @@ class CommentHandler(HandlerBase):
                 activity.delete()
                 comment.upvote_count -= 1
 
-        comment.update(user_id=user_id)
+        comment.update(actor_info=user_id)
         return comment
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelComment:
@@ -115,5 +114,5 @@ class CommentHandler(HandlerBase):
             thread.comment_count -= 1
             thread.reply_count -= len(replies)
             thread.update(update_update_time=False)
-        comment.delete(user_id=handler_context.user.user_id)
+        comment.delete(actor_info=handler_context.user.user_id)
         return comment

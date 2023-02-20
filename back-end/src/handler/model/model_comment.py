@@ -1,12 +1,12 @@
-from __future__ import annotations
-
 import datetime
 from typing import Optional
 
-import attr
-from handler.model.base import Attrib, InitModel, ListOptions, ModelBase
-from handler.model.model_activity import TrackLifecycle
+import attrs
+
+from handler.model.base import (Attrib, DatetimeAttrib, InitModel, IntAttrib,
+                                ListOptions, ModelBase, StrAttrib)
 from handler.model.model_reply import ModelReply
+from handler.model.plugins.tracklifecycle import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
 
@@ -15,31 +15,17 @@ from ..protos import san11_platform_pb2 as pb
     db_table='comments',
     proto_class=pb.Comment,
 )
-@attr.s
-class ModelComment(ModelBase, TrackLifecycle):
+@attrs.define
+class ModelComment(TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/comments/{resource_id}`
     # E.g. `comments/123`, `categories/123/packages/456/comments/789`
-    name = Attrib(
-        type=str,
-    )
-    author_id = Attrib(
-        type=int,
-    )
-    text = Attrib(
-        type=str,
-    )
-    create_time = Attrib(
-        type=datetime.datetime,
-    )
-    update_time = Attrib(
-        type=datetime.datetime,
-    )
-    upvote_count = Attrib(
-        type=int,
-    )
-    index = Attrib(
-        type=int,
-    )
+    name: str = StrAttrib()
+    author_id: int = IntAttrib()
+    text: str = StrAttrib()
+    create_time: datetime.datetime = DatetimeAttrib()
+    update_time: datetime.datetime = DatetimeAttrib()
+    upvote_count: int = IntAttrib()
+    index: int = IntAttrib()
 
     def to_pb(self) -> pb.Comment:
         proto = super(ModelComment, self).to_pb()
@@ -48,11 +34,11 @@ class ModelComment(ModelBase, TrackLifecycle):
         getattr(proto, 'replies').extend([reply.to_pb() for reply in replies])
         return proto
 
-    def delete(self, user_id: Optional[int] = None) -> None:
+    def delete(self, actor_info: Optional[int] = None) -> None:
         for reply in ModelReply.list(ListOptions(parent=self.name))[0]:
             reply.delete()
-        super().delete(user_id=user_id)
+        super().delete(actor_info=actor_info)
 
     @classmethod
-    def from_name(cls, name: str) -> ModelComment:
+    def from_name(cls, name: str) -> 'ModelComment':
         return super().from_name(name)

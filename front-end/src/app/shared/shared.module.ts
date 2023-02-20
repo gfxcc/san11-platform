@@ -22,12 +22,13 @@ import { DiscussionComponent } from './components/discussion/discussion.componen
 import { ThreadCardComponent } from './components/discussion/thread-card/thread-card.component';
 import { ThreadDetailComponent } from './components/discussion/thread-detail/thread-detail.component';
 import { HeaderComponent } from './components/header/header.component';
+import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SidenavService } from './components/sidebar/sidenav.service';
 import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { UserInfoWithSubButtonComponent } from './components/user-info-with-sub-button/user-info-with-sub-button.component';
 import { FullUrlPipe } from './pipes/full-url.pipe';
-import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 
 
 
@@ -74,6 +75,7 @@ import { NotificationCardComponent } from './components/notification-card/notifi
     UserInfoWithSubButtonComponent,
     // Pipes
     FullUrlPipe,
-  ]
+  ],
+  providers: [SidenavService],
 })
 export class SharedModule { }

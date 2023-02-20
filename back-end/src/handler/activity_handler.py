@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 from handler.common.exception import NotFound
 from handler.model.base import ListOptions
-from handler.model.model_activity import ModelActivity
+from handler.model.plugins.tracklifecycle import ModelActivity
 from handler.util.resource_view import ResourceViewVisitor
 
 from .protos import san11_platform_pb2 as pb

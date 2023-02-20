@@ -8,7 +8,6 @@ from handler.model.base import (FieldMask, HandlerBase, ListOptions,
 from handler.model.model_article import ModelArticle
 from handler.model.model_package import ModelPackage
 from handler.model.model_user import ModelUser
-from handler.model.user import User
 from handler.util import gcs
 from handler.util.html_util import get_text_from_html
 from handler.util.notifier import notify
@@ -25,7 +24,7 @@ class ThreadHandler(HandlerBase):
     def create(self, parent: str, thread: ModelThread, handler_context) -> ModelThread:
         thread.author_id = handler_context.user.user_id
         thread.state = pb.ResourceState.NORMAL
-        thread.create(parent=parent, user_id=handler_context.user.user_id)
+        thread.create(parent=parent, actor_info=handler_context.user.user_id)
 
         # Send notification
         # TODO: Skip notification if the parent is not a resource.
@@ -38,7 +37,7 @@ class ThreadHandler(HandlerBase):
                 notify(
                     sender_id=thread.author_id,
                     receiver_id=parent_resource.author_id,
-                    content=f'{User.from_id(thread.author_id).username} 评论了 {view.display_name}: {thread.subject}',
+                    content=f'{ModelUser.from_name(f"users/{thread.author_id}").username} 评论了 {view.display_name}: {thread.subject}',
                     link=thread.name,
                     image_preview=view.image_url,
                 )
@@ -69,7 +68,7 @@ class ThreadHandler(HandlerBase):
         thread.update(handler_context.user.user_id)
         return thread
 
-    def delete(self, name: str, handler_context) -> ModelThread:
+    def delete(self, name: str, handler_context: HandlerContext) -> ModelThread:
         thread = ModelThread.from_name(name)
         gcs.delete_folder(thread.name)
         thread.delete(handler_context.user.user_id)

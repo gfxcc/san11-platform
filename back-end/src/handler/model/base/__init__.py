@@ -48,7 +48,7 @@ In most case, a resource could exists in 3 differnt layers.
 @InitModel(
     ...
 )
-@attr.s
+@attrs.define
 class MyModel(ModelBase):
     first_attr = Attrib(
         ...
@@ -73,15 +73,17 @@ from __future__ import annotations
 
 from abc import ABC
 from copy import deepcopy
-from typing import List, Optional, Tuple, Type, TypeVar
+from typing import List, Optional, Tuple, Type, TypeVar, Union
 
-import attr
+import attrs
 
-from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
+# from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
 # Export sections
-from .base import Attrib, InitModel, NestedAttrib
+from .base import (Attrib, BoolAttrib, BoolListAttrib, DatetimeAttrib,
+                   DatetimeListAttrib, InitModel, IntAttrib, IntListAttrib,
+                   NestedAttrib, StrAttrib, StrListAttrib)
 from .base_core import is_repeated
 from .base_db import DbConverter  # noqa
 from .base_proto import DatetimeProtoConverter  # noqa
@@ -95,30 +97,31 @@ _SUB_MODEL_BASE_T = TypeVar('_SUB_MODEL_BASE_T', bound='ModelBase')
 # TODO: integrate TrackLifecycle
 
 
-class ModelBase(base_db.DbModel, base_proto.ProtoModelBase):
-    def create(self, parent: str, user_id: Optional[int] = None, create_activity: bool = True) -> None:
+class LifecycleEventsBase(ABC):
+    def create(self, parent: str, actor_info: Optional[Union[int, str]] = None):
+        ...
+
+    def update(self, update_update_time: bool = True, actor_info: Optional[Union[int, str]] = None):
+        ...
+
+    def delete(self, actor_info: Optional[Union[int, str]]):
+        ...
+
+
+class ModelBase(base_db.DbModel, base_proto.ProtoModelBase, LifecycleEventsBase):
+    name: str
+
+    # TODO: Migrate callers to pass `actor_info` in `str`. E.g. `users/123`
+    def create(self, parent: str, actor_info: Optional[Union[int, str]] = None) -> None:
         base_db.DbModel.create(self, parent)
-        if isinstance(self, TrackLifecycle) and user_id and create_activity:
-            ModelActivity(name='',
-                          create_time=get_now(),
-                          action=Action.CREATE.value,
-                          resource_name=self.name).create(parent=f'users/{user_id}')
 
-    def update(self, update_update_time: bool = True, user_id: Optional[int] = None, create_activity: bool = True) -> None:
+    # TODO: Migrate callers to pass `actor_info` in `str`. E.g. `users/123`
+    def update(self, update_update_time: bool = True, actor_info: Optional[Union[int, str]] = None) -> None:
         base_db.DbModel.update(self, update_update_time=update_update_time)
-        if isinstance(self, TrackLifecycle) and user_id and create_activity:
-            ModelActivity(name='',
-                          create_time=get_now(),
-                          action=Action.UPDATE.value,
-                          resource_name=self.name).create(parent=f'users/{user_id}')
 
-    def delete(self, user_id: Optional[int] = None, create_activity: bool = True) -> None:
+    # TODO: Migrate callers to pass `actor_info` in `str`. E.g. `users/123`
+    def delete(self, actor_info: Optional[Union[int, str]]) -> None:
         base_db.DbModel.delete(self)
-        if isinstance(self, TrackLifecycle) and user_id and create_activity:
-            ModelActivity(name='',
-                          create_time=get_now(),
-                          action=Action.DELETE.value,
-                          resource_name=self.name).create(parent=f'users/{user_id}')
 
 
 class NestedModel(base_proto.ProtoModelBase, base_db.DbModelBase):
@@ -160,7 +163,7 @@ def merge_resource(base_resource: _SUB_MODEL_BASE_T,
     if isinstance(base_resource, ModelBase) and isinstance(update_request, ModelBase):
         updated_resource = deepcopy(base_resource)
         for path in field_mask.paths:
-            if is_repeated(attr.fields_dict(type(base_resource))[path]):
+            if is_repeated(attrs.fields_dict(type(base_resource))[path]):
                 getattr(updated_resource, path)[
                     :] = getattr(update_request, path)
             else:
