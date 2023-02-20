@@ -27,7 +27,8 @@
             <app-package-card [package]="package" class="module package"></app-package-card>
         </app-comment-card> -->
         <ng-container *ngFor="let comment of this.comments">
-            <app-comment-card [comment]="comment" [resourceOwnerId]="this.resourceOwnerId" class="comment-card" (commentDeleteEvent)="onCommentDelete($event)" (replyCreateEvent)="onReplyCreate($event)"></app-comment-card>
+            <app-comment-card id="comment-{{comment.index}}" [comment]="comment" [resourceOwnerId]="this.resourceOwnerId" (commentDeleteEvent)="onCommentDelete($event)" (replyCreateEvent)="onReplyCreate($event)"></app-comment-card>
+            <!-- <div id="comment-{{comment.index}}">hi</div> -->
         </ng-container>
     </div>
 

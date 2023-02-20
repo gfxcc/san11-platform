@@ -21,6 +21,7 @@
 
 .contents {
     margin-top: 30px;
+    display: grid;
 }
 
 .actions-section {
@@ -29,6 +30,14 @@
 
 .editor {
     height: 200px;
+}
+
+.highlighted {
+    font-weight: bolder;
+    font-style: italic;
+    /* border-left: 1rem solid; */
+    border-left: solid #5B6DCD 10px;
+    /* box-sizing: border-box; */
 }
 
 h5 {
