@@ -5,9 +5,7 @@ export function getResolvedUrl(route: ActivatedRouteSnapshot): string {
 }
 
 
-export function openInNewTab(router: Router, namedRoute) {
-    let newRelativeUrl = router.createUrlTree([namedRoute]);
+export function openInNewTab(router: Router, uri: string) {
     let baseUrl = window.location.href.replace(router.url, '');
-
-    window.open(baseUrl + newRelativeUrl, '_blank');
+    window.open(baseUrl.toString() + "/" + uri, '_blank');
 }

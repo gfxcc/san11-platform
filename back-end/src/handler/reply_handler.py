@@ -36,7 +36,7 @@ class ReplyHandler(HandlerBase):
         if isinstance(grand_parent, ModelThread):
             thread = grand_parent
             comment = find_resource(ResourceName.from_str(parent))
-            view = ResourceViewVisitor().visit(thread)
+            view = ResourceViewVisitor().visit(reply)
             receiver = ModelUser.from_name(f'users/{comment.author_id}')
             if receiver.settings.notification.replies:
                 notify(

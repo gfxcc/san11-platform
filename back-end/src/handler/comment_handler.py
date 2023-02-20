@@ -38,20 +38,20 @@ class CommentHandler(HandlerBase):
             thread.update(update_update_time=False)
             comment.index = thread.comment_count
         comment.create(parent=parent, actor_info=user_id)
+        comment_view = ResourceViewVisitor().visit(comment)
 
         # Post creation
         # 1. Send notification to thread author
         if isinstance(parent_obj, ModelThread):
             thread = parent_obj
-            view = ResourceViewVisitor().visit(thread)
             receiver = ModelUser.from_name(f'users/{thread.author_id}')
             if receiver.settings.notification.comments:
                 notify(
                     sender_id=user_id,
                     receiver_id=receiver.user_id,
-                    content=f"{username} 评论了 {view.display_name}: {get_text_from_html(thread.content)}",
-                    link=view.name,
-                    image_preview=view.image_url,
+                    content=f"{username} 评论了 {comment_view.display_name}: {get_text_from_html(thread.content)}",
+                    link=comment_view.name,
+                    image_preview=comment_view.image_url,
                 )
         # 2. Send notification to user be @
         # (TODO): wrapper this into a func so that it can be reused by reply, thread.
@@ -65,7 +65,7 @@ class CommentHandler(HandlerBase):
                     sender_id=user_id,
                     receiver_id=receiver.user_id,
                     content=f"{username} 在评论中提到了你",
-                    link=comment.name,
+                    link=comment_view.name,
                     image_preview='',
                 )
         return comment
