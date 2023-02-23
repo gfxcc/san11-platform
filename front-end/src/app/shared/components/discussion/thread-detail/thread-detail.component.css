@@ -21,7 +21,7 @@
 }
 
 .author-section {
-    width: 144px;
+    max-width: 144px;
     padding: 12px;
     min-height: 150px;
     text-align: center;

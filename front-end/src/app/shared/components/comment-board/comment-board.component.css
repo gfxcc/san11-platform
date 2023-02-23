@@ -50,3 +50,9 @@ h5 {
     margin-top: 0px;
     margin-bottom: 8px;
 }
+
+@media (max-width: 40rem) {
+    .main {
+        padding: 6px 0;
+    }
+}

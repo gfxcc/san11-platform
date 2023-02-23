@@ -90,10 +90,11 @@
 
 @media (max-width: 40rem) {
     .main {
-        padding: 6px;
+        padding: 2px;
     }
 
     .author-section {
+        width: 60px;
         padding: 6px;
     }
 

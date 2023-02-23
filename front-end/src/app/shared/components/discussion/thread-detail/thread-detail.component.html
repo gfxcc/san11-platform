@@ -62,6 +62,6 @@
         </footer>
 
 
-        <app-comment-board [parent]="this.thread.name" commentsOrder="create_time"></app-comment-board>
+        <app-comment-board [parent]="this.thread.name" [resourceOwnerId]="this.thread.authorId" commentsOrder="create_time"></app-comment-board>
     </div>
 </div>

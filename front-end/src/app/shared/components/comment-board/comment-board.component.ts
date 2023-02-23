@@ -23,6 +23,7 @@ export class CommentBoardComponent implements OnInit {
   @Input() commentsOrder: string;
   @Input() disableInput = false;
   @Input() inputPlaceHolder = '输入评论';
+  @Input() resourceOwnerId: string;
 
   @ViewChild('commentForm') commentFormElement: ElementRef
 
@@ -34,7 +35,6 @@ export class CommentBoardComponent implements OnInit {
   comments: Comment[] = [];
   commentCount: string;
 
-  resourceOwnerId: string;
 
   descEditor = Editor;
   descEditor_data: string;

@@ -1,41 +1,39 @@
 <div class="main">
 
     <div mat-card-avatar class="author-section">
-        <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
-        <div>
-            <div>
-                <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
-            </div>
-            <div>
-                <span *ngIf="this.user?.userId === this.resourceOwnerId" style="margin-left: 5px; margin-right: 5px; color:#3f51b5">[作者]</span>
-            </div>
-        </div>
+        <img [hidden]="this.hideUserImage" [src]="this.userImage"
+            (load)="this.hideUserImage= false;" class="author-image">
     </div>
     <div class="right radius-border shadow-border">
         <div (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
             <div class="header">
-                <span class="create-time">{{getCommentAge()}}</span>
+                <div>
+                    <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
+                    <span *ngIf="this.user?.userId === this.resourceOwnerId"
+                        style="margin-left: 5px; color:#3f51b5">[作者]</span>
+                    <span class="create-time">{{getCommentAge()}}</span>
+                </div>
 
                 <span class="example-spacer"></span>
 
-
                 <button mat-icon-button [matMenuTriggerFor]="menu">
                     <mat-icon>more_vert</mat-icon>
-                    </button>
+                </button>
                 <mat-menu #menu="matMenu">
                     <button mat-menu-item disabled>
-                    <mat-icon>push_pin</mat-icon>
-                    <span>置顶</span>
+                        <mat-icon>push_pin</mat-icon>
+                        <span>置顶</span>
                     </button>
 
                     <button mat-menu-item (click)="onDeleteComment()">
-                    <mat-icon>delete</mat-icon>
-                    <span>删除</span>
+                        <mat-icon>delete</mat-icon>
+                        <span>删除</span>
                     </button>
                 </mat-menu>
 
-                <span *ngIf="this.comment.index != &quot;0&quot;" style="display: inline-flex;
-                align-items: center;"> #{{this.comment.index}} </span>
+                <span *ngIf="this.comment.index != &quot;0&quot;"
+                    style="display: inline-flex;
+                    align-items: center;"> #{{this.comment.index}} </span>
                 <!-- <div *ngIf="!this.hideControl">
                     <button mat-icon-button class="icon-button" (click)="onDeleteComment()">
                     <mat-icon class="icon">delete</mat-icon>
@@ -55,33 +53,42 @@
                     <mat-icon class="icon">thumb_up</mat-icon>
                 </button>
                 <span [hidden]="this.comment.upvoteCount===&quot;0&quot;">{{this.comment.upvoteCount}}</span>
-
-                <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
+                <button class="button" type="submit" mat-button color="primary"
+                    (click)="onReply()">回复</button>
             </div>
         </div>
 
-        <div *ngIf="this.comment.replies.length!=0" style="margin-top: 5px; margin-right: 10px;">
+        <div *ngIf="this.comment.replies.length!=0" style="margin-top: 5px;
+            margin-right: 10px;">
             <ng-container *ngFor="let reply of this.comment.replies">
-                <app-reply-card [reply]="reply" [resourceOwnerId]="this.resourceOwnerId" class="reply-card" (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply()"></app-reply-card>
+                <app-reply-card [reply]="reply"
+                    [resourceOwnerId]="this.resourceOwnerId"
+                    (replyDeleteEvent)="onReplyDelete($event)"
+                    (replyEvent)="onReply()"></app-reply-card>
             </ng-container>
         </div>
 
         <div *ngIf="!this.hideReplyEnter" class="reply-section">
 
             <div mat-card-avatar class="author-image">
-                <img [hidden]="this.hideAuthorImage" [src]="this.authorImage" (load)="this.hideAuthorImage = false;" class="author-image">
+                <img [hidden]="this.hideAuthorImage" [src]="this.authorImage"
+                    (load)="this.hideAuthorImage= false;" class="author-image">
             </div>
 
-            <form #replyForm="ngForm" (ngSubmit)="onCreateReply(replyForm.value);replyForm.resetForm();">
-
+            <form #replyForm="ngForm"
+                (ngSubmit)="onCreateReply(replyForm.value);replyForm.resetForm();">
                 <mat-form-field style="width: 100%;">
-                    <textarea #replyInput (keyup)="textAreaAdjust($event)" matInput type="text" matInput placeholder="输入回复" ngModel name="input" style="height: 15px;"> </textarea>
+                    <textarea #replyInput (keyup)="textAreaAdjust($event)"
+                        matInput type="text" matInput placeholder="输入回复" ngModel
+                        name="input" style="height: 15px;"> </textarea>
                 </mat-form-field>
 
                 <div class="actions-section">
                     <span class="example-spacer"></span>
-                    <button class="button" mat-button color="grey" (click)="onCancelReply()">取消</button>
-                    <button class="button" [disabled]="!replyForm.valid" type="submit" mat-raised-button color="primary">确定</button>
+                    <button class="button" mat-button color="grey"
+                        (click)="onCancelReply()">取消</button>
+                    <button class="button" [disabled]="!replyForm.valid"
+                        type="submit" mat-raised-button color="primary">确定</button>
                 </div>
             </form>
 
