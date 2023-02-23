@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { onMobile } from 'src/app/utils/layout_util';
 import { CreateTagRequest, CreateThreadRequest, DeleteTagRequest, ListTagsRequest, Tag, Thread } from '../../../../proto/san11-platform.pb';
 import { GlobalConstants } from '../../../common/global-constants';
 import { NotificationService } from '../../../common/notification.service';
@@ -8,6 +9,7 @@ import { ComponentMessage, EventEmiterService } from '../../../service/event-emi
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { isAdmin, loadUser, signedIn } from '../../../utils/user_util';
 import { TextInputDialogComponent } from '../text-input-dialog/text-input-dialog.component';
+import { SidenavService } from './sidenav.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -47,6 +49,7 @@ export class SidebarComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private _eventEmiter: EventEmiterService,
+    private sidenavService: SidenavService,
   ) {
     const userId = loadUser().userId;
   }
@@ -107,10 +110,16 @@ export class SidebarComponent implements OnInit {
   }
 
   onClickSidenav(item) {
+    if (onMobile()) {
+      this.sidenavService.close();
+    }
     this.router.navigate(item.link);
   }
 
   onCategoryLabelClick(category) {
+    if (onMobile()) {
+      this.sidenavService.close();
+    }
     this.selectedCategory = category.value;
     this.router.navigate(category.link);
     this.loadTags();

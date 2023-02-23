@@ -5,7 +5,7 @@ import { LoadingComponent } from 'src/app/common/components/loading/loading.comp
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
-import { loadUser } from 'src/app/utils/user_util';
+import { loadUser, signedIn } from 'src/app/utils/user_util';
 import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse } from 'src/proto/san11-platform.pb';
 
 
@@ -29,6 +29,11 @@ export class HistoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+      this.router.navigate(['/']);
+      return
+    }
     this.userId = loadUser().userId;
     this.load_activities();
 

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { SidenavService } from './shared/components/sidebar/sidenav.service';
+import { onMobile } from './utils/layout_util';
 
 
 
@@ -16,8 +17,8 @@ export class AppComponent {
   @ViewChild('sidenav', { static: true }) public sidenav: MatSidenav;
 
   // To auto hide sidebar on mobile.
-  sideBarOpen = !window.matchMedia('(max-width: 40rem)').matches;
-  sideBarMode = window.matchMedia('(max-width: 40rem)').matches ? 'over' : 'side'
+  sideBarOpen = !onMobile();
+  sideBarMode = onMobile() ? 'over' : 'side'
 
   constructor(
     private sidenavService: SidenavService,
