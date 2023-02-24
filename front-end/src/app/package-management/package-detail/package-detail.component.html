@@ -132,10 +132,9 @@
                     </div>
 
                     <div class="icon-button">
-                        <a matTooltip="收藏 (未开放)" class="toggle-button-render
-                            disabled-text">
-                            <button mat-icon-button class="button-svg"
-                                [disabled]="true">
+                        <a matTooltip="收藏" class="toggle-button-render"
+                            (click)="onCollect()">
+                            <button mat-icon-button class="button-svg">
                                 <svg viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -268,7 +267,8 @@
                 <span class="example-spacer"></span>
             </div>
 
-            <div *ngIf="(isAdmin() || isAuthor())" class="package-controller show-border-dev">
+            <div *ngIf="(isAdmin() || isAuthor())" class="package-controller
+                show-border-dev">
                 <div class="admin-zone" *ngIf="isAdmin()">
                     <button mat-button mat-stroked-button color="accent"
                         *ngIf="this.package.state===2" (click)="onApprove()">通过审核</button>

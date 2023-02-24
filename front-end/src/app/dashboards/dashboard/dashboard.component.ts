@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
@@ -17,7 +17,7 @@ export interface OrderOption {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  packages: Package[];
+  @Input() packages: Package[];
   listRequest: ListPackagesRequest = undefined;
 
   orderOptions: OrderOption[] = [
@@ -60,7 +60,9 @@ export class DashboardComponent implements OnInit {
       const query = ap.qparams['query']
       const userId = ap.parentParams.userId;
 
-      if (query != undefined) {
+      if (this.packages?.length > 0 ) {
+        // packages are passed;
+      } else if (query != undefined) {
         this.searchPackages(query);
       } else if (categoryId != undefined) {
         this.listRequest = new ListPackagesRequest({

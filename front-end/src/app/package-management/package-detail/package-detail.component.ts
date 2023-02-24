@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
-import { Action, CreateImageRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
@@ -634,6 +634,22 @@ export class PackageDetailComponent implements OnInit {
       }
     }
     this.toggleAction('dislike_count');
+  }
+
+  onCollect() {
+    this.san11pkService.createSubscription(new CreateSubscriptionRequest({
+      parent: getUserUri(loadUser()),
+      subscription: new Subscription({
+        target: this.package.name,
+      }),
+    })).subscribe(
+      (resp: Subscription) => {
+        this.notificationService.success(`收藏成功`);
+      }, error => {
+        this.notificationService.warn(`收藏失败: ${error.statusMessage}`);
+      }
+    );
+    console.log('on collect');
   }
 
   onReport() {

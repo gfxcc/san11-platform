@@ -153,9 +153,8 @@ class PackageHandler(HandlerBase):
         view = ResourceViewVisitor().visit(package)
 
         if on_approve(
-                pb.ResourceState.DESCRIPTOR.values_by_number(
-                    base_package.state),
-                pb.ResourceState.DESCRIPTOR.values_by_number(update_package.state)):
+                pb.ResourceState.DESCRIPTOR.values_by_number[base_package.state],
+                pb.ResourceState.DESCRIPTOR.values_by_number[update_package.state]):
             for sub in list_subscriptions(author.name):
                 subscriber = ModelUser.from_name(sub.subscriber_name)
                 notify(
