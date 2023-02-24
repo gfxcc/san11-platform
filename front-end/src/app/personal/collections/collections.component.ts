@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
-import { getUserUri, loadUser } from 'src/app/utils/user_util';
+import { getUserUri, loadUser, signedIn } from 'src/app/utils/user_util';
 import { ListPackagesRequest, ListPackagesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, Package, Subscription } from 'src/proto/san11-platform.pb';
 
 
@@ -20,9 +21,15 @@ export class CollectionsComponent implements OnInit {
     public san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private dialog: MatDialog,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+      this.router.navigate(['/']);
+      return
+    }
     this.loading = this.dialog.open(LoadingComponent);
     this.loadCollections();
   }
