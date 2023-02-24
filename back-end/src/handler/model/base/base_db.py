@@ -216,6 +216,7 @@ class DbModel(DbModelBase):
                 message=f'Invalid list_options = {list_options}: {err}')
 
         sql = f"SELECT data FROM {db_table} {where_statement} {order_statement} {limit_statement}"
+        logger.debug(sql)
         resp = run_sql_with_param_and_fetch_all(sql, params)
 
         next_page_options = copy.copy(list_options)

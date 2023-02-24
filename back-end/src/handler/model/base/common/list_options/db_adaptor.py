@@ -1,8 +1,10 @@
 import logging
 import os
+import secrets
+import string
 from abc import ABC, abstractclassmethod
 from dataclasses import dataclass
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 # TODO: Split common into a separate lib
 from .....common.exception import InvalidArgument
@@ -73,7 +75,7 @@ class PostgresAdaptor(DbAdaptor):
 
     def gen_where(self, list_options: ListOptions) -> Tuple[str, Dict]:
         parts = []
-        params = {}
+        params: Dict[str, Union[int, str, bool]] = {}
         if list_options.parent is not None:
             parts.append('parent = %(parent)s')
             params = {'parent': list_options.parent}
@@ -83,14 +85,18 @@ class PostgresAdaptor(DbAdaptor):
                 item = expr.value
                 field_name, comp_op_str, value = item.field_name, str(
                     item.comp_op), item.value
+                # To disambiguite filed_name in the case where the same field name is used
+                # in where statement multiple times.
+                # E.g. `name='a' OR name='b'`
+                casted_field_name = f'{field_name}_{gen_random_str()}'
                 field_trait = self.get_field_trait(item.field_name)
                 if field_trait.is_repeated:
                     if item.comp_op != Comp_Op.HAS:
                         raise InvalidArgument(
                             f'{item.field_name} is a repeated fields which only accept `:` operation')
                     # https://www.postgresql.org/docs/9.5/functions-json.html
-                    params[field_name] = value
-                    return f"(data->'{field_name}')::jsonb ? %({field_name})s"
+                    params[casted_field_name] = value
+                    return f"(data->'{field_name}')::jsonb ? %({casted_field_name})s"
                 else:
                     field_part = _cast_json_field(field_name, field_trait.type)
                     if isinstance(value, str) and self.FUZZY_MATCH_PATTERN in value:
@@ -98,8 +104,8 @@ class PostgresAdaptor(DbAdaptor):
                         comp_op_str = 'LIKE'
                     else:
                         comp_op_str = str(item.comp_op)
-                    params[field_name] = value
-                    return f"{field_part} {comp_op_str} %({field_name})s"
+                    params[casted_field_name] = value
+                    return f"{field_part} {comp_op_str} %({casted_field_name})s"
             statement = ''
             for sub_expr in expr.value:
                 if sub_expr.logic_op:
@@ -117,3 +123,9 @@ class PostgresAdaptor(DbAdaptor):
         limit, offset = list_options.page_size, int(
             list_options.watermark) if list_options.watermark else 0
         return f'LIMIT {limit} OFFSET {offset}'
+
+
+def gen_random_str(l: int = 8) -> str:
+    '''Generate a random string'''
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for i in range(l))
