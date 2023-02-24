@@ -244,6 +244,11 @@ export class ArticleDetailComponent implements OnInit {
     return this.article.createTime.toDate().toLocaleString("en-US", { timeZone: tz });
   }
 
+  getArticleUpdateTime() {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return this.article.updateTime.toDate().toLocaleString("en-US", { timeZone: tz });
+  }
+
 
   // utils
   isAdmin() {
