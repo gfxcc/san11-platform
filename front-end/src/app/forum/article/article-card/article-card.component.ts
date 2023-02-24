@@ -35,7 +35,7 @@ export class ArticleCardComponent implements OnInit {
   }
 
   getArticleAge() {
-    return getAge(this.article.createTime);
+    return getAge(this.article.updateTime);
   }
 
   getUserAvatar(): string {

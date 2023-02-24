@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
-import { Action, CreateImageRequest, DeletePackageRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
@@ -61,6 +61,9 @@ export class PackageDetailComponent implements OnInit {
   liked = false;
   disliked = false;
 
+  // The subscription of the current user to the package
+  subscription: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -87,6 +90,33 @@ export class PackageDetailComponent implements OnInit {
     this.configDescEditor();
 
     this.tagCanEdit = this.isAuthor() || this.isAdmin();
+    this.loadCollected();
+  }
+
+  get collectButtonText(): string {
+    if (this.isCollected) {
+      return '取消收藏';
+    } else {
+      return '收藏';
+    }
+  }
+
+  get isCollected(): boolean {
+    return this.subscription != undefined;
+  }
+
+  loadCollected() {
+    this.san11pkService.listSubscription(new ListSubscriptionsRequest({
+      parent: getUserUri(loadUser()),
+      filter: `target="${this.package.name}"`,
+    })).subscribe(
+      (resp: ListSubscriptionsResponse) => {
+        this.subscription = resp.subscriptions[0];
+      },
+      error => {
+        this.notificationService.warn(`载入收藏失败: ${error.statusMessage}`);
+      }
+    );
   }
 
   ngAfterViewInit(): void {
@@ -636,13 +666,40 @@ export class PackageDetailComponent implements OnInit {
     this.toggleAction('dislike_count');
   }
 
+  onToggleCollect() {
+    if (this.isCollected) {
+      this.san11pkService.deleteSubscription(new DeleteSubscriptionRequest({
+        name: this.subscription.name,
+      })).subscribe(
+        (resp: Subscription) => {
+          this.subscription = undefined;
+          this.notificationService.success(`已取消收藏`);
+        }, error => {
+          this.notificationService.warn(`取消收藏失败: ${error.statusMessage}`);
+        }
+      );
+    } else {
+      this.san11pkService.createSubscription(new CreateSubscriptionRequest({
+        parent: getUserUri(loadUser()),
+        subscription: new Subscription({
+          target: this.package.name,
+        }),
+      })).subscribe(
+        (resp: Subscription) => {
+          this.subscription = resp;
+          this.notificationService.success(`收藏成功`);
+        }, error => {
+          this.notificationService.warn(`收藏失败: ${error.statusMessage}`);
+        }
+      );
+    }
+  }
+
   onReport() {
     if (!signedIn()) {
       this.notificationService.warn('请登录');
       return;
     }
-
-
   }
 
   loadAuthor() {
@@ -656,6 +713,10 @@ export class PackageDetailComponent implements OnInit {
         this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
       }
     );
+  }
+
+  onDescription() {
+    this.descFolded = false;
   }
 
 

@@ -21,11 +21,8 @@ import { LoadingComponent } from './common/components/loading/loading.component'
 import { TextDialogComponent } from './common/components/text-dialog/text-dialog.component';
 import { TextInputDialogComponent } from './common/components/text-input-dialog/text-input-dialog.component';
 import { GlobalConstants } from './common/global-constants';
-import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
-import { MessageBoardComponent } from './dashboards/message-board/message-board.component';
 import { ForumModule } from './forum/forum.module';
 import { AuthorDialog, CreatePackageComponent } from './package-management/create-package/create-package.component';
-import { DeleteDialog, PackageCardComponent } from './package-management/package-card/package-card.component';
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 import { CreateNewVersionComponent } from "./package-management/version-management/create-new-version/create-new-version.component";
 import { BranchComponent } from './package-management/version-management/version-panel/branch/branch.component';
@@ -39,13 +36,10 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
 @NgModule({
   declarations: [
     AppComponent,
-    PackageCardComponent,
     SigninComponent,
     RegisterComponent,
     CreatePackageComponent,
-    DeleteDialog,
     AuthorDialog,
-    DashboardComponent,
     LoadingComponent,
     PackageDetailComponent,
     VersionPanelComponent,
@@ -53,7 +47,6 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
     CreateNewVersionComponent,
     TextDialogComponent,
     TextInputDialogComponent,
-    MessageBoardComponent,
     AdminMessageBoardComponent,
     BasicInfoComponent,
   ],

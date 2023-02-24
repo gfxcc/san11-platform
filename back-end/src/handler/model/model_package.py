@@ -9,6 +9,7 @@ from google.protobuf import message
 from handler.common.exception import NotFound
 from handler.model.base import ListOptions
 from handler.model.model_tag import ModelTag
+from handler.model.plugins.subscribable import Subscribable
 from handler.model.plugins.tracklifecycle import TrackLifecycle
 
 from ..protos import san11_platform_pb2 as pb
@@ -45,7 +46,7 @@ class TagDbConverter(DbConverter):
     proto_class=pb.Package,
 )
 @attrs.define
-class ModelPackage(TrackLifecycle, ModelBase):
+class ModelPackage(Subscribable, TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/packages/{package_id}`
     # E.g. `categories/1/packages/123`
     name: str = StrAttrib()
@@ -68,3 +69,6 @@ class ModelPackage(TrackLifecycle, ModelBase):
     download_count: int = IntAttrib()
     like_count: int = IntAttrib()
     dislike_count: int = IntAttrib()
+
+    # Only to allow `ModelPackage` be subscribable.
+    subscriber_count: int = IntAttrib(is_proto_field=False)

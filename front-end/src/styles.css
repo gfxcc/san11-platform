@@ -9,30 +9,18 @@
     --animation-duration: 200ms;
     --animation-timing-curve: ease-in-out;
     --border-color: rgba(0, 0, 0, .12);
+    --clickable-background-color: #F2F2F2;
+    --clickable-background-color-hover: rgba(0, 0, 0, 0.1);
 }
 
 html,
 body {
     height: 100%;
-}
-
-body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     font-size: 15px;
-}
-
-html,
-body {
-    height: 100%;
-}
-
-body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
     min-height: 100vh;
     background: white;
-    /* background: #F9F9F9; */
 }
 
 .ck-editor__editable {
@@ -168,6 +156,10 @@ body {
     cursor: pointer;
     border-bottom: solid 1px grey;
 } */
+
+.clickable-button {
+    background-color: var(--clickable-background-color);
+}
 
 .clickable {
     cursor: pointer;

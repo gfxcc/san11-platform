@@ -28,8 +28,6 @@ class SubscriptionHandler(HandlerBase):
         return target.subscribe(parent)
 
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelSubscription], str]:
-        for a in attrs.fields(ModelSubscription):
-            logger.debug(a)
         logger.debug(ModelSubscription.__annotations__)
         subs, next_page_token = ModelSubscription.list(list_options)
         return subs, next_page_token

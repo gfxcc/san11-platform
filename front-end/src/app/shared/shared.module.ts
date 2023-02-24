@@ -17,12 +17,15 @@ import { CommentBoardComponent } from './components/comment-board/comment-board.
 import { CommentCardComponent } from './components/comment-card/comment-card.component';
 import { ReplyCardComponent } from './components/comment-card/reply-card/reply-card.component';
 import { CreateNewComponent } from './components/create-new/create-new.component';
+import { DashboardComponent } from './components/dashboards/dashboard/dashboard.component';
+import { MessageBoardComponent } from './components/dashboards/message-board/message-board.component';
 import { CreateThreadComponent } from './components/discussion/create-thread/create-thread.component';
 import { DiscussionComponent } from './components/discussion/discussion.component';
 import { ThreadCardComponent } from './components/discussion/thread-card/thread-card.component';
 import { ThreadDetailComponent } from './components/discussion/thread-detail/thread-detail.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
+import { DeleteDialog, PackageCardComponent } from './components/package-card/package-card.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidenavService } from './components/sidebar/sidenav.service';
 import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
@@ -48,6 +51,10 @@ import { FullUrlPipe } from './pipes/full-url.pipe';
     UserInfoWithSubButtonComponent,
     FullUrlPipe,
     NotificationCardComponent,
+    DashboardComponent,
+    MessageBoardComponent,
+    PackageCardComponent,
+    DeleteDialog,
   ],
   imports: [
     CommonModule,
@@ -73,6 +80,10 @@ import { FullUrlPipe } from './pipes/full-url.pipe';
     CommentCardComponent,
     DiscussionComponent,
     UserInfoWithSubButtonComponent,
+    DashboardComponent,
+    MessageBoardComponent,
+    PackageCardComponent,
+    DeleteDialog,
     // Pipes
     FullUrlPipe,
   ],

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from '../dashboards/dashboard/dashboard.component';
 import { ArticleListComponent } from '../forum/article/article-list/article-list.component';
+import { DashboardComponent } from '../shared/components/dashboards/dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { UserResolver } from "./home/user.resolver";
 import { TimelineComponent } from "./timeline/timeline.component";
