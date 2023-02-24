@@ -110,6 +110,7 @@ export class SidebarComponent implements OnInit {
   }
 
   onClickSidenav(item) {
+    this.tags = [];
     if (onMobile()) {
       this.sidenavService.close();
     }
@@ -117,12 +118,12 @@ export class SidebarComponent implements OnInit {
   }
 
   onCategoryLabelClick(category) {
+    this.loadTags();
     if (onMobile()) {
       this.sidenavService.close();
     }
     this.selectedCategory = category.value;
     this.router.navigate(category.link);
-    this.loadTags();
   }
 
   onClickCreateTool() {

@@ -112,9 +112,52 @@
                     </div>
 
                     <div class="icon-button">
+                        <a matTooltip="{{collectButtonText}}"
+                            class="toggle-button-render"
+                            (click)="onToggleCollect()">
+                            <button mat-icon-button class="button-svg">
+                                <svg *ngIf="!isCollected" viewBox="0 0 24 24"
+                                    preserveAspectRatio="xMidYMid meet"
+                                    focusable="false" style="pointer-events:
+                                    none; display: block; width: 100%; height:
+                                    100%;" class="style-scope yt-icon"><g
+                                        class="style-scope yt-icon"><path
+                                            d="M22,13h-4v4h-2v-4h-4v-2h4V7h2v4h4V13z
+                                            M14,7H2v1h12V7z M2,12h8v-1H2V12z
+                                            M2,16h8v-1H2V16z" class="style-scope
+                                            yt-icon"></path></g></svg>
+
+                                <svg *ngIf="isCollected" viewBox="0 0 24 24"
+                                    preserveAspectRatio="xMidYMid meet"
+                                    focusable="false" style="pointer-events:
+                                    none; display: block; width: 100%; height:
+                                    100%;"
+                                    class="style-scope yt-icon">
+                                    <g class="style-scope yt-icon">
+                                        <path d="M16.5,6.5l-9,9m9,0l-9-9"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="style-scope yt-icon"></path>
+                                        <circle cx="12" cy="12" r="10"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            class="style-scope yt-icon"></circle>
+                                    </g>
+                                </svg>
+                            </button>
+                            <span class="toggle-button-text">{{collectButtonText}}</span>
+                        </a>
+                    </div>
+
+
+                    <div class="icon-button">
                         <a matTooltip="分享 (未开放)" class="toggle-button-render
                             disabled-text">
-                            <button mat-icon-button class="button-svg">
+                            <button mat-icon-button class="button-svg"
+                                disabled="true">
                                 <svg viewBox="0 0 24 24"
                                     preserveAspectRatio="xMidYMid meet"
                                     focusable="false" style="pointer-events:
@@ -131,26 +174,7 @@
                         </a>
                     </div>
 
-                    <div class="icon-button">
-                        <a matTooltip="收藏" class="toggle-button-render"
-                            (click)="onCollect()">
-                            <button mat-icon-button class="button-svg">
-                                <svg viewBox="0 0 24 24"
-                                    preserveAspectRatio="xMidYMid meet"
-                                    focusable="false" style="pointer-events:
-                                    none; display: block; width: 100%; height:
-                                    100%;" class="style-scope yt-icon"><g
-                                        class="style-scope yt-icon"><path
-                                            d="M22,13h-4v4h-2v-4h-4v-2h4V7h2v4h4V13z
-                                            M14,7H2v1h12V7z M2,12h8v-1H2V12z
-                                            M2,16h8v-1H2V16z" class="style-scope
-                                            yt-icon"></path></g></svg>
-                            </button>
-                            <span class="toggle-button-text">收藏</span>
-                        </a>
-                    </div>
-
-                    <div class="icon-button">
+                    <div class="icon-button" style="padding: 0 0;">
                         <a matTooltip="更多" class="toggle-button-render">
                             <button mat-icon-button class="button-svg"
                                 [matMenuTriggerFor]="menu">
@@ -208,7 +232,10 @@
                     [user]="this.author">
                 </app-user-info-with-sub-button>
 
-                <div class="package-description-section">
+                <div class="package-description-section"
+                    [class.package-description-section-folded]="descFolded"
+                    [class.package-description-section-expanded]="!descFolded"
+                    (click)="onDescription()">
                     <div #description id="description-container"
                         [class.desc-folded]="descFolded && !descEditor_updated"
                         [class.desc-full]="!(descFolded &&
@@ -222,10 +249,14 @@
                     </div>
                     <div *ngIf="!descEditor_updated">
                         <span id="more-button" *ngIf="descFolded"
-                            (click)="this.descFolded= false;"
+                            (click)="onDescription()"
                             class="more-button">更多</span>
                         <!-- <span id="more-button" *ngIf="!descFolded" (click)="this.descFolded = true;" class="more-button">折叠</span> -->
                     </div>
+                </div>
+
+                <div style="width: 100%; display: flex;
+                    justify-content:flex-end;">
                     <button *ngIf="this.descEditor_updated" mat-stroked-button
                         color="primary" (click)="onUpdateDesc()"
                         class="update-button">更新</button>

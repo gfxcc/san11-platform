@@ -200,7 +200,14 @@
 }
 
 .icon-button {
-    margin-left: 1.5rem;
+    margin-left: 0.5rem;
+    padding: 0 16px;
+    border-radius: 18px;
+    background-color: var(--clickable-background-color);
+}
+
+.icon-button:hover {
+    background-color: var(--clickable-background-color-hover);
 }
 
 .disabled-text {
@@ -240,8 +247,24 @@
 }
 
 .package-description-section {
-    margin-left: 64px;
+    margin-top: 12px;
+    background-color: var(--clickable-background-color);
+    border-radius: 12px;
 }
+
+.package-description-section-folded {
+    cursor: pointer;
+}
+
+.package-description-section-folded:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+.package-description-section-expanded {
+    cursor: unset;
+}
+
 
 .desc-full {}
 
@@ -251,9 +274,9 @@
 }
 
 .more-button {
-    color: #606060;
     display: inline-block;
-    margin-top: 8px;
+    margin-top: 1rem;
+    margin-left: 1rem;
     text-transform: uppercase;
     font-family: "Roboto", "Arial", sans-serif;
     font-size: 1.2rem;
@@ -267,28 +290,32 @@
 }
 
 
-.discussion-section {
-}
+.discussion-section {}
 
 @media (max-width: 40rem) {
     .top-section {
         flex-direction: column;
     }
+
     .info-section {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
     }
+
     .col-right {
         max-width: unset;
     }
+
     .right-bottom {
         position: unset;
     }
+
     /*NEW UI*/
     .primary-info-render {
         flex-direction: column;
     }
+
     .top-level-buttons {
         flex-direction: column;
     }

@@ -4,17 +4,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { getCategoryId } from 'src/app/utils/package_util';
 import { isAdmin } from 'src/app/utils/user_util';
-import { DeletePackageRequest, GetUserRequest, Package, ResourceState, User } from '../../../proto/san11-platform.pb';
-import { NotificationService } from "../../common/notification.service";
-import { DownloadService } from "../../service/download.service";
-import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
-import { getFullUrl } from "../../utils/resrouce_util";
-
-
-
-
-
-
+import { DeletePackageRequest, GetUserRequest, Package, ResourceState, User } from '../../../../proto/san11-platform.pb';
+import { NotificationService } from "../../../common/notification.service";
+import { DownloadService } from "../../../service/download.service";
+import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
+import { getFullUrl } from "../../../utils/resrouce_util";
 
 @Component({
   selector: 'app-package-card',
