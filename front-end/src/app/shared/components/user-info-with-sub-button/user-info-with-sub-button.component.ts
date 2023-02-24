@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { GlobalConstants } from 'src/app/common/global-constants';
@@ -21,7 +21,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
   @Input() updateAvatar: false;
   @ViewChild('imageInput') imageInputElement: ElementRef
 
-  loading;
+  loading: MatDialogRef<LoadingComponent>;
   hideAvatar = true;
   subscription: Subscription;
 

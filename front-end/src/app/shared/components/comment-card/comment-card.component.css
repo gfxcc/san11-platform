@@ -88,6 +88,23 @@
     height: 32px;
 }
 
+
+a {
+    display: inline-block;
+    overflow: visible;
+    white-space: normal;
+    text-decoration: none;
+    text-decoration-line: none;
+    text-decoration-thickness: initial;
+    text-decoration-style: initial;
+    text-decoration-color: initial;
+    color: initial;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 @media (max-width: 40rem) {
     .main {
         padding: 2px;

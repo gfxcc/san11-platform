@@ -201,6 +201,8 @@
             </div>
         </div>
 
+        <mat-divider></mat-divider>
+
         <div class="meta-content">
             <div class="container">
                 <app-user-info-with-sub-button class="user-info-with-sub-button"
@@ -234,6 +236,8 @@
 
         </div>
 
+        <mat-divider></mat-divider>
+
         <div style="margin-bottom: 5px;">
             <!-- <div class="heading-1">标签</div> -->
             <mat-chip-list #chipList>
@@ -255,18 +259,16 @@
                     </mat-select>
                 </mat-form-field>
             </mat-chip-list>
-
         </div>
 
+        <mat-divider></mat-divider>
 
         <div class="right-bottom">
             <div class="icon-section">
                 <span class="example-spacer"></span>
-                <!-- <mat-icon class="icon" matTooltip="总下载量" [matBadge]="this.package.downloadCount" matBadgeSize="small" matBadgeColor="accent" matBadgePosition="above after">download</mat-icon> -->
             </div>
 
-            <div *ngIf="(isAdmin() || isAuthor())" class="package-controller
-                top-border show-border-dev">
+            <div *ngIf="(isAdmin() || isAuthor())" class="package-controller show-border-dev">
                 <div class="admin-zone" *ngIf="isAdmin()">
                     <button mat-button mat-stroked-button color="accent"
                         *ngIf="this.package.state===2" (click)="onApprove()">通过审核</button>

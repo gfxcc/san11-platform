@@ -8,7 +8,8 @@
         <div (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
             <div class="header">
                 <div>
-                    <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
+                    <a href="users/{{this.user?.userId}}"
+                        target="_blink">{{this.user?.username}}</a>
                     <span *ngIf="this.user?.userId === this.resourceOwnerId"
                         style="margin-left: 5px; color:#3f51b5">[作者]</span>
                     <span class="create-time">{{getCommentAge()}}</span>

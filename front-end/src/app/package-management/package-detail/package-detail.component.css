@@ -132,8 +132,6 @@
 .version-info {
     display: block;
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 5px;
     flex: 1 1 auto;
 }
 
@@ -167,7 +165,6 @@
 
 .info-content {
     display: flex;
-    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
 }
 
 .primary-info-render {
@@ -233,9 +230,8 @@
 /* meta content */
 
 .meta-content {
-    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
-    margin-bottom: 12px;
-    padding-bottom: 16px;
+    /* border-bottom: 1px solid rgb(0, 0, 0, 0.1); */
+    padding: 16px 0;
 }
 
 .user-info-with-sub-button {

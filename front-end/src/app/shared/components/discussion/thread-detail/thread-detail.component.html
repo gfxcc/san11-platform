@@ -9,26 +9,23 @@
         </div>
         <div class="main">
             <div mat-card-avatar class="author-section">
-                <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
-                <div>
-                    <div>
-                        <!-- <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span> -->
-
-                        <a href="users/{{this.user?.userId}}" target="_blink">{{this.user?.username}}</a>
-                    </div>
-                </div>
+                <img [hidden]="this.hideUserImage" [src]="this.userImage"
+                    (load)="this.hideUserImage= false;" class="author-image">
             </div>
 
             <div class="right radius-border shadow-border">
                 <div>
                     <div class="header">
+                        <a href="users/{{this.user?.userId}}" target="_blink">{{this.user?.username}}</a>
                         <span class="create-time">{{getAge()}}</span>
-
-                        <span class="example-spacer"></span>
-
                     </div>
                     <div>
-                        <ckeditor class="editor" [data]="this.descEditor_data" [editor]="descEditor" (ready)="onDescEditorReady($event)" (change)="onDescEditorChange($event)" [disabled]="this.descEditor_disabled" [config]="this.descEditor_config"></ckeditor>
+                        <ckeditor class="editor" [data]="this.descEditor_data"
+                            [editor]="descEditor"
+                            (ready)="onDescEditorReady($event)"
+                            (change)="onDescEditorChange($event)"
+                            [disabled]="this.descEditor_disabled"
+                            [config]="this.descEditor_config"></ckeditor>
                     </div>
 
                 </div>
@@ -36,11 +33,17 @@
                 <mat-form-field class="tag-list" appearance="fill">
                     <mat-label>标签</mat-label>
                     <mat-chip-list #chipList aria-label="Fruit selection">
-                        <mat-chip *ngFor="let tag of this.thread.tags" [selectable]="selectable" [removable]="removable" (removed)="remove(tag)">
+                        <mat-chip *ngFor="let tag of this.thread.tags"
+                            [selectable]="selectable" [removable]="removable"
+                            (removed)="remove(tag)">
                             {{tag}}
                             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                         </mat-chip>
-                        <input *ngIf="removable" placeholder="新标签" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                        <input *ngIf="removable" placeholder="新标签"
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="add($event)">
                     </mat-chip-list>
                 </mat-form-field>
             </div>
@@ -49,19 +52,27 @@
 
         <footer class="cattagsarea">
             <div *ngIf="(isAdmin() || isAuthor())" class="control row">
-                <button class="button" mat-raised-button color="warn" (click)="onDelete()">删除</button>
-                <button class="button" mat-stroked-button color="warn" (click)="onFlipState()">{{thread.state===3? '发布' : '隐藏'}}</button>
-                <button class="button" mat-stroked-button color="primary" *ngIf="isAdmin()" (click)="togglePin()">{{thread.pinned===true? '取消置顶' : '置顶'}}</button>
+                <button class="button" mat-raised-button color="warn"
+                    (click)="onDelete()">删除</button>
+                <button class="button" mat-stroked-button color="warn"
+                    (click)="onFlipState()">{{thread.state===3? '发布' : '隐藏'}}</button>
+                <button class="button" mat-stroked-button color="primary"
+                    *ngIf="isAdmin()" (click)="togglePin()">{{thread.pinned===true?
+                    '取消置顶' : '置顶'}}</button>
 
                 <!-- <button pButton pRipple type="button" [icon]="'pi pi-lock-open'" (click)="togglePin()" class="p-button-sm p-button-text"></button> -->
-
                 <span class="example-spacer"></span>
 
-                <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdate()">更新</button>
+                <button *ngIf="this.descEditor_updated" mat-stroked-button
+                    color="primary" (click)="onUpdate()">更新</button>
             </div>
         </footer>
 
+        <mat-divider></mat-divider>
 
-        <app-comment-board [parent]="this.thread.name" [resourceOwnerId]="this.thread.authorId" commentsOrder="create_time"></app-comment-board>
+
+        <app-comment-board [parent]="this.thread.name"
+            [resourceOwnerId]="this.thread.authorId"
+            commentsOrder="create_time"></app-comment-board>
     </div>
 </div>

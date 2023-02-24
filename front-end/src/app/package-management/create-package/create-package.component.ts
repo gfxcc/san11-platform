@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CreatePackageRequest, Package } from '../../../proto/san11-platform.pb';
 import { LoadingComponent } from '../../common/components/loading/loading.component';
@@ -20,7 +20,7 @@ export class CreatePackageComponent implements OnInit {
   selectedCategory: string;
   createdPackage: Package;
 
-  loading;
+  loading: MatDialogRef<LoadingComponent>;
 
   categories = GlobalConstants.categories;
 

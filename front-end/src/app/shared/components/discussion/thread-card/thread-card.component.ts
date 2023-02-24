@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
+import { onMobile } from 'src/app/utils/layout_util';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
 import { isAdmin, loadUser } from 'src/app/utils/user_util';
@@ -16,7 +17,7 @@ export class ThreadCardComponent implements OnInit {
   coverImage: string = null;
   user: User;
   latestCommenter: User;
-  notMobile = !window.matchMedia('(max-width: 40rem)').matches;
+  notMobile = !onMobile();
 
   constructor(
     private notificationService: NotificationService,

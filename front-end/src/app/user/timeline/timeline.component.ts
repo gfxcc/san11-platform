@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, DefaultUrlSerializer, Router, UrlTree } from '@angular/router';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { NotificationService } from 'src/app/common/notification.service';
@@ -17,7 +17,7 @@ export class TimelineComponent implements OnInit {
   userId: string;
 
   events: any[];
-  loading;
+  loading: MatDialogRef<LoadingComponent>;
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,

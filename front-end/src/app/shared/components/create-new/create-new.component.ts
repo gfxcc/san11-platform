@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { GlobalConstants } from 'src/app/common/global-constants';
@@ -32,7 +32,7 @@ export class CreateNewComponent implements OnInit {
   resourceGroups: ResourceGroup[] = [
     {
       name: '工具',
-      resourceTypes: GlobalConstants.categories.map(category => ({ value: category.value, text: category.text, type: 'packages'}))
+      resourceTypes: GlobalConstants.categories.map(category => ({ value: category.value, text: category.text, type: 'packages' }))
     },
     {
       name: '社区',
@@ -46,7 +46,7 @@ export class CreateNewComponent implements OnInit {
     }
   ];
 
-  loading;
+  loading: MatDialogRef<LoadingComponent>;
   isCreateArticle = false;
 
   constructor(
@@ -59,25 +59,25 @@ export class CreateNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route
-    .queryParams
-    .subscribe((params: Params) => {
-      switch(params.selected) {
-        case '11':
-          this.isCreateArticle = true;
-          break;
-        default:
-          break;
-      }
-    });
+      .queryParams
+      .subscribe((params: Params) => {
+        switch (params.selected) {
+          case '11':
+            this.isCreateArticle = true;
+            break;
+          default:
+            break;
+        }
+      });
   }
 
   onCreate(createForm) {
     const name: string = createForm.value.name;
-    const resourceType:ResourceType = createForm.value.resourceType;
+    const resourceType: ResourceType = createForm.value.resourceType;
 
     if (this.isCreateArticle) {
-        this.createArticle(name);
-        return;
+      this.createArticle(name);
+      return;
     }
 
     switch (resourceType.type) {
@@ -98,11 +98,11 @@ export class CreateNewComponent implements OnInit {
     this.san11pkService.createPackage(new CreatePackageRequest({
       parent: `categories/${categoryId}`,
       package: new Package({
-      packageName: packageName,
-      description: '',
-      authorId: '0',
-      imageUrls: []
-    })
+        packageName: packageName,
+        description: '',
+        authorId: '0',
+        imageUrls: []
+      })
     })).subscribe(
       san11Package => {
         this.loading.close();
