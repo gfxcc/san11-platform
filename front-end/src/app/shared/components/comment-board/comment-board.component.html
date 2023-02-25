@@ -6,7 +6,8 @@
 
     <div class="header">
         <div mat-card-avatar class="author-image">
-            <img [hidden]="this.hideAuthorImage" [src]="this.authorImage"
+            <img [hidden]="this.hideAuthorImage" [src]="this.authorImage |
+                fullUrl : '256_256'"
                 (load)="this.hideAuthorImage= false;" class="author-image">
         </div>
         <div class="right">

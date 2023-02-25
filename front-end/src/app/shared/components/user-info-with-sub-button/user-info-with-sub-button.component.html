@@ -3,7 +3,7 @@
 
         <div>
             <button mat-button (click)="onAvatarClick()" class="user-image">
-                <img [hidden]="this.hideAvatar" [src]="this.user.imageUrl | fullUrl : '256_256'"
+                <img [hidden]="this.hideAvatar" [src]="this.user.imageUrl | fullUrl : '128_128'"
                     (load)="this.hideAvatar=false;" class="user-image">
             </button>
             <input type="file" accept="image/*" hidden="true" #imageInput

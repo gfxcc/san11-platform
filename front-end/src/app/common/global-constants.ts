@@ -12,7 +12,7 @@ export class GlobalConstants {
     public static tmpBucket = 'san11-tmp';
     public static resourceBucket = 'san11-resources';
 
-    public static defaultUserImage: string = '../../../assets/images/zhuge.jpg';
+    public static defaultUserImage: string = 'static/images/avatars/zhuge.jpg';
 
     public static categories = [
         { value: '1', text: 'SIRE 插件', link: ['/categories', 1], icon: 'extension' },

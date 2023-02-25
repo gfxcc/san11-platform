@@ -1,11 +1,11 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { GlobalConstants } from 'src/app/common/global-constants';
 import { getAge } from 'src/app/utils/time_util';
 import { Comment, CreateReplyRequest, DeleteCommentRequest, FieldMask, GetUserRequest, Reply, UpdateCommentRequest, User } from "../../../../proto/san11-platform.pb";
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
-import { getFullUrl } from '../../../utils/resrouce_util';
 import { isAdmin } from '../../../utils/user_util';
 
 
@@ -51,18 +51,18 @@ export class CommentCardComponent implements OnInit {
           name: `users/${this.authorId}`,
         })).subscribe(
           user => {
-            this.authorImage = getFullUrl(user.imageUrl);
+            this.authorImage = user.imageUrl;
           },
           error => {
-            this.authorImage = '../../../../assets/images/zhuge.jpg';
+            this.authorImage = GlobalConstants.defaultUserImage;
             this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
           }
         );
       } else {
-        this.authorImage = getFullUrl(localAuthorImage);
+        this.authorImage = localAuthorImage;
       }
     } else {
-      this.authorImage = '../../../../assets/images/zhuge.jpg';
+      this.authorImage = GlobalConstants.defaultUserImage;
     }
 
   }
@@ -73,10 +73,8 @@ export class CommentCardComponent implements OnInit {
     })).subscribe(
       user => {
         this.user = user;
-        this.userImage = getFullUrl(this.user.imageUrl);
       },
       error => {
-        this.userImage = '../../../../assets/images/zhuge.jpg';
       }
     );
   }

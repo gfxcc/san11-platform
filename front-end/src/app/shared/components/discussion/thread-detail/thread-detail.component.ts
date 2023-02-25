@@ -6,7 +6,6 @@ import { NotificationService } from 'src/app/common/notification.service';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
-import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
 import { getUserUri, isAdmin, loadUser } from 'src/app/utils/user_util';
 import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ListUsersRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
@@ -26,7 +25,6 @@ export class ThreadDetailComponent implements OnInit {
   thread: Thread;
   user: User;
 
-  userImage: string;
   hideUserImage: boolean = true;
 
   rootComment: Comment;
@@ -76,11 +74,9 @@ export class ThreadDetailComponent implements OnInit {
           name: `users/${this.thread.authorId}`,
         })).subscribe(
           user => {
-            this.userImage = getFullUrl(user.imageUrl);
             this.user = user;
           },
           error => {
-            this.userImage = '../../../../assets/images/zhuge.jpg';
             this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
           }
         );

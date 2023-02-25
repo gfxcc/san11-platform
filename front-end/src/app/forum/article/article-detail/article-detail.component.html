@@ -6,7 +6,7 @@
                     (focus)="this.descEditor_updated=true;" class="entry-title">{{article.subject}}</h1>
                 <div class="row justify-content-center">
                     <div style="margin-bottom: 10px; text-align:center;">
-                        <img src="{{getUserAvatar()}}" width="58" height="58"
+                        <img [src]="this.user?.imageUrl | fullUrl : '128_128'" width="58" height="58"
                             class="avatar">
                         <p style="font-size:20px; margin-bottom: 0px;">{{user?.username}}</p>
                     </div>

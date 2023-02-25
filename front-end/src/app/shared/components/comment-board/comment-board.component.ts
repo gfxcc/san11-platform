@@ -9,7 +9,6 @@ import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { increment } from "../../../utils/number_util";
-import { getFullUrl } from "../../../utils/resrouce_util";
 
 
 @Component({
@@ -64,18 +63,17 @@ export class CommentBoardComponent implements OnInit {
           name: `users/${this.authorId}`,
         })).subscribe(
           user => {
-            this.authorImage = getFullUrl(user.imageUrl);
+            this.authorImage = user.imageUrl;
           },
           error => {
-            this.authorImage = '../../../assets/images/zhuge.jpg';
             this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
           }
         );
       } else {
-        this.authorImage = getFullUrl(localAuthorImage);
+        this.authorImage = localAuthorImage;
       }
     } else {
-      this.authorImage = '../../../assets/images/zhuge.jpg';
+      this.authorImage = 'static/images/avatars/zhuge.jpeg';
     }
 
   }

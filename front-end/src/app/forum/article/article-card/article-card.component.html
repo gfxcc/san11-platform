@@ -19,7 +19,8 @@
                 </div>
                 <div class="entry-meta">
                     <span class="entry-avatar">
-                        <img src="{{getUserAvatar()}}" class="avatar-img"
+                        <img [src]="this.user?.imageUrl | fullUrl: '128_128'"
+                            class="avatar-img"
                             width="36" height="36">
                         <span class="entry-author-link">
                             <a href="users/{{user?.userId}}">{{user?.username}}</a>

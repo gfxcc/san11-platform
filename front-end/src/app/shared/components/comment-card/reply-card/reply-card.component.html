@@ -1,6 +1,6 @@
 <div class="main" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
     <div mat-card-avatar class="author-image">
-        <img [hidden]="this.hideUserImage" [src]="this.userImage" (load)="this.hideUserImage = false;" class="author-image">
+        <img [hidden]="this.hideUserImage" [src]="this.user?.imageUrl | fullUrl : '48_48'" (load)="this.hideUserImage = false;" class="author-image">
     </div>
     <div class="right">
         <div class="header">

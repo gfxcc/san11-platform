@@ -1,7 +1,8 @@
 <div class="main">
 
     <div mat-card-avatar class="author-section">
-        <img [hidden]="this.hideUserImage" [src]="this.userImage"
+        <img [hidden]="this.hideUserImage" [src]="this.user?.imageUrl | fullUrl
+            : '128_128'"
             (load)="this.hideUserImage= false;" class="author-image">
     </div>
     <div class="right radius-border shadow-border">
@@ -72,7 +73,8 @@
         <div *ngIf="!this.hideReplyEnter" class="reply-section">
 
             <div mat-card-avatar class="author-image">
-                <img [hidden]="this.hideAuthorImage" [src]="this.authorImage"
+                <img [hidden]="this.hideAuthorImage" [src]="this.authorImage |
+                    fullUrl : '48_48'"
                     (load)="this.hideAuthorImage= false;" class="author-image">
             </div>
 

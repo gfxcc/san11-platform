@@ -4,7 +4,6 @@ import { getAge } from 'src/app/utils/time_util';
 import { DeleteReplyRequest, FieldMask, GetUserRequest, Reply, UpdateReplyRequest, User } from "../../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../../service/san11-platform-service.service";
-import { getFullUrl } from '../../../../utils/resrouce_util';
 import { isAdmin } from "../../../../utils/user_util";
 
 
@@ -23,7 +22,6 @@ export class ReplyCardComponent implements OnInit {
   @Output() replyEvent = new EventEmitter();
 
   hideUserImage = true;
-  userImage: string;
   user: User;
   authorId: string;
 
@@ -43,12 +41,8 @@ export class ReplyCardComponent implements OnInit {
     })).subscribe(
       user => {
         this.user = user;
-        this.userImage = getFullUrl(this.user.imageUrl);
       },
       error => {
-        console.log('Failed to load user ' + this.reply.authorId + ':' + error.statusMessage);
-
-        this.userImage = '../../../../assets/images/zhuge.jpg';
       }
     );
   }
