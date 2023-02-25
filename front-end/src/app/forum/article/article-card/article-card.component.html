@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container clickable-card" (click)="onClick()">
     <div class="entry-area inner-border">
         <div class="entry-image-container">
             <img class="entry-image" [src]="getCoverImage()">
@@ -8,17 +8,19 @@
             <header>
                 <div style="display: flex;">
                     <h5 class="entry-subject">
-                        <a href="{{article.name}}">{{article.subject}}</a>
+                        {{article.subject}}
                     </h5>
 
                     <span class="example-spacer"></span>
-                    <div [hidden]="! ((isAdmin() || isAuthor()) && article.state!=1)">
+                    <div [hidden]="! ((isAdmin() || isAuthor()) &&
+                        article.state!=1)">
                         <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
                     </div>
                 </div>
                 <div class="entry-meta">
                     <span class="entry-avatar">
-                        <img src="{{getUserAvatar()}}" class="avatar-img" width="36" height="36" >
+                        <img src="{{getUserAvatar()}}" class="avatar-img"
+                            width="36" height="36">
                         <span class="entry-author-link">
                             <a href="users/{{user?.userId}}">{{user?.username}}</a>
                         </span>

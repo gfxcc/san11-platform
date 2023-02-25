@@ -68,9 +68,12 @@
         </div>
     </mat-selection-list>
 
+    <mat-divider></mat-divider>
+
     <div *ngIf="this.isAdmin() || this.tags.length> 0" style="margin-top: 10px;
         padding: 5px;">
-        <div class="round-border" style="margin-bottom: 5px; padding: 5px">
+        <div *ngIf="this.tags.length> 0" class="round-border"
+            style="margin-bottom: 5px; padding: 5px">
             <mat-chip-list>
                 <mat-chip color="primary" *ngFor="let tag of this.tags"
                     (click)="onClickTag(tag)" (removed)="removeTag(tag)">{{tag.tagName}}

@@ -79,13 +79,6 @@
 
 .col-right {}
 
-.info-section {
-    width: 100%;
-    /* height: 100%; */
-    float: right;
-    position: relative;
-}
-
 .author-info {
     width: 100%;
     margin-bottom: 10px;
@@ -137,19 +130,12 @@
 
 .button {
     margin-left: 5px;
+    margin-right: 5px;
 }
 
 .example-spacer {
     flex: 1 1 auto;
 }
-
-.author-zone {
-    display: flex;
-    flex: auto;
-}
-
-.comment-section {}
-
 
 /*  */
 
@@ -200,6 +186,7 @@
 }
 
 .icon-button {
+    flex-shrink: 0;
     margin-left: 0.5rem;
     padding: 0 16px;
     border-radius: 18px;
@@ -290,17 +277,13 @@
 }
 
 
-.discussion-section {}
-
 @media (max-width: 40rem) {
     .top-section {
         flex-direction: column;
     }
 
-    .info-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+    .info-content {
+        display: initial;
     }
 
     .col-right {
@@ -317,6 +300,14 @@
     }
 
     .top-level-buttons {
-        flex-direction: column;
+        /* flex-direction: column; */
+        overflow-x: scroll;
+        overflow-y: hidden;
+        justify-content: start;
+        scrollbar-width: none;
+    }
+
+    .top-level-buttons::-webkit-scrollbar {
+        display: none;
     }
 }

@@ -75,7 +75,7 @@ export class San11PlatformServiceService {
     return this.severClient.getPackage(request, this.getMetadata());
   }
 
-  deletePackage(request: DeletePackageRequest): Observable<Empty> {
+  deletePackage(request: DeletePackageRequest): Observable<Package> {
     return this.severClient.deletePackage(request, this.getMetadata());
   }
 

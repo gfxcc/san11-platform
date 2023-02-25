@@ -467,6 +467,9 @@ export class PackageDetailComponent implements OnInit {
 
 
   onFlipHide() {
+    if (confirm('确认要' + (this.package.state === ResourceState.HIDDEN ? '显示' : '隐藏') + ' ' + this.package.packageName + ' 吗？') === false) {
+      return;
+    }
     const request = new UpdatePackageRequest({
       package: new Package({
         name: this.package.name,
@@ -477,7 +480,7 @@ export class PackageDetailComponent implements OnInit {
       })
     });
     this.san11pkService.updatePackage(request).subscribe(
-      san11Package => {
+      (resp: Package) => {
         this.notificationService.success('操作成功')
         this.router.navigate(this.package.name.split('/')).then(() => {
           window.location.reload();
@@ -496,7 +499,7 @@ export class PackageDetailComponent implements OnInit {
         this.san11pkService.deletePackage(new DeletePackageRequest({
           name: this.package.name,
         })).subscribe(
-          status => {
+          (resp: Package) => {
             this.notificationService.success('成功删除');
 
             this.router.navigate(['/']).then(() => {

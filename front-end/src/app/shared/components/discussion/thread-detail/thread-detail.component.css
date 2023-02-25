@@ -56,20 +56,13 @@
 }
 
 .cattagsarea {
-    margin-bottom: 10px;
-    padding: 1rem;
+    padding: 8px;
 }
 
 .cattagsarea button {
-    margin-right: 20px;
+    margin-right: 5px;
 }
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-}
 
 .tag-list {
     width: 100%;

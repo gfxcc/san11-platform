@@ -2,6 +2,11 @@
     padding: 10px;
 }
 
+.status-section {
+    margin: 12px 0;
+    display: flex;
+}
+
 .header {
     display: flex;
 }

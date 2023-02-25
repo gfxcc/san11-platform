@@ -74,20 +74,12 @@ img.avatar {
     color: #616161;
 }
 
-.interactions {
-    margin: 30px 0;
-    padding: 24px 0;
-    border-top: 1px #A6A6A6 solid;
-}
 
 .cattagsarea {
     margin-bottom: 10px;
     background-color: #fff;
     padding: 1rem;
     border-radius: 0 0 4px 4px;
-    border-top: 2px solid rgba(0, 0, 0, .1);
-    border-bottom: 2px solid rgba(0, 0, 0, .1);
-    /* padding-left: 40px; */
 }
 
 .control {
