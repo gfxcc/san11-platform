@@ -406,7 +406,7 @@ export class PackageDetailComponent implements OnInit {
 
     if (getCategoryId(this.package.name) === 1) {
       // append a pre-set image for SIRE package
-      const fullImageUrl = getFullUrl('images/sire2.jpg');
+      const fullImageUrl = getFullUrl('static/images/sire2.jpg');
       this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
     }
     // append image for upload 

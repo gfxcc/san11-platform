@@ -6,9 +6,10 @@ import urllib.parse
 from abc import ABC, abstractproperty
 from enum import Enum
 from io import BytesIO
-from typing import Optional
+from typing import Iterable, Optional, Union
 
 import boto3
+from boto3.resources.base import ServiceResource as S3ServiceResource
 from google.cloud import storage
 from PIL import Image
 from requests import delete
@@ -16,11 +17,12 @@ from requests import delete
 from handler.common.credentials import (get_aws_credentials,
                                         get_gcloud_credentials)
 from handler.common.env import Env, get_env
-from handler.common.exception import NotFound
+from handler.common.exception import InvalidArgument, NotFound
 
 logger = logging.getLogger(os.path.basename(__file__))
 
 
+STATIC_RESOURCES_PATH = 'static'
 # Limits
 PACKAGE_SIZE_LIMIT = 20 * 1024 * 1024 * 1024  # 20 GB
 
@@ -65,11 +67,13 @@ class FileServer(ABC):
         '''
         ...
 
-    def delete_file(self, bucket_class: BucketClass, filename: str) -> None:
+    def delete_file(self, bucket_class: BucketClass, filename: str, force: bool = False) -> None:
         '''
-        Delete the file from the server.
+        Delete the file from the server. Set force to true to delete static resources.
         '''
-        ...
+        if filename.startswith(STATIC_RESOURCES_PATH) and not force:
+            raise Exception(
+                'Cannot delete static resources without force set to true')
 
     def create_file(self, data: BytesIO, filename: str,  bucket_class: BucketClass = BucketClass.REGULAR) -> None:
         ...
@@ -81,11 +85,11 @@ class FileServer(ABC):
         '''
         ...
 
-    def delete_folder(self, bucket_class: BucketClass, path: str) -> None:
-        '''
-        Delete the folder from the server.
-        '''
-        ...
+    def delete_by_prefix(self, bucket_class: BucketClass, path: str, force: bool = False) -> None:
+        '''Delete all files with the given prefix. Set force to true to delete static resources.'''
+        if path.startswith(STATIC_RESOURCES_PATH) and not force:
+            raise Exception(
+                'Cannot delete static resources without force set to true')
 
     # utilities
     def get_bucket_name(self, bucket_class: BucketClass) -> str:
@@ -137,7 +141,8 @@ class Gcs(FileServer):
         source_blob.delete()
         logger.debug(f'({src}) is deleted from bucket {src_bucket_class}')
 
-    def delete_file(self, bucket_class: BucketClass, filename: str) -> None:
+    def delete_file(self, bucket_class: BucketClass, filename: str, force: bool = False) -> None:
+        super().delete_file(bucket_class, filename, force)
         storage_client = self._get_client()
         bucket = storage_client.bucket(self.get_bucket_name(bucket_class))
         bucket.blob(filename).delete()
@@ -157,7 +162,8 @@ class Gcs(FileServer):
             bucket_or_name=self.get_bucket_name(bucket_class), prefix=path)
         return sum(blob.size for blob in blobs)
 
-    def delete_folder(self, bucket_class: BucketClass, path: str) -> None:
+    def delete_by_prefix(self, bucket_class: BucketClass, path: str, force: bool = False) -> None:
+        super().delete_by_prefix(bucket_class, path, force)
         storage_client = self._get_client()
         bucket = storage_client.get_bucket(self.get_bucket_name(bucket_class))
         blobs = bucket.list_blobs(prefix=path)
@@ -221,7 +227,8 @@ class S3(FileServer):
             Key=src,
         )
 
-    def delete_file(self, bucket_class: BucketClass, filename: str) -> None:
+    def delete_file(self, bucket_class: BucketClass, filename: str, force: bool = False) -> None:
+        super().delete_file(bucket_class, filename, force)
         client = self._get_client()
         client.delete_object(
             Bucket=self.get_bucket_name(bucket_class),
@@ -236,7 +243,8 @@ class S3(FileServer):
             total_size = total_size + obj.size
         return total_size
 
-    def delete_folder(self, bucket_class: BucketClass, path: str) -> None:
+    def delete_by_prefix(self, bucket_class: BucketClass, path: str, force: bool = False) -> None:
+        super().delete_by_prefix(bucket_class, path, force)
         bucket = self._get_resource().Bucket(self.get_bucket_name(bucket_class))
         bucket.objects.filter(Prefix=path).delete()
 

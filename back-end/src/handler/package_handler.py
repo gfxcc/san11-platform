@@ -23,7 +23,6 @@ from handler.util.resource_view import ResourceViewVisitor
 from handler.util.state_util import on_approve
 from handler.util.time_util import get_now
 
-from .common.image import Image
 from .protos import san11_platform_pb2 as pb
 from .util.notifier import Notifier, notify, send_message
 
@@ -133,10 +132,11 @@ class PackageHandler(HandlerBase):
 
         # Delete image resources
         if update_mask.has('image_urls'):
+            file_server = get_file_server(FileServerType.GCS)
             for image_url_to_delete in set(base_package.image_urls) - set(update_package.image_urls):
                 try:
-                    image = Image.from_url(image_url_to_delete)
-                    image.delete()
+                    file_server.delete_file(
+                        BucketClass.REGULAR, image_url_to_delete)
                 except Exception as err:
                     logger.error(
                         f'Failed to delete {image_url_to_delete}: {err}')
@@ -168,28 +168,21 @@ class PackageHandler(HandlerBase):
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelPackage:
         package = ModelPackage.from_name(name)
-        for image_url in package.image_urls:
-            try:
-                Image.from_url(image_url).delete()
-            except Exception:
-                logger.error(f'Failed to delete image: image_url={image_url}')
-
         for binary in ModelBinary.list(ListOptions(parent=package.name))[0]:
             try:
                 binary.delete(actor_info=handler_context.user.user_id)
             except Exception as err:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
-
         for thread in ModelThread.list(ListOptions(parent=package.name))[0]:
             try:
                 thread.delete(actor_info=handler_context.user.user_id)
             except Exception as err:
                 logger.error(f'Failed to delete {thread} under {self}: {err}')
 
-        get_file_server(FileServerType.GCS).delete_folder(
+        get_file_server(FileServerType.GCS).delete_by_prefix(
             BucketClass.REGULAR, package.name)
-        get_file_server(FileServerType.S3).delete_folder(
+        get_file_server(FileServerType.S3).delete_by_prefix(
             BucketClass.REGULAR, package.name)
         package.delete(actor_info=handler_context.user.user_id)
         return package

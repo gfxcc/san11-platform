@@ -6,11 +6,11 @@ import requests
 from PIL import Image
 
 from handler.model.model_package import ModelPackage
-from handler.model.model_user import DEFAULT_USER_AVATAR, ModelUser
+from handler.model.model_user import (DEFAULT_USER_AVATAR, PRESET_USER_AVATARS,
+                                      ModelUser)
 from handler.util.file_server import (BucketClass, FileServer, FileServerType,
                                       get_file_server)
 
-from .common.image import Image as CloudImage
 from .common.url import Url
 from .common.util import gen_random_str
 from .protos import san11_platform_pb2 as pb
@@ -29,23 +29,22 @@ class ImageHandler:
         file_server = get_file_server(FileServerType.GCS)
         file_server.move_file(BucketClass.TEMP, request.url,
                               BucketClass.REGULAR, new_uri)
-        image = CloudImage(new_uri)
 
         if request.image_type != pb.ImageType.DESCRIPTION:
             if parent.type == 'packages':
                 package = ModelPackage.from_name(request.parent)
-                package.image_urls.append(image.url)
+                package.image_urls.append(new_uri)
                 package.update()
             elif parent.type == 'users':
                 user = ModelUser.from_name(f'users/{parent.id}')
                 delete_user_avatar(file_server, user)
                 resample_img_for_user_avatar(
                     file_server, new_uri)
-                user.image_url = image.url
+                user.image_url = new_uri
                 user.update(actor_info=user.user_id)
             else:
                 raise Exception(f'Invalid parent: {parent}')
-        return pb.Url(url=image.url)
+        return pb.Url(url=new_uri)
 
 
 def get_image_uri(parent: str, image_type: pb.ImageType.ValueType) -> str:
@@ -70,27 +69,19 @@ def resample_image(url: str, width: int, height: int) -> Image.Image:
 
 
 def delete_user_avatar(file_server: FileServer, user: ModelUser):
-    if user.image_url != DEFAULT_USER_AVATAR:
-        files = [user.image_url, user.image_url.replace(
-            '.jpeg', '_40_40.jpeg'), user.image_url.replace('.jpeg', '_80_80.jpeg')]
-        for file in files:
-            try:
-                file_server.delete_file(BucketClass.REGULAR, file)
-            except Exception as err:
-                logger.error(f'Failed to delete avatar: {err}')
+    if not user.image_url.startswith(PRESET_USER_AVATARS):
+        try:
+            file_server.delete_by_prefix(
+                BucketClass.REGULAR, user.image_url.replace('.jpeg', ''))
+        except Exception as err:
+            logger.error(f'Failed to delete avatar: {err}')
 
 
 def resample_img_for_user_avatar(file_server: FileServer, uri: str):
     url = file_server.get_url(BucketClass.REGULAR, uri)
-    img_40_40 = resample_image(url, 40, 40)
-    img_80_80 = resample_image(url, 80, 80)
-
-    output_buffer = BytesIO()
-    img_40_40.save(output_buffer, format='JPEG')
-    file_server.create_file(output_buffer,
-                            uri.replace('.jpeg', '_40_40.jpeg'))
-
-    output_buffer = BytesIO()
-    img_80_80.save(output_buffer, format='JPEG')
-    file_server.create_file(output_buffer,
-                            uri.replace('.jpeg', '_80_80.jpeg'))
+    for size in [48, 128, 256]:
+        img = resample_image(url, size, size)
+        output_buffer = BytesIO()
+        img.save(output_buffer, format='JPEG')
+        file_server.create_file(output_buffer,
+                                uri.replace('.jpeg', f'_{size}_{size}.jpeg'))

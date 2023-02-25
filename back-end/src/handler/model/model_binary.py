@@ -11,7 +11,6 @@ from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
 
 from ..protos import san11_platform_pb2 as pb
-from ..util import gcs
 from ..util.time_util import get_now
 from .base import (Attrib, DatetimeAttrib, DbConverter, InitModel, IntAttrib,
                    LegacyDatetimeProtoConverter, ModelBase, NestedAttrib,
