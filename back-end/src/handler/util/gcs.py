@@ -4,6 +4,7 @@ from abc import ABC
 from enum import Enum
 
 from google.cloud import storage
+
 from handler.common.env import Env, get_env
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -16,9 +17,6 @@ PACKAGE_LIMIT_GB = 20
 
 
 def move_file(src_bucket_name: str, src_filename: str, dest_bucket_name: str, dest_filename: str) -> None:
-    if get_env() == Env.DEV:
-        logger.debug(f'Skip gcs operations in env: DEV')
-        return
     storage_client = storage.Client()
 
     source_bucket = storage_client.bucket(src_bucket_name)
@@ -35,9 +33,6 @@ def move_file(src_bucket_name: str, src_filename: str, dest_bucket_name: str, de
 
 
 def _delete_file(bucket_name: str, filename: str) -> None:
-    if get_env() == Env.DEV:
-        logger.debug(f'Skip gcs operations in env: DEV')
-        return
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     bucket.blob(filename).delete()
@@ -45,9 +40,6 @@ def _delete_file(bucket_name: str, filename: str) -> None:
 
 
 def _delete_folder(bucket_name: str, folder_path: str) -> None:
-    if get_env() == Env.DEV:
-        logger.debug(f'Skip gcs operations in env: DEV')
-        return
     storage_client = storage.Client()
     bucket = storage_client.get_bucket(bucket_name)
     blobs = bucket.list_blobs(prefix=folder_path)
@@ -95,4 +87,3 @@ def delete_folder(folder_path: str) -> None:
         logger.debug(f'Skip gcs operations in env: DEV')
         return
     _delete_folder(CANONICAL_BUCKET, folder_path)
-

@@ -5,13 +5,16 @@ import os
 import urllib.parse
 from abc import ABC, abstractproperty
 from enum import Enum
+from io import BytesIO
 from typing import Optional
 
 import boto3
 from google.cloud import storage
+from PIL import Image
 from requests import delete
 
-from handler.common.credentials import get_aws_credentials
+from handler.common.credentials import (get_aws_credentials,
+                                        get_gcloud_credentials)
 from handler.common.env import Env, get_env
 from handler.common.exception import NotFound
 
@@ -48,7 +51,7 @@ class FileServer(ABC):
         '''
         ...
 
-    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str]) -> str:
+    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str] = None) -> str:
         '''
         Get a url could be used to download the file.
         The url may expire after certain time.
@@ -66,6 +69,9 @@ class FileServer(ABC):
         '''
         Delete the file from the server.
         '''
+        ...
+
+    def create_file(self, data: BytesIO, filename: str,  bucket_class: BucketClass = BucketClass.REGULAR) -> None:
         ...
 
     # For folder
@@ -92,6 +98,10 @@ class FileServer(ABC):
 
 
 class Gcs(FileServer):
+    def __init__(self) -> None:
+        super().__init__()
+        self._credentials = get_gcloud_credentials()
+
     @property
     def regular_bucket(self) -> str:
         return 'san11-resources'
@@ -101,24 +111,18 @@ class Gcs(FileServer):
         return 'san11-tmp'
 
     def get_file_size(self, bucket_class: BucketClass, filename: str) -> int:
-        if get_env() == Env.DEV:
-            logger.debug(f'Skip gcs operations in env: DEV')
-            return 0
-        storage_client = storage.Client()
+        storage_client = self._get_client()
         bucket = storage_client.bucket(self.get_bucket_name(bucket_class))
         blob = bucket.get_blob(filename)
         if not blob:
             raise NotFound()
         return blob.size or 0
 
-    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str]) -> str:
+    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str] = None) -> str:
         return f'https://storage.googleapis.com/{self.get_bucket_name(bucket_class)}/{uri}'
 
     def move_file(self, src_bucket_class: BucketClass, src: str, dest_bucket_class: BucketClass, dest: str) -> None:
-        if get_env() == Env.DEV:
-            logger.debug(f'Skip gcs operations in env: DEV')
-            return
-        storage_client = storage.Client()
+        storage_client = self._get_client()
         source_bucket = storage_client.bucket(
             self.get_bucket_name(src_bucket_class))
         source_blob = source_bucket.blob(src)
@@ -134,33 +138,35 @@ class Gcs(FileServer):
         logger.debug(f'({src}) is deleted from bucket {src_bucket_class}')
 
     def delete_file(self, bucket_class: BucketClass, filename: str) -> None:
-        if get_env() == Env.DEV:
-            logger.debug(f'Skip gcs operations in env: DEV')
-            return
-        storage_client = storage.Client()
+        storage_client = self._get_client()
         bucket = storage_client.bucket(self.get_bucket_name(bucket_class))
         bucket.blob(filename).delete()
         logger.debug(f'({filename}) is deleted from bucket {bucket_class}')
 
+    def create_file(self, data: BytesIO, filename: str,  bucket_class: BucketClass = BucketClass.REGULAR) -> None:
+        storage_client = self._get_client()
+        bucket = storage_client.get_bucket(self.get_bucket_name(bucket_class))
+        blob = bucket.blob(filename)
+        blob.upload_from_string(data.getvalue(),
+                                content_type='image/jpeg')
+        logger.debug(f'({filename}) is created in bucket {bucket_class}')
+
     def get_folder_size(self, bucket_class: BucketClass, path: str) -> int:
-        if get_env() == Env.DEV:
-            logger.debug(f'Skip gcs operations in env: DEV')
-            return 0
-        storage_client = storage.Client()
+        storage_client = self._get_client()
         blobs = storage_client.list_blobs(
             bucket_or_name=self.get_bucket_name(bucket_class), prefix=path)
         return sum(blob.size for blob in blobs)
 
     def delete_folder(self, bucket_class: BucketClass, path: str) -> None:
-        if get_env() == Env.DEV:
-            logger.debug(f'Skip gcs operations in env: DEV')
-            return
-        storage_client = storage.Client()
+        storage_client = self._get_client()
         bucket = storage_client.get_bucket(self.get_bucket_name(bucket_class))
         blobs = bucket.list_blobs(prefix=path)
         for blob in blobs:
             blob.delete()
             logger.debug(f'({blob}) is deleted from bucket {bucket_class}')
+
+    def _get_client(self) -> storage.Client:
+        return storage.Client(credentials=self._credentials)
 
 
 class S3(FileServer):
@@ -184,7 +190,7 @@ class S3(FileServer):
                                             ObjectAttributes=['ObjectSize'])
         return meta['ObjectSize']
 
-    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str]) -> str:
+    def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str] = None) -> str:
         params = {
             'Bucket': self.get_bucket_name(bucket_class),
             'Key': uri,
@@ -237,8 +243,8 @@ class S3(FileServer):
     def _get_client(self):
         # TODO: This is a workaround due to https://github.com/boto/boto3/issues/3015
         s3 = boto3.client('s3', aws_access_key_id=self.creds.access_key_id,
-                            aws_secret_access_key=self.creds.secret_access_key,
-                            region_name='ap-east-1', config=boto3.session.Config(s3={'addressing_style': 'virtual'}))
+                          aws_secret_access_key=self.creds.secret_access_key,
+                          region_name='ap-east-1', config=boto3.session.Config(s3={'addressing_style': 'virtual'}))
         endpointUrl = s3.meta.endpoint_url
         return boto3.client('s3', aws_access_key_id=self.creds.access_key_id,
                             aws_secret_access_key=self.creds.secret_access_key,

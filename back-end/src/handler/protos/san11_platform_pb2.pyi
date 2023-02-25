@@ -91,6 +91,31 @@ DOWNLOAD: Action.ValueType  # 21
 COLLECT: Action.ValueType  # 22
 global___Action = Action
 
+class _ImageType:
+    ValueType = typing.NewType("ValueType", builtins.int)
+    V: typing_extensions.TypeAlias = ValueType
+
+class _ImageTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_ImageType.ValueType], builtins.type):
+    DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
+    IMAGE_TYPE_UNSPECIFIED: _ImageType.ValueType  # 0
+    SCREENSHOT: _ImageType.ValueType  # 1
+    """For screenshot."""
+    USER_AVATAR: _ImageType.ValueType  # 2
+    """For user avatar."""
+    DESCRIPTION: _ImageType.ValueType  # 3
+    """For image in description"""
+
+class ImageType(_ImageType, metaclass=_ImageTypeEnumTypeWrapper): ...
+
+IMAGE_TYPE_UNSPECIFIED: ImageType.ValueType  # 0
+SCREENSHOT: ImageType.ValueType  # 1
+"""For screenshot."""
+USER_AVATAR: ImageType.ValueType  # 2
+"""For user avatar."""
+DESCRIPTION: ImageType.ValueType  # 3
+"""For image in description"""
+global___ImageType = ImageType
+
 @typing_extensions.final
 class CreatePackageRequest(google.protobuf.message.Message):
     """package related"""
@@ -498,18 +523,18 @@ class CreateImageRequest(google.protobuf.message.Message):
 
     PARENT_FIELD_NUMBER: builtins.int
     URL_FIELD_NUMBER: builtins.int
-    IN_DESCRIPTION_FIELD_NUMBER: builtins.int
+    IMAGE_TYPE_FIELD_NUMBER: builtins.int
     parent: builtins.str
     url: builtins.str
-    in_description: builtins.bool
+    image_type: global___ImageType.ValueType
     def __init__(
         self,
         *,
         parent: builtins.str = ...,
         url: builtins.str = ...,
-        in_description: builtins.bool = ...,
+        image_type: global___ImageType.ValueType = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["in_description", b"in_description", "parent", b"parent", "url", b"url"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["image_type", b"image_type", "parent", b"parent", "url", b"url"]) -> None: ...
 
 global___CreateImageRequest = CreateImageRequest
 

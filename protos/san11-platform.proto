@@ -209,7 +209,7 @@ message UploadImageRequest {
 message CreateImageRequest {
   string parent = 1;
   string url = 2;
-  bool in_description = 3;
+  ImageType image_type = 3;
 }
 
 // Threads
@@ -886,4 +886,15 @@ enum Action {
   // misc
   DOWNLOAD = 21;
   COLLECT = 22;
+}
+
+
+enum ImageType {
+  IMAGE_TYPE_UNSPECIFIED = 0;
+  // For screenshot.
+  SCREENSHOT = 1;
+  // For user avatar.
+  USER_AVATAR = 2;
+  // For image in description
+  DESCRIPTION = 3; 
 }

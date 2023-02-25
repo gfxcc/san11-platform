@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
-import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
@@ -596,7 +596,8 @@ export class PackageDetailComponent implements OnInit {
       if (upload.state === 'DONE') {
         this.san11pkService.createImage(new CreateImageRequest({
           parent: parent,
-          url: filename
+          url: filename,
+          imageType: ImageType.SCREENSHOT,
         })).subscribe(
           url => {
             this.package.imageUrls.push(url.url);

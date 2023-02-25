@@ -33,6 +33,12 @@ export enum Action {
   DOWNLOAD = 21,
   COLLECT = 22
 }
+export enum ImageType {
+  IMAGE_TYPE_UNSPECIFIED = 0,
+  SCREENSHOT = 1,
+  USER_AVATAR = 2,
+  DESCRIPTION = 3
+}
 /**
  * Message implementation for routeguide.CreatePackageRequest
  */
@@ -3288,7 +3294,7 @@ export class CreateImageRequest implements GrpcMessage {
   static refineValues(_instance: CreateImageRequest) {
     _instance.parent = _instance.parent || '';
     _instance.url = _instance.url || '';
-    _instance.inDescription = _instance.inDescription || false;
+    _instance.imageType = _instance.imageType || 0;
   }
 
   /**
@@ -3311,7 +3317,7 @@ export class CreateImageRequest implements GrpcMessage {
           _instance.url = _reader.readString();
           break;
         case 3:
-          _instance.inDescription = _reader.readBool();
+          _instance.imageType = _reader.readEnum();
           break;
         default:
           _reader.skipField();
@@ -3336,14 +3342,14 @@ export class CreateImageRequest implements GrpcMessage {
     if (_instance.url) {
       _writer.writeString(2, _instance.url);
     }
-    if (_instance.inDescription) {
-      _writer.writeBool(3, _instance.inDescription);
+    if (_instance.imageType) {
+      _writer.writeEnum(3, _instance.imageType);
     }
   }
 
   private _parent?: string;
   private _url?: string;
-  private _inDescription?: boolean;
+  private _imageType?: ImageType;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3353,7 +3359,7 @@ export class CreateImageRequest implements GrpcMessage {
     _value = _value || {};
     this.parent = _value.parent;
     this.url = _value.url;
-    this.inDescription = _value.inDescription;
+    this.imageType = _value.imageType;
     CreateImageRequest.refineValues(this);
   }
   get parent(): string | undefined {
@@ -3368,11 +3374,11 @@ export class CreateImageRequest implements GrpcMessage {
   set url(value: string | undefined) {
     this._url = value;
   }
-  get inDescription(): boolean | undefined {
-    return this._inDescription;
+  get imageType(): ImageType | undefined {
+    return this._imageType;
   }
-  set inDescription(value: boolean | undefined) {
-    this._inDescription = value;
+  set imageType(value: ImageType | undefined) {
+    this._imageType = value;
   }
 
   /**
@@ -3392,7 +3398,7 @@ export class CreateImageRequest implements GrpcMessage {
     return {
       parent: this.parent,
       url: this.url,
-      inDescription: this.inDescription
+      imageType: this.imageType
     };
   }
 
@@ -3415,7 +3421,7 @@ export class CreateImageRequest implements GrpcMessage {
     return {
       parent: this.parent,
       url: this.url,
-      inDescription: this.inDescription
+      imageType: ImageType[this.imageType ?? 0]
     };
   }
 }
@@ -3426,7 +3432,7 @@ export module CreateImageRequest {
   export interface AsObject {
     parent?: string;
     url?: string;
-    inDescription?: boolean;
+    imageType?: ImageType;
   }
 
   /**
@@ -3435,7 +3441,7 @@ export module CreateImageRequest {
   export interface AsProtobufJSON {
     parent?: string;
     url?: string;
-    inDescription?: boolean;
+    imageType?: string;
   }
 }
 
