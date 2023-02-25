@@ -227,6 +227,7 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   uploadTmpFile(): void {
+    console.debug('uploadTmpFile');
     this.upload = {
       state: 'PENDING',
       progress: 0,

@@ -11,7 +11,7 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 export class FullUrlPipe implements PipeTransform {
   transform(uri: string, img_size?: string): string {
     if (img_size) {
-      return GlobalConstants.imgServerUrl + '/' + uri.replace('.jpeg', `_${img_size}.jpeg`);
+      return GlobalConstants.imgServerUrl + '/' + uri?.replace('.jpeg', `_${img_size}.jpeg`);
     }
     return GlobalConstants.imgServerUrl + '/' + uri;
   }
