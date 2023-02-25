@@ -11,8 +11,8 @@ from handler.model.model_user import ModelUser
 from handler.model.plugins.subscribable import list_subscriptions
 from handler.model.plugins.tracklifecycle import ModelActivity
 from handler.protos import san11_platform_pb2 as pb
-from handler.util.file_server import (PACKAGE_SIZE_LIMIT, S3, BucketClass,
-                                      FileServerType, Gcs, get_file_server)
+from handler.util.file_server import (PACKAGE_SIZE_LIMIT, BucketClass,
+                                      FileServerType, get_file_server)
 from handler.util.name_util import ResourceName, get_parent
 from handler.util.notifier import notify
 from handler.util.resource_parser import find_resource
@@ -20,7 +20,6 @@ from handler.util.resource_parser import find_resource
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
 from .model.model_package import ModelPackage
 from .model.statistic import Statistic
-from .util import gcs
 from .util.size_util import human_readable
 from .util.time_util import get_now
 
@@ -40,7 +39,7 @@ class BinaryHandler(HandlerBase):
             if file_server.get_file_size(BucketClass.TEMP, file.uri) + file_server.get_folder_size(BucketClass.REGULAR, parent) > PACKAGE_SIZE_LIMIT:
                 file_server.delete_file(BucketClass.TEMP, file.uri)
                 raise ResourceExhausted(
-                    message=f'工具存储空间 {gcs.PACKAGE_LIMIT_GB}GB 已用完，请考虑删除历史版本.')
+                    message=f'工具存储空间 {PACKAGE_SIZE_LIMIT/1024/1024/1024}GB 已用完，请考虑删除历史版本.')
 
             binary.size = human_readable(
                 precision=2, byte=file_server.get_file_size(BucketClass.TEMP, file.uri))

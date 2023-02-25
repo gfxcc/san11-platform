@@ -8,7 +8,7 @@ import { San11PlatformServiceService } from 'src/app/service/san11-platform-serv
 import { UploadService } from 'src/app/service/upload.service';
 import { decrement, increment } from 'src/app/utils/number_util';
 import { getUserUri, loadUser, saveUser, signedIn } from 'src/app/utils/user_util';
-import { CreateImageRequest, CreateSubscriptionRequest, DeleteSubscriptionRequest, ListSubscriptionsRequest, ListSubscriptionsResponse, Subscription, User } from 'src/proto/san11-platform.pb';
+import { CreateImageRequest, CreateSubscriptionRequest, DeleteSubscriptionRequest, ImageType, ListSubscriptionsRequest, ListSubscriptionsResponse, Subscription, User } from 'src/proto/san11-platform.pb';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -121,7 +121,8 @@ export class UserInfoWithSubButtonComponent implements OnInit {
       if (upload.state === 'DONE') {
         this.san11pkService.createImage(new CreateImageRequest({
           parent: parent,
-          url: filename
+          url: filename,
+          imageType: ImageType.USER_AVATAR,
         })).subscribe(
           url => {
             this.user.imageUrl = url.url;

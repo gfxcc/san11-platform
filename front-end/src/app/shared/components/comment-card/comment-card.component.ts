@@ -87,7 +87,7 @@ export class CommentCardComponent implements OnInit {
   }
 
   onDeleteComment() {
-    if (!confirm('确定要删除评论 ' + this.comment.text + ' 吗?')) {
+    if (!confirm('确定要删除评论吗?')) {
       return;
     }
 

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
-import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
@@ -406,7 +406,7 @@ export class PackageDetailComponent implements OnInit {
 
     if (getCategoryId(this.package.name) === 1) {
       // append a pre-set image for SIRE package
-      const fullImageUrl = getFullUrl('images/sire2.jpg');
+      const fullImageUrl = getFullUrl('static/images/sire2.jpg');
       this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
     }
     // append image for upload 
@@ -467,6 +467,9 @@ export class PackageDetailComponent implements OnInit {
 
 
   onFlipHide() {
+    if (confirm('确认要' + (this.package.state === ResourceState.HIDDEN ? '显示' : '隐藏') + ' ' + this.package.packageName + ' 吗？') === false) {
+      return;
+    }
     const request = new UpdatePackageRequest({
       package: new Package({
         name: this.package.name,
@@ -477,7 +480,7 @@ export class PackageDetailComponent implements OnInit {
       })
     });
     this.san11pkService.updatePackage(request).subscribe(
-      san11Package => {
+      (resp: Package) => {
         this.notificationService.success('操作成功')
         this.router.navigate(this.package.name.split('/')).then(() => {
           window.location.reload();
@@ -496,7 +499,7 @@ export class PackageDetailComponent implements OnInit {
         this.san11pkService.deletePackage(new DeletePackageRequest({
           name: this.package.name,
         })).subscribe(
-          status => {
+          (resp: Package) => {
             this.notificationService.success('成功删除');
 
             this.router.navigate(['/']).then(() => {
@@ -593,7 +596,8 @@ export class PackageDetailComponent implements OnInit {
       if (upload.state === 'DONE') {
         this.san11pkService.createImage(new CreateImageRequest({
           parent: parent,
-          url: filename
+          url: filename,
+          imageType: ImageType.SCREENSHOT,
         })).subscribe(
           url => {
             this.package.imageUrls.push(url.url);

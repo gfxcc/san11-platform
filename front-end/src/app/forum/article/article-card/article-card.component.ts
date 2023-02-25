@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
@@ -18,6 +19,7 @@ export class ArticleCardComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private san11pkService: San11PlatformServiceService,
+    private router: Router,
   ) {
   }
 
@@ -27,7 +29,7 @@ export class ArticleCardComponent implements OnInit {
     })).subscribe(
       (resp: User) => {
         this.user = resp;
-      }, 
+      },
       error => {
         this.notificationService.warn(`获取用户数据失败: ${error.statusMessage}`);
       }
@@ -61,10 +63,10 @@ export class ArticleCardComponent implements OnInit {
     var resultStr = "";
 
     // Ignore the <p> tag if it is in very start of the text
-    if(strSrc.indexOf('<p>') == 0)
-        resultStr = strSrc.substring(3);
+    if (strSrc.indexOf('<p>') == 0)
+      resultStr = strSrc.substring(3);
     else
-        resultStr = strSrc;
+      resultStr = strSrc;
 
     // Replace <p> with two newlines
     resultStr = resultStr.replace(/<p>/gi, "\r\n\r\n");
@@ -76,20 +78,24 @@ export class ArticleCardComponent implements OnInit {
     // Strip off other HTML tags.
     //-+-+-+-+-+-+-+-+-+-+-+
 
-    return  resultStr.replace( /<[^<|>]+?>/gi,'' );
-}
+    return resultStr.replace(/<[^<|>]+?>/gi, '');
+  }
 
+  onClick() {
+    console.log(this.article.name.split('/'));
+    this.router.navigate(this.article.name.split('/'));
+  }
 
-isAdmin() {
-  return isAdmin();
-}
+  isAdmin() {
+    return isAdmin();
+  }
 
-isAuthor() {
-  return loadUser().userId === this.article.authorId;
-}
+  isAuthor() {
+    return loadUser().userId === this.article.authorId;
+  }
 
-getStatusName() {
-  return ResourceState[this.article.state];
-}
+  getStatusName() {
+    return ResourceState[this.article.state];
+  }
 
 }

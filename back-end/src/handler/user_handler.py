@@ -9,11 +9,12 @@ from handler.model.base import (FieldMask, HandlerBase, ListOptions, ModelBase,
 from handler.model.model_user import (DEFAULT_USER_AVATAR, ModelUser,
                                       get_user_by_email, validate_email,
                                       validate_new_user, validate_username)
+from handler.util.file_server import (BucketClass, FileServer, FileServerType,
+                                      get_file_server)
 from handler.util.user_util import verify_password
 
 from .auths import Session
 from .common.exception import NotFound, Unauthenticated
-from .common.image import Image
 from .db.db_util import run_sql_with_param, run_sql_with_param_and_fetch_one
 from .util.notifier import Notifier
 
@@ -52,8 +53,10 @@ class UserHandler(HandlerBase):
             base_user, update_resource, update_mask)
         if user.image_url != base_user.image_url:
             if base_user.image_url and base_user.image_url != DEFAULT_USER_AVATAR:
+                file_server = get_file_server(FileServerType.GCS)
                 try:
-                    Image.from_url(base_user.image_url).delete()
+                    file_server.delete_file(
+                        BucketClass.REGULAR, base_user.image_url)
                 except Exception as err:
                     logger.error(
                         f'Failed to delete {base_user.image_url}: {err}')

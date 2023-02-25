@@ -8,7 +8,8 @@ from handler.model.base import (FieldMask, HandlerBase, ListOptions,
 from handler.model.model_article import ModelArticle
 from handler.model.model_package import ModelPackage
 from handler.model.model_user import ModelUser
-from handler.util import gcs
+from handler.util.file_server import (BucketClass, FileServer, FileServerType,
+                                      get_file_server)
 from handler.util.html_util import get_text_from_html
 from handler.util.notifier import notify
 from handler.util.resource_parser import find_resource
@@ -70,6 +71,7 @@ class ThreadHandler(HandlerBase):
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelThread:
         thread = ModelThread.from_name(name)
-        gcs.delete_folder(thread.name)
+        get_file_server(FileServerType.GCS).delete_by_prefix(
+            BucketClass.REGULAR, thread.name)
         thread.delete(handler_context.user.user_id)
         return thread

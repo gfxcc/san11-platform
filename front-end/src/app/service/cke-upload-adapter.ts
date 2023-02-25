@@ -1,10 +1,10 @@
+import { Subscription } from "rxjs";
+import { v4 as uuid } from 'uuid';
+import { CreateImageRequest, ImageType } from "../../proto/san11-platform.pb";
 import { GlobalConstants } from "../common/global-constants";
+import { getFullUrl } from "../utils/resrouce_util";
 import { San11PlatformServiceService } from "./san11-platform-service.service";
 import { UploadService } from "./upload.service";
-import { v4 as uuid } from 'uuid'
-import { CreateImageRequest } from "../../proto/san11-platform.pb";
-import { Observable, Subscription } from "rxjs";
-import { getFullUrl } from "../utils/resrouce_util";
 
 export class MyUploadAdapter {
     uploadSubscription: Subscription;
@@ -29,7 +29,7 @@ export class MyUploadAdapter {
                             this.san11pkService.createImage(new CreateImageRequest({
                                 parent: this.parent,
                                 url: filename,
-                                inDescription: true
+                                imageType: ImageType.DESCRIPTION,
                             })).subscribe(
                                 url => {
                                     resolve({

@@ -16,3 +16,5 @@ bcrypt==3.2.2
 # AWS SDK
 boto3
 html2text
+Pillow
+requests

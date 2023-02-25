@@ -72,7 +72,7 @@ export class PackageCardComponent implements OnInit {
 
   loadImage() {
     if (this.package.imageUrls.length === 0) {
-      this.screenshot = getFullUrl('images/sire2.jpg');
+      this.screenshot = getFullUrl('static/images/sire2.jpg');
     } else {
       this.screenshot = getFullUrl(this.package.imageUrls[0]);
     }

@@ -161,6 +161,10 @@ body {
     background-color: var(--clickable-background-color);
 }
 
+.clickable-button:hover {
+    background-color: var(--clickable-background-color-hover);
+}
+
 .clickable {
     cursor: pointer;
     display: inline-block;
@@ -255,6 +259,7 @@ body {
     transition-duration: .5s;
     border-radius: 4px;
     background: transparent;
+    cursor: pointer;
 }
 
 .clickable-card:hover {

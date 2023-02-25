@@ -20,7 +20,8 @@ from ..protos import san11_platform_pb2 as pb
 from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
                    ModelBase, NestedAttrib, NestedModel, StrAttrib)
 
-DEFAULT_USER_AVATAR = 'users/default_avatar.jpg'
+DEFAULT_USER_AVATAR = 'static/images/avatars/zhuge.jpeg'
+PRESET_USER_AVATARS = 'static/images/avatars'
 
 
 class EmailProtoConverter(ProtoConverter):
