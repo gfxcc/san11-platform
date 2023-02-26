@@ -2,7 +2,6 @@ import { Component, Inject, Input, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { getCategoryId } from 'src/app/utils/package_util';
 import { isAdmin } from 'src/app/utils/user_util';
 import { DeletePackageRequest, GetUserRequest, Package, ResourceState, User } from '../../../../proto/san11-platform.pb';
 import { NotificationService } from "../../../common/notification.service";
@@ -25,16 +24,8 @@ export class PackageCardComponent implements OnInit {
   screenshot: string = undefined;
   selectedBinary;
 
-  hideScreenshot: boolean = true;
-  hideAuthorImage: boolean = true;
-
-
-  loadingDialog;
-  downloadProgress = 0;
-  downloadProgressBar = false;
-
-  acceptFileType: string;
-
+  displayScreenshotLoading: boolean = true;
+  displayAuthorImgLoading: boolean = true;
 
   constructor(
     private notificationService: NotificationService,
@@ -63,7 +54,6 @@ export class PackageCardComponent implements OnInit {
       }
     );
     this.loadImage();
-    this.acceptFileType = getCategoryId(this.package.name) === 1 ? '.scp, .scp-en' : '.rar';
   }
 
   ngAfterViewInit() {

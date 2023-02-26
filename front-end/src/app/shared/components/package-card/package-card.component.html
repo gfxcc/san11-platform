@@ -2,8 +2,12 @@
     <mat-card class="package-card">
         <mat-card-header>
             <div mat-card-avatar class="author-image">
-                <img [hidden]="this.hideAuthorImage" [src]="this.author?.imageUrl | fullUrl : '128_128'"
-                    (load)="this.hideAuthorImage= false;" class="author-image">
+                <div [hidden]="!this.displayAuthorImgLoading"
+                    class="animated-background author-image"></div>
+                <img [hidden]="this.displayAuthorImgLoading"
+                    [src]="this.author?.imageUrl | fullUrl : '128_128'"
+                    (load)="this.displayAuthorImgLoading=false;"
+                    class="author-image">
             </div>
             <mat-card-title>
 
@@ -25,11 +29,13 @@
 
 
         <div class="screenshot">
-            <div [hidden]="!this.hideScreenshot" class="animated-background
+            <div [hidden]="!this.displayScreenshotLoading"
+                class="animated-background
                 screenshot"></div>
 
-            <img [hidden]="this.hideScreenshot" [src]="screenshot"
-                (load)="this.hideScreenshot= false;" class="screenshot
+            <img [hidden]="this.displayScreenshotLoading" [src]="screenshot"
+                (load)="this.displayScreenshotLoading=false;"
+                class="screenshot
                 mat-card-image">
         </div>
 

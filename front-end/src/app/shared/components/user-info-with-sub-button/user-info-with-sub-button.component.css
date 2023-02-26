@@ -21,6 +21,10 @@
     font-weight: 500;
 }
 
+.user-image-size {
+
+}
+
 .user-image {
     background-size: cover;
     padding: 0;

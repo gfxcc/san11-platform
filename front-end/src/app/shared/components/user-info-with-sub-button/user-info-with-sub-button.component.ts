@@ -21,8 +21,9 @@ export class UserInfoWithSubButtonComponent implements OnInit {
   @Input() updateAvatar: false;
   @ViewChild('imageInput') imageInputElement: ElementRef
 
+
+  displayUserImgLoading: boolean = true;
   loading: MatDialogRef<LoadingComponent>;
-  hideAvatar = true;
   subscription: Subscription;
 
   constructor(

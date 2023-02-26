@@ -3,8 +3,16 @@
 
         <div>
             <button mat-button (click)="onAvatarClick()" class="user-image">
-                <img [hidden]="this.hideAvatar" [src]="this.user?.imageUrl | fullUrl : '128_128'"
-                    (load)="this.hideAvatar=false;" class="user-image">
+                <!-- <div [hidden]="!this.displayUserImgLoading"
+                    class="animated-background user-image"></div> -->
+                <p-skeleton *ngIf="this.displayUserImgLoading" shape="circle"
+                    width="5.8em" height="5.8em"></p-skeleton>
+
+                <img [hidden]="this.displayUserImgLoading"
+                    [src]="this.user?.imageUrl |
+                    fullUrl : '128_128'"
+                    (load)="this.displayUserImgLoading=false;"
+                    class="user-image">
             </button>
             <input type="file" accept="image/*" hidden="true" #imageInput
                 (change)="onUploadUserAvatar(imageInput)">
