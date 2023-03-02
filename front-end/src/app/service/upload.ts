@@ -2,7 +2,7 @@ import {
     HttpEvent,
     HttpEventType,
     HttpProgressEvent,
-    HttpResponse,
+    HttpResponse
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, scan } from 'rxjs/operators';
@@ -43,7 +43,8 @@ export function upload(): (
             };
         }
         // TODO: this is a workaround while GCS return 401 due to non-authenticated request
-        if (isHttpResponse(event) || event.type === 3) {
+        // || event.type === 3
+        if (isHttpResponse(event)) {
             return {
                 progress: 100,
                 state: 'DONE',

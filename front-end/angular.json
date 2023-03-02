@@ -125,5 +125,8 @@
             }
         }
     },
-    "defaultProject": "san11-platform"
+    "defaultProject": "san11-platform",
+    "cli": {
+      "analytics": false
+    }
 }
