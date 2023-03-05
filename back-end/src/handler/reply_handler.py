@@ -21,7 +21,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class ReplyHandler(HandlerBase):
-    def _create(self, parent: str, reply: ModelReply,
+    def create(self, parent: str, reply: ModelReply,
                 handler_context: HandlerContext) -> ModelReply:
         user_id = handler_context.user.user_id
         reply.author_id = user_id

@@ -18,3 +18,8 @@ def get_env() -> Env:
     else:
         return Env.PROD
 
+
+def get_server_addr() -> str:
+    if get_env() == Env.DEV:
+        return 'http://localhost:4200'
+    return 'https://san11pk.org'

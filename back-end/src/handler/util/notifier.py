@@ -11,7 +11,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 from handler.common.env import Env, get_env
-from handler.common.visitor import _methods, visitor
+from handler.common.visitor import visitor
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
 from handler.model.model_notification import ModelNotification
@@ -24,6 +24,7 @@ from handler.util.name_util import get_parent
 from handler.util.resource_parser import find_resource
 from handler.util.resource_view import ResourceViewVisitor, get_resource_url
 from handler.util.time_util import get_now
+from handler.util.url import get_full_url
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -69,8 +70,9 @@ def send_email(receiver: str, subject: str, content: str) -> None:
     message.attach(MIMEText(content))
     Notifier().send_email(message)
 
+
 def _send_notification(sender_id: int, receiver_id: int, content: str,
-                      link: str, image_preview: str):
+                       link: str, image_preview: str):
     '''
     Sends a notification to the user.
     '''
@@ -100,10 +102,11 @@ def notify(sender: ModelUser, receiver: ModelUser, content: str,
         # TODO: pass notifier as an argument.
         Notifier().send_email(
             _create_message(sender.email,
-                           receiver.email,
-                           f'{sender.username} 在 San11pk 上发了一条消息',
-                           content,
-                           link))
+                            receiver.email,
+                            f'{sender.username} 在 San11pk 上发了一条消息',
+                            content,
+                            link))
+
 
 def _create_message(sender: str, receiver: str, subject: str, content: str, link: str) -> MIMEMultipart:
     message = MIMEMultipart()
@@ -112,7 +115,8 @@ def _create_message(sender: str, receiver: str, subject: str, content: str, link
     message['subject'] = subject
     message.attach(MIMEText(content))
 
-    message.attach(MIMEText(f"<a href='{link}'>点击查看</a>", 'html'))
+    message.attach(
+        MIMEText(f"<a href='{get_full_url(link)}'>点击查看</a>", 'html'))
     return message
 
 
@@ -259,4 +263,5 @@ def notify_on_creation(resource: Union[ModelPackage, ModelBinary, ModelThread, M
     try:
         CreationNotifier().visit(resource)  # type: ignore
     except Exception as e:
-        logging.exception(f'Failed to notify on creation of {resource.name}: {e}')
+        logging.exception(
+            f'Failed to notify on creation of {resource.name}: {e}')

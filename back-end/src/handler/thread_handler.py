@@ -22,7 +22,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class ThreadHandler(HandlerBase):
-    def _create(self, parent: str, thread: ModelThread, handler_context) -> ModelThread:
+    def create(self, parent: str, thread: ModelThread, handler_context) -> ModelThread:
         thread.author_id = handler_context.user.user_id
         thread.state = pb.ResourceState.NORMAL
         thread.create(parent=parent, actor_info=handler_context.user.user_id)

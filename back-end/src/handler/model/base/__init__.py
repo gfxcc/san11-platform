@@ -141,7 +141,7 @@ class HandlerBase(ABC):
     Provides CRUD operations on resource classes.
     '''
 
-    def _create(self, parent: str, resource: Type[ModelBase], handler_context: Type[Context]) -> Type[ModelBase]:
+    def create(self, parent: str, resource: Type[ModelBase], handler_context: Type[Context]) -> Type[ModelBase]:
         ...
 
     def get(self, name: str, handler_context: Type[Context]) -> Type[ModelBase]:

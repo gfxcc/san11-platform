@@ -30,7 +30,7 @@ def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
 
 
 class BinaryHandler(HandlerBase):
-    def _create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
+    def create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
         if binary.file:
             file_server = get_file_server(FileServerType(binary.file.server))
             file: File = binary.file

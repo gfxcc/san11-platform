@@ -49,7 +49,7 @@ def filter_packages_based_on_requester(packages: Iterable[ModelPackage],
 
 
 class PackageHandler(HandlerBase):
-    def _create(self, parent: str, package: ModelPackage, handler_context: HandlerContext) -> ModelPackage:
+    def create(self, parent: str, package: ModelPackage, handler_context: HandlerContext) -> ModelPackage:
         package.author_id = handler_context.user.user_id
         package.state = pb.ResourceState.UNDER_REVIEW
         package.create(parent=parent, actor_info=handler_context.user.user_id)

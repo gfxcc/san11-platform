@@ -10,8 +10,10 @@ from handler.model.model_user import (DEFAULT_USER_AVATAR, ModelUser,
                                       default_user_settings, get_user_by_email,
                                       validate_email, validate_new_user,
                                       validate_username)
+from handler.model.plugins.tracklifecycle import Action, ModelActivity
 from handler.util.file_server import (BucketClass, FileServer, FileServerType,
                                       get_file_server)
+from handler.util.time_util import get_now
 from handler.util.user_util import verify_password
 
 from .auths import Session
@@ -26,16 +28,24 @@ logger = logging.getLogger(os.path.basename(__file__))
 class UserHandler(HandlerBase):
     def create_user(self, parent: str, user: ModelUser,
                     handler_context: HandlerContext) -> Tuple[ModelUser, Session]:
-        user = self._create(parent, user, handler_context)
+        user = self.create(parent, user, handler_context)
         session = Session.create(user.user_id)
         return user, session
 
-    def _create(self, parent: str, user: ModelUser,
-                handler_context: HandlerContext) -> ModelUser:
+    def create(self, parent: str, user: ModelUser,
+               handler_context: HandlerContext) -> ModelUser:
         user.image_url = DEFAULT_USER_AVATAR
         user.settings = default_user_settings()
         validate_new_user(user)
+
         user.create(parent)
+
+        # actor_info is not available since the user_id is not avaiable until the user is created.
+        # Create the activity after the user is created.
+        ModelActivity(name='',
+                      create_time=get_now(),
+                      action=Action.CREATE.value,
+                      resource_name=user.name).create(parent=user.name)
         return user
 
     def get(self, name: str, handler_context) -> ModelBase:

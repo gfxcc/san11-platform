@@ -9,7 +9,7 @@ from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
 from handler.model.plugins.subscribable import ModelSubscription
-from handler.util.html_util import get_server_url, get_text_from_html
+from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName, get_parent
 from handler.util.resource_parser import find_resource
 
@@ -109,18 +109,16 @@ class ResourceViewVisitor:
         )
 
 
-# Get url for any resource model
 def get_resource_url(resource) -> str:
-    def get_uri(resource) -> str:
-        if isinstance(resource, (ModelPackage, ModelThread, ModelUser, ModelArticle)):
-            return resource.name
-        elif isinstance(resource, ModelBinary):
-            return get_parent(resource.name)
-        elif isinstance(resource, ModelComment):
-            return f'{get_parent(resource.name)}#comment-{resource.index}'
-        elif isinstance(resource, ModelReply):
-            comment: ModelComment = find_resource(get_parent(resource.name))
-            return f'{get_parent(resource.name)}#comment-{comment.index}'
-        else:
-            raise ValueError(f'Unknown resource type {type(resource)}')
-    return f'{get_server_url()}/{get_uri(resource)}'
+    # Return relative url of a resource
+    if isinstance(resource, (ModelPackage, ModelThread, ModelUser, ModelArticle)):
+        return resource.name
+    elif isinstance(resource, ModelBinary):
+        return get_parent(resource.name)
+    elif isinstance(resource, ModelComment):
+        return f'{get_parent(resource.name)}#comment-{resource.index}'
+    elif isinstance(resource, ModelReply):
+        comment: ModelComment = find_resource(get_parent(resource.name))
+        return f'{get_parent(resource.name)}#comment-{comment.index}'
+    else:
+        raise ValueError(f'Unknown resource type {type(resource)}')

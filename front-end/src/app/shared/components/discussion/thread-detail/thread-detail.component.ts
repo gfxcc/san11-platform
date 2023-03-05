@@ -2,6 +2,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
@@ -171,7 +172,7 @@ export class ThreadDetailComponent implements OnInit {
 
   getUsernameFeedItems(queryText: string) {
     return this.san11pkService.listUsers(new ListUsersRequest({
-      pageSize: '5',
+      pageSize: GlobalConstants.usernameFeedPageSize.toString(),
       filter: `username = "*${queryText}*"`
     })).toPromise().then(function (result) {
       return result.users.map(

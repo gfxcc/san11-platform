@@ -1,7 +1,12 @@
 <div class="wrapper">
     <div class="avatar-wrapper">
-        <img [hidden]="senderAvatar == undefined" [src]="senderAvatar"
+        <img [src]="this.sender?.imageUrl | fullUrl : '128_128'"
+            (load)="this.avatar_loading=false;"
+            [hidden]="this.avatar_loading"
             class="user-avatar">
+
+        <p-skeleton *ngIf="this.avatar_loading"
+            height="40px"></p-skeleton>
     </div>
 
     <div class="details-section">
@@ -11,8 +16,15 @@
         </div>
     </div>
 
-    <div *ngIf="notification.imagePreview">
-        <img [src]="preview"
-            class="preview">
+    <div *ngIf="notification.imagePreview" class="preview-wrapper">
+        <!-- <img [src]="preview"
+            class="preview"> -->
+
+        <!-- <p-skeleton [ngStyle]="{'width': '100%'}"></p-skeleton> -->
+        <img [src]="this.notification.imagePreview | fullUrl"
+            (load)="this.preview_loading=false;"
+            [hidden]="preview_loading" class="preview">
+        <p-skeleton *ngIf="preview_loading"
+            height="65px"></p-skeleton>
     </div>
 </div>

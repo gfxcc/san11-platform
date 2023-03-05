@@ -13,7 +13,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class ArticleHandler(HandlerBase):
-    def _create(self, parent: str, article: ModelArticle, handler_context: HandlerContext) -> ModelArticle:
+    def create(self, parent: str, article: ModelArticle, handler_context: HandlerContext) -> ModelArticle:
         article.author_id = handler_context.user.user_id
         article.create(parent=parent, actor_info=handler_context.user.user_id)
         return article

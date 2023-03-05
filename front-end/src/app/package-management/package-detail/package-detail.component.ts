@@ -189,7 +189,7 @@ export class PackageDetailComponent implements OnInit {
 
   getUsernameFeedItems(queryText: string) {
     return this.san11pkService.listUsers(new ListUsersRequest({
-      pageSize: '5',
+      pageSize: GlobalConstants.usernameFeedPageSize.toString(),
       filter: `username = "*${queryText}*"`
     })).toPromise().then(function (result) {
       return result.users.map(

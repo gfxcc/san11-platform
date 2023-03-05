@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
+import { GlobalConstants } from 'src/app/common/global-constants';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { UploadService } from 'src/app/service/upload.service';
 import { getUserUri, signedIn } from 'src/app/utils/user_util';
@@ -195,7 +196,7 @@ export class CommentBoardComponent implements OnInit {
 
   getUsernameFeedItems(queryText: string) {
     return this.san11pkService.listUsers(new ListUsersRequest({
-      pageSize: '5',
+      pageSize: GlobalConstants.usernameFeedPageSize.toString(),
       filter: `username = "*${queryText}*"`
     })).toPromise().then(function (result) {
       return result.users.map(

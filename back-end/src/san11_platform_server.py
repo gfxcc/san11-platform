@@ -104,7 +104,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateArticle(self, request, context):
-        return self.article_handler._create(
+        return self.article_handler.create(
             request.parent,
             ModelArticle.from_pb(request.article),
             context).to_pb()
@@ -141,7 +141,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_resource_owner('parent')
     def CreateBinary(self, request, context):
-        return self.binary_handler._create(
+        return self.binary_handler.create(
             request.parent,
             ModelBinary.from_pb(request.binary),
             context).to_pb()
@@ -177,7 +177,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateComment(self, request, context):
-        return self.comment_handler._create(
+        return self.comment_handler.create(
             request.parent,
             ModelComment.from_pb(request.comment), context).to_pb()
 
@@ -209,7 +209,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateReply(self, request, context):
-        return self.reply_handler._create(
+        return self.reply_handler.create(
             request.parent, ModelReply.from_pb(request.reply), context).to_pb()
 
     @GrpcAbortOnExcep
@@ -229,7 +229,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateThread(self, request, context):
-        created_thread = self.thread_handler._create(
+        created_thread = self.thread_handler.create(
             request.parent, ModelThread.from_pb(request.thread), context)
         return created_thread.to_pb()
 
@@ -291,7 +291,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_admin
     def CreateTag(self, request, context):
-        return self.tag_handler._create(
+        return self.tag_handler.create(
             request.parent,
             ModelTag.from_pb(request.tag),
             context).to_pb()
@@ -316,7 +316,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreatePackage(self, request, context):
-        return self.package_handler._create(
+        return self.package_handler.create(
             request.parent, ModelPackage.from_pb(request.package), context).to_pb()
 
     @GrpcAbortOnExcep
@@ -380,7 +380,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_login
     def CreateSubscription(self, request, context):
-        return self.subscription_handler._create(
+        return self.subscription_handler.create(
             request.parent, ModelSubscription.from_pb(request.subscription), context).to_pb()
 
     @GrpcAbortOnExcep

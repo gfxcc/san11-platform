@@ -20,9 +20,3 @@ def get_mentioned_users(content: str) -> List[int]:
     for at_user_id, at_username in re.findall(pattern, content):
         ret.append(int(at_user_id))
     return ret
-
-
-def get_server_url() -> str:
-    if get_env() == Env.DEV:
-        return 'http://localhost:4200'
-    return 'https://san11pk.org'

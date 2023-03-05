@@ -20,4 +20,6 @@ export class GlobalConstants {
         { value: '3', text: 'MOD', link: ['/categories', 3], icon: 'auto_fix_high' },
     ];
 
+    public static usernameFeedPageSize: number = 10;
+
 }

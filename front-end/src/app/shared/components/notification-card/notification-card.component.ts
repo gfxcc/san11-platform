@@ -15,6 +15,9 @@ export class NotificationCardComponent implements OnInit {
   hideSenderImage = true;
   sender: User;
 
+  preview_loading = true;
+  avatar_loading = true;
+
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -24,22 +27,18 @@ export class NotificationCardComponent implements OnInit {
   ngOnInit(): void {
     this.san11pkService.getUser(new GetUserRequest({
       name: `users/${this.notification.senderId}`,
-    })).subscribe(
-      (resp: User) => {
+    })).subscribe({
+      next: (resp: User) => {
         this.sender = resp;
       },
-      error => {
+      error: error => {
         this.notificationService.warn(`无法获取用户数据: ${error.statusMessage}`);
       }
-    )
+    })
   }
 
   get senderAvatar() {
     return getFullUrl(this.sender?.imageUrl);
-  }
-
-  get preview() {
-    return getFullUrl(this.notification.imagePreview);
   }
 
   get age() {

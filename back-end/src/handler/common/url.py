@@ -4,12 +4,12 @@ class Url:
         self.raw = raw_url
         self._items = raw_url.split('/')
         # TODO: mode validataion
-    
+
     def __str__(self):
         return self.raw
 
     @property
-    def type(self) -> str: 
+    def type(self) -> str:
         '''
         [users, packages, website]
         user:
@@ -31,12 +31,12 @@ class Url:
     @property
     def id(self) -> int:
         return int(self._items[-1])
-    
+
     @property
     def category_id(self) -> int:
         assert self.type in ['categories', 'packages']
         return int(self._items[1])
-    
+
     @property
     def package_id(self) -> int:
         assert self.type in ['packages', 'binaries']

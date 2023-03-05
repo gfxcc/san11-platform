@@ -25,7 +25,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class CommentHandler(HandlerBase):
-    def _create(self, parent: str, comment: ModelComment, handler_context: HandlerContext) -> ModelComment:
+    def create(self, parent: str, comment: ModelComment, handler_context: HandlerContext) -> ModelComment:
         user_id = handler_context.user.user_id
         username = ModelUser.from_name(f'users/{user_id}').username
         comment.author_id = user_id
@@ -38,7 +38,6 @@ class CommentHandler(HandlerBase):
             thread.update(update_update_time=False)
             comment.index = thread.comment_count
         comment.create(parent=parent, actor_info=user_id)
-        comment_view = ResourceViewVisitor().visit(comment)  # type: ignore
 
         # Post creation
         notify_on_creation(comment)

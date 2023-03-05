@@ -44,6 +44,12 @@
     border-radius: 50%;
 }
 
+.preview-wrapper {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+
 .preview {
     width: 85px;
     height: 65px;
