@@ -23,7 +23,7 @@ from handler.util.state_util import on_approve
 from handler.util.time_util import get_now
 
 from .protos import san11_platform_pb2 as pb
-from .util.notifier import Notifier, notify, notify_on_creation
+from .util.notifier import notify, notify_on_creation, send_email
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -55,7 +55,6 @@ class PackageHandler(HandlerBase):
         package.create(parent=parent, actor_info=handler_context.user.user_id)
         # Post creation actions
         try:
-            notifer = Notifier()
             view = ResourceViewVisitor().visit(package) # type: ignore
             for admin in get_admins():
                 notify(
@@ -65,7 +64,7 @@ class PackageHandler(HandlerBase):
                     link=view.name,
                     image_preview=view.image_url)
                 if get_env() == Env.PROD:
-                    notifer.send_email(
+                    send_email(
                         admin.email, '【新内容】待审核', f'[{package.package_name}] 已被 {handler_context.user.username} 创建。请审核。')
         except Exception as err:
             logger.error(f'Failed to notify admin: {err}')

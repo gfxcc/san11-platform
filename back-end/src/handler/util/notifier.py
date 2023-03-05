@@ -62,6 +62,13 @@ class Notifier:
         return service
 
 
+def send_email(receiver: str, subject: str, content: str) -> None:
+    message = MIMEMultipart()
+    message['to'] = receiver
+    message['subject'] = subject
+    message.attach(MIMEText(content))
+    Notifier().send_email(message)
+
 def _send_notification(sender_id: int, receiver_id: int, content: str,
                       link: str, image_preview: str):
     '''
