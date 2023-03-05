@@ -94,6 +94,16 @@ class Subscribable:
         ModelActivity(name='', create_time=get_now(
         ), action=Action.UNSUBSCRIBE.value, resource_name=self.name).create(subscriber_name)
 
+    def list_subscriptions(self) -> Iterable[ModelSubscription]:
+        '''
+        Args:
+            list_options: The list options to list subscriptions.
+        '''
+        assert isinstance(
+            self, ModelBase), 'Only a `ModelBase` can subclass `Subscribable`'
+        return ModelSubscription.list(ListOptions(
+            parent=None, page_size=MAX_PAGE_SIZE, watermark=0, order_by='', filter=f'target="{self.name}"'))[0]
+
 
 def list_subscriptions(target: str) -> Iterable[ModelSubscription]:
     '''

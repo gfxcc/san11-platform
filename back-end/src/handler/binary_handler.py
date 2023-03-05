@@ -8,13 +8,12 @@ from handler.model.base import (MAX_PAGE_SIZE, FieldMask, HandlerBase,
                                 ListOptions, merge_resource)
 from handler.model.model_binary import File, ModelBinary
 from handler.model.model_user import ModelUser
-from handler.model.plugins.subscribable import list_subscriptions
 from handler.model.plugins.tracklifecycle import ModelActivity
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.file_server import (PACKAGE_SIZE_LIMIT, BucketClass,
                                       FileServerType, get_file_server)
 from handler.util.name_util import ResourceName, get_parent
-from handler.util.notifier import notify
+from handler.util.notifier import notify_on_creation
 from handler.util.resource_parser import find_resource
 
 from .common.exception import InvalidArgument, ResourceExhausted, Unimplemented
@@ -31,7 +30,7 @@ def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
 
 
 class BinaryHandler(HandlerBase):
-    def create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
+    def _create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
         if binary.file:
             file_server = get_file_server(FileServerType(binary.file.server))
             file: File = binary.file
@@ -55,7 +54,7 @@ class BinaryHandler(HandlerBase):
                 'Either `file` or `download_method` has be specified.')
         binary.create(parent=parent, actor_info=handler_context.user.user_id)
         # Post creation
-        _notify_subscribed_users(ModelPackage.from_name(parent), binary)
+        notify_on_creation(binary)
         # Update the `update_time` in package.
         find_resource(parent).update()
         return binary
@@ -83,8 +82,7 @@ class BinaryHandler(HandlerBase):
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
         # website statistic
         Statistic.load_today().increment_download()  # Package statistic
-        package = ModelPackage.from_name(str(ResourceName.from_str(
-            binary.name).parent))
+        package = ModelPackage.from_name(get_parent(binary.name))
         package.download_count += 1
         package.update(update_update_time=False)
         try:
@@ -105,21 +103,3 @@ class BinaryHandler(HandlerBase):
             FileServerType(file.server)).get_url(BucketClass.REGULAR, file.uri, filename)
         logger.debug(binary.file.url)
         return binary
-
-
-def _notify_subscribed_users(package: ModelPackage, binary: ModelBinary):
-    '''
-    Notify subscribied users a new version of the package is released.
-    '''
-    author = ModelUser.from_user_id(package.author_id)
-    for sub in list_subscriptions(author.name):
-        subscriber = ModelUser.from_name(sub.subscriber_name)
-        if not subscriber.settings.notification.subscriptions:
-            continue
-        notify(
-            sender_id=author.user_id,
-            receiver_id=subscriber.user_id,
-            content=f'{author.username} 更新了 {package.package_name} {binary.version}',
-            link=package.name,
-            image_preview=package.image_urls[0] if package.image_urls else '',
-        )

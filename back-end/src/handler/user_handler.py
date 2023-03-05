@@ -7,8 +7,9 @@ from handler.handler_context import HandlerContext
 from handler.model.base import (FieldMask, HandlerBase, ListOptions, ModelBase,
                                 merge_resource)
 from handler.model.model_user import (DEFAULT_USER_AVATAR, ModelUser,
-                                      get_user_by_email, validate_email,
-                                      validate_new_user, validate_username)
+                                      default_user_settings, get_user_by_email,
+                                      validate_email, validate_new_user,
+                                      validate_username)
 from handler.util.file_server import (BucketClass, FileServer, FileServerType,
                                       get_file_server)
 from handler.util.user_util import verify_password
@@ -25,13 +26,14 @@ logger = logging.getLogger(os.path.basename(__file__))
 class UserHandler(HandlerBase):
     def create_user(self, parent: str, user: ModelUser,
                     handler_context: HandlerContext) -> Tuple[ModelUser, Session]:
-        user = self.create(parent, user, handler_context)
+        user = self._create(parent, user, handler_context)
         session = Session.create(user.user_id)
         return user, session
 
-    def create(self, parent: str, user: ModelUser,
-               handler_context: HandlerContext) -> ModelUser:
+    def _create(self, parent: str, user: ModelUser,
+                handler_context: HandlerContext) -> ModelUser:
         user.image_url = DEFAULT_USER_AVATAR
+        user.settings = default_user_settings()
         validate_new_user(user)
         user.create(parent)
         return user

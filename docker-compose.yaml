@@ -51,7 +51,7 @@ services:
     environment:
       SSL_CERT: /credentials/san11pk.crt
       SSL_KEY: /credentials/san11pk-private-key.key
-    command: bash -c "npm install && ng serve
+    command: bash -c "npm install --force && ng serve
                       --configuration production
                       --host 0.0.0.0 --disable-host-check
                       --ssl true

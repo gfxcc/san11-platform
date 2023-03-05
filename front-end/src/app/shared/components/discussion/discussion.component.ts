@@ -17,7 +17,6 @@ export class DiscussionComponent implements OnInit {
   @Input() parent: string;
 
   virtualThreads: Thread[];
-  cols = [];
 
   constructor(
     private router: Router,
@@ -27,16 +26,12 @@ export class DiscussionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.cols = [
-      { field: 'vin', header: 'Vin' },
-      { field: 'year', header: 'Year' },
-      { field: 'brand', header: 'Brand' },
-      { field: 'color', header: 'Color' }
-    ];
     this.virtualThreads = Array.from({ length: 300 });
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
+    console.log(event);
+
     if (event.first < 0) {
       return;
     }
@@ -48,6 +43,7 @@ export class DiscussionComponent implements OnInit {
     })
     this.san11pkService.listThreads(request).subscribe(
       (resp: ListThreadsResponse) => {
+        console.log(resp);
         Array.prototype.splice.apply(this.virtualThreads, [
           ...[event.first, resp.threads.length],
           ...resp.threads
@@ -63,6 +59,7 @@ export class DiscussionComponent implements OnInit {
         }
         //trigger change detection
         this.virtualThreads = [...this.virtualThreads];
+        console.log(this.virtualThreads);
       },
       error => {
         console.log(`获取讨论列表失败: ${error.statusMessage}.`);

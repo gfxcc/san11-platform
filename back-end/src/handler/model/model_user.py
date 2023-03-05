@@ -174,3 +174,17 @@ def get_user_by_username(username: str) -> ModelUser:
 
 def get_admins() -> Iterable[ModelUser]:
     return ModelUser.list(ListOptions(parent=None, filter=f'type={pb.User.UserType.ADMIN}'))[0]
+
+
+def default_user_settings() -> UserSettings:
+    return UserSettings(
+        notification=NotificationSettings(
+            send_emails=True,
+            subscriptions=True,
+            recommendations=True,
+            mentions=True,
+            threads=True,
+            comments=True,
+            replies=True,
+        )
+    )

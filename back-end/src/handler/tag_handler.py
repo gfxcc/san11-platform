@@ -13,7 +13,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class TagHandler(HandlerBase):
-    def create(self, parent: str, tag: ModelTag, handler_context: HandlerContext) -> ModelTag:
+    def _create(self, parent: str, tag: ModelTag, handler_context: HandlerContext) -> ModelTag:
         tag.create(parent=parent, actor_info=handler_context.user.user_id)
         return tag
 

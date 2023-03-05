@@ -11,9 +11,9 @@ from handler.model.model_comment import ModelComment
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
-from handler.util.html_util import get_text_from_html
+from handler.util.html_util import get_mentioned_users, get_text_from_html
 from handler.util.name_util import ResourceName
-from handler.util.notifier import notify, send_message
+from handler.util.notifier import notify_on_creation
 from handler.util.resource_parser import find_resource
 from handler.util.resource_view import ResourceViewVisitor
 
@@ -25,7 +25,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class CommentHandler(HandlerBase):
-    def create(self, parent: str, comment: ModelComment, handler_context: HandlerContext) -> ModelComment:
+    def _create(self, parent: str, comment: ModelComment, handler_context: HandlerContext) -> ModelComment:
         user_id = handler_context.user.user_id
         username = ModelUser.from_name(f'users/{user_id}').username
         comment.author_id = user_id
@@ -38,36 +38,11 @@ class CommentHandler(HandlerBase):
             thread.update(update_update_time=False)
             comment.index = thread.comment_count
         comment.create(parent=parent, actor_info=user_id)
-        comment_view = ResourceViewVisitor().visit(comment)
+        comment_view = ResourceViewVisitor().visit(comment)  # type: ignore
 
         # Post creation
-        # 1. Send notification to thread author
-        if isinstance(parent_obj, ModelThread):
-            thread = parent_obj
-            receiver = ModelUser.from_name(f'users/{thread.author_id}')
-            if receiver.settings.notification.comments:
-                notify(
-                    sender_id=user_id,
-                    receiver_id=receiver.user_id,
-                    content=f"{username} 评论了 {comment_view.display_name}: {get_text_from_html(thread.content)}",
-                    link=comment_view.name,
-                    image_preview=comment_view.image_url,
-                )
-        # 2. Send notification to user be @
-        # (TODO): wrapper this into a func so that it can be reused by reply, thread.
-        content = comment.text
-        # A sample of @user element `<a class="mention" href="users/73">@一笑悬命</a>`
-        pattern = r'<a [^>]* href="users/(?P<user_id>[0-9]+)">@(?P<username>[^<]+)</a>'
-        for at_user_id, at_username in re.findall(pattern, content):
-            receiver = ModelUser.from_name(f'users/{at_user_id}')
-            if receiver.settings.notification.mentions:
-                notify(
-                    sender_id=user_id,
-                    receiver_id=receiver.user_id,
-                    content=f"{username} 在评论中提到了你",
-                    link=comment_view.name,
-                    image_preview='',
-                )
+        notify_on_creation(comment)
+
         return comment
 
     def list(self, list_options: ListOptions,
