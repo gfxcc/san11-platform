@@ -18,3 +18,7 @@
     display: flex;
     align-items: center;
 }
+
+.thread-card {
+    flex-grow: 1;
+}
