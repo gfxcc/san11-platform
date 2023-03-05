@@ -21,6 +21,7 @@ class ModelComment(TrackLifecycle, ModelBase):
     # E.g. `comments/123`, `categories/123/packages/456/comments/789`
     name: str = StrAttrib()
     author_id: int = IntAttrib()
+    # TODO: rename to content
     text: str = StrAttrib()
     create_time: datetime.datetime = DatetimeAttrib()
     update_time: datetime.datetime = DatetimeAttrib()
@@ -38,6 +39,11 @@ class ModelComment(TrackLifecycle, ModelBase):
         for reply in ModelReply.list(ListOptions(parent=self.name))[0]:
             reply.delete()
         super().delete(actor_info=actor_info)
+
+    @property
+    def content(self) -> str:
+        '''Alias for text. Prefer to use content instead of text.'''
+        return self.text
 
     @classmethod
     def from_name(cls, name: str) -> 'ModelComment':

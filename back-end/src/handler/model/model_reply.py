@@ -19,6 +19,7 @@ class ModelReply(TrackLifecycle, ModelBase):
     # E.g. `categories/123/packages/456/comments/789/replies/234`
     name: str = StrAttrib()
     author_id: int = IntAttrib()
+    # TODO: rename to content
     text: str = StrAttrib()
     create_time: datetime.datetime = DatetimeAttrib()
     update_time: datetime.datetime = DatetimeAttrib()
@@ -27,3 +28,8 @@ class ModelReply(TrackLifecycle, ModelBase):
     @classmethod
     def from_name(cls, name: str) -> 'ModelReply':
         return super().from_name(name)
+
+    @property
+    def content(self) -> str:
+        '''Alias for text. Prefer to use content instead of text.'''
+        return self.text

@@ -9,7 +9,7 @@ from handler.model.model_user import ModelUser
 from handler.model.plugins.tracklifecycle import Action
 from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName
-from handler.util.notifier import notify
+from handler.util.notifier import notify_on_creation
 from handler.util.resource_parser import find_resource
 from handler.util.resource_view import ResourceViewVisitor
 
@@ -21,8 +21,8 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class ReplyHandler(HandlerBase):
-    def create(self, parent: str, reply: ModelReply,
-               handler_context: HandlerContext) -> ModelReply:
+    def _create(self, parent: str, reply: ModelReply,
+                handler_context: HandlerContext) -> ModelReply:
         user_id = handler_context.user.user_id
         reply.author_id = user_id
         grand_parent = find_resource(ResourceName.from_str(parent).parent)
@@ -33,20 +33,10 @@ class ReplyHandler(HandlerBase):
             thread.latest_commenter_id = user_id
             thread.update(update_update_time=False)
 
-        if isinstance(grand_parent, ModelThread):
-            thread = grand_parent
-            comment = find_resource(ResourceName.from_str(parent))
-            view = ResourceViewVisitor().visit(reply)
-            receiver = ModelUser.from_name(f'users/{comment.author_id}')
-            if receiver.settings.notification.replies:
-                notify(
-                    sender_id=user_id,
-                    receiver_id=receiver.user_id,
-                    content=f"{ModelUser.from_name(f'users/{user_id}').username} 回复了 {get_text_from_html(comment.text)}: {get_text_from_html(reply.text)}",
-                    link=view.name,
-                    image_preview=view.image_url,
-                )
         reply.create(parent=parent, actor_info=user_id)
+
+        # Post creation
+        notify_on_creation(reply)
         return reply
 
     def update(self, update_reply: ModelReply, update_mask: FieldMask,

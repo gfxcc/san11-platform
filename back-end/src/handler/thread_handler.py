@@ -11,7 +11,7 @@ from handler.model.model_user import ModelUser
 from handler.util.file_server import (BucketClass, FileServer, FileServerType,
                                       get_file_server)
 from handler.util.html_util import get_text_from_html
-from handler.util.notifier import notify
+from handler.util.notifier import notify_on_creation
 from handler.util.resource_parser import find_resource
 from handler.util.resource_view import ResourceViewVisitor
 
@@ -22,28 +22,13 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class ThreadHandler(HandlerBase):
-    def create(self, parent: str, thread: ModelThread, handler_context) -> ModelThread:
+    def _create(self, parent: str, thread: ModelThread, handler_context) -> ModelThread:
         thread.author_id = handler_context.user.user_id
         thread.state = pb.ResourceState.NORMAL
         thread.create(parent=parent, actor_info=handler_context.user.user_id)
 
-        # Send notification
-        # TODO: Skip notification if the parent is not a resource.
-        try:
-            parent_resource = find_resource(parent)
-            view = ResourceViewVisitor().visit(parent_resource)
-            receiver = ModelUser.from_name(
-                f'users/{parent_resource.author_id}')
-            if receiver.settings.notification.threads:
-                notify(
-                    sender_id=thread.author_id,
-                    receiver_id=parent_resource.author_id,
-                    content=f'{ModelUser.from_name(f"users/{thread.author_id}").username} 评论了 {view.display_name}: {thread.subject}',
-                    link=thread.name,
-                    image_preview=view.image_url,
-                )
-        except Exception as err:
-            logger.warning(f'failed to notify user: {err}')
+        # post creation actions
+        notify_on_creation(thread)
         return thread
 
     def get(self, name: str, handler_context: HandlerContext) -> ModelThread:

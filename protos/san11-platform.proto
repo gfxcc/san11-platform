@@ -847,7 +847,8 @@ message UserSettings {
     bool threads = 14;
     // Notify me on new comments to my thread.
     bool comments = 15;
-    // Notify me on new replies to my comments.
+    // Notify me on new replies to my comments. 
+    // DEPRECATED. Please check `comments` instead.
     bool replies = 16;
   }
 }

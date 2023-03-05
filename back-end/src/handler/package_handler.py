@@ -14,7 +14,6 @@ from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser, get_admins
-from handler.model.plugins.subscribable import list_subscriptions
 from handler.model.plugins.tracklifecycle import ModelActivity, search_activity
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
@@ -24,7 +23,7 @@ from handler.util.state_util import on_approve
 from handler.util.time_util import get_now
 
 from .protos import san11_platform_pb2 as pb
-from .util.notifier import Notifier, notify, send_message
+from .util.notifier import Notifier, notify, notify_on_creation
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -50,17 +49,21 @@ def filter_packages_based_on_requester(packages: Iterable[ModelPackage],
 
 
 class PackageHandler(HandlerBase):
-    def create(self, parent: str, package: ModelPackage, handler_context: HandlerContext) -> ModelPackage:
+    def _create(self, parent: str, package: ModelPackage, handler_context: HandlerContext) -> ModelPackage:
         package.author_id = handler_context.user.user_id
         package.state = pb.ResourceState.UNDER_REVIEW
         package.create(parent=parent, actor_info=handler_context.user.user_id)
         # Post creation actions
         try:
             notifer = Notifier()
-            view = ResourceViewVisitor().visit(package)
+            view = ResourceViewVisitor().visit(package) # type: ignore
             for admin in get_admins():
-                notify(sender_id=package.author_id, receiver_id=admin.user_id,
-                       content=f'【待审核】{handler_context.user.username} 创建了 {view.display_name}。', link=view.name, image_preview=view.image_url)
+                notify(
+                    sender=handler_context.user,
+                    receiver=admin,
+                    content=f'【待审核】{handler_context.user.username} 创建了 {view.display_name}。',
+                    link=view.name,
+                    image_preview=view.image_url)
                 if get_env() == Env.PROD:
                     notifer.send_email(
                         admin.email, '【新内容】待审核', f'[{package.package_name}] 已被 {handler_context.user.username} 创建。请审核。')
@@ -148,22 +151,10 @@ class PackageHandler(HandlerBase):
         else:
             package.update(actor_info=user_id)
 
-        # notify all subscribers
-        author = ModelUser.from_name(f'users/{package.author_id}')
-        view = ResourceViewVisitor().visit(package)
-
         if on_approve(
                 pb.ResourceState.DESCRIPTOR.values_by_number[base_package.state],
                 pb.ResourceState.DESCRIPTOR.values_by_number[update_package.state]):
-            for sub in list_subscriptions(author.name):
-                subscriber = ModelUser.from_name(sub.subscriber_name)
-                notify(
-                    sender_id=author.user_id,
-                    receiver_id=subscriber.user_id,
-                    content=f'{author.username} 发布了 {view.display_name}',
-                    link=view.name,
-                    image_preview=view.image_url,
-                )
+            notify_on_creation(package)
         return package
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelPackage:

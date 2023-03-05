@@ -20,7 +20,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class SubscriptionHandler(HandlerBase):
-    def create(self, parent: str, sub: ModelSubscription,
+    def _create(self, parent: str, sub: ModelSubscription,
                handler_context: HandlerContext) -> ModelSubscription:
         target = find_resource(sub.target)
         if not isinstance(target, Subscribable):

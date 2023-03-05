@@ -61,11 +61,12 @@ class ModelPackage(Subscribable, TrackLifecycle, ModelBase):
     state: int = IntAttrib()
     author_id: int = IntAttrib()
     image_urls: List[str] = StrListAttrib()
+    # TODO: Migrate to NestedAttrib.
     tags: ModelTag = Attrib(
         proto_converter=TagProtoConverter(),
         db_converter=TagDbConverter(),
         repeated=True,
-    )
+    )  # type: ignore
     download_count: int = IntAttrib()
     like_count: int = IntAttrib()
     dislike_count: int = IntAttrib()
