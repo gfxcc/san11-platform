@@ -25,6 +25,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
   displayUserImgLoading: boolean = true;
   loading: MatDialogRef<LoadingComponent>;
   subscription: Subscription;
+  loadingSubscription: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,15 +48,17 @@ export class UserInfoWithSubButtonComponent implements OnInit {
     this.san11pkService.listSubscription(new ListSubscriptionsRequest({
       parent: `users/${loadUser().userId}`,
       filter: `target="users/${this.user.userId}"`,
-    })).subscribe(
-      (resp: ListSubscriptionsResponse) => {
+    })).subscribe({
+      next: (resp: ListSubscriptionsResponse) => {
         if (resp.subscriptions.length > 0) {
           this.subscription = resp.subscriptions[0];
         }
-      }, error => {
+        this.loadingSubscription = false;
+      },
+      error: error => {
         this.notificationService.warn(`载入订阅状态失败: ${error.statusMessage}`);
       }
-    );
+    });
   }
 
   onSubscribe() {

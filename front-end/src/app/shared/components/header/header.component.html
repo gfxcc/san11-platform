@@ -69,7 +69,8 @@
                 </ng-container>
             </ng-template>
 
-            <button *ngIf="notifications.length > 0" mat-menu-item style="text-align: center;"
+            <button *ngIf="notifications.length> 0" mat-menu-item
+                style="text-align: center;"
                 (click)="onClearAll()">
                 <mat-icon>clear_all</mat-icon>
                 <span>全部清空</span>
@@ -79,7 +80,8 @@
         <span style="width: 20px;"></span>
 
         <button mat-button [matMenuTriggerFor]="menu" style="padding:0;">
-            <app-user-card [user]="this.user"> </app-user-card>
+            <app-user-card [user]="this.user" [clickable]="false" style="display: inline-flex;">
+            </app-user-card>
         </button>
 
         <mat-menu #menu="matMenu" xPosition="before">

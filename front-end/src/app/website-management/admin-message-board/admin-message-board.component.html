@@ -9,6 +9,9 @@
             </span>
         </ng-template>
         <ng-template pTemplate="content" let-event>
+
+            <app-user-card [userId]="event.actorId" style="margin-bottom: 10px;">what why</app-user-card>
+
             <mat-card (click)="onDetailClick(event)" class="alternate-align-card
                 clickable-card p-timeline-event">
                 <mat-card-header>

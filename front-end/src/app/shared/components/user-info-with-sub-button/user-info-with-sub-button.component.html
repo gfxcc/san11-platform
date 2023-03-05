@@ -33,8 +33,10 @@
     <div style="flex-grow: 1;">
     </div>
     <div class="subscribe-section">
-        <button class="subscribe-button" mat-flat-button
+        <button *ngIf="!this.loadingSubscription"
+            class="subscribe-button" mat-flat-button
             [class.clickable-button]="subscription"
             [color]="subscription?'':'warn'" (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>
+        <p-skeleton *ngIf="this.loadingSubscription" width="64px" height="36px"></p-skeleton>
     </div>
 </div>

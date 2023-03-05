@@ -83,6 +83,7 @@ import { FullUrlPipe } from './pipes/full-url.pipe';
     DashboardComponent,
     MessageBoardComponent,
     PackageCardComponent,
+    UserCardComponent,
     DeleteDialog,
     // Pipes
     FullUrlPipe,

@@ -1,8 +1,19 @@
-<div class="author-card" style="display: flex;">
-    <img [hidden]="this.hideAuthorImage" [src]="this.user?.imageUrl | fullUrl :
-        '128_128'" (load)="this.hideAuthorImage= false;" class="author-image">
-    <span class="heading-1 user-text">
-        {{this.user?.username}}
-    </span>
-
-</div>
+<button mat-button style="padding:0;"
+    [disabled]="!this.clickable"
+    (click)="this.onClick()">
+    <div class="author-card" style="display: flex;">
+        <div style="display: flex; justify-content: center;">
+            <img [hidden]="this.loadingAuthorImage" [src]="this.user?.imageUrl |
+                fullUrl :
+                '128_128'" (load)="this.loadingAuthorImage=false;"
+                class="author-image">
+            <p-skeleton *ngIf="this.loadingAuthorImage"
+                [shape]="'circle'"
+                width="40px"
+                height="40px"></p-skeleton>
+        </div>
+        <span class="heading-1 user-text">
+            {{this.user?.username}}
+        </span>
+    </div>
+</button>

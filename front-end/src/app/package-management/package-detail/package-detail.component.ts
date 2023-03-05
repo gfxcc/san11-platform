@@ -709,14 +709,14 @@ export class PackageDetailComponent implements OnInit {
   loadAuthor() {
     this.san11pkService.getUser(new GetUserRequest({
       name: `users/${this.package.authorId}`,
-    })).subscribe(
-      user => {
+    })).subscribe({
+      next: user => {
         this.author = user;
       },
-      error => {
+      error: error => {
         this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
       }
-    );
+    });
   }
 
   onDescription() {

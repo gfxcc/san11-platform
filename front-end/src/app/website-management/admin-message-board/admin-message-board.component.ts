@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { NotificationService } from 'src/app/common/notification.service';
-import { getFullUrl } from 'src/app/utils/resrouce_util';
+import { getFullUrl, parseName } from 'src/app/utils/resrouce_util';
 import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse } from 'src/proto/san11-platform.pb';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
@@ -105,6 +105,7 @@ export class AdminMessageBoardComponent implements OnInit {
     };
 
     return {
+      'actorId': parseName(parseName(activity.name)[0])[2],
       'displayName': `【${action}】 ${activity.resourceView ? activity.resourceView.displayName : '已删除'}`,
       'description': activity.resourceView ? activity.resourceView.description : '',
       'createTime': activity.createTime,
@@ -116,8 +117,6 @@ export class AdminMessageBoardComponent implements OnInit {
   }
 
   onDetailClick(event) {
-    console.log(event.link);
-    this.router.navigate(event.link.split('/'));
+    this.router.navigateByUrl(event.link);
   }
-
 }
