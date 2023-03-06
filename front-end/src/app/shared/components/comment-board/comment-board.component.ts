@@ -5,7 +5,7 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { UploadService } from 'src/app/service/upload.service';
 import { getUserUri, signedIn } from 'src/app/utils/user_util';
-import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, ListUsersRequest, Package, User } from "../../../../proto/san11-platform.pb";
+import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, ListCommentsResponse, ListUsersRequest, Package, User } from "../../../../proto/san11-platform.pb";
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
@@ -20,7 +20,7 @@ import { increment } from "../../../utils/number_util";
 export class CommentBoardComponent implements OnInit {
   @Input() package: Package;
   @Input() parent: string;
-  @Input() commentsOrder: string;
+  @Input() commentsOrder: string = 'create_time';
   @Input() disableInput = false;
   @Input() inputPlaceHolder = '输入评论';
   @Input() resourceOwnerId: string;
@@ -62,14 +62,14 @@ export class CommentBoardComponent implements OnInit {
       if (localAuthorImage === null) {
         this.san11pkService.getUser(new GetUserRequest({
           name: `users/${this.authorId}`,
-        })).subscribe(
-          user => {
+        })).subscribe({
+          next: (user: User) => {
             this.authorImage = user.imageUrl;
           },
-          error => {
+          error: error => {
             this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
           }
-        );
+        });
       } else {
         this.authorImage = localAuthorImage;
       }
@@ -243,12 +243,20 @@ export class CommentBoardComponent implements OnInit {
   }
 
 
-  loadComments() {
+  loadComments(order?: string) {
+    if (order === this.commentsOrder) {
+      return;
+    }
+    // Set order if it is specified.
+    if (order) {
+      this.commentsOrder = order;
+    }
+
     this.san11pkService.listComments(new ListCommentsRequest({
       parent: this.parent,
-      orderBy: this.commentsOrder ? this.commentsOrder : 'create_time desc',
-    })).subscribe(
-      resp => {
+      orderBy: this.commentsOrder,
+    })).subscribe({
+      next: (resp: ListCommentsResponse) => {
         this.comments = resp.comments;
         this.commentCount = this.computeCommentCount(this.comments);
 
@@ -256,10 +264,10 @@ export class CommentBoardComponent implements OnInit {
           this.scrollToFragment();
         }, 0);
       },
-      error => {
+      error: error => {
         this.notificationService.warn('获取评论列表失败: ' + error.statusMessage);
       }
-    );
+    });
   }
 
   computeCommentCount(comments: Comment[]): string {
@@ -286,7 +294,7 @@ export class CommentBoardComponent implements OnInit {
     })).subscribe(
       comment => {
         this.notificationService.success('评论添加 成功!');
-        if (this.commentsOrder) {
+        if (this.commentsOrder === 'create_time') {
           this.comments.push(comment);
         } else {
           this.comments.splice(0, 0, comment);

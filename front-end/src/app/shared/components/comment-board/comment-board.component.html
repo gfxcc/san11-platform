@@ -1,7 +1,24 @@
 <div class="main">
     <div class="status-section">
-        <h5>{{this.commentCount}}</h5>
-        <h5 style="margin-left: 5px;">条评论</h5>
+        <span style="font-size: 1.25rem;">{{this.commentCount}}</span>
+        <span style="font-size: 1.25rem; margin-left: 5px; margin-right: 32px;">条评论</span>
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>sort</mat-icon>
+            排序方式
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item
+                (click)="this.loadComments(&quot;create_time&quot;)">
+                <span>创建先后</span>
+            </button>
+            <button mat-menu-item (click)="this.loadComments(&quot;create_time
+                desc&quot;)">
+                <span>最新评论</span>
+            </button>
+            <button mat-menu-item disabled>
+                <span>热门评论</span>
+            </button>
+        </mat-menu>
     </div>
 
     <div class="header">
@@ -26,7 +43,7 @@
                 <button style="margin-left: 5px;" mat-button color="grey"
                     (click)="onCancel()">取消</button>
                 <button style="margin-left: 5px;" type="submit"
-                    mat-raised-button color="primary"
+                    mat-stroked-button color="primary"
                     [disabled]="this.descEditor_element?.getData() ==
                     &quot;&quot;" (click)="onCreateComment()">确定</button>
             </div>
