@@ -127,8 +127,13 @@ class CreationNotifier:
         author = ModelUser.from_user_id(package.author_id)
         view = ResourceViewVisitor().visit(package)  # type: ignore
         link = get_resource_url(package)
+
+        # Don't notify the author.
+        notified_users = {package.author_id}
         for sub in package.list_subscriptions():
             subscriber = ModelUser.from_name(sub.subscriber_name)
+            if subscriber.user_id in notified_users:
+                continue
             if not subscriber.settings.notification.subscriptions:
                 continue
             notify(
@@ -151,9 +156,12 @@ class CreationNotifier:
         view = ResourceViewVisitor().visit(package)  # type: ignore
         link = get_resource_url(binary)
 
-        notified_users = set()
+        # Don't notify the author.
+        notified_users = {package.author_id}
         for sub in package.list_subscriptions():
             subscriber = ModelUser.from_name(sub.subscriber_name)
+            if subscriber.user_id in notified_users:
+                continue
             if not subscriber.settings.notification.subscriptions:
                 continue
             notified_users.add(subscriber.user_id)
@@ -218,7 +226,6 @@ class CreationNotifier:
         view = ResourceViewVisitor().visit(post)  # type: ignore
         link = get_resource_url(post)
 
-        notified_users = set()
         parent_resource_author = ModelUser.from_user_id(
             find_resource(get_parent(post.name)).author_id)
 
@@ -228,7 +235,9 @@ class CreationNotifier:
         elif isinstance(post, ModelComment) or isinstance(post, ModelReply):
             enabled = parent_resource_author.settings.notification.comments
 
-        if enabled:
+        # Don't notify the author
+        notified_users = {post.author_id}
+        if enabled and parent_resource_author.user_id not in notified_users:
             notify(
                 sender=author,
                 receiver=parent_resource_author,

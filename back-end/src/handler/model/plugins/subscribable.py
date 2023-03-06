@@ -35,6 +35,7 @@ class ModelSubscription(ModelBase):
 
     @property
     def subscriber_name(self) -> str:
+        '''E.g. `users/123``'''
         return get_parent(self.name)
 
 
