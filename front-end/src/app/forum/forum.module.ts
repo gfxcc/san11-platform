@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
+import { SkeletonModule } from 'primeng/skeleton';
 import { SharedModule } from '../shared/shared.module';
 import { ArticleCardComponent } from './article/article-card/article-card.component';
 import { ArticleDetailComponent } from './article/article-detail/article-detail.component';
@@ -47,6 +48,7 @@ import { GeneralDiscussionComponent } from './general-discussion/general-discuss
     CKEditorModule,
     SharedModule,
     MatDividerModule,
+    SkeletonModule,
   ],
   providers: [ProductService]
 })

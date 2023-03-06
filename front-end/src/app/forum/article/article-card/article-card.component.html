@@ -1,7 +1,11 @@
 <div class="container clickable-card" (click)="onClick()">
     <div class="entry-area inner-border">
         <div class="entry-image-container">
-            <img class="entry-image" [src]="getCoverImage()">
+            <img [hidden]="this.loadingPreview"
+            class="entry-image" [src]="getCoverImage()"
+                (load)="this.loadingPreview=false;">
+            <p-skeleton *ngIf="this.loadingPreview"
+                height="200px"></p-skeleton>
         </div>
 
         <div class="entry-content">

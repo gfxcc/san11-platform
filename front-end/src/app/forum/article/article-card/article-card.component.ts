@@ -16,6 +16,8 @@ export class ArticleCardComponent implements OnInit {
   @Input() article: Article;
   user: User;
 
+  loadingPreview = true;
+
   constructor(
     private notificationService: NotificationService,
     private san11pkService: San11PlatformServiceService,
