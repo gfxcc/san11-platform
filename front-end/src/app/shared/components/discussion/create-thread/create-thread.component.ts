@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,6 +25,8 @@ export class CreateThreadComponent implements OnInit {
   descEditor_data: string;
   descEditor_config;
 
+  createThreadLoading = false;
+
   constructor(
     public dialogRef: MatDialogRef<CreateThreadComponent>,
     private notificationService: NotificationService,
@@ -50,6 +52,19 @@ export class CreateThreadComponent implements OnInit {
 
     this.configDescEditor();
   }
+
+  @HostListener('document:keydown.meta.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    // check if cmd+enter is pressed
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+      if (this.createThreadForm.invalid) {
+        return;
+      }
+      // trigger button click event
+      this.onCreateThread();
+    }
+  }
+
 
   get subject() {
     return this.createThreadForm.get('subject');
@@ -119,21 +134,23 @@ export class CreateThreadComponent implements OnInit {
   // Desc-END
 
   onCreateThread() {
+    this.createThreadLoading = true;
     this.san11pkService.createThread(new CreateThreadRequest({
       parent: this.parent,
       thread: new Thread({
         subject: this.subject.value,
         content: this.descEditor_element.getData(),
       })
-    })).subscribe(
-      (resp: Thread) => {
-        console.log(resp);
+    })).subscribe({
+      next: (resp: Thread) => {
+        this.createThreadLoading = false;
         this.router.navigate([resp.name])
         this.dialogRef.close({ data: this.descEditor_element.getData() });
       },
-      error => {
+      error: error => {
+        this.createThreadLoading = false;
         this.notificationService.warn(`创建失败: ${error.statusMessage}.`);
-      }
-    );
+      },
+    });
   }
 }

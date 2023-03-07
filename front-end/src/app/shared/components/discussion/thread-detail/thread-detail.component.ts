@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-constants';
@@ -73,19 +73,31 @@ export class ThreadDetailComponent implements OnInit {
 
         this.san11pkService.getUser(new GetUserRequest({
           name: `users/${this.thread.authorId}`,
-        })).subscribe(
-          user => {
+        })).subscribe({
+          next: (user: User) => {
             this.user = user;
           },
-          error => {
+          error: error => {
             this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
           }
-        );
+        });
 
         this.configDescEditor();
         this.configTags();
       }
     );
+  }
+
+  @HostListener('document:keydown.meta.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    if (!this.descEditor_updated) {
+      return;
+    }
+    // check if cmd+enter is pressed
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+      // trigger button click event
+      this.onUpdate();
+    }
   }
 
   configTags() {
@@ -295,15 +307,18 @@ export class ThreadDetailComponent implements OnInit {
         updateMask: new FieldMask({
           paths: ['content']
         })
-      })).subscribe(
-        (resp: Thread) => {
+      })).subscribe({
+        next: (resp: Thread) => {
           this.thread = resp;
-          this.notificationService.success(`更新成功`);
         },
-        error => {
+        error: error => {
           this.notificationService.warn(`更新失败: ${error.statusMessage}`);
+        },
+        complete: () => {
+          this.descEditor_updated = false;
+          this.notificationService.success(`更新成功`);
         }
-      );
+      });
     }
   }
 

@@ -96,8 +96,11 @@ export class CommentBoardComponent implements OnInit {
 
   @HostListener('document:keydown.meta.enter', ['$event'])
   onEnter(event: KeyboardEvent) {
+    if (!this.descEditor_updated) {
+      return;
+    }
     // check if cmd+enter is pressed
-    if (event.keyCode === 13 && event.metaKey) {
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
       // trigger button click event
       this.onCreateComment();
     }
@@ -316,12 +319,10 @@ export class CommentBoardComponent implements OnInit {
         this.sendCommentLoading = false;
       },
       complete: () => {
-        setTimeout(() => {
-          this.notificationService.success('评论添加 成功!');
-          this.descEditor_element.setData('');
-          this.descEditor_onFocus = false;
-          this.sendCommentLoading = false;
-        }, 2000);
+        this.notificationService.success('评论添加 成功!');
+        this.descEditor_element.setData('');
+        this.descEditor_onFocus = false;
+        this.sendCommentLoading = false;
       }
     });
   }

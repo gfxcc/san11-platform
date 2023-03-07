@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
@@ -92,6 +92,19 @@ export class PackageDetailComponent implements OnInit {
     this.tagCanEdit = this.isAuthor() || this.isAdmin();
     this.loadCollected();
   }
+
+  @HostListener('document:keydown.meta.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    if (!this.descEditor_updated) {
+      return;
+    }
+    // check if cmd+enter is pressed
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+      // trigger button click event
+      this.onUpdateDesc();
+    }
+  }
+
 
   get collectButtonText(): string {
     if (this.isCollected) {
@@ -301,16 +314,18 @@ export class PackageDetailComponent implements OnInit {
           paths: ['description']
         })
       });
-      this.san11pkService.updatePackage(request).subscribe(
-        san11Package => {
+      this.san11pkService.updatePackage(request).subscribe({
+        next: (san11Package: Package) => {
           this.package.description = san11Package.description;
+        },
+        error: error => {
+          this.notificationService.warn(`更新失败: ${error.statusMessage}`);
+        },
+        complete: () => {
           this.descEditor_updated = false;
           this.notificationService.success('更新成功');
-        },
-        error => {
-          this.notificationService.warn(`更新失败: ${error.statusMessage}`);
         }
-      );
+      });
     }
   }
 

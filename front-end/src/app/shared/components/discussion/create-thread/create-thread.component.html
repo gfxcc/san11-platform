@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="!this.createThreadLoading" class="container">
     <mat-card-header style="display: flex; justify-content: center;">
         <mat-card-title style="margin-bottom: 30px;">新帖子</mat-card-title>
     </mat-card-header>
@@ -40,3 +40,4 @@
     </form>
 
 </div>
+<mat-spinner *ngIf="this.createThreadLoading"></mat-spinner>

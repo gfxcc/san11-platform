@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
 import { GlobalConstants } from 'src/app/common/global-constants';
@@ -56,6 +56,19 @@ export class ArticleDetailComponent implements OnInit {
     }
 
   }
+
+  @HostListener('document:keydown.meta.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    if (!this.descEditor_updated) {
+      return;
+    }
+    // check if cmd+enter is pressed
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+      // trigger button click event
+      this.onUpdate();
+    }
+  }
+
 
   configDescEditor() {
     this.descEditor_data = this.article.content;
@@ -219,15 +232,18 @@ export class ArticleDetailComponent implements OnInit {
         updateMask: new FieldMask({
           paths: ['content', 'subject']
         })
-      })).subscribe(
-        (resp: Article) => {
+      })).subscribe({
+        next: (resp: Article) => {
           this.article = resp;
-          this.notificationService.success(`更新成功`);
         },
-        error => {
+        error: error => {
           this.notificationService.warn(`更新失败: ${error.statusMessage}`);
+        },
+        complete: () => {
+          this.descEditor_updated = false;
+          this.notificationService.success(`更新成功`);
         }
-      );
+      });
     }
   }
 

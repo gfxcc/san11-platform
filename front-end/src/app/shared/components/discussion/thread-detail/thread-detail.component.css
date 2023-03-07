@@ -55,17 +55,17 @@
     font-weight: 400;
 }
 
-.cattagsarea {
-    padding: 8px;
-}
-
-.cattagsarea button {
-    margin-right: 5px;
-}
-
-
 .tag-list {
     width: 100%;
+}
+
+.control-section {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.control-section button {
+    margin-right: 5px;
 }
 
 h1 {

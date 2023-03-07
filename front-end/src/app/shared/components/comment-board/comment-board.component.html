@@ -21,43 +21,41 @@
         </mat-menu>
     </div>
 
-    <div class="header-wrapper">
-        <div class="header">
-            <div *ngIf="!this.sendCommentLoading"
-                style="width:100%; display: flex">
-                <div mat-card-avatar class="author-image">
-                    <img [hidden]="this.hideAuthorImage" [src]="this.authorImage
-                        |
-                        fullUrl : '256_256'"
-                        (load)="this.hideAuthorImage= false;"
-                        class="author-image">
+    <div class="header">
+        <div *ngIf="!this.sendCommentLoading"
+            style="width:100%; display: flex">
+            <div mat-card-avatar class="author-image">
+                <img [hidden]="this.hideAuthorImage" [src]="this.authorImage
+                    |
+                    fullUrl : '256_256'"
+                    (load)="this.hideAuthorImage= false;"
+                    class="author-image">
+            </div>
+            <div class="right">
+                <div class="radius-border shadow-border">
+                    <ckeditor class="editor" [data]="this.descEditor_data"
+                        [editor]="descEditor"
+                        (ready)="onDescEditorReady($event)"
+                        (focus)="descEditor_onFocus=true"
+                        (change)="onDescEditorChange($event)"
+                        [disabled]="this.descEditor_disabled"
+                        [config]="this.descEditor_config"></ckeditor>
                 </div>
-                <div class="right">
-                    <div class="radius-border shadow-border">
-                        <ckeditor class="editor" [data]="this.descEditor_data"
-                            [editor]="descEditor"
-                            (ready)="onDescEditorReady($event)"
-                            (focus)="descEditor_onFocus=true"
-                            (change)="onDescEditorChange($event)"
-                            [disabled]="this.descEditor_disabled"
-                            [config]="this.descEditor_config"></ckeditor>
-                    </div>
-                    <div class="actions-section" *ngIf="!disableInput &&
-                        descEditor_onFocus">
-                        <span class="example-spacer"></span>
-                        <button style="margin-left: 5px;" mat-button
-                            color="grey"
-                            (click)="onCancel()">取消</button>
-                        <button style="margin-left: 5px;" type="submit"
-                            mat-stroked-button color="primary"
-                            [disabled]="this.descEditor_element?.getData() ==
-                            &quot;&quot;" (click)="onCreateComment()">确定</button>
-                    </div>
+                <div class="actions-section" *ngIf="!disableInput &&
+                    descEditor_onFocus">
+                    <span class="example-spacer"></span>
+                    <button style="margin-left: 5px;" mat-button
+                        color="grey"
+                        (click)="onCancel()">取消</button>
+                    <button style="margin-left: 5px;" type="submit"
+                        mat-stroked-button color="primary"
+                        [disabled]="this.descEditor_element?.getData() ==
+                        &quot;&quot;" (click)="onCreateComment()">确定</button>
                 </div>
             </div>
-
-            <mat-spinner *ngIf="this.sendCommentLoading"></mat-spinner>
         </div>
+
+        <mat-spinner *ngIf="this.sendCommentLoading"></mat-spinner>
     </div>
 
     <div class="contents">

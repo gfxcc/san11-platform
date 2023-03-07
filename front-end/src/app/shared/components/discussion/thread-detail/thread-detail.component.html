@@ -51,23 +51,20 @@
 
         </div>
 
-        <footer class="cattagsarea">
-            <div *ngIf="(isAdmin() || isAuthor())" class="control row">
-                <button class="button" mat-stroked-button color="warn"
-                    (click)="onDelete()">删除</button>
-                <button class="button" mat-stroked-button color="warn"
-                    (click)="onFlipState()">{{thread.state===3? '发布' : '隐藏'}}</button>
-                <button class="button" mat-stroked-button color="primary"
-                    *ngIf="isAdmin()" (click)="togglePin()">{{thread.pinned===true?
-                    '取消置顶' : '置顶'}}</button>
+        <div *ngIf="(isAdmin() || isAuthor())" class="control-section">
+            <button class="button" mat-stroked-button color="warn"
+                (click)="onDelete()">删除</button>
+            <button class="button" mat-stroked-button color="warn"
+                (click)="onFlipState()">{{thread.state===3? '发布' : '隐藏'}}</button>
+            <button class="button" mat-stroked-button color="primary"
+                *ngIf="isAdmin()" (click)="togglePin()">{{thread.pinned===true?
+                '取消置顶' : '置顶'}}</button>
 
-                <!-- <button pButton pRipple type="button" [icon]="'pi pi-lock-open'" (click)="togglePin()" class="p-button-sm p-button-text"></button> -->
-                <span class="example-spacer"></span>
+            <span class="example-spacer"></span>
 
-                <button *ngIf="this.descEditor_updated" mat-stroked-button
-                    color="primary" (click)="onUpdate()">更新</button>
-            </div>
-        </footer>
+            <button *ngIf="this.descEditor_updated" mat-stroked-button
+                color="primary" (click)="onUpdate()">更新</button>
+        </div>
 
         <mat-divider></mat-divider>
 
