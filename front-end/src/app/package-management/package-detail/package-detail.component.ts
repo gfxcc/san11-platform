@@ -51,7 +51,7 @@ export class PackageDetailComponent implements OnInit {
   descEditor_updated = false;
   descEditor_data: string;
   descEditor_config;
-
+  descEditor_onFocus = false;
   userFeeds;
   allTags: Tag[];
   tagCanEdit: boolean;
@@ -95,7 +95,7 @@ export class PackageDetailComponent implements OnInit {
 
   @HostListener('document:keydown.meta.enter', ['$event'])
   onEnter(event: KeyboardEvent) {
-    if (!this.descEditor_updated) {
+    if (!this.descEditor_onFocus || !this.descEditor_updated) {
       return;
     }
     // check if cmd+enter is pressed

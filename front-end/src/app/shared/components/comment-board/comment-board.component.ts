@@ -96,7 +96,7 @@ export class CommentBoardComponent implements OnInit {
 
   @HostListener('document:keydown.meta.enter', ['$event'])
   onEnter(event: KeyboardEvent) {
-    if (!this.descEditor_updated) {
+    if (!this.descEditor_onFocus || !this.descEditor_updated) {
       return;
     }
     // check if cmd+enter is pressed

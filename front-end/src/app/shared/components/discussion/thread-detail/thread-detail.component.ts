@@ -36,6 +36,7 @@ export class ThreadDetailComponent implements OnInit {
   descEditor_element;
   descEditor_updated = false;
   descEditor_disabled = true;
+  descEditor_onFocus = false;
   descEditor_config;
   userFeeds;
 
@@ -90,7 +91,7 @@ export class ThreadDetailComponent implements OnInit {
 
   @HostListener('document:keydown.meta.enter', ['$event'])
   onEnter(event: KeyboardEvent) {
-    if (!this.descEditor_updated) {
+    if (!this.descEditor_onFocus || !this.descEditor_updated) {
       return;
     }
     // check if cmd+enter is pressed

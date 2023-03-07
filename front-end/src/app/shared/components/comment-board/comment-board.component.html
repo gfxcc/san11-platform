@@ -37,6 +37,7 @@
                         [editor]="descEditor"
                         (ready)="onDescEditorReady($event)"
                         (focus)="descEditor_onFocus=true"
+                        (blur)="descEditor_onFocus=false"
                         (change)="onDescEditorChange($event)"
                         [disabled]="this.descEditor_disabled"
                         [config]="this.descEditor_config"></ckeditor>
