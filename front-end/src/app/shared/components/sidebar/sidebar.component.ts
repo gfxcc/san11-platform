@@ -118,12 +118,13 @@ export class SidebarComponent implements OnInit {
   }
 
   onCategoryLabelClick(category) {
-    this.loadTags();
+    this.selectedCategory = category.value;
+
     if (onMobile()) {
       this.sidenavService.close();
     }
-    this.selectedCategory = category.value;
     this.router.navigate(category.link);
+    this.loadTags();
   }
 
   onClickCreateTool() {
