@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
@@ -35,6 +35,7 @@ export class CommentBoardComponent implements OnInit {
   comments: Comment[] = [];
   commentCount: string;
 
+  sendCommentLoading = false;
 
   descEditor = Editor;
   descEditor_data: string;
@@ -91,6 +92,15 @@ export class CommentBoardComponent implements OnInit {
 
     this.loadComments();
     this.configDescEditor();
+  }
+
+  @HostListener('document:keydown.meta.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    // check if cmd+enter is pressed
+    if (event.keyCode === 13 && event.metaKey) {
+      // trigger button click event
+      this.onCreateComment();
+    }
   }
 
   scrollToFragment() {
@@ -283,31 +293,37 @@ export class CommentBoardComponent implements OnInit {
       this.notificationService.warn('请登录');
       return;
     }
-    const text = this.descEditor_element.getData();
+    this.sendCommentLoading = true;
 
+    const text = this.descEditor_element.getData();
     const comment = new Comment({
       text: text,
     });
     this.san11pkService.createComment(new CreateCommentRequest({
       parent: this.parent,
       comment: comment,
-    })).subscribe(
-      comment => {
-        this.notificationService.success('评论添加 成功!');
+    })).subscribe({
+      next: (comment: Comment) => {
         if (this.commentsOrder === 'create_time') {
           this.comments.push(comment);
         } else {
           this.comments.splice(0, 0, comment);
         }
         this.commentCount = increment(this.commentCount);
-
-        this.descEditor_element.setData('');
-        this.descEditor_onFocus = false;
       },
-      error => {
+      error: error => {
         this.notificationService.warn(`创建失败: ${error.statusMessage}`);
+        this.sendCommentLoading = false;
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.notificationService.success('评论添加 成功!');
+          this.descEditor_element.setData('');
+          this.descEditor_onFocus = false;
+          this.sendCommentLoading = false;
+        }, 2000);
       }
-    );
+    });
   }
 
   onCancel() {
@@ -322,4 +338,5 @@ export class CommentBoardComponent implements OnInit {
   onReplyCreate(event) {
     this.commentCount = increment(this.commentCount);
   }
+
 }

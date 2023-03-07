@@ -8,8 +8,16 @@
     align-items: center;
 }
 
+
+.header-wrapper {
+    display: block;
+}
+
 .header {
+    width: 100%;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .author-image {
