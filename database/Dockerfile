@@ -1,4 +1,4 @@
-FROM postgres:15.2
+FROM postgres:13.10
 
 COPY init.sql /tmp/init.sql
 COPY san11-platform-database.sql /tmp/san11-platform-database.sql
