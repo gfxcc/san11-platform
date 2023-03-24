@@ -28,6 +28,7 @@ export class CommentBoardComponent implements OnInit {
   @ViewChild('commentForm') commentFormElement: ElementRef
 
   hideAuthorImage = true;
+  hideCommentEditor = true;
 
   authorId: string;
   authorImage: string;
@@ -329,7 +330,7 @@ export class CommentBoardComponent implements OnInit {
 
   onCancel() {
     this.descEditor_element.setData('');
-    this.descEditor_onFocus = false;
+    this.hideCommentEditor = true;
   }
 
   onCommentDelete(event) {
