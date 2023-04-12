@@ -41,7 +41,6 @@ export class CommentBoardComponent implements OnInit {
   descEditor = Editor;
   descEditor_data: string;
   descEditor_element;
-  descEditor_updated = false;
   descEditor_disabled = true;
   descEditor_config;
   descEditor_onFocus = false;
@@ -97,7 +96,7 @@ export class CommentBoardComponent implements OnInit {
 
   @HostListener('document:keydown.meta.enter', ['$event'])
   onEnter(event: KeyboardEvent) {
-    if (!this.descEditor_onFocus || !this.descEditor_updated) {
+    if (!this.descEditor_onFocus || !this.isEdited) {
       return;
     }
     // check if cmd+enter is pressed
@@ -118,6 +117,11 @@ export class CommentBoardComponent implements OnInit {
         targetElement.classList.add('highlighted');
       }
     }
+  }
+
+  // If the comment editor is edited, return true
+  get isEdited(): boolean {
+    return this.descEditor_element?.getData() != "";
   }
 
   configDescEditor() {
@@ -205,7 +209,6 @@ export class CommentBoardComponent implements OnInit {
 
 
   onDescEditorChange(event) {
-    this.descEditor_updated = true;
   }
 
   getUsernameFeedItems(queryText: string) {

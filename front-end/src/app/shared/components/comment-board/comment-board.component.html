@@ -36,13 +36,15 @@
                     <ckeditor class="editor" [data]="this.descEditor_data"
                         [editor]="descEditor"
                         (ready)="onDescEditorReady($event)"
-                        (focus)="descEditor_onFocus=true && this.hideCommentEditor=false"
+                        (focus)="descEditor_onFocus=true;
+                        this.hideCommentEditor=false"
                         (blur)="descEditor_onFocus=false"
                         (change)="onDescEditorChange($event)"
                         [disabled]="this.descEditor_disabled"
                         [config]="this.descEditor_config"></ckeditor>
                 </div>
-                <div class="actions-section" *ngIf="!disableInput && !this.hideCommentEditor">
+                <div class="actions-section" *ngIf="!disableInput &&
+                    this.isEdited">
                     <span class="example-spacer"></span>
                     <button style="margin-left: 5px;" mat-button
                         color="grey"
