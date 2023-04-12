@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { getAge } from 'src/app/utils/time_util';
@@ -7,10 +8,6 @@ import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { isAdmin } from '../../../utils/user_util';
-
-
-
-
 
 @Component({
   selector: 'app-comment-card',
@@ -37,6 +34,8 @@ export class CommentCardComponent implements OnInit {
   hideReplyEnter = true;
 
   descEditor = Editor;
+
+  createReplyLoading = false;
 
   constructor(
     private router: Router,
@@ -79,6 +78,17 @@ export class CommentCardComponent implements OnInit {
     );
   }
 
+  handleKeyDown(event: KeyboardEvent, replyForm: NgForm) {
+    if (this.replyInputElement.nativeElement.value === '') {
+      return;
+    }
+    // check if cmd+enter is pressed
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+      // trigger button click event
+      this.onCreateReply(replyForm.value);
+      replyForm.resetForm();
+    }
+  }
 
   onUserClick() {
     this.router.navigate(['users', this.comment.authorId]);
@@ -141,6 +151,8 @@ export class CommentCardComponent implements OnInit {
       this.notificationService.warn('请登录');
       return;
     }
+
+    this.createReplyLoading = true;
     const text = value.input;
     const reply = new Reply({
       text: text,
@@ -148,17 +160,19 @@ export class CommentCardComponent implements OnInit {
     this.san11pkService.createReply(new CreateReplyRequest({
       parent: this.comment.name,
       reply: reply,
-    })).subscribe(
-      reply => {
-        this.notificationService.success('评论添加 成功!');
+    })).subscribe({
+      next: reply => {
+        this.createReplyLoading = false;
         this.hideReplyEnter = true;
         this.comment.replies.push(reply);
         this.replyCreateEvent.emit();
+        this.notificationService.success('评论添加 成功!');
       },
-      error => {
+      error: error => {
+        this.createReplyLoading = false;
         this.notificationService.warn('failed' + error.statusMessage);
       }
-    );
+    });
   }
 
   getCommentAge() {

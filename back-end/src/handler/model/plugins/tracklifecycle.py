@@ -64,7 +64,7 @@ class TrackLifecycle(LifecycleEventsBase):
                           action=self._update_action.value,
                           resource_name=self.name).create(parent=f'users/{actor_info}' if isinstance(actor_info, int) else actor_info)
 
-    def delete(self, actor_info: Optional[Union[int, str]]):
+    def delete(self, actor_info: Optional[Union[int, str]] = None):
         assert isinstance(
             self, ModelBase), 'Only subclass of ModelBase can be tracked'
         super().delete(actor_info)
