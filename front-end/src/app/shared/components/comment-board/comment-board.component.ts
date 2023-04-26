@@ -44,7 +44,6 @@ export class CommentBoardComponent implements OnInit {
   descEditor_disabled = true;
   descEditor_config;
   descEditor_onFocus = false;
-  userFeeds;
 
   private destroy$ = new Subject<void>();
 

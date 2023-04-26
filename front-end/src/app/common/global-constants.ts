@@ -18,6 +18,7 @@ export class GlobalConstants {
         { value: '1', text: 'SIRE 插件', link: ['/categories', 1], icon: 'extension' },
         { value: '2', text: '修改工具', link: ['/categories', 2], icon: 'handyman' },
         { value: '3', text: 'MOD', link: ['/categories', 3], icon: 'auto_fix_high' },
+        { value: '4', text: 'PK2 插件', link: ['/categories', 4], icon: 'superscript' },
     ];
 
     public static usernameFeedPageSize: number = 10;

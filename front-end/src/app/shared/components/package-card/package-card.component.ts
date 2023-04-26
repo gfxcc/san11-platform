@@ -62,11 +62,15 @@ export class PackageCardComponent implements OnInit {
 
   loadImage() {
     if (this.package.imageUrls.length === 0) {
-      this.screenshot = getFullUrl('static/images/sire2.jpg');
+      // load default image
+      if (this.package.name.startsWith('categories/4/')) {
+        this.screenshot = getFullUrl('static/images/pk2_2.jpeg');
+      } else {
+        this.screenshot = getFullUrl('static/images/sire2.jpg');
+      }
     } else {
       this.screenshot = getFullUrl(this.package.imageUrls[0]);
     }
-
   }
 
   isAdmin() {
