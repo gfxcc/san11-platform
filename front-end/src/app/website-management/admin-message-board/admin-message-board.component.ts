@@ -16,7 +16,10 @@ import { San11PlatformServiceService } from '../../service/san11-platform-servic
 export class AdminMessageBoardComponent implements OnInit {
   userId: string;
 
-  events: any[] = [];
+  resourceChanges: any[] = [];
+  socialActivaties: any[] = [];
+  downloads: any[] = [];
+
   loading: MatDialogRef<LoadingComponent>;
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -35,22 +38,31 @@ export class AdminMessageBoardComponent implements OnInit {
 
   load_activities() {
     this.loading = this.dialog.open(LoadingComponent);
+
     this.san11pkService.listActivities(new ListActivitiesRequest({
       parent: '',
       orderBy: 'create_time desc',
       pageSize: '100',
-    })).subscribe(
-      (resp: ListActivitiesResponse) => {
-        this.events = resp.activities.map((activity: Activity) => {
+    })).subscribe({
+      next: (resp: ListActivitiesResponse) => {
+
+        this.resourceChanges = resp.activities.filter((x) => [Action.CREATE, Action.UPDATE, Action.DELETE].includes(x.action)).map((activity: Activity) => {
+          return this.activityToEvent(activity);
+        });
+        this.socialActivaties = resp.activities.filter((x) => [Action.LIKE, Action.SUBSCRIBE, Action.UPVOTE, Action.UNSUBSCRIBE, Action.DISLIKE].includes(x.action)).map((activity: Activity) => {
+          return this.activityToEvent(activity);
+        });
+        this.downloads = resp.activities.filter((x) => x.action === Action.DOWNLOAD).map((activity: Activity) => {
           return this.activityToEvent(activity);
         });
         this.loading.close();
+
       },
-      error => {
+      error: (error) => {
         this.notificationService.warn(`获取时间线失败: ${error.statusMessage}`)
         this.loading.close();
       }
-    );
+    });
   }
 
   activityToEvent(activity: Activity) {

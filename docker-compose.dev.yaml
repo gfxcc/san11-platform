@@ -50,7 +50,6 @@ services:
       - ./front-end:/app
       - ../credentials:/credentials
     command: bash -c "npm install --force && ng serve
-                      --configuration production
                       --host 0.0.0.0 --disable-host-check
                      "
     depends_on: 
