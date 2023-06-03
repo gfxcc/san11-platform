@@ -31,8 +31,7 @@ $ cd san11-platform
 $ docker-compose -f docker-compose.dev.yaml up back-end
 
 # In a separate terminal
-$ cd san11-platform/front-end
-$ ng serve
+$ docker-compose -f docker-compose.dev.yaml up front-end
 ```
 
 ## Tests
