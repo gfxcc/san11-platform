@@ -19,6 +19,18 @@ services:
     depends_on:
       - db
       - envoy
+  
+  gateway:
+    build: ./back-end/gateway
+    # restart: always
+    working_dir: /app
+    volumes:
+      - ./back-end/gateway:/app
+    command: go run main.go
+    depends_on:
+      - back-end
+    ports:
+      - "8081:8081"
 
   envoy:
     image: envoyproxy/envoy-alpine:v1.13.0

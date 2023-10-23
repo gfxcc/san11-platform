@@ -1,6 +1,9 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+option go_package = "san11-platform/service/v1";
 
 package routeguide;
 
@@ -9,7 +12,11 @@ service RouteGuide {
   // package related
   rpc CreatePackage(CreatePackageRequest) returns (Package) {}
   rpc GetPackage(GetPackageRequest) returns (Package) {}
-  rpc ListPackages(ListPackagesRequest) returns (ListPackagesResponse) {}
+  rpc ListPackages(ListPackagesRequest) returns (ListPackagesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=categories/*}/packages"
+    };
+  }
   rpc UpdatePackage(UpdatePackageRequest) returns (Package) {}
   rpc DeletePackage(DeletePackageRequest) returns (Package) {}
 

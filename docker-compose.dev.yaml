@@ -16,10 +16,28 @@ services:
       GCLOUD_CREDENTIALS_FILE: '/credentials/san11-grpc-backend.json'
       DB_HOST: db
       STAGE: DEV
-    command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py", "--verbose"]
+    command:
+      [
+        "/utils/wait-for-postgres.sh",
+        "db",
+        "python3.8",
+        "san11_platform_server.py",
+        "--verbose"
+      ]
     depends_on:
       - db
-      - envoy
+
+  gateway:
+    build: ./back-end/gateway
+    # restart: always
+    working_dir: /app
+    volumes:
+      - ./back-end/gateway:/app
+    command: go run main.go
+    depends_on:
+      - back-end
+    ports:
+      - "8081:8081"
 
   envoy:
     image: envoyproxy/envoy-alpine:v1.13.0
@@ -31,11 +49,13 @@ services:
     ports:
       - "8090:8090"
       - "80:80"
+    depends_on:
+      - back-end
 
   db:
     build: ./database
     restart: always
-    volumes: 
+    volumes:
       - ./database/postgres-data:/var/lib/postgresql/data
       - ./database/backup:/backup
     environment:
@@ -49,10 +69,8 @@ services:
     volumes:
       - ./front-end:/app
       - ../credentials:/credentials
-    command: bash -c "npm install --force && ng serve
-                      --host 0.0.0.0 --disable-host-check
-                     "
-    depends_on: 
+    command: bash -c "npm install --force && ng serve --host 0.0.0.0 --disable-host-check "
+    depends_on:
       - back-end
     ports:
       - "4200:4200"
