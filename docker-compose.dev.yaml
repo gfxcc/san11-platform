@@ -29,7 +29,7 @@ services:
 
   gateway:
     build: ./back-end/gateway
-    # restart: always
+    restart: always
     working_dir: /app
     command: go run main.go
     depends_on:
