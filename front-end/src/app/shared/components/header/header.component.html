@@ -2,15 +2,13 @@
     <button mat-icon-button (click)="toggleSideBar()">
         <mat-icon>menu</mat-icon>
     </button>
-    <span class="website-title clickable"
-        (click)="onClickIcon()">San11 分享平台</span>
+    <span class="website-title clickable" (click)="onClickIcon()">San11 分享平台</span>
     <span class="example-spacer"></span>
 
     <div id="search-bar" class="search-bar-container">
         <div class="search-bar-input-wrapper">
-            <input #searchInput [(ngModel)]="this.searchQuery" type="text"
-                spellcheck="false" autocomplete="off" placeholder="搜索 ..."
-                (ngModelChange)="this.searchChanged()" class="search-input">
+            <input #searchInput [(ngModel)]="this.searchQuery" type="text" spellcheck="false" autocomplete="off"
+                placeholder="搜索 ..." (ngModelChange)="this.searchChanged()" class="search-input">
             <span matTooltip="支持 工具名" class="help-icon"></span>
         </div>
     </div>
@@ -35,15 +33,13 @@
                            [matMenuTriggerData]="menuItems">
             {{activeUser.Name}}
         </button> -->
-        <button mat-icon-button [matMenuTriggerFor]="manageAccounts"
-            [matMenuTriggerData]="menuItems">
+        <button mat-icon-button [matMenuTriggerFor]="notificationMenu" [matMenuTriggerData]="menuItems">
             <mat-icon [matBadge]="(this.notifications === undefined ||
                 this.notifications.length == 0) ? undefined :
-                this.notifications.length" matBadgeColor="warn"
-                matBadgeSize="small">notifications</mat-icon>
+                this.notifications.length" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
         </button>
 
-        <mat-menu #manageAccounts="matMenu">
+        <mat-menu #notificationMenu>
             <div class="message-panel-header">
                 <p>
                     通知
@@ -58,9 +54,7 @@
             <ng-template [matMenuContent]="notifications">
                 <ng-container *ngFor="let notification of notifications; let i=
                     index">
-                    <button mat-menu-item
-                        (click)="openNotification(notification, i)"
-                        class="notification-button">
+                    <button mat-menu-item (click)="openNotification(notification, i)" class="notification-button">
                         <!-- <p class="notification-card">
                             {{notification.content}}
                         </p> -->
@@ -69,9 +63,7 @@
                 </ng-container>
             </ng-template>
 
-            <button *ngIf="notifications.length> 0" mat-menu-item
-                style="text-align: center;"
-                (click)="onClearAll()">
+            <button *ngIf="notifications.length> 0" mat-menu-item style="text-align: center;" (click)="onClearAll()">
                 <mat-icon>clear_all</mat-icon>
                 <span>全部清空</span>
             </button>
@@ -79,12 +71,12 @@
 
         <span style="width: 20px;"></span>
 
-        <button mat-button [matMenuTriggerFor]="menu" style="padding:0;">
-            <app-user-card [user]="this.user" [clickable]="false" style="display: inline-flex;">
+        <button mat-button [matMenuTriggerFor]="accountMenu" style="padding:0;">
+            <app-user-card [user]="this.user" style="display: inline-flex; z-index: 999;">
             </app-user-card>
         </button>
 
-        <mat-menu #menu="matMenu" xPosition="before">
+        <mat-menu #accountMenu xPosition="before">
             <button mat-menu-item (click)="onUserDetail()">
                 <mat-icon>account_circle</mat-icon>
                 <span>账户详情</span>
