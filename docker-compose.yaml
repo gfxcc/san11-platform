@@ -24,8 +24,6 @@ services:
     build: ./back-end/gateway
     # restart: always
     working_dir: /app
-    volumes:
-      - ./back-end/gateway:/app
     command: go run main.go
     depends_on:
       - back-end
