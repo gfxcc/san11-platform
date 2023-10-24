@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as S3 from 'aws-sdk/clients/s3';
@@ -74,6 +74,19 @@ export class CreateNewVersionComponent implements OnInit {
   autoCreateChecked = false;
   useAwsS3 = true;
 
+  @HostListener('window:keyup.esc') onKeyUp() {
+    let cn = confirm('放弃编辑?');
+    if (cn) {
+      this.dialogRef.close();
+    }
+  }
+
+  @HostListener('window:beforeunload', ['$event']) unloadHandler(event: Event) {
+    console.log('event:', event);
+    event.returnValue = false;
+  }
+
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: VersionData,
     private dialog: MatDialog,
@@ -105,6 +118,14 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dialogRef.disableClose = true;
+    this.dialogRef.backdropClick().subscribe((_) => {
+      let cn = confirm('放弃编辑?');
+      if (cn) {
+        this.dialogRef.close();
+      }
+    });
+
     this.onVersionSelectorUpdate(this.updateType);
   }
 
