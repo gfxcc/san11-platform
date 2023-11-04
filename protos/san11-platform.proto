@@ -26,11 +26,19 @@ service RouteGuide {
   rpc CreateBinary(CreateBinaryRequest) returns (Binary) {}
   rpc GetBinary(GetBinaryRequest) returns (Binary) {}
   rpc BatchGetBinary(BatchGetBinaryRequest) returns (BatchGetBinaryResponse) {}
-  rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {}
+  rpc ListBinaries(ListBinariesRequest) returns (ListBinariesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=categories/*/packages/*}/binaries"
+    };
+  }
   rpc UpdateBinary(UpdateBinaryRequest) returns (Binary) {}
   rpc DeleteBinary(DeleteBinaryRequest) returns (Binary) {}
 
-  rpc DownloadBinary(DownloadBinaryRequest) returns (Binary) {}
+  rpc DownloadBinary(DownloadBinaryRequest) returns (Binary) {
+    option (google.api.http) = {
+      post: "/v1/{name=categories/*/packages/*/binaries/*}:download"
+    };
+  }
 
   // Image related
   rpc CreateImage(CreateImageRequest) returns (Url) {}
