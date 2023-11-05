@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -19,7 +20,10 @@ import {
 } from '@ngx-grpc/core';
 import { Observable } from 'rxjs';
 import * as thisProto from './san11-platform.pb';
-import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
+import * as googleApi000 from './google/api/http.pb';
+import * as googleProtobuf001 from '@ngx-grpc/well-known-types';
+import * as googleProtobuf002 from '@ngx-grpc/well-known-types';
+import * as googleApi003 from './google/api/annotations.pb';
 import { GRPC_ROUTE_GUIDE_CLIENT_SETTINGS } from './san11-platform.pbconf';
 /**
  * Service client implementation for routeguide.RouteGuide
@@ -35,7 +39,7 @@ export class RouteGuideClient {
    */
   $raw = {
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreatePackage
+     * Unary call: /routeguide.RouteGuide/CreatePackage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -56,7 +60,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/GetPackage
+     * Unary call: /routeguide.RouteGuide/GetPackage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -77,7 +81,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListPackages
+     * Unary call: /routeguide.RouteGuide/ListPackages
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -98,7 +102,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdatePackage
+     * Unary call: /routeguide.RouteGuide/UpdatePackage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -119,7 +123,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeletePackage
+     * Unary call: /routeguide.RouteGuide/DeletePackage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -140,7 +144,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/SearchPackages
+     * Unary call: /routeguide.RouteGuide/SearchPackages
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -161,7 +165,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateBinary
+     * Unary call: /routeguide.RouteGuide/CreateBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -182,7 +186,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/GetBinary
+     * Unary call: /routeguide.RouteGuide/GetBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -203,7 +207,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/BatchGetBinary
+     * Unary call: /routeguide.RouteGuide/BatchGetBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -224,7 +228,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListBinaries
+     * Unary call: /routeguide.RouteGuide/ListBinaries
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -245,7 +249,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateBinary
+     * Unary call: /routeguide.RouteGuide/UpdateBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -266,7 +270,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteBinary
+     * Unary call: /routeguide.RouteGuide/DeleteBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -287,7 +291,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DownloadBinary
+     * Unary call: /routeguide.RouteGuide/DownloadBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -308,7 +312,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateImage
+     * Unary call: /routeguide.RouteGuide/CreateImage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -329,7 +333,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateThread
+     * Unary call: /routeguide.RouteGuide/CreateThread
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -350,7 +354,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/GetThread
+     * Unary call: /routeguide.RouteGuide/GetThread
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -371,7 +375,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListThreads
+     * Unary call: /routeguide.RouteGuide/ListThreads
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -392,7 +396,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateThread
+     * Unary call: /routeguide.RouteGuide/UpdateThread
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -413,7 +417,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteThread
+     * Unary call: /routeguide.RouteGuide/DeleteThread
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -434,7 +438,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateComment
+     * Unary call: /routeguide.RouteGuide/CreateComment
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -455,7 +459,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListComments
+     * Unary call: /routeguide.RouteGuide/ListComments
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -476,7 +480,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateComment
+     * Unary call: /routeguide.RouteGuide/UpdateComment
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -497,7 +501,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteComment
+     * Unary call: /routeguide.RouteGuide/DeleteComment
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -518,7 +522,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateReply
+     * Unary call: /routeguide.RouteGuide/CreateReply
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -539,7 +543,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateReply
+     * Unary call: /routeguide.RouteGuide/UpdateReply
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -560,7 +564,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteReply
+     * Unary call: /routeguide.RouteGuide/DeleteReply
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -581,7 +585,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateArticle
+     * Unary call: /routeguide.RouteGuide/CreateArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -602,7 +606,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/GetArticle
+     * Unary call: /routeguide.RouteGuide/GetArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -623,7 +627,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListArticles
+     * Unary call: /routeguide.RouteGuide/ListArticles
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -644,7 +648,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateArticle
+     * Unary call: /routeguide.RouteGuide/UpdateArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -665,7 +669,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteArticle
+     * Unary call: /routeguide.RouteGuide/DeleteArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -686,7 +690,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/SignIn
+     * Unary call: /routeguide.RouteGuide/SignIn
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -707,7 +711,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/SignOut
+     * Unary call: /routeguide.RouteGuide/SignOut
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -728,7 +732,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateUser
+     * Unary call: /routeguide.RouteGuide/CreateUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -749,7 +753,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/GetUser
+     * Unary call: /routeguide.RouteGuide/GetUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -770,7 +774,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListUsers
+     * Unary call: /routeguide.RouteGuide/ListUsers
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -791,7 +795,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateUser
+     * Unary call: /routeguide.RouteGuide/UpdateUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -812,7 +816,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/SendVerificationCode
+     * Unary call: /routeguide.RouteGuide/SendVerificationCode
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -833,7 +837,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/VerifyEmail
+     * Unary call: /routeguide.RouteGuide/VerifyEmail
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -854,7 +858,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ValidateNewUser
+     * Unary call: /routeguide.RouteGuide/ValidateNewUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -875,7 +879,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdatePassword
+     * Unary call: /routeguide.RouteGuide/UpdatePassword
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -896,7 +900,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListActivities
+     * Unary call: /routeguide.RouteGuide/ListActivities
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -917,7 +921,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListNotifications
+     * Unary call: /routeguide.RouteGuide/ListNotifications
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -938,7 +942,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateNotification
+     * Unary call: /routeguide.RouteGuide/UpdateNotification
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -959,7 +963,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateTag
+     * Unary call: /routeguide.RouteGuide/CreateTag
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -980,7 +984,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListTags
+     * Unary call: /routeguide.RouteGuide/ListTags
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1001,7 +1005,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteTag
+     * Unary call: /routeguide.RouteGuide/DeleteTag
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1022,7 +1026,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/GetStatistic
+     * Unary call: /routeguide.RouteGuide/GetStatistic
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1043,7 +1047,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/GetAdminMessage
+     * Unary call: /routeguide.RouteGuide/GetAdminMessage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1064,7 +1068,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/CreateSubscription
+     * Unary call: /routeguide.RouteGuide/CreateSubscription
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1085,7 +1089,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/ListSubscriptioins
+     * Unary call: /routeguide.RouteGuide/ListSubscriptioins
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1106,7 +1110,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/UpdateSubscription
+     * Unary call: /routeguide.RouteGuide/UpdateSubscription
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1127,7 +1131,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary RPC for /routeguide.RouteGuide/DeleteSubscription
+     * Unary call: /routeguide.RouteGuide/DeleteSubscription
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1158,7 +1162,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreatePackage
+   * Unary call @/routeguide.RouteGuide/CreatePackage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1174,7 +1178,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/GetPackage
+   * Unary call @/routeguide.RouteGuide/GetPackage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1190,7 +1194,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListPackages
+   * Unary call @/routeguide.RouteGuide/ListPackages
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1206,7 +1210,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdatePackage
+   * Unary call @/routeguide.RouteGuide/UpdatePackage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1222,7 +1226,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeletePackage
+   * Unary call @/routeguide.RouteGuide/DeletePackage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1238,7 +1242,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/SearchPackages
+   * Unary call @/routeguide.RouteGuide/SearchPackages
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1254,7 +1258,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateBinary
+   * Unary call @/routeguide.RouteGuide/CreateBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1270,7 +1274,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/GetBinary
+   * Unary call @/routeguide.RouteGuide/GetBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1286,7 +1290,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/BatchGetBinary
+   * Unary call @/routeguide.RouteGuide/BatchGetBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1302,7 +1306,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListBinaries
+   * Unary call @/routeguide.RouteGuide/ListBinaries
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1318,7 +1322,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateBinary
+   * Unary call @/routeguide.RouteGuide/UpdateBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1334,7 +1338,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteBinary
+   * Unary call @/routeguide.RouteGuide/DeleteBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1350,7 +1354,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DownloadBinary
+   * Unary call @/routeguide.RouteGuide/DownloadBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1366,7 +1370,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateImage
+   * Unary call @/routeguide.RouteGuide/CreateImage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1382,7 +1386,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateThread
+   * Unary call @/routeguide.RouteGuide/CreateThread
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1398,7 +1402,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/GetThread
+   * Unary call @/routeguide.RouteGuide/GetThread
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1414,7 +1418,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListThreads
+   * Unary call @/routeguide.RouteGuide/ListThreads
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1430,7 +1434,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateThread
+   * Unary call @/routeguide.RouteGuide/UpdateThread
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1446,7 +1450,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteThread
+   * Unary call @/routeguide.RouteGuide/DeleteThread
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1462,7 +1466,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateComment
+   * Unary call @/routeguide.RouteGuide/CreateComment
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1478,7 +1482,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListComments
+   * Unary call @/routeguide.RouteGuide/ListComments
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1494,7 +1498,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateComment
+   * Unary call @/routeguide.RouteGuide/UpdateComment
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1510,7 +1514,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteComment
+   * Unary call @/routeguide.RouteGuide/DeleteComment
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1526,7 +1530,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateReply
+   * Unary call @/routeguide.RouteGuide/CreateReply
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1542,7 +1546,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateReply
+   * Unary call @/routeguide.RouteGuide/UpdateReply
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1558,7 +1562,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteReply
+   * Unary call @/routeguide.RouteGuide/DeleteReply
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1574,7 +1578,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateArticle
+   * Unary call @/routeguide.RouteGuide/CreateArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1590,7 +1594,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/GetArticle
+   * Unary call @/routeguide.RouteGuide/GetArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1606,7 +1610,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListArticles
+   * Unary call @/routeguide.RouteGuide/ListArticles
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1622,7 +1626,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateArticle
+   * Unary call @/routeguide.RouteGuide/UpdateArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1638,7 +1642,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteArticle
+   * Unary call @/routeguide.RouteGuide/DeleteArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1654,7 +1658,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/SignIn
+   * Unary call @/routeguide.RouteGuide/SignIn
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1670,7 +1674,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/SignOut
+   * Unary call @/routeguide.RouteGuide/SignOut
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1686,7 +1690,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateUser
+   * Unary call @/routeguide.RouteGuide/CreateUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1702,7 +1706,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/GetUser
+   * Unary call @/routeguide.RouteGuide/GetUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1718,7 +1722,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListUsers
+   * Unary call @/routeguide.RouteGuide/ListUsers
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1734,7 +1738,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateUser
+   * Unary call @/routeguide.RouteGuide/UpdateUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1750,7 +1754,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/SendVerificationCode
+   * Unary call @/routeguide.RouteGuide/SendVerificationCode
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1766,7 +1770,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/VerifyEmail
+   * Unary call @/routeguide.RouteGuide/VerifyEmail
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1782,7 +1786,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ValidateNewUser
+   * Unary call @/routeguide.RouteGuide/ValidateNewUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1798,7 +1802,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdatePassword
+   * Unary call @/routeguide.RouteGuide/UpdatePassword
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1814,7 +1818,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListActivities
+   * Unary call @/routeguide.RouteGuide/ListActivities
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1830,7 +1834,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListNotifications
+   * Unary call @/routeguide.RouteGuide/ListNotifications
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1846,7 +1850,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateNotification
+   * Unary call @/routeguide.RouteGuide/UpdateNotification
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1862,7 +1866,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateTag
+   * Unary call @/routeguide.RouteGuide/CreateTag
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1878,7 +1882,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListTags
+   * Unary call @/routeguide.RouteGuide/ListTags
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1894,7 +1898,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteTag
+   * Unary call @/routeguide.RouteGuide/DeleteTag
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1910,7 +1914,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/GetStatistic
+   * Unary call @/routeguide.RouteGuide/GetStatistic
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1926,7 +1930,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/GetAdminMessage
+   * Unary call @/routeguide.RouteGuide/GetAdminMessage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1942,7 +1946,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/CreateSubscription
+   * Unary call @/routeguide.RouteGuide/CreateSubscription
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1958,7 +1962,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/ListSubscriptioins
+   * Unary call @/routeguide.RouteGuide/ListSubscriptioins
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1974,7 +1978,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/UpdateSubscription
+   * Unary call @/routeguide.RouteGuide/UpdateSubscription
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1990,7 +1994,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary RPC for /routeguide.RouteGuide/DeleteSubscription
+   * Unary call @/routeguide.RouteGuide/DeleteSubscription
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata

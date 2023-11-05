@@ -1729,8 +1729,6 @@ global___Package = Package
 class Binary(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    BINARY_ID_FIELD_NUMBER: builtins.int
-    PACKAGE_ID_FIELD_NUMBER: builtins.int
     DOWNLOAD_COUNT_FIELD_NUMBER: builtins.int
     VERSION_FIELD_NUMBER: builtins.int
     DESCRIPTION_FIELD_NUMBER: builtins.int
@@ -1741,9 +1739,10 @@ class Binary(google.protobuf.message.Message):
     UPDATE_TIME_FIELD_NUMBER: builtins.int
     FILE_FIELD_NUMBER: builtins.int
     DOWNLOAD_METHOD_FIELD_NUMBER: builtins.int
-    binary_id: builtins.int
-    package_id: builtins.int
     download_count: builtins.int
+    """int64 binary_id = 1;
+    int64 package_id = 2;
+    """
     @property
     def version(self) -> global___Version: ...
     description: builtins.str
@@ -1760,8 +1759,6 @@ class Binary(google.protobuf.message.Message):
     def __init__(
         self,
         *,
-        binary_id: builtins.int = ...,
-        package_id: builtins.int = ...,
         download_count: builtins.int = ...,
         version: global___Version | None = ...,
         description: builtins.str = ...,
@@ -1774,7 +1771,7 @@ class Binary(google.protobuf.message.Message):
         download_method: builtins.str = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["download_method", b"download_method", "file", b"file", "resource", b"resource", "version", b"version"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["binary_id", b"binary_id", "create_time", b"create_time", "description", b"description", "download_count", b"download_count", "download_method", b"download_method", "file", b"file", "name", b"name", "package_id", b"package_id", "resource", b"resource", "size", b"size", "tag", b"tag", "update_time", b"update_time", "version", b"version"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "description", b"description", "download_count", b"download_count", "download_method", b"download_method", "file", b"file", "name", b"name", "resource", b"resource", "size", b"size", "tag", b"tag", "update_time", b"update_time", "version", b"version"]) -> None: ...
     def WhichOneof(self, oneof_group: typing_extensions.Literal["resource", b"resource"]) -> typing_extensions.Literal["file", "download_method"] | None: ...
 
 global___Binary = Binary
@@ -2432,7 +2429,9 @@ class UserSettings(google.protobuf.message.Message):
         comments: builtins.bool
         """Notify me on new comments to my thread."""
         replies: builtins.bool
-        """Notify me on new replies to my comments."""
+        """Notify me on new replies to my comments. 
+        DEPRECATED. Please check `comments` instead.
+        """
         def __init__(
             self,
             *,

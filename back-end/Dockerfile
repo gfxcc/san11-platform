@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 WORKDIR /app
 
@@ -13,11 +13,12 @@ RUN apt-get update -y && \
     apt-get install build-essential libffi-dev software-properties-common -y && \
     apt-get install postgresql -y && \
     add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get install python3 python3-pip python3.8-dev libpq-dev -y
+    apt-get install python3 python3-pip python3.8-dev libpq-dev python3-setuptools -y
 
 # Install grpc related lib here as it takes a long time to build
 # Have a different layer will prevent us from rebuild them whenever 
 #   requirements.txt get updated
+RUN python3.8 -m pip install --upgrade setuptools
 RUN python3.8 -m pip install grpcio grpcio-tools
 
 COPY ./requirements.txt /tmp/requirements.txt

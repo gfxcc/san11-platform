@@ -609,10 +609,11 @@ message Package {
 }
 
 message Binary {
-  reserved 9;
+  reserved 1, 2, 9;
 
-  int64 binary_id = 1;
-  int64 package_id = 2;
+  string name = 11;
+  // int64 binary_id = 1;
+  // int64 package_id = 2;
   int64 download_count = 4;
   Version version = 5;
   string description = 6;
@@ -621,7 +622,6 @@ message Binary {
   // human readable size. E.g. 20M, 1.2G
   string size = 10;
   // resource name like `categories/123/packages/456/binaries/789`
-  string name = 11;
   string update_time = 12;
 
   oneof resource {

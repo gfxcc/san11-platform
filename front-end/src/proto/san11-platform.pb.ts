@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -10,7 +11,10 @@ import {
   uint8ArrayToBase64
 } from '@ngx-grpc/common';
 import { BinaryReader, BinaryWriter, ByteSource } from 'google-protobuf';
-import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
+import * as googleApi000 from './google/api/http.pb';
+import * as googleProtobuf001 from '@ngx-grpc/well-known-types';
+import * as googleProtobuf002 from '@ngx-grpc/well-known-types';
+import * as googleApi003 from './google/api/annotations.pb';
 export enum ResourceState {
   RESOURCE_STATE_UNSPECIFIED = 0,
   NORMAL = 1,
@@ -119,7 +123,7 @@ export class CreatePackageRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _package?: Package;
 
   /**
@@ -132,10 +136,10 @@ export class CreatePackageRequest implements GrpcMessage {
     this.package = _value.package ? new Package(_value.package) : undefined;
     CreatePackageRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get package(): Package | undefined {
@@ -192,7 +196,7 @@ export module CreatePackageRequest {
    * Standard JavaScript object representation for CreatePackageRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     package?: Package.AsObject;
   }
 
@@ -200,8 +204,8 @@ export module CreatePackageRequest {
    * Protobuf JSON representation for CreatePackageRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    package?: Package.AsProtobufJSON | null;
+    parent: string;
+    package: Package.AsProtobufJSON | null;
   }
 }
 
@@ -270,7 +274,7 @@ export class GetPackageRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -281,10 +285,10 @@ export class GetPackageRequest implements GrpcMessage {
     this.name = _value.name;
     GetPackageRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -333,14 +337,14 @@ export module GetPackageRequest {
    * Standard JavaScript object representation for GetPackageRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for GetPackageRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -517,8 +521,8 @@ export module UpdatePackageRequest {
    * Protobuf JSON representation for UpdatePackageRequest
    */
   export interface AsProtobufJSON {
-    package?: Package.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    package: Package.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -587,7 +591,7 @@ export class DeletePackageRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -598,10 +602,10 @@ export class DeletePackageRequest implements GrpcMessage {
     this.name = _value.name;
     DeletePackageRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -650,14 +654,14 @@ export module DeletePackageRequest {
    * Standard JavaScript object representation for DeletePackageRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DeletePackageRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -754,11 +758,11 @@ export class ListPackagesRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -773,34 +777,34 @@ export class ListPackagesRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListPackagesRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -857,22 +861,22 @@ export module ListPackagesRequest {
    * Standard JavaScript object representation for ListPackagesRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListPackagesRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -960,7 +964,7 @@ export class ListPackagesResponse implements GrpcMessage {
   }
 
   private _packages?: Package[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -978,10 +982,10 @@ export class ListPackagesResponse implements GrpcMessage {
   set packages(value: Package[] | undefined) {
     this._packages = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -1033,15 +1037,15 @@ export module ListPackagesResponse {
    */
   export interface AsObject {
     packages?: Package.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListPackagesResponse
    */
   export interface AsProtobufJSON {
-    packages?: Package.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    packages: Package.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -1124,9 +1128,9 @@ export class SearchPackagesRequest implements GrpcMessage {
     }
   }
 
-  private _query?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
+  private _query: string;
+  private _pageSize: string;
+  private _pageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -1139,22 +1143,22 @@ export class SearchPackagesRequest implements GrpcMessage {
     this.pageToken = _value.pageToken;
     SearchPackagesRequest.refineValues(this);
   }
-  get query(): string | undefined {
+  get query(): string {
     return this._query;
   }
-  set query(value: string | undefined) {
+  set query(value: string) {
     this._query = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
 
@@ -1207,18 +1211,18 @@ export module SearchPackagesRequest {
    * Standard JavaScript object representation for SearchPackagesRequest
    */
   export interface AsObject {
-    query?: string;
-    pageSize?: string;
-    pageToken?: string;
+    query: string;
+    pageSize: string;
+    pageToken: string;
   }
 
   /**
    * Protobuf JSON representation for SearchPackagesRequest
    */
   export interface AsProtobufJSON {
-    query?: string;
-    pageSize?: string;
-    pageToken?: string;
+    query: string;
+    pageSize: string;
+    pageToken: string;
   }
 }
 
@@ -1306,7 +1310,7 @@ export class SearchPackagesResponse implements GrpcMessage {
   }
 
   private _packages?: Package[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -1324,10 +1328,10 @@ export class SearchPackagesResponse implements GrpcMessage {
   set packages(value: Package[] | undefined) {
     this._packages = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -1379,15 +1383,15 @@ export module SearchPackagesResponse {
    */
   export interface AsObject {
     packages?: Package.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for SearchPackagesResponse
    */
   export interface AsProtobufJSON {
-    packages?: Package.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    packages: Package.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -1456,7 +1460,7 @@ export class GetBinaryRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -1467,10 +1471,10 @@ export class GetBinaryRequest implements GrpcMessage {
     this.name = _value.name;
     GetBinaryRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -1519,14 +1523,14 @@ export module GetBinaryRequest {
    * Standard JavaScript object representation for GetBinaryRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for GetBinaryRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -1643,13 +1647,13 @@ export class UploadBinaryRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _binary?: Binary;
-  private _data?: Uint8Array;
-  private _downloadMethod?: string;
-  private _url?: string;
-  private _sireVersion?: string;
-  private _sireAutoConvert?: boolean;
+  private _data: Uint8Array;
+  private _downloadMethod: string;
+  private _url: string;
+  private _sireVersion: string;
+  private _sireAutoConvert: boolean;
 
   private _resource: UploadBinaryRequest.ResourceCase =
     UploadBinaryRequest.ResourceCase.none;
@@ -1669,10 +1673,10 @@ export class UploadBinaryRequest implements GrpcMessage {
     this.sireAutoConvert = _value.sireAutoConvert;
     UploadBinaryRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get binary(): Binary | undefined {
@@ -1681,46 +1685,46 @@ export class UploadBinaryRequest implements GrpcMessage {
   set binary(value: Binary | undefined) {
     this._binary = value;
   }
-  get data(): Uint8Array | undefined {
+  get data(): Uint8Array {
     return this._data;
   }
-  set data(value: Uint8Array | undefined) {
+  set data(value: Uint8Array) {
     if (value !== undefined && value !== null) {
       this._downloadMethod = this._url = undefined;
       this._resource = UploadBinaryRequest.ResourceCase.data;
     }
     this._data = value;
   }
-  get downloadMethod(): string | undefined {
+  get downloadMethod(): string {
     return this._downloadMethod;
   }
-  set downloadMethod(value: string | undefined) {
+  set downloadMethod(value: string) {
     if (value !== undefined && value !== null) {
       this._data = this._url = undefined;
       this._resource = UploadBinaryRequest.ResourceCase.downloadMethod;
     }
     this._downloadMethod = value;
   }
-  get url(): string | undefined {
+  get url(): string {
     return this._url;
   }
-  set url(value: string | undefined) {
+  set url(value: string) {
     if (value !== undefined && value !== null) {
       this._data = this._downloadMethod = undefined;
       this._resource = UploadBinaryRequest.ResourceCase.url;
     }
     this._url = value;
   }
-  get sireVersion(): string | undefined {
+  get sireVersion(): string {
     return this._sireVersion;
   }
-  set sireVersion(value: string | undefined) {
+  set sireVersion(value: string) {
     this._sireVersion = value;
   }
-  get sireAutoConvert(): boolean | undefined {
+  get sireAutoConvert(): boolean {
     return this._sireAutoConvert;
   }
-  set sireAutoConvert(value: boolean | undefined) {
+  set sireAutoConvert(value: boolean) {
     this._sireAutoConvert = value;
   }
   get resource() {
@@ -1772,8 +1776,11 @@ export class UploadBinaryRequest implements GrpcMessage {
       parent: this.parent,
       binary: this.binary ? this.binary.toProtobufJSON(options) : null,
       data: this.data ? uint8ArrayToBase64(this.data) : '',
-      downloadMethod: this.downloadMethod ?? null,
-      url: this.url ?? null,
+      downloadMethod:
+        this.downloadMethod === null || this.downloadMethod === undefined
+          ? null
+          : this.downloadMethod,
+      url: this.url === null || this.url === undefined ? null : this.url,
       sireVersion: this.sireVersion,
       sireAutoConvert: this.sireAutoConvert
     };
@@ -1784,26 +1791,26 @@ export module UploadBinaryRequest {
    * Standard JavaScript object representation for UploadBinaryRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     binary?: Binary.AsObject;
-    data?: Uint8Array;
-    downloadMethod?: string;
-    url?: string;
-    sireVersion?: string;
-    sireAutoConvert?: boolean;
+    data: Uint8Array;
+    downloadMethod: string;
+    url: string;
+    sireVersion: string;
+    sireAutoConvert: boolean;
   }
 
   /**
    * Protobuf JSON representation for UploadBinaryRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    binary?: Binary.AsProtobufJSON | null;
-    data?: string;
-    downloadMethod?: string | null;
-    url?: string | null;
-    sireVersion?: string;
-    sireAutoConvert?: boolean;
+    parent: string;
+    binary: Binary.AsProtobufJSON | null;
+    data: string;
+    downloadMethod: string | null;
+    url: string | null;
+    sireVersion: string;
+    sireAutoConvert: boolean;
   }
   export enum ResourceCase {
     none = 0,
@@ -1893,7 +1900,7 @@ export class CreateBinaryRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _binary?: Binary;
 
   /**
@@ -1906,10 +1913,10 @@ export class CreateBinaryRequest implements GrpcMessage {
     this.binary = _value.binary ? new Binary(_value.binary) : undefined;
     CreateBinaryRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get binary(): Binary | undefined {
@@ -1966,7 +1973,7 @@ export module CreateBinaryRequest {
    * Standard JavaScript object representation for CreateBinaryRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     binary?: Binary.AsObject;
   }
 
@@ -1974,8 +1981,8 @@ export module CreateBinaryRequest {
    * Protobuf JSON representation for CreateBinaryRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    binary?: Binary.AsProtobufJSON | null;
+    parent: string;
+    binary: Binary.AsProtobufJSON | null;
   }
 }
 
@@ -2046,7 +2053,7 @@ export class BatchGetBinaryRequest implements GrpcMessage {
     }
   }
 
-  private _binaryId?: string[];
+  private _binaryId: string[];
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -2057,10 +2064,10 @@ export class BatchGetBinaryRequest implements GrpcMessage {
     this.binaryId = (_value.binaryId || []).slice();
     BatchGetBinaryRequest.refineValues(this);
   }
-  get binaryId(): string[] | undefined {
+  get binaryId(): string[] {
     return this._binaryId;
   }
-  set binaryId(value: string[] | undefined) {
+  set binaryId(value: string[]) {
     this._binaryId = value;
   }
 
@@ -2109,14 +2116,14 @@ export module BatchGetBinaryRequest {
    * Standard JavaScript object representation for BatchGetBinaryRequest
    */
   export interface AsObject {
-    binaryId?: string[];
+    binaryId: string[];
   }
 
   /**
    * Protobuf JSON representation for BatchGetBinaryRequest
    */
   export interface AsProtobufJSON {
-    binaryId?: string[];
+    binaryId: string[];
   }
 }
 
@@ -2266,7 +2273,7 @@ export module BatchGetBinaryResponse {
    * Protobuf JSON representation for BatchGetBinaryResponse
    */
   export interface AsProtobufJSON {
-    binaries?: Binary.AsProtobufJSON[] | null;
+    binaries: Binary.AsProtobufJSON[] | null;
   }
 }
 
@@ -2335,7 +2342,7 @@ export class DownloadBinaryRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -2346,10 +2353,10 @@ export class DownloadBinaryRequest implements GrpcMessage {
     this.name = _value.name;
     DownloadBinaryRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -2398,14 +2405,14 @@ export module DownloadBinaryRequest {
    * Standard JavaScript object representation for DownloadBinaryRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DownloadBinaryRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -2474,7 +2481,7 @@ export class DeleteBinaryRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -2485,10 +2492,10 @@ export class DeleteBinaryRequest implements GrpcMessage {
     this.name = _value.name;
     DeleteBinaryRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -2537,14 +2544,14 @@ export module DeleteBinaryRequest {
    * Standard JavaScript object representation for DeleteBinaryRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteBinaryRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -2721,8 +2728,8 @@ export module UpdateBinaryRequest {
    * Protobuf JSON representation for UpdateBinaryRequest
    */
   export interface AsProtobufJSON {
-    binary?: Binary.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    binary: Binary.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -2819,11 +2826,11 @@ export class ListBinariesRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -2838,34 +2845,34 @@ export class ListBinariesRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListBinariesRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -2922,22 +2929,22 @@ export module ListBinariesRequest {
    * Standard JavaScript object representation for ListBinariesRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListBinariesRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -3025,7 +3032,7 @@ export class ListBinariesResponse implements GrpcMessage {
   }
 
   private _binaries?: Binary[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3043,10 +3050,10 @@ export class ListBinariesResponse implements GrpcMessage {
   set binaries(value: Binary[] | undefined) {
     this._binaries = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -3098,15 +3105,15 @@ export module ListBinariesResponse {
    */
   export interface AsObject {
     binaries?: Binary.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListBinariesResponse
    */
   export interface AsProtobufJSON {
-    binaries?: Binary.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    binaries: Binary.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -3182,8 +3189,8 @@ export class UploadImageRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _image?: Uint8Array;
+  private _parent: string;
+  private _image: Uint8Array;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3195,16 +3202,16 @@ export class UploadImageRequest implements GrpcMessage {
     this.image = _value.image;
     UploadImageRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get image(): Uint8Array | undefined {
+  get image(): Uint8Array {
     return this._image;
   }
-  set image(value: Uint8Array | undefined) {
+  set image(value: Uint8Array) {
     this._image = value;
   }
 
@@ -3255,16 +3262,16 @@ export module UploadImageRequest {
    * Standard JavaScript object representation for UploadImageRequest
    */
   export interface AsObject {
-    parent?: string;
-    image?: Uint8Array;
+    parent: string;
+    image: Uint8Array;
   }
 
   /**
    * Protobuf JSON representation for UploadImageRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    image?: string;
+    parent: string;
+    image: string;
   }
 }
 
@@ -3347,9 +3354,9 @@ export class CreateImageRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _url?: string;
-  private _imageType?: ImageType;
+  private _parent: string;
+  private _url: string;
+  private _imageType: ImageType;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3362,22 +3369,22 @@ export class CreateImageRequest implements GrpcMessage {
     this.imageType = _value.imageType;
     CreateImageRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get url(): string | undefined {
+  get url(): string {
     return this._url;
   }
-  set url(value: string | undefined) {
+  set url(value: string) {
     this._url = value;
   }
-  get imageType(): ImageType | undefined {
+  get imageType(): ImageType {
     return this._imageType;
   }
-  set imageType(value: ImageType | undefined) {
+  set imageType(value: ImageType) {
     this._imageType = value;
   }
 
@@ -3421,7 +3428,12 @@ export class CreateImageRequest implements GrpcMessage {
     return {
       parent: this.parent,
       url: this.url,
-      imageType: ImageType[this.imageType ?? 0]
+      imageType:
+        ImageType[
+          this.imageType === null || this.imageType === undefined
+            ? 0
+            : this.imageType
+        ]
     };
   }
 }
@@ -3430,18 +3442,18 @@ export module CreateImageRequest {
    * Standard JavaScript object representation for CreateImageRequest
    */
   export interface AsObject {
-    parent?: string;
-    url?: string;
-    imageType?: ImageType;
+    parent: string;
+    url: string;
+    imageType: ImageType;
   }
 
   /**
    * Protobuf JSON representation for CreateImageRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    url?: string;
-    imageType?: string;
+    parent: string;
+    url: string;
+    imageType: string;
   }
 }
 
@@ -3525,7 +3537,7 @@ export class CreateThreadRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _thread?: Thread;
 
   /**
@@ -3538,10 +3550,10 @@ export class CreateThreadRequest implements GrpcMessage {
     this.thread = _value.thread ? new Thread(_value.thread) : undefined;
     CreateThreadRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get thread(): Thread | undefined {
@@ -3598,7 +3610,7 @@ export module CreateThreadRequest {
    * Standard JavaScript object representation for CreateThreadRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     thread?: Thread.AsObject;
   }
 
@@ -3606,8 +3618,8 @@ export module CreateThreadRequest {
    * Protobuf JSON representation for CreateThreadRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    thread?: Thread.AsProtobufJSON | null;
+    parent: string;
+    thread: Thread.AsProtobufJSON | null;
   }
 }
 
@@ -3676,7 +3688,7 @@ export class GetThreadRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3687,10 +3699,10 @@ export class GetThreadRequest implements GrpcMessage {
     this.name = _value.name;
     GetThreadRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -3739,14 +3751,14 @@ export module GetThreadRequest {
    * Standard JavaScript object representation for GetThreadRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for GetThreadRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -3843,11 +3855,11 @@ export class ListThreadsRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -3862,34 +3874,34 @@ export class ListThreadsRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListThreadsRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -3946,22 +3958,22 @@ export module ListThreadsRequest {
    * Standard JavaScript object representation for ListThreadsRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListThreadsRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -4049,7 +4061,7 @@ export class ListThreadsResponse implements GrpcMessage {
   }
 
   private _threads?: Thread[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4067,10 +4079,10 @@ export class ListThreadsResponse implements GrpcMessage {
   set threads(value: Thread[] | undefined) {
     this._threads = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -4122,15 +4134,15 @@ export module ListThreadsResponse {
    */
   export interface AsObject {
     threads?: Thread.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListThreadsResponse
    */
   export interface AsProtobufJSON {
-    threads?: Thread.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    threads: Thread.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -4307,8 +4319,8 @@ export module UpdateThreadRequest {
    * Protobuf JSON representation for UpdateThreadRequest
    */
   export interface AsProtobufJSON {
-    thread?: Thread.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    thread: Thread.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -4377,7 +4389,7 @@ export class DeleteThreadRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4388,10 +4400,10 @@ export class DeleteThreadRequest implements GrpcMessage {
     this.name = _value.name;
     DeleteThreadRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -4440,14 +4452,14 @@ export module DeleteThreadRequest {
    * Standard JavaScript object representation for DeleteThreadRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteThreadRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -4531,7 +4543,7 @@ export class CreateCommentRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _comment?: Comment;
 
   /**
@@ -4544,10 +4556,10 @@ export class CreateCommentRequest implements GrpcMessage {
     this.comment = _value.comment ? new Comment(_value.comment) : undefined;
     CreateCommentRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get comment(): Comment | undefined {
@@ -4604,7 +4616,7 @@ export module CreateCommentRequest {
    * Standard JavaScript object representation for CreateCommentRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     comment?: Comment.AsObject;
   }
 
@@ -4612,8 +4624,8 @@ export module CreateCommentRequest {
    * Protobuf JSON representation for CreateCommentRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    comment?: Comment.AsProtobufJSON | null;
+    parent: string;
+    comment: Comment.AsProtobufJSON | null;
   }
 }
 
@@ -4682,7 +4694,7 @@ export class DeleteCommentRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -4693,10 +4705,10 @@ export class DeleteCommentRequest implements GrpcMessage {
     this.name = _value.name;
     DeleteCommentRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -4745,14 +4757,14 @@ export module DeleteCommentRequest {
    * Standard JavaScript object representation for DeleteCommentRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteCommentRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -4929,8 +4941,8 @@ export module UpdateCommentRequest {
    * Protobuf JSON representation for UpdateCommentRequest
    */
   export interface AsProtobufJSON {
-    comment?: Comment.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    comment: Comment.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -5027,11 +5039,11 @@ export class ListCommentsRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -5046,34 +5058,34 @@ export class ListCommentsRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListCommentsRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -5130,22 +5142,22 @@ export module ListCommentsRequest {
    * Standard JavaScript object representation for ListCommentsRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListCommentsRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -5233,7 +5245,7 @@ export class ListCommentsResponse implements GrpcMessage {
   }
 
   private _comments?: Comment[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -5251,10 +5263,10 @@ export class ListCommentsResponse implements GrpcMessage {
   set comments(value: Comment[] | undefined) {
     this._comments = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -5306,15 +5318,15 @@ export module ListCommentsResponse {
    */
   export interface AsObject {
     comments?: Comment.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListCommentsResponse
    */
   export interface AsProtobufJSON {
-    comments?: Comment.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    comments: Comment.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -5398,7 +5410,7 @@ export class CreateReplyRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _reply?: Reply;
 
   /**
@@ -5411,10 +5423,10 @@ export class CreateReplyRequest implements GrpcMessage {
     this.reply = _value.reply ? new Reply(_value.reply) : undefined;
     CreateReplyRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get reply(): Reply | undefined {
@@ -5471,7 +5483,7 @@ export module CreateReplyRequest {
    * Standard JavaScript object representation for CreateReplyRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     reply?: Reply.AsObject;
   }
 
@@ -5479,8 +5491,8 @@ export module CreateReplyRequest {
    * Protobuf JSON representation for CreateReplyRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    reply?: Reply.AsProtobufJSON | null;
+    parent: string;
+    reply: Reply.AsProtobufJSON | null;
   }
 }
 
@@ -5549,7 +5561,7 @@ export class DeleteReplyRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -5560,10 +5572,10 @@ export class DeleteReplyRequest implements GrpcMessage {
     this.name = _value.name;
     DeleteReplyRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -5612,14 +5624,14 @@ export module DeleteReplyRequest {
    * Standard JavaScript object representation for DeleteReplyRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteReplyRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -5796,8 +5808,8 @@ export module UpdateReplyRequest {
    * Protobuf JSON representation for UpdateReplyRequest
    */
   export interface AsProtobufJSON {
-    reply?: Reply.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    reply: Reply.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -5881,7 +5893,7 @@ export class CreateArticleRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _article?: Article;
 
   /**
@@ -5894,10 +5906,10 @@ export class CreateArticleRequest implements GrpcMessage {
     this.article = _value.article ? new Article(_value.article) : undefined;
     CreateArticleRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get article(): Article | undefined {
@@ -5954,7 +5966,7 @@ export module CreateArticleRequest {
    * Standard JavaScript object representation for CreateArticleRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     article?: Article.AsObject;
   }
 
@@ -5962,8 +5974,8 @@ export module CreateArticleRequest {
    * Protobuf JSON representation for CreateArticleRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    article?: Article.AsProtobufJSON | null;
+    parent: string;
+    article: Article.AsProtobufJSON | null;
   }
 }
 
@@ -6032,7 +6044,7 @@ export class GetArticleRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -6043,10 +6055,10 @@ export class GetArticleRequest implements GrpcMessage {
     this.name = _value.name;
     GetArticleRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -6095,14 +6107,14 @@ export module GetArticleRequest {
    * Standard JavaScript object representation for GetArticleRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for GetArticleRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -6199,11 +6211,11 @@ export class ListArticlesRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -6218,34 +6230,34 @@ export class ListArticlesRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListArticlesRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -6302,22 +6314,22 @@ export module ListArticlesRequest {
    * Standard JavaScript object representation for ListArticlesRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListArticlesRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -6405,7 +6417,7 @@ export class ListArticlesResponse implements GrpcMessage {
   }
 
   private _articles?: Article[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -6423,10 +6435,10 @@ export class ListArticlesResponse implements GrpcMessage {
   set articles(value: Article[] | undefined) {
     this._articles = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -6478,15 +6490,15 @@ export module ListArticlesResponse {
    */
   export interface AsObject {
     articles?: Article.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListArticlesResponse
    */
   export interface AsProtobufJSON {
-    articles?: Article.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    articles: Article.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -6663,8 +6675,8 @@ export module UpdateArticleRequest {
    * Protobuf JSON representation for UpdateArticleRequest
    */
   export interface AsProtobufJSON {
-    article?: Article.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    article: Article.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -6733,7 +6745,7 @@ export class DeleteArticleRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -6744,10 +6756,10 @@ export class DeleteArticleRequest implements GrpcMessage {
     this.name = _value.name;
     DeleteArticleRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -6796,14 +6808,14 @@ export module DeleteArticleRequest {
    * Standard JavaScript object representation for DeleteArticleRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteArticleRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -6872,7 +6884,7 @@ export class GetUserRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -6883,10 +6895,10 @@ export class GetUserRequest implements GrpcMessage {
     this.name = _value.name;
     GetUserRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -6935,14 +6947,14 @@ export module GetUserRequest {
    * Standard JavaScript object representation for GetUserRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for GetUserRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -7086,7 +7098,7 @@ export module GetUserResponse {
    * Protobuf JSON representation for GetUserResponse
    */
   export interface AsProtobufJSON {
-    user?: User.AsProtobufJSON | null;
+    user: User.AsProtobufJSON | null;
   }
 }
 
@@ -7162,8 +7174,8 @@ export class SignInRequest implements GrpcMessage {
     }
   }
 
-  private _identity?: string;
-  private _password?: string;
+  private _identity: string;
+  private _password: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -7175,16 +7187,16 @@ export class SignInRequest implements GrpcMessage {
     this.password = _value.password;
     SignInRequest.refineValues(this);
   }
-  get identity(): string | undefined {
+  get identity(): string {
     return this._identity;
   }
-  set identity(value: string | undefined) {
+  set identity(value: string) {
     this._identity = value;
   }
-  get password(): string | undefined {
+  get password(): string {
     return this._password;
   }
-  set password(value: string | undefined) {
+  set password(value: string) {
     this._password = value;
   }
 
@@ -7235,16 +7247,16 @@ export module SignInRequest {
    * Standard JavaScript object representation for SignInRequest
    */
   export interface AsObject {
-    identity?: string;
-    password?: string;
+    identity: string;
+    password: string;
   }
 
   /**
    * Protobuf JSON representation for SignInRequest
    */
   export interface AsProtobufJSON {
-    identity?: string;
-    password?: string;
+    identity: string;
+    password: string;
   }
 }
 
@@ -7326,7 +7338,7 @@ export class SignInResponse implements GrpcMessage {
   }
 
   private _user?: User;
-  private _sid?: string;
+  private _sid: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -7344,10 +7356,10 @@ export class SignInResponse implements GrpcMessage {
   set user(value: User | undefined) {
     this._user = value;
   }
-  get sid(): string | undefined {
+  get sid(): string {
     return this._sid;
   }
-  set sid(value: string | undefined) {
+  set sid(value: string) {
     this._sid = value;
   }
 
@@ -7399,15 +7411,15 @@ export module SignInResponse {
    */
   export interface AsObject {
     user?: User.AsObject;
-    sid?: string;
+    sid: string;
   }
 
   /**
    * Protobuf JSON representation for SignInResponse
    */
   export interface AsProtobufJSON {
-    user?: User.AsProtobufJSON | null;
-    sid?: string;
+    user: User.AsProtobufJSON | null;
+    sid: string;
   }
 }
 
@@ -7615,10 +7627,10 @@ export class CreateUserRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _user?: User;
-  private _password?: string;
-  private _verificationCode?: string;
+  private _password: string;
+  private _verificationCode: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -7632,10 +7644,10 @@ export class CreateUserRequest implements GrpcMessage {
     this.verificationCode = _value.verificationCode;
     CreateUserRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get user(): User | undefined {
@@ -7644,16 +7656,16 @@ export class CreateUserRequest implements GrpcMessage {
   set user(value: User | undefined) {
     this._user = value;
   }
-  get password(): string | undefined {
+  get password(): string {
     return this._password;
   }
-  set password(value: string | undefined) {
+  set password(value: string) {
     this._password = value;
   }
-  get verificationCode(): string | undefined {
+  get verificationCode(): string {
     return this._verificationCode;
   }
-  set verificationCode(value: string | undefined) {
+  set verificationCode(value: string) {
     this._verificationCode = value;
   }
 
@@ -7708,20 +7720,20 @@ export module CreateUserRequest {
    * Standard JavaScript object representation for CreateUserRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     user?: User.AsObject;
-    password?: string;
-    verificationCode?: string;
+    password: string;
+    verificationCode: string;
   }
 
   /**
    * Protobuf JSON representation for CreateUserRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    user?: User.AsProtobufJSON | null;
-    password?: string;
-    verificationCode?: string;
+    parent: string;
+    user: User.AsProtobufJSON | null;
+    password: string;
+    verificationCode: string;
   }
 }
 
@@ -7803,7 +7815,7 @@ export class CreateUserResponse implements GrpcMessage {
   }
 
   private _user?: User;
-  private _sid?: string;
+  private _sid: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -7821,10 +7833,10 @@ export class CreateUserResponse implements GrpcMessage {
   set user(value: User | undefined) {
     this._user = value;
   }
-  get sid(): string | undefined {
+  get sid(): string {
     return this._sid;
   }
-  set sid(value: string | undefined) {
+  set sid(value: string) {
     this._sid = value;
   }
 
@@ -7876,15 +7888,15 @@ export module CreateUserResponse {
    */
   export interface AsObject {
     user?: User.AsObject;
-    sid?: string;
+    sid: string;
   }
 
   /**
    * Protobuf JSON representation for CreateUserResponse
    */
   export interface AsProtobufJSON {
-    user?: User.AsProtobufJSON | null;
-    sid?: string;
+    user: User.AsProtobufJSON | null;
+    sid: string;
   }
 }
 
@@ -8058,8 +8070,8 @@ export module UpdateUserRequest {
    * Protobuf JSON representation for UpdateUserRequest
    */
   export interface AsProtobufJSON {
-    user?: User.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    user: User.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -8142,9 +8154,9 @@ export class UpdatePasswordRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _password?: string;
-  private _verificationCode?: string;
+  private _name: string;
+  private _password: string;
+  private _verificationCode: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8157,22 +8169,22 @@ export class UpdatePasswordRequest implements GrpcMessage {
     this.verificationCode = _value.verificationCode;
     UpdatePasswordRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get password(): string | undefined {
+  get password(): string {
     return this._password;
   }
-  set password(value: string | undefined) {
+  set password(value: string) {
     this._password = value;
   }
-  get verificationCode(): string | undefined {
+  get verificationCode(): string {
     return this._verificationCode;
   }
-  set verificationCode(value: string | undefined) {
+  set verificationCode(value: string) {
     this._verificationCode = value;
   }
 
@@ -8225,18 +8237,18 @@ export module UpdatePasswordRequest {
    * Standard JavaScript object representation for UpdatePasswordRequest
    */
   export interface AsObject {
-    name?: string;
-    password?: string;
-    verificationCode?: string;
+    name: string;
+    password: string;
+    verificationCode: string;
   }
 
   /**
    * Protobuf JSON representation for UpdatePasswordRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
-    password?: string;
-    verificationCode?: string;
+    name: string;
+    password: string;
+    verificationCode: string;
   }
 }
 
@@ -8333,11 +8345,11 @@ export class ListUsersRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8352,34 +8364,34 @@ export class ListUsersRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListUsersRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -8436,22 +8448,22 @@ export module ListUsersRequest {
    * Standard JavaScript object representation for ListUsersRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListUsersRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -8537,7 +8549,7 @@ export class ListUsersResponse implements GrpcMessage {
   }
 
   private _users?: User[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8555,10 +8567,10 @@ export class ListUsersResponse implements GrpcMessage {
   set users(value: User[] | undefined) {
     this._users = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -8610,15 +8622,15 @@ export module ListUsersResponse {
    */
   export interface AsObject {
     users?: User.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListUsersResponse
    */
   export interface AsProtobufJSON {
-    users?: User.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    users: User.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -8687,7 +8699,7 @@ export class SendVerificationCodeRequest implements GrpcMessage {
     }
   }
 
-  private _email?: string;
+  private _email: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8698,10 +8710,10 @@ export class SendVerificationCodeRequest implements GrpcMessage {
     this.email = _value.email;
     SendVerificationCodeRequest.refineValues(this);
   }
-  get email(): string | undefined {
+  get email(): string {
     return this._email;
   }
-  set email(value: string | undefined) {
+  set email(value: string) {
     this._email = value;
   }
 
@@ -8750,14 +8762,14 @@ export module SendVerificationCodeRequest {
    * Standard JavaScript object representation for SendVerificationCodeRequest
    */
   export interface AsObject {
-    email?: string;
+    email: string;
   }
 
   /**
    * Protobuf JSON representation for SendVerificationCodeRequest
    */
   export interface AsProtobufJSON {
-    email?: string;
+    email: string;
   }
 }
 
@@ -8833,8 +8845,8 @@ export class VerifyEmailRequest implements GrpcMessage {
     }
   }
 
-  private _email?: string;
-  private _verificationCode?: string;
+  private _email: string;
+  private _verificationCode: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -8846,16 +8858,16 @@ export class VerifyEmailRequest implements GrpcMessage {
     this.verificationCode = _value.verificationCode;
     VerifyEmailRequest.refineValues(this);
   }
-  get email(): string | undefined {
+  get email(): string {
     return this._email;
   }
-  set email(value: string | undefined) {
+  set email(value: string) {
     this._email = value;
   }
-  get verificationCode(): string | undefined {
+  get verificationCode(): string {
     return this._verificationCode;
   }
-  set verificationCode(value: string | undefined) {
+  set verificationCode(value: string) {
     this._verificationCode = value;
   }
 
@@ -8906,16 +8918,16 @@ export module VerifyEmailRequest {
    * Standard JavaScript object representation for VerifyEmailRequest
    */
   export interface AsObject {
-    email?: string;
-    verificationCode?: string;
+    email: string;
+    verificationCode: string;
   }
 
   /**
    * Protobuf JSON representation for VerifyEmailRequest
    */
   export interface AsProtobufJSON {
-    email?: string;
-    verificationCode?: string;
+    email: string;
+    verificationCode: string;
   }
 }
 
@@ -8996,7 +9008,7 @@ export class VerifyEmailResponse implements GrpcMessage {
     }
   }
 
-  private _ok?: boolean;
+  private _ok: boolean;
   private _user?: User;
 
   /**
@@ -9009,10 +9021,10 @@ export class VerifyEmailResponse implements GrpcMessage {
     this.user = _value.user ? new User(_value.user) : undefined;
     VerifyEmailResponse.refineValues(this);
   }
-  get ok(): boolean | undefined {
+  get ok(): boolean {
     return this._ok;
   }
-  set ok(value: boolean | undefined) {
+  set ok(value: boolean) {
     this._ok = value;
   }
   get user(): User | undefined {
@@ -9069,7 +9081,7 @@ export module VerifyEmailResponse {
    * Standard JavaScript object representation for VerifyEmailResponse
    */
   export interface AsObject {
-    ok?: boolean;
+    ok: boolean;
     user?: User.AsObject;
   }
 
@@ -9077,8 +9089,8 @@ export module VerifyEmailResponse {
    * Protobuf JSON representation for VerifyEmailResponse
    */
   export interface AsProtobufJSON {
-    ok?: boolean;
-    user?: User.AsProtobufJSON | null;
+    ok: boolean;
+    user: User.AsProtobufJSON | null;
   }
 }
 
@@ -9222,7 +9234,7 @@ export module ValidateNewUserRequest {
    * Protobuf JSON representation for ValidateNewUserRequest
    */
   export interface AsProtobufJSON {
-    user?: User.AsProtobufJSON | null;
+    user: User.AsProtobufJSON | null;
   }
 }
 
@@ -9319,11 +9331,11 @@ export class ListActivitiesRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -9338,34 +9350,34 @@ export class ListActivitiesRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListActivitiesRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -9422,22 +9434,22 @@ export module ListActivitiesRequest {
    * Standard JavaScript object representation for ListActivitiesRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListActivitiesRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -9525,7 +9537,7 @@ export class ListActivitiesResponse implements GrpcMessage {
   }
 
   private _activities?: Activity[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -9543,10 +9555,10 @@ export class ListActivitiesResponse implements GrpcMessage {
   set activities(value: Activity[] | undefined) {
     this._activities = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -9598,15 +9610,15 @@ export module ListActivitiesResponse {
    */
   export interface AsObject {
     activities?: Activity.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListActivitiesResponse
    */
   export interface AsProtobufJSON {
-    activities?: Activity.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    activities: Activity.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -9703,11 +9715,11 @@ export class ListNotificationsRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -9722,34 +9734,34 @@ export class ListNotificationsRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListNotificationsRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -9806,22 +9818,22 @@ export module ListNotificationsRequest {
    * Standard JavaScript object representation for ListNotificationsRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListNotificationsRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -9908,7 +9920,7 @@ export class ListNotificationsResponse implements GrpcMessage {
     }
   }
 
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
   private _notifications?: Notification[];
 
   /**
@@ -9923,10 +9935,10 @@ export class ListNotificationsResponse implements GrpcMessage {
     );
     ListNotificationsResponse.refineValues(this);
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
   get notifications(): Notification[] | undefined {
@@ -9985,7 +9997,7 @@ export module ListNotificationsResponse {
    * Standard JavaScript object representation for ListNotificationsResponse
    */
   export interface AsObject {
-    nextPageToken?: string;
+    nextPageToken: string;
     notifications?: Notification.AsObject[];
   }
 
@@ -9993,8 +10005,8 @@ export module ListNotificationsResponse {
    * Protobuf JSON representation for ListNotificationsResponse
    */
   export interface AsProtobufJSON {
-    nextPageToken?: string;
-    notifications?: Notification.AsProtobufJSON[] | null;
+    nextPageToken: string;
+    notifications: Notification.AsProtobufJSON[] | null;
   }
 }
 
@@ -10177,8 +10189,8 @@ export module UpdateNotificationRequest {
    * Protobuf JSON representation for UpdateNotificationRequest
    */
   export interface AsProtobufJSON {
-    notification?: Notification.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    notification: Notification.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -10259,7 +10271,7 @@ export class CreateTagRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _tag?: Tag;
 
   /**
@@ -10272,10 +10284,10 @@ export class CreateTagRequest implements GrpcMessage {
     this.tag = _value.tag ? new Tag(_value.tag) : undefined;
     CreateTagRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get tag(): Tag | undefined {
@@ -10332,7 +10344,7 @@ export module CreateTagRequest {
    * Standard JavaScript object representation for CreateTagRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     tag?: Tag.AsObject;
   }
 
@@ -10340,8 +10352,8 @@ export module CreateTagRequest {
    * Protobuf JSON representation for CreateTagRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    tag?: Tag.AsProtobufJSON | null;
+    parent: string;
+    tag: Tag.AsProtobufJSON | null;
   }
 }
 
@@ -10438,11 +10450,11 @@ export class ListTagsRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10457,34 +10469,34 @@ export class ListTagsRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListTagsRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -10541,22 +10553,22 @@ export module ListTagsRequest {
    * Standard JavaScript object representation for ListTagsRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListTagsRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -10642,7 +10654,7 @@ export class ListTagsResponse implements GrpcMessage {
   }
 
   private _tags?: Tag[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10660,10 +10672,10 @@ export class ListTagsResponse implements GrpcMessage {
   set tags(value: Tag[] | undefined) {
     this._tags = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -10715,15 +10727,15 @@ export module ListTagsResponse {
    */
   export interface AsObject {
     tags?: Tag.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListTagsResponse
    */
   export interface AsProtobufJSON {
-    tags?: Tag.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    tags: Tag.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -10792,7 +10804,7 @@ export class DeleteTagRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10803,10 +10815,10 @@ export class DeleteTagRequest implements GrpcMessage {
     this.name = _value.name;
     DeleteTagRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -10855,14 +10867,14 @@ export module DeleteTagRequest {
    * Standard JavaScript object representation for DeleteTagRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteTagRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -10931,7 +10943,7 @@ export class GetStatisticRequest implements GrpcMessage {
     }
   }
 
-  private _date?: string;
+  private _date: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -10942,10 +10954,10 @@ export class GetStatisticRequest implements GrpcMessage {
     this.date = _value.date;
     GetStatisticRequest.refineValues(this);
   }
-  get date(): string | undefined {
+  get date(): string {
     return this._date;
   }
-  set date(value: string | undefined) {
+  set date(value: string) {
     this._date = value;
   }
 
@@ -10994,14 +11006,14 @@ export module GetStatisticRequest {
    * Standard JavaScript object representation for GetStatisticRequest
    */
   export interface AsObject {
-    date?: string;
+    date: string;
   }
 
   /**
    * Protobuf JSON representation for GetStatisticRequest
    */
   export interface AsProtobufJSON {
-    date?: string;
+    date: string;
   }
 }
 
@@ -11198,7 +11210,7 @@ export class CreateSubscriptionRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
+  private _parent: string;
   private _subscription?: Subscription;
 
   /**
@@ -11213,10 +11225,10 @@ export class CreateSubscriptionRequest implements GrpcMessage {
       : undefined;
     CreateSubscriptionRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
   get subscription(): Subscription | undefined {
@@ -11275,7 +11287,7 @@ export module CreateSubscriptionRequest {
    * Standard JavaScript object representation for CreateSubscriptionRequest
    */
   export interface AsObject {
-    parent?: string;
+    parent: string;
     subscription?: Subscription.AsObject;
   }
 
@@ -11283,8 +11295,8 @@ export module CreateSubscriptionRequest {
    * Protobuf JSON representation for CreateSubscriptionRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    subscription?: Subscription.AsProtobufJSON | null;
+    parent: string;
+    subscription: Subscription.AsProtobufJSON | null;
   }
 }
 
@@ -11381,11 +11393,11 @@ export class ListSubscriptionsRequest implements GrpcMessage {
     }
   }
 
-  private _parent?: string;
-  private _pageSize?: string;
-  private _pageToken?: string;
-  private _orderBy?: string;
-  private _filter?: string;
+  private _parent: string;
+  private _pageSize: string;
+  private _pageToken: string;
+  private _orderBy: string;
+  private _filter: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11400,34 +11412,34 @@ export class ListSubscriptionsRequest implements GrpcMessage {
     this.filter = _value.filter;
     ListSubscriptionsRequest.refineValues(this);
   }
-  get parent(): string | undefined {
+  get parent(): string {
     return this._parent;
   }
-  set parent(value: string | undefined) {
+  set parent(value: string) {
     this._parent = value;
   }
-  get pageSize(): string | undefined {
+  get pageSize(): string {
     return this._pageSize;
   }
-  set pageSize(value: string | undefined) {
+  set pageSize(value: string) {
     this._pageSize = value;
   }
-  get pageToken(): string | undefined {
+  get pageToken(): string {
     return this._pageToken;
   }
-  set pageToken(value: string | undefined) {
+  set pageToken(value: string) {
     this._pageToken = value;
   }
-  get orderBy(): string | undefined {
+  get orderBy(): string {
     return this._orderBy;
   }
-  set orderBy(value: string | undefined) {
+  set orderBy(value: string) {
     this._orderBy = value;
   }
-  get filter(): string | undefined {
+  get filter(): string {
     return this._filter;
   }
-  set filter(value: string | undefined) {
+  set filter(value: string) {
     this._filter = value;
   }
 
@@ -11484,22 +11496,22 @@ export module ListSubscriptionsRequest {
    * Standard JavaScript object representation for ListSubscriptionsRequest
    */
   export interface AsObject {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 
   /**
    * Protobuf JSON representation for ListSubscriptionsRequest
    */
   export interface AsProtobufJSON {
-    parent?: string;
-    pageSize?: string;
-    pageToken?: string;
-    orderBy?: string;
-    filter?: string;
+    parent: string;
+    pageSize: string;
+    pageToken: string;
+    orderBy: string;
+    filter: string;
   }
 }
 
@@ -11587,7 +11599,7 @@ export class ListSubscriptionsResponse implements GrpcMessage {
   }
 
   private _subscriptions?: Subscription[];
-  private _nextPageToken?: string;
+  private _nextPageToken: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11607,10 +11619,10 @@ export class ListSubscriptionsResponse implements GrpcMessage {
   set subscriptions(value: Subscription[] | undefined) {
     this._subscriptions = value;
   }
-  get nextPageToken(): string | undefined {
+  get nextPageToken(): string {
     return this._nextPageToken;
   }
-  set nextPageToken(value: string | undefined) {
+  set nextPageToken(value: string) {
     this._nextPageToken = value;
   }
 
@@ -11664,15 +11676,15 @@ export module ListSubscriptionsResponse {
    */
   export interface AsObject {
     subscriptions?: Subscription.AsObject[];
-    nextPageToken?: string;
+    nextPageToken: string;
   }
 
   /**
    * Protobuf JSON representation for ListSubscriptionsResponse
    */
   export interface AsProtobufJSON {
-    subscriptions?: Subscription.AsProtobufJSON[] | null;
-    nextPageToken?: string;
+    subscriptions: Subscription.AsProtobufJSON[] | null;
+    nextPageToken: string;
   }
 }
 
@@ -11855,8 +11867,8 @@ export module UpdateSubscriptionRequest {
    * Protobuf JSON representation for UpdateSubscriptionRequest
    */
   export interface AsProtobufJSON {
-    subscription?: Subscription.AsProtobufJSON | null;
-    updateMask?: FieldMask.AsProtobufJSON | null;
+    subscription: Subscription.AsProtobufJSON | null;
+    updateMask: FieldMask.AsProtobufJSON | null;
   }
 }
 
@@ -11925,7 +11937,7 @@ export class DeleteSubscriptionRequest implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -11936,10 +11948,10 @@ export class DeleteSubscriptionRequest implements GrpcMessage {
     this.name = _value.name;
     DeleteSubscriptionRequest.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
 
@@ -11988,14 +12000,14 @@ export module DeleteSubscriptionRequest {
    * Standard JavaScript object representation for DeleteSubscriptionRequest
    */
   export interface AsObject {
-    name?: string;
+    name: string;
   }
 
   /**
    * Protobuf JSON representation for DeleteSubscriptionRequest
    */
   export interface AsProtobufJSON {
-    name?: string;
+    name: string;
   }
 }
 
@@ -12166,8 +12178,8 @@ export class Status implements GrpcMessage {
     }
   }
 
-  private _code?: string;
-  private _message?: string;
+  private _code: string;
+  private _message: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -12179,16 +12191,16 @@ export class Status implements GrpcMessage {
     this.message = _value.message;
     Status.refineValues(this);
   }
-  get code(): string | undefined {
+  get code(): string {
     return this._code;
   }
-  set code(value: string | undefined) {
+  set code(value: string) {
     this._code = value;
   }
-  get message(): string | undefined {
+  get message(): string {
     return this._message;
   }
-  set message(value: string | undefined) {
+  set message(value: string) {
     this._message = value;
   }
 
@@ -12239,16 +12251,16 @@ export module Status {
    * Standard JavaScript object representation for Status
    */
   export interface AsObject {
-    code?: string;
-    message?: string;
+    code: string;
+    message: string;
   }
 
   /**
    * Protobuf JSON representation for Status
    */
   export interface AsProtobufJSON {
-    code?: string;
-    message?: string;
+    code: string;
+    message: string;
   }
 }
 
@@ -12399,18 +12411,18 @@ export class Package implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _packageName?: string;
-  private _description?: string;
-  private _createTime?: string;
-  private _updateTime?: string;
-  private _state?: ResourceState;
-  private _authorId?: string;
-  private _imageUrls?: string[];
+  private _name: string;
+  private _packageName: string;
+  private _description: string;
+  private _createTime: string;
+  private _updateTime: string;
+  private _state: ResourceState;
+  private _authorId: string;
+  private _imageUrls: string[];
   private _tags?: Tag[];
-  private _downloadCount?: string;
-  private _likeCount?: string;
-  private _dislikeCount?: string;
+  private _downloadCount: string;
+  private _likeCount: string;
+  private _dislikeCount: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -12432,52 +12444,52 @@ export class Package implements GrpcMessage {
     this.dislikeCount = _value.dislikeCount;
     Package.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get packageName(): string | undefined {
+  get packageName(): string {
     return this._packageName;
   }
-  set packageName(value: string | undefined) {
+  set packageName(value: string) {
     this._packageName = value;
   }
-  get description(): string | undefined {
+  get description(): string {
     return this._description;
   }
-  set description(value: string | undefined) {
+  set description(value: string) {
     this._description = value;
   }
-  get createTime(): string | undefined {
+  get createTime(): string {
     return this._createTime;
   }
-  set createTime(value: string | undefined) {
+  set createTime(value: string) {
     this._createTime = value;
   }
-  get updateTime(): string | undefined {
+  get updateTime(): string {
     return this._updateTime;
   }
-  set updateTime(value: string | undefined) {
+  set updateTime(value: string) {
     this._updateTime = value;
   }
-  get state(): ResourceState | undefined {
+  get state(): ResourceState {
     return this._state;
   }
-  set state(value: ResourceState | undefined) {
+  set state(value: ResourceState) {
     this._state = value;
   }
-  get authorId(): string | undefined {
+  get authorId(): string {
     return this._authorId;
   }
-  set authorId(value: string | undefined) {
+  set authorId(value: string) {
     this._authorId = value;
   }
-  get imageUrls(): string[] | undefined {
+  get imageUrls(): string[] {
     return this._imageUrls;
   }
-  set imageUrls(value: string[] | undefined) {
+  set imageUrls(value: string[]) {
     this._imageUrls = value;
   }
   get tags(): Tag[] | undefined {
@@ -12486,22 +12498,22 @@ export class Package implements GrpcMessage {
   set tags(value: Tag[] | undefined) {
     this._tags = value;
   }
-  get downloadCount(): string | undefined {
+  get downloadCount(): string {
     return this._downloadCount;
   }
-  set downloadCount(value: string | undefined) {
+  set downloadCount(value: string) {
     this._downloadCount = value;
   }
-  get likeCount(): string | undefined {
+  get likeCount(): string {
     return this._likeCount;
   }
-  set likeCount(value: string | undefined) {
+  set likeCount(value: string) {
     this._likeCount = value;
   }
-  get dislikeCount(): string | undefined {
+  get dislikeCount(): string {
     return this._dislikeCount;
   }
-  set dislikeCount(value: string | undefined) {
+  set dislikeCount(value: string) {
     this._dislikeCount = value;
   }
 
@@ -12557,7 +12569,10 @@ export class Package implements GrpcMessage {
       description: this.description,
       createTime: this.createTime,
       updateTime: this.updateTime,
-      state: ResourceState[this.state ?? 0],
+      state:
+        ResourceState[
+          this.state === null || this.state === undefined ? 0 : this.state
+        ],
       authorId: this.authorId,
       imageUrls: (this.imageUrls || []).slice(),
       tags: (this.tags || []).map(m => m.toProtobufJSON(options)),
@@ -12572,36 +12587,36 @@ export module Package {
    * Standard JavaScript object representation for Package
    */
   export interface AsObject {
-    name?: string;
-    packageName?: string;
-    description?: string;
-    createTime?: string;
-    updateTime?: string;
-    state?: ResourceState;
-    authorId?: string;
-    imageUrls?: string[];
+    name: string;
+    packageName: string;
+    description: string;
+    createTime: string;
+    updateTime: string;
+    state: ResourceState;
+    authorId: string;
+    imageUrls: string[];
     tags?: Tag.AsObject[];
-    downloadCount?: string;
-    likeCount?: string;
-    dislikeCount?: string;
+    downloadCount: string;
+    likeCount: string;
+    dislikeCount: string;
   }
 
   /**
    * Protobuf JSON representation for Package
    */
   export interface AsProtobufJSON {
-    name?: string;
-    packageName?: string;
-    description?: string;
-    createTime?: string;
-    updateTime?: string;
-    state?: string;
-    authorId?: string;
-    imageUrls?: string[];
-    tags?: Tag.AsProtobufJSON[] | null;
-    downloadCount?: string;
-    likeCount?: string;
-    dislikeCount?: string;
+    name: string;
+    packageName: string;
+    description: string;
+    createTime: string;
+    updateTime: string;
+    state: string;
+    authorId: string;
+    imageUrls: string[];
+    tags: Tag.AsProtobufJSON[] | null;
+    downloadCount: string;
+    likeCount: string;
+    dislikeCount: string;
   }
 }
 
@@ -12626,8 +12641,6 @@ export class Binary implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Binary) {
-    _instance.binaryId = _instance.binaryId || '0';
-    _instance.packageId = _instance.packageId || '0';
     _instance.downloadCount = _instance.downloadCount || '0';
     _instance.version = _instance.version || undefined;
     _instance.description = _instance.description || '';
@@ -12648,12 +12661,6 @@ export class Binary implements GrpcMessage {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
-        case 1:
-          _instance.binaryId = _reader.readInt64String();
-          break;
-        case 2:
-          _instance.packageId = _reader.readInt64String();
-          break;
         case 4:
           _instance.downloadCount = _reader.readInt64String();
           break;
@@ -12703,12 +12710,6 @@ export class Binary implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: Binary, _writer: BinaryWriter) {
-    if (_instance.binaryId) {
-      _writer.writeInt64String(1, _instance.binaryId);
-    }
-    if (_instance.packageId) {
-      _writer.writeInt64String(2, _instance.packageId);
-    }
     if (_instance.downloadCount) {
       _writer.writeInt64String(4, _instance.downloadCount);
     }
@@ -12749,18 +12750,16 @@ export class Binary implements GrpcMessage {
     }
   }
 
-  private _binaryId?: string;
-  private _packageId?: string;
-  private _downloadCount?: string;
+  private _downloadCount: string;
   private _version?: Version;
-  private _description?: string;
-  private _createTime?: string;
-  private _tag?: string;
-  private _size?: string;
-  private _name?: string;
-  private _updateTime?: string;
+  private _description: string;
+  private _createTime: string;
+  private _tag: string;
+  private _size: string;
+  private _name: string;
+  private _updateTime: string;
   private _file?: File;
-  private _downloadMethod?: string;
+  private _downloadMethod: string;
 
   private _resource: Binary.ResourceCase = Binary.ResourceCase.none;
 
@@ -12770,8 +12769,6 @@ export class Binary implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<Binary.AsObject>) {
     _value = _value || {};
-    this.binaryId = _value.binaryId;
-    this.packageId = _value.packageId;
     this.downloadCount = _value.downloadCount;
     this.version = _value.version ? new Version(_value.version) : undefined;
     this.description = _value.description;
@@ -12784,22 +12781,10 @@ export class Binary implements GrpcMessage {
     this.downloadMethod = _value.downloadMethod;
     Binary.refineValues(this);
   }
-  get binaryId(): string | undefined {
-    return this._binaryId;
-  }
-  set binaryId(value: string | undefined) {
-    this._binaryId = value;
-  }
-  get packageId(): string | undefined {
-    return this._packageId;
-  }
-  set packageId(value: string | undefined) {
-    this._packageId = value;
-  }
-  get downloadCount(): string | undefined {
+  get downloadCount(): string {
     return this._downloadCount;
   }
-  set downloadCount(value: string | undefined) {
+  set downloadCount(value: string) {
     this._downloadCount = value;
   }
   get version(): Version | undefined {
@@ -12808,40 +12793,40 @@ export class Binary implements GrpcMessage {
   set version(value: Version | undefined) {
     this._version = value;
   }
-  get description(): string | undefined {
+  get description(): string {
     return this._description;
   }
-  set description(value: string | undefined) {
+  set description(value: string) {
     this._description = value;
   }
-  get createTime(): string | undefined {
+  get createTime(): string {
     return this._createTime;
   }
-  set createTime(value: string | undefined) {
+  set createTime(value: string) {
     this._createTime = value;
   }
-  get tag(): string | undefined {
+  get tag(): string {
     return this._tag;
   }
-  set tag(value: string | undefined) {
+  set tag(value: string) {
     this._tag = value;
   }
-  get size(): string | undefined {
+  get size(): string {
     return this._size;
   }
-  set size(value: string | undefined) {
+  set size(value: string) {
     this._size = value;
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get updateTime(): string | undefined {
+  get updateTime(): string {
     return this._updateTime;
   }
-  set updateTime(value: string | undefined) {
+  set updateTime(value: string) {
     this._updateTime = value;
   }
   get file(): File | undefined {
@@ -12854,10 +12839,10 @@ export class Binary implements GrpcMessage {
     }
     this._file = value;
   }
-  get downloadMethod(): string | undefined {
+  get downloadMethod(): string {
     return this._downloadMethod;
   }
-  set downloadMethod(value: string | undefined) {
+  set downloadMethod(value: string) {
     if (value !== undefined && value !== null) {
       this._file = undefined;
       this._resource = Binary.ResourceCase.downloadMethod;
@@ -12883,8 +12868,6 @@ export class Binary implements GrpcMessage {
    */
   toObject(): Binary.AsObject {
     return {
-      binaryId: this.binaryId,
-      packageId: this.packageId,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toObject() : undefined,
       description: this.description,
@@ -12915,8 +12898,6 @@ export class Binary implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Binary.AsProtobufJSON {
     return {
-      binaryId: this.binaryId,
-      packageId: this.packageId,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toProtobufJSON(options) : null,
       description: this.description,
@@ -12926,7 +12907,10 @@ export class Binary implements GrpcMessage {
       name: this.name,
       updateTime: this.updateTime,
       file: this.file ? this.file.toProtobufJSON(options) : null,
-      downloadMethod: this.downloadMethod ?? null
+      downloadMethod:
+        this.downloadMethod === null || this.downloadMethod === undefined
+          ? null
+          : this.downloadMethod
     };
   }
 }
@@ -12935,36 +12919,32 @@ export module Binary {
    * Standard JavaScript object representation for Binary
    */
   export interface AsObject {
-    binaryId?: string;
-    packageId?: string;
-    downloadCount?: string;
+    downloadCount: string;
     version?: Version.AsObject;
-    description?: string;
-    createTime?: string;
-    tag?: string;
-    size?: string;
-    name?: string;
-    updateTime?: string;
+    description: string;
+    createTime: string;
+    tag: string;
+    size: string;
+    name: string;
+    updateTime: string;
     file?: File.AsObject;
-    downloadMethod?: string;
+    downloadMethod: string;
   }
 
   /**
    * Protobuf JSON representation for Binary
    */
   export interface AsProtobufJSON {
-    binaryId?: string;
-    packageId?: string;
-    downloadCount?: string;
-    version?: Version.AsProtobufJSON | null;
-    description?: string;
-    createTime?: string;
-    tag?: string;
-    size?: string;
-    name?: string;
-    updateTime?: string;
-    file?: File.AsProtobufJSON | null;
-    downloadMethod?: string | null;
+    downloadCount: string;
+    version: Version.AsProtobufJSON | null;
+    description: string;
+    createTime: string;
+    tag: string;
+    size: string;
+    name: string;
+    updateTime: string;
+    file: File.AsProtobufJSON | null;
+    downloadMethod: string | null;
   }
   export enum ResourceCase {
     none = 0,
@@ -13042,17 +13022,17 @@ export class User implements GrpcMessage {
           _instance.subscriberCount = _reader.readInt64String();
           break;
         case 9:
-          _instance.createTime = new googleProtobuf000.Timestamp();
+          _instance.createTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 10:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _instance.updateTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 11:
@@ -13104,14 +13084,14 @@ export class User implements GrpcMessage {
       _writer.writeMessage(
         9,
         _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
         10,
         _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.settings) {
@@ -13123,16 +13103,16 @@ export class User implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _username?: string;
-  private _email?: string;
-  private _type?: User.UserType;
-  private _imageUrl?: string;
-  private _website?: string;
-  private _userId?: string;
-  private _subscriberCount?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
+  private _name: string;
+  private _username: string;
+  private _email: string;
+  private _type: User.UserType;
+  private _imageUrl: string;
+  private _website: string;
+  private _userId: string;
+  private _subscriberCount: string;
+  private _createTime?: googleProtobuf002.Timestamp;
+  private _updateTime?: googleProtobuf002.Timestamp;
   private _settings?: UserSettings;
 
   /**
@@ -13150,74 +13130,74 @@ export class User implements GrpcMessage {
     this.userId = _value.userId;
     this.subscriberCount = _value.subscriberCount;
     this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
+      ? new googleProtobuf002.Timestamp(_value.createTime)
       : undefined;
     this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      ? new googleProtobuf002.Timestamp(_value.updateTime)
       : undefined;
     this.settings = _value.settings
       ? new UserSettings(_value.settings)
       : undefined;
     User.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get username(): string | undefined {
+  get username(): string {
     return this._username;
   }
-  set username(value: string | undefined) {
+  set username(value: string) {
     this._username = value;
   }
-  get email(): string | undefined {
+  get email(): string {
     return this._email;
   }
-  set email(value: string | undefined) {
+  set email(value: string) {
     this._email = value;
   }
-  get type(): User.UserType | undefined {
+  get type(): User.UserType {
     return this._type;
   }
-  set type(value: User.UserType | undefined) {
+  set type(value: User.UserType) {
     this._type = value;
   }
-  get imageUrl(): string | undefined {
+  get imageUrl(): string {
     return this._imageUrl;
   }
-  set imageUrl(value: string | undefined) {
+  set imageUrl(value: string) {
     this._imageUrl = value;
   }
-  get website(): string | undefined {
+  get website(): string {
     return this._website;
   }
-  set website(value: string | undefined) {
+  set website(value: string) {
     this._website = value;
   }
-  get userId(): string | undefined {
+  get userId(): string {
     return this._userId;
   }
-  set userId(value: string | undefined) {
+  set userId(value: string) {
     this._userId = value;
   }
-  get subscriberCount(): string | undefined {
+  get subscriberCount(): string {
     return this._subscriberCount;
   }
-  set subscriberCount(value: string | undefined) {
+  set subscriberCount(value: string) {
     this._subscriberCount = value;
   }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
+  get createTime(): googleProtobuf002.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+  set createTime(value: googleProtobuf002.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
+  get updateTime(): googleProtobuf002.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+  set updateTime(value: googleProtobuf002.Timestamp | undefined) {
     this._updateTime = value;
   }
   get settings(): UserSettings | undefined {
@@ -13276,7 +13256,10 @@ export class User implements GrpcMessage {
       name: this.name,
       username: this.username,
       email: this.email,
-      type: User.UserType[this.type ?? 0],
+      type:
+        User.UserType[
+          this.type === null || this.type === undefined ? 0 : this.type
+        ],
       imageUrl: this.imageUrl,
       website: this.website,
       userId: this.userId,
@@ -13296,16 +13279,16 @@ export module User {
    * Standard JavaScript object representation for User
    */
   export interface AsObject {
-    name?: string;
-    username?: string;
-    email?: string;
-    type?: User.UserType;
-    imageUrl?: string;
-    website?: string;
-    userId?: string;
-    subscriberCount?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
+    name: string;
+    username: string;
+    email: string;
+    type: User.UserType;
+    imageUrl: string;
+    website: string;
+    userId: string;
+    subscriberCount: string;
+    createTime?: googleProtobuf002.Timestamp.AsObject;
+    updateTime?: googleProtobuf002.Timestamp.AsObject;
     settings?: UserSettings.AsObject;
   }
 
@@ -13313,17 +13296,17 @@ export module User {
    * Protobuf JSON representation for User
    */
   export interface AsProtobufJSON {
-    name?: string;
-    username?: string;
-    email?: string;
-    type?: string;
-    imageUrl?: string;
-    website?: string;
-    userId?: string;
-    subscriberCount?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    settings?: UserSettings.AsProtobufJSON | null;
+    name: string;
+    username: string;
+    email: string;
+    type: string;
+    imageUrl: string;
+    website: string;
+    userId: string;
+    subscriberCount: string;
+    createTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    settings: UserSettings.AsProtobufJSON | null;
   }
   export enum UserType {
     USER_TYPE_UNSPECIFIED = 0,
@@ -13406,9 +13389,9 @@ export class Version implements GrpcMessage {
     }
   }
 
-  private _major?: string;
-  private _minor?: string;
-  private _patch?: string;
+  private _major: string;
+  private _minor: string;
+  private _patch: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -13421,22 +13404,22 @@ export class Version implements GrpcMessage {
     this.patch = _value.patch;
     Version.refineValues(this);
   }
-  get major(): string | undefined {
+  get major(): string {
     return this._major;
   }
-  set major(value: string | undefined) {
+  set major(value: string) {
     this._major = value;
   }
-  get minor(): string | undefined {
+  get minor(): string {
     return this._minor;
   }
-  set minor(value: string | undefined) {
+  set minor(value: string) {
     this._minor = value;
   }
-  get patch(): string | undefined {
+  get patch(): string {
     return this._patch;
   }
-  set patch(value: string | undefined) {
+  set patch(value: string) {
     this._patch = value;
   }
 
@@ -13489,18 +13472,18 @@ export module Version {
    * Standard JavaScript object representation for Version
    */
   export interface AsObject {
-    major?: string;
-    minor?: string;
-    patch?: string;
+    major: string;
+    minor: string;
+    patch: string;
   }
 
   /**
    * Protobuf JSON representation for Version
    */
   export interface AsProtobufJSON {
-    major?: string;
-    minor?: string;
-    patch?: string;
+    major: string;
+    minor: string;
+    patch: string;
   }
 }
 
@@ -13570,8 +13553,8 @@ export class Statistic implements GrpcMessage {
     }
   }
 
-  private _visitCount?: string;
-  private _downloadCount?: string;
+  private _visitCount: string;
+  private _downloadCount: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -13583,16 +13566,16 @@ export class Statistic implements GrpcMessage {
     this.downloadCount = _value.downloadCount;
     Statistic.refineValues(this);
   }
-  get visitCount(): string | undefined {
+  get visitCount(): string {
     return this._visitCount;
   }
-  set visitCount(value: string | undefined) {
+  set visitCount(value: string) {
     this._visitCount = value;
   }
-  get downloadCount(): string | undefined {
+  get downloadCount(): string {
     return this._downloadCount;
   }
-  set downloadCount(value: string | undefined) {
+  set downloadCount(value: string) {
     this._downloadCount = value;
   }
 
@@ -13643,16 +13626,16 @@ export module Statistic {
    * Standard JavaScript object representation for Statistic
    */
   export interface AsObject {
-    visitCount?: string;
-    downloadCount?: string;
+    visitCount: string;
+    downloadCount: string;
   }
 
   /**
    * Protobuf JSON representation for Statistic
    */
   export interface AsProtobufJSON {
-    visitCount?: string;
-    downloadCount?: string;
+    visitCount: string;
+    downloadCount: string;
   }
 }
 
@@ -13712,7 +13695,7 @@ export class Url implements GrpcMessage {
     }
   }
 
-  private _url?: string;
+  private _url: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -13723,10 +13706,10 @@ export class Url implements GrpcMessage {
     this.url = _value.url;
     Url.refineValues(this);
   }
-  get url(): string | undefined {
+  get url(): string {
     return this._url;
   }
-  set url(value: string | undefined) {
+  set url(value: string) {
     this._url = value;
   }
 
@@ -13775,14 +13758,14 @@ export module Url {
    * Standard JavaScript object representation for Url
    */
   export interface AsObject {
-    url?: string;
+    url: string;
   }
 
   /**
    * Protobuf JSON representation for Url
    */
   export interface AsProtobufJSON {
-    url?: string;
+    url: string;
   }
 }
 
@@ -13847,17 +13830,17 @@ export class Thread implements GrpcMessage {
           _instance.authorId = _reader.readInt64String();
           break;
         case 5:
-          _instance.createTime = new googleProtobuf000.Timestamp();
+          _instance.createTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 6:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _instance.updateTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 7:
@@ -13870,10 +13853,10 @@ export class Thread implements GrpcMessage {
           _instance.pinned = _reader.readBool();
           break;
         case 10:
-          _instance.latestCommentedTime = new googleProtobuf000.Timestamp();
+          _instance.latestCommentedTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.latestCommentedTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 11:
@@ -13921,14 +13904,14 @@ export class Thread implements GrpcMessage {
       _writer.writeMessage(
         5,
         _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
         6,
         _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.state) {
@@ -13944,7 +13927,7 @@ export class Thread implements GrpcMessage {
       _writer.writeMessage(
         10,
         _instance.latestCommentedTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.latestCommenterId) {
@@ -13964,21 +13947,21 @@ export class Thread implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _subject?: string;
-  private _content?: string;
-  private _authorId?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
-  private _state?: ResourceState;
-  private _tags?: string[];
-  private _pinned?: boolean;
-  private _latestCommentedTime?: googleProtobuf000.Timestamp;
-  private _latestCommenterId?: string;
-  private _viewCount?: string;
-  private _likeCount?: string;
-  private _commentCount?: string;
-  private _replyCount?: string;
+  private _name: string;
+  private _subject: string;
+  private _content: string;
+  private _authorId: string;
+  private _createTime?: googleProtobuf002.Timestamp;
+  private _updateTime?: googleProtobuf002.Timestamp;
+  private _state: ResourceState;
+  private _tags: string[];
+  private _pinned: boolean;
+  private _latestCommentedTime?: googleProtobuf002.Timestamp;
+  private _latestCommenterId: string;
+  private _viewCount: string;
+  private _likeCount: string;
+  private _commentCount: string;
+  private _replyCount: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -13991,16 +13974,16 @@ export class Thread implements GrpcMessage {
     this.content = _value.content;
     this.authorId = _value.authorId;
     this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
+      ? new googleProtobuf002.Timestamp(_value.createTime)
       : undefined;
     this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      ? new googleProtobuf002.Timestamp(_value.updateTime)
       : undefined;
     this.state = _value.state;
     this.tags = (_value.tags || []).slice();
     this.pinned = _value.pinned;
     this.latestCommentedTime = _value.latestCommentedTime
-      ? new googleProtobuf000.Timestamp(_value.latestCommentedTime)
+      ? new googleProtobuf002.Timestamp(_value.latestCommentedTime)
       : undefined;
     this.latestCommenterId = _value.latestCommenterId;
     this.viewCount = _value.viewCount;
@@ -14009,94 +13992,94 @@ export class Thread implements GrpcMessage {
     this.replyCount = _value.replyCount;
     Thread.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get subject(): string | undefined {
+  get subject(): string {
     return this._subject;
   }
-  set subject(value: string | undefined) {
+  set subject(value: string) {
     this._subject = value;
   }
-  get content(): string | undefined {
+  get content(): string {
     return this._content;
   }
-  set content(value: string | undefined) {
+  set content(value: string) {
     this._content = value;
   }
-  get authorId(): string | undefined {
+  get authorId(): string {
     return this._authorId;
   }
-  set authorId(value: string | undefined) {
+  set authorId(value: string) {
     this._authorId = value;
   }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
+  get createTime(): googleProtobuf002.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+  set createTime(value: googleProtobuf002.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
+  get updateTime(): googleProtobuf002.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+  set updateTime(value: googleProtobuf002.Timestamp | undefined) {
     this._updateTime = value;
   }
-  get state(): ResourceState | undefined {
+  get state(): ResourceState {
     return this._state;
   }
-  set state(value: ResourceState | undefined) {
+  set state(value: ResourceState) {
     this._state = value;
   }
-  get tags(): string[] | undefined {
+  get tags(): string[] {
     return this._tags;
   }
-  set tags(value: string[] | undefined) {
+  set tags(value: string[]) {
     this._tags = value;
   }
-  get pinned(): boolean | undefined {
+  get pinned(): boolean {
     return this._pinned;
   }
-  set pinned(value: boolean | undefined) {
+  set pinned(value: boolean) {
     this._pinned = value;
   }
-  get latestCommentedTime(): googleProtobuf000.Timestamp | undefined {
+  get latestCommentedTime(): googleProtobuf002.Timestamp | undefined {
     return this._latestCommentedTime;
   }
-  set latestCommentedTime(value: googleProtobuf000.Timestamp | undefined) {
+  set latestCommentedTime(value: googleProtobuf002.Timestamp | undefined) {
     this._latestCommentedTime = value;
   }
-  get latestCommenterId(): string | undefined {
+  get latestCommenterId(): string {
     return this._latestCommenterId;
   }
-  set latestCommenterId(value: string | undefined) {
+  set latestCommenterId(value: string) {
     this._latestCommenterId = value;
   }
-  get viewCount(): string | undefined {
+  get viewCount(): string {
     return this._viewCount;
   }
-  set viewCount(value: string | undefined) {
+  set viewCount(value: string) {
     this._viewCount = value;
   }
-  get likeCount(): string | undefined {
+  get likeCount(): string {
     return this._likeCount;
   }
-  set likeCount(value: string | undefined) {
+  set likeCount(value: string) {
     this._likeCount = value;
   }
-  get commentCount(): string | undefined {
+  get commentCount(): string {
     return this._commentCount;
   }
-  set commentCount(value: string | undefined) {
+  set commentCount(value: string) {
     this._commentCount = value;
   }
-  get replyCount(): string | undefined {
+  get replyCount(): string {
     return this._replyCount;
   }
-  set replyCount(value: string | undefined) {
+  set replyCount(value: string) {
     this._replyCount = value;
   }
 
@@ -14162,7 +14145,10 @@ export class Thread implements GrpcMessage {
       updateTime: this.updateTime
         ? this.updateTime.toProtobufJSON(options)
         : null,
-      state: ResourceState[this.state ?? 0],
+      state:
+        ResourceState[
+          this.state === null || this.state === undefined ? 0 : this.state
+        ],
       tags: (this.tags || []).slice(),
       pinned: this.pinned,
       latestCommentedTime: this.latestCommentedTime
@@ -14181,42 +14167,42 @@ export module Thread {
    * Standard JavaScript object representation for Thread
    */
   export interface AsObject {
-    name?: string;
-    subject?: string;
-    content?: string;
-    authorId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
-    state?: ResourceState;
-    tags?: string[];
-    pinned?: boolean;
-    latestCommentedTime?: googleProtobuf000.Timestamp.AsObject;
-    latestCommenterId?: string;
-    viewCount?: string;
-    likeCount?: string;
-    commentCount?: string;
-    replyCount?: string;
+    name: string;
+    subject: string;
+    content: string;
+    authorId: string;
+    createTime?: googleProtobuf002.Timestamp.AsObject;
+    updateTime?: googleProtobuf002.Timestamp.AsObject;
+    state: ResourceState;
+    tags: string[];
+    pinned: boolean;
+    latestCommentedTime?: googleProtobuf002.Timestamp.AsObject;
+    latestCommenterId: string;
+    viewCount: string;
+    likeCount: string;
+    commentCount: string;
+    replyCount: string;
   }
 
   /**
    * Protobuf JSON representation for Thread
    */
   export interface AsProtobufJSON {
-    name?: string;
-    subject?: string;
-    content?: string;
-    authorId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    state?: string;
-    tags?: string[];
-    pinned?: boolean;
-    latestCommentedTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    latestCommenterId?: string;
-    viewCount?: string;
-    likeCount?: string;
-    commentCount?: string;
-    replyCount?: string;
+    name: string;
+    subject: string;
+    content: string;
+    authorId: string;
+    createTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    state: string;
+    tags: string[];
+    pinned: boolean;
+    latestCommentedTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    latestCommenterId: string;
+    viewCount: string;
+    likeCount: string;
+    commentCount: string;
+    replyCount: string;
   }
 }
 
@@ -14268,17 +14254,17 @@ export class Comment implements GrpcMessage {
           _instance.name = _reader.readString();
           break;
         case 3:
-          _instance.createTime = new googleProtobuf000.Timestamp();
+          _instance.createTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 4:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _instance.updateTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 5:
@@ -14324,14 +14310,14 @@ export class Comment implements GrpcMessage {
       _writer.writeMessage(
         3,
         _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
         4,
         _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.text) {
@@ -14355,14 +14341,14 @@ export class Comment implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
-  private _text?: string;
-  private _authorId?: string;
-  private _upvoteCount?: string;
+  private _name: string;
+  private _createTime?: googleProtobuf002.Timestamp;
+  private _updateTime?: googleProtobuf002.Timestamp;
+  private _text: string;
+  private _authorId: string;
+  private _upvoteCount: string;
   private _replies?: Reply[];
-  private _index?: string;
+  private _index: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -14372,10 +14358,10 @@ export class Comment implements GrpcMessage {
     _value = _value || {};
     this.name = _value.name;
     this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
+      ? new googleProtobuf002.Timestamp(_value.createTime)
       : undefined;
     this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      ? new googleProtobuf002.Timestamp(_value.updateTime)
       : undefined;
     this.text = _value.text;
     this.authorId = _value.authorId;
@@ -14384,40 +14370,40 @@ export class Comment implements GrpcMessage {
     this.index = _value.index;
     Comment.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
+  get createTime(): googleProtobuf002.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+  set createTime(value: googleProtobuf002.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
+  get updateTime(): googleProtobuf002.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+  set updateTime(value: googleProtobuf002.Timestamp | undefined) {
     this._updateTime = value;
   }
-  get text(): string | undefined {
+  get text(): string {
     return this._text;
   }
-  set text(value: string | undefined) {
+  set text(value: string) {
     this._text = value;
   }
-  get authorId(): string | undefined {
+  get authorId(): string {
     return this._authorId;
   }
-  set authorId(value: string | undefined) {
+  set authorId(value: string) {
     this._authorId = value;
   }
-  get upvoteCount(): string | undefined {
+  get upvoteCount(): string {
     return this._upvoteCount;
   }
-  set upvoteCount(value: string | undefined) {
+  set upvoteCount(value: string) {
     this._upvoteCount = value;
   }
   get replies(): Reply[] | undefined {
@@ -14426,10 +14412,10 @@ export class Comment implements GrpcMessage {
   set replies(value: Reply[] | undefined) {
     this._replies = value;
   }
-  get index(): string | undefined {
+  get index(): string {
     return this._index;
   }
-  set index(value: string | undefined) {
+  set index(value: string) {
     this._index = value;
   }
 
@@ -14496,28 +14482,28 @@ export module Comment {
    * Standard JavaScript object representation for Comment
    */
   export interface AsObject {
-    name?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
-    text?: string;
-    authorId?: string;
-    upvoteCount?: string;
+    name: string;
+    createTime?: googleProtobuf002.Timestamp.AsObject;
+    updateTime?: googleProtobuf002.Timestamp.AsObject;
+    text: string;
+    authorId: string;
+    upvoteCount: string;
     replies?: Reply.AsObject[];
-    index?: string;
+    index: string;
   }
 
   /**
    * Protobuf JSON representation for Comment
    */
   export interface AsProtobufJSON {
-    name?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    text?: string;
-    authorId?: string;
-    upvoteCount?: string;
-    replies?: Reply.AsProtobufJSON[] | null;
-    index?: string;
+    name: string;
+    createTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    text: string;
+    authorId: string;
+    upvoteCount: string;
+    replies: Reply.AsProtobufJSON[] | null;
+    index: string;
   }
 }
 
@@ -14564,17 +14550,17 @@ export class Reply implements GrpcMessage {
           _instance.name = _reader.readString();
           break;
         case 2:
-          _instance.createTime = new googleProtobuf000.Timestamp();
+          _instance.createTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 3:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _instance.updateTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 4:
@@ -14607,14 +14593,14 @@ export class Reply implements GrpcMessage {
       _writer.writeMessage(
         2,
         _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
         3,
         _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.text) {
@@ -14628,12 +14614,12 @@ export class Reply implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
-  private _text?: string;
-  private _authorId?: string;
-  private _upvoteCount?: string;
+  private _name: string;
+  private _createTime?: googleProtobuf002.Timestamp;
+  private _updateTime?: googleProtobuf002.Timestamp;
+  private _text: string;
+  private _authorId: string;
+  private _upvoteCount: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -14643,50 +14629,50 @@ export class Reply implements GrpcMessage {
     _value = _value || {};
     this.name = _value.name;
     this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
+      ? new googleProtobuf002.Timestamp(_value.createTime)
       : undefined;
     this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      ? new googleProtobuf002.Timestamp(_value.updateTime)
       : undefined;
     this.text = _value.text;
     this.authorId = _value.authorId;
     this.upvoteCount = _value.upvoteCount;
     Reply.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
+  get createTime(): googleProtobuf002.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+  set createTime(value: googleProtobuf002.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
+  get updateTime(): googleProtobuf002.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+  set updateTime(value: googleProtobuf002.Timestamp | undefined) {
     this._updateTime = value;
   }
-  get text(): string | undefined {
+  get text(): string {
     return this._text;
   }
-  set text(value: string | undefined) {
+  set text(value: string) {
     this._text = value;
   }
-  get authorId(): string | undefined {
+  get authorId(): string {
     return this._authorId;
   }
-  set authorId(value: string | undefined) {
+  set authorId(value: string) {
     this._authorId = value;
   }
-  get upvoteCount(): string | undefined {
+  get upvoteCount(): string {
     return this._upvoteCount;
   }
-  set upvoteCount(value: string | undefined) {
+  set upvoteCount(value: string) {
     this._upvoteCount = value;
   }
 
@@ -14749,24 +14735,24 @@ export module Reply {
    * Standard JavaScript object representation for Reply
    */
   export interface AsObject {
-    name?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
-    text?: string;
-    authorId?: string;
-    upvoteCount?: string;
+    name: string;
+    createTime?: googleProtobuf002.Timestamp.AsObject;
+    updateTime?: googleProtobuf002.Timestamp.AsObject;
+    text: string;
+    authorId: string;
+    upvoteCount: string;
   }
 
   /**
    * Protobuf JSON representation for Reply
    */
   export interface AsProtobufJSON {
-    name?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    text?: string;
-    authorId?: string;
-    upvoteCount?: string;
+    name: string;
+    createTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    text: string;
+    authorId: string;
+    upvoteCount: string;
   }
 }
 
@@ -14840,9 +14826,9 @@ export class Tag implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _tagName?: string;
-  private _mutable?: boolean;
+  private _name: string;
+  private _tagName: string;
+  private _mutable: boolean;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -14855,22 +14841,22 @@ export class Tag implements GrpcMessage {
     this.mutable = _value.mutable;
     Tag.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get tagName(): string | undefined {
+  get tagName(): string {
     return this._tagName;
   }
-  set tagName(value: string | undefined) {
+  set tagName(value: string) {
     this._tagName = value;
   }
-  get mutable(): boolean | undefined {
+  get mutable(): boolean {
     return this._mutable;
   }
-  set mutable(value: boolean | undefined) {
+  set mutable(value: boolean) {
     this._mutable = value;
   }
 
@@ -14923,18 +14909,18 @@ export module Tag {
    * Standard JavaScript object representation for Tag
    */
   export interface AsObject {
-    name?: string;
-    tagName?: string;
-    mutable?: boolean;
+    name: string;
+    tagName: string;
+    mutable: boolean;
   }
 
   /**
    * Protobuf JSON representation for Tag
    */
   export interface AsProtobufJSON {
-    name?: string;
-    tagName?: string;
-    mutable?: boolean;
+    name: string;
+    tagName: string;
+    mutable: boolean;
   }
 }
 
@@ -15000,7 +14986,7 @@ export class AdminMessage implements GrpcMessage {
     }
   }
 
-  private _message?: string;
+  private _message: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -15011,10 +14997,10 @@ export class AdminMessage implements GrpcMessage {
     this.message = _value.message;
     AdminMessage.refineValues(this);
   }
-  get message(): string | undefined {
+  get message(): string {
     return this._message;
   }
-  set message(value: string | undefined) {
+  set message(value: string) {
     this._message = value;
   }
 
@@ -15063,14 +15049,14 @@ export module AdminMessage {
    * Standard JavaScript object representation for AdminMessage
    */
   export interface AsObject {
-    message?: string;
+    message: string;
   }
 
   /**
    * Protobuf JSON representation for AdminMessage
    */
   export interface AsProtobufJSON {
-    message?: string;
+    message: string;
   }
 }
 
@@ -15130,7 +15116,7 @@ export class Auth implements GrpcMessage {
     }
   }
 
-  private _oauth2Token?: string;
+  private _oauth2Token: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -15141,10 +15127,10 @@ export class Auth implements GrpcMessage {
     this.oauth2Token = _value.oauth2Token;
     Auth.refineValues(this);
   }
-  get oauth2Token(): string | undefined {
+  get oauth2Token(): string {
     return this._oauth2Token;
   }
-  set oauth2Token(value: string | undefined) {
+  set oauth2Token(value: string) {
     this._oauth2Token = value;
   }
 
@@ -15193,14 +15179,14 @@ export module Auth {
    * Standard JavaScript object representation for Auth
    */
   export interface AsObject {
-    oauth2Token?: string;
+    oauth2Token: string;
   }
 
   /**
    * Protobuf JSON representation for Auth
    */
   export interface AsProtobufJSON {
-    oauth2Token?: string;
+    oauth2Token: string;
   }
 }
 
@@ -15292,9 +15278,9 @@ export class Activity implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _createTime?: string;
-  private _action?: Action;
+  private _name: string;
+  private _createTime: string;
+  private _action: Action;
   private _resourceView?: ResourceView;
 
   /**
@@ -15311,22 +15297,22 @@ export class Activity implements GrpcMessage {
       : undefined;
     Activity.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get createTime(): string | undefined {
+  get createTime(): string {
     return this._createTime;
   }
-  set createTime(value: string | undefined) {
+  set createTime(value: string) {
     this._createTime = value;
   }
-  get action(): Action | undefined {
+  get action(): Action {
     return this._action;
   }
-  set action(value: Action | undefined) {
+  set action(value: Action) {
     this._action = value;
   }
   get resourceView(): ResourceView | undefined {
@@ -15377,7 +15363,10 @@ export class Activity implements GrpcMessage {
     return {
       name: this.name,
       createTime: this.createTime,
-      action: Action[this.action ?? 0],
+      action:
+        Action[
+          this.action === null || this.action === undefined ? 0 : this.action
+        ],
       resourceView: this.resourceView
         ? this.resourceView.toProtobufJSON(options)
         : null
@@ -15389,9 +15378,9 @@ export module Activity {
    * Standard JavaScript object representation for Activity
    */
   export interface AsObject {
-    name?: string;
-    createTime?: string;
-    action?: Action;
+    name: string;
+    createTime: string;
+    action: Action;
     resourceView?: ResourceView.AsObject;
   }
 
@@ -15399,10 +15388,10 @@ export module Activity {
    * Protobuf JSON representation for Activity
    */
   export interface AsProtobufJSON {
-    name?: string;
-    createTime?: string;
-    action?: string;
-    resourceView?: ResourceView.AsProtobufJSON | null;
+    name: string;
+    createTime: string;
+    action: string;
+    resourceView: ResourceView.AsProtobufJSON | null;
   }
 }
 
@@ -15457,17 +15446,17 @@ export class Notification implements GrpcMessage {
           _instance.senderId = _reader.readInt64String();
           break;
         case 3:
-          _instance.createTime = new googleProtobuf000.Timestamp();
+          _instance.createTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 4:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _instance.updateTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 5:
@@ -15509,14 +15498,14 @@ export class Notification implements GrpcMessage {
       _writer.writeMessage(
         3,
         _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
         4,
         _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.unread) {
@@ -15533,14 +15522,14 @@ export class Notification implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _senderId?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
-  private _unread?: boolean;
-  private _content?: string;
-  private _imagePreview?: string;
-  private _link?: string;
+  private _name: string;
+  private _senderId: string;
+  private _createTime?: googleProtobuf002.Timestamp;
+  private _updateTime?: googleProtobuf002.Timestamp;
+  private _unread: boolean;
+  private _content: string;
+  private _imagePreview: string;
+  private _link: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -15551,10 +15540,10 @@ export class Notification implements GrpcMessage {
     this.name = _value.name;
     this.senderId = _value.senderId;
     this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
+      ? new googleProtobuf002.Timestamp(_value.createTime)
       : undefined;
     this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      ? new googleProtobuf002.Timestamp(_value.updateTime)
       : undefined;
     this.unread = _value.unread;
     this.content = _value.content;
@@ -15562,52 +15551,52 @@ export class Notification implements GrpcMessage {
     this.link = _value.link;
     Notification.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get senderId(): string | undefined {
+  get senderId(): string {
     return this._senderId;
   }
-  set senderId(value: string | undefined) {
+  set senderId(value: string) {
     this._senderId = value;
   }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
+  get createTime(): googleProtobuf002.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+  set createTime(value: googleProtobuf002.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
+  get updateTime(): googleProtobuf002.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+  set updateTime(value: googleProtobuf002.Timestamp | undefined) {
     this._updateTime = value;
   }
-  get unread(): boolean | undefined {
+  get unread(): boolean {
     return this._unread;
   }
-  set unread(value: boolean | undefined) {
+  set unread(value: boolean) {
     this._unread = value;
   }
-  get content(): string | undefined {
+  get content(): string {
     return this._content;
   }
-  set content(value: string | undefined) {
+  set content(value: string) {
     this._content = value;
   }
-  get imagePreview(): string | undefined {
+  get imagePreview(): string {
     return this._imagePreview;
   }
-  set imagePreview(value: string | undefined) {
+  set imagePreview(value: string) {
     this._imagePreview = value;
   }
-  get link(): string | undefined {
+  get link(): string {
     return this._link;
   }
-  set link(value: string | undefined) {
+  set link(value: string) {
     this._link = value;
   }
 
@@ -15674,28 +15663,28 @@ export module Notification {
    * Standard JavaScript object representation for Notification
    */
   export interface AsObject {
-    name?: string;
-    senderId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
-    unread?: boolean;
-    content?: string;
-    imagePreview?: string;
-    link?: string;
+    name: string;
+    senderId: string;
+    createTime?: googleProtobuf002.Timestamp.AsObject;
+    updateTime?: googleProtobuf002.Timestamp.AsObject;
+    unread: boolean;
+    content: string;
+    imagePreview: string;
+    link: string;
   }
 
   /**
    * Protobuf JSON representation for Notification
    */
   export interface AsProtobufJSON {
-    name?: string;
-    senderId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    unread?: boolean;
-    content?: string;
-    imagePreview?: string;
-    link?: string;
+    name: string;
+    senderId: string;
+    createTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    unread: boolean;
+    content: string;
+    imagePreview: string;
+    link: string;
   }
 }
 
@@ -15782,10 +15771,10 @@ export class ResourceView implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _displayName?: string;
-  private _description?: string;
-  private _imageUrl?: string;
+  private _name: string;
+  private _displayName: string;
+  private _description: string;
+  private _imageUrl: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -15799,28 +15788,28 @@ export class ResourceView implements GrpcMessage {
     this.imageUrl = _value.imageUrl;
     ResourceView.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get displayName(): string | undefined {
+  get displayName(): string {
     return this._displayName;
   }
-  set displayName(value: string | undefined) {
+  set displayName(value: string) {
     this._displayName = value;
   }
-  get description(): string | undefined {
+  get description(): string {
     return this._description;
   }
-  set description(value: string | undefined) {
+  set description(value: string) {
     this._description = value;
   }
-  get imageUrl(): string | undefined {
+  get imageUrl(): string {
     return this._imageUrl;
   }
-  set imageUrl(value: string | undefined) {
+  set imageUrl(value: string) {
     this._imageUrl = value;
   }
 
@@ -15875,20 +15864,20 @@ export module ResourceView {
    * Standard JavaScript object representation for ResourceView
    */
   export interface AsObject {
-    name?: string;
-    displayName?: string;
-    description?: string;
-    imageUrl?: string;
+    name: string;
+    displayName: string;
+    description: string;
+    imageUrl: string;
   }
 
   /**
    * Protobuf JSON representation for ResourceView
    */
   export interface AsProtobufJSON {
-    name?: string;
-    displayName?: string;
-    description?: string;
-    imageUrl?: string;
+    name: string;
+    displayName: string;
+    description: string;
+    imageUrl: string;
   }
 }
 
@@ -15951,17 +15940,17 @@ export class Article implements GrpcMessage {
           _instance.authorId = _reader.readInt64String();
           break;
         case 5:
-          _instance.createTime = new googleProtobuf000.Timestamp();
+          _instance.createTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 6:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _instance.updateTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 7:
@@ -16006,14 +15995,14 @@ export class Article implements GrpcMessage {
       _writer.writeMessage(
         5,
         _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
         6,
         _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.state) {
@@ -16030,16 +16019,16 @@ export class Article implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _subject?: string;
-  private _content?: string;
-  private _authorId?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
-  private _state?: ResourceState;
-  private _tags?: string[];
-  private _viewCount?: string;
-  private _likeCount?: string;
+  private _name: string;
+  private _subject: string;
+  private _content: string;
+  private _authorId: string;
+  private _createTime?: googleProtobuf002.Timestamp;
+  private _updateTime?: googleProtobuf002.Timestamp;
+  private _state: ResourceState;
+  private _tags: string[];
+  private _viewCount: string;
+  private _likeCount: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -16052,10 +16041,10 @@ export class Article implements GrpcMessage {
     this.content = _value.content;
     this.authorId = _value.authorId;
     this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
+      ? new googleProtobuf002.Timestamp(_value.createTime)
       : undefined;
     this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      ? new googleProtobuf002.Timestamp(_value.updateTime)
       : undefined;
     this.state = _value.state;
     this.tags = (_value.tags || []).slice();
@@ -16063,64 +16052,64 @@ export class Article implements GrpcMessage {
     this.likeCount = _value.likeCount;
     Article.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get subject(): string | undefined {
+  get subject(): string {
     return this._subject;
   }
-  set subject(value: string | undefined) {
+  set subject(value: string) {
     this._subject = value;
   }
-  get content(): string | undefined {
+  get content(): string {
     return this._content;
   }
-  set content(value: string | undefined) {
+  set content(value: string) {
     this._content = value;
   }
-  get authorId(): string | undefined {
+  get authorId(): string {
     return this._authorId;
   }
-  set authorId(value: string | undefined) {
+  set authorId(value: string) {
     this._authorId = value;
   }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
+  get createTime(): googleProtobuf002.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+  set createTime(value: googleProtobuf002.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
+  get updateTime(): googleProtobuf002.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+  set updateTime(value: googleProtobuf002.Timestamp | undefined) {
     this._updateTime = value;
   }
-  get state(): ResourceState | undefined {
+  get state(): ResourceState {
     return this._state;
   }
-  set state(value: ResourceState | undefined) {
+  set state(value: ResourceState) {
     this._state = value;
   }
-  get tags(): string[] | undefined {
+  get tags(): string[] {
     return this._tags;
   }
-  set tags(value: string[] | undefined) {
+  set tags(value: string[]) {
     this._tags = value;
   }
-  get viewCount(): string | undefined {
+  get viewCount(): string {
     return this._viewCount;
   }
-  set viewCount(value: string | undefined) {
+  set viewCount(value: string) {
     this._viewCount = value;
   }
-  get likeCount(): string | undefined {
+  get likeCount(): string {
     return this._likeCount;
   }
-  set likeCount(value: string | undefined) {
+  set likeCount(value: string) {
     this._likeCount = value;
   }
 
@@ -16179,7 +16168,10 @@ export class Article implements GrpcMessage {
       updateTime: this.updateTime
         ? this.updateTime.toProtobufJSON(options)
         : null,
-      state: ResourceState[this.state ?? 0],
+      state:
+        ResourceState[
+          this.state === null || this.state === undefined ? 0 : this.state
+        ],
       tags: (this.tags || []).slice(),
       viewCount: this.viewCount,
       likeCount: this.likeCount
@@ -16191,32 +16183,32 @@ export module Article {
    * Standard JavaScript object representation for Article
    */
   export interface AsObject {
-    name?: string;
-    subject?: string;
-    content?: string;
-    authorId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
-    state?: ResourceState;
-    tags?: string[];
-    viewCount?: string;
-    likeCount?: string;
+    name: string;
+    subject: string;
+    content: string;
+    authorId: string;
+    createTime?: googleProtobuf002.Timestamp.AsObject;
+    updateTime?: googleProtobuf002.Timestamp.AsObject;
+    state: ResourceState;
+    tags: string[];
+    viewCount: string;
+    likeCount: string;
   }
 
   /**
    * Protobuf JSON representation for Article
    */
   export interface AsProtobufJSON {
-    name?: string;
-    subject?: string;
-    content?: string;
-    authorId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    state?: string;
-    tags?: string[];
-    viewCount?: string;
-    likeCount?: string;
+    name: string;
+    subject: string;
+    content: string;
+    authorId: string;
+    createTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    state: string;
+    tags: string[];
+    viewCount: string;
+    likeCount: string;
   }
 }
 
@@ -16304,11 +16296,11 @@ export class File implements GrpcMessage {
     }
   }
 
-  private _filename?: string;
-  private _ext?: string;
-  private _server?: File.Server;
-  private _uri?: string;
-  private _url?: string;
+  private _filename: string;
+  private _ext: string;
+  private _server: File.Server;
+  private _uri: string;
+  private _url: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -16323,34 +16315,34 @@ export class File implements GrpcMessage {
     this.url = _value.url;
     File.refineValues(this);
   }
-  get filename(): string | undefined {
+  get filename(): string {
     return this._filename;
   }
-  set filename(value: string | undefined) {
+  set filename(value: string) {
     this._filename = value;
   }
-  get ext(): string | undefined {
+  get ext(): string {
     return this._ext;
   }
-  set ext(value: string | undefined) {
+  set ext(value: string) {
     this._ext = value;
   }
-  get server(): File.Server | undefined {
+  get server(): File.Server {
     return this._server;
   }
-  set server(value: File.Server | undefined) {
+  set server(value: File.Server) {
     this._server = value;
   }
-  get uri(): string | undefined {
+  get uri(): string {
     return this._uri;
   }
-  set uri(value: string | undefined) {
+  set uri(value: string) {
     this._uri = value;
   }
-  get url(): string | undefined {
+  get url(): string {
     return this._url;
   }
-  set url(value: string | undefined) {
+  set url(value: string) {
     this._url = value;
   }
 
@@ -16396,7 +16388,10 @@ export class File implements GrpcMessage {
     return {
       filename: this.filename,
       ext: this.ext,
-      server: File.Server[this.server ?? 0],
+      server:
+        File.Server[
+          this.server === null || this.server === undefined ? 0 : this.server
+        ],
       uri: this.uri,
       url: this.url
     };
@@ -16407,22 +16402,22 @@ export module File {
    * Standard JavaScript object representation for File
    */
   export interface AsObject {
-    filename?: string;
-    ext?: string;
-    server?: File.Server;
-    uri?: string;
-    url?: string;
+    filename: string;
+    ext: string;
+    server: File.Server;
+    uri: string;
+    url: string;
   }
 
   /**
    * Protobuf JSON representation for File
    */
   export interface AsProtobufJSON {
-    filename?: string;
-    ext?: string;
-    server?: string;
-    uri?: string;
-    url?: string;
+    filename: string;
+    ext: string;
+    server: string;
+    uri: string;
+    url: string;
   }
   export enum Server {
     SERVER_UNSPECIFIED = 0,
@@ -16478,17 +16473,17 @@ export class Subscription implements GrpcMessage {
           _instance.target = _reader.readString();
           break;
         case 3:
-          _instance.createTime = new googleProtobuf000.Timestamp();
+          _instance.createTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 4:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _instance.updateTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         default:
@@ -16518,22 +16513,22 @@ export class Subscription implements GrpcMessage {
       _writer.writeMessage(
         3,
         _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
         4,
         _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
   }
 
-  private _name?: string;
-  private _target?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
+  private _name: string;
+  private _target: string;
+  private _createTime?: googleProtobuf002.Timestamp;
+  private _updateTime?: googleProtobuf002.Timestamp;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -16544,35 +16539,35 @@ export class Subscription implements GrpcMessage {
     this.name = _value.name;
     this.target = _value.target;
     this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
+      ? new googleProtobuf002.Timestamp(_value.createTime)
       : undefined;
     this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      ? new googleProtobuf002.Timestamp(_value.updateTime)
       : undefined;
     Subscription.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get target(): string | undefined {
+  get target(): string {
     return this._target;
   }
-  set target(value: string | undefined) {
+  set target(value: string) {
     this._target = value;
   }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
+  get createTime(): googleProtobuf002.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+  set createTime(value: googleProtobuf002.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
+  get updateTime(): googleProtobuf002.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+  set updateTime(value: googleProtobuf002.Timestamp | undefined) {
     this._updateTime = value;
   }
 
@@ -16631,20 +16626,20 @@ export module Subscription {
    * Standard JavaScript object representation for Subscription
    */
   export interface AsObject {
-    name?: string;
-    target?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
+    name: string;
+    target: string;
+    createTime?: googleProtobuf002.Timestamp.AsObject;
+    updateTime?: googleProtobuf002.Timestamp.AsObject;
   }
 
   /**
    * Protobuf JSON representation for Subscription
    */
   export interface AsProtobufJSON {
-    name?: string;
-    target?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    name: string;
+    target: string;
+    createTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
   }
 }
 
@@ -16699,17 +16694,17 @@ export class LegacySubscription implements GrpcMessage {
           _instance.subscriberId = _reader.readInt64String();
           break;
         case 3:
-          _instance.createTime = new googleProtobuf000.Timestamp();
+          _instance.createTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.createTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 4:
-          _instance.updateTime = new googleProtobuf000.Timestamp();
+          _instance.updateTime = new googleProtobuf002.Timestamp();
           _reader.readMessage(
             _instance.updateTime,
-            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+            googleProtobuf002.Timestamp.deserializeBinaryFromReader
           );
           break;
         case 5:
@@ -16742,14 +16737,14 @@ export class LegacySubscription implements GrpcMessage {
       _writer.writeMessage(
         3,
         _instance.createTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.updateTime) {
       _writer.writeMessage(
         4,
         _instance.updateTime as any,
-        googleProtobuf000.Timestamp.serializeBinaryToWriter
+        googleProtobuf002.Timestamp.serializeBinaryToWriter
       );
     }
     if (_instance.type) {
@@ -16757,11 +16752,11 @@ export class LegacySubscription implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _subscriberId?: string;
-  private _createTime?: googleProtobuf000.Timestamp;
-  private _updateTime?: googleProtobuf000.Timestamp;
-  private _type?: LegacySubscription.SubscribeType;
+  private _name: string;
+  private _subscriberId: string;
+  private _createTime?: googleProtobuf002.Timestamp;
+  private _updateTime?: googleProtobuf002.Timestamp;
+  private _type: LegacySubscription.SubscribeType;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -16772,42 +16767,42 @@ export class LegacySubscription implements GrpcMessage {
     this.name = _value.name;
     this.subscriberId = _value.subscriberId;
     this.createTime = _value.createTime
-      ? new googleProtobuf000.Timestamp(_value.createTime)
+      ? new googleProtobuf002.Timestamp(_value.createTime)
       : undefined;
     this.updateTime = _value.updateTime
-      ? new googleProtobuf000.Timestamp(_value.updateTime)
+      ? new googleProtobuf002.Timestamp(_value.updateTime)
       : undefined;
     this.type = _value.type;
     LegacySubscription.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get subscriberId(): string | undefined {
+  get subscriberId(): string {
     return this._subscriberId;
   }
-  set subscriberId(value: string | undefined) {
+  set subscriberId(value: string) {
     this._subscriberId = value;
   }
-  get createTime(): googleProtobuf000.Timestamp | undefined {
+  get createTime(): googleProtobuf002.Timestamp | undefined {
     return this._createTime;
   }
-  set createTime(value: googleProtobuf000.Timestamp | undefined) {
+  set createTime(value: googleProtobuf002.Timestamp | undefined) {
     this._createTime = value;
   }
-  get updateTime(): googleProtobuf000.Timestamp | undefined {
+  get updateTime(): googleProtobuf002.Timestamp | undefined {
     return this._updateTime;
   }
-  set updateTime(value: googleProtobuf000.Timestamp | undefined) {
+  set updateTime(value: googleProtobuf002.Timestamp | undefined) {
     this._updateTime = value;
   }
-  get type(): LegacySubscription.SubscribeType | undefined {
+  get type(): LegacySubscription.SubscribeType {
     return this._type;
   }
-  set type(value: LegacySubscription.SubscribeType | undefined) {
+  set type(value: LegacySubscription.SubscribeType) {
     this._type = value;
   }
 
@@ -16859,7 +16854,10 @@ export class LegacySubscription implements GrpcMessage {
       updateTime: this.updateTime
         ? this.updateTime.toProtobufJSON(options)
         : null,
-      type: LegacySubscription.SubscribeType[this.type ?? 0]
+      type:
+        LegacySubscription.SubscribeType[
+          this.type === null || this.type === undefined ? 0 : this.type
+        ]
     };
   }
 }
@@ -16868,22 +16866,22 @@ export module LegacySubscription {
    * Standard JavaScript object representation for LegacySubscription
    */
   export interface AsObject {
-    name?: string;
-    subscriberId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsObject;
-    updateTime?: googleProtobuf000.Timestamp.AsObject;
-    type?: LegacySubscription.SubscribeType;
+    name: string;
+    subscriberId: string;
+    createTime?: googleProtobuf002.Timestamp.AsObject;
+    updateTime?: googleProtobuf002.Timestamp.AsObject;
+    type: LegacySubscription.SubscribeType;
   }
 
   /**
    * Protobuf JSON representation for LegacySubscription
    */
   export interface AsProtobufJSON {
-    name?: string;
-    subscriberId?: string;
-    createTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    updateTime?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
-    type?: string;
+    name: string;
+    subscriberId: string;
+    createTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
+    type: string;
   }
   export enum SubscribeType {
     SUBSCRIBE_TYPE_UNSPECIFIED = 0,
@@ -17035,14 +17033,14 @@ export module UserSettings {
    * Protobuf JSON representation for UserSettings
    */
   export interface AsProtobufJSON {
-    notification?: UserSettings.NotificationSetting.AsProtobufJSON | null;
+    notification: UserSettings.NotificationSetting.AsProtobufJSON | null;
   }
 
   /**
-   * Message implementation for routeguide.NotificationSetting
+   * Message implementation for routeguide.UserSettings.NotificationSetting
    */
   export class NotificationSetting implements GrpcMessage {
-    static id = 'routeguide.NotificationSetting';
+    static id = 'routeguide.UserSettings.NotificationSetting';
 
     /**
      * Deserialize binary data to message
@@ -17145,13 +17143,13 @@ export module UserSettings {
       }
     }
 
-    private _sendEmails?: boolean;
-    private _subscriptions?: boolean;
-    private _recommendations?: boolean;
-    private _mentions?: boolean;
-    private _threads?: boolean;
-    private _comments?: boolean;
-    private _replies?: boolean;
+    private _sendEmails: boolean;
+    private _subscriptions: boolean;
+    private _recommendations: boolean;
+    private _mentions: boolean;
+    private _threads: boolean;
+    private _comments: boolean;
+    private _replies: boolean;
 
     /**
      * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -17168,46 +17166,46 @@ export module UserSettings {
       this.replies = _value.replies;
       NotificationSetting.refineValues(this);
     }
-    get sendEmails(): boolean | undefined {
+    get sendEmails(): boolean {
       return this._sendEmails;
     }
-    set sendEmails(value: boolean | undefined) {
+    set sendEmails(value: boolean) {
       this._sendEmails = value;
     }
-    get subscriptions(): boolean | undefined {
+    get subscriptions(): boolean {
       return this._subscriptions;
     }
-    set subscriptions(value: boolean | undefined) {
+    set subscriptions(value: boolean) {
       this._subscriptions = value;
     }
-    get recommendations(): boolean | undefined {
+    get recommendations(): boolean {
       return this._recommendations;
     }
-    set recommendations(value: boolean | undefined) {
+    set recommendations(value: boolean) {
       this._recommendations = value;
     }
-    get mentions(): boolean | undefined {
+    get mentions(): boolean {
       return this._mentions;
     }
-    set mentions(value: boolean | undefined) {
+    set mentions(value: boolean) {
       this._mentions = value;
     }
-    get threads(): boolean | undefined {
+    get threads(): boolean {
       return this._threads;
     }
-    set threads(value: boolean | undefined) {
+    set threads(value: boolean) {
       this._threads = value;
     }
-    get comments(): boolean | undefined {
+    get comments(): boolean {
       return this._comments;
     }
-    set comments(value: boolean | undefined) {
+    set comments(value: boolean) {
       this._comments = value;
     }
-    get replies(): boolean | undefined {
+    get replies(): boolean {
       return this._replies;
     }
-    set replies(value: boolean | undefined) {
+    set replies(value: boolean) {
       this._replies = value;
     }
 
@@ -17268,26 +17266,26 @@ export module UserSettings {
      * Standard JavaScript object representation for NotificationSetting
      */
     export interface AsObject {
-      sendEmails?: boolean;
-      subscriptions?: boolean;
-      recommendations?: boolean;
-      mentions?: boolean;
-      threads?: boolean;
-      comments?: boolean;
-      replies?: boolean;
+      sendEmails: boolean;
+      subscriptions: boolean;
+      recommendations: boolean;
+      mentions: boolean;
+      threads: boolean;
+      comments: boolean;
+      replies: boolean;
     }
 
     /**
      * Protobuf JSON representation for NotificationSetting
      */
     export interface AsProtobufJSON {
-      sendEmails?: boolean;
-      subscriptions?: boolean;
-      recommendations?: boolean;
-      mentions?: boolean;
-      threads?: boolean;
-      comments?: boolean;
-      replies?: boolean;
+      sendEmails: boolean;
+      subscriptions: boolean;
+      recommendations: boolean;
+      mentions: boolean;
+      threads: boolean;
+      comments: boolean;
+      replies: boolean;
     }
   }
 }
@@ -17351,7 +17349,7 @@ export class FieldMask implements GrpcMessage {
     }
   }
 
-  private _paths?: string[];
+  private _paths: string[];
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -17362,10 +17360,10 @@ export class FieldMask implements GrpcMessage {
     this.paths = (_value.paths || []).slice();
     FieldMask.refineValues(this);
   }
-  get paths(): string[] | undefined {
+  get paths(): string[] {
     return this._paths;
   }
-  set paths(value: string[] | undefined) {
+  set paths(value: string[]) {
     this._paths = value;
   }
 
@@ -17414,13 +17412,13 @@ export module FieldMask {
    * Standard JavaScript object representation for FieldMask
    */
   export interface AsObject {
-    paths?: string[];
+    paths: string[];
   }
 
   /**
    * Protobuf JSON representation for FieldMask
    */
   export interface AsProtobufJSON {
-    paths?: string[];
+    paths: string[];
   }
 }

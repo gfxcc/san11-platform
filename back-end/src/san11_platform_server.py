@@ -152,10 +152,12 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             request=request,
             handler_context=context,
         )
-        return pb.ListBinariesResponse(
+        ret = pb.ListBinariesResponse(
             binaries=[binary.to_pb() for binary in binaries],
             next_page_token=next_page_token,
         )
+        logger.debug(ret.binaries)
+        return ret
 
     @GrpcAbortOnExcep
     @iam_util.assert_resource_owner('binary.name')

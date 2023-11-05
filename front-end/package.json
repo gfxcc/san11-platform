@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "proto:generate": "protoc --plugin=protoc-gen-ng=$(which protoc-gen-ng) --ng_out=./src/proto -I ../protos $(find ../protos -iname \"*.proto\")"
+    "proto:generate": "protoc --plugin=protoc-gen-ng=$(which protoc-gen-ng) --ng_out=./src/proto -I ../third_party/googleapis -I ../third_party/protobuf/src -I ../protos $(find ../protos -iname \"*.proto\")"
   },
   "private": true,
   "dependencies": {
@@ -28,10 +28,10 @@
     "@ckeditor/ckeditor5-build-inline": "^36.0.1",
     "@ckeditor/ckeditor5-image": "^36.0.1",
     "@grpc/grpc-js": "^1.8.11",
-    "@ngx-grpc/common": "^3.1.1",
-    "@ngx-grpc/core": "^3.1.1",
-    "@ngx-grpc/grpc-web-client": "^3.1.1",
-    "@ngx-grpc/well-known-types": "^3.1.1",
+    "@ngx-grpc/common": "^3.1.2",
+    "@ngx-grpc/core": "^3.1.2",
+    "@ngx-grpc/grpc-web-client": "^3.1.2",
+    "@ngx-grpc/well-known-types": "^3.1.2",
     "@types/uuid": "^9.0.1",
     "angular-material": "^1.2.2",
     "aws-sdk": "^2.1326.0",

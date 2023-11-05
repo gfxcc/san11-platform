@@ -13,7 +13,11 @@ cleanup:
 	# Removes any residues from previous test.
 	docker-compose -f docker-compose.test.yaml down
 
-.PHONY: regen
-regen:
-	cd back-end && make regen
+.PHONY: gen-proto
+gen-proto:
+	cd back-end && make gen-proto
 	cd front-end && npm run proto:generate
+
+.PHONY: gen-gateway
+gen-gateway:
+	cd protos && buf generate
