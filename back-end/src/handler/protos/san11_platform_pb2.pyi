@@ -1729,16 +1729,17 @@ global___Package = Package
 class Binary(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    NAME_FIELD_NUMBER: builtins.int
     DOWNLOAD_COUNT_FIELD_NUMBER: builtins.int
     VERSION_FIELD_NUMBER: builtins.int
     DESCRIPTION_FIELD_NUMBER: builtins.int
     CREATE_TIME_FIELD_NUMBER: builtins.int
     TAG_FIELD_NUMBER: builtins.int
     SIZE_FIELD_NUMBER: builtins.int
-    NAME_FIELD_NUMBER: builtins.int
     UPDATE_TIME_FIELD_NUMBER: builtins.int
     FILE_FIELD_NUMBER: builtins.int
     DOWNLOAD_METHOD_FIELD_NUMBER: builtins.int
+    name: builtins.str
     download_count: builtins.int
     """int64 binary_id = 1;
     int64 package_id = 2;
@@ -1750,22 +1751,21 @@ class Binary(google.protobuf.message.Message):
     tag: builtins.str
     size: builtins.str
     """human readable size. E.g. 20M, 1.2G"""
-    name: builtins.str
-    """resource name like `categories/123/packages/456/binaries/789`"""
     update_time: builtins.str
+    """resource name like `categories/123/packages/456/binaries/789`"""
     @property
     def file(self) -> global___File: ...
     download_method: builtins.str
     def __init__(
         self,
         *,
+        name: builtins.str = ...,
         download_count: builtins.int = ...,
         version: global___Version | None = ...,
         description: builtins.str = ...,
         create_time: builtins.str = ...,
         tag: builtins.str = ...,
         size: builtins.str = ...,
-        name: builtins.str = ...,
         update_time: builtins.str = ...,
         file: global___File | None = ...,
         download_method: builtins.str = ...,
@@ -1784,7 +1784,7 @@ class User(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _UserTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[User._UserType.ValueType], builtins.type):  # noqa: F821
+    class _UserTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[User._UserType.ValueType], builtins.type):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         USER_TYPE_UNSPECIFIED: User._UserType.ValueType  # 0
         ADMIN: User._UserType.ValueType  # 1
@@ -2258,7 +2258,7 @@ class File(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _ServerEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[File._Server.ValueType], builtins.type):  # noqa: F821
+    class _ServerEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[File._Server.ValueType], builtins.type):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         SERVER_UNSPECIFIED: File._Server.ValueType  # 0
         GCS: File._Server.ValueType  # 1
@@ -2352,7 +2352,7 @@ class LegacySubscription(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _SubscribeTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[LegacySubscription._SubscribeType.ValueType], builtins.type):  # noqa: F821
+    class _SubscribeTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[LegacySubscription._SubscribeType.ValueType], builtins.type):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         SUBSCRIBE_TYPE_UNSPECIFIED: LegacySubscription._SubscribeType.ValueType  # 0
         ALL: LegacySubscription._SubscribeType.ValueType  # 1

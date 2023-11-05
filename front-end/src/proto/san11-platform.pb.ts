@@ -12641,13 +12641,13 @@ export class Binary implements GrpcMessage {
    * @param _instance message instance
    */
   static refineValues(_instance: Binary) {
+    _instance.name = _instance.name || '';
     _instance.downloadCount = _instance.downloadCount || '0';
     _instance.version = _instance.version || undefined;
     _instance.description = _instance.description || '';
     _instance.createTime = _instance.createTime || '';
     _instance.tag = _instance.tag || '';
     _instance.size = _instance.size || '';
-    _instance.name = _instance.name || '';
     _instance.updateTime = _instance.updateTime || '';
   }
 
@@ -12661,6 +12661,9 @@ export class Binary implements GrpcMessage {
       if (_reader.isEndGroup()) break;
 
       switch (_reader.getFieldNumber()) {
+        case 11:
+          _instance.name = _reader.readString();
+          break;
         case 4:
           _instance.downloadCount = _reader.readInt64String();
           break;
@@ -12682,9 +12685,6 @@ export class Binary implements GrpcMessage {
           break;
         case 10:
           _instance.size = _reader.readString();
-          break;
-        case 11:
-          _instance.name = _reader.readString();
           break;
         case 12:
           _instance.updateTime = _reader.readString();
@@ -12710,6 +12710,9 @@ export class Binary implements GrpcMessage {
    * @param _writer binary writer instance
    */
   static serializeBinaryToWriter(_instance: Binary, _writer: BinaryWriter) {
+    if (_instance.name) {
+      _writer.writeString(11, _instance.name);
+    }
     if (_instance.downloadCount) {
       _writer.writeInt64String(4, _instance.downloadCount);
     }
@@ -12732,9 +12735,6 @@ export class Binary implements GrpcMessage {
     if (_instance.size) {
       _writer.writeString(10, _instance.size);
     }
-    if (_instance.name) {
-      _writer.writeString(11, _instance.name);
-    }
     if (_instance.updateTime) {
       _writer.writeString(12, _instance.updateTime);
     }
@@ -12750,13 +12750,13 @@ export class Binary implements GrpcMessage {
     }
   }
 
+  private _name: string;
   private _downloadCount: string;
   private _version?: Version;
   private _description: string;
   private _createTime: string;
   private _tag: string;
   private _size: string;
-  private _name: string;
   private _updateTime: string;
   private _file?: File;
   private _downloadMethod: string;
@@ -12769,17 +12769,23 @@ export class Binary implements GrpcMessage {
    */
   constructor(_value?: RecursivePartial<Binary.AsObject>) {
     _value = _value || {};
+    this.name = _value.name;
     this.downloadCount = _value.downloadCount;
     this.version = _value.version ? new Version(_value.version) : undefined;
     this.description = _value.description;
     this.createTime = _value.createTime;
     this.tag = _value.tag;
     this.size = _value.size;
-    this.name = _value.name;
     this.updateTime = _value.updateTime;
     this.file = _value.file ? new File(_value.file) : undefined;
     this.downloadMethod = _value.downloadMethod;
     Binary.refineValues(this);
+  }
+  get name(): string {
+    return this._name;
+  }
+  set name(value: string) {
+    this._name = value;
   }
   get downloadCount(): string {
     return this._downloadCount;
@@ -12816,12 +12822,6 @@ export class Binary implements GrpcMessage {
   }
   set size(value: string) {
     this._size = value;
-  }
-  get name(): string {
-    return this._name;
-  }
-  set name(value: string) {
-    this._name = value;
   }
   get updateTime(): string {
     return this._updateTime;
@@ -12868,13 +12868,13 @@ export class Binary implements GrpcMessage {
    */
   toObject(): Binary.AsObject {
     return {
+      name: this.name,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toObject() : undefined,
       description: this.description,
       createTime: this.createTime,
       tag: this.tag,
       size: this.size,
-      name: this.name,
       updateTime: this.updateTime,
       file: this.file ? this.file.toObject() : undefined,
       downloadMethod: this.downloadMethod
@@ -12898,13 +12898,13 @@ export class Binary implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Binary.AsProtobufJSON {
     return {
+      name: this.name,
       downloadCount: this.downloadCount,
       version: this.version ? this.version.toProtobufJSON(options) : null,
       description: this.description,
       createTime: this.createTime,
       tag: this.tag,
       size: this.size,
-      name: this.name,
       updateTime: this.updateTime,
       file: this.file ? this.file.toProtobufJSON(options) : null,
       downloadMethod:
@@ -12919,13 +12919,13 @@ export module Binary {
    * Standard JavaScript object representation for Binary
    */
   export interface AsObject {
+    name: string;
     downloadCount: string;
     version?: Version.AsObject;
     description: string;
     createTime: string;
     tag: string;
     size: string;
-    name: string;
     updateTime: string;
     file?: File.AsObject;
     downloadMethod: string;
@@ -12935,13 +12935,13 @@ export module Binary {
    * Protobuf JSON representation for Binary
    */
   export interface AsProtobufJSON {
+    name: string;
     downloadCount: string;
     version: Version.AsProtobufJSON | null;
     description: string;
     createTime: string;
     tag: string;
     size: string;
-    name: string;
     updateTime: string;
     file: File.AsProtobufJSON | null;
     downloadMethod: string | null;

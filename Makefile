@@ -21,3 +21,7 @@ gen-proto:
 .PHONY: gen-gateway
 gen-gateway:
 	cd protos && buf generate
+	# protoc -I ./protos -I third_party/googleapis -I third_party/protobuf  \
+    # 		--go_out ./back-end/gateway/gen/go/ --go_opt paths=source_relative \
+    # 		--go-grpc_out ./back-end/gateway/gen/go/ --go-grpc_opt paths=source_relative \
+    # 		./protos/*.proto
