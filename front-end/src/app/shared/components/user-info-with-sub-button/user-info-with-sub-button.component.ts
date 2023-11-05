@@ -42,6 +42,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
 
   setSubscriptionStatus() {
     if (!signedIn()) {
+      this.loadingSubscription = false;
       return;
     }
 
