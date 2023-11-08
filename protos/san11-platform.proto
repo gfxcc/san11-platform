@@ -73,7 +73,11 @@ service RouteGuide {
 
   // User related
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
-  rpc GetUser(GetUserRequest) returns (User) {}
+  rpc GetUser(GetUserRequest) returns (User) {
+    option (google.api.http) = {
+      get: "/v1/{name=users/*}"
+    };
+  }
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
   rpc UpdateUser(UpdateUserRequest) returns (User) {}
 
