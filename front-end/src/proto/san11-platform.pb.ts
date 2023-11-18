@@ -12696,6 +12696,13 @@ export class Binary implements GrpcMessage {
         case 14:
           _instance.downloadMethod = _reader.readString();
           break;
+        case 15:
+          _instance.cloudDiskFile = new CloudDiskFile();
+          _reader.readMessage(
+            _instance.cloudDiskFile,
+            CloudDiskFile.deserializeBinaryFromReader
+          );
+          break;
         default:
           _reader.skipField();
       }
@@ -12748,6 +12755,13 @@ export class Binary implements GrpcMessage {
     if (_instance.downloadMethod || _instance.downloadMethod === '') {
       _writer.writeString(14, _instance.downloadMethod);
     }
+    if (_instance.cloudDiskFile) {
+      _writer.writeMessage(
+        15,
+        _instance.cloudDiskFile as any,
+        CloudDiskFile.serializeBinaryToWriter
+      );
+    }
   }
 
   private _name: string;
@@ -12760,6 +12774,7 @@ export class Binary implements GrpcMessage {
   private _updateTime: string;
   private _file?: File;
   private _downloadMethod: string;
+  private _cloudDiskFile?: CloudDiskFile;
 
   private _resource: Binary.ResourceCase = Binary.ResourceCase.none;
 
@@ -12779,6 +12794,9 @@ export class Binary implements GrpcMessage {
     this.updateTime = _value.updateTime;
     this.file = _value.file ? new File(_value.file) : undefined;
     this.downloadMethod = _value.downloadMethod;
+    this.cloudDiskFile = _value.cloudDiskFile
+      ? new CloudDiskFile(_value.cloudDiskFile)
+      : undefined;
     Binary.refineValues(this);
   }
   get name(): string {
@@ -12834,7 +12852,7 @@ export class Binary implements GrpcMessage {
   }
   set file(value: File | undefined) {
     if (value !== undefined && value !== null) {
-      this._downloadMethod = undefined;
+      this._downloadMethod = this._cloudDiskFile = undefined;
       this._resource = Binary.ResourceCase.file;
     }
     this._file = value;
@@ -12844,10 +12862,20 @@ export class Binary implements GrpcMessage {
   }
   set downloadMethod(value: string) {
     if (value !== undefined && value !== null) {
-      this._file = undefined;
+      this._file = this._cloudDiskFile = undefined;
       this._resource = Binary.ResourceCase.downloadMethod;
     }
     this._downloadMethod = value;
+  }
+  get cloudDiskFile(): CloudDiskFile | undefined {
+    return this._cloudDiskFile;
+  }
+  set cloudDiskFile(value: CloudDiskFile | undefined) {
+    if (value !== undefined && value !== null) {
+      this._file = this._downloadMethod = undefined;
+      this._resource = Binary.ResourceCase.cloudDiskFile;
+    }
+    this._cloudDiskFile = value;
   }
   get resource() {
     return this._resource;
@@ -12877,7 +12905,10 @@ export class Binary implements GrpcMessage {
       size: this.size,
       updateTime: this.updateTime,
       file: this.file ? this.file.toObject() : undefined,
-      downloadMethod: this.downloadMethod
+      downloadMethod: this.downloadMethod,
+      cloudDiskFile: this.cloudDiskFile
+        ? this.cloudDiskFile.toObject()
+        : undefined
     };
   }
 
@@ -12910,7 +12941,10 @@ export class Binary implements GrpcMessage {
       downloadMethod:
         this.downloadMethod === null || this.downloadMethod === undefined
           ? null
-          : this.downloadMethod
+          : this.downloadMethod,
+      cloudDiskFile: this.cloudDiskFile
+        ? this.cloudDiskFile.toProtobufJSON(options)
+        : null
     };
   }
 }
@@ -12929,6 +12963,7 @@ export module Binary {
     updateTime: string;
     file?: File.AsObject;
     downloadMethod: string;
+    cloudDiskFile?: CloudDiskFile.AsObject;
   }
 
   /**
@@ -12945,11 +12980,13 @@ export module Binary {
     updateTime: string;
     file: File.AsProtobufJSON | null;
     downloadMethod: string | null;
+    cloudDiskFile: CloudDiskFile.AsProtobufJSON | null;
   }
   export enum ResourceCase {
     none = 0,
     file = 1,
-    downloadMethod = 2
+    downloadMethod = 2,
+    cloudDiskFile = 3
   }
 }
 
@@ -16423,6 +16460,164 @@ export module File {
     SERVER_UNSPECIFIED = 0,
     GCS = 1,
     AWS_S3 = 2
+  }
+}
+
+/**
+ * Message implementation for routeguide.CloudDiskFile
+ */
+export class CloudDiskFile implements GrpcMessage {
+  static id = 'routeguide.CloudDiskFile';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new CloudDiskFile();
+    CloudDiskFile.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: CloudDiskFile) {
+    _instance.url = _instance.url || '';
+    _instance.code = _instance.code || '';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: CloudDiskFile,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.url = _reader.readString();
+          break;
+        case 2:
+          _instance.code = _reader.readString();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    CloudDiskFile.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: CloudDiskFile,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.url) {
+      _writer.writeString(1, _instance.url);
+    }
+    if (_instance.code) {
+      _writer.writeString(2, _instance.code);
+    }
+  }
+
+  private _url: string;
+  private _code: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of CloudDiskFile to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<CloudDiskFile.AsObject>) {
+    _value = _value || {};
+    this.url = _value.url;
+    this.code = _value.code;
+    CloudDiskFile.refineValues(this);
+  }
+  get url(): string {
+    return this._url;
+  }
+  set url(value: string) {
+    this._url = value;
+  }
+  get code(): string {
+    return this._code;
+  }
+  set code(value: string) {
+    this._code = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    CloudDiskFile.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): CloudDiskFile.AsObject {
+    return {
+      url: this.url,
+      code: this.code
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): CloudDiskFile.AsProtobufJSON {
+    return {
+      url: this.url,
+      code: this.code
+    };
+  }
+}
+export module CloudDiskFile {
+  /**
+   * Standard JavaScript object representation for CloudDiskFile
+   */
+  export interface AsObject {
+    url: string;
+    code: string;
+  }
+
+  /**
+   * Protobuf JSON representation for CloudDiskFile
+   */
+  export interface AsProtobufJSON {
+    url: string;
+    code: string;
   }
 }
 

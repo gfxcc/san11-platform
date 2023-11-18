@@ -108,7 +108,6 @@ export class AccountInfoComponent implements OnInit {
       email: this.email.value,
       verificationCode: this.verificationCode.value
     });
-    console.log(request);
     this.san11pkService.verifyEmail(request).subscribe(
       (resp: VerifyEmailResponse) => {
         if (resp.ok) {
@@ -123,7 +122,6 @@ export class AccountInfoComponent implements OnInit {
 
   onResendVerificationCodeClick() {
     if (this.timeToResend != undefined && this.timeToResend > 0) {
-      console.log('Cannot resend email yet. Please wait');
       return;
     }
 

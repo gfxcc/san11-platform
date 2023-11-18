@@ -133,6 +133,14 @@ export class BranchComponent {
         })).subscribe();
     }
 
+    onDownloadCloudDisk(binary: Binary) {
+        if (binary.cloudDiskFile.code) {
+            confirm(`请复制密钥 ${binary.cloudDiskFile.code}`);
+        }
+
+        window.open(binary.cloudDiskFile.url, '_blank');
+    }
+
     onDelete(binary: Binary) {
         if (!confirm('确定要删除 ' + version2str(binary.version) + ' 吗?')) {
             return;

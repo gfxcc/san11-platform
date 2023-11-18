@@ -45,7 +45,7 @@ export class ThreadCardComponent implements OnInit {
           this.latestCommenter = resp;
         },
         error => {
-          console.log(`Failed to get user info: ${error.statusMessage}`);
+          this.notificationService.warn(`Failed to get user info: ${error.statusMessage}`);
         }
       );
     }

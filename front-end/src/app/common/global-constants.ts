@@ -6,7 +6,7 @@ export class GlobalConstants {
     public static san11ServerUrl: string = GlobalConstants.serverIp + ':8090';
     public static imgServerUrl: string = 'https://storage.googleapis.com/san11-resources';
 
-    public static maxBinarySize: number = 10 * 1024 * 1024 * 1024; // 10GB
+    public static maxBinarySize: number = 10 * 1024 * 1024; // 10MB
     public static maxImageSize: number = 10 * 1024 * 1024; // 10MB
 
     public static tmpBucket = 'san11-tmp';

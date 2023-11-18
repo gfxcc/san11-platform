@@ -4,7 +4,6 @@ import os
 from typing import Dict, List, Optional, Tuple
 
 import attrs
-
 from handler.model.base import ListOptions
 from handler.model.plugins.tracklifecycle import TrackLifecycle
 from handler.util.file_server import (BucketClass, FileServerType,
@@ -14,7 +13,7 @@ from ..protos import san11_platform_pb2 as pb
 from ..util.time_util import get_now
 from .base import (Attrib, DatetimeAttrib, DbConverter, InitModel, IntAttrib,
                    LegacyDatetimeProtoConverter, ModelBase, NestedAttrib,
-                   ProtoConverter, StrAttrib)
+                   NestedModel, ProtoConverter, StrAttrib)
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -62,49 +61,72 @@ class VersionDbConverter(DbConverter):
         return Version.from_str(db_value)
 
 
-@attrs.define(auto_attribs=True)
-class File:
-    ext: str
-    uri: str
-    filename: str = ''
-    url: str = ''
-    server: int = 0
+# @attrs.define(auto_attribs=True)
+# class File:
+#     ext: str
+#     uri: str
+#     filename: str = ''
+#     url: str = ''
+#     server: int = 0
 
 
-class FileProtoConverter(ProtoConverter):
-    def from_model(self, value: Optional[File]) -> Optional[pb.File]:
-        if value is None:
-            return None
-        return pb.File(
-            filename=value.filename,
-            ext=value.ext,
-            server=value.server,
-            uri=value.uri,
-            url=value.url,
-        )
+# class FileProtoConverter(ProtoConverter):
+#     def from_model(self, value: Optional[File]) -> Optional[pb.File]:
+#         if value is None:
+#             return None
+#         return pb.File(
+#             filename=value.filename,
+#             ext=value.ext,
+#             server=value.server,
+#             uri=value.uri,
+#             url=value.url,
+#         )
 
-    def to_model(self, proto_value: Optional[pb.File]) -> Optional[File]:
-        if proto_value is None:
-            return None
-        return File(
-            filename=proto_value.filename,
-            ext=proto_value.ext,
-            server=proto_value.server,
-            uri=proto_value.uri,
-            url=proto_value.url,
-        )
+#     def to_model(self, proto_value: Optional[pb.File]) -> Optional[File]:
+#         if proto_value is None:
+#             return None
+#         return File(
+#             filename=proto_value.filename,
+#             ext=proto_value.ext,
+#             server=proto_value.server,
+#             uri=proto_value.uri,
+#             url=proto_value.url,
+#         )
 
 
-class FileDbConverter(DbConverter):
-    def from_model(self, value: Optional[File]) -> Optional[Dict]:
-        if value is None:
-            return None
-        return attrs.asdict(value)
+# class FileDbConverter(DbConverter):
+#     def from_model(self, value: Optional[File]) -> Optional[Dict]:
+#         if value is None:
+#             return None
+#         return attrs.asdict(value)
 
-    def to_model(self, db_value: Optional[Dict]) -> Optional[File]:
-        if db_value is None:
-            return None
-        return File(**db_value)
+#     def to_model(self, db_value: Optional[Dict]) -> Optional[File]:
+#         if db_value is None:
+#             return None
+#         return File(**db_value)
+
+
+@InitModel(
+    db_table=None,
+    proto_class=pb.File,
+)
+@attrs.define
+class File(NestedModel):
+    ext: str = StrAttrib()
+    uri: str = StrAttrib()
+    filename: str = StrAttrib()
+    url: str = StrAttrib()
+    server: int = IntAttrib()
+
+
+@InitModel(
+    db_table=None,
+    proto_class=pb.CloudDiskFile
+)
+@attrs.define
+class CloudDiskFile(NestedModel):
+    url: str = StrAttrib()
+    code: str = StrAttrib()
 
 
 @InitModel(
@@ -126,13 +148,14 @@ class ModelBinary(TrackLifecycle, ModelBase):
     tag: str = StrAttrib()
     size: str = StrAttrib()
     # BEGINNING - OneOf field resource
-    # TODO: Migrate to `NestedAttrib`
-    file: File = Attrib(
-        proto_converter=FileProtoConverter(),
-        db_converter=FileDbConverter(),
+    file: File = NestedAttrib(
+        nested_type=File,
     )
     download_method: str = StrAttrib()
-    # END
+    cloud_disk_file: str = NestedAttrib(
+        nested_type=CloudDiskFile,
+    )
+    # END - OneOf field resource
     create_time: datetime.datetime = DatetimeAttrib(
         proto_converter=LegacyDatetimeProtoConverter(),
     )
@@ -141,6 +164,7 @@ class ModelBinary(TrackLifecycle, ModelBase):
     )
 
     def remove_resource(self) -> None:
+        logger.debug(f'Remove resource of {self.name}: {self}')
         if self.file:
             server = get_file_server(FileServerType(self.file.server))
             server.delete_file(BucketClass.REGULAR, self.file.uri)

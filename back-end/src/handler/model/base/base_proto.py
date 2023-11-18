@@ -123,6 +123,8 @@ class ProtoModelBase(ABC):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
                 continue
             model_value = getattr(self, attribute.name)
+            if model_value is None:
+                continue
             path = _get_proto_path(attribute)
             field_descriptor = proto_model.DESCRIPTOR.fields_by_name[path]
             proto_value = _attribute_to_proto(attribute, model_value)
@@ -169,6 +171,9 @@ def _attribute_from_pb(attribute: attrs.Attribute, proto_value: Any) -> Any:
         return [
             converter.to_model(item) for item in proto_value]
     else:
+        # To handle the case where proto field is not set.
+        if proto_value is None:
+            return None
         return converter.to_model(proto_value)
 
 
@@ -177,6 +182,8 @@ def _attribute_to_proto(attribute: attrs.Attribute, model_value: Any) -> Any:
     if attribute.metadata[base_core.REPEATED]:
         ret = [converter.from_model(v) for v in model_value]
     else:
+        if model_value is None:
+            return None
         ret = converter.from_model(model_value)
     return ret
 

@@ -8,9 +8,8 @@ from concurrent import futures
 from typing import Any, Callable
 
 import grpc
-from google.protobuf import message
-
 import iam_util
+from google.protobuf import message
 from handler.activity_handler import ActivityHandler
 from handler.admin_handler import AdminHandler
 from handler.article_handler import ArticleHandler

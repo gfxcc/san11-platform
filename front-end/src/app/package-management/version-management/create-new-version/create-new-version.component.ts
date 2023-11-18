@@ -1,13 +1,13 @@
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as S3 from 'aws-sdk/clients/s3';
 import { Subscription } from 'rxjs';
+import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { isAdmin } from 'src/app/utils/user_util';
 import { v4 as uuid } from 'uuid';
-import { Binary, CreateBinaryRequest, File, Version } from "../../../../proto/san11-platform.pb";
+import { Binary, CloudDiskFile, CreateBinaryRequest, File, Version } from "../../../../proto/san11-platform.pb";
 import * as Editor from "../../../common/components/ckeditor/ckeditor";
-import { LoadingComponent } from "../../../common/components/loading/loading.component";
 import { TextInputDialogComponent } from "../../../common/components/text-input-dialog/text-input-dialog.component";
 import { GlobalConstants } from "../../../common/global-constants";
 import { NotificationService } from "../../../common/notification.service";
@@ -32,6 +32,8 @@ export interface VersionData {
 })
 export class CreateNewVersionComponent implements OnInit {
   @ViewChild('createVersionForm') createForm: NgForm;
+  newBinaryForm: FormGroup;
+
   NEW_TAG_STR = '**新分支**';
   // inputs
   latestVersions: Version[];
@@ -82,7 +84,6 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   @HostListener('window:beforeunload', ['$event']) unloadHandler(event: Event) {
-    console.log('event:', event);
     event.returnValue = false;
   }
 
@@ -94,19 +95,19 @@ export class CreateNewVersionComponent implements OnInit {
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<CreateNewVersionComponent>,
     public uploadService: UploadService,
+    private fb: FormBuilder,
   ) {
     this.latestVersions = data.latestVersions;
     this.acceptFileType = data.acceptFileType;
     this.parent = data.parent;
     this.categoryId = data.categoryId;
-    this.tag = data.tag;
     this.tags = data.tags;
+    this.tag = data.tag;
     if (this.categoryId != '1') {
       this.tags.push(this.NEW_TAG_STR);
     }
-    this.latestVersion = this.latestVersions[this.tag];
+    this.latestVersion = this.latestVersions[data.tag];
 
-    console.log(this.tag);
 
     if (this.isFirstTimeUpload(this.latestVersion)) {
       this.updateType = 'custom';
@@ -115,6 +116,30 @@ export class CreateNewVersionComponent implements OnInit {
     }
 
     this.configDescEditor();
+
+    this.newBinaryForm = this.fb.group({
+      desc: ['', Validators.required],
+      cloudDiskFileUrl: [''],
+      cloudDiskFileCode: [''],
+      fileUploaded: [false] // Dummy form control for file validation
+    }, { validators: this.validateNewBinaryForm() });
+
+  }
+
+  validateNewBinaryForm(): ValidatorFn {
+    return (formGroup: FormGroup): ValidationErrors | null => {
+      if (this.desc === '') {
+        return { 'descMissing': true };
+      }
+
+      const cloudDiskFileUrl = formGroup.get('cloudDiskFileUrl').value;
+      const fileUploaded = formGroup.get('fileUploaded').value;
+      if (cloudDiskFileUrl === '' && fileUploaded === false) {
+        return { 'fileMissing': true };
+      }
+
+      return null;
+    };
   }
 
   ngOnInit(): void {
@@ -132,6 +157,12 @@ export class CreateNewVersionComponent implements OnInit {
   get showExperimentalRegion() {
     return isAdmin();
   }
+
+  get desc() {
+    return this.descEditor_element?.getData();
+  }
+
+
 
   // Desc-BEGIN
   configDescEditor() {
@@ -224,10 +255,12 @@ export class CreateNewVersionComponent implements OnInit {
 
     if (file === undefined) {
       this.file = undefined;
+      this.newBinaryForm.get('fileUploaded').setValue(false);
       return;
     } else if (file.size > GlobalConstants.maxBinarySize) {
       alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize / 1024 / 1024).toString() + 'MB');
       this.fileInputElement.nativeElement.value = '';
+      this.newBinaryForm.get('fileUploaded').setValue(false);
       return;
     } else {
       this.file = file;
@@ -265,8 +298,11 @@ export class CreateNewVersionComponent implements OnInit {
 
         this.updateProgress(upload);
 
-        if (upload.state === 'DONE' && this.autoCreateChecked) {
-          this.createForm.ngSubmit.emit();
+        if (upload.state === 'DONE') {
+          this.newBinaryForm.get('fileUploaded').setValue(true);
+          if (this.autoCreateChecked) {
+            this.onNewBinaryFormSubmit();
+          }
         }
       });
     } else {
@@ -299,8 +335,9 @@ export class CreateNewVersionComponent implements OnInit {
           return false;
         }
         this.upload.state = 'DONE';
+        this.newBinaryForm.get('fileUploaded').setValue(true);
         if (this.autoCreateChecked) {
-          this.createForm.ngSubmit.emit();
+          this.onNewBinaryFormSubmit();
         }
       });
     }
@@ -332,22 +369,31 @@ export class CreateNewVersionComponent implements OnInit {
     this.oldbytes = this.bytesReceied;
   }
 
-  onCreateBinary(createVersionForm) {
-    // Pattern for a tailing substring which start with `.` and does not contain `.` after the first char.
-    const re = /(?:(\.[^.]+))?$/;
-    const ext = re.exec(this.file.name)[1];
 
-    const binary: Binary = new Binary({
+  onNewBinaryFormSubmit() {
+
+    let binary: Binary = new Binary({
       version: this.newVersion,
-      description: createVersionForm.value.updateDesc,
+      description: this.desc,
       tag: this.tag,
-      file: new File({
+    });
+
+    if (this.newBinaryForm.value.cloudDiskFileUrl !== '') {
+      binary.cloudDiskFile = new CloudDiskFile({
+        url: this.newBinaryForm.value.cloudDiskFileUrl,
+        code: this.newBinaryForm.value.cloudDiskFileCode,
+      });
+    } else {
+      // Pattern for a tailing substring which start with `.` and does not contain `.` after the first char.
+      const re = /(?:(\.[^.]+))?$/;
+      const ext = re.exec(this.file.name)[1];
+      binary.file = new File({
         // filename is OUTPUT_ONLY
         ext: ext,
         uri: this.tmpUrl,
         server: this.useAwsS3 ? File.Server.AWS_S3 : File.Server.GCS,
-      }),
-    });
+      });
+    }
 
     const request = new CreateBinaryRequest({
       parent: this.parent,
@@ -475,7 +521,6 @@ export class CreateNewVersionComponent implements OnInit {
   onAutoCreateAfterUpload(event) {
     this.autoCreateChecked = event.checked;
     if (this.autoCreateChecked) {
-      console.log(this.descEditor_data);
       if (this.descEditor_element.getData() === '') {
         this.notificationService.warn('请输入 更新日志');
         setTimeout(() => {

@@ -12,7 +12,6 @@ from typing import (Any, Callable, Dict, Generic, Iterable, List, Optional,
                     Tuple, Type, TypeVar)
 
 import attrs
-
 from handler.model.base import base_proto
 from handler.util.name_util import ResourceName
 
@@ -110,8 +109,10 @@ class DbModelBase(ABC):
             if not attribute.metadata[base_core.IS_DB_FIELD]:
                 continue
             name, db_field_path = attribute.name, _get_db_path(attribute)
-            data[db_field_path] = _attribute_to_data(
+            field_value = _attribute_to_data(
                 attribute, getattr(self, name))
+            if field_value is not None:
+                data[db_field_path] = field_value
         # logger.debug(f'{type(self).__name__}.to_db({self}) -> {data}')
         return data
 
@@ -331,6 +332,8 @@ def _attribute_from_db(attribute: attrs.Attribute, value: Any):
         return [populate_default(converter.to_model(item), attribute.type)
                 for item in (value or [])]
     else:
+        if value is None:
+            return None
         return populate_default(converter.to_model(
             value), attribute.type)
 
@@ -341,6 +344,8 @@ def _attribute_to_data(attribute: attrs.Attribute, value: Any):
         return [converter.from_model(item)
                 for item in value]
     else:
+        if value is None:
+            return None
         return converter.from_model(value)
 
 

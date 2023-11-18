@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from "@angular/material/paginator";
-import { Binary, ListBinariesRequest, ListBinariesResponse, Package, Version as PbVersion } from "../../../../proto/san11-platform.pb";
+import { Binary, ListBinariesRequest, ListBinariesResponse, Package } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 import { BinaryService } from "../../../service/binary-service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
@@ -68,7 +68,7 @@ export class VersionPanelComponent implements OnInit {
     const selectedTab = this.branchs[this.tabSelectedIndex];
     let latestVersions = {};
     this.branchs.forEach(branch => {
-      latestVersions[branch.name] = branch.binaries.length > 0 ? branch.binaries[0].version : new PbVersion({ major: "1", minor: "-1", patch: "0" });
+      latestVersions[branch.name] = branch.binaries.length > 0 ? branch.binaries[0].version : null;
     });
     const categoryId = getCategoryId(this.package.name).toString();
     this.dialog.open(CreateNewVersionComponent, {

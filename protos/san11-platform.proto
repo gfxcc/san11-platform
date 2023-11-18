@@ -631,8 +631,10 @@ message Binary {
   oneof resource {
     File file = 13;
     string download_method = 14;
+    CloudDiskFile cloud_disk_file = 15;
   }
 }
+
 
 message User {
   string name = 1;
@@ -809,6 +811,11 @@ message File {
     // AWS S3
     AWS_S3 = 2;
   }
+}
+
+message CloudDiskFile {
+  string url = 1;
+  string code = 2;
 }
 
 message Subscription {

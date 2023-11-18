@@ -1739,6 +1739,7 @@ class Binary(google.protobuf.message.Message):
     UPDATE_TIME_FIELD_NUMBER: builtins.int
     FILE_FIELD_NUMBER: builtins.int
     DOWNLOAD_METHOD_FIELD_NUMBER: builtins.int
+    CLOUD_DISK_FILE_FIELD_NUMBER: builtins.int
     name: builtins.str
     download_count: builtins.int
     """int64 binary_id = 1;
@@ -1756,6 +1757,8 @@ class Binary(google.protobuf.message.Message):
     @property
     def file(self) -> global___File: ...
     download_method: builtins.str
+    @property
+    def cloud_disk_file(self) -> global___CloudDiskFile: ...
     def __init__(
         self,
         *,
@@ -1769,10 +1772,11 @@ class Binary(google.protobuf.message.Message):
         update_time: builtins.str = ...,
         file: global___File | None = ...,
         download_method: builtins.str = ...,
+        cloud_disk_file: global___CloudDiskFile | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["download_method", b"download_method", "file", b"file", "resource", b"resource", "version", b"version"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "description", b"description", "download_count", b"download_count", "download_method", b"download_method", "file", b"file", "name", b"name", "resource", b"resource", "size", b"size", "tag", b"tag", "update_time", b"update_time", "version", b"version"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["resource", b"resource"]) -> typing_extensions.Literal["file", "download_method"] | None: ...
+    def HasField(self, field_name: typing_extensions.Literal["cloud_disk_file", b"cloud_disk_file", "download_method", b"download_method", "file", b"file", "resource", b"resource", "version", b"version"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["cloud_disk_file", b"cloud_disk_file", "create_time", b"create_time", "description", b"description", "download_count", b"download_count", "download_method", b"download_method", "file", b"file", "name", b"name", "resource", b"resource", "size", b"size", "tag", b"tag", "update_time", b"update_time", "version", b"version"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["resource", b"resource"]) -> typing_extensions.Literal["file", "download_method", "cloud_disk_file"] | None: ...
 
 global___Binary = Binary
 
@@ -1784,7 +1788,7 @@ class User(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _UserTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[User._UserType.ValueType], builtins.type):
+    class _UserTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[User._UserType.ValueType], builtins.type):  # noqa: F821
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         USER_TYPE_UNSPECIFIED: User._UserType.ValueType  # 0
         ADMIN: User._UserType.ValueType  # 1
@@ -2258,7 +2262,7 @@ class File(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _ServerEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[File._Server.ValueType], builtins.type):
+    class _ServerEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[File._Server.ValueType], builtins.type):  # noqa: F821
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         SERVER_UNSPECIFIED: File._Server.ValueType  # 0
         GCS: File._Server.ValueType  # 1
@@ -2309,6 +2313,24 @@ class File(google.protobuf.message.Message):
 global___File = File
 
 @typing_extensions.final
+class CloudDiskFile(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    URL_FIELD_NUMBER: builtins.int
+    CODE_FIELD_NUMBER: builtins.int
+    url: builtins.str
+    code: builtins.str
+    def __init__(
+        self,
+        *,
+        url: builtins.str = ...,
+        code: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["code", b"code", "url", b"url"]) -> None: ...
+
+global___CloudDiskFile = CloudDiskFile
+
+@typing_extensions.final
 class Subscription(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
@@ -2352,7 +2374,7 @@ class LegacySubscription(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _SubscribeTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[LegacySubscription._SubscribeType.ValueType], builtins.type):
+    class _SubscribeTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[LegacySubscription._SubscribeType.ValueType], builtins.type):  # noqa: F821
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         SUBSCRIBE_TYPE_UNSPECIFIED: LegacySubscription._SubscribeType.ValueType  # 0
         ALL: LegacySubscription._SubscribeType.ValueType  # 1

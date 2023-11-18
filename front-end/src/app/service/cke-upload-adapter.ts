@@ -37,7 +37,7 @@ export class MyUploadAdapter {
                                     });
                                 },
                                 error => {
-                                    console.log(`Failed to uploadImage ${filename}: ${error.statusMessage}`)
+                                    console.warn(`Failed to uploadImage ${filename}: ${error.statusMessage}`)
                                 }
                             );
                         }

@@ -30,8 +30,6 @@ export class DiscussionComponent implements OnInit {
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
-    console.log(event);
-
     if (event.first < 0) {
       return;
     }
@@ -43,7 +41,6 @@ export class DiscussionComponent implements OnInit {
     })
     this.san11pkService.listThreads(request).subscribe(
       (resp: ListThreadsResponse) => {
-        console.log(resp);
         Array.prototype.splice.apply(this.virtualThreads, [
           ...[event.first, resp.threads.length],
           ...resp.threads
@@ -59,10 +56,9 @@ export class DiscussionComponent implements OnInit {
         }
         //trigger change detection
         this.virtualThreads = [...this.virtualThreads];
-        console.log(this.virtualThreads);
       },
       error => {
-        console.log(`获取讨论列表失败: ${error.statusMessage}.`);
+        this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`);
       }
     );
   }

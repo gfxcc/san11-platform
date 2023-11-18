@@ -17,7 +17,7 @@ export function getFileUrl(file: File): string {
             serverUrl = 'https://san11-resources.s3.ap-east-1.amazonaws.com';
             break;
         default:
-            console.log(`ERROR: unsupported File.Server: ${file.server}`);
+            console.warn(`ERROR: unsupported File.Server: ${file.server}`);
             break;
     }
     return `${serverUrl}/${file.uri}`;

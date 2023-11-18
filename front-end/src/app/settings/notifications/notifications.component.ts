@@ -33,8 +33,6 @@ export class NotificationsComponent implements OnInit {
   }
 
   updateSetting() {
-    console.log(this.user);
-
     const request = new UpdateUserRequest({
       user: this.user,
       updateMask: new FieldMask({

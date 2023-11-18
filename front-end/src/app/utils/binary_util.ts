@@ -29,7 +29,6 @@ function getExt(san11Package: Package, binary: Binary) {
         } else if (binary.tag === 'sire1') {
             extension = '.sirecm';
         } else {
-            console.log('unknow tag for sire plugin');
             extension = '.scp';
         }
     } else {

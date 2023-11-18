@@ -49,7 +49,6 @@ export class SubscriptionsComponent implements OnInit {
     })).subscribe(
       (resp: ListActivitiesResponse) => {
         this.activities = resp.activities;
-        console.log(this.activities);
       }, error => {
 
       }

@@ -47,6 +47,8 @@ class BinaryHandler(HandlerBase):
             file_server.move_file(BucketClass.TEMP, file.uri,
                                   BucketClass.REGULAR, canonical_uri)
             file.uri = canonical_uri
+        elif binary.cloud_disk_file:
+            ...
         elif binary.download_method:
             raise Unimplemented()
         else:

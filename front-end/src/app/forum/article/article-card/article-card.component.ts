@@ -84,7 +84,6 @@ export class ArticleCardComponent implements OnInit {
   }
 
   onClick() {
-    console.log(this.article.name.split('/'));
     this.router.navigate(this.article.name.split('/'));
   }
 

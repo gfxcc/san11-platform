@@ -349,8 +349,6 @@ export class PackageDetailComponent implements OnInit {
     let updateTags = this.package.tags;
     updateTags.push(newTag);
 
-    console.log(updateTags);
-
     const request = new UpdatePackageRequest({
       package: new Package({
         name: this.package.name,
