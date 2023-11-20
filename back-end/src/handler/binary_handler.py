@@ -97,11 +97,10 @@ class BinaryHandler(HandlerBase):
 
         binary.download_count += 1
         binary.update()
-
-        # Populate url for download.
-        file = binary.file
-        filename = f'{package.package_name}-{binary.version}{file.ext}'
-        binary.file.url = get_file_server(
-            FileServerType(file.server)).get_url(BucketClass.REGULAR, file.uri, filename)
-        logger.debug(binary.file.url)
+        if binary.file:
+            # Populate url for download.
+            file = binary.file
+            filename = f'{package.package_name}-{binary.version}{file.ext}'
+            binary.file.url = get_file_server(
+                FileServerType(file.server)).get_url(BucketClass.REGULAR, file.uri, filename)
         return binary

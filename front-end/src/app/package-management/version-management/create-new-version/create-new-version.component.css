@@ -21,8 +21,8 @@
     flex: 1 1 auto;
 }
 
-.upload-section {
-    margin-bottom: 10px;
+.file-section {
+    padding: .8rem;
 }
 
 .upload-section mat-button-wrapper {

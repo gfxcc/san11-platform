@@ -371,7 +371,6 @@ export class CreateNewVersionComponent implements OnInit {
 
 
   onNewBinaryFormSubmit() {
-
     let binary: Binary = new Binary({
       version: this.newVersion,
       description: this.desc,

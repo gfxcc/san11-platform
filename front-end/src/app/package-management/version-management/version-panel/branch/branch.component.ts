@@ -8,7 +8,6 @@ import { NotificationService } from "src/app/common/notification.service";
 import { DownloadService } from "src/app/service/download.service";
 import { San11PlatformServiceService } from "src/app/service/san11-platform-service.service";
 import { version2str } from "src/app/utils/binary_util";
-import { increment } from "src/app/utils/number_util";
 import { signedIn } from "src/app/utils/user_util";
 import { Binary, DeleteBinaryRequest, DownloadBinaryRequest, FieldMask, Package, UpdateBinaryRequest } from "src/proto/san11-platform.pb";
 
@@ -34,8 +33,6 @@ export class BranchComponent {
     displayedColumns: string[] = ['version', 'createTime', 'size', 'downloadCount', 'actions'];
     dataSource: MatTableDataSource<Binary>;
 
-
-    downloadProgress: number;
     startTime: any;
     endTime: any;
     currTime: any;
@@ -45,7 +42,6 @@ export class BranchComponent {
     oldbytes: number = 0;
     unit: string = "Mbps";
     speed: number = 0;
-
 
     constructor(
         private dialog: MatDialog,
@@ -107,38 +103,30 @@ export class BranchComponent {
             return;
         }
 
-        this.downloadProgress = 0;
         this.san11pkService.downloadBinary(new DownloadBinaryRequest({
             name: binary.name
-        })).subscribe(
-            binary => {
-                saveAs(binary.file.url, binary.file.filename);
+        })).subscribe({
+            next: (binary: Binary) => {
+                if (binary.file) {
+                    saveAs(binary.file.url, binary.file.filename);
+                } else if (binary.downloadMethod) {
+                    this.dialog.open(TextDialogComponent, {
+                        data: {
+                            title: '下载方式',
+                            content: binary.downloadMethod
+                        }
+                    });
+                } else if (binary.cloudDiskFile) {
+                    if (binary.cloudDiskFile.code) {
+                        confirm(`请复制密钥 ${binary.cloudDiskFile.code}`);
+                    }
+                    window.open(binary.cloudDiskFile.url, '_blank');
+                }
             },
-            error => {
-                this.notificationService.warn('下载失败' + error.statusMessage);
-            }
-        );
-    }
-
-    onDownloadMethod(binary: Binary) {
-        this.dialog.open(TextDialogComponent, {
-            data: {
-                title: '下载方式',
-                content: binary.downloadMethod
+            error: err => {
+                this.notificationService.warn('下载失败' + err.statusMessage);
             }
         });
-        binary.downloadCount = increment(binary.downloadCount);
-        this.san11pkService.downloadBinary(new DownloadBinaryRequest({
-            name: binary.name
-        })).subscribe();
-    }
-
-    onDownloadCloudDisk(binary: Binary) {
-        if (binary.cloudDiskFile.code) {
-            confirm(`请复制密钥 ${binary.cloudDiskFile.code}`);
-        }
-
-        window.open(binary.cloudDiskFile.url, '_blank');
     }
 
     onDelete(binary: Binary) {
