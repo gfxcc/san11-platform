@@ -106,8 +106,7 @@ export class CreateNewVersionComponent implements OnInit {
     if (this.categoryId != '1') {
       this.tags.push(this.NEW_TAG_STR);
     }
-    this.latestVersion = this.latestVersions[data.tag];
-
+    this.latestVersion = this.getLatestVersion(data.tag);
 
     if (this.isFirstTimeUpload(this.latestVersion)) {
       this.updateType = 'custom';
@@ -437,7 +436,7 @@ export class CreateNewVersionComponent implements OnInit {
 
             this.latestVersions[this.tag] = new Version({ major: "1", minor: "-1", patch: "0" });
 
-            this.latestVersion = this.latestVersions[this.tag];
+            this.latestVersion = this.getLatestVersion(this.tag);
             this.onVersionSelectorUpdate('custom');
           } else {
             this.tag = this.tags[0];
@@ -445,7 +444,7 @@ export class CreateNewVersionComponent implements OnInit {
         }
       );
     } else {
-      this.latestVersion = this.latestVersions[this.tag];
+      this.latestVersion = this.getLatestVersion(this.tag);
       this.onVersionSelectorUpdate('minor');
     }
   }
@@ -531,6 +530,13 @@ export class CreateNewVersionComponent implements OnInit {
 
   onUseAwsS3Toggled(event) {
     this.useAwsS3 = event.checked;
+  }
+
+  getLatestVersion(tag: string) {
+    if (this.latestVersions[tag] === null) {
+      this.latestVersions[tag] = new Version({ major: "1", minor: "-1", patch: "0" });
+    }
+    return this.latestVersions[tag];
   }
 }
 

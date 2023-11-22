@@ -660,6 +660,7 @@ message User {
     USER_TYPE_UNSPECIFIED = 0;
 
     // System maintainer
+
     ADMIN = 1;
     TESTER = 2;
 
