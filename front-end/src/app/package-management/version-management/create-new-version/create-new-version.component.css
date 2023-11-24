@@ -30,3 +30,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+:host ::ng-deep .ck-editor__editable_inline {
+    max-height: 500px;
+}
