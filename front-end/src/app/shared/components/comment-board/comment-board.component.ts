@@ -1,12 +1,12 @@
 import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { UploadService } from 'src/app/service/upload.service';
 import { getUserUri, signedIn } from 'src/app/utils/user_util';
 import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, ListCommentsResponse, ListUsersRequest, Package, User } from "../../../../proto/san11-platform.pb";
-import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { increment } from "../../../utils/number_util";

@@ -2,12 +2,12 @@ import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '
 import { FormBuilder, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as S3 from 'aws-sdk/clients/s3';
+import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { Subscription } from 'rxjs';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { isAdmin } from 'src/app/utils/user_util';
 import { v4 as uuid } from 'uuid';
 import { Binary, CloudDiskFile, CreateBinaryRequest, File, Version } from "../../../../proto/san11-platform.pb";
-import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { TextInputDialogComponent } from "../../../common/components/text-input-dialog/text-input-dialog.component";
 import { GlobalConstants } from "../../../common/global-constants";
 import { NotificationService } from "../../../common/notification.service";

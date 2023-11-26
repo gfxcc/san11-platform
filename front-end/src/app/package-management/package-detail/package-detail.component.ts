@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { ImageItem } from 'ng-gallery';
 import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
-import * as Editor from "../../common/components/ckeditor/ckeditor";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
 import { NotificationService } from "../../common/notification.service";
@@ -329,11 +330,15 @@ export class PackageDetailComponent implements OnInit {
     }
   }
 
-  onDescEditorReady(event) {
-    this.descEditor_element = event;
-    event.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+  onDescEditorReady(editor: DecoupledEditor) {
+    this.descEditor_element = editor;
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, getPackageUrl(this.package));
     };
+    if (this.descEditor_disabled) {
+      const toolbarElement = editor.ui.view.toolbar.element;
+      toolbarElement.style.display = 'none';
+    }
   }
 
   onDescEditorChange(event) {

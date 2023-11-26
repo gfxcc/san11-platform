@@ -2,6 +2,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
@@ -10,7 +11,6 @@ import { UploadService } from 'src/app/service/upload.service';
 import { getAge } from 'src/app/utils/time_util';
 import { getUserUri, isAdmin, loadUser } from 'src/app/utils/user_util';
 import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ListUsersRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
-import * as Editor from "../../../../common/components/ckeditor/ckeditor";
 
 
 

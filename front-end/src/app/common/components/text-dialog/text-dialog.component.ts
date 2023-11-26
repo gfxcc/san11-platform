@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as Editor from "../../../common/components/ckeditor/ckeditor";
+import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 
 
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';

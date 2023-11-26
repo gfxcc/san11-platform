@@ -2,10 +2,10 @@ import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { CreateThreadRequest, Thread } from 'src/proto/san11-platform.pb';
-import * as Editor from "../../../../common/components/ckeditor/ckeditor";
 
 
 export interface CreateThreadArgs {

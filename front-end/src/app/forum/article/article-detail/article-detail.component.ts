@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
+import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
@@ -9,7 +10,6 @@ import { UploadService } from 'src/app/service/upload.service';
 import { getAge } from 'src/app/utils/time_util';
 import { getUserUri, isAdmin, loadUser } from 'src/app/utils/user_util';
 import { Article, DeleteArticleRequest, GetUserRequest, ListUsersRequest, ResourceState, UpdateArticleRequest, User } from 'src/proto/san11-platform.pb';
-import * as Editor from "../../../common/components/ckeditor/ckeditor";
 
 @Component({
   selector: 'app-article-detail',

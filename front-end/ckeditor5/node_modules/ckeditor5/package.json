@@ -1,0 +1,55 @@
+{
+  "name": "ckeditor5",
+  "version": "40.1.0",
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "ckeditor 5",
+    "wysiwyg",
+    "rich text",
+    "editor",
+    "html",
+    "contentEditable",
+    "editing",
+    "operational transformation",
+    "ot",
+    "collaboration",
+    "collaborative",
+    "real-time",
+    "framework"
+  ],
+  "description": "A set of ready-to-use rich text editors created with a powerful framework. Made with real-time collaborative editing in mind.",
+  "dependencies": {
+    "@ckeditor/ckeditor5-clipboard": "40.1.0",
+    "@ckeditor/ckeditor5-core": "40.1.0",
+    "@ckeditor/ckeditor5-engine": "40.1.0",
+    "@ckeditor/ckeditor5-enter": "40.1.0",
+    "@ckeditor/ckeditor5-paragraph": "40.1.0",
+    "@ckeditor/ckeditor5-select-all": "40.1.0",
+    "@ckeditor/ckeditor5-typing": "40.1.0",
+    "@ckeditor/ckeditor5-ui": "40.1.0",
+    "@ckeditor/ckeditor5-undo": "40.1.0",
+    "@ckeditor/ckeditor5-upload": "40.1.0",
+    "@ckeditor/ckeditor5-utils": "40.1.0",
+    "@ckeditor/ckeditor5-watchdog": "40.1.0",
+    "@ckeditor/ckeditor5-widget": "40.1.0"
+  },
+  "author": "CKSource (http://cksource.com/)",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://ckeditor.com/ckeditor-5",
+  "bugs": "https://github.com/ckeditor/ckeditor5/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/ckeditor5.git"
+  },
+  "files": [
+    "src/*.js",
+    "src/*.d.ts",
+    "build/ckeditor5-dll.js",
+    "build/ckeditor5-dll.manifest.json",
+    "build/translations/*.js",
+    "CHANGELOG.md",
+    "LICENSE.md",
+    "README.md"
+  ]
+}

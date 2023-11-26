@@ -1,10 +1,10 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { getAge } from 'src/app/utils/time_util';
 import { Comment, CreateReplyRequest, DeleteCommentRequest, FieldMask, GetUserRequest, Reply, UpdateCommentRequest, User } from "../../../../proto/san11-platform.pb";
-import * as Editor from "../../../common/components/ckeditor/ckeditor";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { isAdmin } from '../../../utils/user_util';
