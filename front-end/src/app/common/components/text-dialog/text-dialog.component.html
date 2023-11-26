@@ -2,12 +2,16 @@
     <h3 style="margin-top: 0px;">{{this.title}}</h3>
 
     <div class="show-border" style="margin-bottom: 10px;">
-        <ckeditor [data]="this.descEditor_data" [editor]="descEditor" [disabled]="!this.editable" (ready)="onDescEditorReady($event)" [config]="this.descEditor_config"></ckeditor>
+        <ckeditor [data]="this.content" [editor]="this.editorService.getEditorInstance()"
+            [config]="this.editorService.getConfig()" [disabled]="!this.editable" 
+            (ready)="this.editorService.onReady($event)">
+        </ckeditor>
     </div>
 
     <div style="display:inline-flex; width: 100%;">
         <span class="example-spacer"></span>
-        <button *ngIf="this.editable" mat-stroked-button mat-dialog-close color="accent" style="margin-right: 5px">取消</button>
+        <button *ngIf="this.editable" mat-stroked-button mat-dialog-close color="accent"
+            style="margin-right: 5px">取消</button>
         <button mat-stroked-button color="primary" (click)="this.onConfirm()">确认</button>
     </div>
 

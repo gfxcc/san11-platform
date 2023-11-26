@@ -1,15 +1,13 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
-import * as Editor from "ckeditor5-custom-build/build/ckeditor";
-import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
-import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
+import { EditorService } from 'src/app/service/editor.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { getAge } from 'src/app/utils/time_util';
-import { getUserUri, isAdmin, loadUser } from 'src/app/utils/user_util';
-import { Article, DeleteArticleRequest, GetUserRequest, ListUsersRequest, ResourceState, UpdateArticleRequest, User } from 'src/proto/san11-platform.pb';
+import { isAdmin, loadUser } from 'src/app/utils/user_util';
+import { Article, DeleteArticleRequest, GetUserRequest, ResourceState, UpdateArticleRequest, User } from 'src/proto/san11-platform.pb';
 
 @Component({
   selector: 'app-article-detail',
@@ -22,13 +20,7 @@ export class ArticleDetailComponent implements OnInit {
   article: Article;
   user: User;
 
-
-  descEditor = Editor;
-  descEditor_data: string;
-  descEditor_element;
   descEditor_updated = false;
-  descEditor_disabled = true;
-  descEditor_config;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +28,7 @@ export class ArticleDetailComponent implements OnInit {
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private uploadService: UploadService,
+    public editorService: EditorService,
   ) { }
 
   ngOnInit(): void {
@@ -46,7 +39,7 @@ export class ArticleDetailComponent implements OnInit {
       }
     );
 
-    this.configDescEditor();
+    this.editorService.configEditor(!this.isAuthor(), this.article.name);
   }
 
   ngAfterViewInit(): void {
@@ -69,102 +62,9 @@ export class ArticleDetailComponent implements OnInit {
     }
   }
 
-
-  configDescEditor() {
-    this.descEditor_data = this.article.content;
-    this.descEditor_disabled = !this.isAuthor();
-    this.descEditor_config = {
-      placeholder: `
-      ...起
-      ...承
-      ...转
-      ...合
-      `,
-      toolbar: {
-        items: [
-          'heading',
-          '|',
-          'fontColor',
-          'bold',
-          'italic',
-          'underline',
-          'blockQuote',
-          'code',
-          'link',
-          '|',
-          'bulletedList',
-          'numberedList',
-          'todoList',
-          'horizontalLine',
-          '|',
-          'outdent',
-          'indent',
-          'alignment',
-          '|',
-          'imageUpload', // comment out this function as current implement will cause performance issue 
-          'codeBlock',
-          'insertTable',
-          'undo',
-          'redo'
-        ]
-      },
-      language: 'zh-cn',
-      image: {
-        toolbar: [
-          'imageStyle:full',
-          'imageStyle:side',
-        ]
-      },
-      table: {
-        contentToolbar: [
-          'tableColumn',
-          'tableRow',
-          'mergeTableCells',
-          'tableCellProperties',
-          'tableProperties'
-        ]
-      },
-      mention: {
-        feeds: [
-          {
-            marker: '@',
-            feed: this.getUsernameFeedItems.bind(this),
-            minimumCharacters: 1,
-          }
-        ]
-      },
-      licenseKey: '',
-    };
-  }
-
-  getUsernameFeedItems(queryText: string) {
-    return this.san11pkService.listUsers(new ListUsersRequest({
-      pageSize: GlobalConstants.usernameFeedPageSize.toString(),
-      filter: `username = "*${queryText}*"`
-    })).toPromise().then(function (result) {
-      return result.users.map(
-        (user: User) => ({
-          id: `@${user.username}`,
-          userId: user.userId,
-          username: user.username,
-          link: getUserUri(user),
-        })
-      );
-    });
-  }
-
-  onDescEditorReady(event) {
-    this.descEditor_element = event;
-    event.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.article.name);
-    };
-  }
-
-
   onDescEditorChange(event) {
     this.descEditor_updated = true;
   }
-
 
   loadUser() {
     this.san11pkService.getUser(new GetUserRequest({
@@ -219,7 +119,7 @@ export class ArticleDetailComponent implements OnInit {
   }
 
   onUpdate() {
-    const updateContent = this.descEditor_element.getData();
+    const updateContent = this.editorService.getData();
     const updatedSubject = this.articleSubjectElement.nativeElement.innerHTML;
 
     if (updateContent != undefined) {

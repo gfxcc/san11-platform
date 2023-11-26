@@ -1,14 +1,12 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { ImageItem } from 'ng-gallery';
-import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, ListUsersRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { EditorService } from 'src/app/service/editor.service';
+import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
 import { NotificationService } from "../../common/notification.service";
-import { MyUploadAdapter } from '../../service/cke-upload-adapter';
 import { EventEmiterService } from "../../service/event-emiter.service";
 import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
 import { UploadService } from '../../service/upload.service';
@@ -46,14 +44,9 @@ export class PackageDetailComponent implements OnInit {
   adminZone = false;
   authorZone = false;
 
-  descEditor = Editor;
-  descEditor_element;
-  descEditor_disabled = true;
   descEditor_updated = false;
-  descEditor_data: string;
-  descEditor_config;
   descEditor_onFocus = false;
-  userFeeds;
+
   allTags: Tag[];
   tagCanEdit: boolean;
 
@@ -74,6 +67,7 @@ export class PackageDetailComponent implements OnInit {
     private _eventEmiter: EventEmiterService,
     private cd: ChangeDetectorRef,
     private uploadService: UploadService,
+    public editorService: EditorService,
   ) {
   }
 
@@ -140,147 +134,15 @@ export class PackageDetailComponent implements OnInit {
   }
 
   configDescEditor() {
-    this.descEditor_data = this.package.description;
-    this.descEditor_disabled = !this.isAuthor();
-    this.descEditor_config = {
-      placeholder: '请添加描述...',
-      toolbar: {
-        items: [
-          'heading',
-          '|',
-          'fontColor',
-          'bold',
-          'italic',
-          'underline',
-          'blockQuote',
-          'code',
-          'link',
-          '|',
-          'bulletedList',
-          'numberedList',
-          'todoList',
-          'horizontalLine',
-          '|',
-          'outdent',
-          'indent',
-          'alignment',
-          '|',
-          'imageUpload', // comment out this function as current implement will cause performance issue 
-          'codeBlock',
-          'insertTable',
-          'undo',
-          'redo'
-        ]
-      },
-      language: 'zh-cn',
-      image: {
-        toolbar: [
-          'imageStyle:full',
-          'imageStyle:side',
-        ]
-      },
-      table: {
-        contentToolbar: [
-          'tableColumn',
-          'tableRow',
-          'mergeTableCells',
-          'tableCellProperties',
-          'tableProperties'
-        ]
-      },
-      mention: {
-        feeds: [
-          {
-            marker: '@',
-            feed: this.getUsernameFeedItems.bind(this),
-            minimumCharacters: 1,
-          }
-        ]
-      },
-      licenseKey: '',
-    };
+    this.editorService.configEditor(!this.isAuthor(), this.package.name);
   }
 
-  getUsernameFeedItems(queryText: string) {
-    return this.san11pkService.listUsers(new ListUsersRequest({
-      pageSize: GlobalConstants.usernameFeedPageSize.toString(),
-      filter: `username = "*${queryText}*"`
-    })).toPromise().then(function (result) {
-      return result.users.map(
-        (user: User) => ({
-          id: `@${user.username}`,
-          userId: user.userId,
-          username: user.username,
-          link: getUserUri(user),
-        })
-      );
-    });
+  onDescEditorChange(event) {
+    this.descEditor_updated = true;
   }
-
-  MentionCustomization(editor) {
-    // The upcast converter will convert view <a class="mention" href="" data-user-id="">
-    // elements to the model 'mention' text attribute.
-    editor.conversion.for('upcast').elementToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-mention',
-        classes: 'mention',
-        attributes: {
-          href: true,
-          'data-user-id': true
-        }
-      },
-      model: {
-        key: 'mention',
-        value: viewItem => {
-          // The mention feature expects that the mention attribute value
-          // in the model is a plain object with a set of additional attributes.
-          // In order to create a proper object use the toMentionAttribute() helper method:
-          const mentionAttribute = editor.plugins.get('Mention').toMentionAttribute(viewItem, {
-            // Add any other properties that you need.
-            link: viewItem.getAttribute('href'),
-            userId: viewItem.getAttribute('data-user-id')
-          });
-
-          return mentionAttribute;
-        }
-      },
-      converterPriority: 'high'
-    });
-
-    // Downcast the model 'mention' text attribute to a view <a> element.
-    editor.conversion.for('downcast').attributeToElement({
-      model: 'mention',
-      view: (modelAttributeValue, { writer }) => {
-        // Do not convert empty attributes (lack of value means no mention).
-        if (!modelAttributeValue) {
-          return;
-        }
-
-        return writer.createAttributeElement('a', {
-          class: 'mention',
-          'data-mention': modelAttributeValue.id,
-          'data-user-id': modelAttributeValue.userId,
-          'href': modelAttributeValue.link
-        }, {
-          // Make mention attribute to be wrapped by other attribute elements.
-          priority: 20,
-          // Prevent merging mentions together.
-          id: modelAttributeValue.uid
-        });
-      },
-      converterPriority: 'high'
-    });
-  }
-
-  //
-  // Editor-END
-  //
 
   onUpdateTitle() {
     const updatedPackageName = this.packageNameElement.nativeElement.innerHTML;
-    const newPackage = new Package({
-    });
     const request = new UpdatePackageRequest({
       package: new Package({
         name: this.package.name,
@@ -303,7 +165,7 @@ export class PackageDetailComponent implements OnInit {
   }
 
   onUpdateDesc() {
-    const newDesc = this.descEditor_element.getData();
+    const newDesc = this.editorService.getData();
 
     if (newDesc != undefined) {
       const request = new UpdatePackageRequest({
@@ -330,20 +192,6 @@ export class PackageDetailComponent implements OnInit {
     }
   }
 
-  onDescEditorReady(editor: DecoupledEditor) {
-    this.descEditor_element = editor;
-    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, getPackageUrl(this.package));
-    };
-    if (this.descEditor_disabled) {
-      const toolbarElement = editor.ui.view.toolbar.element;
-      toolbarElement.style.display = 'none';
-    }
-  }
-
-  onDescEditorChange(event) {
-    this.descEditor_updated = true;
-  }
 
   newTagSelected(newTag: Tag) {
     for (const tag of this.package.tags) {

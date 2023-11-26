@@ -2,17 +2,13 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as Editor from "ckeditor5-custom-build/build/ckeditor";
-import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
-import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
+import { EditorService } from 'src/app/service/editor.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { getAge } from 'src/app/utils/time_util';
-import { getUserUri, isAdmin, loadUser } from 'src/app/utils/user_util';
-import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ListUsersRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
-
-
+import { isAdmin, loadUser } from 'src/app/utils/user_util';
+import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
 
 export interface Fruit {
   name: string;
@@ -30,26 +26,13 @@ export class ThreadDetailComponent implements OnInit {
 
   rootComment: Comment;
 
-
-  descEditor = Editor;
-  descEditor_data: string;
-  descEditor_element;
   descEditor_updated = false;
-  descEditor_disabled = true;
   descEditor_onFocus = false;
-  descEditor_config;
-  userFeeds;
 
   selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
-  fruits: Fruit[] = [
-    { name: 'Lemon' },
-    { name: 'Lime' },
-    { name: 'Apple' },
-  ];
-
 
   constructor(
     private route: ActivatedRoute,
@@ -57,9 +40,11 @@ export class ThreadDetailComponent implements OnInit {
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private uploadService: UploadService,
+    public editorService: EditorService,
   ) { }
 
   ngOnInit(): void {
+    // TODO: use resolver to load data
     this.route.data.subscribe(
       (data) => {
         this.thread = data.thread;
@@ -83,7 +68,7 @@ export class ThreadDetailComponent implements OnInit {
           }
         });
 
-        this.configDescEditor();
+        this.editorService.configEditor(!this.isAuthor(), this.thread.name);
         this.configTags();
       }
     );
@@ -105,132 +90,9 @@ export class ThreadDetailComponent implements OnInit {
     this.removable = this.isAdmin() || this.isAuthor();
   }
 
-  configDescEditor() {
-    this.descEditor_data = this.thread.content;
-    this.descEditor_disabled = !this.isAuthor();
-    if (!this.descEditor_disabled) {
-      // this.preloadUserFeeds();
-    }
-    this.descEditor_config = {
-      placeholder: `
-      ...编辑帖子
-      `,
-      toolbar: {
-        items: [
-          'heading',
-          '|',
-          'fontColor',
-          'bold',
-          'italic',
-          'underline',
-          'blockQuote',
-          'code',
-          'link',
-          '|',
-          'bulletedList',
-          'numberedList',
-          'todoList',
-          'horizontalLine',
-          '|',
-          'outdent',
-          'indent',
-          'alignment',
-          '|',
-          'imageUpload', // comment out this function as current implement will cause performance issue 
-          'codeBlock',
-          'insertTable',
-          'undo',
-          'redo'
-        ]
-      },
-      language: 'zh-cn',
-      image: {
-        toolbar: [
-          'imageStyle:full',
-          'imageStyle:side',
-        ]
-      },
-      table: {
-        contentToolbar: [
-          'tableColumn',
-          'tableRow',
-          'mergeTableCells',
-          'tableCellProperties',
-          'tableProperties'
-        ]
-      },
-      mention: {
-        feeds: [
-          {
-            marker: '@',
-            feed: this.getUsernameFeedItems.bind(this),
-            minimumCharacters: 1,
-          }
-        ]
-      },
-      licenseKey: '',
-    };
-  }
-
-  onDescEditorReady(event) {
-    this.descEditor_element = event;
-    event.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.thread.name);
-    };
-  }
-
   onDescEditorChange(event) {
     this.descEditor_updated = true;
   }
-
-  getUsernameFeedItems(queryText: string) {
-    return this.san11pkService.listUsers(new ListUsersRequest({
-      pageSize: GlobalConstants.usernameFeedPageSize.toString(),
-      filter: `username = "*${queryText}*"`
-    })).toPromise().then(function (result) {
-      return result.users.map(
-        (user: User) => ({
-          id: `@${user.username}`,
-          userId: user.userId,
-          username: user.username,
-          link: getUserUri(user),
-        })
-      );
-    });
-  }
-
-  MentionCustomization(editor) {
-    // The upcast converter will convert view <a class="mention" href="" data-user-id="">
-    // elements to the model 'mention' text attribute.
-    editor.conversion.for('upcast').elementToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-mention',
-        classes: 'mention',
-        attributes: {
-          href: true,
-          'data-user-id': true
-        }
-      },
-      model: {
-        key: 'mention',
-        value: viewItem => {
-          // The mention feature expects that the mention attribute value
-          // in the model is a plain object with a set of additional attributes.
-          // In order to create a proper object use the toMentionAttribute() helper method:
-          const mentionAttribute = editor.plugins.get('Mention').toMentionAttribute(viewItem, {
-            // Add any other properties that you need.
-            link: viewItem.getAttribute('href'),
-            userId: viewItem.getAttribute('data-user-id')
-          });
-
-          return mentionAttribute;
-        }
-      },
-      converterPriority: 'high'
-    });
-  }
-
 
   togglePin() {
     this.san11pkService.updateThread(new UpdateThreadRequest({
@@ -297,7 +159,7 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   onUpdate() {
-    const updateContent = this.descEditor_element.getData();
+    const updateContent = this.editorService.getData();
 
     if (updateContent != undefined) {
       this.san11pkService.updateThread(new UpdateThreadRequest({

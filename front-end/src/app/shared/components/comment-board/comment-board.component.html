@@ -7,8 +7,7 @@
             排序方式
         </button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item
-                (click)="this.loadComments(&quot;create_time&quot;)">
+            <button mat-menu-item (click)="this.loadComments(&quot;create_time&quot;)">
                 <span>创建先后</span>
             </button>
             <button mat-menu-item (click)="this.loadComments(&quot;create_time
@@ -22,36 +21,25 @@
     </div>
 
     <div class="header">
-        <div *ngIf="!this.sendCommentLoading"
-            style="width:100%; display: flex">
+        <div *ngIf="!this.sendCommentLoading" style="width:100%; display: flex">
             <div mat-card-avatar class="author-image">
                 <img [hidden]="this.hideAuthorImage" [src]="this.authorImage
                     |
-                    fullUrl : '256_256'"
-                    (load)="this.hideAuthorImage= false;"
-                    class="author-image">
+                    fullUrl : '256_256'" (load)="this.hideAuthorImage= false;" class="author-image">
             </div>
             <div class="right">
                 <div class="radius-border shadow-border">
                     <ckeditor class="editor" [data]="this.descEditor_data"
-                        [editor]="descEditor"
-                        (ready)="onDescEditorReady($event)"
-                        (focus)="descEditor_onFocus=true;
-                        this.hideCommentEditor=false"
-                        (blur)="descEditor_onFocus=false"
-                        (change)="onDescEditorChange($event)"
-                        [disabled]="this.descEditor_disabled"
-                        [config]="this.descEditor_config"></ckeditor>
+                        [editor]="this.editorService.getEditorInstance()" [config]="this.editorService.getConfig()"
+                        (ready)="this.editorService.onReady($event)" (focus)="descEditor_onFocus=true;
+                        this.hideCommentEditor=false" (blur)="descEditor_onFocus=false"
+                        [disabled]="this.editorService.disabled"></ckeditor>
                 </div>
                 <div class="actions-section" *ngIf="!disableInput &&
                     this.isEdited">
                     <span class="example-spacer"></span>
-                    <button style="margin-left: 5px;" mat-button
-                        color="grey"
-                        (click)="onCancel()">取消</button>
-                    <button style="margin-left: 5px;" type="submit"
-                        mat-stroked-button color="primary"
-                        [disabled]="this.descEditor_element?.getData() ==
+                    <button style="margin-left: 5px;" mat-button color="grey" (click)="onCancel()">取消</button>
+                    <button style="margin-left: 5px;" type="submit" mat-stroked-button color="primary" [disabled]="this.descEditor_element?.getData() ==
                         &quot;&quot;" (click)="onCreateComment()">确定</button>
                 </div>
             </div>
@@ -66,8 +54,7 @@
         </app-comment-card> -->
         <ng-container *ngFor="let comment of this.comments">
             <app-comment-card id="comment-{{comment.index}}" [comment]="comment"
-                [resourceOwnerId]="this.resourceOwnerId"
-                (commentDeleteEvent)="onCommentDelete($event)"
+                [resourceOwnerId]="this.resourceOwnerId" (commentDeleteEvent)="onCommentDelete($event)"
                 (replyCreateEvent)="onReplyCreate($event)"></app-comment-card>
             <!-- <div id="comment-{{comment.index}}">hi</div> -->
         </ng-container>

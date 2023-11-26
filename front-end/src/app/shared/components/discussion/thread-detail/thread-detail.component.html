@@ -10,8 +10,7 @@
         <div class="main">
             <div class="author-section">
                 <img [hidden]="this.hideUserImage" [src]="this.user?.imageUrl |
-                    fullUrl : '128_128'"
-                    (load)="this.hideUserImage= false;" class="author-image">
+                    fullUrl : '128_128'" (load)="this.hideUserImage= false;" class="author-image">
             </div>
 
             <div class="right radius-border shadow-border">
@@ -21,14 +20,12 @@
                         <span class="create-time">{{getAge()}}</span>
                     </div>
                     <div>
-                        <ckeditor class="editor" [data]="this.descEditor_data"
-                            [editor]="descEditor"
-                            (ready)="onDescEditorReady($event)"
-                            (focus)="descEditor_onFocus=true"
-                            (blur)="descEditor_onFocus=false"
-                            (change)="onDescEditorChange($event)"
-                            [disabled]="this.descEditor_disabled"
-                            [config]="this.descEditor_config"></ckeditor>
+                        <ckeditor class="editor" [data]="this.thread.content"
+                            [editor]="this.editorService.getEditorInstance()"
+                            (ready)="this.editorService.onReady($event)" (focus)="descEditor_onFocus=true"
+                            (blur)="descEditor_onFocus=false" (change)="onDescEditorChange($event)"
+                            [disabled]="!this.isAuthor()" [config]="this.editorService.getConfig()">
+                        </ckeditor>
                     </div>
 
                 </div>
@@ -36,16 +33,13 @@
                 <mat-form-field class="tag-list" appearance="fill">
                     <mat-label>标签</mat-label>
                     <mat-chip-list #chipList aria-label="Fruit selection">
-                        <mat-chip *ngFor="let tag of this.thread.tags"
-                            [selectable]="selectable" [removable]="removable"
+                        <mat-chip *ngFor="let tag of this.thread.tags" [selectable]="selectable" [removable]="removable"
                             (removed)="remove(tag)">
                             {{tag}}
                             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                         </mat-chip>
-                        <input *ngIf="removable" placeholder="新标签"
-                            [matChipInputFor]="chipList"
-                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                            [matChipInputAddOnBlur]="addOnBlur"
+                        <input *ngIf="removable" placeholder="新标签" [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
                             (matChipInputTokenEnd)="add($event)">
                     </mat-chip-list>
                 </mat-form-field>
@@ -54,25 +48,22 @@
         </div>
 
         <div *ngIf="(isAdmin() || isAuthor())" class="control-section">
-            <button class="button" mat-stroked-button color="warn"
-                (click)="onDelete()">删除</button>
-            <button class="button" mat-stroked-button color="warn"
-                (click)="onFlipState()">{{thread.state===3? '发布' : '隐藏'}}</button>
-            <button class="button" mat-stroked-button color="primary"
-                *ngIf="isAdmin()" (click)="togglePin()">{{thread.pinned===true?
+            <button class="button" mat-stroked-button color="warn" (click)="onDelete()">删除</button>
+            <button class="button" mat-stroked-button color="warn" (click)="onFlipState()">{{thread.state===3? '发布' :
+                '隐藏'}}</button>
+            <button class="button" mat-stroked-button color="primary" *ngIf="isAdmin()"
+                (click)="togglePin()">{{thread.pinned===true?
                 '取消置顶' : '置顶'}}</button>
 
             <span class="example-spacer"></span>
 
-            <button *ngIf="this.descEditor_updated" mat-stroked-button
-                color="primary" (click)="onUpdate()">更新</button>
+            <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdate()">更新</button>
         </div>
 
         <mat-divider></mat-divider>
 
 
-        <app-comment-board [parent]="this.thread.name"
-            [resourceOwnerId]="this.thread.authorId"
+        <app-comment-board [parent]="this.thread.name" [resourceOwnerId]="this.thread.authorId"
             commentsOrder="create_time"></app-comment-board>
     </div>
 </div>

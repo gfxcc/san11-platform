@@ -240,14 +240,15 @@
                         [class.desc-folded]="descFolded && !descEditor_updated"
                         [class.desc-full]="!(descFolded &&
                         !descEditor_updated)">
-                        <ckeditor #description [data]="this.descEditor_data"
-                            [editor]="descEditor"
-                            (ready)="onDescEditorReady($event)"
+                        <ckeditor #description [data]="this.package.description"
+                            [editor]="this.editorService.getEditorInstance()"
+                            (ready)="this.editorService.onReady($event)"
+                            [disabled]="this.editorService.disabled"
+                            [config]="this.editorService.getConfig()"
+                            (change)="onDescEditorChange($event)"
                             (focus)="descEditor_onFocus=true"
                             (blur)="descEditor_onFocus=false"
-                            (change)="onDescEditorChange($event)"
-                            [disabled]="this.descEditor_disabled"
-                            [config]="this.descEditor_config"></ckeditor>
+                            ></ckeditor>
                     </div>
                     <div *ngIf="!descEditor_updated">
                         <span id="more-button" *ngIf="descFolded"

@@ -1,9 +1,9 @@
 import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
+import { EditorService } from 'src/app/service/editor.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { getUserUri, signedIn } from 'src/app/utils/user_util';
 import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, ListCommentsResponse, ListUsersRequest, Package, User } from "../../../../proto/san11-platform.pb";
@@ -38,11 +38,8 @@ export class CommentBoardComponent implements OnInit {
 
   sendCommentLoading = false;
 
-  descEditor = Editor;
   descEditor_data: string;
   descEditor_element;
-  descEditor_disabled = true;
-  descEditor_config;
   descEditor_onFocus = false;
 
   private destroy$ = new Subject<void>();
@@ -54,6 +51,7 @@ export class CommentBoardComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private elementRef: ElementRef,
     private renderer: Renderer2,
+    public editorService: EditorService,
   ) {
 
     this.authorId = localStorage.getItem('userId');
@@ -125,89 +123,14 @@ export class CommentBoardComponent implements OnInit {
 
   configDescEditor() {
     this.descEditor_data = this.disableInput ? this.inputPlaceHolder : '';
-    this.descEditor_disabled = this.disableInput;
-    this.descEditor_config = {
-      placeholder: this.inputPlaceHolder,
-      toolbar: {
-        items: [
-          'heading',
-          '|',
-          'fontColor',
-          'bold',
-          'italic',
-          'underline',
-          'blockQuote',
-          'code',
-          'link',
-          '|',
-          'bulletedList',
-          'numberedList',
-          'todoList',
-          'horizontalLine',
-          '|',
-          'outdent',
-          'indent',
-          'alignment',
-          '|',
-          'imageUpload', // comment out this function as current implement will cause performance issue 
-          'codeBlock',
-          'insertTable',
-          'undo',
-          'redo'
-        ]
-      },
-      language: 'zh-cn',
-      image: {
-        toolbar: [
-          'imageStyle:full',
-          'imageStyle:side',
-        ]
-      },
-      table: {
-        contentToolbar: [
-          'tableColumn',
-          'tableRow',
-          'mergeTableCells',
-          'tableCellProperties',
-          'tableProperties'
-        ]
-      },
-      mention: {
-        feeds: [
-          {
-            marker: '@',
-            feed: this.getUsernameFeedItems.bind(this),
-            minimumCharacters: 1,
-          },
-          // {
-          //   marker: '#',
-          //   feed: [
-          //     '#american', '#asian', '#baking', '#breakfast', '#cake', '#caribbean',
-          //     '#chinese', '#chocolate', '#cooking', '#dairy', '#delicious', '#delish',
-          //     '#dessert', '#desserts', '#dinner', '#eat', '#eating', '#eggs', '#fish',
-          //     '#food', '#foodgasm', '#foodie', '#foodporn', '#foods', '#french', '#fresh',
-          //     '#fusion', '#glutenfree', '#greek', '#grilling', '#halal', '#homemade',
-          //     '#hot', '#hungry', '#icecream', '#indian', '#italian', '#japanese', '#keto',
-          //     '#korean', '#lactosefree', '#lunch', '#meat', '#mediterranean', '#mexican',
-          //     '#moroccan', '#nom', '#nomnom', '#paleo', '#poultry', '#snack', '#spanish',
-          //     '#sugarfree', '#sweet', '#sweettooth', '#tasty', '#thai', '#vegan',
-          //     '#vegetarian', '#vietnamese', '#yum', '#yummy'
-          //   ]
-          // }
-        ]
-      },
-      licenseKey: '',
-    };
+    this.editorService.configEditor(this.disableInput, this.parent, this.inputPlaceHolder);
   }
+
   onDescEditorReady(event) {
     this.descEditor_element = event;
     event.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.parent);
     };
-  }
-
-
-  onDescEditorChange(event) {
   }
 
   getUsernameFeedItems(queryText: string) {
@@ -301,7 +224,7 @@ export class CommentBoardComponent implements OnInit {
     }
     this.sendCommentLoading = true;
 
-    const text = this.descEditor_element.getData();
+    const text = this.editorService.getData();
     const comment = new Comment({
       text: text,
     });
@@ -323,7 +246,7 @@ export class CommentBoardComponent implements OnInit {
       },
       complete: () => {
         this.notificationService.success('评论添加 成功!');
-        this.descEditor_element.setData('');
+        this.editorService.setData('');
         this.descEditor_onFocus = false;
         this.sendCommentLoading = false;
       }
@@ -331,7 +254,7 @@ export class CommentBoardComponent implements OnInit {
   }
 
   onCancel() {
-    this.descEditor_element.setData('');
+    this.editorService.setData('');
     this.hideCommentEditor = true;
   }
 

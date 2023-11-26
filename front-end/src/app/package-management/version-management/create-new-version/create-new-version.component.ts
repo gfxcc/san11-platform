@@ -2,9 +2,9 @@ import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '
 import { FormBuilder, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as S3 from 'aws-sdk/clients/s3';
-import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { Subscription } from 'rxjs';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
+import { EditorService } from 'src/app/service/editor.service';
 import { isAdmin } from 'src/app/utils/user_util';
 import { v4 as uuid } from 'uuid';
 import { Binary, CloudDiskFile, CreateBinaryRequest, File, Version } from "../../../../proto/san11-platform.pb";
@@ -52,12 +52,6 @@ export class CreateNewVersionComponent implements OnInit {
   loadingDialog;
   tmpUrl: string = undefined;
 
-
-  descEditor = Editor;
-  descEditor_element;
-  descEditor_data: string;
-  descEditor_config;
-
   selectSireVersion: string;
   convertedSireVersion: string;
 
@@ -96,6 +90,7 @@ export class CreateNewVersionComponent implements OnInit {
     public dialogRef: MatDialogRef<CreateNewVersionComponent>,
     public uploadService: UploadService,
     private fb: FormBuilder,
+    public editorService: EditorService,
   ) {
     this.latestVersions = data.latestVersions;
     this.acceptFileType = data.acceptFileType;
@@ -114,7 +109,7 @@ export class CreateNewVersionComponent implements OnInit {
       this.updateType = 'minor';
     }
 
-    this.configDescEditor();
+    this.editorService.configEditor(false, undefined);
 
     this.newBinaryForm = this.fb.group({
       desc: ['', Validators.required],
@@ -127,7 +122,7 @@ export class CreateNewVersionComponent implements OnInit {
 
   validateNewBinaryForm(): ValidatorFn {
     return (formGroup: FormGroup): ValidationErrors | null => {
-      if (this.desc === '') {
+      if (this.editorService.getData() === '') {
         return { 'descMissing': true };
       }
 
@@ -157,66 +152,11 @@ export class CreateNewVersionComponent implements OnInit {
     return isAdmin();
   }
 
-  get desc() {
-    return this.descEditor_element?.getData();
-  }
-
-
-
-  // Desc-BEGIN
-  configDescEditor() {
-    this.descEditor_data = '';
-    this.descEditor_config = {
-      placeholder: '请添加更新日志...',
-      toolbar: {
-        items: [
-          'heading',
-          '|',
-          'bold',
-          'italic',
-          'blockQuote',
-          'code',
-          'link',
-          '|',
-          'bulletedList',
-          'todoList',
-          'numberedList',
-          '|',
-          'outdent',
-          'indent',
-          'horizontalLine',
-          '|',
-          'codeBlock',
-          'insertTable',
-          '|',
-          'undo',
-          'redo'
-        ]
-      },
-      language: 'zh-cn',
-      table: {
-        contentToolbar: [
-          'tableColumn',
-          'tableRow',
-          'mergeTableCells',
-        ]
-      },
-      licenseKey: '',
-    };
-  }
-
-  onDescEditorReady(event) {
-    this.descEditor_element = event;
-  }
-
   onDescEditorChange(event) {
-    if (this.descEditor_element.getData() === '') {
+    if (this.editorService.getData() === '') {
       this.autoCreateChecked = false;
     }
   }
-
-
-  // Desc-END
 
   onVersionSelectorUpdate(updateTypeValue) {
     this.updateType = updateTypeValue;
@@ -372,7 +312,7 @@ export class CreateNewVersionComponent implements OnInit {
   onNewBinaryFormSubmit() {
     let binary: Binary = new Binary({
       version: this.newVersion,
-      description: this.desc,
+      description: this.editorService.getData(),
       tag: this.tag,
     });
 
@@ -516,10 +456,11 @@ export class CreateNewVersionComponent implements OnInit {
     }
   }
 
-  onAutoCreateAfterUpload(event) {
+  toggleAutoCreate(event) {
     this.autoCreateChecked = event.checked;
+
     if (this.autoCreateChecked) {
-      if (this.descEditor_element.getData() === '') {
+      if (this.editorService.getData() === '') {
         this.notificationService.warn('请输入 更新日志');
         setTimeout(() => {
           this.autoCreateChecked = false;

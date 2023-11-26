@@ -2,8 +2,8 @@ import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { NotificationService } from 'src/app/common/notification.service';
+import { EditorService } from 'src/app/service/editor.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { CreateThreadRequest, Thread } from 'src/proto/san11-platform.pb';
 
@@ -20,11 +20,6 @@ export class CreateThreadComponent implements OnInit {
   createThreadForm: FormGroup;
   parent: string;
 
-  descEditor = Editor;
-  descEditor_element;
-  descEditor_data: string;
-  descEditor_config;
-
   createThreadLoading = false;
 
   constructor(
@@ -35,6 +30,7 @@ export class CreateThreadComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private san11pkService: San11PlatformServiceService,
+    public editorService: EditorService,
     @Inject(MAT_DIALOG_DATA) public data: CreateThreadArgs,
   ) {
     this.parent = data.parent;
@@ -50,7 +46,7 @@ export class CreateThreadComponent implements OnInit {
         ]],
     });
 
-    this.configDescEditor();
+    this.editorService.configEditor(false, undefined);
   }
 
   @HostListener('document:keydown.meta.enter', ['$event'])
@@ -73,79 +69,19 @@ export class CreateThreadComponent implements OnInit {
     return this.createThreadForm.get('content');
   }
 
-
-  // Desc-BEGIN
-  configDescEditor() {
-    this.descEditor_data = '';
-    this.descEditor_config = {
-      placeholder: '请添加描述...',
-      toolbar: {
-        items: [
-          'heading',
-          '|',
-          'fontColor',
-          'bold',
-          'italic',
-          'underline',
-          'blockQuote',
-          'code',
-          'link',
-          '|',
-          'bulletedList',
-          'numberedList',
-          'todoList',
-          'horizontalLine',
-          '|',
-          'outdent',
-          'indent',
-          'alignment',
-          '|',
-          'codeBlock',
-          'insertTable',
-          'undo',
-          'redo'
-        ]
-      },
-      language: 'zh-cn',
-      image: {
-        toolbar: [
-          'imageTextAlternative',
-          'imageStyle:full',
-          'imageStyle:side',
-          'linkImage'
-        ]
-      },
-      table: {
-        contentToolbar: [
-          'tableColumn',
-          'tableRow',
-          'mergeTableCells',
-          'tableCellProperties',
-          'tableProperties'
-        ]
-      },
-      licenseKey: '',
-    };
-  }
-
-  onDescEditorReady(event) {
-    this.descEditor_element = event;
-  }
-  // Desc-END
-
   onCreateThread() {
     this.createThreadLoading = true;
     this.san11pkService.createThread(new CreateThreadRequest({
       parent: this.parent,
       thread: new Thread({
         subject: this.subject.value,
-        content: this.descEditor_element.getData(),
+        content: this.editorService.getData(),
       })
     })).subscribe({
       next: (resp: Thread) => {
         this.createThreadLoading = false;
         this.router.navigate([resp.name])
-        this.dialogRef.close({ data: this.descEditor_element.getData() });
+        this.dialogRef.close({ data: this.editorService.getData() });
       },
       error: error => {
         this.createThreadLoading = false;

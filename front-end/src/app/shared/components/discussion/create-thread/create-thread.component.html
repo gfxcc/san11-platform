@@ -2,14 +2,12 @@
     <mat-card-header style="display: flex; justify-content: center;">
         <mat-card-title style="margin-bottom: 30px;">新帖子</mat-card-title>
     </mat-card-header>
-    <form class="form" [formGroup]="createThreadForm"
-        (ngSubmit)="onCreateThread()">
+    <form class="form" [formGroup]="createThreadForm" (ngSubmit)="onCreateThread()">
         <mat-card-content>
 
             <mat-form-field class="input-field">
                 <mat-label>标题</mat-label>
-                <input matInput required placeholder="标题" autocomplete="off"
-                    formControlName="subject">
+                <input matInput required placeholder="标题" autocomplete="off" formControlName="subject">
                 <mat-error *ngIf="subject.errors?.minlength &&
                     subject.touched" align="end">
                     至少需要2个字符
@@ -23,19 +21,16 @@
 
             <div class="context-wrapper bottom-bord" style="margin-bottom:
                 10px;">
-                <ckeditor [data]="this.descEditor_data"
-                    [editor]="descEditor"
-                    (ready)="onDescEditorReady($event)"
-                    [config]="this.descEditor_config"></ckeditor>
+                <ckeditor [editor]="this.editorService.getEditorInstance()" (ready)="this.editorService.onReady($event)"
+                    [config]="this.editorService.getConfig()"></ckeditor>
             </div>
 
         </mat-card-content>
 
         <div class="actions">
             <span class="example-spacer"></span>
-            <button class="button" [disabled]="!createThreadForm.valid"
-                type="submit"
-                mat-stroked-button color="primary">创建</button>
+            <button class="button" [disabled]="!createThreadForm.valid" type="submit" mat-stroked-button
+                color="primary">创建</button>
         </div>
     </form>
 
