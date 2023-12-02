@@ -15,7 +15,8 @@ import { increment } from "../../../utils/number_util";
 @Component({
   selector: 'app-comment-board',
   templateUrl: './comment-board.component.html',
-  styleUrls: ['./comment-board.component.css']
+  styleUrls: ['./comment-board.component.css'],
+  providers: [EditorService],
 })
 export class CommentBoardComponent implements OnInit {
   @Input() package: Package;

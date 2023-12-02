@@ -24,7 +24,7 @@
                             [editor]="this.editorService.getEditorInstance()"
                             (ready)="this.editorService.onReady($event)" (focus)="descEditor_onFocus=true"
                             (blur)="descEditor_onFocus=false" (change)="onDescEditorChange($event)"
-                            [disabled]="!this.isAuthor()" [config]="this.editorService.getConfig()">
+                            [disabled]="this.editorService.disabled" [config]="this.editorService.getConfig()">
                         </ckeditor>
                     </div>
 

@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/common/notification.service';
 import { EditorService } from 'src/app/service/editor.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
-import { UploadService } from 'src/app/service/upload.service';
 import { getAge } from 'src/app/utils/time_util';
 import { isAdmin, loadUser } from 'src/app/utils/user_util';
 import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
@@ -16,7 +15,8 @@ export interface Fruit {
 @Component({
   selector: 'app-thread-detail',
   templateUrl: './thread-detail.component.html',
-  styleUrls: ['./thread-detail.component.css']
+  styleUrls: ['./thread-detail.component.css'],
+  providers: [EditorService],
 })
 export class ThreadDetailComponent implements OnInit {
   thread: Thread;
@@ -39,7 +39,6 @@ export class ThreadDetailComponent implements OnInit {
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
-    private uploadService: UploadService,
     public editorService: EditorService,
   ) { }
 
@@ -68,10 +67,11 @@ export class ThreadDetailComponent implements OnInit {
           }
         });
 
-        this.editorService.configEditor(!this.isAuthor(), this.thread.name);
         this.configTags();
       }
     );
+
+    this.editorService.configEditor(!this.isAuthor(), this.thread.name);
   }
 
   @HostListener('document:keydown.meta.enter', ['$event'])
