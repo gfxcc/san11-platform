@@ -18,8 +18,9 @@ export class DiscussionComponent implements OnInit {
   @Input() parent: string;
 
   threads: Thread[] = [];
-  pageSize = 20;
-  totalThreadsCount = 200;
+  pageSize = 5;
+  totalThreadsCount = 20;
+  reachedEnd = false;
 
   constructor(
     private viewportScroller: ViewportScroller,
@@ -49,9 +50,7 @@ export class DiscussionComponent implements OnInit {
       (resp: ListThreadsResponse) => {
         this.threads = resp.threads;
         this.scrollToTop();
-        if (resp.threads.length < pageSize) {
-          this.totalThreadsCount = watermark + resp.threads.length;
-        }
+        this.updateTotalCount(resp.threads.length < pageSize, watermark + resp.threads.length);
       },
       error => {
         this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`);
@@ -66,6 +65,21 @@ export class DiscussionComponent implements OnInit {
 
       // const headerHeight = 70; // Height of your header
       // window.scrollBy(0, -headerHeight);
+    }
+  }
+
+  updateTotalCount(reachedEnd: boolean, loadedSize: number) {
+    if (this.reachedEnd) {
+      return;
+    }
+
+    if (reachedEnd) {
+      this.totalThreadsCount = loadedSize;
+      this.reachedEnd = true;
+    } else {
+      if (loadedSize > this.totalThreadsCount * 0.8) {
+        this.totalThreadsCount *= 2;
+      }
     }
   }
 
