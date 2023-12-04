@@ -109,7 +109,6 @@ export class CommentBoardComponent implements OnInit {
     if (fragment) {
       const targetElement = this.elementRef.nativeElement.querySelector(`#${fragment}`);
       if (targetElement) {
-        this.renderer.setProperty(targetElement, 'scrollTop', 0);
         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         targetElement.classList.add('highlighted');

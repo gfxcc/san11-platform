@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/api';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { ListThreadsRequest, ListThreadsResponse, Thread } from 'src/proto/san11-platform.pb';
@@ -16,9 +17,14 @@ export class DiscussionComponent implements OnInit {
   @Input() displayName: string = "讨论区";
   @Input() parent: string;
 
-  virtualThreads: Thread[];
+  threads: Thread[] = [];
+  pageSize = 20;
+  totalThreadsCount = 200;
 
   constructor(
+    private viewportScroller: ViewportScroller,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
     private router: Router,
     private dialog: MatDialog,
     public san11pkService: San11PlatformServiceService,
@@ -26,41 +32,41 @@ export class DiscussionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.virtualThreads = Array.from({ length: 300 });
+    this.loadThreads(0, this.pageSize);
   }
 
-  loadCarsLazy(event: LazyLoadEvent) {
-    if (event.first < 0) {
-      return;
-    }
+  changePage(event: PageEvent) {
+    this.loadThreads(event.pageIndex * event.pageSize, event.pageSize);
+  }
 
+  loadThreads(watermark: number, pageSize: number) {
     const request = new ListThreadsRequest({
       parent: this.parent,
-      pageSize: event.rows.toString(),
-      pageToken: `{ "watermark": "${event.first}" }`,
+      pageSize: this.pageSize.toString(),
+      pageToken: `{ "watermark": "${watermark}" }`,
     })
     this.san11pkService.listThreads(request).subscribe(
       (resp: ListThreadsResponse) => {
-        Array.prototype.splice.apply(this.virtualThreads, [
-          ...[event.first, resp.threads.length],
-          ...resp.threads
-        ]);
-
-        if (resp.threads.length < event.rows) {
-          this.virtualThreads.splice(event.first + resp.threads.length);
-        } else {
-          Array.prototype.splice.apply(this.virtualThreads, [
-            ...[event.first + event.rows, 100],
-            ...Array.from({ length: 100 })
-          ]);
+        this.threads = resp.threads;
+        this.scrollToTop();
+        if (resp.threads.length < pageSize) {
+          this.totalThreadsCount = watermark + resp.threads.length;
         }
-        //trigger change detection
-        this.virtualThreads = [...this.virtualThreads];
       },
       error => {
         this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`);
       }
     );
+  }
+
+  scrollToTop() {
+    const targetElement = this.elementRef.nativeElement.querySelector('#caption');
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+
+      // const headerHeight = 70; // Height of your header
+      // window.scrollBy(0, -headerHeight);
+    }
   }
 
   createThread() {

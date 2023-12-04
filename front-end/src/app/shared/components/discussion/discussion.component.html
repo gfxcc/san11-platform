@@ -1,42 +1,22 @@
 <div class="main-container">
     <!-- <h5>Virtual Scroll with Lazy Loading from a Remote Datasource (10000 Rows)</h5> -->
-    <div class="table-wrapper radius-border shadow-border">
-        <p-table selectionMode="single"
-            [value]="virtualThreads" [scrollable]="true"
-            [rows]="50"
-            scrollHeight="flex" [virtualScroll]="true" [virtualRowHeight]="72"
-            [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
-            styleClass="p-datatable-striped">
-            <ng-template pTemplate="caption">
-                <div class="caption">
-                    <span>
-                        {{this.displayName}}
-                    </span>
-                    <span class="example-spacer"></span>
-                    <button mat-mini-fab color="primary"
-                        (click)="createThread()">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                </div>
+    <div style="width: 100%;">
+        <div class="caption" id=caption>
+            <h3>
+                {{this.displayName}}
+            </h3>
+            <span class="example-spacer"></span>
+            <button mat-mini-fab color="primary" (click)="createThread()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
 
-            </ng-template>
+        <div class="table-wrapper radius-border shadow-border">
+            <app-thread-card class="bottom-board" *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
+        </div>
 
-            <ng-template pTemplate="body" let-thread let-columns="columns">
-                <tr>
-                    <td style="padding: 0;">
-                        <app-thread-card [thread]="thread" class="thread-card">
-                        </app-thread-card>
-                    </td>
-                </tr>
-            </ng-template>
-
-            <ng-template pTemplate="loadingbody">
-                <tr style="height:72px">
-                    <td>
-                        <p-skeleton [ngStyle]="{'width': '100%'}"></p-skeleton>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
+        <mat-paginator [length]="totalThreadsCount" [pageSize]="pageSize" [hidePageSize]="true"
+            (page)="changePage($event)">
+        </mat-paginator>
     </div>
 </div>

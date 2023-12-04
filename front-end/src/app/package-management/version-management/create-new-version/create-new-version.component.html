@@ -46,7 +46,7 @@
     </div>
 
     <mat-label>更新日志</mat-label>
-    <div class="bottom-bord">
+    <div class="bottom-board">
         <ckeditor formControlName="desc" [editor]="this.editorService.getEditorInstance()"
             (ready)="this.editorService.onReady($event)" (change)="onDescEditorChange($event)"
             [config]="this.editorService.getConfig()">
