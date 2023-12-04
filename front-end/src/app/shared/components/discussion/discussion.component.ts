@@ -18,8 +18,8 @@ export class DiscussionComponent implements OnInit {
   @Input() parent: string;
 
   threads: Thread[] = [];
-  pageSize = 5;
-  totalThreadsCount = 20;
+  pageSize = 20;
+  totalThreadsCount = 200;
   reachedEnd = false;
 
   constructor(
