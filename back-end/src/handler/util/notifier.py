@@ -9,9 +9,9 @@ from typing import Dict, Union
 from apiclient import errors
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-
 from handler.common.env import Env, get_env
 from handler.common.visitor import visitor
+from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
 from handler.model.model_notification import ModelNotification
@@ -40,8 +40,9 @@ class Notifier:
         self._service = self._gmail_login()
 
     def send_email(self, message: MIMEMultipart) -> None:
+        logger.debug(f'Sending email: {message}')
         if get_env() == Env.DEV and message['to'] not in TESTING_RECEIVERS:
-            logger.debug(f"Skip sending email: {message}")
+            logger.debug(f"Skip sending email in non-prod env")
             return
         raw_message = base64.urlsafe_b64encode(
             message.as_bytes()).decode('utf-8')
@@ -103,7 +104,7 @@ def notify(sender: ModelUser, receiver: ModelUser, content: str,
         Notifier().send_email(
             _create_message(sender.email,
                             receiver.email,
-                            f'{sender.username} 在 San11pk 上发了一条消息',
+                            f'{sender.username} 在 san11pk.org 的新动态',
                             content,
                             link))
 
@@ -139,7 +140,7 @@ class CreationNotifier:
             notify(
                 sender=author,
                 receiver=subscriber,
-                content=f'{author.username} 发布了 {view.display_name}',
+                content=f'{author.username} 发布了【{view.display_name}】',
                 link=link,
                 image_preview=view.image_url,
             )
@@ -168,7 +169,7 @@ class CreationNotifier:
             notify(
                 sender=author,
                 receiver=subscriber,
-                content=f'{author.username} 更新了 {view.display_name}',
+                content=f'{author.username} 更新了【{view.display_name}】',
                 link=link,
                 image_preview=view.image_url,
             )
@@ -183,7 +184,34 @@ class CreationNotifier:
             notify(
                 sender=author,
                 receiver=subscriber,
-                content=f'{author.username} 更新了 {view.display_name}',
+                content=f'{author.username} 更新了【{view.display_name}】',
+                link=link,
+                image_preview=view.image_url,
+            )
+            notified_users.add(subscriber.user_id)
+
+    @visitor(ModelArticle)
+    def visit(self, article: ModelArticle) -> None:  # type: ignore
+        '''
+        Notify
+            * subscribers of the author
+        '''
+        author = ModelUser.from_user_id(article.author_id)
+        view = ResourceViewVisitor().visit(article)  # type: ignore
+        link = get_resource_url(article)
+
+        # Don't notify the author.
+        notified_users = {article.author_id}
+        for sub in author.list_subscriptions():
+            subscriber = ModelUser.from_name(sub.subscriber_name)
+            if subscriber.user_id in notified_users:
+                continue
+            if not subscriber.settings.notification.subscriptions:
+                continue
+            notify(
+                sender=author,
+                receiver=subscriber,
+                content=f'{author.username} 发布了 文章【{view.display_name}】',
                 link=link,
                 image_preview=view.image_url,
             )
@@ -241,7 +269,7 @@ class CreationNotifier:
             notify(
                 sender=author,
                 receiver=parent_resource_author,
-                content=f'{author.username} 评论了 {view.display_name}',
+                content=f'{author.username} 评论了 【{view.display_name}】',
                 link=link,
                 image_preview=view.image_url,
             )
@@ -263,7 +291,7 @@ class CreationNotifier:
             notified_users.add(user.user_id)
 
 
-def notify_on_creation(resource: Union[ModelPackage, ModelBinary, ModelThread, ModelComment, ModelReply]) -> None:
+def notify_on_creation(resource: Union[ModelPackage, ModelBinary, ModelArticle, ModelThread, ModelComment, ModelReply]) -> None:
     '''
     Notify users on creation of a resource.
 

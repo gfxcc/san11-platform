@@ -6,6 +6,7 @@ from handler.handler_context import HandlerContext
 from handler.model.base import (FieldMask, HandlerBase, ListOptions,
                                 merge_resource)
 from handler.model.model_article import ModelArticle
+from handler.util.notifier import notify_on_creation
 
 from .protos import san11_platform_pb2 as pb
 
@@ -16,6 +17,9 @@ class ArticleHandler(HandlerBase):
     def create(self, parent: str, article: ModelArticle, handler_context: HandlerContext) -> ModelArticle:
         article.author_id = handler_context.user.user_id
         article.create(parent=parent, actor_info=handler_context.user.user_id)
+
+        # Post creation
+        notify_on_creation(article)
         return article
 
     def get(self, name: str, handler_context: HandlerContext) -> ModelArticle:

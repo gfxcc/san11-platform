@@ -55,7 +55,7 @@ class PackageHandler(HandlerBase):
         package.create(parent=parent, actor_info=handler_context.user.user_id)
         # Post creation actions
         try:
-            view = ResourceViewVisitor().visit(package) # type: ignore
+            view = ResourceViewVisitor().visit(package)  # type: ignore
             for admin in get_admins():
                 notify(
                     sender=handler_context.user,
@@ -63,9 +63,6 @@ class PackageHandler(HandlerBase):
                     content=f'【待审核】{handler_context.user.username} 创建了 {view.display_name}。',
                     link=view.name,
                     image_preview=view.image_url)
-                if get_env() == Env.PROD:
-                    send_email(
-                        admin.email, '【新内容】待审核', f'[{package.package_name}] 已被 {handler_context.user.username} 创建。请审核。')
         except Exception as err:
             logger.error(f'Failed to notify admin: {err}')
         return package
