@@ -3,21 +3,21 @@
     /* width: 70%; */
     display: flex;
     justify-content: center;
-    padding: 8px 0;
+    padding: 1rem 0;
 }
 
 .table-wrapper {
     min-width: 200px;
     max-width: 1200px;
     flex-grow: 1;
-    padding: 16px;
+    padding: .5rem 1rem;
 }
 
 .caption {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
-    scroll-margin-top: 70px
+    scroll-margin-top: 80px
 }
 
 .thread-card {

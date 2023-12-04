@@ -1,6 +1,5 @@
 <div class="main-container">
-    <!-- <h5>Virtual Scroll with Lazy Loading from a Remote Datasource (10000 Rows)</h5> -->
-    <div style="width: 100%;">
+    <div class="table-wrapper radius-border shadow-border">
         <div class="caption" id=caption>
             <h3>
                 {{this.displayName}}
@@ -11,9 +10,7 @@
             </button>
         </div>
 
-        <div class="table-wrapper radius-border shadow-border">
-            <app-thread-card class="bottom-board" *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
-        </div>
+        <app-thread-card class="bottom-board" *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
 
         <mat-paginator [length]="totalThreadsCount" [pageSize]="pageSize" [hidePageSize]="true"
             (page)="changePage($event)">
