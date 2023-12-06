@@ -74,7 +74,7 @@ def GrpcAbortOnExcep(func: RpcFunc):
             # Server space error
             logger.debug(f'request={request}')
             logger.debug(f'context={context}')
-            logger.warning(err, exc_info=get_env() != Env.PROD)
+            logger.warning(err, exc_info=True)
             context.abort(code=255, details='Internal error')
     return wrapper
 

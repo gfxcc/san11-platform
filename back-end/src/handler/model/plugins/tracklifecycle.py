@@ -3,7 +3,6 @@ from enum import Enum
 from typing import Mapping, Optional, Union
 
 import attrs
-
 from handler.model.base import (DatetimeAttrib, InitModel, IntAttrib,
                                 LifecycleEventsBase, ModelBase, StrAttrib,
                                 base_db, base_proto)
