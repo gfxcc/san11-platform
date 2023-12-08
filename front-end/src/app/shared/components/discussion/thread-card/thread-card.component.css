@@ -119,6 +119,11 @@
     padding-right: 10px;
 }
 
+.avatar-wrapper {
+    width: 36px;
+    height: 36px;
+}
+
 .avatar-img {
     border-radius: 100px;
     vertical-align: middle;

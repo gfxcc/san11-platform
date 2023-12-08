@@ -6,9 +6,11 @@
     </td>
 
     <td class="author-cell">
-        <!-- <div style="height: 100%;"> -->
-        <img [src]="this.user?.imageUrl | fullUrl : '128_128'" class="avatar-img">
-        <!-- </div> -->
+        <div class="avatar-wrapper">
+            <img [src]="this.user?.imageUrl | fullUrl : '128_128'" class="avatar-img" [hidden]="this.loadingAuthorImage"
+                (load)="loadAvatar()">
+            <p-skeleton *ngIf="this.loadingAuthorImage" [shape]="'circle'" height="36px" width="36px"></p-skeleton>
+        </div>
     </td>
 
     <td style="flex-grow: 1;">

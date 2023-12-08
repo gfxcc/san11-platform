@@ -10,7 +10,7 @@
                 <div>
                     <a href="users/{{this.user?.userId}}" target="_blink">{{this.user?.username}}</a>
                     <span *ngIf="this.user?.userId === this.resourceOwnerId"
-                        style="margin-left: 5px; color:#3f51b5">[作者]</span>
+                        style="margin-left: 5px; color:#3f51b5">[发帖人]</span>
                     <span class="create-time">{{getCommentAge()}}</span>
                 </div>
 

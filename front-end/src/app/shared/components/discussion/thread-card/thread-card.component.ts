@@ -19,6 +19,8 @@ export class ThreadCardComponent implements OnInit {
   latestCommenter: User;
   notMobile = !onMobile();
 
+  loadingAuthorImage = true;
+
   constructor(
     private notificationService: NotificationService,
     private san11pkService: San11PlatformServiceService,
@@ -49,6 +51,9 @@ export class ThreadCardComponent implements OnInit {
         }
       );
     }
+  }
+  loadAvatar() {
+    this.loadingAuthorImage = false;
   }
 
   getThreadAge() {
