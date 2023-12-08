@@ -22,7 +22,6 @@ import { TextDialogComponent } from './common/components/text-dialog/text-dialog
 import { TextInputDialogComponent } from './common/components/text-input-dialog/text-input-dialog.component';
 import { GlobalConstants } from './common/global-constants';
 import { ForumModule } from './forum/forum.module';
-import { AuthorDialog, CreatePackageComponent } from './package-management/create-package/create-package.component';
 import { PackageDetailComponent } from "./package-management/package-detail/package-detail.component";
 import { CreateNewVersionComponent } from "./package-management/version-management/create-new-version/create-new-version.component";
 import { BranchComponent } from './package-management/version-management/version-panel/branch/branch.component';
@@ -38,8 +37,6 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
     AppComponent,
     SigninComponent,
     RegisterComponent,
-    CreatePackageComponent,
-    AuthorDialog,
     LoadingComponent,
     PackageDetailComponent,
     VersionPanelComponent,
