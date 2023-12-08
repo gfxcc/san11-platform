@@ -1,3 +1,7 @@
+<mat-progress-bar *ngIf="(progressService.currentMode | async) as mode" [mode]="mode"
+    [value]="mode === 'determinate' ? (progressService.currentProgress | async) : 0">
+</mat-progress-bar>
+
 <mat-toolbar color="primary">
     <button mat-icon-button (click)="toggleSideBar()">
         <mat-icon>menu</mat-icon>

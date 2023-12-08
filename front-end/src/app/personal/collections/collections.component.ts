@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { NotificationService } from 'src/app/common/notification.service';
+import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getUserUri, loadUser, signedIn } from 'src/app/utils/user_util';
 import { ListPackagesRequest, ListPackagesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, Package, Subscription } from 'src/proto/san11-platform.pb';
@@ -22,6 +24,7 @@ export class CollectionsComponent implements OnInit {
     private notificationService: NotificationService,
     private dialog: MatDialog,
     private router: Router,
+    private progressService: ProgressService,
   ) { }
 
   ngOnInit(): void {
@@ -35,16 +38,21 @@ export class CollectionsComponent implements OnInit {
   }
 
   loadCollections() {
+    this.progressService.loading();
     this.san11pkService.listSubscription(new ListSubscriptionsRequest({
       parent: getUserUri(loadUser()),
       filter: 'target="categories/*"',
-    })).subscribe(
-      (resp: ListSubscriptionsResponse) => {
-        this.loadCollectedPackages(resp.subscriptions);
-      }, error => {
-        this.notificationService.warn("获取收藏失败: " + error.statusMessage);
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListSubscriptionsResponse) => {
+          this.loadCollectedPackages(resp.subscriptions);
+        },
+        error: error => {
+          this.notificationService.warn("获取收藏失败: " + error.statusMessage);
+        }
       }
-    );
+      );
   }
 
   loadCollectedPackages(sub: Subscription[]) {

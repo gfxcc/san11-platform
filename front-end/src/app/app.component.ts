@@ -6,8 +6,6 @@ import { SidenavService } from './shared/components/sidebar/sidenav.service';
 import { onMobile } from './utils/layout_util';
 
 
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,6 +14,7 @@ import { onMobile } from './utils/layout_util';
 export class AppComponent {
   @ViewChild('sidenav', { static: true }) public sidenav: MatSidenav;
 
+  globalLoading
   // To auto hide sidebar on mobile.
   sideBarOpen = !onMobile();
   sideBarMode = onMobile() ? 'over' : 'side'
@@ -23,13 +22,13 @@ export class AppComponent {
   constructor(
     private sidenavService: SidenavService,
     private dialog: MatDialog,
-    public router: Router) {
+    public router: Router,
+  ) {
   }
 
   ngOnInit(): void {
     this.sidenavService.setSidenav(this.sidenav);
   }
-
 
   sideBarToggler(event) {
     this.sideBarOpen = !this.sideBarOpen;

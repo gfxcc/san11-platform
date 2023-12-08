@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
+import { finalize } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
+import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { Article, CreateArticleRequest, CreatePackageRequest, Package, ResourceState } from 'src/proto/san11-platform.pb';
 
@@ -46,7 +47,6 @@ export class CreateNewComponent implements OnInit {
     }
   ];
 
-  loading: MatDialogRef<LoadingComponent>;
   isCreateArticle = false;
 
   constructor(
@@ -55,6 +55,7 @@ export class CreateNewComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
+    private progressService: ProgressService,
   ) { }
 
   ngOnInit(): void {
@@ -93,8 +94,7 @@ export class CreateNewComponent implements OnInit {
   }
 
   createPackage(packageName: string, categoryId: string) {
-    this.loading = this.dialog.open(LoadingComponent);
-
+    this.progressService.loading();
     this.san11pkService.createPackage(new CreatePackageRequest({
       parent: `categories/${categoryId}`,
       package: new Package({
@@ -103,38 +103,38 @@ export class CreateNewComponent implements OnInit {
         authorId: '0',
         imageUrls: []
       })
-    })).subscribe(
-      san11Package => {
-        this.loading.close();
-        this.notificationService.success('创建成功')
-        this.router.navigate(['categories', categoryId]);
-      },
-      error => {
-        this.notificationService.warn('创建工具失败:' + error.statusMessage);
-        this.loading.close();
-      }
-    );
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: Package) => {
+          this.notificationService.success('创建成功')
+          this.router.navigate([resp.name]);
+        },
+        error: error => {
+          this.notificationService.warn(`创建失败: ${error.statusMessage}`);
+        },
+      });
   }
 
   createArticle(subject: string) {
-    this.loading = this.dialog.open(LoadingComponent);
+    this.progressService.loading();
     this.san11pkService.createArticle(new CreateArticleRequest({
       parent: '',
       article: new Article({
         subject: subject,
         state: ResourceState.NORMAL,
       }),
-    })).subscribe(
-      (resp: Article) => {
-        this.loading.close();
-        this.notificationService.success('创建成功')
-        this.router.navigate([resp.name]);
-      },
-      error => {
-        this.loading.close();
-        this.notificationService.warn(`创建失败: ${error.statusMessage}`);
-      }
-    );
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: Article) => {
+          this.notificationService.success('创建成功');
+          this.router.navigate([resp.name]);
+        },
+        error: error => {
+          this.notificationService.warn(`创建失败: ${error.statusMessage}`);
+        }
+      });
   }
 
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
+import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { Article, ListArticlesRequest, ListArticlesResponse } from 'src/proto/san11-platform.pb';
 
@@ -16,6 +18,7 @@ export class ArticleListComponent implements OnInit {
     private notificationService: NotificationService,
     private san11pkService: San11PlatformServiceService,
     private route: ActivatedRoute,
+    private progressService: ProgressService,
   ) { }
 
   ngOnInit(): void {
@@ -29,20 +32,23 @@ export class ArticleListComponent implements OnInit {
   }
 
   loadArticle(userId: string) {
-    let request = new ListArticlesRequest({
-      parent: '',
-    });
-    if (userId) {
+    this.progressService.loading();
+
+    const request = new ListArticlesRequest({ parent: '' });
+
+    if (userId && userId.trim() !== '') {
       request.filter = `author_id = ${userId}`;
     }
-    this.san11pkService.listArticles(request).subscribe(
-      (resp: ListArticlesResponse) => {
-        this.articles = resp.articles;
-      },
-      error => {
-        this.notificationService.warn(`Failed to list articles: ${error.statusMessage}`);
-      }
-    );
-  }
 
+    this.san11pkService.listArticles(request)
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListArticlesResponse) => {
+          this.articles = resp.articles;
+        },
+        error: error => {
+          this.notificationService.warn(`获取文章列表失败: ${error.statusMessage}`);
+        },
+      });
+  }
 }

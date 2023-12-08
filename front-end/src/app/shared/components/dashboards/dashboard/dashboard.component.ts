@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { ListPackagesRequest, Package } from '../../../../../proto/san11-platform.pb';
+import { combineLatest, finalize } from 'rxjs';
+import { ProgressService } from 'src/app/progress.service';
+import { ListPackagesRequest, ListPackagesResponse, Package, SearchPackagesResponse } from '../../../../../proto/san11-platform.pb';
 import { NotificationService } from "../../../../common/notification.service";
 import { EventEmiterService } from "../../../../service/event-emiter.service";
 import { San11PlatformServiceService } from '../../../../service/san11-platform-service.service';
@@ -35,6 +36,7 @@ export class DashboardComponent implements OnInit {
     private dialog: MatDialog,
     private san11pkService: San11PlatformServiceService,
     private _eventEmiter: EventEmiterService,
+    private progressService: ProgressService,
   ) { }
 
   ngOnInit(): void {
@@ -72,14 +74,20 @@ export class DashboardComponent implements OnInit {
 
   loadPackages(): void {
     // this._eventEmiter.sendMessage({ categoryId: request.categoryId });
-    this.san11pkService.listPackages(this.listRequest).subscribe(
-      resp => {
-        this.packages = resp.packages
-      },
-      error => {
-        this.notificationService.warn(`载入工具列表失败: ${error.statusMessage}`);
-      }
-    );
+    this.progressService.loading();
+    this.san11pkService.listPackages(this.listRequest)
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListPackagesResponse) => {
+          this.packages = resp.packages
+          this.progressService.complete();
+        },
+        error: error => {
+          this.notificationService.warn(`载入工具列表失败: ${error.statusMessage}`);
+          this.progressService.complete();
+
+        },
+      });
   }
 
   loadPackagesInCate(userId: string, category: number) {
@@ -101,15 +109,17 @@ export class DashboardComponent implements OnInit {
 
 
   searchPackages(query: string): void {
-    this.san11pkService.searchPackages(query, 0, '').subscribe(
-      resp => {
-        this.packages = resp.packages;
-      },
-      error => {
-        this.notificationService.warn(`搜索失败: ${error.statusMessage}`);
-      }
-    );
-
+    this.progressService.loading();
+    this.san11pkService.searchPackages(query, 0, '')
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: SearchPackagesResponse) => {
+          this.packages = resp.packages;
+        },
+        error: error => {
+          this.notificationService.warn(`搜索失败: ${error.statusMessage}`);
+        },
+      });
   }
 
   onOrderChanged(event) {

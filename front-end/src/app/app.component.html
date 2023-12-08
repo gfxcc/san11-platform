@@ -1,8 +1,7 @@
 <app-header (toggleSideBarForMe)="sideBarToggler($event)"></app-header>
 
 <mat-sidenav-container>
-    <mat-sidenav #sidenav [mode]="sideBarMode" [(opened)]="sideBarOpen"
-        [fixedInViewport]="true">
+    <mat-sidenav #sidenav [mode]="sideBarMode" [(opened)]="sideBarOpen" [fixedInViewport]="true">
         <app-sidebar></app-sidebar>
     </mat-sidenav>
     <mat-sidenav-content>

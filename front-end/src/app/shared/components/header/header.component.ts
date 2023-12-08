@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
+import { ProgressService } from 'src/app/progress.service';
 import { openInNewTab } from 'src/app/utils/url_util';
 import { ListNotificationsRequest, ListNotificationsResponse, Notification, SignOutRequest, UpdateNotificationRequest, User } from '../../../../proto/san11-platform.pb';
 import { NotificationService } from '../../../common/notification.service';
@@ -31,8 +32,8 @@ export class HeaderComponent implements OnInit {
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private sidenav: SidenavService,
+    public progressService: ProgressService,
   ) {
-
   }
 
   ngOnInit(): void {
@@ -40,13 +41,10 @@ export class HeaderComponent implements OnInit {
       this.user = loadUser();
       this.loadNotifications();
     }
+  }
 
-    // this.san11pkService.getStatistic().subscribe(
-    //   statistic => {
-    //     this.today_visit_count = Number(statistic.visitCount);
-    //     this.today_download_count = Number(statistic.downloadCount);
-    //   }
-    // );
+  ngAfterViewInit() {
+    this.progressService.complete();
   }
 
   toggleSideBar() {

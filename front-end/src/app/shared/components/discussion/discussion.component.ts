@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/common/notification.service';
+import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { ListThreadsRequest, ListThreadsResponse, Thread } from 'src/proto/san11-platform.pb';
 import { CreateThreadComponent } from './create-thread/create-thread.component';
@@ -30,6 +31,7 @@ export class DiscussionComponent implements OnInit {
     private dialog: MatDialog,
     public san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    public progressService: ProgressService,
   ) { }
 
   ngOnInit() {
@@ -41,6 +43,7 @@ export class DiscussionComponent implements OnInit {
   }
 
   loadThreads(watermark: number, pageSize: number) {
+    this.progressService.loading();
     const request = new ListThreadsRequest({
       parent: this.parent,
       pageSize: this.pageSize.toString(),
@@ -51,9 +54,11 @@ export class DiscussionComponent implements OnInit {
         this.threads = resp.threads;
         this.scrollToTop();
         this.updateTotalCount(resp.threads.length < pageSize, watermark + resp.threads.length);
+        this.progressService.complete();
       },
       error => {
         this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`);
+        this.progressService.complete();
       }
     );
   }

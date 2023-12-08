@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
+import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
+import { ProgressService } from 'src/app/progress.service';
 import { getFullUrl, parseName } from 'src/app/utils/resrouce_util';
 import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse } from 'src/proto/san11-platform.pb';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
@@ -20,13 +21,13 @@ export class AdminMessageBoardComponent implements OnInit {
   socialActivaties: any[] = [];
   downloads: any[] = [];
 
-  loading: MatDialogRef<LoadingComponent>;
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
+    private progressService: ProgressService,
   ) { }
 
   ngOnInit(): void {
@@ -37,32 +38,30 @@ export class AdminMessageBoardComponent implements OnInit {
   }
 
   load_activities() {
-    this.loading = this.dialog.open(LoadingComponent);
+    this.progressService.loading();
 
     this.san11pkService.listActivities(new ListActivitiesRequest({
       parent: '',
       orderBy: 'create_time desc',
       pageSize: '100',
-    })).subscribe({
-      next: (resp: ListActivitiesResponse) => {
-
-        this.resourceChanges = resp.activities.filter((x) => [Action.CREATE, Action.UPDATE, Action.DELETE].includes(x.action)).map((activity: Activity) => {
-          return this.activityToEvent(activity);
-        });
-        this.socialActivaties = resp.activities.filter((x) => [Action.LIKE, Action.SUBSCRIBE, Action.UPVOTE, Action.UNSUBSCRIBE, Action.DISLIKE].includes(x.action)).map((activity: Activity) => {
-          return this.activityToEvent(activity);
-        });
-        this.downloads = resp.activities.filter((x) => x.action === Action.DOWNLOAD).map((activity: Activity) => {
-          return this.activityToEvent(activity);
-        });
-        this.loading.close();
-
-      },
-      error: (error) => {
-        this.notificationService.warn(`获取时间线失败: ${error.statusMessage}`)
-        this.loading.close();
-      }
-    });
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListActivitiesResponse) => {
+          this.resourceChanges = resp.activities.filter((x) => [Action.CREATE, Action.UPDATE, Action.DELETE].includes(x.action)).map((activity: Activity) => {
+            return this.activityToEvent(activity);
+          });
+          this.socialActivaties = resp.activities.filter((x) => [Action.LIKE, Action.SUBSCRIBE, Action.UPVOTE, Action.UNSUBSCRIBE, Action.DISLIKE].includes(x.action)).map((activity: Activity) => {
+            return this.activityToEvent(activity);
+          });
+          this.downloads = resp.activities.filter((x) => x.action === Action.DOWNLOAD).map((activity: Activity) => {
+            return this.activityToEvent(activity);
+          });
+        },
+        error: (error) => {
+          this.notificationService.warn(`获取时间线失败: ${error.statusMessage}`)
+        }
+      });
   }
 
   activityToEvent(activity: Activity) {

@@ -1,7 +1,8 @@
 import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { finalize, Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
+import { ProgressService } from 'src/app/progress.service';
 import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { EditorService } from 'src/app/service/editor.service';
 import { UploadService } from 'src/app/service/upload.service';
@@ -53,6 +54,7 @@ export class CommentBoardComponent implements OnInit {
     private elementRef: ElementRef,
     private renderer: Renderer2,
     public editorService: EditorService,
+    private progressService: ProgressService,
   ) {
 
     this.authorId = localStorage.getItem('userId');
@@ -183,6 +185,8 @@ export class CommentBoardComponent implements OnInit {
 
 
   loadComments(order?: string) {
+    this.progressService.loading();
+
     if (order === this.commentsOrder) {
       return;
     }
@@ -194,19 +198,21 @@ export class CommentBoardComponent implements OnInit {
     this.san11pkService.listComments(new ListCommentsRequest({
       parent: this.parent,
       orderBy: this.commentsOrder,
-    })).subscribe({
-      next: (resp: ListCommentsResponse) => {
-        this.comments = resp.comments;
-        this.commentCount = this.computeCommentCount(this.comments);
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListCommentsResponse) => {
+          this.comments = resp.comments;
+          this.commentCount = this.computeCommentCount(this.comments);
 
-        setTimeout(() => {
-          this.scrollToFragment();
-        }, 0);
-      },
-      error: error => {
-        this.notificationService.warn('获取评论列表失败: ' + error.statusMessage);
-      }
-    });
+          setTimeout(() => {
+            this.scrollToFragment();
+          }, 0);
+        },
+        error: error => {
+          this.notificationService.warn('获取评论列表失败: ' + error.statusMessage);
+        }
+      });
   }
 
   computeCommentCount(comments: Comment[]): string {

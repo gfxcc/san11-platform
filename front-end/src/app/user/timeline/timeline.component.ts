@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, DefaultUrlSerializer, Router, UrlTree } from '@angular/router';
-import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
+import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
+import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse } from 'src/proto/san11-platform.pb';
@@ -17,13 +18,13 @@ export class TimelineComponent implements OnInit {
   userId: string;
 
   events: any[];
-  loading: MatDialogRef<LoadingComponent>;
   constructor(
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
+    private progressService: ProgressService,
   ) { }
 
   ngOnInit(): void {
@@ -36,22 +37,23 @@ export class TimelineComponent implements OnInit {
   }
 
   load_activities() {
-    this.loading = this.dialog.open(LoadingComponent);
+    this.progressService.loading();
+
     this.san11pkService.listActivities(new ListActivitiesRequest({
       parent: `users/${this.userId}`,
       orderBy: 'create_time desc',
-    })).subscribe(
-      (resp: ListActivitiesResponse) => {
-        this.events = resp.activities.map((activity: Activity) => {
-          return this.activityToEvent(activity);
-        });
-        this.loading.close();
-      },
-      error => {
-        this.notificationService.warn(`获取时间线失败: ${error.statusMessage}`)
-        this.loading.close();
-      }
-    );
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListActivitiesResponse) => {
+          this.events = resp.activities.map((activity: Activity) => {
+            return this.activityToEvent(activity);
+          });
+        },
+        error: error => {
+          this.notificationService.warn(`获取时间线失败: ${error.statusMessage}`)
+        }
+      });
   }
 
   activityToEvent(activity: Activity) {
