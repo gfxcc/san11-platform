@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
-import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
 import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
@@ -16,13 +14,11 @@ import { ListPackagesRequest, ListPackagesResponse, ListSubscriptionsRequest, Li
   styleUrls: ['./collections.component.css']
 })
 export class CollectionsComponent implements OnInit {
-  loading: MatDialogRef<LoadingComponent>;
   collectedPackages: Package[] = [];
 
   constructor(
     public san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
-    private dialog: MatDialog,
     private router: Router,
     private progressService: ProgressService,
   ) { }
@@ -33,7 +29,6 @@ export class CollectionsComponent implements OnInit {
       this.router.navigate(['/']);
       return
     }
-    this.loading = this.dialog.open(LoadingComponent);
     this.loadCollections();
   }
 
@@ -49,6 +44,7 @@ export class CollectionsComponent implements OnInit {
           this.loadCollectedPackages(resp.subscriptions);
         },
         error: error => {
+          this.progressService.complete();
           this.notificationService.warn("获取收藏失败: " + error.statusMessage);
         }
       }
@@ -57,7 +53,6 @@ export class CollectionsComponent implements OnInit {
 
   loadCollectedPackages(sub: Subscription[]) {
     if (sub.length == 0) {
-      this.loading.close();
       return;
     }
     const package_names = sub.map(c => c.target);
@@ -66,16 +61,16 @@ export class CollectionsComponent implements OnInit {
     this.san11pkService.listPackages(new ListPackagesRequest({
       parent: '',
       filter: filter,
-    })).subscribe(
-      (resp: ListPackagesResponse) => {
-        this.collectedPackages = resp.packages;
-        this.loading.close();
-      },
-      error => {
-        this.loading.close();
-        this.notificationService.warn(`获取收藏内容失败: ${error.statusMessage}`);
-      }
-    );
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListPackagesResponse) => {
+          this.collectedPackages = resp.packages;
+        },
+        error: error => {
+          this.notificationService.warn(`获取收藏内容失败: ${error.statusMessage}`);
+        }
+      });
   }
 
 }

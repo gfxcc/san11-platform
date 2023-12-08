@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
+import { finalize } from 'rxjs';
+import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
 import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
-import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { GlobalConstants } from '../../common/global-constants';
 import { NotificationService } from "../../common/notification.service";
 import { EventEmiterService } from "../../service/event-emiter.service";
@@ -36,7 +37,6 @@ export class PackageDetailComponent implements OnInit {
   author: User = new User({});
 
   packageNameUpdated = false;
-  loading: MatDialogRef<LoadingComponent>;
 
   galleryElement;
 
@@ -68,6 +68,7 @@ export class PackageDetailComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private uploadService: UploadService,
     public editorService: EditorService,
+    private progressService: ProgressService,
   ) {
   }
 
@@ -447,44 +448,42 @@ export class PackageDetailComponent implements OnInit {
 
 
   onUploadScreenshot(imageInput) {
-
     const image = imageInput.files[0];
     if (image.size > GlobalConstants.maxImageSize) {
       alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize / 1024 / 1024).toString() + 'MB');
       return;
     }
 
-    this.loading = this.dialog.open(LoadingComponent);
-
     const parent = getPackageUrl(this.package);
     const filename = `${parent}/images/tmp.jpeg`
+
+    this.progressService.loading();
     this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
       if (upload.state === 'DONE') {
         this.san11pkService.createImage(new CreateImageRequest({
           parent: parent,
           url: filename,
           imageType: ImageType.SCREENSHOT,
-        })).subscribe(
-          url => {
-            this.package.imageUrls.push(url.url);
-            const fullUrl = getFullUrl(url.url);
-            if (getCategoryId(this.package.name) === 1) {
-              this.images.splice(this.images.length - 2, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
-            } else {
-              this.images.splice(this.images.length - 1, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
-            }
+        }))
+          .pipe(finalize(() => this.progressService.complete()))
+          .subscribe({
+            next: (url) => {
+              this.package.imageUrls.push(url.url);
+              const fullUrl = getFullUrl(url.url);
+              if (getCategoryId(this.package.name) === 1) {
+                this.images.splice(this.images.length - 2, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
+              } else {
+                this.images.splice(this.images.length - 1, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
+              }
 
-            this.galleryElement.load(this.images);
+              this.galleryElement.load(this.images);
 
-            this.notificationService.success('图片上传成功');
-            this.loading.close();
-          },
-          error => {
-            this.loading.close();
-            this.notificationService.warn('上传截图失败: ' + error.statusMessage);
-          }
-        );
-
+              this.notificationService.success('图片上传成功');
+            },
+            error: (error) => {
+              this.notificationService.warn('上传截图失败: ' + error.statusMessage);
+            },
+          })
       }
     });
   }

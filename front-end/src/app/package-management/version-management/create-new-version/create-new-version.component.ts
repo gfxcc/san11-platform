@@ -2,8 +2,8 @@ import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '
 import { FormBuilder, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as S3 from 'aws-sdk/clients/s3';
-import { Subscription } from 'rxjs';
-import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
+import { finalize, Subscription } from 'rxjs';
+import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
 import { isAdmin } from 'src/app/utils/user_util';
 import { v4 as uuid } from 'uuid';
@@ -49,7 +49,6 @@ export class CreateNewVersionComponent implements OnInit {
   updateType: string = 'minor';
 
   file: globalThis.File;
-  loadingDialog;
   tmpUrl: string = undefined;
 
   selectSireVersion: string;
@@ -91,6 +90,7 @@ export class CreateNewVersionComponent implements OnInit {
     public uploadService: UploadService,
     private fb: FormBuilder,
     public editorService: EditorService,
+    private progressService: ProgressService,
   ) {
     this.latestVersions = data.latestVersions;
     this.acceptFileType = data.acceptFileType;
@@ -338,25 +338,19 @@ export class CreateNewVersionComponent implements OnInit {
       binary: binary,
     });
 
-    this.loadingDialog = this.dialog.open(LoadingComponent);
-
-    this.san11PkService.createBinary(request).subscribe(
-      resp => {
-        if (this.loadingDialog != undefined) {
-          this.loadingDialog.close();
+    this.progressService.loading();
+    this.san11PkService.createBinary(request)
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: Binary) => {
+          this.notificationService.success('创建成功');
+          this.onClose();
+        },
+        error: (err) => {
+          this.notificationService.warn('创建失败:' + err.statusMessage);
+          this.onClose();
         }
-        this.notificationService.success('更新成功');
-        this.onClose();
-      },
-      error => {
-        if (this.loadingDialog != undefined) {
-          this.loadingDialog.close();
-        }
-        this.notificationService.warn('更新失败:' + error.statusMessage);
-
-        this.onClose();
-      }
-    );
+      });
   }
 
   newTagSelected(tag: string) {

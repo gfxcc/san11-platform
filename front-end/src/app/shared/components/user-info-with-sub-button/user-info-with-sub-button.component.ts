@@ -1,9 +1,10 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingComponent } from 'src/app/common/components/loading/loading.component';
+import { finalize } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
+import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { decrement, increment } from 'src/app/utils/number_util';
@@ -21,9 +22,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
   @Input() updateAvatar: false;
   @ViewChild('imageInput') imageInputElement: ElementRef
 
-
   displayUserImgLoading: boolean = true;
-  loading: MatDialogRef<LoadingComponent>;
   subscription: Subscription;
   loadingSubscription: boolean = true;
 
@@ -34,6 +33,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
     private notificationService: NotificationService,
     private dialog: MatDialog,
     private uploadService: UploadService,
+    private progressService: ProgressService,
   ) { }
 
   ngOnInit(): void {
@@ -118,29 +118,28 @@ export class UserInfoWithSubButtonComponent implements OnInit {
       return;
     }
 
-    this.loading = this.dialog.open(LoadingComponent);
-
     const parent = getUserUri(this.user);
     const filename = `${parent}/images/${uuid()}.jpeg`
+    this.progressService.loading();
     this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
       if (upload.state === 'DONE') {
         this.san11pkService.createImage(new CreateImageRequest({
           parent: parent,
           url: filename,
           imageType: ImageType.USER_AVATAR,
-        })).subscribe(
-          url => {
-            this.user.imageUrl = url.url;
-            saveUser(this.user);
+        }))
+          .pipe(finalize(() => this.progressService.complete()))
+          .subscribe({
+            next: (resp) => {
+              this.user.imageUrl = resp.url;
+              saveUser(this.user);
 
-            this.notificationService.success('图片上传成功');
-            this.loading.close();
-          },
-          error => {
-            this.notificationService.warn('上传截图失败: ' + error.statusMessage);
-            this.loading.close();
-          }
-        );
+              this.notificationService.success('图片上传成功');
+            },
+            error: (error) => {
+              this.notificationService.warn('上传图片失败: ' + error.statusMessage);
+            },
+          });
       }
     });
   }

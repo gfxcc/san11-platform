@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../proto/san11-platform.pb';
-import { LoadingComponent } from '../../common/components/loading/loading.component';
 import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { UploadService } from '../../service/upload.service';
@@ -16,7 +15,6 @@ import { getFullUrl } from '../../utils/resrouce_util';
 export class HomeComponent implements OnInit {
   @ViewChild('imageInput') imageInputElement: ElementRef
 
-  loading: MatDialogRef<LoadingComponent>;
   user: User;
   selectedIndex = 0;
 
