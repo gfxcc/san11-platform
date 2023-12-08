@@ -182,8 +182,6 @@ def _attribute_to_proto(attribute: attrs.Attribute, model_value: Any) -> Any:
     if attribute.metadata[base_core.REPEATED]:
         ret = [converter.from_model(v) for v in model_value]
     else:
-        if model_value is None:
-            return None
         ret = converter.from_model(model_value)
     return ret
 

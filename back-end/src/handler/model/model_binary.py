@@ -152,7 +152,7 @@ class ModelBinary(TrackLifecycle, ModelBase):
         nested_type=File,
     )
     download_method: str = StrAttrib()
-    cloud_disk_file: str = NestedAttrib(
+    cloud_disk_file: CloudDiskFile = NestedAttrib(
         nested_type=CloudDiskFile,
     )
     # END - OneOf field resource

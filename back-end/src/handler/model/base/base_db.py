@@ -9,7 +9,7 @@ import re
 from abc import ABC
 from dataclasses import dataclass
 from typing import (Any, Callable, Dict, Generic, Iterable, List, Optional,
-                    Tuple, Type, TypeVar)
+                    Tuple, Type, TypeVar, Union)
 
 import attrs
 from handler.model.base import base_proto
@@ -67,14 +67,18 @@ class NestedDbConverter(DbConverter):
     from_model_exec: Callable[[Any], Any] = lambda x: x
     to_model_exec: Callable[[Any], Any] = lambda x: x
 
-    def from_model(self, value: _MODEL_T) -> _DB_MODEL_T:
+    def from_model(self, value: _MODEL_T) -> Union[_DB_MODEL_T, None]:
+        if value is None:
+            return None
         return self.from_model_exec(value)
 
-    def to_model(self, proto_value: _DB_MODEL_T) -> _MODEL_T:
-        return self.to_model_exec(proto_value)
+    def to_model(self, db_value: _DB_MODEL_T) -> Union[_MODEL_T, None]:
+        if db_value is None:
+            return None
+        return self.to_model_exec(db_value)
 
 
-def build_nested_converter(cls: type):
+def build_nested_converter(cls: DbModelBase):
     return NestedDbConverter(from_model_exec=lambda v: v.to_db(), to_model_exec=cls.from_db)
 
 
@@ -322,7 +326,7 @@ def _is_db_field(attribute: attrs.Attribute) -> bool:
 
 
 def _attribute_from_db(attribute: attrs.Attribute, value: Any):
-    # TODO: document why a default value is needed.
+    # Newly added field may not have value in db.
     def populate_default(value, type):
         if value is None and type in [str, int, bool]:
             return type()
@@ -332,8 +336,6 @@ def _attribute_from_db(attribute: attrs.Attribute, value: Any):
         return [populate_default(converter.to_model(item), attribute.type)
                 for item in (value or [])]
     else:
-        if value is None:
-            return None
         return populate_default(converter.to_model(
             value), attribute.type)
 
@@ -344,8 +346,6 @@ def _attribute_to_data(attribute: attrs.Attribute, value: Any):
         return [converter.from_model(item)
                 for item in value]
     else:
-        if value is None:
-            return None
         return converter.from_model(value)
 
 
