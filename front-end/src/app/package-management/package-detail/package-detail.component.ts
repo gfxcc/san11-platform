@@ -598,14 +598,14 @@ export class PackageDetailComponent implements OnInit {
       updateMask: new FieldMask({
         paths: [field],
       })
-    })).subscribe(
-      (pkg: Package) => {
+    })).subscribe({
+      next: (pkg: Package) => {
         this.package = pkg;
       },
-      error => {
+      error: error => {
         this.notificationService.warn(`操作失败: ${error.statusMessage}`);
       }
-    );
+    });
   }
 
   isAdmin() {
