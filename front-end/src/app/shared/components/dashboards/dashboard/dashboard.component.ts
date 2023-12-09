@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, finalize } from 'rxjs';
+import { GlobalConstants } from 'src/app/common/global-constants';
 import { ProgressService } from 'src/app/progress.service';
 import { ListPackagesRequest, ListPackagesResponse, Package, SearchPackagesResponse } from '../../../../../proto/san11-platform.pb';
 import { NotificationService } from "../../../../common/notification.service";
@@ -64,9 +65,9 @@ export class DashboardComponent implements OnInit {
         } else if (userId != undefined) {
           // TODO: Reimplement this with SearchPackage.
           this.packages = [];
-          this.loadPackagesInCate(userId, 1);
-          this.loadPackagesInCate(userId, 2);
-          this.loadPackagesInCate(userId, 3);
+          GlobalConstants.categories.forEach(c => {
+            this.loadPackagesInCate(userId, parseInt(c.value));
+          });
         }
       });
     }
@@ -80,31 +81,31 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: (resp: ListPackagesResponse) => {
           this.packages = resp.packages
-          this.progressService.complete();
         },
         error: error => {
           this.notificationService.warn(`载入工具列表失败: ${error.statusMessage}`);
-          this.progressService.complete();
-
         },
       });
   }
 
   loadPackagesInCate(userId: string, category: number) {
+    this.progressService.loading();
     this.san11pkService.listPackages(new ListPackagesRequest({
       parent: `categories/${category.toString()}`,
       filter: `author_id=${userId}`,
       orderBy: this.selectedOrder,
-    })).subscribe(
-      resp => {
-        resp.packages.forEach(p => {
-          this.packages.push(p)
-        });
-      },
-      error => {
-        this.notificationService.warn(`获取工具列表失败: ${error.statusMessage}`);
-      }
-    );
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListPackagesResponse) => {
+          resp.packages.forEach(p => {
+            this.packages.push(p)
+          });
+        },
+        error: (error: any) => {
+          this.notificationService.warn(`获取工具列表失败: ${error.statusMessage}`);
+        }
+      });
   }
 
 

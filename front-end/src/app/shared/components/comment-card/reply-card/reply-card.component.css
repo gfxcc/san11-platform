@@ -35,6 +35,11 @@
     height: 32px;
 }
 
+.custom-icon-button:hover {
+    background-color: #F8F8FC;
+    cursor: pointer;
+}
+
 .icon {
     color: #9e9fa2;
     font-size: 16px;

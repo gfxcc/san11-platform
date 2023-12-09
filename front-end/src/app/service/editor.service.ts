@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import * as Editor from "ckeditor5-custom-build/build/ckeditor";
 import { ListUsersRequest, User } from 'src/proto/san11-platform.pb';
 import { GlobalConstants } from '../common/global-constants';
+import { ProgressService } from '../progress.service';
 import { getUserUri } from '../utils/user_util';
 import { MyUploadAdapter } from './cke-upload-adapter';
 import { San11PlatformServiceService } from './san11-platform-service.service';
@@ -22,6 +23,8 @@ export class EditorService {
   constructor(
     private san11pkService: San11PlatformServiceService,
     private uploadService: UploadService,
+    public progressService: ProgressService,
+    private ngZone: NgZone,  // Inject NgZone
   ) {
     this.createEditor();
   }
@@ -137,9 +140,8 @@ export class EditorService {
     this.editorElement = editor;
     if (this.imageUploadPath !== undefined) {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-        return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.imageUploadPath);
+        return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.imageUploadPath, this.progressService, this.ngZone);
       };
-
     }
     if (this.disabled) {
       const toolbarElement = editor.ui.view.toolbar.element;

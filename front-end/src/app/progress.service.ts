@@ -13,7 +13,7 @@ export class ProgressService {
 
   constructor() { }
 
-  show(value: number) {
+  update(value: number) {
     this.progressModeSource.next('determinate');
     this.progressValueSource.next(value);
   }

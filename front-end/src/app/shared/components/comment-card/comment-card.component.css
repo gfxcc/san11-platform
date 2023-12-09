@@ -16,7 +16,7 @@
 .author-section {
     width: 144px;
     padding: 12px;
-    min-height: 150px;
+    min-height: 100px;
     text-align: center;
     color: #9e9fa2;
 }
@@ -48,6 +48,17 @@
 
 .right .bottom {
     height: 32px;
+}
+
+
+.custom-icon-button {
+    height: 36px;
+    width: 36px;
+}
+
+.custom-icon-button:hover {
+    background-color: #F8F8FC;
+    cursor: pointer;
 }
 
 .icon {

@@ -33,10 +33,10 @@
                         [editor]="this.editorService.getEditorInstance()" [config]="this.editorService.getConfig()"
                         (ready)="this.editorService.onReady($event)" (focus)="descEditor_onFocus=true;
                         this.hideCommentEditor=false" (blur)="descEditor_onFocus=false"
-                        [disabled]="this.editorService.disabled"></ckeditor>
+                        [disabled]="this.editorService.disabled" (change)="onDescEditorChange($event)"></ckeditor>
                 </div>
                 <div class="actions-section" *ngIf="!disableInput &&
-                    this.isEdited">
+                    this.descEditor_updated">
                     <span class="example-spacer"></span>
                     <button style="margin-left: 5px;" mat-button color="grey" (click)="onCancel()">取消</button>
                     <button style="margin-left: 5px;" type="submit" mat-stroked-button color="primary" [disabled]="this.descEditor_element?.getData() ==

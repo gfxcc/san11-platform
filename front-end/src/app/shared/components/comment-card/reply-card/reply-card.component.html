@@ -20,7 +20,7 @@
             {{this.reply.text}}
         </div>
         <div class="bottom">
-            <button mat-icon-button (click)="onUpvote()">
+            <button mat-icon-button (click)="onUpvote()" class="custom-icon-button">
                 <mat-icon class="icon">thumb_up</mat-icon>
             </button>
             <span [hidden]="this.reply.upvoteCount===&quot;0&quot;">{{this.reply.upvoteCount}}</span>

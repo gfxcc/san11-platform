@@ -73,7 +73,7 @@
                             </button>
 
                             <!-- Replace with live count -->
-                            <span class="toggle-button-text">{{package.likeCount}}</span>
+                            <span *ngIf="package.likeCount != '0'" class="toggle-button-text">{{package.likeCount}}</span>
                         </a>
                     </div>
                     <div class="icon-button">

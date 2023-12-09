@@ -1,5 +1,5 @@
 .main-container {
-    min-height: 500px;
+    min-height: 200px;
     /* width: 70%; */
     display: flex;
     justify-content: center;
@@ -22,4 +22,15 @@
 
 .thread-card {
     flex-grow: 1;
+}
+
+.dashboard-placeholder {
+    min-height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: grey;
+    font-size: 2rem;
+    font-weight: 500;
+    font-style: italic;
 }

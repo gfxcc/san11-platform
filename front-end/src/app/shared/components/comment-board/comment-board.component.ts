@@ -1,13 +1,11 @@
 import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { finalize, Subject } from 'rxjs';
-import { GlobalConstants } from 'src/app/common/global-constants';
+import { Subject, finalize } from 'rxjs';
 import { ProgressService } from 'src/app/progress.service';
-import { MyUploadAdapter } from 'src/app/service/cke-upload-adapter';
 import { EditorService } from 'src/app/service/editor.service';
 import { UploadService } from 'src/app/service/upload.service';
-import { getUserUri, signedIn } from 'src/app/utils/user_util';
-import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, ListCommentsResponse, ListUsersRequest, Package, User } from "../../../../proto/san11-platform.pb";
+import { signedIn } from 'src/app/utils/user_util';
+import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, ListCommentsResponse, Package, User } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { increment } from "../../../utils/number_util";
@@ -43,6 +41,7 @@ export class CommentBoardComponent implements OnInit {
   descEditor_data: string;
   descEditor_element;
   descEditor_onFocus = false;
+  descEditor_updated = false;
 
   private destroy$ = new Subject<void>();
 
@@ -91,12 +90,13 @@ export class CommentBoardComponent implements OnInit {
     }
 
     this.loadComments();
-    this.configDescEditor();
+    this.editorService.configEditor(this.disableInput, this.parent, this.inputPlaceHolder);
+    this.descEditor_data = this.disableInput ? this.inputPlaceHolder : '';
   }
 
   @HostListener('document:keydown.meta.enter', ['$event'])
   onEnter(event: KeyboardEvent) {
-    if (!this.descEditor_onFocus || !this.isEdited) {
+    if (!this.descEditor_onFocus || !this.descEditor_updated) {
       return;
     }
     // check if cmd+enter is pressed
@@ -118,71 +118,9 @@ export class CommentBoardComponent implements OnInit {
     }
   }
 
-  // If the comment editor is edited, return true
-  get isEdited(): boolean {
-    return this.descEditor_element?.getData() != "";
+  onDescEditorChange(event) {
+    this.descEditor_updated = true;
   }
-
-  configDescEditor() {
-    this.descEditor_data = this.disableInput ? this.inputPlaceHolder : '';
-    this.editorService.configEditor(this.disableInput, this.parent, this.inputPlaceHolder);
-  }
-
-  onDescEditorReady(event) {
-    this.descEditor_element = event;
-    event.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.parent);
-    };
-  }
-
-  getUsernameFeedItems(queryText: string) {
-    return this.san11pkService.listUsers(new ListUsersRequest({
-      pageSize: GlobalConstants.usernameFeedPageSize.toString(),
-      filter: `username = "*${queryText}*"`
-    })).toPromise().then(function (result) {
-      return result.users.map(
-        (user: User) => ({
-          id: `@${user.username}`,
-          userId: user.userId,
-          username: user.username,
-          link: getUserUri(user),
-        })
-      );
-    });
-  }
-
-  MentionCustomization(editor) {
-    // The upcast converter will convert view <a class="mention" href="" data-user-id="">
-    // elements to the model 'mention' text attribute.
-    editor.conversion.for('upcast').elementToAttribute({
-      view: {
-        name: 'a',
-        key: 'data-mention',
-        classes: 'mention',
-        attributes: {
-          href: true,
-          'data-user-id': true
-        }
-      },
-      model: {
-        key: 'mention',
-        value: viewItem => {
-          // The mention feature expects that the mention attribute value
-          // in the model is a plain object with a set of additional attributes.
-          // In order to create a proper object use the toMentionAttribute() helper method:
-          const mentionAttribute = editor.plugins.get('Mention').toMentionAttribute(viewItem, {
-            // Add any other properties that you need.
-            link: viewItem.getAttribute('href'),
-            userId: viewItem.getAttribute('data-user-id')
-          });
-
-          return mentionAttribute;
-        }
-      },
-      converterPriority: 'high'
-    });
-  }
-
 
   loadComments(order?: string) {
     this.progressService.loading();
@@ -228,6 +166,9 @@ export class CommentBoardComponent implements OnInit {
       this.notificationService.warn('请登录');
       return;
     }
+    if (this.editorService.getData() === '') {
+      return;
+    }
     this.sendCommentLoading = true;
 
     const text = this.editorService.getData();
@@ -254,6 +195,7 @@ export class CommentBoardComponent implements OnInit {
         this.notificationService.success('评论添加 成功!');
         this.editorService.setData('');
         this.descEditor_onFocus = false;
+        this.descEditor_updated = false;
         this.sendCommentLoading = false;
       }
     });
