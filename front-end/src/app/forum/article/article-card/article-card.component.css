@@ -32,9 +32,11 @@
 }
 
 .entry-image-container {
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
+    width: 320px;
+    height: 200px;
 }
 
 .entry-image {

@@ -2,3 +2,7 @@
     min-width: 200px;
     max-width: 600px;
 }
+
+:host ::ng-deep .ck-editor__editable_inline {
+    max-height: 500px;
+}

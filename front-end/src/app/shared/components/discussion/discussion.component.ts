@@ -3,6 +3,7 @@ import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
@@ -18,7 +19,7 @@ export class DiscussionComponent implements OnInit {
   @Input() displayName: string = "讨论区";
   @Input() parent: string;
 
-  threads: Thread[] = [];
+  threads: Thread[];
   pageSize = 20;
   totalThreadsCount = 200;
   reachedEnd = false;
@@ -49,18 +50,18 @@ export class DiscussionComponent implements OnInit {
       pageSize: this.pageSize.toString(),
       pageToken: `{ "watermark": "${watermark}" }`,
     })
-    this.san11pkService.listThreads(request).subscribe(
-      (resp: ListThreadsResponse) => {
-        this.threads = resp.threads;
-        this.scrollToTop();
-        this.updateTotalCount(resp.threads.length < pageSize, watermark + resp.threads.length);
-        this.progressService.complete();
-      },
-      error => {
-        this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`);
-        this.progressService.complete();
-      }
-    );
+    this.san11pkService.listThreads(request)
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListThreadsResponse) => {
+          this.threads = resp.threads;
+          this.scrollToTop();
+          this.updateTotalCount(resp.threads.length < pageSize, watermark + resp.threads.length);
+        },
+        error: error => {
+          this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`);
+        }
+      });
   }
 
   scrollToTop() {

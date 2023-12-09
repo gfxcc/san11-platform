@@ -1,11 +1,9 @@
 <div class="container clickable-card" (click)="onClick()">
     <div class="entry-area inner-border">
         <div class="entry-image-container">
-            <img [hidden]="this.loadingPreview"
-            class="entry-image" [src]="getCoverImage()"
+            <img [hidden]="this.loadingPreview" class="entry-image" [src]="getCoverImage()"
                 (load)="this.loadingPreview=false;">
-            <p-skeleton *ngIf="this.loadingPreview"
-                height="200px"></p-skeleton>
+            <p-skeleton *ngIf="this.loadingPreview" height="200px"></p-skeleton>
         </div>
 
         <div class="entry-content">
@@ -23,9 +21,7 @@
                 </div>
                 <div class="entry-meta">
                     <span class="entry-avatar">
-                        <img [src]="this.user?.imageUrl | fullUrl: '128_128'"
-                            class="avatar-img"
-                            width="36" height="36">
+                        <img [src]="this.user?.imageUrl | fullUrl: '128_128'" class="avatar-img" width="36" height="36">
                         <span class="entry-author-link">
                             <a href="users/{{user?.userId}}">{{user?.username}}</a>
                         </span>
