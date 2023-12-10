@@ -16325,6 +16325,7 @@ export class Article implements GrpcMessage {
     _instance.tags = _instance.tags || [];
     _instance.viewCount = _instance.viewCount || '0';
     _instance.likeCount = _instance.likeCount || '0';
+    _instance.dislikeCount = _instance.dislikeCount || '0';
   }
 
   /**
@@ -16378,6 +16379,9 @@ export class Article implements GrpcMessage {
         case 22:
           _instance.likeCount = _reader.readInt64String();
           break;
+        case 23:
+          _instance.dislikeCount = _reader.readInt64String();
+          break;
         default:
           _reader.skipField();
       }
@@ -16430,6 +16434,9 @@ export class Article implements GrpcMessage {
     if (_instance.likeCount) {
       _writer.writeInt64String(22, _instance.likeCount);
     }
+    if (_instance.dislikeCount) {
+      _writer.writeInt64String(23, _instance.dislikeCount);
+    }
   }
 
   private _name: string;
@@ -16442,6 +16449,7 @@ export class Article implements GrpcMessage {
   private _tags: string[];
   private _viewCount: string;
   private _likeCount: string;
+  private _dislikeCount: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -16463,6 +16471,7 @@ export class Article implements GrpcMessage {
     this.tags = (_value.tags || []).slice();
     this.viewCount = _value.viewCount;
     this.likeCount = _value.likeCount;
+    this.dislikeCount = _value.dislikeCount;
     Article.refineValues(this);
   }
   get name(): string {
@@ -16525,6 +16534,12 @@ export class Article implements GrpcMessage {
   set likeCount(value: string) {
     this._likeCount = value;
   }
+  get dislikeCount(): string {
+    return this._dislikeCount;
+  }
+  set dislikeCount(value: string) {
+    this._dislikeCount = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -16550,7 +16565,8 @@ export class Article implements GrpcMessage {
       state: this.state,
       tags: (this.tags || []).slice(),
       viewCount: this.viewCount,
-      likeCount: this.likeCount
+      likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount
     };
   }
 
@@ -16587,7 +16603,8 @@ export class Article implements GrpcMessage {
         ],
       tags: (this.tags || []).slice(),
       viewCount: this.viewCount,
-      likeCount: this.likeCount
+      likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount
     };
   }
 }
@@ -16606,6 +16623,7 @@ export module Article {
     tags: string[];
     viewCount: string;
     likeCount: string;
+    dislikeCount: string;
   }
 
   /**
@@ -16622,6 +16640,7 @@ export module Article {
     tags: string[];
     viewCount: string;
     likeCount: string;
+    dislikeCount: string;
   }
 }
 

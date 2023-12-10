@@ -809,6 +809,9 @@ message Article {
 
   int64 view_count = 21;
   int64 like_count = 22;
+  int64 dislike_count = 23;
+
+  // next tag: 24
 }
 
 message File {

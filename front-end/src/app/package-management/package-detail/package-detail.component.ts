@@ -455,7 +455,7 @@ export class PackageDetailComponent implements OnInit {
     }
 
     const parent = getPackageUrl(this.package);
-    const filename = `${parent} / images / tmp.jpeg`
+    const filename = `${parent}/images/tmp.jpeg`
 
     this.progressService.loading();
     this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {

@@ -16,6 +16,12 @@
                 <ckeditor class="editor" [data]="this.article.content" [editor]="this.editorService.getEditorInstance()"
                     (ready)="this.editorService.onReady($event)" (change)="onDescEditorChange($event)"
                     [disabled]="this.editorService.disabled" [config]="this.editorService.getConfig()"></ckeditor>
+
+                <div style="width: 100%; display: flex; padding-top: 20px;">
+                    <span class="example-spacer"></span>
+                    <app-feedback-card [target]="this.article.name" [likeCount]="this.article.likeCount"
+                        [dislikeCount]="this.article.dislikeCount"></app-feedback-card>
+                </div>
             </div>
 
             <mat-divider></mat-divider>

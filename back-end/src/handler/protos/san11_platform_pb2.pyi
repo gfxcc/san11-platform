@@ -2267,6 +2267,7 @@ class Article(google.protobuf.message.Message):
     TAGS_FIELD_NUMBER: builtins.int
     VIEW_COUNT_FIELD_NUMBER: builtins.int
     LIKE_COUNT_FIELD_NUMBER: builtins.int
+    DISLIKE_COUNT_FIELD_NUMBER: builtins.int
     name: builtins.str
     """Resource name. E.g. 'articles/12345'"""
     subject: builtins.str
@@ -2283,6 +2284,7 @@ class Article(google.protobuf.message.Message):
     def tags(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     view_count: builtins.int
     like_count: builtins.int
+    dislike_count: builtins.int
     def __init__(
         self,
         *,
@@ -2296,9 +2298,10 @@ class Article(google.protobuf.message.Message):
         tags: collections.abc.Iterable[builtins.str] | None = ...,
         view_count: builtins.int = ...,
         like_count: builtins.int = ...,
+        dislike_count: builtins.int = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "content", b"content", "create_time", b"create_time", "like_count", b"like_count", "name", b"name", "state", b"state", "subject", b"subject", "tags", b"tags", "update_time", b"update_time", "view_count", b"view_count"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "content", b"content", "create_time", b"create_time", "dislike_count", b"dislike_count", "like_count", b"like_count", "name", b"name", "state", b"state", "subject", b"subject", "tags", b"tags", "update_time", b"update_time", "view_count", b"view_count"]) -> None: ...
 
 global___Article = Article
 
