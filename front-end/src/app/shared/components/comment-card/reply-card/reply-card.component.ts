@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { getAge } from 'src/app/utils/time_util';
-import { DeleteReplyRequest, FieldMask, GetUserRequest, Reply, UpdateReplyRequest, User } from "../../../../../proto/san11-platform.pb";
+import { DeleteReplyRequest, GetUserRequest, Reply, User } from "../../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../../service/san11-platform-service.service";
 import { isAdmin } from "../../../../utils/user_util";
@@ -45,27 +45,6 @@ export class ReplyCardComponent implements OnInit {
       error => {
       }
     );
-  }
-
-  onUpvote() {
-
-    const reply = new Reply({
-      name: this.reply.name,
-    });
-    this.san11pkService.updateReply(new UpdateReplyRequest({
-      reply: reply,
-      updateMask: new FieldMask({
-        paths: ['like_count']
-      })
-    })).subscribe({
-      next: (reply: Reply) => {
-        this.reply.likeCount = reply.likeCount;
-      },
-      error: error => {
-        this.notificationService.warn(error.statusMessage);
-      }
-    });
-
   }
 
   onDeleteReply() {

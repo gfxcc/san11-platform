@@ -5,7 +5,7 @@ import { ImageItem } from 'ng-gallery';
 import { finalize } from 'rxjs';
 import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
-import { Action, CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListActivitiesRequest, ListActivitiesResponse, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import { CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
 import { GlobalConstants } from '../../common/global-constants';
 import { NotificationService } from "../../common/notification.service";
 import { EventEmiterService } from "../../service/event-emiter.service";
@@ -283,27 +283,6 @@ export class PackageDetailComponent implements OnInit {
 
     this.loadAuthor();
 
-    this.loadLikeStatus();
-  }
-
-  loadLikeStatus() {
-    this.san11pkService.listActivities(new ListActivitiesRequest({
-      parent: `users/${loadUser().userId}`,
-      filter: `resource_name="${this.package.name}"`,
-    })).subscribe({
-      next: (resp: ListActivitiesResponse) => {
-        resp.activities.forEach(activity => {
-          if (activity.action === Action.LIKE) {
-            this.liked = true;
-          } else if (activity.action === Action.DISLIKE) {
-            this.disliked = true;
-          }
-        });
-      },
-      error: (error) => {
-        console.error(`Failed to load like status: ${error.statusMessage}`);
-      }
-    });
   }
 
   // admin
@@ -503,38 +482,6 @@ export class PackageDetailComponent implements OnInit {
     this.router.navigate(['users', this.package.authorId]);
   }
 
-  onToggleLike() {
-    if (!signedIn()) {
-      this.notificationService.warn('请登录');
-      return;
-    }
-    if (this.liked) {
-      this.liked = false;
-    } else {
-      this.liked = true;
-      if (this.disliked) {
-        this.disliked = false;
-      }
-    }
-    this.toggleAction('like_count');
-  }
-
-  onToggleDislike() {
-    if (!signedIn()) {
-      this.notificationService.warn('请登录');
-      return;
-    }
-    if (this.disliked) {
-      this.disliked = false;
-    } else {
-      this.disliked = true;
-      if (this.liked) {
-        this.liked = false;
-      }
-    }
-    this.toggleAction('dislike_count');
-  }
-
   onToggleCollect() {
     if (this.isCollected) {
       this.san11pkService.deleteSubscription(new DeleteSubscriptionRequest({
@@ -590,23 +537,6 @@ export class PackageDetailComponent implements OnInit {
 
 
   // utils
-  toggleAction(field: string) {
-    this.san11pkService.updatePackage(new UpdatePackageRequest({
-      package: new Package({
-        name: this.package.name,
-      }),
-      updateMask: new FieldMask({
-        paths: [field],
-      })
-    })).subscribe({
-      next: (pkg: Package) => {
-        this.package = pkg;
-      },
-      error: error => {
-        this.notificationService.warn(`操作失败: ${error.statusMessage}`);
-      }
-    });
-  }
 
   isAdmin() {
     return isAdmin();

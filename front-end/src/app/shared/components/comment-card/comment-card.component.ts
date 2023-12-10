@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { getAge } from 'src/app/utils/time_util';
-import { Comment, CreateReplyRequest, DeleteCommentRequest, FieldMask, GetUserRequest, Reply, UpdateCommentRequest, User } from "../../../../proto/san11-platform.pb";
+import { Comment, CreateReplyRequest, DeleteCommentRequest, GetUserRequest, Reply, User } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { isAdmin } from '../../../utils/user_util';
@@ -107,27 +107,6 @@ export class CommentCardComponent implements OnInit {
         this.notificationService.warn('删除评论 失败: ' + error.statusMessage);
       }
     );
-
-  }
-
-  onToggleLike() {
-    const comment = new Comment({
-      // commentId: this.comment.commentId,
-      name: this.comment.name,
-    });
-    this.san11pkService.updateComment(new UpdateCommentRequest({
-      comment: comment,
-      updateMask: new FieldMask({
-        paths: ['like_count'],
-      }),
-    })).subscribe({
-      next: (comment: Comment) => {
-        this.comment.likeCount = comment.likeCount;
-      },
-      error: error => {
-        this.notificationService.warn(error.statusMessage);
-      }
-    });
 
   }
 
