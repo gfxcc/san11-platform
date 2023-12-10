@@ -63,20 +63,20 @@ def GrpcAbortOnExcep(func: RpcFunc):
     def wrapper(this, request: message.Message, context: grpc.ServicerContext):
         try:
             logger.debug(f'Call to {func} -- request={request}')
-            ret = func(this, request,
-                       HandlerContext.from_service_context(context))
+            handler_context = HandlerContext.from_service_context(context)
+            ret = func(this, request, handler_context)
             return ret
         except Excep as err:
             # Client space error
             logger.info(f'Client space error: {err}', exc_info=True)
             logger.debug(f'request={request}')
-            logger.debug(f'context={context}')
+            logger.debug(f'context={dict(context.invocation_metadata())}')
             context.abort(code=err.code, details=err.message)
         except Exception as err:
             # Server space error
             logger.error(f'Server space error: {err}', exc_info=True)
             logger.error(f'request={request}')
-            logger.error(f'context={context}')
+            logger.error(f'context={dict(context.invocation_metadata())}')
             context.abort(code=255, details='Internal error')
     return wrapper
 
