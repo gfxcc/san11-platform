@@ -9,6 +9,7 @@ from typing import Any, Callable
 
 import grpc
 import iam_util
+from google.cloud import logging as cloud_logging
 from google.protobuf import message
 from handler.activity_handler import ActivityHandler
 from handler.admin_handler import AdminHandler
@@ -67,15 +68,15 @@ def GrpcAbortOnExcep(func: RpcFunc):
             return ret
         except Excep as err:
             # Client space error
+            logger.info(f'Client space error: {err}', exc_info=True)
             logger.debug(f'request={request}')
             logger.debug(f'context={context}')
-            logger.warning(err, exc_info=get_env() != Env.PROD)
             context.abort(code=err.code, details=err.message)
         except Exception as err:
             # Server space error
-            logger.debug(f'request={request}')
-            logger.debug(f'context={context}')
-            logger.warning(err, exc_info=True)
+            logger.error(f'Server space error: {err}', exc_info=True)
+            logger.error(f'request={request}')
+            logger.error(f'context={context}')
             context.abort(code=255, details='Internal error')
     return wrapper
 
@@ -557,9 +558,14 @@ def serve():
 
 
 def init_log(verbose: bool):
+    level = logging.DEBUG if verbose else logging.INFO
+
+    if is_production():
+        client = cloud_logging.Client()
+        client.setup_logging(log_level=level)
     FORMAT = '%(asctime)-15s %(levelname)s %(name)s:%(lineno)s [func=%(funcName)s] %(message)s'
     logging.basicConfig(
-        level=logging.INFO if not verbose else logging.NOTSET,
+        level=level,
         format=FORMAT,
         datefmt='%Y-%m-%d %H:%M:%S %Z')
 

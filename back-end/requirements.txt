@@ -9,6 +9,7 @@ google-cloud-storage
 google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
+google-cloud-logging
 attr
 attrs
 # bcrypt requires a rust toolchain since v4.0. Install v3.x.x to avoid such a dependency.

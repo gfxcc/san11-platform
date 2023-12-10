@@ -13,7 +13,8 @@ from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser, get_admins
-from handler.model.plugins.tracklifecycle import ModelActivity, Action, search_activity
+from handler.model.plugins.tracklifecycle import (Action, ModelActivity,
+                                                  search_activity)
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
 from handler.util.name_util import get_parent

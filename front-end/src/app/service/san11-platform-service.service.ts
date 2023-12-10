@@ -250,6 +250,6 @@ export class San11PlatformServiceService {
     if (sid === null) {
       sid = '';
     }
-    return new GrpcMetadata({ sid: sid });
+    return new GrpcMetadata({ sid: sid, client: 'web' });
   }
 }
