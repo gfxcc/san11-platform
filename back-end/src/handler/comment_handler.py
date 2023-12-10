@@ -1,8 +1,6 @@
-import imp
 import logging
 import os
-import re
-from typing import Iterable, List, Tuple
+from typing import List, Tuple
 
 from handler.handler_context import HandlerContext
 from handler.model.base import FieldMask, HandlerBase, merge_resource
@@ -11,15 +9,10 @@ from handler.model.model_comment import ModelComment
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
-from handler.util.html_util import get_mentioned_users, get_text_from_html
 from handler.util.name_util import ResourceName
 from handler.util.notifier import notify_on_creation
 from handler.util.resource_parser import find_resource
-from handler.util.resource_view import ResourceViewVisitor
 
-from .common.exception import NotFound
-from .model.activity import Action, Activity
-from .util.time_util import get_now
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -50,33 +43,22 @@ class CommentHandler(HandlerBase):
 
     def update(self, update_comment: ModelComment, update_mask: FieldMask,
                handler_context: HandlerContext) -> ModelComment:
-        # Value of update_count.upvote_count is 1 if upvote event is emitted.
-        # Using 1 rather than precomputed count from client side to avoid race condition
-        #   where multiple upvote event is emiited at the same time.
-        # Remove `upvote_count` from update_mask here and handle the count update
-        #   explicitly later.
         sanitized_update_mask = FieldMask(
-            set(update_mask.paths) - {'upvote_count'})
+            set(update_mask.paths) - {'like_count', 'dislike_count'})
         comment = merge_resource(base_resource=ModelComment.from_name(update_comment.name),
                                  update_request=update_comment,
                                  field_mask=sanitized_update_mask)
-        user_id = handler_context.user.user_id
+        actor = handler_context.user
 
-        if update_mask.has('upvote_count'):
-            try:
-                activity = Activity.from_detail(
-                    user_id=user_id, action=Action.UPVOTE, resource_name=comment.name)
-            except NotFound as err:
-                Activity(activity_id=0, user_id=user_id,
-                         create_time=get_now(),
-                         action=Action.UPVOTE, resource_name=comment.name).create()
-                comment.upvote_count += 1
-            else:
-                # upvote from the same user will result as cancelling previous upvote
-                activity.delete()
-                comment.upvote_count -= 1
+        if update_mask.has('like_count'):
+            comment.toggle_like(actor.name)
 
-        comment.update(actor_info=user_id)
+        is_visitor = True if set(update_mask.paths) <= {
+            'like_count', 'dislike_count'} else False
+        if is_visitor:
+            comment.update(update_update_time=False)
+        else:
+            comment.update(actor_info=actor.name)
         return comment
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelComment:

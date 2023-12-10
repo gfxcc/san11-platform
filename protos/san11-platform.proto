@@ -714,7 +714,8 @@ message Comment {
   google.protobuf.Timestamp update_time = 4;
   string text = 5;
   int64 author_id = 6;
-  int64 upvote_count = 7;
+  // Used to be named `upvote_count`
+  int64 like_count = 7;
   // [ OUTPUT_ONLY ]
   repeated Reply replies = 8;
   // The index of the comment within its parent. The first index is 1.
@@ -727,7 +728,8 @@ message Reply {
   google.protobuf.Timestamp update_time = 3;
   string text = 4;
   int64 author_id = 5;
-  int64 upvote_count = 6;
+  // Used to be named `upvote_count`
+  int64 like_count = 6;
 }
 
 message Tag {

@@ -6,7 +6,6 @@ from typing import Iterable, List, Optional, Tuple, Type, Union
 from handler.common.env import Env, get_env
 from handler.common.exception import PermissionDenied
 from handler.handler_context import HandlerContext
-from handler.model.activity import Action
 from handler.model.base import (Context, FieldMask, HandlerBase, ModelBase,
                                 merge_resource)
 from handler.model.base.base_db import ListOptions
@@ -14,7 +13,7 @@ from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser, get_admins
-from handler.model.plugins.tracklifecycle import ModelActivity, search_activity
+from handler.model.plugins.tracklifecycle import ModelActivity, Action, search_activity
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
 from handler.util.name_util import get_parent
@@ -85,31 +84,6 @@ class PackageHandler(HandlerBase):
                 if not handler_context.user.is_admin():
                     raise PermissionDenied(message='审核通过新工具需要管理员权限')
 
-        def toggle_like_dislike(user_id: int, action: Action, package: ModelPackage):
-            action2field = {
-                Action.LIKE: 'like_count',
-                Action.DISLIKE: 'dislike_count',
-            }
-            act1 = search_activity(
-                f'users/{user_id}', action, package.name)
-            if act1:
-                act1.delete()
-                setattr(package, action2field[action], getattr(
-                    package, action2field[action]) - 1)
-            else:
-                ModelActivity('', get_now(), action.value, package.name).create(
-                    parent=f'users/{user_id}')
-                setattr(package, action2field[action], getattr(
-                    package, action2field[action]) + 1)
-
-                reversed_action = Action.DISLIKE if action == Action.LIKE else Action.LIKE
-                act2 = search_activity(
-                    f'users/{user_id}', reversed_action, package.name)
-                if act2:
-                    act2.delete()
-                    setattr(package, action2field[reversed_action], getattr(
-                        package, action2field[reversed_action]) - 1)
-
         base_package = ModelPackage.from_name(update_package.name)
         if update_mask.has('state'):
             verify_permission_on_update(
@@ -125,9 +99,9 @@ class PackageHandler(HandlerBase):
         user_id = handler_context.user.user_id
 
         if update_mask.has('like_count'):
-            toggle_like_dislike(user_id, Action.LIKE, package)
+            package.toggle_like(handler_context.user.name)
         if update_mask.has('dislike_count'):
-            toggle_like_dislike(user_id, Action.DISLIKE, package)
+            package.toggle_dislike(handler_context.user.name)
 
         # Delete image resources
         if update_mask.has('image_urls'):

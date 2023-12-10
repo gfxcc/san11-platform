@@ -1987,7 +1987,7 @@ class Comment(google.protobuf.message.Message):
     UPDATE_TIME_FIELD_NUMBER: builtins.int
     TEXT_FIELD_NUMBER: builtins.int
     AUTHOR_ID_FIELD_NUMBER: builtins.int
-    UPVOTE_COUNT_FIELD_NUMBER: builtins.int
+    LIKE_COUNT_FIELD_NUMBER: builtins.int
     REPLIES_FIELD_NUMBER: builtins.int
     INDEX_FIELD_NUMBER: builtins.int
     name: builtins.str
@@ -1997,7 +1997,8 @@ class Comment(google.protobuf.message.Message):
     def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
     text: builtins.str
     author_id: builtins.int
-    upvote_count: builtins.int
+    like_count: builtins.int
+    """Used to be named `upvote_count`"""
     @property
     def replies(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Reply]:
         """[ OUTPUT_ONLY ]"""
@@ -2011,12 +2012,12 @@ class Comment(google.protobuf.message.Message):
         update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
         text: builtins.str = ...,
         author_id: builtins.int = ...,
-        upvote_count: builtins.int = ...,
+        like_count: builtins.int = ...,
         replies: collections.abc.Iterable[global___Reply] | None = ...,
         index: builtins.int = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "create_time", b"create_time", "index", b"index", "name", b"name", "replies", b"replies", "text", b"text", "update_time", b"update_time", "upvote_count", b"upvote_count"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "create_time", b"create_time", "index", b"index", "like_count", b"like_count", "name", b"name", "replies", b"replies", "text", b"text", "update_time", b"update_time"]) -> None: ...
 
 global___Comment = Comment
 
@@ -2029,7 +2030,7 @@ class Reply(google.protobuf.message.Message):
     UPDATE_TIME_FIELD_NUMBER: builtins.int
     TEXT_FIELD_NUMBER: builtins.int
     AUTHOR_ID_FIELD_NUMBER: builtins.int
-    UPVOTE_COUNT_FIELD_NUMBER: builtins.int
+    LIKE_COUNT_FIELD_NUMBER: builtins.int
     name: builtins.str
     @property
     def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
@@ -2037,7 +2038,8 @@ class Reply(google.protobuf.message.Message):
     def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
     text: builtins.str
     author_id: builtins.int
-    upvote_count: builtins.int
+    like_count: builtins.int
+    """Used to be named `upvote_count`"""
     def __init__(
         self,
         *,
@@ -2046,10 +2048,10 @@ class Reply(google.protobuf.message.Message):
         update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
         text: builtins.str = ...,
         author_id: builtins.int = ...,
-        upvote_count: builtins.int = ...,
+        like_count: builtins.int = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "create_time", b"create_time", "name", b"name", "text", b"text", "update_time", b"update_time", "upvote_count", b"upvote_count"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "create_time", b"create_time", "like_count", b"like_count", "name", b"name", "text", b"text", "update_time", b"update_time"]) -> None: ...
 
 global___Reply = Reply
 

@@ -7,7 +7,7 @@ import { EditorService } from 'src/app/service/editor.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { getAge } from 'src/app/utils/time_util';
 import { isAdmin, loadUser } from 'src/app/utils/user_util';
-import { Comment, DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
+import { DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
 
 export interface Fruit {
   name: string;
@@ -23,8 +23,6 @@ export class ThreadDetailComponent implements OnInit {
   user: User;
 
   hideUserImage: boolean = true;
-
-  rootComment: Comment;
 
   descEditor_updated = false;
   descEditor_onFocus = false;
@@ -47,14 +45,6 @@ export class ThreadDetailComponent implements OnInit {
     this.route.data.subscribe(
       (data) => {
         this.thread = data.thread;
-
-        this.rootComment = new Comment({
-          name: this.thread.name,
-          text: this.thread.content,
-          createTime: this.thread.createTime,
-          updateTime: this.thread.updateTime,
-          upvoteCount: this.thread.likeCount,
-        })
 
         this.san11pkService.getUser(new GetUserRequest({
           name: `users/${this.thread.authorId}`,

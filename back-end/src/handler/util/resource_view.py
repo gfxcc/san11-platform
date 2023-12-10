@@ -8,7 +8,6 @@ from handler.model.model_reply import ModelReply
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
-from handler.model.plugins.subscribable import ModelSubscription
 from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName, get_parent
 from handler.util.resource_parser import find_resource

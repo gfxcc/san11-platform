@@ -55,16 +55,16 @@ export class ReplyCardComponent implements OnInit {
     this.san11pkService.updateReply(new UpdateReplyRequest({
       reply: reply,
       updateMask: new FieldMask({
-        paths: ['upvote_count']
+        paths: ['like_count']
       })
-    })).subscribe(
-      reply => {
-        this.reply.upvoteCount = reply.upvoteCount;
+    })).subscribe({
+      next: (reply: Reply) => {
+        this.reply.likeCount = reply.likeCount;
       },
-      error => {
+      error: error => {
         this.notificationService.warn(error.statusMessage);
       }
-    );
+    });
 
   }
 

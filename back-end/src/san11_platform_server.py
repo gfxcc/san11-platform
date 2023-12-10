@@ -192,7 +192,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
         )
 
     @GrpcAbortOnExcep
-    @iam_util.assert_resource_owner('comment.name', bypass="set(request.update_mask.paths) <= {'upvote_count'}")
+    @iam_util.assert_resource_owner('comment.name', bypass="set(request.update_mask.paths) <= {'like_count'}")
     def UpdateComment(self, request, context):
         return self.comment_handler.update(
             ModelComment.from_pb(request.comment),
@@ -212,7 +212,7 @@ class RouteGuideServicer(san11_platform_pb2_grpc.RouteGuideServicer):
             request.parent, ModelReply.from_pb(request.reply), context).to_pb()
 
     @GrpcAbortOnExcep
-    @iam_util.assert_resource_owner('reply.name', bypass="set(request.update_mask.paths) <= {'upvote_count'}")
+    @iam_util.assert_resource_owner('reply.name', bypass="set(request.update_mask.paths) <= {'like_count'}")
     def UpdateReply(self, request, context):
         return self.reply_handler.update(
             ModelReply.from_pb(request.reply),

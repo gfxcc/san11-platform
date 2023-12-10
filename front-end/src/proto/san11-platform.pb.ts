@@ -14269,7 +14269,7 @@ export class Comment implements GrpcMessage {
     _instance.updateTime = _instance.updateTime || undefined;
     _instance.text = _instance.text || '';
     _instance.authorId = _instance.authorId || '0';
-    _instance.upvoteCount = _instance.upvoteCount || '0';
+    _instance.likeCount = _instance.likeCount || '0';
     _instance.replies = _instance.replies || [];
     _instance.index = _instance.index || '0';
   }
@@ -14311,7 +14311,7 @@ export class Comment implements GrpcMessage {
           _instance.authorId = _reader.readInt64String();
           break;
         case 7:
-          _instance.upvoteCount = _reader.readInt64String();
+          _instance.likeCount = _reader.readInt64String();
           break;
         case 8:
           const messageInitializer8 = new Reply();
@@ -14363,8 +14363,8 @@ export class Comment implements GrpcMessage {
     if (_instance.authorId) {
       _writer.writeInt64String(6, _instance.authorId);
     }
-    if (_instance.upvoteCount) {
-      _writer.writeInt64String(7, _instance.upvoteCount);
+    if (_instance.likeCount) {
+      _writer.writeInt64String(7, _instance.likeCount);
     }
     if (_instance.replies && _instance.replies.length) {
       _writer.writeRepeatedMessage(
@@ -14383,7 +14383,7 @@ export class Comment implements GrpcMessage {
   private _updateTime?: googleProtobuf002.Timestamp;
   private _text: string;
   private _authorId: string;
-  private _upvoteCount: string;
+  private _likeCount: string;
   private _replies?: Reply[];
   private _index: string;
 
@@ -14402,7 +14402,7 @@ export class Comment implements GrpcMessage {
       : undefined;
     this.text = _value.text;
     this.authorId = _value.authorId;
-    this.upvoteCount = _value.upvoteCount;
+    this.likeCount = _value.likeCount;
     this.replies = (_value.replies || []).map(m => new Reply(m));
     this.index = _value.index;
     Comment.refineValues(this);
@@ -14437,11 +14437,11 @@ export class Comment implements GrpcMessage {
   set authorId(value: string) {
     this._authorId = value;
   }
-  get upvoteCount(): string {
-    return this._upvoteCount;
+  get likeCount(): string {
+    return this._likeCount;
   }
-  set upvoteCount(value: string) {
-    this._upvoteCount = value;
+  set likeCount(value: string) {
+    this._likeCount = value;
   }
   get replies(): Reply[] | undefined {
     return this._replies;
@@ -14476,7 +14476,7 @@ export class Comment implements GrpcMessage {
       updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
       text: this.text,
       authorId: this.authorId,
-      upvoteCount: this.upvoteCount,
+      likeCount: this.likeCount,
       replies: (this.replies || []).map(m => m.toObject()),
       index: this.index
     };
@@ -14508,7 +14508,7 @@ export class Comment implements GrpcMessage {
         : null,
       text: this.text,
       authorId: this.authorId,
-      upvoteCount: this.upvoteCount,
+      likeCount: this.likeCount,
       replies: (this.replies || []).map(m => m.toProtobufJSON(options)),
       index: this.index
     };
@@ -14524,7 +14524,7 @@ export module Comment {
     updateTime?: googleProtobuf002.Timestamp.AsObject;
     text: string;
     authorId: string;
-    upvoteCount: string;
+    likeCount: string;
     replies?: Reply.AsObject[];
     index: string;
   }
@@ -14538,7 +14538,7 @@ export module Comment {
     updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
     text: string;
     authorId: string;
-    upvoteCount: string;
+    likeCount: string;
     replies: Reply.AsProtobufJSON[] | null;
     index: string;
   }
@@ -14570,7 +14570,7 @@ export class Reply implements GrpcMessage {
     _instance.updateTime = _instance.updateTime || undefined;
     _instance.text = _instance.text || '';
     _instance.authorId = _instance.authorId || '0';
-    _instance.upvoteCount = _instance.upvoteCount || '0';
+    _instance.likeCount = _instance.likeCount || '0';
   }
 
   /**
@@ -14607,7 +14607,7 @@ export class Reply implements GrpcMessage {
           _instance.authorId = _reader.readInt64String();
           break;
         case 6:
-          _instance.upvoteCount = _reader.readInt64String();
+          _instance.likeCount = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -14646,8 +14646,8 @@ export class Reply implements GrpcMessage {
     if (_instance.authorId) {
       _writer.writeInt64String(5, _instance.authorId);
     }
-    if (_instance.upvoteCount) {
-      _writer.writeInt64String(6, _instance.upvoteCount);
+    if (_instance.likeCount) {
+      _writer.writeInt64String(6, _instance.likeCount);
     }
   }
 
@@ -14656,7 +14656,7 @@ export class Reply implements GrpcMessage {
   private _updateTime?: googleProtobuf002.Timestamp;
   private _text: string;
   private _authorId: string;
-  private _upvoteCount: string;
+  private _likeCount: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -14673,7 +14673,7 @@ export class Reply implements GrpcMessage {
       : undefined;
     this.text = _value.text;
     this.authorId = _value.authorId;
-    this.upvoteCount = _value.upvoteCount;
+    this.likeCount = _value.likeCount;
     Reply.refineValues(this);
   }
   get name(): string {
@@ -14706,11 +14706,11 @@ export class Reply implements GrpcMessage {
   set authorId(value: string) {
     this._authorId = value;
   }
-  get upvoteCount(): string {
-    return this._upvoteCount;
+  get likeCount(): string {
+    return this._likeCount;
   }
-  set upvoteCount(value: string) {
-    this._upvoteCount = value;
+  set likeCount(value: string) {
+    this._likeCount = value;
   }
 
   /**
@@ -14733,7 +14733,7 @@ export class Reply implements GrpcMessage {
       updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
       text: this.text,
       authorId: this.authorId,
-      upvoteCount: this.upvoteCount
+      likeCount: this.likeCount
     };
   }
 
@@ -14763,7 +14763,7 @@ export class Reply implements GrpcMessage {
         : null,
       text: this.text,
       authorId: this.authorId,
-      upvoteCount: this.upvoteCount
+      likeCount: this.likeCount
     };
   }
 }
@@ -14777,7 +14777,7 @@ export module Reply {
     updateTime?: googleProtobuf002.Timestamp.AsObject;
     text: string;
     authorId: string;
-    upvoteCount: string;
+    likeCount: string;
   }
 
   /**
@@ -14789,7 +14789,7 @@ export module Reply {
     updateTime: googleProtobuf002.Timestamp.AsProtobufJSON | null;
     text: string;
     authorId: string;
-    upvoteCount: string;
+    likeCount: string;
   }
 }
 

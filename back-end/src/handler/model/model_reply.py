@@ -5,6 +5,7 @@ import attrs
 from handler.model.base import (Attrib, DatetimeAttrib, InitModel, IntAttrib,
                                 ModelBase, StrAttrib)
 from handler.model.plugins.tracklifecycle import TrackLifecycle
+from handler.model.plugins.likeable import Likeable
 
 from ..protos import san11_platform_pb2 as pb
 
@@ -14,7 +15,7 @@ from ..protos import san11_platform_pb2 as pb
     proto_class=pb.Reply,
 )
 @attrs.define
-class ModelReply(TrackLifecycle, ModelBase):
+class ModelReply(Likeable, TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/replies/{resource_id}/`
     # E.g. `categories/123/packages/456/comments/789/replies/234`
     name: str = StrAttrib()
@@ -23,7 +24,13 @@ class ModelReply(TrackLifecycle, ModelBase):
     text: str = StrAttrib()
     create_time: datetime.datetime = DatetimeAttrib()
     update_time: datetime.datetime = DatetimeAttrib()
-    upvote_count: int = IntAttrib()
+
+    # Attributes for Likeable
+    like_count: int = IntAttrib(
+        # Migrated from `upvote_count`
+        db_path='upvote_count')
+    # Dummy attributes for Likeable.
+    dislike_count: int = IntAttrib(is_proto_field=False, is_db_field=False)
 
     @classmethod
     def from_name(cls, name: str) -> 'ModelReply':

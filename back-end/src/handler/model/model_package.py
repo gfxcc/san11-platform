@@ -11,6 +11,7 @@ from handler.model.base import ListOptions
 from handler.model.model_tag import ModelTag
 from handler.model.plugins.subscribable import Subscribable
 from handler.model.plugins.tracklifecycle import TrackLifecycle
+from handler.model.plugins.likeable import Likeable
 
 from ..protos import san11_platform_pb2 as pb
 from .base import (Attrib, DatetimeAttrib, DbConverter, InitModel, IntAttrib,
@@ -46,7 +47,7 @@ class TagDbConverter(DbConverter):
     proto_class=pb.Package,
 )
 @attrs.define
-class ModelPackage(Subscribable, TrackLifecycle, ModelBase):
+class ModelPackage(Likeable, Subscribable, TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/packages/{package_id}`
     # E.g. `categories/1/packages/123`
     name: str = StrAttrib()
@@ -68,6 +69,8 @@ class ModelPackage(Subscribable, TrackLifecycle, ModelBase):
         repeated=True,
     )  # type: ignore
     download_count: int = IntAttrib()
+
+    # Attributes for Likeable.
     like_count: int = IntAttrib()
     dislike_count: int = IntAttrib()
 

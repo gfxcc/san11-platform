@@ -110,8 +110,7 @@ export class CommentCardComponent implements OnInit {
 
   }
 
-  onUpvote() {
-
+  onToggleLike() {
     const comment = new Comment({
       // commentId: this.comment.commentId,
       name: this.comment.name,
@@ -119,16 +118,16 @@ export class CommentCardComponent implements OnInit {
     this.san11pkService.updateComment(new UpdateCommentRequest({
       comment: comment,
       updateMask: new FieldMask({
-        paths: ['upvote_count'],
+        paths: ['like_count'],
       }),
-    })).subscribe(
-      commentResp => {
-        this.comment.upvoteCount = commentResp.upvoteCount;
+    })).subscribe({
+      next: (comment: Comment) => {
+        this.comment.likeCount = comment.likeCount;
       },
-      error => {
+      error: error => {
         this.notificationService.warn(error.statusMessage);
       }
-    );
+    });
 
   }
 

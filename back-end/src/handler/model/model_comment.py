@@ -7,6 +7,7 @@ from handler.model.base import (Attrib, DatetimeAttrib, InitModel, IntAttrib,
                                 ListOptions, ModelBase, StrAttrib)
 from handler.model.model_reply import ModelReply
 from handler.model.plugins.tracklifecycle import TrackLifecycle
+from handler.model.plugins.likeable import Likeable
 
 from ..protos import san11_platform_pb2 as pb
 
@@ -16,7 +17,7 @@ from ..protos import san11_platform_pb2 as pb
     proto_class=pb.Comment,
 )
 @attrs.define
-class ModelComment(TrackLifecycle, ModelBase):
+class ModelComment(Likeable, TrackLifecycle, ModelBase):
     # Resource name. It is `{parent}/comments/{resource_id}`
     # E.g. `comments/123`, `categories/123/packages/456/comments/789`
     name: str = StrAttrib()
@@ -25,8 +26,14 @@ class ModelComment(TrackLifecycle, ModelBase):
     text: str = StrAttrib()
     create_time: datetime.datetime = DatetimeAttrib()
     update_time: datetime.datetime = DatetimeAttrib()
-    upvote_count: int = IntAttrib()
     index: int = IntAttrib()
+
+    # Attributes for Likeable.
+    like_count: int = IntAttrib(
+        # Migrated from `upvote_count`
+        db_path='upvote_count')
+    # Dummy attributes for Likeable.
+    dislike_count: int = IntAttrib(is_proto_field=False, is_db_field=False)
 
     def to_pb(self) -> pb.Comment:
         proto = super(ModelComment, self).to_pb()

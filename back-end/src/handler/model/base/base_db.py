@@ -96,12 +96,16 @@ class DbModelBase(ABC):
     def from_db(cls, db_value: Dict) -> _SUB_DB_MODEL_T:
         obj_args = {}
         for attribute in attrs.fields(cls):
-            if not attribute.metadata.get(base_core.IS_DB_FIELD):
-                continue
-            name, db_field_path = attribute.name, _get_db_path(attribute)
-            # Handle the case where db_value itself is None. This could happen
-            # on nested message.
-            field_value = db_value.get(db_field_path) if db_value else None
+            name = attribute.name
+
+            if attribute.metadata.get(base_core.IS_DB_FIELD):
+                db_field_path = _get_db_path(attribute)
+                # Handle the case where db_value itself is None. This could happen
+                # on nested message.
+                field_value = db_value.get(db_field_path) if db_value else None
+            else:
+                field_value = None
+
             obj_args[name] = _attribute_from_db(attribute, field_value)
         ret = cls(**obj_args)
         # logger.debug(f'{cls.__name__}.from_db({json.dumps(db_value)}) -> {ret}')

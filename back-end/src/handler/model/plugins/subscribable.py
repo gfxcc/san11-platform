@@ -39,12 +39,11 @@ class ModelSubscription(ModelBase):
         return get_parent(self.name)
 
 
-@attrs.define
 class Subscribable:
     '''
     A sub-class must contains an IntAttrib named as `subscriber_count`.
     '''
-    subscriber_count: int = IntAttrib()
+    subscriber_count: int
 
     def subscribe(self, subscriber_name: str) -> ModelSubscription:
         '''
