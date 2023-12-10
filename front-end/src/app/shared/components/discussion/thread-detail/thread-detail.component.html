@@ -43,6 +43,9 @@
                             (matChipInputTokenEnd)="add($event)">
                     </mat-chip-list>
                 </mat-form-field>
+
+                <app-feedback-card [target]="this.thread.name" [likeCount]="this.thread.likeCount"
+                    [dislikeCount]="this.thread.dislikeCount"></app-feedback-card>
             </div>
 
         </div>

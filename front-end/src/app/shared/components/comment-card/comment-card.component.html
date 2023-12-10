@@ -48,12 +48,14 @@
                 <div class="ck-content" [innerHtml]="this.comment.text">
                 </div>
             </div>
-            <div class="bottom">
-                <button mat-icon-button (click)="onToggleLike()" class="custom-icon-button">
-                    <mat-icon class="icon">thumb_up</mat-icon>
-                </button>
-                <span [hidden]="this.comment.likeCount===&quot;0&quot;">{{this.comment.likeCount}}</span>
+            <div class="action-section">
+                <div class="feedback-card-wrapper" [style.transform]="'scale(0.8)'">
+                    <app-feedback-card [target]="this.comment.name" [likeCount]="this.comment.likeCount"
+                        [dislikeCount]="this.comment.dislikeCount" 
+                        [disableClickableBackground]="true"></app-feedback-card>
+                </div>
                 <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
+
             </div>
         </div>
 

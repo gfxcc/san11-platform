@@ -32,8 +32,7 @@ class ModelComment(Likeable, TrackLifecycle, ModelBase):
     like_count: int = IntAttrib(
         # Migrated from `upvote_count`
         db_path='upvote_count')
-    # Dummy attributes for Likeable.
-    dislike_count: int = IntAttrib(is_proto_field=False, is_db_field=False)
+    dislike_count: int = IntAttrib()
 
     def to_pb(self) -> pb.Comment:
         proto = super(ModelComment, self).to_pb()

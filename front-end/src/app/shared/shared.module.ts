@@ -23,6 +23,7 @@ import { CreateThreadComponent } from './components/discussion/create-thread/cre
 import { DiscussionComponent } from './components/discussion/discussion.component';
 import { ThreadCardComponent } from './components/discussion/thread-card/thread-card.component';
 import { ThreadDetailComponent } from './components/discussion/thread-detail/thread-detail.component';
+import { FeedbackCardComponent } from './components/feedback-card/feedback-card.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 import { DeleteDialog, PackageCardComponent } from './components/package-card/package-card.component';
@@ -55,6 +56,7 @@ import { FullUrlPipe } from './pipes/full-url.pipe';
     MessageBoardComponent,
     PackageCardComponent,
     DeleteDialog,
+    FeedbackCardComponent,
   ],
   imports: [
     CommonModule,
@@ -85,6 +87,7 @@ import { FullUrlPipe } from './pipes/full-url.pipe';
     PackageCardComponent,
     UserCardComponent,
     DeleteDialog,
+    FeedbackCardComponent,
     // Pipes
     FullUrlPipe,
   ],

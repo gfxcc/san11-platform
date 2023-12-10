@@ -1,11 +1,13 @@
 <div class="main" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
     <div mat-card-avatar class="author-image">
-        <img [hidden]="this.hideUserImage" [src]="this.user?.imageUrl | fullUrl : '48_48'" (load)="this.hideUserImage = false;" class="author-image">
+        <img [hidden]="this.hideUserImage" [src]="this.user?.imageUrl | fullUrl : '48_48'"
+            (load)="this.hideUserImage = false;" class="author-image">
     </div>
     <div class="right">
         <div class="header">
             <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
-            <span *ngIf="this.user?.userId === this.resourceOwnerId" style="margin-left: 5px; margin-right: 5px; color:#3f51b5">[发帖人]</span>
+            <span *ngIf="this.user?.userId === this.resourceOwnerId"
+                style="margin-left: 5px; margin-right: 5px; color:#3f51b5">[发帖人]</span>
             <span class="create-time">{{getReplyAge()}}</span>
 
             <span class="example-spacer"></span>
@@ -19,11 +21,11 @@
         <div style="white-space: pre-wrap;">
             {{this.reply.text}}
         </div>
-        <div class="bottom">
-            <button mat-icon-button (click)="onUpvote()" class="custom-icon-button">
-                <mat-icon class="icon">thumb_up</mat-icon>
-            </button>
-            <span [hidden]="this.reply.likeCount===&quot;0&quot;">{{this.reply.likeCount}}</span>
+        <div class="action-section">
+            <div class="feedback-card-wrapper" [style.transform]="'scale(0.8)'">
+                <app-feedback-card [target]="this.reply.name" [likeCount]="this.reply.likeCount"
+                    [dislikeCount]="this.reply.dislikeCount" [disableClickableBackground]="true"></app-feedback-card>
+            </div>
 
             <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
         </div>

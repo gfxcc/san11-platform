@@ -89,6 +89,7 @@ service RouteGuide {
 
   // Activities reltead
   rpc ListActivities(ListActivitiesRequest) returns (ListActivitiesResponse) {}
+  rpc ToggleAction(ToggleActionRequest) returns (ToggleActionResponse) {}
 
   rpc ListNotifications(ListNotificationsRequest)
       returns (ListNotificationsResponse) {}
@@ -481,6 +482,16 @@ message ListActivitiesResponse {
   string next_page_token = 2;
 }
 
+message ToggleActionRequest {
+  string target = 1; // E.g. `categories/123/packages/456`
+  Action action = 2;
+}
+
+message ToggleActionResponse {
+  int64 like_count = 1;
+  int64 dislike_count = 2;
+}
+
 message ListNotificationsRequest {
   string parent = 1;
   int64 page_size = 2;
@@ -702,8 +713,11 @@ message Thread {
 
   int64 view_count = 21;
   int64 like_count = 22;
+  int64 dislike_count = 25;
   int64 comment_count = 23;
   int64 reply_count = 24;
+
+  // next tag: 26
 }
 
 message Comment {
@@ -716,10 +730,13 @@ message Comment {
   int64 author_id = 6;
   // Used to be named `upvote_count`
   int64 like_count = 7;
+  int64 dislike_count = 10;
   // [ OUTPUT_ONLY ]
   repeated Reply replies = 8;
   // The index of the comment within its parent. The first index is 1.
   int64 index = 9;
+
+  // next tag: 11
 }
 
 message Reply {
@@ -730,6 +747,9 @@ message Reply {
   int64 author_id = 5;
   // Used to be named `upvote_count`
   int64 like_count = 6;
+  int64 dislike_count = 7;
+
+  // next tag: 8
 }
 
 message Tag {

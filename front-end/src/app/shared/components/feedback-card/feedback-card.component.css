@@ -1,0 +1,46 @@
+/* Top level buttons section */
+
+.feedback-card-container {
+    transform-origin: top left;
+    display: flex;
+}
+
+
+
+.clickable-background {
+    background-color: var(--clickable-background-color);
+}
+
+.icon-button {
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+    padding: 0 16px;
+    border-radius: 18px;
+}
+
+.icon-button:hover {
+    background-color: var(--clickable-background-color-hover);
+}
+
+.disabled-text {
+    font-weight: 10 !important;
+}
+
+.toggle-button-render {
+    display: flex;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.toggle-button-text {
+    height: fit-content;
+}
+
+.button-svg {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+}

@@ -61,6 +61,7 @@ const (
 	RouteGuide_ValidateNewUser_FullMethodName      = "/routeguide.RouteGuide/ValidateNewUser"
 	RouteGuide_UpdatePassword_FullMethodName       = "/routeguide.RouteGuide/UpdatePassword"
 	RouteGuide_ListActivities_FullMethodName       = "/routeguide.RouteGuide/ListActivities"
+	RouteGuide_ToggleAction_FullMethodName         = "/routeguide.RouteGuide/ToggleAction"
 	RouteGuide_ListNotifications_FullMethodName    = "/routeguide.RouteGuide/ListNotifications"
 	RouteGuide_UpdateNotification_FullMethodName   = "/routeguide.RouteGuide/UpdateNotification"
 	RouteGuide_CreateTag_FullMethodName            = "/routeguide.RouteGuide/CreateTag"
@@ -130,6 +131,7 @@ type RouteGuideClient interface {
 	UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*User, error)
 	// Activities reltead
 	ListActivities(ctx context.Context, in *ListActivitiesRequest, opts ...grpc.CallOption) (*ListActivitiesResponse, error)
+	ToggleAction(ctx context.Context, in *ToggleActionRequest, opts ...grpc.CallOption) (*ToggleActionResponse, error)
 	ListNotifications(ctx context.Context, in *ListNotificationsRequest, opts ...grpc.CallOption) (*ListNotificationsResponse, error)
 	UpdateNotification(ctx context.Context, in *UpdateNotificationRequest, opts ...grpc.CallOption) (*Notification, error)
 	// Tag related
@@ -532,6 +534,15 @@ func (c *routeGuideClient) ListActivities(ctx context.Context, in *ListActivitie
 	return out, nil
 }
 
+func (c *routeGuideClient) ToggleAction(ctx context.Context, in *ToggleActionRequest, opts ...grpc.CallOption) (*ToggleActionResponse, error) {
+	out := new(ToggleActionResponse)
+	err := c.cc.Invoke(ctx, RouteGuide_ToggleAction_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *routeGuideClient) ListNotifications(ctx context.Context, in *ListNotificationsRequest, opts ...grpc.CallOption) (*ListNotificationsResponse, error) {
 	out := new(ListNotificationsResponse)
 	err := c.cc.Invoke(ctx, RouteGuide_ListNotifications_FullMethodName, in, out, opts...)
@@ -687,6 +698,7 @@ type RouteGuideServer interface {
 	UpdatePassword(context.Context, *UpdatePasswordRequest) (*User, error)
 	// Activities reltead
 	ListActivities(context.Context, *ListActivitiesRequest) (*ListActivitiesResponse, error)
+	ToggleAction(context.Context, *ToggleActionRequest) (*ToggleActionResponse, error)
 	ListNotifications(context.Context, *ListNotificationsRequest) (*ListNotificationsResponse, error)
 	UpdateNotification(context.Context, *UpdateNotificationRequest) (*Notification, error)
 	// Tag related
@@ -833,6 +845,9 @@ func (UnimplementedRouteGuideServer) UpdatePassword(context.Context, *UpdatePass
 }
 func (UnimplementedRouteGuideServer) ListActivities(context.Context, *ListActivitiesRequest) (*ListActivitiesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListActivities not implemented")
+}
+func (UnimplementedRouteGuideServer) ToggleAction(context.Context, *ToggleActionRequest) (*ToggleActionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ToggleAction not implemented")
 }
 func (UnimplementedRouteGuideServer) ListNotifications(context.Context, *ListNotificationsRequest) (*ListNotificationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListNotifications not implemented")
@@ -1636,6 +1651,24 @@ func _RouteGuide_ListActivities_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RouteGuide_ToggleAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ToggleActionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RouteGuideServer).ToggleAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RouteGuide_ToggleAction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RouteGuideServer).ToggleAction(ctx, req.(*ToggleActionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _RouteGuide_ListNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListNotificationsRequest)
 	if err := dec(in); err != nil {
@@ -2008,6 +2041,10 @@ var RouteGuide_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListActivities",
 			Handler:    _RouteGuide_ListActivities_Handler,
+		},
+		{
+			MethodName: "ToggleAction",
+			Handler:    _RouteGuide_ToggleAction_Handler,
 		},
 		{
 			MethodName: "ListNotifications",

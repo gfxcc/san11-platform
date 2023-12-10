@@ -573,7 +573,7 @@ export class PackageDetailComponent implements OnInit {
 
   loadAuthor() {
     this.san11pkService.getUser(new GetUserRequest({
-      name: `users / ${this.package.authorId}`,
+      name: `users/${this.package.authorId}`,
     })).subscribe({
       next: user => {
         this.author = user;

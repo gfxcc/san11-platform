@@ -9623,6 +9623,325 @@ export module ListActivitiesResponse {
 }
 
 /**
+ * Message implementation for routeguide.ToggleActionRequest
+ */
+export class ToggleActionRequest implements GrpcMessage {
+  static id = 'routeguide.ToggleActionRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ToggleActionRequest();
+    ToggleActionRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ToggleActionRequest) {
+    _instance.target = _instance.target || '';
+    _instance.action = _instance.action || 0;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ToggleActionRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.target = _reader.readString();
+          break;
+        case 2:
+          _instance.action = _reader.readEnum();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ToggleActionRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ToggleActionRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.target) {
+      _writer.writeString(1, _instance.target);
+    }
+    if (_instance.action) {
+      _writer.writeEnum(2, _instance.action);
+    }
+  }
+
+  private _target: string;
+  private _action: Action;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ToggleActionRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ToggleActionRequest.AsObject>) {
+    _value = _value || {};
+    this.target = _value.target;
+    this.action = _value.action;
+    ToggleActionRequest.refineValues(this);
+  }
+  get target(): string {
+    return this._target;
+  }
+  set target(value: string) {
+    this._target = value;
+  }
+  get action(): Action {
+    return this._action;
+  }
+  set action(value: Action) {
+    this._action = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ToggleActionRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ToggleActionRequest.AsObject {
+    return {
+      target: this.target,
+      action: this.action
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ToggleActionRequest.AsProtobufJSON {
+    return {
+      target: this.target,
+      action:
+        Action[
+          this.action === null || this.action === undefined ? 0 : this.action
+        ]
+    };
+  }
+}
+export module ToggleActionRequest {
+  /**
+   * Standard JavaScript object representation for ToggleActionRequest
+   */
+  export interface AsObject {
+    target: string;
+    action: Action;
+  }
+
+  /**
+   * Protobuf JSON representation for ToggleActionRequest
+   */
+  export interface AsProtobufJSON {
+    target: string;
+    action: string;
+  }
+}
+
+/**
+ * Message implementation for routeguide.ToggleActionResponse
+ */
+export class ToggleActionResponse implements GrpcMessage {
+  static id = 'routeguide.ToggleActionResponse';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new ToggleActionResponse();
+    ToggleActionResponse.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: ToggleActionResponse) {
+    _instance.likeCount = _instance.likeCount || '0';
+    _instance.dislikeCount = _instance.dislikeCount || '0';
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: ToggleActionResponse,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.likeCount = _reader.readInt64String();
+          break;
+        case 2:
+          _instance.dislikeCount = _reader.readInt64String();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    ToggleActionResponse.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: ToggleActionResponse,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.likeCount) {
+      _writer.writeInt64String(1, _instance.likeCount);
+    }
+    if (_instance.dislikeCount) {
+      _writer.writeInt64String(2, _instance.dislikeCount);
+    }
+  }
+
+  private _likeCount: string;
+  private _dislikeCount: string;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of ToggleActionResponse to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<ToggleActionResponse.AsObject>) {
+    _value = _value || {};
+    this.likeCount = _value.likeCount;
+    this.dislikeCount = _value.dislikeCount;
+    ToggleActionResponse.refineValues(this);
+  }
+  get likeCount(): string {
+    return this._likeCount;
+  }
+  set likeCount(value: string) {
+    this._likeCount = value;
+  }
+  get dislikeCount(): string {
+    return this._dislikeCount;
+  }
+  set dislikeCount(value: string) {
+    this._dislikeCount = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    ToggleActionResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): ToggleActionResponse.AsObject {
+    return {
+      likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): ToggleActionResponse.AsProtobufJSON {
+    return {
+      likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount
+    };
+  }
+}
+export module ToggleActionResponse {
+  /**
+   * Standard JavaScript object representation for ToggleActionResponse
+   */
+  export interface AsObject {
+    likeCount: string;
+    dislikeCount: string;
+  }
+
+  /**
+   * Protobuf JSON representation for ToggleActionResponse
+   */
+  export interface AsProtobufJSON {
+    likeCount: string;
+    dislikeCount: string;
+  }
+}
+
+/**
  * Message implementation for routeguide.ListNotificationsRequest
  */
 export class ListNotificationsRequest implements GrpcMessage {
@@ -13840,6 +14159,7 @@ export class Thread implements GrpcMessage {
     _instance.latestCommenterId = _instance.latestCommenterId || '0';
     _instance.viewCount = _instance.viewCount || '0';
     _instance.likeCount = _instance.likeCount || '0';
+    _instance.dislikeCount = _instance.dislikeCount || '0';
     _instance.commentCount = _instance.commentCount || '0';
     _instance.replyCount = _instance.replyCount || '0';
   }
@@ -13904,6 +14224,9 @@ export class Thread implements GrpcMessage {
           break;
         case 22:
           _instance.likeCount = _reader.readInt64String();
+          break;
+        case 25:
+          _instance.dislikeCount = _reader.readInt64String();
           break;
         case 23:
           _instance.commentCount = _reader.readInt64String();
@@ -13976,6 +14299,9 @@ export class Thread implements GrpcMessage {
     if (_instance.likeCount) {
       _writer.writeInt64String(22, _instance.likeCount);
     }
+    if (_instance.dislikeCount) {
+      _writer.writeInt64String(25, _instance.dislikeCount);
+    }
     if (_instance.commentCount) {
       _writer.writeInt64String(23, _instance.commentCount);
     }
@@ -13997,6 +14323,7 @@ export class Thread implements GrpcMessage {
   private _latestCommenterId: string;
   private _viewCount: string;
   private _likeCount: string;
+  private _dislikeCount: string;
   private _commentCount: string;
   private _replyCount: string;
 
@@ -14025,6 +14352,7 @@ export class Thread implements GrpcMessage {
     this.latestCommenterId = _value.latestCommenterId;
     this.viewCount = _value.viewCount;
     this.likeCount = _value.likeCount;
+    this.dislikeCount = _value.dislikeCount;
     this.commentCount = _value.commentCount;
     this.replyCount = _value.replyCount;
     Thread.refineValues(this);
@@ -14107,6 +14435,12 @@ export class Thread implements GrpcMessage {
   set likeCount(value: string) {
     this._likeCount = value;
   }
+  get dislikeCount(): string {
+    return this._dislikeCount;
+  }
+  set dislikeCount(value: string) {
+    this._dislikeCount = value;
+  }
   get commentCount(): string {
     return this._commentCount;
   }
@@ -14150,6 +14484,7 @@ export class Thread implements GrpcMessage {
       latestCommenterId: this.latestCommenterId,
       viewCount: this.viewCount,
       likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount,
       commentCount: this.commentCount,
       replyCount: this.replyCount
     };
@@ -14194,6 +14529,7 @@ export class Thread implements GrpcMessage {
       latestCommenterId: this.latestCommenterId,
       viewCount: this.viewCount,
       likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount,
       commentCount: this.commentCount,
       replyCount: this.replyCount
     };
@@ -14217,6 +14553,7 @@ export module Thread {
     latestCommenterId: string;
     viewCount: string;
     likeCount: string;
+    dislikeCount: string;
     commentCount: string;
     replyCount: string;
   }
@@ -14238,6 +14575,7 @@ export module Thread {
     latestCommenterId: string;
     viewCount: string;
     likeCount: string;
+    dislikeCount: string;
     commentCount: string;
     replyCount: string;
   }
@@ -14270,6 +14608,7 @@ export class Comment implements GrpcMessage {
     _instance.text = _instance.text || '';
     _instance.authorId = _instance.authorId || '0';
     _instance.likeCount = _instance.likeCount || '0';
+    _instance.dislikeCount = _instance.dislikeCount || '0';
     _instance.replies = _instance.replies || [];
     _instance.index = _instance.index || '0';
   }
@@ -14312,6 +14651,9 @@ export class Comment implements GrpcMessage {
           break;
         case 7:
           _instance.likeCount = _reader.readInt64String();
+          break;
+        case 10:
+          _instance.dislikeCount = _reader.readInt64String();
           break;
         case 8:
           const messageInitializer8 = new Reply();
@@ -14366,6 +14708,9 @@ export class Comment implements GrpcMessage {
     if (_instance.likeCount) {
       _writer.writeInt64String(7, _instance.likeCount);
     }
+    if (_instance.dislikeCount) {
+      _writer.writeInt64String(10, _instance.dislikeCount);
+    }
     if (_instance.replies && _instance.replies.length) {
       _writer.writeRepeatedMessage(
         8,
@@ -14384,6 +14729,7 @@ export class Comment implements GrpcMessage {
   private _text: string;
   private _authorId: string;
   private _likeCount: string;
+  private _dislikeCount: string;
   private _replies?: Reply[];
   private _index: string;
 
@@ -14403,6 +14749,7 @@ export class Comment implements GrpcMessage {
     this.text = _value.text;
     this.authorId = _value.authorId;
     this.likeCount = _value.likeCount;
+    this.dislikeCount = _value.dislikeCount;
     this.replies = (_value.replies || []).map(m => new Reply(m));
     this.index = _value.index;
     Comment.refineValues(this);
@@ -14443,6 +14790,12 @@ export class Comment implements GrpcMessage {
   set likeCount(value: string) {
     this._likeCount = value;
   }
+  get dislikeCount(): string {
+    return this._dislikeCount;
+  }
+  set dislikeCount(value: string) {
+    this._dislikeCount = value;
+  }
   get replies(): Reply[] | undefined {
     return this._replies;
   }
@@ -14477,6 +14830,7 @@ export class Comment implements GrpcMessage {
       text: this.text,
       authorId: this.authorId,
       likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount,
       replies: (this.replies || []).map(m => m.toObject()),
       index: this.index
     };
@@ -14509,6 +14863,7 @@ export class Comment implements GrpcMessage {
       text: this.text,
       authorId: this.authorId,
       likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount,
       replies: (this.replies || []).map(m => m.toProtobufJSON(options)),
       index: this.index
     };
@@ -14525,6 +14880,7 @@ export module Comment {
     text: string;
     authorId: string;
     likeCount: string;
+    dislikeCount: string;
     replies?: Reply.AsObject[];
     index: string;
   }
@@ -14539,6 +14895,7 @@ export module Comment {
     text: string;
     authorId: string;
     likeCount: string;
+    dislikeCount: string;
     replies: Reply.AsProtobufJSON[] | null;
     index: string;
   }
@@ -14571,6 +14928,7 @@ export class Reply implements GrpcMessage {
     _instance.text = _instance.text || '';
     _instance.authorId = _instance.authorId || '0';
     _instance.likeCount = _instance.likeCount || '0';
+    _instance.dislikeCount = _instance.dislikeCount || '0';
   }
 
   /**
@@ -14608,6 +14966,9 @@ export class Reply implements GrpcMessage {
           break;
         case 6:
           _instance.likeCount = _reader.readInt64String();
+          break;
+        case 7:
+          _instance.dislikeCount = _reader.readInt64String();
           break;
         default:
           _reader.skipField();
@@ -14649,6 +15010,9 @@ export class Reply implements GrpcMessage {
     if (_instance.likeCount) {
       _writer.writeInt64String(6, _instance.likeCount);
     }
+    if (_instance.dislikeCount) {
+      _writer.writeInt64String(7, _instance.dislikeCount);
+    }
   }
 
   private _name: string;
@@ -14657,6 +15021,7 @@ export class Reply implements GrpcMessage {
   private _text: string;
   private _authorId: string;
   private _likeCount: string;
+  private _dislikeCount: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -14674,6 +15039,7 @@ export class Reply implements GrpcMessage {
     this.text = _value.text;
     this.authorId = _value.authorId;
     this.likeCount = _value.likeCount;
+    this.dislikeCount = _value.dislikeCount;
     Reply.refineValues(this);
   }
   get name(): string {
@@ -14712,6 +15078,12 @@ export class Reply implements GrpcMessage {
   set likeCount(value: string) {
     this._likeCount = value;
   }
+  get dislikeCount(): string {
+    return this._dislikeCount;
+  }
+  set dislikeCount(value: string) {
+    this._dislikeCount = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -14733,7 +15105,8 @@ export class Reply implements GrpcMessage {
       updateTime: this.updateTime ? this.updateTime.toObject() : undefined,
       text: this.text,
       authorId: this.authorId,
-      likeCount: this.likeCount
+      likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount
     };
   }
 
@@ -14763,7 +15136,8 @@ export class Reply implements GrpcMessage {
         : null,
       text: this.text,
       authorId: this.authorId,
-      likeCount: this.likeCount
+      likeCount: this.likeCount,
+      dislikeCount: this.dislikeCount
     };
   }
 }
@@ -14778,6 +15152,7 @@ export module Reply {
     text: string;
     authorId: string;
     likeCount: string;
+    dislikeCount: string;
   }
 
   /**
@@ -14790,6 +15165,7 @@ export module Reply {
     text: string;
     authorId: string;
     likeCount: string;
+    dislikeCount: string;
   }
 }
 

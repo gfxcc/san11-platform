@@ -921,6 +921,27 @@ export class RouteGuideClient {
       });
     },
     /**
+     * Unary call: /routeguide.RouteGuide/ToggleAction
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.ToggleActionResponse>>
+     */
+    toggleAction: (
+      requestData: thisProto.ToggleActionRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.ToggleActionResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/routeguide.RouteGuide/ToggleAction',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.ToggleActionRequest,
+        responseClass: thisProto.ToggleActionResponse
+      });
+    },
+    /**
      * Unary call: /routeguide.RouteGuide/ListNotifications
      *
      * @param requestMessage Request message
@@ -1830,6 +1851,22 @@ export class RouteGuideClient {
   ): Observable<thisProto.ListActivitiesResponse> {
     return this.$raw
       .listActivities(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary call @/routeguide.RouteGuide/ToggleAction
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.ToggleActionResponse>
+   */
+  toggleAction(
+    requestData: thisProto.ToggleActionRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.ToggleActionResponse> {
+    return this.$raw
+      .toggleAction(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

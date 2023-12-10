@@ -225,6 +225,11 @@ class RouteGuideStub(object):
                 request_serializer=san11__platform__pb2.ListActivitiesRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.ListActivitiesResponse.FromString,
                 )
+        self.ToggleAction = channel.unary_unary(
+                '/routeguide.RouteGuide/ToggleAction',
+                request_serializer=san11__platform__pb2.ToggleActionRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.ToggleActionResponse.FromString,
+                )
         self.ListNotifications = channel.unary_unary(
                 '/routeguide.RouteGuide/ListNotifications',
                 request_serializer=san11__platform__pb2.ListNotificationsRequest.SerializeToString,
@@ -548,6 +553,12 @@ class RouteGuideServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ToggleAction(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def ListNotifications(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -829,6 +840,11 @@ def add_RouteGuideServicer_to_server(servicer, server):
                     servicer.ListActivities,
                     request_deserializer=san11__platform__pb2.ListActivitiesRequest.FromString,
                     response_serializer=san11__platform__pb2.ListActivitiesResponse.SerializeToString,
+            ),
+            'ToggleAction': grpc.unary_unary_rpc_method_handler(
+                    servicer.ToggleAction,
+                    request_deserializer=san11__platform__pb2.ToggleActionRequest.FromString,
+                    response_serializer=san11__platform__pb2.ToggleActionResponse.SerializeToString,
             ),
             'ListNotifications': grpc.unary_unary_rpc_method_handler(
                     servicer.ListNotifications,
@@ -1607,6 +1623,23 @@ class RouteGuide(object):
         return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ListActivities',
             san11__platform__pb2.ListActivitiesRequest.SerializeToString,
             san11__platform__pb2.ListActivitiesResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ToggleAction(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/routeguide.RouteGuide/ToggleAction',
+            san11__platform__pb2.ToggleActionRequest.SerializeToString,
+            san11__platform__pb2.ToggleActionResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

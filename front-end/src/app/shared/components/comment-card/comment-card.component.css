@@ -66,7 +66,17 @@
     font-size: 16px;
 }
 
-.right .bottom .button {
+.action-section {
+    display: flex;
+    align-items: center;
+}
+
+.feedback-card-wrapper {
+    transform-origin: left;
+    display: inline-block;
+}
+
+.right .bottom .feedback {
     margin-left: 5px;
     height: 32px;
     color: #9e9fa2;

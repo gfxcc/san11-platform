@@ -45,6 +45,16 @@
     font-size: 16px;
 }
 
+.action-section {
+    display: flex;
+    align-items: center;
+}
+
+.feedback-card-wrapper {
+    transform-origin: left;
+    display: inline-block;
+}
+
 .right>.bottom>.button {
     margin-left: 5px;
     height: 32px;

@@ -1332,6 +1332,43 @@ class ListActivitiesResponse(google.protobuf.message.Message):
 global___ListActivitiesResponse = ListActivitiesResponse
 
 @typing_extensions.final
+class ToggleActionRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    TARGET_FIELD_NUMBER: builtins.int
+    ACTION_FIELD_NUMBER: builtins.int
+    target: builtins.str
+    """E.g. `categories/123/packages/456`"""
+    action: global___Action.ValueType
+    def __init__(
+        self,
+        *,
+        target: builtins.str = ...,
+        action: global___Action.ValueType = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["action", b"action", "target", b"target"]) -> None: ...
+
+global___ToggleActionRequest = ToggleActionRequest
+
+@typing_extensions.final
+class ToggleActionResponse(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    LIKE_COUNT_FIELD_NUMBER: builtins.int
+    DISLIKE_COUNT_FIELD_NUMBER: builtins.int
+    like_count: builtins.int
+    dislike_count: builtins.int
+    def __init__(
+        self,
+        *,
+        like_count: builtins.int = ...,
+        dislike_count: builtins.int = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["dislike_count", b"dislike_count", "like_count", b"like_count"]) -> None: ...
+
+global___ToggleActionResponse = ToggleActionResponse
+
+@typing_extensions.final
 class ListNotificationsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
@@ -1928,6 +1965,7 @@ class Thread(google.protobuf.message.Message):
     LATEST_COMMENTER_ID_FIELD_NUMBER: builtins.int
     VIEW_COUNT_FIELD_NUMBER: builtins.int
     LIKE_COUNT_FIELD_NUMBER: builtins.int
+    DISLIKE_COUNT_FIELD_NUMBER: builtins.int
     COMMENT_COUNT_FIELD_NUMBER: builtins.int
     REPLY_COUNT_FIELD_NUMBER: builtins.int
     name: builtins.str
@@ -1952,6 +1990,7 @@ class Thread(google.protobuf.message.Message):
     """[ OUTPUT_ONLY ]"""
     view_count: builtins.int
     like_count: builtins.int
+    dislike_count: builtins.int
     comment_count: builtins.int
     reply_count: builtins.int
     def __init__(
@@ -1970,11 +2009,12 @@ class Thread(google.protobuf.message.Message):
         latest_commenter_id: builtins.int = ...,
         view_count: builtins.int = ...,
         like_count: builtins.int = ...,
+        dislike_count: builtins.int = ...,
         comment_count: builtins.int = ...,
         reply_count: builtins.int = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "latest_commented_time", b"latest_commented_time", "update_time", b"update_time"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "comment_count", b"comment_count", "content", b"content", "create_time", b"create_time", "latest_commented_time", b"latest_commented_time", "latest_commenter_id", b"latest_commenter_id", "like_count", b"like_count", "name", b"name", "pinned", b"pinned", "reply_count", b"reply_count", "state", b"state", "subject", b"subject", "tags", b"tags", "update_time", b"update_time", "view_count", b"view_count"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "comment_count", b"comment_count", "content", b"content", "create_time", b"create_time", "dislike_count", b"dislike_count", "latest_commented_time", b"latest_commented_time", "latest_commenter_id", b"latest_commenter_id", "like_count", b"like_count", "name", b"name", "pinned", b"pinned", "reply_count", b"reply_count", "state", b"state", "subject", b"subject", "tags", b"tags", "update_time", b"update_time", "view_count", b"view_count"]) -> None: ...
 
 global___Thread = Thread
 
@@ -1988,6 +2028,7 @@ class Comment(google.protobuf.message.Message):
     TEXT_FIELD_NUMBER: builtins.int
     AUTHOR_ID_FIELD_NUMBER: builtins.int
     LIKE_COUNT_FIELD_NUMBER: builtins.int
+    DISLIKE_COUNT_FIELD_NUMBER: builtins.int
     REPLIES_FIELD_NUMBER: builtins.int
     INDEX_FIELD_NUMBER: builtins.int
     name: builtins.str
@@ -1999,6 +2040,7 @@ class Comment(google.protobuf.message.Message):
     author_id: builtins.int
     like_count: builtins.int
     """Used to be named `upvote_count`"""
+    dislike_count: builtins.int
     @property
     def replies(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Reply]:
         """[ OUTPUT_ONLY ]"""
@@ -2013,11 +2055,12 @@ class Comment(google.protobuf.message.Message):
         text: builtins.str = ...,
         author_id: builtins.int = ...,
         like_count: builtins.int = ...,
+        dislike_count: builtins.int = ...,
         replies: collections.abc.Iterable[global___Reply] | None = ...,
         index: builtins.int = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "create_time", b"create_time", "index", b"index", "like_count", b"like_count", "name", b"name", "replies", b"replies", "text", b"text", "update_time", b"update_time"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "create_time", b"create_time", "dislike_count", b"dislike_count", "index", b"index", "like_count", b"like_count", "name", b"name", "replies", b"replies", "text", b"text", "update_time", b"update_time"]) -> None: ...
 
 global___Comment = Comment
 
@@ -2031,6 +2074,7 @@ class Reply(google.protobuf.message.Message):
     TEXT_FIELD_NUMBER: builtins.int
     AUTHOR_ID_FIELD_NUMBER: builtins.int
     LIKE_COUNT_FIELD_NUMBER: builtins.int
+    DISLIKE_COUNT_FIELD_NUMBER: builtins.int
     name: builtins.str
     @property
     def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
@@ -2040,6 +2084,7 @@ class Reply(google.protobuf.message.Message):
     author_id: builtins.int
     like_count: builtins.int
     """Used to be named `upvote_count`"""
+    dislike_count: builtins.int
     def __init__(
         self,
         *,
@@ -2049,9 +2094,10 @@ class Reply(google.protobuf.message.Message):
         text: builtins.str = ...,
         author_id: builtins.int = ...,
         like_count: builtins.int = ...,
+        dislike_count: builtins.int = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["create_time", b"create_time", "update_time", b"update_time"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "create_time", b"create_time", "like_count", b"like_count", "name", b"name", "text", b"text", "update_time", b"update_time"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["author_id", b"author_id", "create_time", b"create_time", "dislike_count", b"dislike_count", "like_count", b"like_count", "name", b"name", "text", b"text", "update_time", b"update_time"]) -> None: ...
 
 global___Reply = Reply
 

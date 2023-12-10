@@ -200,6 +200,10 @@ export class San11PlatformServiceService {
     return this.severClient.listActivities(request, this.getMetadata());
   }
 
+  toggleAction(request: pb.ToggleActionRequest): Observable<pb.ToggleActionResponse> {
+    return this.severClient.toggleAction(request, this.getMetadata());
+  }
+
   // notifications
   listNotifications(request: ListNotificationsRequest): Observable<ListNotificationsResponse> {
     return this.severClient.listNotifications(request, this.getMetadata());
