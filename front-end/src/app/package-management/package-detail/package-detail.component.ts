@@ -283,15 +283,15 @@ export class PackageDetailComponent implements OnInit {
 
     this.loadAuthor();
 
-    this.setLikeAndDislikeStatus();
+    this.loadLikeStatus();
   }
 
-  setLikeAndDislikeStatus() {
+  loadLikeStatus() {
     this.san11pkService.listActivities(new ListActivitiesRequest({
       parent: `users/${loadUser().userId}`,
       filter: `resource_name="${this.package.name}"`,
-    })).subscribe(
-      (resp: ListActivitiesResponse) => {
+    })).subscribe({
+      next: (resp: ListActivitiesResponse) => {
         resp.activities.forEach(activity => {
           if (activity.action === Action.LIKE) {
             this.liked = true;
@@ -300,10 +300,10 @@ export class PackageDetailComponent implements OnInit {
           }
         });
       },
-      error => {
-
+      error: (error) => {
+        console.error(`Failed to load like status: ${error.statusMessage}`);
       }
-    );
+    });
   }
 
   // admin
@@ -455,7 +455,7 @@ export class PackageDetailComponent implements OnInit {
     }
 
     const parent = getPackageUrl(this.package);
-    const filename = `${parent}/images/tmp.jpeg`
+    const filename = `${parent} / images / tmp.jpeg`
 
     this.progressService.loading();
     this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
@@ -573,7 +573,7 @@ export class PackageDetailComponent implements OnInit {
 
   loadAuthor() {
     this.san11pkService.getUser(new GetUserRequest({
-      name: `users/${this.package.authorId}`,
+      name: `users / ${this.package.authorId}`,
     })).subscribe({
       next: user => {
         this.author = user;
