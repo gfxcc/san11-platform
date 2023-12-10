@@ -15,7 +15,7 @@ services:
       AWS_CREDENTIALS_FILE: '/credentials/aws-backend.json'
       GCLOUD_CREDENTIALS_FILE: '/credentials/san11-grpc-backend.json'
       DB_HOST: db
-    command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py"]
+    command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py", "-v"]
     depends_on:
       - db
       - envoy
