@@ -73,4 +73,4 @@ The actual rendered columns are set as a property on the row definition" -->
     <tr mat-row *matRowDef="let row; columns:
         displayedColumns;"></tr>
 </table>
-<mat-paginator [pageSizeOptions]="[5, 10, 50]"></mat-paginator>
+<mat-paginator [pageSize]="5" [hidePageSize]="true"></mat-paginator>
