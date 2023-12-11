@@ -12,6 +12,7 @@ from typing import (Any, Callable, Dict, Generic, Iterable, List, Optional,
                     Tuple, Type, TypeVar, Union)
 
 import attrs
+
 from handler.model.base import base_proto
 from handler.util.name_util import ResourceName
 
@@ -304,7 +305,7 @@ class DbModel(DbModelBase):
         # However, it is also possible that table name is suffixed with `_legacy`
         # due to data migration.
         if not match or match['collection'] not in cls._DB_TABLE:
-            raise ValueError(
+            raise InvalidArgument(
                 f'{name} is not a valid resource name in {cls._DB_TABLE}')
         return match['parent'] or '', int(match['resource_id'])
 

@@ -154,7 +154,7 @@ class CreationNotifier:
         '''
         package = ModelPackage.from_name(get_parent(binary.name))
         author = ModelUser.from_user_id(package.author_id)
-        view = ResourceViewVisitor().visit(package)  # type: ignore
+        view = ResourceViewVisitor().visit(binary)  # type: ignore
         link = get_resource_url(binary)
 
         # Don't notify the author.
