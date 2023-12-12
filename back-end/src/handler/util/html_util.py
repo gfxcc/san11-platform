@@ -1,5 +1,5 @@
 import re
-from typing import List
+from typing import Iterable, List, Set
 
 import html2text
 
@@ -12,11 +12,17 @@ def get_text_from_html(html: str) -> str:
     return h.handle(html)
 
 
-def get_mentioned_users(content: str) -> List[int]:
-    '''Get a list of user_id from user mentioned in the content.'''
-    ret = []
+def get_mentioned_users(content: str) -> Set[str]:
+    '''Get a list of usernames from user mentioned in the content.'''
+    ret = set()
     # A sample of @user element `<a class="mention" href="users/73">@一笑悬命</a>`
     pattern = r'<a [^>]* href="users/(?P<user_id>[0-9]+)">@(?P<username>[^<]+)</a>'
     for at_user_id, at_username in re.findall(pattern, content):
-        ret.append(int(at_user_id))
+        ret.add(at_username)
+    
+    # A sample of vanilla @user text `@username:`
+    pattern = r'@(?P<username>[^@#$%^&*()=+{}\[\]|\\:<>?]+):'
+    for at_username in re.findall(pattern, content):
+        ret.add(at_username)
+
     return ret

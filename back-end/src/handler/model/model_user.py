@@ -145,8 +145,8 @@ def validate_username(username: str) -> None:
         InvalidArgument: if username is illegal
         AlreadyExists: if username is already used in db
     '''
-    if not re.fullmatch(r'[^ @]{4,32}', username):
-        raise InvalidArgument("用户名要求: [长度] 4-32 [字符] 不包含 空格, @")
+    if not re.fullmatch(r'[^ @#$%^&*()=+{}\[\]|\\:<>?]{4,32}', username):
+        raise InvalidArgument("用户名要求: [长度] 4-32 [字符] 不包含 空格, @, #, $, %, ^, &, *, (, ), =, +, {, }, [, ], |, \\, :, <, >, ?")
     if ModelUser.list(ListOptions(parent=None, filter=f'username="{username}"'))[0]:
         raise AlreadyExists(f'用户名 {username} 已被使用')
 

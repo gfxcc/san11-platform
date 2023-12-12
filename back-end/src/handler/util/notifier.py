@@ -9,6 +9,7 @@ from typing import Dict, Union
 from apiclient import errors
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+
 from handler.common.env import Env, get_env
 from handler.common.visitor import visitor
 from handler.model.model_article import ModelArticle
@@ -275,10 +276,15 @@ class CreationNotifier:
             )
             notified_users.add(parent_resource_author.user_id)
 
-        for user_id in get_mentioned_users(post.content):
-            user = ModelUser.from_user_id(user_id)
+        for username in get_mentioned_users(post.content):
+            try:
+                user = ModelUser.from_name(username)
+            except Exception as e:
+                logger.error(f'Failed to get user {username}: {e}')
+                continue
             if user.user_id in notified_users:
                 continue
+
             if not user.settings.notification.mentions:
                 continue
             notify(

@@ -22,7 +22,7 @@ itest:
 
 .PHONY: utest
 utest:
-	cd src && $(PY) -m pytest .
+	$(PY) -m unittest discover -v -s "./src" -p "*_test.py"
 
 .PHONY: gen-proto
 gen-proto:
