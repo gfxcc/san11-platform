@@ -69,7 +69,7 @@ export class ReplyCardComponent implements OnInit {
   }
 
   onReply() {
-    this.replyEvent.emit();
+    this.replyEvent.emit('@' + this.user.username + ': ');
   }
 
   getReplyAge() {

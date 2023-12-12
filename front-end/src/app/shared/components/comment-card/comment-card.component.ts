@@ -110,9 +110,10 @@ export class CommentCardComponent implements OnInit {
 
   }
 
-  onReply() {
+  onReply(event) {
     this.hideReplyEnter = false;
     setTimeout(() => {
+      this.replyInputElement.nativeElement.value = event;
       this.replyInputElement.nativeElement.focus();
     });
   }

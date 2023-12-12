@@ -54,7 +54,7 @@
                         [dislikeCount]="this.comment.dislikeCount" 
                         [disableClickableBackground]="true"></app-feedback-card>
                 </div>
-                <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
+                <button class="button" type="submit" mat-button color="primary" (click)="onReply('')">回复</button>
 
             </div>
         </div>
@@ -63,7 +63,7 @@
             margin-right: 10px;">
             <ng-container *ngFor="let reply of this.comment.replies">
                 <app-reply-card [reply]="reply" [resourceOwnerId]="this.resourceOwnerId"
-                    (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply()"></app-reply-card>
+                    (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply($event)"></app-reply-card>
             </ng-container>
         </div>
 

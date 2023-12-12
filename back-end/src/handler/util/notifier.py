@@ -19,7 +19,7 @@ from handler.model.model_notification import ModelNotification
 from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
-from handler.model.model_user import ModelUser
+from handler.model.model_user import ModelUser, get_user_by_username
 from handler.util.html_util import get_mentioned_users
 from handler.util.name_util import get_parent
 from handler.util.resource_parser import find_resource
@@ -278,7 +278,7 @@ class CreationNotifier:
 
         for username in get_mentioned_users(post.content):
             try:
-                user = ModelUser.from_name(username)
+                user = get_user_by_username(username)
             except Exception as e:
                 logger.error(f'Failed to get user {username}: {e}')
                 continue
