@@ -61,7 +61,7 @@ class Notifier:
             self.NOTIFIER_SERVICE_ACCOUNT_FILE, scopes=SCOPES)
         delegated_credentials = credentials.with_subject(
             self.NOTIFIER_EMAIL_ADDRESS)
-        service = build('gmail', 'v1', credentials=delegated_credentials)
+        service = build('gmail', 'v1', credentials=delegated_credentials, cache_discovery=False)
         return service
 
 
