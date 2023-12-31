@@ -8,9 +8,10 @@ from concurrent import futures
 from typing import Any, Callable
 
 import grpc
-import iam_util
 from google.cloud import logging as cloud_logging
 from google.protobuf import message
+
+import iam_util
 from handler.activity_handler import ActivityHandler
 from handler.admin_handler import AdminHandler
 from handler.article_handler import ArticleHandler
@@ -69,8 +70,8 @@ def GrpcAbortOnExcep(func: RpcFunc):
         except Excep as err:
             # Client space error
             logger.info(f'Client space error: {err}', exc_info=True)
-            logger.debug(f'request={request}')
-            logger.debug(f'context={dict(context.invocation_metadata())}')
+            logger.info(f'request={request}')
+            logger.info(f'context={dict(context.invocation_metadata())}')
             context.abort(code=err.code, details=err.message)
         except Exception as err:
             # Server space error
