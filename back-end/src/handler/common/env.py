@@ -2,6 +2,7 @@ import os
 from asyncio.subprocess import DEVNULL
 from enum import Enum
 
+IMAGE_SERVER = 'https://storage.googleapis.com/san11-resources'
 
 class Env(Enum):
     ENV_UNSPECIFIED = 0

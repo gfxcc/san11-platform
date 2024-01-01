@@ -103,22 +103,29 @@ def notify(sender: ModelUser, receiver: ModelUser, content: str,
     if receiver.settings.notification.send_emails:
         # TODO: pass notifier as an argument.
         Notifier().send_email(
-            _create_message(sender.email,
-                            receiver.email,
+            _create_message(sender,
+                            receiver,
                             f'{sender.username} 在 san11pk.org 的新动态',
                             content,
                             link))
 
 
-def _create_message(sender: str, receiver: str, subject: str, content: str, link: str) -> MIMEMultipart:
+def _create_message(sender: ModelUser, receiver: ModelUser, subject: str, content: str, link: str) -> MIMEMultipart:
     message = MIMEMultipart()
-    message['to'] = receiver
-    message['from'] = sender
+    message['to'] = receiver.email
+    message['from'] = sender.email
     message['subject'] = subject
-    message.attach(MIMEText(content))
+
+    # read temp from local file
+    template = open('handler/util/email_template.html', 'r').read()
+
+    template = template.replace('{{content}}', f"{content} <a href='{get_full_url(link)}'>点击查看</a>")
+    template = template.replace('{{receiver_avatar}}', receiver.get_avatar_url())
+
+    logger.debug(f'Email template: {template}')
 
     message.attach(
-        MIMEText(f"<a href='{get_full_url(link)}'>点击查看</a>", 'html'))
+        MIMEText(template, 'html'))
     return message
 
 

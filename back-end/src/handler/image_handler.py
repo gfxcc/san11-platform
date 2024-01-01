@@ -13,6 +13,7 @@ from handler.util.file_server import (BucketClass, FileServer, FileServerType,
 
 from .common.url import Url
 from .common.util import gen_random_str
+from .common.image import ImageSize
 from .protos import san11_platform_pb2 as pb
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -79,8 +80,8 @@ def delete_user_avatar(file_server: FileServer, user: ModelUser):
 
 def resample_img_for_user_avatar(file_server: FileServer, uri: str):
     url = file_server.get_url(BucketClass.REGULAR, uri)
-    for size in [48, 128, 256]:
-        img = resample_image(url, size, size)
+    for size in [ImageSize.SMALL, ImageSize.MEDIUM, ImageSize.LARGE]:
+        img = resample_image(url, size.value, size.value)
         output_buffer = BytesIO()
         img.save(output_buffer, format='JPEG')
         file_server.create_file(output_buffer,

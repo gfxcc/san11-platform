@@ -15,6 +15,8 @@ from handler.model.plugins.subscribable import Subscribable
 from handler.model.plugins.tracklifecycle import TrackLifecycle
 from handler.util.name_util import ResourceName
 from handler.util.user_util import hash_password, is_email, normalize_email
+from handler.common.image import ImageSize
+from handler.util.url import get_full_url, get_image_url
 
 from ..protos import san11_platform_pb2 as pb
 from .base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, IntAttrib,
@@ -116,6 +118,10 @@ class ModelUser(Subscribable, TrackLifecycle, ModelBase):
     @property
     def user_id(self) -> int:
         return ResourceName.from_str(self.name).resource_id
+    
+    def get_avatar_url(self, size: ImageSize = ImageSize.MEDIUM) -> str:
+        uri = self.image_url.replace('.jpeg', f'_{size.value}_{size.value}.jpeg')
+        return get_image_url(uri)
 
 
 def validate_email(email: str) -> None:
