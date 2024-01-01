@@ -4,7 +4,7 @@ import os
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Dict, Union
+from typing import Dict, Union, Optional
 
 from apiclient import errors
 from google.oauth2 import service_account
@@ -19,21 +19,21 @@ from handler.model.model_notification import ModelNotification
 from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
-from handler.model.model_user import ModelUser, get_user_by_username
+from handler.model.model_user import DEFAULT_USER_AVATAR, ModelUser, get_user_by_username
 from handler.util.html_util import get_mentioned_users
 from handler.util.name_util import get_parent
 from handler.util.resource_parser import find_resource
 from handler.util.resource_view import ResourceViewVisitor, get_resource_url
 from handler.util.time_util import get_now
-from handler.util.url import get_full_url
+from handler.util.url import get_full_url, get_image_url
 
 logger = logging.getLogger(os.path.basename(__file__))
 
 TESTING_RECEIVERS = ['ycao181@gmail.com']
+NOTIFIER_EMAIL_ADDRESS = 'no-reply@san11pk.org'
 
 
 class Notifier:
-    NOTIFIER_EMAIL_ADDRESS = 'no-reply@san11pk.org'
     NOTIFIER_SERVICE_ACCOUNT_FILE = os.environ.get(
         'NOTIFIER_SERVICE_ACCOUNT_FILE')
 
@@ -60,7 +60,7 @@ class Notifier:
         credentials = service_account.Credentials.from_service_account_file(
             self.NOTIFIER_SERVICE_ACCOUNT_FILE, scopes=SCOPES)
         delegated_credentials = credentials.with_subject(
-            self.NOTIFIER_EMAIL_ADDRESS)
+            NOTIFIER_EMAIL_ADDRESS)
         service = build('gmail', 'v1', credentials=delegated_credentials, cache_discovery=False)
         return service
 
@@ -103,26 +103,32 @@ def notify(sender: ModelUser, receiver: ModelUser, content: str,
     if receiver.settings.notification.send_emails:
         # TODO: pass notifier as an argument.
         Notifier().send_email(
-            _create_message(sender,
-                            receiver,
-                            f'{sender.username} 在 san11pk.org 的新动态',
-                            content,
-                            link))
+            create_message(receiver=receiver.email,
+                            receiver_avatar=receiver.get_avatar_url(),
+                            subject=f'{sender.username} 在 san11pk.org 的新动态',
+                            content=content,
+                            link=link))
 
 
-def _create_message(sender: ModelUser, receiver: ModelUser, subject: str, content: str, link: str) -> MIMEMultipart:
+def create_message(receiver: str,
+                   receiver_avatar: Optional[str],
+                   subject: str, 
+                   content: str, 
+                   link: Optional[str]) -> MIMEMultipart:
+    if receiver_avatar is None:
+        receiver_avatar = get_image_url(DEFAULT_USER_AVATAR)
+    if link:
+        content = f'{content} <a href="{get_full_url(link)}">点击查看</a>'
+
     message = MIMEMultipart()
-    message['to'] = receiver.email
-    message['from'] = sender.email
+    message['from'] = NOTIFIER_EMAIL_ADDRESS
+    message['to'] = receiver
     message['subject'] = subject
 
     # read temp from local file
     template = open('handler/util/email_template.html', 'r').read()
-
-    template = template.replace('{{content}}', f"{content} <a href='{get_full_url(link)}'>点击查看</a>")
-    template = template.replace('{{receiver_avatar}}', receiver.get_avatar_url())
-
-    logger.debug(f'Email template: {template}')
+    template = template.replace('{{receiver_avatar}}', receiver_avatar)
+    template = template.replace('{{content}}', content)
 
     message.attach(
         MIMEText(template, 'html'))
@@ -262,8 +268,11 @@ class CreationNotifier:
         view = ResourceViewVisitor().visit(post)  # type: ignore
         link = get_resource_url(post)
 
+        parent_resource = find_resource(get_parent(post.name))
+        parent_resource_view = ResourceViewVisitor().visit(
+            parent_resource)
         parent_resource_author = ModelUser.from_user_id(
-            find_resource(get_parent(post.name)).author_id)
+            parent_resource.author_id)
 
         enabled = False
         if isinstance(post, ModelThread):
@@ -277,7 +286,7 @@ class CreationNotifier:
             notify(
                 sender=author,
                 receiver=parent_resource_author,
-                content=f'{author.username} 评论了 【{view.display_name}】',
+                content=f'{author.username} 评论了 【{parent_resource_view.display_name}】',
                 link=link,
                 image_preview=view.image_url,
             )

@@ -19,7 +19,7 @@ from handler.util.user_util import verify_password
 from .auths import Session
 from .common.exception import NotFound, Unauthenticated
 from .db.db_util import run_sql_with_param, run_sql_with_param_and_fetch_one
-from .util.notifier import send_email
+from .util.notifier import Notifier, create_message, send_email
 
 VERIFICATION_CODES_TABLE = 'verification_codes'
 logger = logging.getLogger(os.path.basename(__file__))
@@ -98,7 +98,13 @@ class UserHandler(HandlerBase):
 
     def send_verification_code(self, email: str, handler_context: HandlerContext) -> None:
         verification_code = generate_verification_code(email)
-        send_email(email, '账号验证码', verification_code)
+        Notifier().send_email(create_message(
+            receiver=email,
+            subject='账号验证码',
+            receiver_avatar=None,
+            content=verification_code,
+            link=None,
+        ))
 
     def verify_email(self, email: str, verification_code: str, context) -> Tuple[bool, Optional[ModelUser]]:
         if not verify_code(email, verification_code):

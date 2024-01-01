@@ -1,24 +1,33 @@
-<div style="width: 100%;">
-    <div style="max-width: 900px; min-width: 400px;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="center">
+            <table width="100%" style="max-width: 900px; min-width: 400px; border: 1px solid rgb(0, 0, 0, 0.1);" cellspacing="0" cellpadding="0">
+                <!-- Header Section -->
+                <tr>
+                    <td style="height: 64px; padding: 0 10px; background-color: #3f51b5; text-align: left;">
+                        <span style="font-size: 30px; color: white">San11 分享平台</span>
+                    </td>
+                    <td style="height: 64px; padding: 0 10px; background-color: #3f51b5; text-align: right;">
+                        <img src="{{receiver_avatar}}"
+                            style="border-radius: 50%; width: 40px; height: 40px; border: 2px solid white; display: inline-block; vertical-align: middle;">
 
-        <header style="height: 64px; padding: 0 10px; background-color: #3f51b5;">
-            <span style="font-size: 30px; color: white">San11 分享平台</span>
+                    </td>
+                </tr>
 
-            <span style="flex-grow: 1;"></span>
+                <!-- Content Section -->
+                <tr style="height: 100px;">
+                    <td colspan="2" style="padding: 16px 24px; min-height: 100px;">
+                        {{content}}
+                    </td>
+                </tr>
 
-            <img align="right" src="{{receiver_avatar}}"
-                style="margin-top: 10px; border-radius: 50%; width: 40px; height: 40px; border: 2px solid white">
-        </header>
-
-        <div #content style="padding: 16px 24px; min-height: 100px;">
-            {{content}}
-        </div>
-
-        <footer style="min-height: 64px; background-color: #EDF0F3;">
-
-            <a align="center" style="margin: 20px 10px;" href="https://san11pk.org/settings/notifications">通知偏好</a>
-            <!-- <a>联系我们</a> -->
-        </footer>
-    </div>
-
-</div>
+                <!-- Footer Section -->
+                <tr>
+                    <td colspan="2" align="center" style="height: 64px; background-color: #EDF0F3;">
+                        <a href="https://san11pk.org/settings/notifications" style="margin: 20px 10px;">通知偏好</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
