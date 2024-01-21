@@ -74,6 +74,42 @@
             </p-timeline>
 
         </mat-tab>
+
+        <mat-tab label="通知">
+            <p-timeline [value]="notifications" align="alternate" styleClass="customized-timeline" style="max-width: 1200px;">
+                <ng-template pTemplate="marker" let-event>
+                    <span class="custom-marker p-shadow-2" [style.backgroundColor]="event.color">
+                        <!-- <i [ngClass]="event.icon"></i> -->
+                        <mat-icon>{{event.icon}}</mat-icon>
+                    </span>
+                </ng-template>
+                <ng-template pTemplate="content" let-event>
+
+                    <app-user-card [userId]="event.actorId" style="margin-bottom: 10px;">what why</app-user-card>
+
+                    <mat-card (click)="onDetailClick(event)" class="alternate-align-card
+                clickable-card p-timeline-event">
+                        <mat-card-header>
+                            <mat-card-title>
+                                {{event.displayName}}
+                            </mat-card-title>
+
+                            <mat-card-subtitle>
+                                {{event.createTime}}
+                            </mat-card-subtitle>
+                        </mat-card-header>
+
+                        <div>
+                            <img *ngIf="event.image" [src]="event.image" width="200" class="p-shadow-2" />
+                            <p *ngIf="event.description">{{event.description}}</p>
+                            <!-- <button *ngIf="event.link" mat-button color="primary"
+                        (click)="onDetailClick(event)">查看</button> -->
+                        </div>
+                    </mat-card>
+                </ng-template>
+            </p-timeline>
+        </mat-tab>
+
         <mat-tab label="下载">
             <p-timeline [value]="downloads" align="alternate" styleClass="customized-timeline" style="max-width: 1200px;">
                 <ng-template pTemplate="marker" let-event>
@@ -107,8 +143,8 @@
                     </mat-card>
                 </ng-template>
             </p-timeline>
-
         </mat-tab>
+
     </mat-tab-group>
 
 </div>

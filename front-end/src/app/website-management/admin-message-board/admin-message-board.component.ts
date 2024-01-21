@@ -5,7 +5,8 @@ import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
 import { activityToEvent } from 'src/app/utils/activity_util';
-import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse } from 'src/proto/san11-platform.pb';
+import { notificationToEvent } from 'src/app/utils/notification_util';
+import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse, ListNotificationsRequest, ListNotificationsResponse, Notification } from 'src/proto/san11-platform.pb';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 
 
@@ -20,6 +21,7 @@ export class AdminMessageBoardComponent implements OnInit {
   resourceChanges: any[] = [];
   socialActivaties: any[] = [];
   downloads: any[] = [];
+  notifications: any[] = [];
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -34,6 +36,7 @@ export class AdminMessageBoardComponent implements OnInit {
     this.route.parent.params.subscribe(params => {
       this.userId = params.userId;
       this.load_activities();
+      this.loadNotifications();
     });
   }
 
@@ -65,6 +68,26 @@ export class AdminMessageBoardComponent implements OnInit {
       });
   }
 
+  loadNotifications() {
+    this.progressService.loading();
+
+    this.san11pkService.listNotifications(new ListNotificationsRequest({
+      parent: '',
+      orderBy: 'create_time desc',
+      pageSize: '100',
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: (resp: ListNotificationsResponse) => {
+          this.notifications = resp.notifications.map((notification: Notification) => {
+            return notificationToEvent(notification);
+          });
+        },
+        error: (error) => {
+          this.notificationService.warn(`获取通知失败: ${error.statusMessage}`)
+        }
+      });
+  }
 
   onDetailClick(event) {
     this.router.navigateByUrl(event.link);

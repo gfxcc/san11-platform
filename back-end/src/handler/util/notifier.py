@@ -264,7 +264,9 @@ class CreationNotifier:
         Notify
             * parent resource author
             * Mentioned users
-            * subscribers of the author
+
+            Only for ModelThread:
+                * subscribers of the author
         '''
         author = ModelUser.from_user_id(post.author_id)
         view = ResourceViewVisitor().visit(post)  # type: ignore
@@ -320,20 +322,21 @@ class CreationNotifier:
             )
             notified_users.add(user.user_id)
         
-        for sub in author.list_subscriptions():
-            subscriber = ModelUser.from_name(sub.subscriber_name)
-            if subscriber.user_id in notified_users:
-                continue
-            if not subscriber.settings.notification.subscriptions:
-                continue
-            notify(
-                sender=author,
-                receiver=subscriber,
-                content=f'{author.username} 更新了【{view.display_name}】',
-                link=link,
-                image_preview=view.image_url,
-            )
-            notified_users.add(subscriber.user_id)
+        if isinstance(post, ModelThread):
+            for sub in author.list_subscriptions():
+                subscriber = ModelUser.from_name(sub.subscriber_name)
+                if subscriber.user_id in notified_users:
+                    continue
+                if not subscriber.settings.notification.subscriptions:
+                    continue
+                notify(
+                    sender=author,
+                    receiver=subscriber,
+                    content=f'{author.username} 更新了【{view.display_name}】',
+                    link=link,
+                    image_preview=view.image_url,
+                )
+                notified_users.add(subscriber.user_id)
 
 
 def notify_on_creation(resource: Union[ModelPackage, ModelBinary, ModelArticle, ModelThread, ModelComment, ModelReply]) -> None:
