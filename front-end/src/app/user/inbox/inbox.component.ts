@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, DefaultUrlSerializer, Router, UrlTree } from '@angular/router';
 import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
@@ -54,4 +54,8 @@ export class InboxComponent implements OnInit {
       });
   }
 
+  onDetailClick(event) {
+    const urlTree: UrlTree = new DefaultUrlSerializer().parse(event.link);
+    this.router.navigateByUrl(urlTree);
+  }
 }
