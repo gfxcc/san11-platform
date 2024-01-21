@@ -12,6 +12,7 @@ from googleapiclient.discovery import build
 
 from handler.common.env import Env, get_env
 from handler.common.visitor import visitor
+from handler.common.exception import InvalidArgument
 from handler.model.model_article import ModelArticle
 from handler.model.model_binary import ModelBinary
 from handler.model.model_comment import ModelComment
@@ -41,7 +42,6 @@ class Notifier:
         self._service = self._gmail_login()
 
     def send_email(self, message: MIMEMultipart) -> None:
-        logger.debug(f'Sending email: {message}')
         if get_env() == Env.DEV and message['to'] not in TESTING_RECEIVERS:
             logger.debug(f"Skip sending email in non-prod env")
             return
@@ -94,6 +94,7 @@ def notify(sender: ModelUser, receiver: ModelUser, content: str,
            link: str, image_preview: str) -> None:
     '''
     '''
+    logger.debug(f'Notifying {receiver.username} on {content}')
     # 1. Send notification to the user.
     _send_notification(
         sender.user_id, receiver.user_id, content, link, image_preview
@@ -263,34 +264,41 @@ class CreationNotifier:
         Notify
             * parent resource author
             * Mentioned users
+            * subscribers of the author
         '''
         author = ModelUser.from_user_id(post.author_id)
         view = ResourceViewVisitor().visit(post)  # type: ignore
         link = get_resource_url(post)
 
-        parent_resource = find_resource(get_parent(post.name))
-        parent_resource_view = ResourceViewVisitor().visit(
-            parent_resource)
-        parent_resource_author = ModelUser.from_user_id(
-            parent_resource.author_id)
-
-        enabled = False
-        if isinstance(post, ModelThread):
-            enabled = parent_resource_author.settings.notification.threads
-        elif isinstance(post, ModelComment) or isinstance(post, ModelReply):
-            enabled = parent_resource_author.settings.notification.comments
-
         # Don't notify the author
         notified_users = {post.author_id}
-        if enabled and parent_resource_author.user_id not in notified_users:
-            notify(
-                sender=author,
-                receiver=parent_resource_author,
-                content=f'{author.username} 评论了 【{parent_resource_view.display_name}】',
-                link=link,
-                image_preview=view.image_url,
-            )
-            notified_users.add(parent_resource_author.user_id)
+
+        try:
+            parent_resource = find_resource(get_parent(post.name))
+        except InvalidArgument as e:
+            # Parent is not a resource, don't notify.
+            pass
+        else:
+            parent_resource_view = ResourceViewVisitor().visit(
+                parent_resource)
+            parent_resource_author = ModelUser.from_user_id(
+                parent_resource.author_id)
+
+            enabled = False
+            if isinstance(post, ModelThread):
+                enabled = parent_resource_author.settings.notification.threads
+            elif isinstance(post, ModelComment) or isinstance(post, ModelReply):
+                enabled = parent_resource_author.settings.notification.comments
+
+            if enabled and parent_resource_author.user_id not in notified_users:
+                notify(
+                    sender=author,
+                    receiver=parent_resource_author,
+                    content=f'{author.username} 评论了 【{parent_resource_view.display_name}】',
+                    link=link,
+                    image_preview=view.image_url,
+                )
+                notified_users.add(parent_resource_author.user_id)
 
         for username in get_mentioned_users(post.content):
             try:
@@ -311,6 +319,21 @@ class CreationNotifier:
                 image_preview=view.image_url,
             )
             notified_users.add(user.user_id)
+        
+        for sub in author.list_subscriptions():
+            subscriber = ModelUser.from_name(sub.subscriber_name)
+            if subscriber.user_id in notified_users:
+                continue
+            if not subscriber.settings.notification.subscriptions:
+                continue
+            notify(
+                sender=author,
+                receiver=subscriber,
+                content=f'{author.username} 更新了【{view.display_name}】',
+                link=link,
+                image_preview=view.image_url,
+            )
+            notified_users.add(subscriber.user_id)
 
 
 def notify_on_creation(resource: Union[ModelPackage, ModelBinary, ModelArticle, ModelThread, ModelComment, ModelReply]) -> None:
