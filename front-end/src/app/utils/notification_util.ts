@@ -11,7 +11,7 @@ import { getFullUrl, parseName } from "./resrouce_util";
       'description': notification.content,
       'createTime': notification.createTime.toISOString(),
       'icon': notification.unread ? 'mark_email_unread' : 'mark_email_read',
-      'image': getFullUrl(notification.imagePreview),
+      'image': notification.imagePreview ? getFullUrl(notification.imagePreview) : undefined,
       'color': notification.unread ? '#FBBE04' : '#33A951',
       'link': notification.link,
     }

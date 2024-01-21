@@ -1,10 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { isAdmin } from 'src/app/utils/user_util';
 import { User } from '../../../proto/san11-platform.pb';
-import { NotificationService } from '../../common/notification.service';
-import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
-import { UploadService } from '../../service/upload.service';
 import { getFullUrl } from '../../utils/resrouce_util';
 
 @Component({
@@ -22,31 +19,27 @@ export class HomeComponent implements OnInit {
     {
       label: '作品',
       link: ['publishedPackages'],
-      disabled: false,
     },
     {
       label: '文章',
       link: ['articles'],
-      disabled: false,
     },
     {
       label: '时间线',
       link: ['timeline'],
-      disabled: false
     },
-    // {
-    //   label: '关于',
-    //   link: ['about']
-    // }
+  ];
+
+  privateTabs = [
+    {
+      label: '🔒 收件箱',
+      link: ['inbox'],
+    }
   ];
 
   constructor(
     private router: Router,
-    private san11pkService: San11PlatformServiceService,
-    private dialog: MatDialog,
-    private notificationService: NotificationService,
     private route: ActivatedRoute,
-    private uploadService: UploadService,
   ) { }
 
   ngOnInit(): void {
@@ -55,6 +48,9 @@ export class HomeComponent implements OnInit {
         if (data.user) {
           this.user = data.user;
           // this.selectedTabChange({ index: 0 });
+          if (this.user.userId === localStorage.getItem('userId') || isAdmin()) {
+            this.tabs = this.tabs.concat(this.privateTabs);
+          }
         }
       }
     );

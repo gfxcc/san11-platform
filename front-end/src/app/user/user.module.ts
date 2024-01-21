@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { PublishedPackagesComponent } from './published-packages/published-packages.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { UserRoutingModule } from './user-routing.module';
+import { InboxComponent } from './inbox/inbox.component';
 
 
 
@@ -19,6 +20,7 @@ import { UserRoutingModule } from './user-routing.module';
     PublishedPackagesComponent,
     AboutComponent,
     TimelineComponent,
+    InboxComponent,
   ],
   imports: [
     CommonModule,
