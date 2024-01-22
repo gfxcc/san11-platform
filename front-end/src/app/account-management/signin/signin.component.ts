@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
-import { SendVerificationCodeRequest, SignInRequest, UpdatePasswordRequest, User, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
+import { Empty, SendVerificationCodeRequest, SignInRequest, UpdatePasswordRequest, User, VerifyEmailRequest, VerifyEmailResponse } from "../../../proto/san11-platform.pb";
 import { NotificationService } from "../../common/notification.service";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { saveUser } from '../../utils/user_util';
@@ -90,13 +90,12 @@ export class SigninComponent implements OnInit {
   //
 
   onSignIn(input) {
-// signInForm.value
+    // signInForm.value
     this.san11PlatformServiceService.signIn(new SignInRequest({
       identity: input.identity,
       password: input.password
     })).subscribe(
       resp => {
-
         this.notificationService.success('登陆成功');
 
         localStorage.setItem('sid', resp.sid);
@@ -121,19 +120,6 @@ export class SigninComponent implements OnInit {
       this.onResendVerificationCodeClick();
     }
     stepper.next();
-    // this.san11PlatformServiceService.getUser(new GetUserRequest({ username: this.username.value })).subscribe(
-    //   (user: User) => {
-    //     this.user = user;
-    //     if (user.email != this.email.value) {
-    //       this.notificationService.warn('邮箱与用户名不符');
-    //     } else {
-    //       if (this.timeToResend === undefined) {
-    //         this.onResendVerificationCodeClick();
-    //       }
-    //       stepper.next();
-    //     }
-    //   }
-    // );
   }
 
   onResendVerificationCodeClick() {
@@ -188,14 +174,14 @@ export class SigninComponent implements OnInit {
       name: this.user.name,
       password: this.password.value,
       verificationCode: this.verificationCode.value
-    })).subscribe(
-      resp => {
+    })).subscribe({
+      next: (resp: Empty) => {
         this.notificationService.success('密码更新成功');
         this.selectedTabIndex = 0;
       },
-      error => {
-        this.notificationService.warn(`更新失败: ${error.statusMessage}`);
+      error: error => {
+        this.notificationService.warn(`密码更新失败: ${error.statusMessage}`)
       }
-    );
+    });
   }
 }

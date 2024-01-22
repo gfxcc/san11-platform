@@ -79,9 +79,9 @@
             <mat-step state="check" *ngIf="iAmTheUser()">
                 <ng-template matStepLabel>3. 完成更新</ng-template>
 
-                <p *ngIf="this.updatedUser.username">新用户名: {{this.updatedUser.username}}</p>
-                <p *ngIf="this.updatedUser.email">新邮箱: {{this.updatedUser.email}}</p>
-                <p *ngIf="password.value != this.PASSWORD_PLACEHOLDER">更新密码</p>
+                <p *ngIf="this.updatedUser.username" style="color:var(--primary-color)">* 新用户名: {{this.updatedUser.username}}</p>
+                <p *ngIf="this.updatedUser.email" style="color:var(--primary-color)">* 新邮箱: {{this.updatedUser.email}}</p>
+                <p *ngIf="password.value != this.PASSWORD_PLACEHOLDER" style="color:var(--primary-color)">* 更新密码</p>
 
                 <button mat-button matStepperPrevious>上一步</button>
                 <button mat-raised-button color="primary" (click)="onUpdateUser()">更新</button>

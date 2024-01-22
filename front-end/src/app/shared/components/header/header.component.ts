@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     if (signedIn()) {
       this.user = loadUser();
+      console.log(this.user);
       this.loadNotifications();
     }
   }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { saveUser } from 'src/app/utils/user_util';
 import { FieldMask, SendVerificationCodeRequest, UpdatePasswordRequest, UpdateUserRequest, User, VerifyEmailRequest, VerifyEmailResponse } from '../../../proto/san11-platform.pb';
 import { NewUserValidators } from "../../account-management/common/new-user-validator";
 import { NotificationService } from '../../common/notification.service';
@@ -146,7 +147,7 @@ export class AccountInfoComponent implements OnInit {
       this.onResendVerificationCodeClick();
     }
   }
-  
+
   prepareUpdateUser() {
     this.updatedUser.userId = this.user.userId;
     this.updatedUser.name = `users/${this.user.userId}`;
@@ -169,32 +170,38 @@ export class AccountInfoComponent implements OnInit {
         updateMask: new FieldMask({
           paths: paths
         })
-      })).subscribe(
-        (resp: User) => {
-          this.notificationService.success('更新成功');
-          this.router.navigate(['categories/1']);
+      })).subscribe({
+        next: (resp: User) => {
+          saveUser(resp);
+          this.notificationService.success('更新成功 2s后刷新页面');
+
+          // refresh page in 2s
+          setTimeout(() => {
+            this.router.navigate(['/']).then(() => {
+              window.location.reload();
+            });
+          }, 2000);
         },
-        error => {
+        error: error => {
           this.notificationService.warn(`更新失败: ${error.statusMessage}`);
         }
-      );
+      });
     }
+
     if (this.password.value != this.PASSWORD_PLACEHOLDER) {
       this.san11pkService.updatePassword(new UpdatePasswordRequest({
         name: this.user.name,
         password: this.password.value,
         verificationCode: this.verificationCode.value,
-      })).subscribe(
-        empty => {
-          this.notificationService.success('更新密码 成功');
+      })).subscribe({
+        next: (resp: User) => {
+          this.notificationService.success('更新成功');
           this.router.navigate(['categories/1']);
         },
-        error => {
-          this.notificationService.warn('更新密码 失败:' + error.statusMessage);
+        error: error => {
+          this.notificationService.warn(`更新失败: ${error.statusMessage}`);
         }
-      );
+      });
     }
-
   }
-
 }
