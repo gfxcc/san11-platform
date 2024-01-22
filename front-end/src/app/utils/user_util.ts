@@ -31,6 +31,7 @@ export function clearUser() {
 
 export function loadUser(): User {
     return new User({
+        name: `users/${localStorage.getItem('userId')}`,
         userId: localStorage.getItem('userId'),
         username: localStorage.getItem('username'),
         type: User.UserType[localStorage.getItem('userType')],

@@ -43,6 +43,7 @@ export class UserCardComponent implements OnInit {
 
   onClick() {
     if (this.clickable) {
+      console.log(`navigate to ${this.user.name}`);
       this.router.navigateByUrl(this.user.name);
     }
   }
