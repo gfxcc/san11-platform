@@ -5,9 +5,9 @@ static_resources:
         socket_address: { address: 0.0.0.0, port_value: 8090 }
       filter_chains:
         - filters:
-            - name: envoy.http_connection_manager
-              config:
-                codec_type: auto
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
                 stat_prefix: ingress_http
                 route_config:
                   name: local_route
@@ -21,15 +21,17 @@ static_resources:
                             max_grpc_timeout: 0s
                       cors:
                         allow_origin_string_match:
-                          - prefix: "*"
+                          - safe_regex:
+                              google_re2: {}
+                              regex: ".*"
                         allow_methods: GET, PUT, DELETE, POST, OPTIONS
                         allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout, sid, client
                         max_age: "1728000"
                         expose_headers: custom-header-1,grpc-status,grpc-message
                 http_filters:
-                  - name: envoy.grpc_web
-                  - name: envoy.cors
-                  - name: envoy.router
+                  - name: envoy.filters.http.grpc_web
+                  - name: envoy.filters.http.cors
+                  - name: envoy.filters.http.router
           transport_socket:
             name: envoy.transport_sockets.tls
             typed_config:
@@ -39,14 +41,15 @@ static_resources:
                   certificate_chain: { filename: "/credentials/san11pk.crt" }
                   private_key:
                     { filename: "/credentials/san11pk-private-key.key" }
+
     - name: listener_1
       address:
         socket_address: { address: 0.0.0.0, port_value: 80 }
       filter_chains:
         - filters:
-            - name: envoy.http_connection_manager
-              config:
-                codec_type: auto
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
                 stat_prefix: ingress_http
                 route_config:
                   name: local_route
@@ -55,16 +58,24 @@ static_resources:
                       domains: ["*"]
                       routes:
                         - match: { prefix: "/" }
-                          # direct_response: {status: 403, body: { inline_string: "Please visit https://san11pk.org"} }
                           redirect:
                             port_redirect: 443
                             https_redirect: true
                 http_filters:
-                  - name: envoy.router
+                  - name: envoy.filters.http.router
+
   clusters:
     - name: echo_service
       connect_timeout: 0.25s
-      type: logical_dns
+      type: LOGICAL_DNS
       http2_protocol_options: {}
-      lb_policy: round_robin
-      hosts: [{ socket_address: { address: back-end, port_value: 50051 } }]
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: echo_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: back-end
+                      port_value: 50051

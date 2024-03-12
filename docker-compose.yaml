@@ -31,7 +31,7 @@ services:
       - "8081:8081"
 
   envoy:
-    image: envoyproxy/envoy-alpine:v1.13.0
+    image: envoyproxy/envoy-alpine:v1.21.6
     restart: always
     volumes:
       - ./back-end/envoy:/etc/envoy
