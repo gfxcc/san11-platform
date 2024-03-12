@@ -13,3 +13,12 @@ export function openInNewTab(router: Router, uri: string) {
     console.debug("openInNewTab: " + url)
     window.open(url, '_blank');
 }
+
+export function isValidUrl(input: string): boolean {
+    try {
+        new URL(input);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}

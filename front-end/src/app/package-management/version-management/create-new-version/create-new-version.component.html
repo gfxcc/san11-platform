@@ -108,6 +108,10 @@
             请提供网盘链接 或 上传文件
         </mat-error>
 
+        <mat-error *ngIf="newBinaryForm.errors?.invalidUrl" align="end">
+            无效的网盘链接
+        </mat-error>
+
         <span class="example-spacer"></span>
         <button mat-stroked-button type="button" (click)="onCancel()" color="accent"
             style="margin-right: 5px">取消</button>

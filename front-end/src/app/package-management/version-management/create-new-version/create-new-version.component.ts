@@ -1,10 +1,11 @@
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as S3 from 'aws-sdk/clients/s3';
-import { finalize, Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
+import { isValidUrl } from 'src/app/utils/url_util';
 import { isAdmin } from 'src/app/utils/user_util';
 import { v4 as uuid } from 'uuid';
 import { Binary, CloudDiskFile, CreateBinaryRequest, File, Version } from "../../../../proto/san11-platform.pb";
@@ -130,6 +131,10 @@ export class CreateNewVersionComponent implements OnInit {
       const fileUploaded = formGroup.get('fileUploaded').value;
       if (cloudDiskFileUrl === '' && fileUploaded === false) {
         return { 'fileMissing': true };
+      }
+
+      if (cloudDiskFileUrl != '' && !isValidUrl(cloudDiskFileUrl)) {
+        return { 'invalidUrl': true };
       }
 
       return null;
