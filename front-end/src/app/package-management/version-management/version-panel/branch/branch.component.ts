@@ -97,12 +97,16 @@ export class BranchComponent {
         );
     }
 
-    onDownload(binary: Binary) {
+    onDownloadRequireSignIn(binary: Binary) {
         if (!signedIn()) {
             this.notificationService.warn('请登录');
             return;
         }
 
+        this.onDownload(binary);
+    }
+
+    onDownload(binary: Binary) {
         this.san11pkService.downloadBinary(new DownloadBinaryRequest({
             name: binary.name
         })).subscribe({
