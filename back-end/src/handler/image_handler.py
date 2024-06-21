@@ -11,9 +11,9 @@ from handler.model.model_user import (DEFAULT_USER_AVATAR, PRESET_USER_AVATARS,
 from handler.util.file_server import (BucketClass, FileServer, FileServerType,
                                       get_file_server)
 
+from .common.image import ImageSize
 from .common.url import Url
 from .common.util import gen_random_str
-from .common.image import ImageSize
 from .protos import san11_platform_pb2 as pb
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -85,4 +85,4 @@ def resample_img_for_user_avatar(file_server: FileServer, uri: str):
         output_buffer = BytesIO()
         img.save(output_buffer, format='JPEG')
         file_server.create_file(output_buffer,
-                                uri.replace('.jpeg', f'_{size}_{size}.jpeg'))
+                                uri.replace('.jpeg', f'_{size.value}_{size.value}.jpeg'))
