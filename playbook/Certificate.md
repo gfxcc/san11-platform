@@ -4,7 +4,19 @@ san11pk.org use [Let's Encrypt](https://letsencrypt.org/) to generate certificat
 
 [Detailed instruction](https://certbot.eff.org/instructions?ws=other&os=ubuntufocal)
 
-## Renew certificate
+## Automation
+
+Following cmd can renew certificate and setup renew job in the background.
+
+```
+sudo certbot certonly --standalone -d san11pk.org --agree-tos --non-interactive \
+  --pre-hook "$HOME/san11-platform/scripts/cert-bot-pre-hook.sh" \
+  --post-hook "$HOME/san11-platform/scripts/cert-bot-post-hook.sh"
+```
+
+## Renew certificate manually
+
+
 
 ```
 sudo certbot certonly --standalone
