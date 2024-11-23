@@ -17,7 +17,7 @@ from handler.admin_handler import AdminHandler
 from handler.article_handler import ArticleHandler
 from handler.binary_handler import BinaryHandler
 from handler.comment_handler import CommentHandler
-from handler.common.env import Env, get_env
+from handler.common.env import Env, get_env, is_prod
 from handler.common.exception import *
 from handler.general_handler import GeneralHandler
 from handler.handler_context import HandlerContext
@@ -53,10 +53,6 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 RpcFunc = Callable[[Any, Any, Any], Any]
-
-
-def is_production() -> bool:
-    return os.environ.get('PRODUCTION') == 'true'
 
 
 def GrpcAbortOnExcep(func: RpcFunc):
@@ -561,7 +557,7 @@ def serve():
 def init_log(verbose: bool):
     level = logging.DEBUG if verbose else logging.INFO
 
-    if is_production():
+    if is_prod():
         client = cloud_logging.Client()
         client.setup_logging(log_level=level)
     FORMAT = '%(asctime)-15s %(levelname)s %(name)s:%(lineno)s [func=%(funcName)s] %(message)s'

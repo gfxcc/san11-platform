@@ -19,6 +19,9 @@ def get_env() -> Env:
     else:
         return Env.PROD
 
+def is_prod() -> bool:
+    return get_env() == Env.PROD
+
 
 def get_server_addr() -> str:
     if get_env() == Env.DEV:

@@ -10,7 +10,8 @@ services:
       - ./back-end/utils:/utils
       - ../credentials:/credentials
     environment:
-      PRODUCTION: 'true'
+      # STAGE: PROD
+      STAGE: DEV
       NOTIFIER_SERVICE_ACCOUNT_FILE: '/credentials/san11-platform-notifier.json'
       AWS_CREDENTIALS_FILE: '/credentials/aws-backend.json'
       GCLOUD_CREDENTIALS_FILE: '/credentials/san11-grpc-backend.json'
@@ -64,10 +65,11 @@ services:
     command: bash -c "npm install --force && ng serve
                       --configuration production
                       --host 0.0.0.0 --disable-host-check
-                      --ssl true
-                      --ssl-cert /credentials/san11pk.crt
-                      --ssl-key /credentials/san11pk-private-key.key
                      "
+
+                      # --ssl true
+                      # --ssl-cert /credentials/san11pk.crt
+                      # --ssl-key /credentials/san11pk-private-key.key
     depends_on: 
       - back-end
     ports:
