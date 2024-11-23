@@ -38,7 +38,7 @@ services:
       - ../credentials:/credentials
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
     ports:
-      - "8090:8090"
+      - "8091:8091"
 
   db:
     build: ./database

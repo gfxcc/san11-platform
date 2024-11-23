@@ -1,8 +1,8 @@
 static_resources:
   listeners:
-    - name: listener_0
+    - name: https_backend
       address:
-        socket_address: { address: 0.0.0.0, port_value: 8090 }
+        socket_address: { address: 0.0.0.0, port_value: 8091 }
       filter_chains:
         - filters:
             - name: envoy.filters.network.http_connection_manager
@@ -17,7 +17,7 @@ static_resources:
                       routes:
                         - match: { prefix: "/" }
                           route:
-                            cluster: echo_service
+                            cluster: grpc_backend
                             max_grpc_timeout: 0s
                       cors:
                         allow_origin_string_match:
@@ -32,17 +32,8 @@ static_resources:
                   - name: envoy.filters.http.grpc_web
                   - name: envoy.filters.http.cors
                   - name: envoy.filters.http.router
-          transport_socket:
-            name: envoy.transport_sockets.tls
-            typed_config:
-              "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
-              common_tls_context:
-                tls_certificates:
-                  certificate_chain: { filename: "/credentials/san11pk.crt" }
-                  private_key:
-                    { filename: "/credentials/san11pk-private-key.key" }
 
-    - name: listener_1
+    - name: redirect_http_to_https
       address:
         socket_address: { address: 0.0.0.0, port_value: 80 }
       filter_chains:
@@ -65,13 +56,13 @@ static_resources:
                   - name: envoy.filters.http.router
 
   clusters:
-    - name: echo_service
+    - name: grpc_backend
       connect_timeout: 0.25s
       type: LOGICAL_DNS
       http2_protocol_options: {}
       lb_policy: ROUND_ROBIN
       load_assignment:
-        cluster_name: echo_service
+        cluster_name: grpc_backend
         endpoints:
           - lb_endpoints:
               - endpoint:

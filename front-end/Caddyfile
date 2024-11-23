@@ -5,3 +5,7 @@ san11pk.org {
     # Angular routing fallback
     try_files {path} /index.html
 }
+
+san11pk.org:8090 {
+    reverse_proxy 127.0.0.1:8091
+}
