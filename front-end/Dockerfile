@@ -1,14 +1,17 @@
-# FILE: front-end/Dockerfile
-# Stage 1: Build the Angular app
+# Stage 1: Build Angular application
 FROM node:18.14 AS build
 WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install --force
 COPY . .
-RUN npm install
-# RUN npm install -g @angular/cli
-RUN npm run build --prod
+RUN npm run build -- --configuration=production --project=san11-platform
 
-# Stage 2: Serve the app with nginx
-FROM nginx:alpine
-COPY --from=build /app /usr/share/nginx/html
+# Stage 2: Serve with Caddy
+FROM caddy:2.6.4-alpine
+COPY --from=build /app/dist/san11-platform /srv
+COPY Caddyfile /etc/caddy/Caddyfile
+
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 443
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile"]

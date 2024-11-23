@@ -40,7 +40,6 @@ services:
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
     ports:
       - "8090:8090"
-      - "80:80"
 
   db:
     build: ./database
@@ -55,22 +54,8 @@ services:
   front-end:
     build: ./front-end
     restart: always
-    working_dir: /app
-    volumes:
-      - ./front-end:/app
-      - ../credentials:/credentials
-    environment:
-      SSL_CERT: /credentials/san11pk.crt
-      SSL_KEY: /credentials/san11pk-private-key.key
-    command: bash -c "npm install --force && ng serve
-                      --configuration production
-                      --host 0.0.0.0 --disable-host-check
-                     "
-
-                      # --ssl true
-                      # --ssl-cert /credentials/san11pk.crt
-                      # --ssl-key /credentials/san11pk-private-key.key
-    depends_on: 
-      - back-end
     ports:
-      - "443:4200"
+      - "443:443" # If using SSL with Nginx
+      - "80:80"   # For standard HTTP
+    depends_on:
+      - back-end
