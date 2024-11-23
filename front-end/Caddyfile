@@ -1,0 +1,7 @@
+san11pk.org {
+    root * /srv
+    file_server
+
+    # Angular routing fallback
+    try_files {path} /index.html
+}
