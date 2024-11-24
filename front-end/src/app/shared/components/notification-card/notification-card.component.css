@@ -18,7 +18,7 @@
     max-height: 12rem;
     overflow: hidden;
     display: block;
-    display: box;
+    display: flex;
     text-overflow: ellipsis;
     white-space: normal;
 }
