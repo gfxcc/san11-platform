@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DefaultUrlSerializer, Router, UrlTree } from '@angular/router';
 import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';

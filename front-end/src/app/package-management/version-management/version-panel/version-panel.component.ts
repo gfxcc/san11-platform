@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from "@angular/material/paginator";
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
 import { Binary, ListBinariesRequest, ListBinariesResponse, Package } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 import { BinaryService } from "../../../service/binary-service";
