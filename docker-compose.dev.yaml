@@ -69,7 +69,7 @@ services:
     environment:
     - NODE_OPTIONS=--max-old-space-size=4096
     volumes:
-      - ./front-end/src:/app/src
+      - ./front-end:/app
     command: bash -c "npx ng serve --host 0.0.0.0 --disable-host-check"
     depends_on:
       - back-end
