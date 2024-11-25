@@ -69,10 +69,8 @@ services:
     environment:
     - NODE_OPTIONS=--max-old-space-size=4096
     volumes:
-      - ./front-end:/app
-      # Do not mount node_modules to avoid conflict with the container's node_modules
-      - /app/node_modules
-    command: bash -c "npx ng serve --host 0.0.0.0 --disable-host-check "
+      - ./front-end/src:/app/src
+    command: bash -c "npx ng serve --host 0.0.0.0 --disable-host-check"
     depends_on:
       - back-end
     ports:
