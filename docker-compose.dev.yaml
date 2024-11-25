@@ -66,6 +66,8 @@ services:
       dockerfile: Dockerfile.dev
     restart: always
     working_dir: /app
+    environment:
+    - NODE_OPTIONS=--max-old-space-size=4096
     volumes:
       - ./front-end:/app
       # Do not mount node_modules to avoid conflict with the container's node_modules

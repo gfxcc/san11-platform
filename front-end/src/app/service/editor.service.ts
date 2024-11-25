@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
-import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-import * as Editor from "ckeditor5-custom-build/build/ckeditor";
+import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ListUsersRequest, User } from 'src/proto/san11-platform.pb';
 import { GlobalConstants } from '../common/global-constants';
 import { ProgressService } from '../progress.service';
@@ -8,13 +9,56 @@ import { getUserUri } from '../utils/user_util';
 import { MyUploadAdapter } from './cke-upload-adapter';
 import { San11PlatformServiceService } from './san11-platform-service.service';
 import { UploadService } from './upload.service';
+import {
+	InlineEditor,
+	AccessibilityHelp,
+	Autoformat,
+	AutoImage,
+	Autosave,
+	BlockQuote,
+	Bold,
+	CloudServices,
+	Essentials,
+	Heading,
+	ImageBlock,
+	ImageCaption,
+	ImageInline,
+	ImageInsert,
+	ImageInsertViaUrl,
+	ImageResize,
+	ImageStyle,
+	ImageTextAlternative,
+	ImageToolbar,
+	ImageUpload,
+	Indent,
+	IndentBlock,
+	Italic,
+	Link,
+	LinkImage,
+	List,
+	ListProperties,
+	Paragraph,
+	SelectAll,
+	SimpleUploadAdapter,
+	Table,
+	TableCaption,
+	TableCellProperties,
+	TableColumnResize,
+	TableProperties,
+	TableToolbar,
+	TextTransformation,
+	TodoList,
+	Underline,
+	Undo,
+	type EditorConfig
+} from 'ckeditor5';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EditorService {
-  private editor: typeof Editor;
-  private editorElement: DecoupledEditor;
+  private editor = InlineEditor;
+  private editorElement;
   private placeholder: string = '请输入...';
   public disabled: boolean = true;
 
@@ -31,8 +75,8 @@ export class EditorService {
 
 
   private createEditor(): void {
-    // Logic to create and configure the editor instance
-    this.editor = Editor; // Replace this with actual editor instance creation if needed
+    // // Logic to create and configure the editor instance
+    // this.editor = InlineEditor; // Replace this with actual editor instance creation if needed
   }
 
   private getUsernameFeedItems(queryText: string) {
@@ -57,7 +101,7 @@ export class EditorService {
     this.placeholder = placeholder;
   }
 
-  getEditorInstance(): typeof Editor {
+  getEditorInstance() {
     return this.editor;
   }
 
@@ -136,7 +180,7 @@ export class EditorService {
     this.editorElement.setData(data);
   }
 
-  onReady(editor: DecoupledEditor) {
+  onReady(editor) {
     this.editorElement = editor;
     if (this.imageUploadPath !== undefined) {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {

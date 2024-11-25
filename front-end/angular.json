@@ -17,7 +17,6 @@
                             "grpc-web",
                             "aws-sdk/clients/s3",
                             "file-saver",
-                            "ckeditor5-custom-build/build/ckeditor",
                             "uuid",
                             "google-protobuf"
                         ],
