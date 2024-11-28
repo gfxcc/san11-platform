@@ -50,14 +50,15 @@ import {
 	TodoList,
 	Underline,
 	Undo,
-	type EditorConfig
+	type EditorConfig,
+  ClassicEditor
 } from 'ckeditor5';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EditorService {
-  private editor = InlineEditor;
+  private editor = ClassicEditor;
   private editorElement;
   private placeholder: string = '请输入...';
   public disabled: boolean = true;
@@ -132,10 +133,45 @@ export class EditorService {
           'imageUpload', // comment out this function as current implement will cause performance issue 
           'codeBlock',
           'insertTable',
-          'undo',
-          'redo'
         ]
       },
+			plugins: [
+				Autoformat,
+				AutoImage,
+				BlockQuote,
+				Bold,
+				Essentials,
+				Heading,
+				ImageBlock,
+				ImageCaption,
+				ImageInline,
+				ImageInsert,
+				ImageResize,
+				ImageStyle,
+				ImageTextAlternative,
+				ImageToolbar,
+				ImageUpload,
+				Indent,
+				IndentBlock,
+				Italic,
+				Link,
+				LinkImage,
+				List,
+				ListProperties,
+				Paragraph,
+				SelectAll,
+				SimpleUploadAdapter,
+				Table,
+				TableCaption,
+				TableCellProperties,
+				TableColumnResize,
+				TableProperties,
+				TableToolbar,
+				TextTransformation,
+				TodoList,
+				Underline,
+				Undo
+			],
       language: 'zh-cn',
       image: {
         toolbar: [
@@ -183,9 +219,9 @@ export class EditorService {
   onReady(editor) {
     this.editorElement = editor;
     if (this.imageUploadPath !== undefined) {
-      editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-        return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.imageUploadPath, this.progressService, this.ngZone);
-      };
+      // editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      //   return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.imageUploadPath, this.progressService, this.ngZone);
+      // };
     }
     if (this.disabled) {
       const toolbarElement = editor.ui.view.toolbar.element;
