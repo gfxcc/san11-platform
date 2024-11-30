@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
-import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
+import { inject, Injectable } from '@angular/core';
+import { MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
+  // private snackBar = inject(MatSnackBar);
 
-  constructor(public snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar) { }
 
   config: MatSnackBarConfig = {
     duration: 3000,
