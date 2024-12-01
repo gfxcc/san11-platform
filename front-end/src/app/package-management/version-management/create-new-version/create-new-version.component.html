@@ -1,120 +1,122 @@
-<mat-card-header>
-    <mat-card-title>更新</mat-card-title>
-</mat-card-header>
+<mat-dialog-content>
+    <mat-card-header>
+        <mat-card-title>更新</mat-card-title>
+    </mat-card-header>
 
 
-<form class="form" [formGroup]="newBinaryForm" (ngSubmit)="onNewBinaryFormSubmit()">
-    <div style="margin-top: 10px;">
-        <mat-form-field style="width: 100%;">
-            <mat-label>分支</mat-label>
-            <mat-select required (selectionChange)="newTagSelected($event.value)" [(value)]="this.tag">
-                <mat-option *ngFor="let tag of this.tags" [value]="tag">
-                    {{tag}}
-                </mat-option>
+    <form class="form" [formGroup]="newBinaryForm" (ngSubmit)="onNewBinaryFormSubmit()">
+        <div style="margin-top: 10px;">
+            <mat-form-field style="width: 100%;">
+                <mat-label>分支</mat-label>
+                <mat-select required (selectionChange)="newTagSelected($event.value)" [(value)]="this.tag">
+                    <mat-option *ngFor="let tag of this.tags" [value]="tag">
+                        {{tag}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field class="form-field">
+            <mat-label>更新类型</mat-label>
+            <mat-select name="updateType" (selectionChange)="onVersionSelectorUpdate($event.value)"
+                [(value)]="this.updateType">
+                <mat-option value="major">major</mat-option>
+                <mat-option value="minor">minor</mat-option>
+                <mat-option value="patch">patch</mat-option>
+                <mat-option value="custom">custom</mat-option>
             </mat-select>
+            <mat-hint></mat-hint>
         </mat-form-field>
-    </div>
 
-    <mat-form-field class="form-field">
-        <mat-label>更新类型</mat-label>
-        <mat-select name="updateType" (selectionChange)="onVersionSelectorUpdate($event.value)"
-            [(value)]="this.updateType">
-            <mat-option value="major">major</mat-option>
-            <mat-option value="minor">minor</mat-option>
-            <mat-option value="patch">patch</mat-option>
-            <mat-option value="custom">custom</mat-option>
-        </mat-select>
-        <mat-hint></mat-hint>
-    </mat-form-field>
+        <div class="version-section">
+            <mat-form-field class="version-field" floatLabel="always">
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="major"
+                    autocomplete="off" [value]="this.newVersion.major.toString()" #majorInput name="majorInput"
+                    (change)="updateMajor(majorInput)" />
+            </mat-form-field>
+            <mat-form-field class="version-field" floatLabel="always">
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="minor"
+                    autocomplete="off" [value]="this.newVersion.minor.toString()" #minorInput name="minorInput"
+                    (change)="updateMinor(minorInput)" />
+            </mat-form-field>
+            <mat-form-field class="version-field" floatLabel="always">
+                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="patch"
+                    autocomplete="off" [value]="this.newVersion.patch.toString()" #patchInput name="patchInput"
+                    (change)="updatePatch(patchInput)" />
+            </mat-form-field>
+        </div>
 
-    <div class="version-section">
-        <mat-form-field class="version-field" floatLabel="always">
-            <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="major"
-                autocomplete="off" [value]="this.newVersion.major.toString()" #majorInput name="majorInput"
-                (change)="updateMajor(majorInput)" />
-        </mat-form-field>
-        <mat-form-field class="version-field" floatLabel="always">
-            <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="minor"
-                autocomplete="off" [value]="this.newVersion.minor.toString()" #minorInput name="minorInput"
-                (change)="updateMinor(minorInput)" />
-        </mat-form-field>
-        <mat-form-field class="version-field" floatLabel="always">
-            <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="patch"
-                autocomplete="off" [value]="this.newVersion.patch.toString()" #patchInput name="patchInput"
-                (change)="updatePatch(patchInput)" />
-        </mat-form-field>
-    </div>
+        <mat-label>更新日志</mat-label>
+        <div class="bottom-board">
+            <ckeditor formControlName="desc" [editor]="this.editorService.getEditorInstance()"
+                (ready)="this.editorService.onReady($event)" (change)="onDescEditorChange($event)"
+                [config]="this.editorService.getConfig()">
+            </ckeditor>
+        </div>
 
-    <mat-label>更新日志</mat-label>
-    <div class="bottom-board">
-        <ckeditor formControlName="desc" [editor]="this.editorService.getEditorInstance()"
-            (ready)="this.editorService.onReady($event)" (change)="onDescEditorChange($event)"
-            [config]="this.editorService.getConfig()">
-        </ckeditor>
-    </div>
+        <p></p>
 
-    <p></p>
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="网盘链接">
+                <div class="file-section">
+                    <mat-form-field style="width: 100%;">
+                        <input matInput formControlName="cloudDiskFileUrl" placeholder="链接" autocomplete="off" />
+                    </mat-form-field>
 
-    <mat-tab-group mat-align-tabs="center">
-        <mat-tab label="网盘链接">
-            <div class="file-section">
-                <mat-form-field style="width: 100%;">
-                    <input matInput formControlName="cloudDiskFileUrl" placeholder="链接" autocomplete="off" />
-                </mat-form-field>
+                    <mat-form-field style="width: 100%;">
+                        <input matInput formControlName="cloudDiskFileCode" placeholder="密码(可选)" autocomplete="off" />
+                    </mat-form-field>
+                </div>
+            </mat-tab>
 
-                <mat-form-field style="width: 100%;">
-                    <input matInput formControlName="cloudDiskFileCode" placeholder="密码(可选)" autocomplete="off" />
-                </mat-form-field>
-            </div>
-        </mat-tab>
+            <mat-tab label="上传文件 (限10M)">
+                <div class="file-section">
+                    <div style="display: flex;">
+                        <input hidden #fileInput type="file" [accept]="acceptFileType" name="fileInput"
+                            (change)="selectFile(fileInput.files)">
 
-        <mat-tab label="上传文件 (限10M)">
-            <div class="file-section">
-                <div style="display: flex;">
-                    <input hidden #fileInput type="file" [accept]="acceptFileType" name="fileInput"
-                        (change)="selectFile(fileInput.files)">
-
-                    <button type="button" mat-raised-button (click)="fileInput.click()" style="text-overflow: ellipsis; overflow:hidden;
+                        <button type="button" mat-raised-button (click)="fileInput.click()" style="text-overflow: ellipsis; overflow:hidden;
                 white-space:nowrap; margin-right: 10px; flex-shrink: 1;">
-                        {{ file ? file.name : '选择文件' }}
-                    </button>
-                    <span class="example-spacer"></span>
-                    <button [disabled]="!(this.file != undefined && this.upload ===
+                            {{ file ? file.name : '选择文件' }}
+                        </button>
+                        <span class="example-spacer"></span>
+                        <button [disabled]="!(this.file != undefined && this.upload ===
                 undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()" style="display: inline-block;
                 flex-shrink: 0;">
-                        {{this.upload ? (this.upload.state != 'DONE' ?
-                        this.speed.toFixed(1) + this.unit: '已上传') : '上传'}}
-                    </button>
-                </div>
+                            {{this.upload ? (this.upload.state != 'DONE' ?
+                            this.speed.toFixed(1) + this.unit: '已上传') : '上传'}}
+                        </button>
+                    </div>
 
-                <mat-progress-bar *ngIf="upload" [mode]="upload.state ==
+                    <mat-progress-bar *ngIf="upload" [mode]="upload.state ==
                     'PENDING' ?
                     'buffer' : 'determinate'" [value]="upload.progress" style="margin-top: 3px; height: 2px;">
-                </mat-progress-bar>
-                <mat-slide-toggle style="margin-top: 5px;" [checked]="this.autoCreateChecked" color='primary'
-                    (change)="toggleAutoCreate($event)">上传完成后自动创建</mat-slide-toggle>
+                    </mat-progress-bar>
+                    <mat-slide-toggle style="margin-top: 5px;" [checked]="this.autoCreateChecked" color='primary'
+                        (change)="toggleAutoCreate($event)">上传完成后自动创建</mat-slide-toggle>
 
-                <div *ngIf="showExperimentalRegion">
-                    <!-- <mat-slide-toggle style="margin-top: 5px;" [(checked)]="this.useAwsS3" color='primary'
+                    <div *ngIf="showExperimentalRegion">
+                        <!-- <mat-slide-toggle style="margin-top: 5px;" [(checked)]="this.useAwsS3" color='primary'
                         (change)="onUseAwsS3Toggled($event)">使用AWS S3</mat-slide-toggle> -->
+                    </div>
                 </div>
-            </div>
-        </mat-tab>
-    </mat-tab-group>
+            </mat-tab>
+        </mat-tab-group>
 
-    <p></p>
-    <div class="actions">
-        <mat-error *ngIf="newBinaryForm.errors?.fileMissing" align="end">
-            请提供网盘链接 或 上传文件
-        </mat-error>
+        <p></p>
+        <div class="actions">
+            <mat-error *ngIf="newBinaryForm.errors?.fileMissing" align="end">
+                请提供网盘链接 或 上传文件
+            </mat-error>
 
-        <mat-error *ngIf="newBinaryForm.errors?.invalidUrl" align="end">
-            无效的网盘链接
-        </mat-error>
+            <mat-error *ngIf="newBinaryForm.errors?.invalidUrl" align="end">
+                无效的网盘链接
+            </mat-error>
 
-        <span class="example-spacer"></span>
-        <button mat-stroked-button type="button" (click)="onCancel()" color="accent"
-            style="margin-right: 5px">取消</button>
-        <button type="submit" [disabled]="!newBinaryForm.valid" mat-stroked-button color="primary">创建</button>
-    </div>
-</form>
+            <span class="example-spacer"></span>
+            <button mat-stroked-button type="button" (click)="onCancel()" color="accent"
+                style="margin-right: 5px">取消</button>
+            <button type="submit" [disabled]="!newBinaryForm.valid" mat-stroked-button color="primary">创建</button>
+        </div>
+    </form>
+</mat-dialog-content>
