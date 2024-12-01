@@ -11,7 +11,7 @@
             "prefix": "app",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
+                    "builder": "@angular-devkit/build-angular:application",
                     "options": {
                         "allowedCommonJsDependencies": [
                             "grpc-web",
@@ -20,10 +20,13 @@
                             "uuid",
                             "google-protobuf"
                         ],
-                        "outputPath": "dist/san11-platform",
+                        "outputPath": {
+                          "base": "dist/san11-platform"
+                        },
                         "index": "src/index.html",
-                        "main": "src/main.ts",
-                        "polyfills": "src/polyfills.ts",
+                        "polyfills": [
+                          "src/polyfills.ts"
+                        ],
                         "tsConfig": "tsconfig.app.json",
                         "aot": true,
                         "assets": [
@@ -40,7 +43,8 @@
                             "node_modules/primeicons/primeicons.css",
                             "node_modules/quill/dist/quill.snow.css",
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "browser": "src/main.ts"
                     },
                     "configurations": {
                         "production": {
@@ -55,8 +59,6 @@
                             "sourceMap": false,
                             "namedChunks": false,
                             "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
                             "budgets": [
                                 {
                                     "type": "initial",
