@@ -1,5 +1,5 @@
 <div class="card-wrapper">
-    <mat-card class="box">
+    <mat-card appearance="outlined" class="box">
         <mat-tab-group #tagGroup [(selectedIndex)]="selectedTabIndex" class="header-less-tabs">
             <mat-tab label="login">
                 <mat-card-header>
@@ -68,7 +68,7 @@
                                     我们发送了一封邮件到 {{email.value}}, 请输入其中的 验证码
                                 </p>
                                 <form class="example-form" [formGroup]="emailVerificationForm" (ngSubmit)="onVerifyEmail(verifyForm)">
-                                    <mat-form-field appearance="standard" style="width: 100%;">
+                                    <mat-form-field style="width: 100%;">
                                         <mat-label>验证码</mat-label>
                                         <input matInput autocomplete="off" formControlName="verificationCode">
                                     </mat-form-field>
@@ -86,7 +86,7 @@
                         <ng-template matStepLabel>3. 修改密码</ng-template>
                         <ng-template matStepContent>
                             <form class="example-form" [formGroup]="resetPasswordForm">
-                                <mat-form-field appearance="standard" style="width: 100%;">
+                                <mat-form-field style="width: 100%;">
                                     <mat-label>新密码</mat-label>
                                     <input matInput [type]="hidePassword ? 'password' : 'text'" autocomplete="off" formControlName="password">
 

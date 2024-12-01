@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { onMobile } from 'src/app/utils/layout_util';
 import { CreateTagRequest, CreateThreadRequest, DeleteTagRequest, ListTagsRequest, Tag, Thread } from '../../../../proto/san11-platform.pb';

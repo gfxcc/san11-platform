@@ -4,7 +4,7 @@
 
 */
 
-.header-less-tabs .mat-tab-header {
+.header-less-tabs .mat-mdc-tab-header {
     display: none;
 }
 

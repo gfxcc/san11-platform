@@ -31,11 +31,11 @@
                 </ul>
 
 
-                <mat-chip-list #chipList aria-label="Fruit selection">
-                    <mat-chip color="primary" *ngFor="let tag of this.thread.tags">
+                <mat-chip-listbox #chipList aria-label="Fruit selection">
+                    <mat-chip-option color="primary" *ngFor="let tag of this.thread.tags">
                         {{tag}}
-                    </mat-chip>
-                </mat-chip-list>
+                    </mat-chip-option>
+                </mat-chip-listbox>
 
 
                 <div style="width: 200px; display: flex;">

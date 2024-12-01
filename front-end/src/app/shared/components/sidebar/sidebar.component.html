@@ -71,12 +71,12 @@
     <div *ngIf="this.isAdmin() || this.tags.length > 0" style="margin-top: 10px;
         padding: 5px;">
         <div *ngIf="this.tags.length>0" class="round-border" style="margin-bottom: 5px; padding: 5px">
-            <mat-chip-list>
-                <mat-chip color="primary" *ngFor="let tag of this.tags" (click)="onClickTag(tag)"
+            <mat-chip-listbox>
+                <mat-chip-option color="primary" *ngFor="let tag of this.tags" (click)="onClickTag(tag)"
                     (removed)="removeTag(tag)">{{tag.tagName}}
                     <mat-icon matChipRemove *ngIf="this.isAdmin()">cancel</mat-icon>
-                </mat-chip>
-            </mat-chip-list>
+                </mat-chip-option>
+            </mat-chip-listbox>
         </div>
 
         <mat-form-field *ngIf="this.isAdmin()" style="width: 100%; margin-top:

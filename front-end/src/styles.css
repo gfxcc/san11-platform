@@ -152,7 +152,7 @@ body {
     margin: 0;
 }
 
-.card-wrapper .mat-card {
+.card-wrapper .mat-mdc-card {
     padding: 40px 40px 50px;
 }
 
@@ -163,6 +163,7 @@ body {
     background: #FFF7FA;
 } */
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .card-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
     padding: 0.8375em 0;
 }

@@ -181,12 +181,12 @@
 
         <div style="padding: 10px 0;">
             <!-- <div class="heading-1">标签</div> -->
-            <mat-chip-list #chipList>
-                <mat-chip *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit"
+            <mat-chip-listbox #chipList>
+                <mat-chip-option *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit"
                     (removed)="removeTag(tag)">
                     {{tag.tagName}}
                     <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
-                </mat-chip>
+                </mat-chip-option>
 
                 <mat-form-field *ngIf="tagCanEdit">
                     <mat-label>新标签...</mat-label>
@@ -196,7 +196,7 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-            </mat-chip-list>
+            </mat-chip-listbox>
         </div>
 
         <div *ngIf="(isAdmin() || isAuthor())" class="package-controller

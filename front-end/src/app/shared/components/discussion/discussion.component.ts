@@ -1,7 +1,7 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';

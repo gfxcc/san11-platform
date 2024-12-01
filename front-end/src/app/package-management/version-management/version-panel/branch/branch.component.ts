@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from "@angular/core";
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
-import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
-import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 import { saveAs } from 'file-saver';
 import { TextDialogComponent } from "src/app/common/components/text-dialog/text-dialog.component";
 import { NotificationService } from "src/app/common/notification.service";

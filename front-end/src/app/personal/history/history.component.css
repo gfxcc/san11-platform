@@ -13,6 +13,6 @@
     display: block !important;
 }
 
-::ng-deep .alternate-align-card>.mat-card-header {
+::ng-deep .alternate-align-card>.mat-mdc-card-header {
     display: initial !important;
 }
