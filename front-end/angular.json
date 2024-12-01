@@ -135,7 +135,6 @@
             }
         }
     },
-    "defaultProject": "san11-platform",
     "cli": {
         "analytics": false
     }
