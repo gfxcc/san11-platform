@@ -1,7 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-/* Angular Flex Layout */
-import { FlexLayoutModule } from "@angular/flex-layout";
 /* FormsModule */
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -56,7 +54,6 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
     BrowserAnimationsModule,
     AppRoutingModule,
     AngularMaterialModule,
-    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
