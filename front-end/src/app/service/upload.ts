@@ -1,9 +1,4 @@
-import {
-    HttpEvent,
-    HttpEventType,
-    HttpProgressEvent,
-    HttpResponse
-} from '@angular/common/http';
+import { HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, scan } from 'rxjs/operators';
 

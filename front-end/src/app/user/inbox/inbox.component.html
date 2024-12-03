@@ -7,7 +7,7 @@
             </span>
         </ng-template>
         <ng-template pTemplate="content" let-event>
-            <mat-card (click)="onDetailClick(event)" style="margin-top: 40px;" class="clickable-card">
+            <mat-card appearance="outlined" (click)="onDetailClick(event)" style="margin-top: 40px;" class="clickable-card">
                 <mat-card-header>
                     <mat-card-title>
                         {{event.displayName}}

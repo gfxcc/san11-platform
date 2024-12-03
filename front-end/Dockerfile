@@ -1,8 +1,9 @@
 # Stage 1: Build Angular application
-FROM node:18.14 AS build
+FROM node:22.10 AS build
+
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install --force
+RUN npm install
 COPY . .
 RUN npm run build -- --configuration=production --project=san11-platform
 

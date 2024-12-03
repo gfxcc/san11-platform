@@ -10,6 +10,7 @@ import { getAcceptFileType } from "../../../utils/resrouce_util";
 import { isAdmin } from '../../../utils/user_util';
 import { CreateNewVersionComponent } from "../create-new-version/create-new-version.component";
 import { Branch } from "./branch/branch.component";
+import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-version-panel',

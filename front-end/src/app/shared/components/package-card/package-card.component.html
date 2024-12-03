@@ -1,13 +1,10 @@
 <div class="clickable-card" (click)="onClick()">
-    <mat-card class="package-card">
+    <mat-card appearance="outlined" class="package-card">
         <mat-card-header>
             <div mat-card-avatar class="author-image">
-                <div [hidden]="!this.displayAuthorImgLoading"
-                    class="animated-background author-image"></div>
-                <img [hidden]="this.displayAuthorImgLoading"
-                    [src]="this.author?.imageUrl | fullUrl : '128_128'"
-                    (load)="this.displayAuthorImgLoading=false;"
-                    class="author-image">
+                <div [hidden]="!this.displayAuthorImgLoading" class="animated-background author-image"></div>
+                <img [hidden]="this.displayAuthorImgLoading" [src]="this.author?.imageUrl | fullUrl : '128_128'"
+                    (load)="this.displayAuthorImgLoading=false;" class="author-image">
             </div>
             <mat-card-title>
 
@@ -29,14 +26,11 @@
 
 
         <div class="screenshot">
-            <div [hidden]="!this.displayScreenshotLoading"
-                class="animated-background
+            <div [hidden]="!this.displayScreenshotLoading" class="animated-background
                 screenshot"></div>
 
             <img [hidden]="this.displayScreenshotLoading" [src]="screenshot"
-                (load)="this.displayScreenshotLoading=false;"
-                class="screenshot
-                mat-card-image">
+                (load)="this.displayScreenshotLoading=false;" class="fit-image">
         </div>
 
         <!-- <mat-card-content>

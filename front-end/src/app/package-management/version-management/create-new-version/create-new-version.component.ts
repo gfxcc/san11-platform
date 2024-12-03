@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import * as S3 from 'aws-sdk/clients/s3';
+import S3 from 'aws-sdk/clients/s3';
 import { Subscription, finalize } from 'rxjs';
 import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
@@ -16,6 +15,13 @@ import { San11PlatformServiceService } from "../../../service/san11-platform-ser
 import { Upload } from '../../../service/upload';
 import { UploadService } from "../../../service/upload.service";
 import { increment } from "../../../utils/number_util";
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+} from '@angular/material/dialog';
 
 
 export interface VersionData {

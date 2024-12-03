@@ -72,6 +72,7 @@ const materialModules = [
   MatDatepickerModule,
   MatTooltipModule,
   MatDialogModule,
+  MatDialogModule,
   MatProgressBarModule,
   MatSlideToggleModule,
   MatStepperModule

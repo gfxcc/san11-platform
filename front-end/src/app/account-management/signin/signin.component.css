@@ -4,7 +4,7 @@
 
 */
 
-.header-less-tabs .mat-tab-header {
+.header-less-tabs .mat-mdc-tab-header {
     display: none;
 }
 
@@ -14,4 +14,8 @@
 
 .card {
     max-width: 400px;
+}
+
+.mat-mdc-tab-body-content {
+    overflow: hidden !important;
 }

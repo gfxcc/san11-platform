@@ -1,7 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-/* Angular Flex Layout */
-import { FlexLayoutModule } from "@angular/flex-layout";
 /* FormsModule */
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -32,44 +30,36 @@ import { SharedModule } from './shared/shared.module';
 import { UserModule } from "./user/user.module";
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    SigninComponent,
-    RegisterComponent,
-    LoadingComponent,
-    PackageDetailComponent,
-    VersionPanelComponent,
-    BranchComponent,
-    CreateNewVersionComponent,
-    TextDialogComponent,
-    TextInputDialogComponent,
-    AdminMessageBoardComponent,
-    BasicInfoComponent,
-  ],
-  imports: [
-    GrpcCoreModule.forRoot(),
-    GrpcWebClientModule.forRoot({
-      settings: { host: GlobalConstants.san11ServerUrl },
-    }),
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    AngularMaterialModule,
-    FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    GalleryModule,
-    CKEditorModule,
-    SharedModule,
-    UserModule,
-    ForumModule,
-    PersonalModule,
-    TimelineModule,
-    SettingsModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        SigninComponent,
+        RegisterComponent,
+        LoadingComponent,
+        PackageDetailComponent,
+        VersionPanelComponent,
+        BranchComponent,
+        CreateNewVersionComponent,
+        TextDialogComponent,
+        TextInputDialogComponent,
+        AdminMessageBoardComponent,
+        BasicInfoComponent,
+    ],
+    bootstrap: [AppComponent], imports: [GrpcCoreModule.forRoot(),
+        GrpcWebClientModule.forRoot({
+            settings: { host: GlobalConstants.san11ServerUrl },
+        }),
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        AngularMaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        GalleryModule,
+        CKEditorModule,
+        SharedModule,
+        UserModule,
+        ForumModule,
+        PersonalModule,
+        TimelineModule,
+        SettingsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

@@ -61,13 +61,16 @@ services:
       POSTGRES_PASSWORD: example
 
   front-end:
-    build: ./front-end
+    build: 
+      context: ./front-end
+      dockerfile: Dockerfile.dev
     restart: always
     working_dir: /app
+    environment:
+    - NODE_OPTIONS=--max-old-space-size=4096
     volumes:
       - ./front-end:/app
-      - ../credentials:/credentials
-    command: bash -c "npm install --force && ng serve --host 0.0.0.0 --disable-host-check "
+    command: bash -c "npx ng serve --host 0.0.0.0 --disable-host-check"
     depends_on:
       - back-end
     ports:

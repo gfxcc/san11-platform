@@ -1,5 +1,5 @@
 <div class="card-wrapper">
-    <mat-card class="card">
+    <mat-card appearance="outlined" class="card">
         <mat-card-header>
             <mat-card-title>更新资料</mat-card-title>
         </mat-card-header>
@@ -62,7 +62,7 @@
                             我们发送了一封邮件到 {{email.value}}, 请输入其中的 验证码
                         </p>
                         <form class="example-form" [formGroup]="emailVerificationForm">
-                            <mat-form-field appearance="standard" style="width: 100%;">
+                            <mat-form-field style="width: 100%;">
                                 <mat-label>验证码</mat-label>
                                 <input matInput autocomplete="off" formControlName="verificationCode">
                             </mat-form-field>

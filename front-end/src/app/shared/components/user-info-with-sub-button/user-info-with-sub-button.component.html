@@ -5,17 +5,12 @@
             <button mat-button (click)="onAvatarClick()" class="user-image">
                 <!-- <div [hidden]="!this.displayUserImgLoading"
                     class="animated-background user-image"></div> -->
-                <p-skeleton *ngIf="this.displayUserImgLoading" shape="circle"
-                    width="5.8em" height="5.8em"></p-skeleton>
+                <p-skeleton *ngIf="this.displayUserImgLoading" shape="circle" width="5.8em" height="5.8em"></p-skeleton>
 
-                <img [hidden]="this.displayUserImgLoading"
-                    [src]="this.user?.imageUrl |
-                    fullUrl : '128_128'"
-                    (load)="this.displayUserImgLoading=false;"
-                    class="user-image">
+                <img [hidden]="this.displayUserImgLoading" [src]="this.user?.imageUrl |
+                    fullUrl : '128_128'" (load)="this.displayUserImgLoading=false;" class="user-image">
             </button>
-            <input type="file" accept="image/*" hidden="true" #imageInput
-                (change)="onUploadUserAvatar(imageInput)">
+            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadUserAvatar(imageInput)">
         </div>
 
         <div class="text-info-wrapper">
@@ -33,9 +28,7 @@
     <div style="flex-grow: 1;">
     </div>
     <div class="subscribe-section">
-        <button *ngIf="!this.loadingSubscription"
-            class="subscribe-button" mat-flat-button
-            [class.clickable-button]="subscription"
+        <button *ngIf="!this.loadingSubscription" mat-flat-button [class.clickable-button]="subscription"
             [color]="subscription?'':'warn'" (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>
         <p-skeleton *ngIf="this.loadingSubscription" width="64px" height="36px"></p-skeleton>
     </div>

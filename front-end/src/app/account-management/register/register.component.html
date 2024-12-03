@@ -1,6 +1,6 @@
 <!-- <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center"> -->
 <div class="card-wrapper">
-    <mat-card class="card">
+    <mat-card appearance="outlined" class="card">
         <mat-card-header>
             <mat-card-title>注册</mat-card-title>
         </mat-card-header>
@@ -23,7 +23,7 @@
                                 </mat-error>
                                 <mat-error *ngIf="username.errors?.pattern &&
                                     username.touched" align="end">
-                                    不能使用 空格, @
+                                    不能使用 空格, &#64;
                                 </mat-error>
                                 <mat-error *ngIf="username.errors?.invalidNewUser &&
                                     username.touched" align="end">

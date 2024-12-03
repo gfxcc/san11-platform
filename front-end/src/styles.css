@@ -1,3 +1,31 @@
+@import 'ckeditor5/ckeditor5.css';
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@media print {
+	body {
+		margin: 0 !important;
+	}
+}
+
+.main-container {
+	font-family: 'Lato';
+	width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.ck-content {
+	font-family: 'Lato';
+	line-height: 1.6;
+	word-break: break-word;
+}
+
+.editor-container_inline-editor .editor-container__editor {
+	min-width: 795px;
+	max-width: 795px;
+}
+
+
 /* You can add global styles to this file, and also import other style files */
 :root {
     --primary-color: #3f51b5;
@@ -124,7 +152,7 @@ body {
     margin: 0;
 }
 
-.card-wrapper .mat-card {
+.card-wrapper .mat-mdc-card {
     padding: 40px 40px 50px;
 }
 
@@ -135,6 +163,7 @@ body {
     background: #FFF7FA;
 } */
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .card-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
     padding: 0.8375em 0;
 }

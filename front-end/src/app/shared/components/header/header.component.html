@@ -1,7 +1,3 @@
-<mat-progress-bar *ngIf="(progressService.currentMode | async) as mode" [mode]="mode"
-    [value]="mode === 'determinate' ? (progressService.currentProgress | async) : 0">
-</mat-progress-bar>
-
 <mat-toolbar color="primary">
     <button mat-icon-button (click)="toggleSideBar()">
         <mat-icon>menu</mat-icon>
@@ -76,7 +72,7 @@
         <span style="width: 20px;"></span>
 
         <button mat-button [matMenuTriggerFor]="accountMenu" style="padding:0;">
-            <app-user-card [user]="this.user" [clickable]="false" style="display: inline-flex; z-index: 999;">
+            <app-user-card [user]="this.user" [clickable]="false" style="z-index: 999;">
             </app-user-card>
         </button>
 
@@ -96,3 +92,7 @@
         </mat-menu>
     </div>
 </mat-toolbar>
+
+<mat-progress-bar *ngIf="(progressService.currentMode | async) as mode" [mode]="mode"
+    [value]="mode === 'determinate' ? (progressService.currentProgress | async) : 0">
+</mat-progress-bar>
