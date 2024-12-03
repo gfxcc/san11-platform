@@ -1,0 +1,16 @@
+staging.san11pk.org {
+    root * /srv
+    file_server
+
+    # Angular routing fallback
+    try_files {path} /index.html
+}
+
+
+gateway.staging.san11pk.org {
+    # Forward https traffic for gateway
+    reverse_proxy / http://127.0.0.1:8081 {
+        header_up X-Forwarded-Proto {scheme}
+        header_up Host {host}
+    }
+}

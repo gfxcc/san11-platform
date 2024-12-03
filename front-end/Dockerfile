@@ -13,8 +13,12 @@ RUN npm run build -- --configuration=production --project=san11-platform
 
 # Stage 2: Serve with Caddy
 FROM caddy:2.6.4-alpine
+
+ARG CADDYFILE
+
 COPY --from=build /app/dist/san11-platform/browser /srv
-COPY Caddyfile /etc/caddy/Caddyfile
+
+COPY ${CADDYFILE} /etc/caddy/Caddyfile
 
 EXPOSE 80
 EXPOSE 443

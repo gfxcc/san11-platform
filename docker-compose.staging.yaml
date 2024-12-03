@@ -1,6 +1,22 @@
+# Staging env is used to test prod specific setup. E.g. `Caddy` is used to server 
+# traffic rather than `ng serve`.
+#
+# It should use prod setup wherever possible
 version: "3"
 
 services:
+  front-end:
+    build:
+      context: ./front-end
+      args:
+        CADDYFILE: Caddyfile.staging
+    restart: always
+    ports:
+      - "443:443" # If using SSL with Nginx
+      - "80:80" # For standard HTTP
+    depends_on:
+      - back-end
+
   back-end:
     build: ./back-end
     restart: always
@@ -10,10 +26,7 @@ services:
       - ./back-end/utils:/utils
       - ../credentials:/credentials
     environment:
-      STAGE: PROD
-      NOTIFIER_SERVICE_ACCOUNT_FILE: "/credentials/san11-platform-notifier.json"
-      AWS_CREDENTIALS_FILE: "/credentials/aws-backend.json"
-      GCLOUD_CREDENTIALS_FILE: "/credentials/san11-grpc-backend.json"
+      STAGE: STAGING
       DB_HOST: db
     command:
       [
@@ -42,7 +55,7 @@ services:
     volumes:
       - ./back-end/envoy:/etc/envoy
       - ../credentials:/credentials
-    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy_dev.yaml
     ports:
       - "8090:8090"
 
@@ -56,14 +69,3 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
 
-  front-end:
-    build:
-      context: ./front-end
-      args:
-        CADDYFILE: Caddyfile
-    restart: always
-    ports:
-      - "443:443"
-      - "80:80"
-    depends_on:
-      - back-end
