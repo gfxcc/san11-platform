@@ -1,9 +1,7 @@
 <div style="padding: 10px;">
-    <p-timeline [value]="events" align="alternate"
-        styleClass="customized-timeline">
+    <p-timeline [value]="events" align="alternate" styleClass="customized-timeline">
         <ng-template pTemplate="marker" let-event>
-            <span class="custom-marker p-shadow-2"
-                [style.backgroundColor]="event.color">
+            <span class="custom-marker p-shadow-2" [style.backgroundColor]="event.color">
                 <!-- <i [ngClass]="event.icon"></i> -->
                 <mat-icon>{{event.icon}}</mat-icon>
             </span>
@@ -21,13 +19,12 @@
                     </mat-card-subtitle>
                 </mat-card-header>
 
-                <div>
-                    <img *ngIf="event.image" [src]="event.image" width="200"
-                        class="p-shadow-2" />
+                <mat-card-content>
+                    <img *ngIf="event.image" [src]="event.image" width="200" class="p-shadow-2" />
                     <p *ngIf="event.description">{{event.description}}</p>
                     <!-- <button *ngIf="event.link" mat-button color="primary"
                         (click)="onDetailClick(event)">查看</button> -->
-                </div>
+                </mat-card-content>
             </mat-card>
         </ng-template>
     </p-timeline>

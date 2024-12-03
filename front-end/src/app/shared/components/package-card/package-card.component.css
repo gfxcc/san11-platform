@@ -21,9 +21,12 @@
     border-radius: 4px;
 }
 
-.screenshot-div {
+.fit-image {
     height: 200px;
+    width: 100%;
+    object-fit: contain;
     display: block;
+    margin: 0 auto;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */

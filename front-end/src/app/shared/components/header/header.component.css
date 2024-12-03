@@ -2,20 +2,10 @@
 /* TODO(mdc-migration): The following rule targets internal classes of progress-bar that may no longer apply for the MDC version. */
 mat-progress-bar {
     position: fixed;
-    top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
     /* Ensure it's above other elements */
-}
-
-.head-bar {
-    /* position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: block;
-    z-index: 100; */
+    z-index: 1000;
 }
 
 .website-title {

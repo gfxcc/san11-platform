@@ -9,9 +9,6 @@
     z-index: 1;
 }
 
-.alternate-align-card {
-    display: block !important;
-}
 
 ::ng-deep .alternate-align-card>.mat-mdc-card-header {
     display: initial !important;
