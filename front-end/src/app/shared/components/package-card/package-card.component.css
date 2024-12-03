@@ -69,11 +69,6 @@ mat-card-content p {
     max-height: 100px;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-mat-card-header {
-    height: 60px;
-}
-
 .timeline-item {
     background: #fff;
     border-color: #e5e6e9 #dfe0e4 #d0d1d5;
