@@ -12,9 +12,6 @@ services:
       - ../credentials:/credentials
     environment:
       STAGE: DEV
-      NOTIFIER_SERVICE_ACCOUNT_FILE: '/credentials/san11-platform-notifier.json'
-      AWS_CREDENTIALS_FILE: '/credentials/aws-backend.json'
-      GCLOUD_CREDENTIALS_FILE: '/credentials/san11-grpc-backend.json'
       DB_HOST: db
     command:
       [
@@ -22,7 +19,7 @@ services:
         "db",
         "python3.8",
         "san11_platform_server.py",
-        "--verbose"
+        "--verbose",
       ]
     depends_on:
       - db
@@ -61,15 +58,16 @@ services:
       POSTGRES_PASSWORD: example
 
   front-end:
-    build: 
+    build:
       context: ./front-end
       dockerfile: Dockerfile.dev
     restart: always
     working_dir: /app
     environment:
-    - NODE_OPTIONS=--max-old-space-size=4096
+      - NODE_OPTIONS=--max-old-space-size=4096
     volumes:
-      - ./front-end:/app
+      # Map the source code to the container so that changes will trigger a rebuild.
+      - ./front-end/src:/app/src
     command: bash -c "npx ng serve --host 0.0.0.0 --disable-host-check"
     depends_on:
       - back-end

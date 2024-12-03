@@ -11,15 +11,21 @@ services:
       - ../credentials:/credentials
     environment:
       STAGE: PROD
-      NOTIFIER_SERVICE_ACCOUNT_FILE: '/credentials/san11-platform-notifier.json'
-      AWS_CREDENTIALS_FILE: '/credentials/aws-backend.json'
-      GCLOUD_CREDENTIALS_FILE: '/credentials/san11-grpc-backend.json'
+      NOTIFIER_SERVICE_ACCOUNT_FILE: "/credentials/san11-platform-notifier.json"
+      AWS_CREDENTIALS_FILE: "/credentials/aws-backend.json"
+      GCLOUD_CREDENTIALS_FILE: "/credentials/san11-grpc-backend.json"
       DB_HOST: db
-    command: ["/utils/wait-for-postgres.sh", "db", "python3.8", "san11_platform_server.py"]
+    command:
+      [
+        "/utils/wait-for-postgres.sh",
+        "db",
+        "python3.8",
+        "san11_platform_server.py",
+      ]
     depends_on:
       - db
       - envoy
-  
+
   gateway:
     build: ./back-end/gateway
     restart: always
@@ -43,7 +49,7 @@ services:
   db:
     build: ./database
     restart: always
-    volumes: 
+    volumes:
       - ./database/postgres-data:/var/lib/postgresql/data
       - ./database/backup:/backup
     environment:
@@ -54,7 +60,7 @@ services:
     build: ./front-end
     restart: always
     ports:
-      - "443:443" # If using SSL with Nginx
-      - "80:80"   # For standard HTTP
+      - "443:443"
+      - "80:80"
     depends_on:
       - back-end
