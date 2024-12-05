@@ -1,9 +1,6 @@
 .container {
     min-width: 600px;
-}
-
-.context-wrapper {
-    /* min-height: 200px; */
+    padding: 1rem;
 }
 
 .ck.ck-editor__editable_inline {

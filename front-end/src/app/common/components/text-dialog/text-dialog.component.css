@@ -1,6 +1,7 @@
 .main {
     min-width: 200px;
     max-width: 600px;
+    padding: 1rem;
 }
 
 :host ::ng-deep .ck-editor__editable_inline {
