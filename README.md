@@ -6,31 +6,32 @@ A web platform to share San11 related tools
 ## Prepare VM environment (ubuntu)
 
 ### Install Dependencies
-```
-$ sudo apt-get update && sudo apt-get install docker docker-compose -y
-$ sudo systemctl start docker
-$ sudo usermod -aG docker ${USER}
-$ su -s ${USER}
+```sh
+sudo apt-get update && sudo apt-get install docker -y
+sudo systemctl start docker
+sudo usermod -aG docker ${USER}
+# apply group membership changes immediately
+newgrp docker
 ```
 
 ## Start services
-```
-$ cd san11-platform
-$ docker compose -f docker-compose.yaml -f docker-compose.prod.yaml build
-$ docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up
+```sh
+cd san11-platform
+docker compose -f docker-compose.yaml -f docker-compose.prod.yaml build
+docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up
 ```
 
 # Development
 
 ## Start backend & frontend
-```
-$ cd san11-platform
+```sh
+cd san11-platform
 
-$ docker compose -f docker-compose.yaml -f docker-compose.dev.yaml build
-$ docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml build
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up
 ```
 
 ## Tests
-```
-$ make test
+```sh
+make test
 ```

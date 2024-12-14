@@ -17,4 +17,3 @@ services:
   envoy:
     volumes:
       - ../credentials:/credentials
-
