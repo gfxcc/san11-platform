@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  back-end:
+    volumes:
+      - ../credentials:/credentials
+    environment:
+      STAGE: PROD
+      NOTIFIER_SERVICE_ACCOUNT_FILE: "/credentials/san11-platform-notifier.json"
+      AWS_CREDENTIALS_FILE: "/credentials/aws-backend.json"
+      GCLOUD_CREDENTIALS_FILE: "/credentials/san11-grpc-backend.json"
+
+  envoy:
+    volumes:
+      - ../credentials:/credentials

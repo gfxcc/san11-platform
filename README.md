@@ -13,14 +13,11 @@ $ sudo usermod -aG docker ${USER}
 $ su -s ${USER}
 ```
 
-### Network
-Need to open ports: 80, 443, 8090
-
 ## Start services
 ```
 $ cd san11-platform
-$ docker-compose build
-$ docker-compose up
+$ docker compose -f docker-compose.yaml -f docker-compose.prod.yaml build
+$ docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up
 ```
 
 # Development
@@ -28,23 +25,12 @@ $ docker-compose up
 ## Start backend & frontend
 ```
 $ cd san11-platform
-$ docker-compose -f docker-compose.dev.yaml up back-end
 
-# In a separate terminal
-$ docker-compose -f docker-compose.dev.yaml up front-end
+$ docker compose -f docker-compose.yaml -f docker-compose.dev.yaml build
+$ docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up
 ```
 
 ## Tests
 ```
 $ make test
-```
-
-# Deployment
-```
-$ cd san11-platform
-$ docker-compose up back-end
-
-# In a separate terminal
-$ cd san11-platform
-$ docker-compose up front-end
 ```

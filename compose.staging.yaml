@@ -1,0 +1,20 @@
+# Staging env is used to test prod specific setup. E.g. `Caddy` is used to server 
+# traffic rather than `ng serve`.
+#
+# It should use prod setup wherever possible
+version: "3"
+
+services:
+  front-end:
+    build:
+      args:
+        CADDYFILE: Caddyfile.staging
+
+  back-end:
+    environment:
+      STAGE: STAGING
+
+  envoy:
+    volumes:
+      - ../credentials:/credentials
+
