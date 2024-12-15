@@ -1,7 +1,20 @@
-staging.san11pk.org {
+{
+    # Global options block
+    debug
+    log {
+        output stdout
+        level DEBUG
+    }
+}
+
+localhost {
     root * /srv
     file_server
 
     # Angular routing fallback
     try_files {path} /index.html
+}
+
+api.localhost:8090 {
+    reverse_proxy envoy:8091
 }

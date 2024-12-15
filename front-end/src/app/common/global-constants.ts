@@ -1,9 +1,8 @@
 import { environment } from "src/environments/environment";
 
 export class GlobalConstants {
-    public static serverIp: string = environment.production ? "https://san11pk.org" : "http://0.0.0.0";
     public static domain: string = 'san11pk';
-    public static san11ServerUrl: string = GlobalConstants.serverIp + ':8090';
+    public static san11ServerUrl: string = environment.serverAddress + ':8090';
     public static imgServerUrl: string = 'https://storage.googleapis.com/san11-resources';
 
     public static maxBinarySize: number = 10 * 1024 * 1024; // 10MB

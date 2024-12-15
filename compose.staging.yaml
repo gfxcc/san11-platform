@@ -9,6 +9,7 @@ services:
     build:
       args:
         CADDYFILE: Caddyfile.staging
+        ENV: staging
 
   back-end:
     environment:

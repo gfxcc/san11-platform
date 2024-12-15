@@ -21,11 +21,11 @@
                             "google-protobuf"
                         ],
                         "outputPath": {
-                          "base": "dist/san11-platform"
+                            "base": "dist/san11-platform"
                         },
                         "index": "src/index.html",
                         "polyfills": [
-                          "src/polyfills.ts"
+                            "src/polyfills.ts"
                         ],
                         "tsConfig": "tsconfig.app.json",
                         "aot": true,
@@ -69,6 +69,14 @@
                                     "type": "anyComponentStyle",
                                     "maximumWarning": "6kb",
                                     "maximumError": "10kb"
+                                }
+                            ]
+                        },
+                        "staging": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.staging.ts"
                                 }
                             ]
                         }

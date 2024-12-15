@@ -10,6 +10,9 @@ services:
     ports:
       - "443:443"
       - "80:80"
+      - "8090:8090"
+    depends_on:
+      - envoy
 
   back-end:
     build: ./back-end
@@ -48,7 +51,7 @@ services:
       - ./back-end/envoy:/etc/envoy
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
     ports:
-      - "8090:8090"
+      - "8091:8091"
 
   db:
     build: ./database
