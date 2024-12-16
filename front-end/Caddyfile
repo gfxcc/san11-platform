@@ -4,6 +4,13 @@
 
     # Angular routing fallback
     try_files {path} /index.html
+
+    header {
+        Access-Control-Allow-Origin "https://{$DOMAIN}"
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers "keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout, sid, client"
+        Access-Control-Allow-Credentials true
+    }
 }
 
 api.{$DOMAIN}:8090 {
