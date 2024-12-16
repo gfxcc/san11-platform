@@ -1,7 +1,11 @@
-san11pk.org {
+{$DOMAIN} {
     root * /srv
     file_server
 
     # Angular routing fallback
     try_files {path} /index.html
+}
+
+api.{$DOMAIN}:8090 {
+    reverse_proxy envoy:8091
 }

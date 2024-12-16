@@ -8,13 +8,10 @@ services:
   front-end:
     build:
       args:
-        CADDYFILE: Caddyfile.staging
         ENV: staging
+    environment:
+      - DOMAIN=localhost
 
   back-end:
     environment:
       STAGE: STAGING
-
-  envoy:
-    volumes:
-      - ../credentials:/credentials

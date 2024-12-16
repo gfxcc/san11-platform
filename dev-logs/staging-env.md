@@ -22,4 +22,14 @@ The staging environment allows verification of changes in a production-like sett
 
 The drawback of using `localhost` is the need to manually install the local CA certificate.
 
-In the long term, a public endpoint like `staging.my-domain.com` should be preferred.
+Once the staging env is stable, a public endpoint like `staging.my-domain.com` should be preferred.
+
+#### Locate the local root CA certificate
+
+```sh
+# Access the front-end container
+docker exec -it san11-platform-front-end-1 /bin/sh
+
+# Print the root CA certificate
+cat /data/caddy/pki/authorities/local/root.crt
+```

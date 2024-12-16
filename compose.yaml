@@ -6,6 +6,8 @@ services:
       context: ./front-end
       args:
         CADDYFILE: Caddyfile
+    environment:
+      - DOMAIN=san11pk.org
     restart: always
     ports:
       - "443:443"
