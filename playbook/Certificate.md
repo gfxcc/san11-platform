@@ -1,6 +1,7 @@
 # Certificate
+~~san11pk.org use [Let's Encrypt](https://letsencrypt.org/) to generate certificates.~~
 
-san11pk.org use [Let's Encrypt](https://letsencrypt.org/) to generate certificates.
+san11pk.org use Caddy to manage https certificates.
 
 [Detailed instruction](https://certbot.eff.org/instructions?ws=other&os=ubuntufocal)
 

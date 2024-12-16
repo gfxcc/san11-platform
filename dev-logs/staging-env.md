@@ -20,7 +20,9 @@ The staging environment allows verification of changes in a production-like sett
 
 `localhost` is used to quickly build this environment. Compared to a public endpoint like `staging.my-domain.com`, `localhost` can be tested locally. Otherwise, development would need to be done on a remote machine serving as `staging.my-domain.com`, or frequent `git` operations would be required.
 
-The drawback of using `localhost` is the need to manually install the local CA certificate.
+The drawback of using `localhost` is 
+* the need to manually install the local CA certificate.
+* issue like `Access-Control-Allow-Origin` can only be revealed when using public endpoints.
 
 Once the staging env is stable, a public endpoint like `staging.my-domain.com` should be preferred.
 
