@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  serverAddress: 'http://localhost',
+  domain: 'localhost',
+  schema: 'http',
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file

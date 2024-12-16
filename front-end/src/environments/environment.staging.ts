@@ -1,4 +1,7 @@
+
 export const environment = {
   production: true,
-  serverAddress: 'https://api.localhost',
+  // MUST match the domain configured in the compose.staging.yaml
+  domain: 'staging.san11pk.org',
+  schema: 'https',
 };

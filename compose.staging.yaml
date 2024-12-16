@@ -10,7 +10,7 @@ services:
       args:
         ENV: staging
     environment:
-      - DOMAIN=localhost
+      - DOMAIN=staging.san11pk.org
 
   back-end:
     environment:
