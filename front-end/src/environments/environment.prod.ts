@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverAddress: 'https://san11pk.org',
+  serverAddress: 'https://api.san11pk.org',
 };
