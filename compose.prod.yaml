@@ -1,10 +1,12 @@
 version: "3"
 
 services:
-  back-end:
+  front-end:
     build:
       args:
         ENV: production
+
+  back-end:
     volumes:
       - ../credentials:/credentials
     environment:
