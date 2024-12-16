@@ -6,45 +6,43 @@ A web platform to share San11 related tools
 ## Prepare VM environment (ubuntu)
 
 ### Install Dependencies
-```
-$ sudo apt-get update && sudo apt-get install docker docker-compose -y
-$ sudo systemctl start docker
-$ sudo usermod -aG docker ${USER}
-$ su -s ${USER}
-```
 
-### Network
-Need to open ports: 80, 443, 8090
+1. Follow https://docs.docker.com/engine/install/ubuntu/#installation-methods to install docker.
+
+2. Grant permission to current user
+```sh
+sudo systemctl start docker
+sudo usermod -aG docker ${USER}
+# apply group membership changes immediately
+newgrp docker
+```
 
 ## Start services
+```sh
+cd san11-platform
+docker compose -f compose.yaml -f compose.prod.yaml build
+docker compose -f compose.yaml -f compose.prod.yaml up
 ```
-$ cd san11-platform
-$ docker-compose build
-$ docker-compose up
+
+# Staging env
+
+```sh
+cd san11-platform
+docker compose -f compose.yaml -f compose.staging.yaml build
+docker compose -f compose.yaml -f compose.staging.yaml up
 ```
 
 # Development
 
 ## Start backend & frontend
-```
-$ cd san11-platform
-$ docker-compose -f docker-compose.dev.yaml up back-end
+```sh
+cd san11-platform
 
-# In a separate terminal
-$ docker-compose -f docker-compose.dev.yaml up front-end
+docker compose -f compose.yaml -f compose.dev.yaml build
+docker compose -f compose.yaml -f compose.dev.yaml up
 ```
 
 ## Tests
-```
-$ make test
-```
-
-# Deployment
-```
-$ cd san11-platform
-$ docker-compose up back-end
-
-# In a separate terminal
-$ cd san11-platform
-$ docker-compose up front-end
+```sh
+make test
 ```

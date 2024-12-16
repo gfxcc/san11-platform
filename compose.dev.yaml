@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  front-end:
+    build:
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=4096
+    volumes:
+      # Map the source code to the container so that changes will trigger a rebuild.
+      - ./front-end/src:/app/src
+    command: bash -c "npx ng serve --host 0.0.0.0 --disable-host-check"
+    ports:
+      - "4200:4200"
+
+  back-end:
+    environment:
+      STAGE: DEV
+
+  envoy:
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy_dev.yaml

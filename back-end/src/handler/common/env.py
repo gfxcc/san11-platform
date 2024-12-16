@@ -8,14 +8,15 @@ class Env(Enum):
     ENV_UNSPECIFIED = 0
 
     DEV = 1
-    ALPHA = 2
-    BETA = 3
-    PROD = 4
+    STAGING = 2
+    PROD = 3
 
 
 def get_env() -> Env:
     if os.environ.get('STAGE') == 'DEV':
         return Env.DEV
+    elif os.environ.get('STAGE') == 'STAGING':
+        return Env.STAGING
     else:
         return Env.PROD
 
