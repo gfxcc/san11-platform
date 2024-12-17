@@ -9,6 +9,28 @@
 
     # Angular routing fallback
     try_files {path} /index.html
+}
+
+# API backend for GRPC traffic
+api.{$DOMAIN}:8090 {
+    reverse_proxy envoy:8091
+
+    header {
+        Access-Control-Allow-Origin "https://{$DOMAIN}"
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers "keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout, sid, client"
+        Access-Control-Allow-Credentials true
+    }
+
+    @preflight {
+        method OPTIONS
+    }
+    respond @preflight 204
+}
+
+# API backend for HTTP, HTTPS
+api.{$DOMAIN} {
+    reverse_proxy gateway:8081
 
     header {
         Access-Control-Allow-Origin "https://{$DOMAIN}"
@@ -18,6 +40,12 @@
     }
 }
 
-api.{$DOMAIN}:8090 {
-    reverse_proxy envoy:8091
+#
+# Legacy section for backward compatibility
+#
+
+# DEPRECATED: Gateway for http traffic
+# Traffic is served directly instead of being redirected to ensure compatibility with clients that cannot handle redirection.
+http://{$DOMAIN}:8081 {
+    reverse_proxy gateway:8081
 }

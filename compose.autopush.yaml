@@ -1,0 +1,15 @@
+# autopush env is very similar to staging env. However, it use localhost rather than a staging domain.
+version: "3"
+
+services:
+  front-end:
+    build:
+      args:
+        ENV: autopush
+    environment:
+      # MUST match the domain in front-end/src/environments/environment.staging.ts
+      - DOMAIN=localhost
+
+  back-end:
+    environment:
+      STAGE: AUTOPUSH

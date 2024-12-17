@@ -25,3 +25,47 @@ gen-gateway:
     # 		--go_out ./back-end/gateway/gen/go/ --go_opt paths=source_relative \
     # 		--go-grpc_out ./back-end/gateway/gen/go/ --go-grpc_opt paths=source_relative \
     # 		./protos/*.proto
+
+# prod deployment
+.PHONY: build-prod
+build-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml build
+
+.PHONY: up-prod
+up-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml up
+
+.PHONY: deploy-prod
+deploy-prod: build-prod up-prod
+
+# Staging deployment
+.PHONY: build-staging
+build-staging:
+	docker compose -f compose.yaml -f compose.staging.yaml build
+
+.PHONY: up-staging
+up-staging:
+	docker compose -f compose.yaml -f compose.staging.yaml up
+
+.PHONY: deploy-staging
+deploy-staging: build-staging up-staging
+
+# Autopush deployment
+.PHONY: build-autopush
+build-autopush:
+	docker compose -f compose.yaml -f compose.autopush.yaml build
+
+.PHONY: up-autopush
+up-autopush:
+	docker compose -f compose.yaml -f compose.autopush.yaml up
+
+.PHONY: deploy-autopush
+deploy-autopush: build-autopush up-autopush
+
+
+# For development
+.PHONY: fetch-local-ca
+fetch-local-ca:
+	mkdir -p tmp
+	docker cp san11-platform-front-end-1:/data/caddy/pki/authorities/local/root.crt tmp/local-ca-cert.pem
+	@echo "Certificate saved to tmp/local-ca-cert.pem"
