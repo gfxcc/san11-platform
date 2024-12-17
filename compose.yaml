@@ -15,6 +15,7 @@ services:
       - "8090:8090"
     depends_on:
       - envoy
+      - gateway
 
   back-end:
     build: ./back-end
