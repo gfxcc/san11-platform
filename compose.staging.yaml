@@ -10,7 +10,8 @@ services:
       args:
         ENV: staging
     environment:
-      - DOMAIN=staging.san11pk.org
+      # MUST match the domain in front-end/src/environments/environment.staging.ts
+      - DOMAIN=localhost
 
   back-end:
     environment:

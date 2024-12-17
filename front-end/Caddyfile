@@ -11,21 +11,10 @@
     try_files {path} /index.html
 }
 
-api.{$DOMAIN} {
-    # Handle multiple ports with different upstreams
-    @envoyRequests {
-        header Host api.{$DOMAIN}
-        port 8090
-    }
-    reverse_proxy @envoyRequests envoy:8091
+# API backend (on port 8090)
+api.{$DOMAIN}:8090 {
+    reverse_proxy envoy:8091
 
-    @gatewayRequests {
-        header Host api.{$DOMAIN}
-        port 80, 443
-    }
-    reverse_proxy @gatewayRequests gateway:8081
-
-    # Global CORS Headers for API
     header {
         Access-Control-Allow-Origin "https://{$DOMAIN}"
         Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
@@ -33,9 +22,20 @@ api.{$DOMAIN} {
         Access-Control-Allow-Credentials true
     }
 
-    # Preflight request handler for OPTIONS
     @preflight {
         method OPTIONS
     }
     respond @preflight 204
 }
+
+# # API backend for HTTPS (port 443)
+# api.{$DOMAIN}, http://api.{$DOMAIN} {
+#     reverse_proxy gateway:8081
+
+#     header {
+#         Access-Control-Allow-Origin "https://{$DOMAIN}"
+#         Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+#         Access-Control-Allow-Headers "keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout, sid, client"
+#         Access-Control-Allow-Credentials true
+#     }
+# }
