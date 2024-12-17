@@ -39,3 +39,14 @@ api.{$DOMAIN}, http://api.{$DOMAIN} {
         Access-Control-Allow-Credentials true
     }
 }
+
+#
+# Legacy section for backward compatibility
+#
+
+# DEPRECATED: Gateway for http traffic
+# Traffic are redirected.
+http://{$DOMAIN}:8081 {
+    # redir https://api.{$DOMAIN}{uri}
+    reverse_proxy gateway:8081
+}

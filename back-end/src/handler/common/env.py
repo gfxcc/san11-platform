@@ -8,17 +8,21 @@ class Env(Enum):
     ENV_UNSPECIFIED = 0
 
     DEV = 1
-    STAGING = 2
-    PROD = 3
+    AUTOPUSH = 2
+    STAGING = 3
+    PROD = 4
 
 
 def get_env() -> Env:
-    if os.environ.get('STAGE') == 'DEV':
-        return Env.DEV
+    if os.environ.get('STAGE') == 'PROD':
+        return Env.PROD
     elif os.environ.get('STAGE') == 'STAGING':
         return Env.STAGING
+    elif os.environ.get('STAGE') == 'AUTOPUSH':
+        return Env.AUTOPUSH
     else:
-        return Env.PROD
+        return Env.DEV
+
 
 def is_prod() -> bool:
     return get_env() == Env.PROD

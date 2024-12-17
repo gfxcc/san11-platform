@@ -12,7 +12,10 @@ services:
     ports:
       - "443:443"
       - "80:80"
+      # For GRPC traffic to api.${DOMAIN}
       - "8090:8090"
+      # For gateway legacy traffic
+      - "8081:8081"
     depends_on:
       - envoy
       - gateway
@@ -44,10 +47,6 @@ services:
     command: go run main.go
     depends_on:
       - back-end
-    ports:
-      # Traffic is served at `api.${domain}` via front-end now. 
-      # `${domain}:8081` is preserved for backward compatibility.
-      - "8081:8081"
 
   envoy:
     image: envoyproxy/envoy-alpine:v1.21.6

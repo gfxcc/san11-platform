@@ -79,6 +79,14 @@
                                     "with": "src/environments/environment.staging.ts"
                                 }
                             ]
+                        },
+                        "autopush": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.autopush.ts"
+                                }
+                            ]
                         }
                     }
                 },

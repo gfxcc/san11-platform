@@ -26,15 +26,30 @@ gen-gateway:
     # 		--go-grpc_out ./back-end/gateway/gen/go/ --go-grpc_opt paths=source_relative \
     # 		./protos/*.proto
 
-# For deployment
+# Staging deployment
 .PHONY: staging-build
 staging-build:
 	docker compose -f compose.yaml -f compose.staging.yaml build
 
 .PHONY: staging-up
-staging-up: staging-build
+staging-up:
 	docker compose -f compose.yaml -f compose.staging.yaml up
 
+.PHONY: staging-deploy
+staging-deploy: staging-build staging-up
+
+
+# Autopush deployment
+.PHONY: autopush-build
+autopush-build:
+	docker compose -f compose.yaml -f compose.autopush.yaml build
+
+.PHONY: autopush-up
+autopush-up:
+	docker compose -f compose.yaml -f compose.autopush.yaml up
+
+.PHONY: autopush-deploy
+autopush-deploy: autopush-build autopush-up
 
 # For development
 .PHONY: fetch-local-ca

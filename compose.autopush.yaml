@@ -1,0 +1,18 @@
+# Staging env is used to test prod specific setup. E.g. `Caddy` is used to server 
+# traffic rather than `ng serve`.
+#
+# It should use prod setup wherever possible
+version: "3"
+
+services:
+  front-end:
+    build:
+      args:
+        ENV: autopush
+    environment:
+      # MUST match the domain in front-end/src/environments/environment.staging.ts
+      - DOMAIN=localhost
+
+  back-end:
+    environment:
+      STAGE: AUTOPUSH
