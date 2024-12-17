@@ -29,7 +29,7 @@ api.{$DOMAIN}:8090 {
 }
 
 # API backend for HTTP, HTTPS
-api.{$DOMAIN}, http://api.{$DOMAIN} {
+api.{$DOMAIN} {
     reverse_proxy gateway:8081
 
     header {
@@ -45,8 +45,7 @@ api.{$DOMAIN}, http://api.{$DOMAIN} {
 #
 
 # DEPRECATED: Gateway for http traffic
-# Traffic are redirected.
+# Traffic is served directly instead of being redirected to ensure compatibility with clients that cannot handle redirection.
 http://{$DOMAIN}:8081 {
-    # redir https://api.{$DOMAIN}{uri}
     reverse_proxy gateway:8081
 }
