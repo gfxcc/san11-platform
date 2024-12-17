@@ -1,6 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# Recompute package dependencies
+# Recompute package dependencies file as it can different whe running on different OS
 package-lock.json
 
 # compiled output

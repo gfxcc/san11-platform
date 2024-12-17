@@ -45,6 +45,8 @@ services:
     depends_on:
       - back-end
     ports:
+      # Traffic is served at `api.${domain}` via front-end now. 
+      # `${domain}:8081` is preserved for backward compatibility.
       - "8081:8081"
 
   envoy:
