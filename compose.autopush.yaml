@@ -1,7 +1,4 @@
-# Staging env is used to test prod specific setup. E.g. `Caddy` is used to server 
-# traffic rather than `ng serve`.
-#
-# It should use prod setup wherever possible
+# autopush env is very similar to staging env. However, it use localhost rather than a staging domain.
 version: "3"
 
 services:
