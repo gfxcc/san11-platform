@@ -3,7 +3,7 @@
 ## List all packages for a category
 
 ```
-» curl -X GET "http://san11pk.org:8081/v1/categories/4/packages" | jq                                                                          324ms
+» curl -X GET "https://api.san11pk.org/v1/categories/4/packages" | jq                                                                          324ms
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   411  100   411    0     0   1376      0 --:--:-- --:--:-- --:--:--  1397
@@ -32,7 +32,7 @@
 ## List all binaries for a package
 
 ```
-» curl -X GET "http://san11pk.org:8081/v1/categories/2/packages/120/binaries" | jq                                                              24ms
+» curl -X GET "https://api.san11pk.org/v1/categories/2/packages/120/binaries" | jq                                                              24ms
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   787  100   787    0     0   2306      0 --:--:-- --:--:-- --:--:--  2342
@@ -72,7 +72,7 @@
 Please note this is a **POST** request.
 
 ```
-» curl -X POST "http://san11pk.org:8081/v1/categories/2/packages/120/binaries/219:download" | jq                                               359ms
+» curl -X POST "https://api.san11pk.org/v1/categories/2/packages/120/binaries/219:download" | jq                                               359ms
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  1267  100  1267    0     0   3918      0 --:--:-- --:--:-- --:--:--  3959

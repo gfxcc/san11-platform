@@ -20,16 +20,7 @@ newgrp docker
 ## Start services
 ```sh
 cd san11-platform
-docker compose -f compose.yaml -f compose.prod.yaml build
-docker compose -f compose.yaml -f compose.prod.yaml up
-```
-
-# Staging env
-
-```sh
-cd san11-platform
-docker compose -f compose.yaml -f compose.staging.yaml build
-docker compose -f compose.yaml -f compose.staging.yaml up
+make deploy-prod
 ```
 
 # Development
@@ -45,4 +36,16 @@ docker compose -f compose.yaml -f compose.dev.yaml up
 ## Tests
 ```sh
 make test
+```
+
+## [Non-prod Environment](https://github.com/gfxcc/san11-platform/blob/main/dev-logs/nonprod-envs.md)
+
+### Staging
+```sh
+make deploy-staging
+```
+
+### Autopush
+```sh
+make deploy-autopush
 ```
