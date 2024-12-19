@@ -33,10 +33,14 @@ build-prod:
 
 .PHONY: up-prod
 up-prod:
-	docker compose -f compose.yaml -f compose.prod.yaml up
+	docker compose -f compose.yaml -f compose.prod.yaml up -d
+
+.PHONY: down-prod
+down-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml down
 
 .PHONY: deploy-prod
-deploy-prod: build-prod up-prod
+deploy-prod: down-prod build-prod up-prod
 
 # Staging deployment
 .PHONY: build-staging
@@ -45,10 +49,14 @@ build-staging:
 
 .PHONY: up-staging
 up-staging:
-	docker compose -f compose.yaml -f compose.staging.yaml up
+	docker compose -f compose.yaml -f compose.staging.yaml up -d
+
+.PHONY: down-staging
+down-staging:
+	docker compose -f compose.yaml -f compose.staging.yaml down
 
 .PHONY: deploy-staging
-deploy-staging: build-staging up-staging
+deploy-staging: down-staging build-staging up-staging
 
 # Autopush deployment
 .PHONY: build-autopush
@@ -57,10 +65,26 @@ build-autopush:
 
 .PHONY: up-autopush
 up-autopush:
-	docker compose -f compose.yaml -f compose.autopush.yaml up
+	docker compose -f compose.yaml -f compose.autopush.yaml up -d
+
+.PHONY: down-autopush
+down-autopush:
+	docker compose -f compose.yaml -f compose.autopush.yaml down
 
 .PHONY: deploy-autopush
-deploy-autopush: build-autopush up-autopush
+deploy-autopush: down-autopush build-autopush up-autopush
+
+# Dev deployment
+.PHONY: build-dev
+build-dev:
+	docker compose -f compose.yaml -f compose.dev.yaml build
+
+.PHONY: up-dev
+up-dev:
+	docker compose -f compose.yaml -f compose.dev.yaml up
+
+.PHONY: deploy-dev
+deploy-dev: build-dev up-dev
 
 
 # For development

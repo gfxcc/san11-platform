@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   domain: 'localhost',
   schema: 'http',
+  serverPort: 8091,
 };
 
 

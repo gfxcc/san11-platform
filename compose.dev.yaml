@@ -17,5 +17,5 @@ services:
     environment:
       STAGE: DEV
 
-  envoy:
-    command: /usr/local/bin/envoy -c /etc/envoy/envoy_dev.yaml
+  # envoy:
+  #   command: /usr/local/bin/envoy -c /etc/envoy/envoy_dev.yaml
