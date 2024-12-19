@@ -29,8 +29,7 @@ make deploy-prod
 ```sh
 cd san11-platform
 
-docker compose -f compose.yaml -f compose.dev.yaml build
-docker compose -f compose.yaml -f compose.dev.yaml up
+make deploy-dev
 ```
 
 ## Tests

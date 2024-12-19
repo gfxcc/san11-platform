@@ -49,7 +49,7 @@ build-staging:
 
 .PHONY: up-staging
 up-staging:
-	docker compose -f compose.yaml -f compose.staging.yaml up -d
+	docker compose -f compose.yaml -f compose.staging.yaml up
 
 .PHONY: down-staging
 down-staging:
@@ -65,7 +65,7 @@ build-autopush:
 
 .PHONY: up-autopush
 up-autopush:
-	docker compose -f compose.yaml -f compose.autopush.yaml up -d
+	docker compose -f compose.yaml -f compose.autopush.yaml up
 
 .PHONY: down-autopush
 down-autopush:
