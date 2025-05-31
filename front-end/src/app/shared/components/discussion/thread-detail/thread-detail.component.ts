@@ -28,7 +28,7 @@ export class ThreadDetailComponent implements OnInit {
   descEditor_onFocus = false;
 
   selectable = true;
-  removable = true;
+  editable = true;
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
@@ -77,7 +77,7 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   configTags() {
-    this.removable = this.isAdmin() || this.isAuthor();
+    this.editable = this.isAuthor();
   }
 
   onDescEditorChange(event) {
