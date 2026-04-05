@@ -1,17 +1,55 @@
 UUID := $(shell uuidgen)
 TMP_DIR := /tmp/san11pk-platform-test
+.DEFAULT_GOAL := help
 test: export TMP_DB_DATA=/tmp/san11pk-platform-test/$(UUID)
- 
+
+.PHONY: help
+help:
+	@echo "Available targets:"
+	@echo ""
+	@echo "General:"
+	@echo "  help              Show this help message (default)"
+	@echo "  test              Run test suite in Docker (uses docker-compose.test.yaml)"
+	@echo "  cleanup           Clean test temp data and stop test containers"
+	@echo "  fetch-local-ca    Copy Caddy local root CA cert from front-end container"
+	@echo ""
+	@echo "Codegen:"
+	@echo "  gen-proto         Generate protobuf files for back-end and front-end"
+	@echo "  gen-gateway       Generate gateway stubs via buf"
+	@echo ""
+	@echo "Prod:"
+	@echo "  build-prod        Build production images"
+	@echo "  up-prod           Start production stack"
+	@echo "  down-prod         Stop production stack"
+	@echo "  deploy-prod       Rebuild and restart production stack"
+	@echo ""
+	@echo "Staging:"
+	@echo "  build-staging     Build staging images"
+	@echo "  up-staging        Start staging stack"
+	@echo "  down-staging      Stop staging stack"
+	@echo "  deploy-staging    Rebuild and restart staging stack"
+	@echo ""
+	@echo "Autopush:"
+	@echo "  build-autopush    Build autopush images"
+	@echo "  up-autopush       Start autopush stack"
+	@echo "  down-autopush     Stop autopush stack"
+	@echo "  deploy-autopush   Rebuild and restart autopush stack"
+	@echo ""
+	@echo "Dev:"
+	@echo "  build-dev         Build development images"
+	@echo "  up-dev            Start development stack"
+	@echo "  deploy-dev        Build and start development stack"
+
 .PHONY: test
 test: cleanup
 	mkdir -p $(TMP_DB_DATA)
-	docker-compose -f docker-compose.test.yaml run --rm sut
+	docker compose -f docker-compose.test.yaml run --rm sut
 
 .PHONY: cleanup
 cleanup:
 	rm -rf ${TMP_DIR}
 	# Removes any residues from previous test.
-	docker-compose -f docker-compose.test.yaml down
+	docker compose -f docker-compose.test.yaml down
 
 .PHONY: gen-proto
 gen-proto:
