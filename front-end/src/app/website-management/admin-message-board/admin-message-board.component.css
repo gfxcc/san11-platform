@@ -1,18 +1,324 @@
+.admin-page {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px clamp(14px, 3vw, 36px) 40px;
+}
+
+.admin-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(420px, 520px);
+    gap: 24px;
+    align-items: end;
+    margin-bottom: 24px;
+}
+
+.admin-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 2.2rem;
+    line-height: 1.15;
+    font-weight: 800;
+}
+
+.admin-header p {
+    margin: 10px 0 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.summary-item {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.summary-item mat-icon {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--primary-soft);
+    color: var(--primary-color);
+    font-size: 20px;
+}
+
+.summary-item span {
+    color: var(--text-muted);
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+.summary-item strong {
+    color: var(--text-color);
+    font-size: 1.35rem;
+    line-height: 1;
+    font-weight: 800;
+}
+
+.admin-tabs {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.timeline-panel {
+    padding: 22px 24px 28px;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-header h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.panel-header p {
+    margin: 5px 0 0;
+    color: var(--text-muted);
+    font-size: .92rem;
+}
+
+.panel-header>span {
+    display: inline-flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--surface-muted);
+    color: var(--text-muted);
+    font-size: .85rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
 .custom-marker {
     display: flex;
-    width: 2rem;
-    height: 2rem;
+    width: 34px;
+    height: 34px;
     align-items: center;
     justify-content: center;
     color: #ffffff;
+    border: 3px solid var(--surface);
     border-radius: 50%;
+    box-shadow: var(--shadow-sm);
     z-index: 1;
 }
 
-.alternate-align-card {
-    display: block !important;
+.custom-marker mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
 }
 
-::ng-deep .alternate-align-card>.mat-mdc-card-header {
-    display: initial !important;
+.event-card {
+    width: min(100%, 780px);
+    border-color: var(--border-color);
+    background: var(--surface);
+    box-shadow: none;
+}
+
+.event-card.disabled-event {
+    cursor: default;
+}
+
+.event-card.disabled-event:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.event-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-width: 0;
+    padding: 12px 14px 0;
+}
+
+.event-topline>span {
+    min-width: 0;
+    max-width: 46%;
+    overflow: hidden;
+    color: var(--text-subtle);
+    font-size: .82rem;
+    font-weight: 700;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.event-user {
+    display: inline-flex;
+    min-width: 0;
+}
+
+::ng-deep .event-user .author-card {
+    min-width: 0;
+    height: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+::ng-deep .event-user .author-card:hover {
+    box-shadow: none;
+}
+
+::ng-deep .event-user .author-image {
+    width: 36px;
+    height: 36px;
+}
+
+::ng-deep .event-user .user-text {
+    margin: 0;
+    padding: 0 0 0 10px;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: .95rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.event-card h3 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.35;
+    font-weight: 800;
+    white-space: normal;
+}
+
+.event-card mat-card-content {
+    display: grid;
+    gap: 12px;
+    padding: 12px 14px 14px;
+}
+
+.event-card p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+.event-image {
+    width: min(100%, 280px);
+    max-height: 180px;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--surface-muted);
+}
+
+.empty-state {
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--text-subtle);
+    font-weight: 700;
+}
+
+.empty-state mat-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--text-subtle);
+    font-size: 48px;
+}
+
+::ng-deep .admin-tabs .mat-mdc-tab-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+::ng-deep .admin-tabs .mat-mdc-tab-body-content {
+    overflow: visible;
+}
+
+::ng-deep .admin-timeline.p-timeline {
+    max-width: 940px;
+}
+
+::ng-deep .admin-timeline .p-timeline-event-opposite {
+    display: none;
+}
+
+::ng-deep .admin-timeline .p-timeline-event-content {
+    padding: 0 0 24px 18px;
+}
+
+::ng-deep .admin-timeline .p-timeline-event-marker {
+    border: 0;
+}
+
+::ng-deep .admin-timeline .p-timeline-event-connector {
+    background: var(--border-color);
+}
+
+@media (max-width: 64rem) {
+    .admin-header {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 40rem) {
+    .admin-page {
+        padding: 18px 12px 28px;
+    }
+
+    .admin-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .timeline-panel {
+        padding: 18px 14px 22px;
+    }
+
+    .panel-header {
+        align-items: flex-start;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    ::ng-deep .admin-timeline .p-timeline-event-content {
+        padding-left: 12px;
+    }
 }

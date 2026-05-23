@@ -55,7 +55,6 @@ export class AdminMessageBoardComponent implements OnInit {
             return activityToEvent(activity);
           });
           this.socialActivaties = resp.activities.filter((x) => [Action.LIKE, Action.SUBSCRIBE, Action.UPVOTE, Action.UNSUBSCRIBE, Action.DISLIKE].includes(x.action)).map((activity: Activity) => {
-            console.debug(activity);
             return activityToEvent(activity);
           });
           this.downloads = resp.activities.filter((x) => x.action === Action.DOWNLOAD).map((activity: Activity) => {
@@ -90,6 +89,41 @@ export class AdminMessageBoardComponent implements OnInit {
   }
 
   onDetailClick(event) {
+    if (!event?.link) {
+      return;
+    }
     this.router.navigateByUrl(event.link);
+  }
+
+  eventTitle(event, fallback: string): string {
+    return event?.displayName || fallback;
+  }
+
+  eventTime(event): string {
+    const value = event?.createTime;
+    if (!value) {
+      return '';
+    }
+
+    if (value instanceof Date) {
+      return this.formatDate(value);
+    }
+
+    if (typeof value === 'string') {
+      const parsed = new Date(value);
+      return Number.isNaN(parsed.getTime()) ? value : this.formatDate(parsed);
+    }
+
+    return String(value);
+  }
+
+  private formatDate(value: Date): string {
+    return value.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   }
 }
