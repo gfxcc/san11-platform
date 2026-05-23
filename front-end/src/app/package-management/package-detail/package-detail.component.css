@@ -43,14 +43,21 @@
     padding: 5px 15px 5px 10px;
 }
 
+.resource-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
+    gap: 22px;
+    align-items: stretch;
+}
+
 .image-gallery {
-    max-width: 1200px;
-    height: clamp(360px, 58vw, 680px);
+    min-width: 0;
+    height: clamp(420px, 48vw, 650px);
     background:
         linear-gradient(135deg, rgba(47, 91, 234, .12), rgba(18, 128, 92, .08)),
         var(--surface);
     border: solid 1px var(--border-color);
-    border-radius: 18px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-md);
 }
@@ -61,14 +68,18 @@
     background-color: transparent;
 }
 
-.heading {
+.detail-admin-bar {
     display: inline-flex;
     align-items: center;
     width: 100%;
-    /* height: 50px; */
-    /* display: block; */
-    margin-bottom: 5px;
     display: flex;
+    min-height: 38px;
+    margin-bottom: 10px;
+}
+
+.title-update-button {
+    height: 36px;
+    border-radius: 999px;
 }
 
 .timestamps {
@@ -120,12 +131,6 @@
 
 .right-bottom {}
 
-.package-controller {
-    display: flex;
-    width: 100%;
-    padding: 8px 0;
-}
-
 .version-info {
     display: block;
     width: 100%;
@@ -141,28 +146,36 @@
     flex: 1 1 auto;
 }
 
-/*  */
-
-
-/* new layout */
-
-
-/*  */
-
-.info-container {
-    padding: 24px 0 18px 0;
+.resource-summary {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 24px;
 }
 
-.info-content {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+.section-kicker {
+    display: inline-flex;
+    margin-bottom: 8px;
+    color: var(--primary-strong);
+    font-size: .78rem;
+    font-weight: 850;
+}
+
+.resource-summary h1 {
+    margin: 8px 0 0;
+}
+
+.resource-summary .title {
+    display: block;
+    font-size: clamp(1.85rem, 3vw, 2.65rem);
+    font-weight: 850;
 }
 
 .primary-info-render {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    margin-top: 18px;
 }
 
 .primary-text {
@@ -173,7 +186,7 @@
     padding: 0 12px;
     border: 1px solid var(--border-color);
     border-radius: 999px;
-    background: var(--surface);
+    background: rgba(255, 255, 255, .82);
     color: var(--text-muted);
     font-family: "Roboto", "Arial", sans-serif;
     font-size: .92rem;
@@ -203,6 +216,73 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.summary-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.download-cta,
+.collect-action {
+    min-height: 44px;
+    border-radius: 999px;
+}
+
+.summary-icon-button {
+    background: var(--clickable-background-color);
+}
+
+.package-management {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-color);
+}
+
+.management-trigger {
+    width: 100%;
+    min-height: 40px;
+    border-radius: 999px;
+    color: var(--text-muted);
+    justify-content: center;
+}
+
+.management-trigger mat-icon {
+    width: 19px;
+    height: 19px;
+    margin-right: 6px;
+    font-size: 19px;
+}
+
+.danger-menu-item mat-icon,
+.danger-menu-item span {
+    color: var(--accent-color);
+}
+
+.summary-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 22px;
+}
+
+.summary-tags span {
+    max-width: 100%;
+    padding: 5px 10px;
+    border: 1px solid rgba(37, 99, 235, .14);
+    border-radius: 999px;
+    background: rgba(219, 234, 254, .72);
+    color: var(--primary-strong);
+    font-size: .82rem;
+    font-weight: 750;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .icon-button {
@@ -226,8 +306,9 @@
 
 .toggle-button-render {
     display: flex;
+    min-height: 38px;
     font-size: .95rem;
-    font-weight: 500;
+    font-weight: 750;
     letter-spacing: 0;
     align-items: center;
     cursor: pointer;
@@ -240,14 +321,47 @@
 .button-svg {
     width: 34px;
     height: 34px;
-    padding: 7px;
+    padding: 0;
+}
+
+.button-svg mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+.compact-action {
+    padding: 0;
 }
 
 
 /* meta content */
 
 .meta-content {
-    padding: 20px 0;
+    margin-top: 22px;
+    padding: 22px;
+}
+
+.detail-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-section-header h2,
+.panel-title {
+    margin: 0;
+    color: var(--primary-strong);
+    font-size: 1.05rem;
+    line-height: 1.35;
+    font-weight: 800;
+}
+
+.description-layout {
+    padding-top: 4px;
 }
 
 .user-info-with-sub-button {
@@ -256,11 +370,12 @@
 }
 
 .package-description-section {
-    margin-top: 14px;
-    background-color: var(--clickable-background-color);
+    margin-top: 18px;
+    background-color: var(--surface);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
+    box-shadow: var(--shadow-sm);
 }
 
 .package-description-section-folded {
@@ -300,11 +415,23 @@
     margin-top: 8px;
 }
 
+.description-actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
 .tags-section {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 16px;
-    padding: 16px 0;
+    margin-top: 18px;
+    padding: 16px;
+}
+
+.tags-section .panel-title {
+    margin-bottom: 10px;
 }
 
 .tags-section mat-form-field {
@@ -314,15 +441,20 @@
 .version-info {
     margin-top: 18px;
     border: 1px solid var(--border-color);
-    border-radius: 18px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--surface);
     box-shadow: var(--shadow-sm);
+    scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+.discussion-panel {
+    display: block;
+    margin-top: 18px;
 }
 
 .discussion-section {
     display: block;
-    margin-top: 18px;
 }
 
 .page-content {
@@ -331,26 +463,12 @@
 
 
 @media (max-width: 40rem) {
-    .top-section {
-        flex-direction: column;
-    }
-
-    .info-content {
-        display: block;
-    }
-
-    .col-right {
-        max-width: unset;
-    }
-
-    .right-bottom {
-        position: unset;
-    }
-
-    /*NEW UI*/
-    .primary-info-render {
-        display: grid;
+    .resource-hero {
         grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .primary-info-render {
         gap: 8px;
     }
 
@@ -369,6 +487,11 @@
     .image-gallery {
         height: 320px;
         border-radius: 14px;
+    }
+
+    .resource-summary,
+    .meta-content {
+        padding: 16px;
     }
 
     .tags-section {

@@ -30,6 +30,7 @@ export class PackageDetailComponent implements OnInit {
   @ViewChild('imageInput') imageInputElement: ElementRef
   @ViewChild('gallery') galleryElementCatched: ElementRef
   @ViewChild('description') descriptionElement: ElementRef;
+  @ViewChild('versionsSection') versionsSection: ElementRef<HTMLElement>;
 
   images: ImageItem[] = [];
   packageId: string;
@@ -475,6 +476,13 @@ export class PackageDetailComponent implements OnInit {
   // childs
   onChildDownload(msg) {
     this.package.downloadCount = increment(this.package.downloadCount);
+  }
+
+  scrollToVersions() {
+    this.versionsSection?.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
   }
 
   // NEW UI

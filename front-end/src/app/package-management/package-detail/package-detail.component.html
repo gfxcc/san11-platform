@@ -1,152 +1,111 @@
 <div class="page-wrapper">
     <div class="page-content">
 
-        <div class="heading show-border-dev">
+        <div class="detail-admin-bar show-border-dev">
             <span class="example-spacer"></span>
 
             <button mat-stroked-button color="primary" *ngIf="this.packageNameUpdated" (click)="onUpdateTitle()"
-                style="height: 36px;">更新</button>
+                class="title-update-button">更新标题</button>
 
         </div>
 
-        <div class="image-gallery">
-            <gallery class="gallery" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free"
-                [counter]="false" slidingDirection="vertical" [nav]="false" (itemClick)="onGalleryItemClick($event)"
-                [autoPlay]="false" [playerInterval]="5000" #gallery></gallery>
+        <section class="resource-hero">
+            <div class="image-gallery">
+                <gallery class="gallery" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free"
+                    [counter]="false" slidingDirection="vertical" [nav]="false" (itemClick)="onGalleryItemClick($event)"
+                    [autoPlay]="false" [playerInterval]="5000" #gallery></gallery>
 
-            <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
-        </div>
+                <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
+            </div>
 
-        <section class="info-container">
-            <h1 style="margin: 0;">
-                <div #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;">
-                    {{this.package.packageName}} </div>
-            </h1>
-            <div class="info-content">
+            <aside class="resource-summary surface-panel">
+                <h2 class="panel-title">资源详情</h2>
+                <h1>
+                    <span #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;">
+                        {{this.package.packageName}}
+                    </span>
+                </h1>
 
                 <div class="primary-info-render">
-                    <div class="primary-text">
+                    <div class="meta-pill">
                         <mat-icon>download</mat-icon>
                         <span>{{this.package.downloadCount}} 下载</span>
                     </div>
-                    <div class="primary-text">
+                    <div class="meta-pill">
                         <mat-icon>calendar_today</mat-icon>
                         <span matTooltip="创建日期">{{this.package.createTime}}</span>
                     </div>
-                    <div class="primary-text">
+                    <div class="meta-pill">
                         <mat-icon>update</mat-icon>
                         <span matTooltip="最近更新">{{this.package.updateTime}}</span>
                     </div>
                 </div>
 
-                <div style="flex-grow: 1;"></div>
+                <div class="summary-actions">
+                    <button mat-flat-button color="primary" class="download-cta" type="button"
+                        (click)="scrollToVersions()">
+                        <mat-icon>download</mat-icon>
+                        查看版本
+                    </button>
 
-                <div class="top-level-buttons">
-
-                    <app-feedback-card [target]="this.package.name" [likeCount]="this.package.likeCount"
-                        [dislikeCount]="this.package.dislikeCount"></app-feedback-card>
-                    <div class="icon-button">
-                        <a matTooltip="{{collectButtonText}}" class="toggle-button-render" (click)="onToggleCollect()">
-                            <button mat-icon-button class="button-svg">
-                                <svg *ngIf="!isCollected" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
-                                    focusable="false" style="pointer-events:
-                                    none; display: block; width: 100%; height:
-                                    100%;" class="style-scope yt-icon">
-                                    <g class="style-scope yt-icon">
-                                        <path d="M22,13h-4v4h-2v-4h-4v-2h4V7h2v4h4V13z
-                                            M14,7H2v1h12V7z M2,12h8v-1H2V12z
-                                            M2,16h8v-1H2V16z" class="style-scope
-                                            yt-icon"></path>
-                                    </g>
-                                </svg>
-
-                                <svg *ngIf="isCollected" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
-                                    focusable="false" style="pointer-events:
-                                    none; display: block; width: 100%; height:
-                                    100%;" class="style-scope yt-icon">
-                                    <g class="style-scope yt-icon">
-                                        <path d="M16.5,6.5l-9,9m9,0l-9-9" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="style-scope yt-icon">
-                                        </path>
-                                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor"
-                                            stroke-width="2" class="style-scope yt-icon"></circle>
-                                    </g>
-                                </svg>
-                            </button>
-                            <span class="toggle-button-text">{{collectButtonText}}</span>
-                        </a>
-                    </div>
-
-
-                    <div class="icon-button">
-                        <a matTooltip="分享 (未开放)" class="toggle-button-render
-                            disabled-text">
-                            <button mat-icon-button class="button-svg" disabled="true">
-                                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" style="pointer-events:
-                                    none; display: block; width: 100%; height:
-                                    100%;" class="style-scope yt-icon">
-                                    <g mirror-in-rtl="" class="style-scope
-                                        yt-icon">
-                                        <path d="M15,5.63L20.66,12L15,18.37V15v-1h-1c-3.96,0-7.14,1-9.75,3.09c1.84-4.07,5.11-6.4,9.89-7.1L15,9.86V9V5.63
-                                            M14,3v6
-                                            C6.22,10.13,3.11,15.33,2,21c2.78-3.97,6.44-6,12-6v6l8-9L14,3L14,3z"
-                                            class="style-scope yt-icon"></path>
-                                    </g>
-                                </svg>
-                            </button>
-                            <span class="toggle-button-text">分享</span>
-                        </a>
-                    </div>
-
-                    <div class="icon-button" style="padding: 0 0;">
-                        <a matTooltip="更多" class="toggle-button-render">
-                            <button mat-icon-button class="button-svg" [matMenuTriggerFor]="menu">
-                                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" style="pointer-events:
-                                    none; display: block; width: 100%; height:
-                                    100%;" class="style-scope yt-icon">
-                                    <g class="style-scope yt-icon">
-                                        <path d="M7.5,12c0,0.83-0.67,1.5-1.5,1.5S4.5,12.83,4.5,12s0.67-1.5,1.5-1.5S7.5,11.17,7.5,12z
-                                            M12,10.5c-0.83,0-1.5,0.67-1.5,1.5
-                                            s0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5S12.83,10.5,12,10.5z
-                                            M18,10.5c-0.83,0-1.5,0.67-1.5,1.5s0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5
-                                            S18.83,10.5,18,10.5z" class="style-scope yt-icon"></path>
-                                    </g>
-                                </svg>
-                            </button>
-                            <mat-menu #menu="matMenu">
-                                <button mat-menu-item style="display: flex;
-                                    align-items: center;" (click)="onReport()" [disabled]="true">
-                                    <div style="width: 24px; height: 24px;">
-                                        <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid
-                                            meet" focusable="false" style="pointer-events:
-                                            none; display: block; width:
-                                            100%;
-                                            height: 100%;" class="style-scope
-                                            yt-icon">
-                                            <g class="style-scope
-                                                yt-icon">
-                                                <path d="M13.18,4l0.24,1.2L13.58,6h0.82H19v7h-5.18l-0.24-1.2L13.42,11H12.6H6V4H13.18
-                                                    M14,3H5v18h1v-9h6.6l0.4,2h7V5h-5.6L14,3
-                                                    L14,3z" class="style-scope
-                                                    yt-icon"></path>
-                                            </g>
-                                        </svg>
-                                    </div>
-                                    举报(未开放)
-                                </button>
-                            </mat-menu>
-
-                        </a>
-                    </div>
+                    <button mat-stroked-button color="primary" class="collect-action" (click)="onToggleCollect()">
+                        <mat-icon>{{isCollected ? 'playlist_remove' : 'playlist_add'}}</mat-icon>
+                        {{collectButtonText}}
+                    </button>
                 </div>
 
-            </div>
+                <div class="top-level-buttons">
+                    <app-feedback-card [target]="this.package.name" [likeCount]="this.package.likeCount"
+                        [dislikeCount]="this.package.dislikeCount"></app-feedback-card>
+
+                    <button mat-icon-button matTooltip="分享 (未开放)" disabled="true" class="summary-icon-button">
+                        <mat-icon>share</mat-icon>
+                    </button>
+
+                    <button mat-icon-button matTooltip="更多" class="summary-icon-button" [matMenuTriggerFor]="menu">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="onReport()" [disabled]="true">
+                            <mat-icon>flag</mat-icon>
+                            <span>举报(未开放)</span>
+                        </button>
+                    </mat-menu>
+                </div>
+
+                <div *ngIf="isAdmin() || isAuthor()" class="package-management">
+                    <button mat-stroked-button class="management-trigger" [matMenuTriggerFor]="packageManagementMenu">
+                        <mat-icon>admin_panel_settings</mat-icon>
+                        管理资源
+                    </button>
+                    <mat-menu #packageManagementMenu="matMenu" xPosition="before">
+                        <button mat-menu-item *ngIf="isAdmin() && this.package.state===2" (click)="onApprove()">
+                            <mat-icon>verified</mat-icon>
+                            <span>通过审核</span>
+                        </button>
+                        <button mat-menu-item *ngIf="isAdmin() && (this.package.state===1 || this.package.state===3)"
+                            (click)="onFlipHide()">
+                            <mat-icon>{{this.package.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
+                            <span>{{this.package.state===3 ? '取消隐藏' : '隐藏资源'}}</span>
+                        </button>
+                        <button mat-menu-item class="danger-menu-item" *ngIf="authorZone" (click)="onDelete()">
+                            <mat-icon>delete</mat-icon>
+                            <span>删除资源</span>
+                        </button>
+                    </mat-menu>
+                </div>
+
+                <div class="summary-tags" *ngIf="this.package.tags?.length">
+                    <span *ngFor="let tag of this.package.tags">{{tag.tagName}}</span>
+                </div>
+            </aside>
         </section>
 
-        <mat-divider></mat-divider>
-
-        <section class="meta-content">
-            <div class="container">
+        <section class="meta-content surface-panel">
+            <div class="detail-section-header">
+                <h2>资源介绍</h2>
+            </div>
+            <div class="description-layout">
                 <app-user-info-with-sub-button class="user-info-with-sub-button" [user]="this.author">
                 </app-user-info-with-sub-button>
 
@@ -168,8 +127,7 @@
                     </div>
                 </div>
 
-                <div style="width: 100%; display: flex;
-                    justify-content:flex-end;">
+                <div class="description-actions">
                     <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()"
                         class="update-button">更新</button>
                 </div>
@@ -178,21 +136,19 @@
 
         </section>
 
-        <mat-divider></mat-divider>
+        <section class="tags-section surface-panel" *ngIf="this.package.tags?.length || tagCanEdit">
+            <div>
+                <h2 class="panel-title">标签</h2>
+                <mat-chip-listbox #chipList>
+                    <mat-chip-option *ngFor="let tag of this.package.tags" selectable="false"
+                        [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
+                        {{tag.tagName}}
+                        <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
+                    </mat-chip-option>
+                </mat-chip-listbox>
+            </div>
 
-        <section class="tags-section">
-            <!-- <div class="heading-1">标签</div> -->
-            <mat-chip-listbox #chipList>
-                <mat-chip-option *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit"
-                    (removed)="removeTag(tag)">
-                    {{tag.tagName}}
-                    <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
-                </mat-chip-option>
-            </mat-chip-listbox>
-
-            <span class="example-spacer"></span>
-
-            <mat-form-field *ngIf="tagCanEdit">
+            <mat-form-field *ngIf="tagCanEdit" appearance="outline">
                 <mat-label>新标签...</mat-label>
                 <mat-select required (selectionChange)="newTagSelected($event.value)">
                     <mat-option *ngFor="let tag of this.allTags" [value]="tag">
@@ -202,31 +158,14 @@
             </mat-form-field>
         </section>
 
-        <div *ngIf="(isAdmin() || isAuthor())" class="package-controller
-                top-border">
-            <div class="author-zone" *ngIf="authorZone">
-                <!-- dangerous zone -->
-                <button class="button" mat-stroked-button color="warn" (click)="onDelete()">删除</button>
-            </div>
-
-            <div class="admin-zone" *ngIf="isAdmin()">
-                <button mat-button mat-stroked-button color="accent" *ngIf="this.package.state===2"
-                    (click)="onApprove()">通过审核</button>
-                <button mat-button mat-stroked-button color="accent" *ngIf="this.package.state===1 ||
-                        this.package.state===3" (click)="onFlipHide()">{{this.package.state===3
-                    ? '取消隐藏' : '隐藏'}}</button>
-            </div>
-        </div>
-
-        <section class="version-info show-border-dev">
+        <section class="version-info show-border-dev" id="versions" #versionsSection>
             <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)">
             </app-version-panel>
         </section>
 
-        <!-- <app-comment-board [parent]="this.getPackageUrl()" [package]="this.package" class="comment-section"></app-comment-board> -->
-        <div>
+        <section class="discussion-panel">
             <app-discussion [parent]="this.package.name" class="discussion-section"></app-discussion>
-        </div>
+        </section>
 
     </div>
 </div>

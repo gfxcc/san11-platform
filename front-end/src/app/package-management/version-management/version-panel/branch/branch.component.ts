@@ -8,7 +8,6 @@ import { NotificationService } from "src/app/common/notification.service";
 import { DownloadService } from "src/app/service/download.service";
 import { San11PlatformServiceService } from "src/app/service/san11-platform-service.service";
 import { version2str } from "src/app/utils/binary_util";
-import { signedIn } from "src/app/utils/user_util";
 import { Binary, DeleteBinaryRequest, DownloadBinaryRequest, FieldMask, Package, UpdateBinaryRequest } from "src/proto/san11-platform.pb";
 
 
@@ -27,6 +26,7 @@ export class BranchComponent {
     @Input() branch: Branch;
     @Input() editorPermission: boolean;
     @Output() updateDownloadProgress = new EventEmitter();
+    @Output() downloadEvent = new EventEmitter<Binary>();
     @Output() reload = new EventEmitter();
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -97,20 +97,12 @@ export class BranchComponent {
         );
     }
 
-    onDownloadRequireSignIn(binary: Binary) {
-        if (!signedIn()) {
-            this.notificationService.warn('请登录');
-            return;
-        }
-
-        this.onDownload(binary);
-    }
-
     onDownload(binary: Binary) {
         this.san11pkService.downloadBinary(new DownloadBinaryRequest({
             name: binary.name
         })).subscribe({
             next: (binary: Binary) => {
+                this.downloadEvent.emit(binary);
                 if (binary.file) {
                     saveAs(binary.file.url, binary.file.filename);
                 } else if (binary.downloadMethod) {

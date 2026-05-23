@@ -1,18 +1,17 @@
 .main-container {
     min-height: 200px;
     width: 100%;
-    display: flex;
-    justify-content: center;
     padding: 1rem 0 2rem;
 }
 
 .table-wrapper {
     min-width: 200px;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 100%;
     flex-grow: 1;
     overflow: hidden;
     border: 1px solid var(--border-color);
-    border-radius: 18px;
+    border-radius: var(--radius-lg);
     background: var(--surface);
     box-shadow: var(--shadow-sm);
 }
@@ -26,11 +25,24 @@
     scroll-margin-top: 80px;
 }
 
+.caption-title {
+    min-width: 0;
+}
+
 .caption h3 {
     margin: 0;
-    color: var(--text-color);
+    color: var(--primary-strong);
     font-size: 1.05rem;
+    line-height: 1.35;
     font-weight: 800;
+}
+
+.create-thread-button {
+    border-radius: 999px;
+}
+
+.thread-list {
+    background: var(--surface);
 }
 
 .thread-card {
@@ -53,4 +65,19 @@
     font-size: 42px;
     width: 42px;
     height: 42px;
+}
+
+@media (max-width: 40rem) {
+    .main-container {
+        padding: .75rem 0 1.5rem;
+    }
+
+    .caption {
+        min-height: 64px;
+        padding: 0 14px;
+    }
+
+    .create-thread-button span {
+        display: none;
+    }
 }

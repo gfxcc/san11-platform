@@ -1,22 +1,23 @@
 <div *ngIf="downloadProgressBar" class="progress-bar-container">
     <mat-progress-bar color="primary" [mode]="downloadProgress === 0 ? 'buffer'
         : 'determinate'" [value]="downloadProgress"></mat-progress-bar>
-    <div style="display: flex;">
+    <div class="download-speed-row">
         <span class="example-spacer"></span>
-        <div style="margin-right: 100px;">{{this.speed.toFixed(1)}}
+        <div class="download-speed">{{this.speed.toFixed(1)}}
             {{this.unit}}</div>
     </div>
 </div>
 
 <div class="head">
     <div class="section-title">
-        <mat-icon>deployed_code</mat-icon>
-        <span>版本</span>
+        <div class="section-copy">
+            <h2>版本</h2>
+        </div>
     </div>
     <span class="example-spacer"></span>
     <button *ngIf="hasEditPermission" class="update-button" mat-flat-button color="primary" (click)="onUpdate()">
-        <mat-icon>upgrade</mat-icon>
-        更新
+        <mat-icon>add</mat-icon>
+        发布新版本
     </button>
 </div>
 
@@ -27,6 +28,7 @@
             <branch [branch]="branch" [package]="package"
                 [editorPermission]="hasEditPermission"
                 (reload)="this.loadBinaries()"
+                (downloadEvent)="downloadEvent.emit($event)"
                 (updateDownloadProgress)="this.updateDownloadProgress($event)">
             </branch>
         </mat-tab>

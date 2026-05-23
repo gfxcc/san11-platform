@@ -178,7 +178,10 @@ class Gcs(FileServer):
 class S3(FileServer):
 
     def __init__(self) -> None:
-        self.creds = get_aws_credentials()
+        self.creds = get_aws_credentials() if 'AWS_CREDENTIALS_FILE' in os.environ else None
+        if self.creds is None:
+            logger.warning(
+                'AWS_CREDENTIALS_FILE is not set; using public S3 URLs')
         super().__init__()
 
     @property
@@ -197,6 +200,9 @@ class S3(FileServer):
         return meta['ObjectSize']
 
     def get_url(self, bucket_class: BucketClass, uri: str, filename: Optional[str] = None) -> str:
+        if self.creds is None:
+            return f'https://{self.get_bucket_name(bucket_class)}.s3.ap-east-1.amazonaws.com/{urllib.parse.quote(uri)}'
+
         params = {
             'Bucket': self.get_bucket_name(bucket_class),
             'Key': uri,

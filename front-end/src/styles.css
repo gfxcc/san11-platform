@@ -28,33 +28,37 @@
 
 /* You can add global styles to this file, and also import other style files */
 :root {
-    --primary-color: #2f5bea;
-    --primary-strong: #1d3fbf;
-    --primary-soft: #e9eefc;
-    --accent-color: #d83b2a;
-    --success-color: #12805c;
+    --primary-color: #2563eb;
+    --primary-strong: #1e40af;
+    --primary-soft: #dbeafe;
+    --accent-color: #dc2626;
+    --success-color: #059669;
+    --warning-color: #b45309;
     --surface: #ffffff;
-    --surface-muted: #f6f8fb;
-    --surface-raised: rgba(255, 255, 255, .92);
-    --text-color: #172033;
-    --text-muted: #667085;
-    --text-subtle: #8a94a6;
+    --surface-muted: #f5f7fa;
+    --surface-subtle: #eef2f7;
+    --surface-raised: rgba(255, 255, 255, .94);
+    --text-color: #111827;
+    --text-muted: #5b6472;
+    --text-subtle: #8892a0;
     --lightest-gray: #f3f5f8;
     --light-gray: #98a2b3;
     --medium-gray: #667085;
-    --dark-gray: #172033;
+    --dark-gray: #111827;
     --header-height: 64px;
     --animation-duration: 200ms;
     --animation-timing-curve: ease-in-out;
-    --border-color: rgba(23, 32, 51, .1);
-    --border-strong: rgba(23, 32, 51, .16);
+    --border-color: rgba(17, 24, 39, .1);
+    --border-strong: rgba(17, 24, 39, .18);
     --shadow-sm: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .1);
-    --shadow-md: 0 12px 32px rgba(16, 24, 40, .12);
-    --shadow-lg: 0 22px 60px rgba(16, 24, 40, .16);
+    --shadow-md: 0 14px 34px rgba(16, 24, 40, .12);
+    --shadow-lg: 0 26px 70px rgba(16, 24, 40, .16);
     --radius-sm: 8px;
     --radius-md: 12px;
+    --radius-lg: 16px;
+    --content-max-width: 1240px;
     --clickable-background-color: #eef2f7;
-    --clickable-background-color-hover: #e3e9f2;
+    --clickable-background-color-hover: #e2e8f0;
 }
 
 html,
@@ -64,7 +68,9 @@ body {
     font-family: Inter, Roboto, "Helvetica Neue", "Noto Sans SC", Arial, sans-serif;
     font-size: 15px;
     min-height: 100vh;
-    background: var(--surface-muted);
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, .1), transparent 32rem),
+        linear-gradient(180deg, #fbfcfe 0, var(--surface-muted) 34rem);
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -298,11 +304,11 @@ body {
 .page-wrapper {
     display: flex;
     justify-content: center;
-    padding: 28px clamp(16px, 3vw, 36px);
+    padding: 28px clamp(16px, 3vw, 36px) 44px;
 }
 
 .page-content {
-    max-width: min(1180px, 100%);
+    max-width: min(var(--content-max-width), 100%);
     /* min-width: 700px; */
     flex-grow: 1;
     /* margin-left: 24px; */
@@ -335,6 +341,36 @@ body {
 
 .mat-mdc-card {
     border-radius: var(--radius-md) !important;
+}
+
+.surface-panel {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: .86rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.meta-pill mat-icon {
+    width: 17px;
+    height: 17px;
+    font-size: 17px;
+    color: var(--text-subtle);
 }
 
 .mat-mdc-raised-button.mat-primary,

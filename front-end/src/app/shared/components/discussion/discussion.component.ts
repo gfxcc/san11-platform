@@ -36,14 +36,14 @@ export class DiscussionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadThreads(0, this.pageSize);
+    this.loadThreads(0, this.pageSize, false);
   }
 
   changePage(event: PageEvent) {
-    this.loadThreads(event.pageIndex * event.pageSize, event.pageSize);
+    this.loadThreads(event.pageIndex * event.pageSize, event.pageSize, true);
   }
 
-  loadThreads(watermark: number, pageSize: number) {
+  loadThreads(watermark: number, pageSize: number, shouldScrollToTop = true) {
     this.progressService.loading();
     const request = new ListThreadsRequest({
       parent: this.parent,
@@ -55,7 +55,9 @@ export class DiscussionComponent implements OnInit {
       .subscribe({
         next: (resp: ListThreadsResponse) => {
           this.threads = resp.threads;
-          this.scrollToTop();
+          if (shouldScrollToTop) {
+            this.scrollToTop();
+          }
           this.updateTotalCount(resp.threads.length < pageSize, watermark + resp.threads.length);
         },
         error: error => {

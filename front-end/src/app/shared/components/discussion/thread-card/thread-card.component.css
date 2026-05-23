@@ -67,6 +67,7 @@
     align-items: center;
     gap: 10px;
     color: var(--text-muted);
+    flex-wrap: wrap;
 }
 
 .structItem-parts>li {
@@ -209,9 +210,32 @@ mat-icon {
     align-items: center;
     gap: 4px;
     margin-right: .25rem;
-    width: 60px;
+    min-width: 48px;
     font-size: 0.9rem;
     color: var(--text-muted);
+}
+
+.thread-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.thread-stats mat-icon {
+    width: 19px;
+    height: 19px;
+    font-size: 19px;
+    color: var(--text-subtle);
+}
+
+.pinned-stat {
+    min-width: 22px;
+    color: var(--accent-color);
+}
+
+.pinned-stat mat-icon {
+    color: var(--accent-color);
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version. */
@@ -227,5 +251,10 @@ mat-chip {
 
     .structItem-minor {
         display: block;
+    }
+
+    .thread-stats {
+        margin-left: 0;
+        margin-top: 8px;
     }
 }

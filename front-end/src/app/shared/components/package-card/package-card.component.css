@@ -1,9 +1,15 @@
+.resource-card {
+    display: block;
+    height: 100%;
+}
+
 .package-card {
     height: 100%;
     overflow: hidden;
     border: 1px solid var(--border-color);
     background: var(--surface);
     box-shadow: var(--shadow-sm);
+    transition: border-color var(--animation-duration) var(--animation-timing-curve), box-shadow var(--animation-duration) var(--animation-timing-curve);
 }
 
 .author-image {
@@ -15,13 +21,21 @@
     background: var(--surface-muted);
 }
 
+.author-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+}
+
 .met-card-title {
     max-height: 20px;
 }
 
+.screenshot-frame,
 .screenshot {
     position: relative;
-    height: 190px;
+    height: 198px;
     background:
         linear-gradient(135deg, rgba(47, 91, 234, .12), rgba(18, 128, 92, .08)),
         var(--surface-muted);
@@ -29,7 +43,7 @@
 }
 
 .fit-image {
-    height: 190px;
+    height: 198px;
     width: 100%;
     object-fit: cover;
     display: block;
@@ -39,6 +53,10 @@
 
 .clickable-card:hover .fit-image {
     transform: scale(1.03);
+}
+
+.clickable-card:hover .package-card {
+    border-color: rgba(37, 99, 235, .26);
 }
 
 .status-badge {
@@ -56,7 +74,7 @@
 
 /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card-content {
-    padding: 16px !important;
+    padding: 16px 16px 18px !important;
 }
 
 .example-spacer {
@@ -122,7 +140,7 @@ mat-card-content p {
 
 .card-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
     min-width: 0;
 }
@@ -134,9 +152,9 @@ mat-card-content p {
 .title-block h2 {
     margin: 0;
     color: var(--text-color);
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     line-height: 1.3;
-    font-weight: 800;
+    font-weight: 850;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -154,31 +172,17 @@ mat-card-content p {
 .card-meta {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
     margin-top: 14px;
-    color: var(--text-muted);
-    font-size: .85rem;
+    flex-wrap: wrap;
 }
 
-.card-meta span {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+.card-meta .update-time {
     min-width: 0;
-    white-space: nowrap;
-}
-
-.card-meta span:last-child {
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.card-meta mat-icon {
-    width: 17px;
-    height: 17px;
-    font-size: 17px;
-    color: var(--text-subtle);
 }
 
 .tag-row {
@@ -192,7 +196,8 @@ mat-card-content p {
     max-width: 100%;
     padding: 4px 9px;
     border-radius: 999px;
-    background: var(--primary-soft);
+    border: 1px solid rgba(37, 99, 235, .14);
+    background: rgba(219, 234, 254, .72);
     color: var(--primary-strong);
     font-size: .78rem;
     font-weight: 700;

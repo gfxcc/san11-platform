@@ -1,6 +1,6 @@
-<div class="clickable-card" (click)="onClick()">
+<article class="resource-card clickable-card" (click)="onClick()">
     <mat-card appearance="outlined" class="package-card">
-        <div class="screenshot">
+        <div class="screenshot-frame">
             <div [hidden]="!this.displayScreenshotLoading" class="animated-background screenshot"></div>
 
             <img [hidden]="this.displayScreenshotLoading" [src]="screenshot" (load)="this.displayScreenshotLoading=false;"
@@ -13,7 +13,7 @@
 
         <mat-card-content>
             <div class="card-header">
-                <div class="author-image">
+                <div class="author-avatar">
                     <div [hidden]="!this.displayAuthorImgLoading" class="animated-background author-image"></div>
                     <img [hidden]="this.displayAuthorImgLoading" [src]="authorImage"
                         (load)="this.displayAuthorImgLoading=false;" class="author-image">
@@ -25,15 +25,15 @@
             </div>
 
             <div class="card-meta">
-                <span>
+                <span class="meta-pill">
                     <mat-icon>download</mat-icon>
                     {{package.downloadCount || 0}}
                 </span>
-                <span>
+                <span class="meta-pill">
                     <mat-icon>thumb_up</mat-icon>
                     {{package.likeCount || 0}}
                 </span>
-                <span *ngIf="package.updateTime">
+                <span class="meta-pill update-time" *ngIf="package.updateTime">
                     <mat-icon>schedule</mat-icon>
                     {{package.updateTime}}
                 </span>
@@ -44,4 +44,4 @@
             </div>
         </mat-card-content>
     </mat-card>
-</div>
+</article>

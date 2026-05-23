@@ -3,9 +3,8 @@
 .feedback-card-container {
     transform-origin: top left;
     display: flex;
+    gap: 8px;
 }
-
-
 
 .clickable-background {
     background-color: var(--clickable-background-color);
@@ -13,13 +12,16 @@
 
 .icon-button {
     flex-shrink: 0;
-    margin-left: 0.5rem;
-    padding: 0 16px;
-    border-radius: 18px;
+    margin-left: 0;
+    padding: 0 10px;
+    border-radius: 999px;
+    color: var(--text-color);
+    transition: background-color var(--animation-duration) var(--animation-timing-curve), transform var(--animation-duration) var(--animation-timing-curve);
 }
 
 .icon-button:hover {
     background-color: var(--clickable-background-color-hover);
+    transform: translateY(-1px);
 }
 
 .disabled-text {
@@ -28,8 +30,9 @@
 
 .toggle-button-render {
     display: flex;
-    font-size: 1.2rem;
-    font-weight: 500;
+    min-height: 36px;
+    font-size: .95rem;
+    font-weight: 750;
     letter-spacing: 0;
     align-items: center;
     cursor: pointer;
@@ -42,5 +45,11 @@
 .button-svg {
     width: 36px;
     height: 36px;
-    padding: 6px;
+    padding: 0;
+}
+
+.button-svg mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
 }

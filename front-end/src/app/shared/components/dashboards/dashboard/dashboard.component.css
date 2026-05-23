@@ -1,32 +1,76 @@
 
-.container {
+.catalog-page {
     width: 100%;
-    max-width: 1240px;
+    max-width: var(--content-max-width);
     margin: 0 auto;
     padding: 28px clamp(14px, 3vw, 36px) 40px;
+}
+
+.catalog-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 8px 0 22px;
+}
+
+.catalog-title {
+    min-width: 0;
+}
+
+.catalog-kicker {
+    display: inline-flex;
+    margin-bottom: 8px;
+    color: var(--primary-strong);
+    font-size: .82rem;
+    font-weight: 850;
+}
+
+.catalog-title h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: clamp(1.75rem, 3vw, 2.6rem);
+    line-height: 1.08;
+    font-weight: 850;
+}
+
+.catalog-title p {
+    margin: 10px 0 0;
+    color: var(--text-muted);
+    font-size: 1rem;
 }
 
 .dashboard-toolbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 16px;
-    min-height: 54px;
-    margin-bottom: 18px;
-    padding-bottom: 14px;
+    min-height: 52px;
+    margin-bottom: 20px;
+    padding: 12px 14px;
     border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, .66);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius-lg);
 }
 
-.dashboard-summary {
+.catalog-summary {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--surface);
     color: var(--text-muted);
     font-size: .95rem;
     font-weight: 750;
+    box-shadow: var(--shadow-sm);
 }
 
-.dashboard-summary mat-icon {
+.catalog-summary mat-icon {
     width: 20px;
     height: 20px;
     color: var(--text-subtle);
@@ -44,10 +88,10 @@
     width: 160px;
 }
 
-.grid {
+.resource-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(286px, 1fr));
+    gap: 22px;
     align-items: stretch;
 }
 
@@ -67,6 +111,7 @@
     color: var(--text-subtle);
     font-size: 1.05rem;
     font-weight: 650;
+    margin-top: 18px;
 }
 
 .dashboard-placeholder mat-icon {
@@ -77,8 +122,18 @@
 }
 
 @media (max-width: 48rem) {
-    .container {
+    .catalog-page {
         padding: 20px 12px 28px;
+    }
+
+    .catalog-header {
+        display: block;
+        padding-top: 4px;
+    }
+
+    .catalog-summary {
+        margin-top: 16px;
+        width: fit-content;
     }
 
     .dashboard-toolbar {
@@ -95,7 +150,7 @@
         min-width: 0;
     }
 
-    .grid {
+    .resource-grid {
         grid-template-columns: 1fr;
         gap: 14px;
     }

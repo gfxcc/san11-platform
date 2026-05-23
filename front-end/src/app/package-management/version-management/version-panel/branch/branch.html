@@ -1,14 +1,14 @@
-<table mat-table [dataSource]="dataSource" class="" style="width: 100%;">
+<table mat-table [dataSource]="dataSource" class="version-table">
     <!--- Note that these columns can be defined in any order.
 The actual rendered columns are set as a property on the row definition" -->
     <!-- Position Column -->
     <ng-container matColumnDef="version">
         <th mat-header-cell *matHeaderCellDef> 版本 </th>
-        <td mat-cell *matCellDef="let binary">
-            <div style="display: flex;">
-                <button mat-button (click)="onDescription(binary)" matTooltip="更新日志">
-                    {{this.getVersionStr(binary)}}
+        <td mat-cell *matCellDef="let binary" class="version-column-cell">
+            <div class="version-cell">
+                <button mat-button class="version-log-button" (click)="onDescription(binary)" matTooltip="更新日志">
                     <mat-icon>description</mat-icon>
+                    <span>{{this.getVersionStr(binary)}}</span>
                 </button>
             </div>
         </td>
@@ -16,22 +16,19 @@ The actual rendered columns are set as a property on the row definition" -->
 
     <!-- Column -->
     <ng-container matColumnDef="createTime">
-        <th mat-header-cell *matHeaderCellDef style="width:
-            20%;"> 更新于 </th>
+        <th mat-header-cell *matHeaderCellDef class="date-column"> 更新于 </th>
         <td mat-cell *matCellDef="let binary"> {{binary.createTime}} </td>
     </ng-container>
 
     <!-- Column -->
     <ng-container matColumnDef="size">
-        <th mat-header-cell *matHeaderCellDef style="width:
-            20%;"> 大小 </th>
+        <th mat-header-cell *matHeaderCellDef class="size-column"> 大小 </th>
         <td mat-cell *matCellDef="let binary"> {{binary.size}}
         </td>
     </ng-container>
 
     <!-- Column -->
-    <ng-container matColumnDef="downloadCount" style="width:
-        20%;">
+    <ng-container matColumnDef="downloadCount">
         <th mat-header-cell *matHeaderCellDef> 下载量 </th>
         <td mat-cell *matCellDef="let binary">
             {{binary.downloadCount}} </td>
@@ -41,30 +38,41 @@ The actual rendered columns are set as a property on the row definition" -->
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef class="align-right"> 选项 </th>
 
-        <td mat-cell *matCellDef="let binary" class="align-right">
-            <div class="actions-sections">
-                <span class="example-spacer"></span>
+        <td mat-cell *matCellDef="let binary" class="actions-cell">
+            <div class="action-cluster">
+                <button *ngIf="binary.file" mat-flat-button color="primary" (click)="onDownload(binary)"
+                    class="download-action">
+                    <mat-icon>download</mat-icon>
+                    <span>下载</span>
+                </button>
 
-                <div [hidden]="!editorPermission">
-                    <button mat-button mat-stroked-button color="warn" (click)="onDelete(binary)">删除</button>
-                    <button mat-button mat-stroked-button *ngIf="binary.size != &quot;&quot;" color="warn"
-                        (click)="onOffload(binary)" style="margin-left: 5px;">卸载</button>
-                </div>
+                <button *ngIf="binary.downloadMethod" mat-flat-button color="primary" (click)="onDownload(binary)"
+                    class="download-action">
+                    <mat-icon>info</mat-icon>
+                    <span>下载方式</span>
+                </button>
 
-                <div [hidden]="!binary.file">
-                    <button mat-button mat-stroked-button color="primary" (click)="onDownloadRequireSignIn(binary)"
-                        style="margin-left: 5px;">下载</button>
-                </div>
+                <button *ngIf="binary.cloudDiskFile" mat-flat-button color="primary" (click)="onDownload(binary)"
+                    class="download-action">
+                    <mat-icon>cloud_download</mat-icon>
+                    <span>网盘下载</span>
+                </button>
 
-                <div [hidden]="!binary.downloadMethod">
-                    <button mat-button mat-stroked-button color="primary" (click)="onDownload(binary)"
-                        style="margin-left: 5px;">下载方式</button>
-                </div>
-
-                <div [hidden]="!binary.cloudDiskFile">
-                    <button mat-button mat-stroked-button color="primary" (click)="onDownload(binary)"
-                        style="margin-left: 5px;">网盘下载</button>
-                </div>
+                <button *ngIf="editorPermission" mat-stroked-button class="row-menu-button"
+                    [matMenuTriggerFor]="rowMenu" matTooltip="管理版本">
+                    <mat-icon>settings</mat-icon>
+                    <span>管理</span>
+                </button>
+                <mat-menu #rowMenu="matMenu" xPosition="before">
+                    <button mat-menu-item *ngIf="binary.size != &quot;&quot;" (click)="onOffload(binary)">
+                        <mat-icon>inventory_2</mat-icon>
+                        <span>卸载文件</span>
+                    </button>
+                    <button mat-menu-item class="danger-menu-item" (click)="onDelete(binary)">
+                        <mat-icon>delete</mat-icon>
+                        <span>删除版本</span>
+                    </button>
+                </mat-menu>
             </div>
         </td>
     </ng-container>

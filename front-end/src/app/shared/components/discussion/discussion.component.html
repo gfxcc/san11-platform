@@ -1,16 +1,22 @@
 <div class="main-container">
     <div class="table-wrapper">
         <div class="caption" id=caption>
-            <h3>
-                {{this.displayName}}
-            </h3>
+            <div class="caption-title">
+                <h3>
+                    {{this.displayName}}
+                </h3>
+            </div>
             <span class="example-spacer"></span>
-            <button mat-mini-fab color="primary" matTooltip="新帖子" (click)="createThread()">
+            <button mat-flat-button color="primary" class="create-thread-button" matTooltip="新帖子"
+                (click)="createThread()">
                 <mat-icon>add</mat-icon>
+                <span>新帖子</span>
             </button>
         </div>
 
-        <app-thread-card *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
+        <div class="thread-list">
+            <app-thread-card *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
+        </div>
 
         <div *ngIf="threads?.length === 0" class="dashboard-placeholder">
             <mat-icon>forum</mat-icon>
