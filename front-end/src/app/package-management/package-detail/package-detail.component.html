@@ -17,7 +17,7 @@
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
         </div>
 
-        <div class="info-container">
+        <section class="info-container">
             <h1 style="margin: 0;">
                 <div #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;">
                     {{this.package.packageName}} </div>
@@ -26,14 +26,15 @@
 
                 <div class="primary-info-render">
                     <div class="primary-text">
+                        <mat-icon>download</mat-icon>
                         <span>{{this.package.downloadCount}} 下载</span>
                     </div>
                     <div class="primary-text">
-                        <span class="dot-render"></span>
+                        <mat-icon>calendar_today</mat-icon>
                         <span matTooltip="创建日期">{{this.package.createTime}}</span>
                     </div>
                     <div class="primary-text">
-                        <span class="dot-render"></span>
+                        <mat-icon>update</mat-icon>
                         <span matTooltip="最近更新">{{this.package.updateTime}}</span>
                     </div>
                 </div>
@@ -140,11 +141,11 @@
                 </div>
 
             </div>
-        </div>
+        </section>
 
         <mat-divider></mat-divider>
 
-        <div class="meta-content">
+        <section class="meta-content">
             <div class="container">
                 <app-user-info-with-sub-button class="user-info-with-sub-button" [user]="this.author">
                 </app-user-info-with-sub-button>
@@ -175,11 +176,11 @@
 
             </div>
 
-        </div>
+        </section>
 
         <mat-divider></mat-divider>
 
-        <div style="padding: 10px 0; display: flex; align-items: center;">
+        <section class="tags-section">
             <!-- <div class="heading-1">标签</div> -->
             <mat-chip-listbox #chipList>
                 <mat-chip-option *ngFor="let tag of this.package.tags" selectable="false" [removable]="this.tagCanEdit"
@@ -199,7 +200,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-        </div>
+        </section>
 
         <div *ngIf="(isAdmin() || isAuthor())" class="package-controller
                 top-border">
@@ -217,10 +218,10 @@
             </div>
         </div>
 
-        <div class="version-info show-border-dev">
+        <section class="version-info show-border-dev">
             <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)">
             </app-version-panel>
-        </div>
+        </section>
 
         <!-- <app-comment-board [parent]="this.getPackageUrl()" [package]="this.package" class="comment-section"></app-comment-board> -->
         <div>

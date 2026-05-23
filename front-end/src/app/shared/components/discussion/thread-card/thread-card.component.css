@@ -1,25 +1,34 @@
 .container {
-    /* width: 800px; */
-    /* margin-top: 20px; */
-    /* margin-bottom: 20px; */
-    /* background-color: #fff; */
-    /* height: 72px; */
-    padding: .5rem .5rem;
+    padding: 14px 16px;
     display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--surface);
+    transition: background-color var(--animation-duration) var(--animation-timing-curve);
+}
+
+.container:hover {
+    background: var(--surface-muted);
 }
 
 .main-content {
-    /* width: 70%;
-    max-width: 700px;
-    min-width: 300px; */
-    /* display: table-cell; */
     width: 100%;
     padding: 0 .5rem;
+}
+
+.state-cell {
+    flex: 0 0 auto;
+}
+
+.content-cell {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .author-cell {
     text-align: center;
     vertical-align: middle;
+    flex: 0 0 auto;
 }
 
 .structItem-cell {
@@ -37,11 +46,11 @@
 }
 
 .structItem-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin: 0;
     padding: 0;
-    color: #58595b;
-    font-weight: 400;
+    color: var(--text-color);
+    font-weight: 800;
 }
 
 .structItem-parts {
@@ -56,7 +65,8 @@
 .structItem-minor {
     display: flex;
     align-items: center;
-    color: #9e9fa2;
+    gap: 10px;
+    color: var(--text-muted);
 }
 
 .structItem-parts>li {
@@ -130,6 +140,8 @@
     border-style: none;
     width: 36px;
     height: 36px;
+    object-fit: cover;
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--border-color);
 }
 
 .entry-author-link {
@@ -169,7 +181,8 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
 hr {
@@ -193,13 +206,26 @@ mat-icon {
 
 .statistic-div {
     display: flex;
+    align-items: center;
+    gap: 4px;
     margin-right: .25rem;
     width: 60px;
     font-size: 0.9rem;
+    color: var(--text-muted);
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version. */
 mat-chip {
     padding: 0 8px;
     font-size: 0.8rem;
+}
+
+@media (max-width: 40rem) {
+    .container {
+        padding: 12px;
+    }
+
+    .structItem-minor {
+        display: block;
+    }
 }

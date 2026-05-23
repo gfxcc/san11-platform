@@ -9,12 +9,33 @@
 
 .head {
     display: flex;
+    align-items: center;
+    min-height: 58px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--surface);
 }
 
 .head > .update-button {
-    margin-top: 2px;
-    margin-right: 5px;
-    z-index: 1000;
+    border-radius: 999px;
+}
+
+.section-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.section-title mat-icon {
+    color: var(--primary-color);
+}
+
+.version-tabs {
+    box-shadow: none;
+    background: var(--surface);
 }
 
 @media (max-width: 40rem) {

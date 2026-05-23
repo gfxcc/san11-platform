@@ -30,7 +30,7 @@
     display: flex;
     font-size: 1.2rem;
     font-weight: 500;
-    letter-spacing: 0.5px;
+    letter-spacing: 0;
     align-items: center;
     cursor: pointer;
 }

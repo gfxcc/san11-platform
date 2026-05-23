@@ -1,21 +1,20 @@
 <div class="main-container">
-    <div class="table-wrapper radius-border shadow-border">
-        <div class="caption bottom-board" id=caption>
+    <div class="table-wrapper">
+        <div class="caption" id=caption>
             <h3>
                 {{this.displayName}}
             </h3>
             <span class="example-spacer"></span>
-            <button mat-mini-fab color="primary" (click)="createThread()">
+            <button mat-mini-fab color="primary" matTooltip="新帖子" (click)="createThread()">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
 
-        <app-thread-card class="bottom-board" *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
+        <app-thread-card *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
 
         <div *ngIf="threads?.length === 0" class="dashboard-placeholder">
-            <p>
-                空空如也
-            </p>
+            <mat-icon>forum</mat-icon>
+            <p>空空如也</p>
         </div>
 
         <mat-paginator [length]="totalThreadsCount" [pageSize]="pageSize" [hidePageSize]="true"

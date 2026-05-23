@@ -8,15 +8,20 @@
     </div>
 </div>
 
-<div class="head" style="height: 44px;">
-    <!-- <div class="heading-1">版本</div> -->
+<div class="head">
+    <div class="section-title">
+        <mat-icon>deployed_code</mat-icon>
+        <span>版本</span>
+    </div>
     <span class="example-spacer"></span>
-    <button *ngIf="hasEditPermission" class="update-button" style="margin-top: 5px;"
-        mat-button mat-raised-button color="primary" (click)="onUpdate()">更新</button>
+    <button *ngIf="hasEditPermission" class="update-button" mat-flat-button color="primary" (click)="onUpdate()">
+        <mat-icon>upgrade</mat-icon>
+        更新
+    </button>
 </div>
 
 <mat-tab-group dynamicHeight [(selectedIndex)]="this.tabSelectedIndex"
-    class="shadow-border" style="margin-top: -44px;">
+    class="version-tabs">
     <div *ngFor="let branch of branchs">
         <mat-tab [label]="branch.name" [disabled]="branch.disabled">
             <branch [branch]="branch" [package]="package"

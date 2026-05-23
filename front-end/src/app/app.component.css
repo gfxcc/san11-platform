@@ -14,22 +14,29 @@ app-header {
 }
 
 mat-sidenav {
-    width: 256px;
+    width: 280px;
     margin-top: var(--header-height);
     height: calc(100vh - var(--header-height));
+    border-right: 1px solid var(--border-color);
+    background: var(--surface);
 }
 
 mat-sidenav-content {
-    /* padding: 5px; */
     margin-top: var(--header-height);
-    padding: 0 .5rem;
+    padding: 0;
     min-height: calc(100vh - var(--header-height));
-    overflow: hidden;
-    background-color: white;
+    overflow-x: hidden;
+    background:
+        linear-gradient(180deg, rgba(47, 91, 234, .08) 0, rgba(47, 91, 234, 0) 260px),
+        var(--surface-muted);
 }
 
 @media (max-width: 40rem) {
     :host {
         --header-height: 56px;
+    }
+
+    mat-sidenav {
+        width: min(86vw, 320px);
     }
 }

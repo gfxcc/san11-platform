@@ -1,19 +1,19 @@
-<div class="container bottom-board">
-    <td>
+<div class="container">
+    <div class="state-cell">
         <div [hidden]="! (isAdmin() && thread.state!=1)">
             <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
         </div>
-    </td>
+    </div>
 
-    <td class="author-cell">
+    <div class="author-cell">
         <div class="avatar-wrapper">
             <img [src]="this.user?.imageUrl | fullUrl : '128_128'" class="avatar-img" [hidden]="this.loadingAuthorImage"
                 (load)="loadAvatar()">
             <p-skeleton *ngIf="this.loadingAuthorImage" [shape]="'circle'" height="36px" width="36px"></p-skeleton>
         </div>
-    </td>
+    </div>
 
-    <td style="flex-grow: 1;">
+    <div class="content-cell">
         <div class="main-content">
             <div class="structItem-title">
                 <a href="{{thread.name}}" target="_blink">{{thread.subject}}</a>
@@ -75,16 +75,16 @@
                 </div>
             </div>
         </div>
-    </td>
+    </div>
 
 
-    <td class="structItem-cell structItem-cell--latest" *ngIf="notMobile">
+    <div class="structItem-cell structItem-cell--latest" *ngIf="notMobile">
         <div>
             <div class="">{{getLatestCommentedAge()}}</div>
             <div class="">
                 <a href="users/{{latestCommenter?.userId}}" target="_blink">{{latestCommenter?.username}}</a>
             </div>
         </div>
-    </td>
+    </div>
 
 </div>

@@ -49,7 +49,7 @@ export class PackageCardComponent implements OnInit {
         if (this.author.imageUrl != '') {
           this.authorImage = getFullUrl(this.author.imageUrl);
         } else {
-          this.authorImage = '../../../assets/images/zhuge.jpg';
+          this.authorImage = 'assets/images/zhuge.jpg';
         }
       }
     );

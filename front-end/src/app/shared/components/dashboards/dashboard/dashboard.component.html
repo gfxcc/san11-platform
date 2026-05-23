@@ -1,29 +1,28 @@
 <div class="container">
-    <div *ngIf="this.listRequest" style="margin-left: 10px;">
-        <!-- <div class="example-spacer"></div> -->
+    <section class="dashboard-toolbar">
+        <div class="dashboard-summary" *ngIf="packages != undefined">
+            <mat-icon>inventory_2</mat-icon>
+            <span>{{packages.length}} 项资源</span>
+        </div>
 
-        <mat-form-field appearance="fill">
-            <mat-label>排序优先</mat-label>
-            <mat-select [(value)]="selectedOrder"
-                (selectionChange)="onOrderChanged($event)">
-                <mat-option [value]="option.value" *ngFor="let option of
-                    orderOptions">{{
-                    option.viewValue }}</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
+        <div class="dashboard-actions">
+            <mat-form-field *ngIf="this.listRequest" appearance="outline" class="sort-field">
+                <mat-label>排序优先</mat-label>
+                <mat-select [(value)]="selectedOrder" (selectionChange)="onOrderChanged($event)">
+                    <mat-option [value]="option.value" *ngFor="let option of orderOptions">
+                        {{ option.viewValue }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </section>
 
     <div class="grid">
-        <a *ngFor="let package of packages" class="card">
-            <div style="display: flex; align-items: center;">
-                <app-package-card [package]="package" class="module"></app-package-card>
-            </div>
-        </a>
+        <app-package-card *ngFor="let package of packages" [package]="package" class="module"></app-package-card>
     </div>
 </div>
 
 <div *ngIf="packages?.length === 0" class="dashboard-placeholder">
-    <p>
-        空空如也
-    </p>
+    <mat-icon>inventory_2</mat-icon>
+    <p>空空如也</p>
 </div>

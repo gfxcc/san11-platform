@@ -1,42 +1,47 @@
 <div class="clickable-card" (click)="onClick()">
     <mat-card appearance="outlined" class="package-card">
-        <mat-card-header>
-            <div mat-card-avatar class="author-image">
-                <div [hidden]="!this.displayAuthorImgLoading" class="animated-background author-image"></div>
-                <img [hidden]="this.displayAuthorImgLoading" [src]="this.author?.imageUrl | fullUrl : '128_128'"
-                    (load)="this.displayAuthorImgLoading=false;" class="author-image">
-            </div>
-            <mat-card-title>
-
-                <span>
-                    {{package.packageName}}
-                </span>
-
-                <div [hidden]="! (isAdmin() && package.state!=1)">
-                    <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
-                </div>
-            </mat-card-title>
-
-
-            <mat-card-subtitle>
-                {{authorName}}
-            </mat-card-subtitle>
-
-        </mat-card-header>
-
-
         <div class="screenshot">
-            <div [hidden]="!this.displayScreenshotLoading" class="animated-background
-                screenshot"></div>
+            <div [hidden]="!this.displayScreenshotLoading" class="animated-background screenshot"></div>
 
-            <img [hidden]="this.displayScreenshotLoading" [src]="screenshot"
-                (load)="this.displayScreenshotLoading=false;" class="fit-image">
+            <img [hidden]="this.displayScreenshotLoading" [src]="screenshot" (load)="this.displayScreenshotLoading=false;"
+                class="fit-image">
+
+            <div class="status-badge" [hidden]="! (isAdmin() && package.state!=1)">
+                {{getStatusName()}}
+            </div>
         </div>
 
-        <!-- <mat-card-content>
-            <p class="mat-card-content-p">
-                {{package.description}}
-            </p>
-        </mat-card-content> -->
+        <mat-card-content>
+            <div class="card-header">
+                <div class="author-image">
+                    <div [hidden]="!this.displayAuthorImgLoading" class="animated-background author-image"></div>
+                    <img [hidden]="this.displayAuthorImgLoading" [src]="authorImage"
+                        (load)="this.displayAuthorImgLoading=false;" class="author-image">
+                </div>
+                <div class="title-block">
+                    <h2>{{package.packageName}}</h2>
+                    <p>{{authorName}}</p>
+                </div>
+            </div>
+
+            <div class="card-meta">
+                <span>
+                    <mat-icon>download</mat-icon>
+                    {{package.downloadCount || 0}}
+                </span>
+                <span>
+                    <mat-icon>thumb_up</mat-icon>
+                    {{package.likeCount || 0}}
+                </span>
+                <span *ngIf="package.updateTime">
+                    <mat-icon>schedule</mat-icon>
+                    {{package.updateTime}}
+                </span>
+            </div>
+
+            <div class="tag-row" *ngIf="package.tags?.length">
+                <span *ngFor="let tag of package.tags">{{tag.tagName}}</span>
+            </div>
+        </mat-card-content>
     </mat-card>
 </div>
