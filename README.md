@@ -37,6 +37,28 @@ make deploy-dev
 make test
 ```
 
+## Production auto-deploy
+
+Merges to `main` are deployed by GitHub Actions after `make test` passes. The
+workflow SSHes into the production VM, updates the repo, and runs the existing
+`make deploy-prod` target.
+
+Configure these GitHub repository secrets before enabling production deploys:
+
+- `GCP_WORKLOAD_IDENTITY_PROVIDER`
+- `GCP_DEPLOY_SERVICE_ACCOUNT`
+- `GCP_PROJECT_ID`
+- `GCP_ZONE`
+- `GCP_PROD_INSTANCE`
+- `GCP_PROD_SSH_USER`
+- `GCP_PROD_REPO_PATH`
+
+The deploy service account must be allowed to authenticate through the Workload
+Identity Provider and must have enough Compute Engine IAM permission to SSH to
+the production VM. If the VM uses OS Login, grant the identity access to log in
+to the VM; if it uses metadata SSH keys, grant the permissions required for
+`gcloud compute ssh` to write SSH metadata.
+
 ## [Non-prod Environment](https://github.com/gfxcc/san11-platform/blob/main/dev-logs/nonprod-envs.md)
 
 ### Staging
