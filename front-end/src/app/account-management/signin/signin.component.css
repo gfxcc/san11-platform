@@ -1,21 +1,113 @@
-/* .login-wrapper {
-    height: 70%;
-}
-
-*/
-
-.header-less-tabs .mat-mdc-tab-header {
+app-signin .header-less-tabs .mat-mdc-tab-header {
     display: none;
 }
 
-.card-wrapper {
+app-signin .auth-page {
     min-height: calc(100vh - var(--header-height));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 14px;
 }
 
-.card {
-    max-width: 400px;
+app-signin .auth-panel {
+    width: min(100%, 460px);
+    padding: 28px;
 }
 
-.mat-mdc-tab-body-content {
+app-signin .auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+app-signin .brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(219, 234, 254, .95), rgba(191, 219, 254, .82));
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, .12);
+}
+
+app-signin .auth-brand h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.85rem;
+    line-height: 1.1;
+    font-weight: 850;
+}
+
+app-signin .auth-form {
+    width: 100%;
+}
+
+app-signin .field-stack {
+    display: grid;
+    gap: 12px;
+}
+
+app-signin .auth-form mat-form-field {
+    width: 100%;
+}
+
+app-signin .auth-actions,
+app-signin .step-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+app-signin .auth-actions button,
+app-signin .step-actions button,
+app-signin .cancel-recovery {
+    border-radius: 999px;
+}
+
+app-signin .auth-actions mat-icon,
+app-signin .step-actions mat-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    font-size: 18px;
+}
+
+app-signin .auth-stepper {
+    margin: 0 -8px;
+}
+
+app-signin .step-note {
+    margin: 0 0 14px;
+    color: var(--text-muted);
+    font-size: .95rem;
+    line-height: 1.5;
+}
+
+app-signin .cancel-recovery {
+    margin-top: 12px;
+}
+
+app-signin .header-less-tabs .mat-mdc-tab-body-content {
     overflow: hidden !important;
+}
+
+@media (max-width: 40rem) {
+    app-signin .auth-page {
+        align-items: flex-start;
+        padding: 18px 12px 32px;
+    }
+
+    app-signin .auth-panel {
+        padding: 20px 16px;
+    }
+
+    app-signin .auth-brand h1 {
+        font-size: 1.55rem;
+    }
 }

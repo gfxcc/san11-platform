@@ -1,14 +1,23 @@
-<div class="main-list">
-    <div class="wrapper">
-        <a *ngFor="let article of articles">
-            <app-article-card [article]="article">
-            </app-article-card>
-        </a>
-    </div>
-</div>
+<div class="article-page">
+    <section class="article-header">
+        <div>
+            <span class="article-kicker">社区文章</span>
+            <h1>攻略、教程与更新</h1>
+            <p>浏览玩家发布的长文内容、工具说明和平台动态。</p>
+        </div>
 
-<div *ngIf="articles?.length === 0" class="dashboard-placeholder">
-    <p>
-        空空如也
-    </p>
+        <div class="article-summary" *ngIf="articles != undefined">
+            <mat-icon>auto_stories</mat-icon>
+            <span>{{articles.length}} 篇文章</span>
+        </div>
+    </section>
+
+    <section class="article-list" *ngIf="articles?.length > 0">
+        <app-article-card *ngFor="let article of articles" [article]="article"></app-article-card>
+    </section>
+
+    <div *ngIf="articles?.length === 0" class="article-placeholder surface-panel">
+        <mat-icon>auto_stories</mat-icon>
+        <p>空空如也</p>
+    </div>
 </div>

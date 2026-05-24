@@ -1,23 +1,99 @@
-.main-list {
-    min-height: 200px;
+.article-page {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 28px clamp(14px, 3vw, 36px) 44px;
+}
+
+.article-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 8px 0 24px;
+}
+
+.article-kicker {
+    display: inline-flex;
+    margin-bottom: 8px;
+    color: var(--primary-strong);
+    font-size: .82rem;
+    font-weight: 850;
+}
+
+.article-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: clamp(1.75rem, 3vw, 2.55rem);
+    line-height: 1.08;
+    font-weight: 850;
+}
+
+.article-header p {
+    margin: 10px 0 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.article-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: .95rem;
+    font-weight: 750;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+}
+
+.article-summary mat-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--text-subtle);
+    font-size: 20px;
+}
+
+.article-list {
+    display: grid;
+    gap: 18px;
+}
+
+.article-placeholder {
+    min-height: 18rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-.wrapper {
-    min-width: 200px;
-    max-width: 1200px;
-    flex-grow: 1;
-}
-
-.dashboard-placeholder {
-    min-height: 5rem;
-    display: flex;
     justify-content: center;
     align-items: center;
-    color: grey;
-    font-size: 2rem;
-    font-weight: 500;
-    font-style: italic;
+    gap: 10px;
+    color: var(--text-subtle);
+    font-size: 1.05rem;
+    font-weight: 650;
+}
+
+.article-placeholder mat-icon {
+    width: 56px;
+    height: 56px;
+    color: var(--text-subtle);
+    font-size: 56px;
+}
+
+@media (max-width: 48rem) {
+    .article-page {
+        padding: 20px 12px 32px;
+    }
+
+    .article-header {
+        display: block;
+        padding-top: 4px;
+    }
+
+    .article-summary {
+        margin-top: 16px;
+        width: fit-content;
+    }
 }

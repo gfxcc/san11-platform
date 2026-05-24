@@ -24,11 +24,19 @@
     align-items: center;
 }
 
-.author-card:hover {
-    /* background-color: rgba(0, 0, 0, 0.139); */
+.user-card-button .author-card:hover {
     cursor: pointer;
     box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
-    /* cursor: pointer; */
+}
+
+.user-card-static .author-card {
+    min-height: 40px;
+    padding: 0;
+    cursor: default;
+}
+
+.user-card-static .author-card:hover {
+    box-shadow: none;
 }
 
 .avatar-frame {

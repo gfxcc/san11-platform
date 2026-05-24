@@ -1,107 +1,155 @@
-.wrapper {
-    padding: 30px 0;
+.article-detail-page {
+    width: 100%;
+    max-width: min(980px, var(--content-max-width));
+    margin: 0 auto;
+    padding: 28px clamp(14px, 3vw, 36px) 44px;
 }
 
-.row {
+.article-detail {
+    overflow: hidden;
+}
+
+.detail-header {
+    padding: clamp(28px, 5vw, 52px) clamp(22px, 6vw, 72px) 24px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(248, 250, 252, .86)),
+        var(--surface);
+}
+
+.article-kicker {
+    display: inline-flex;
+    margin-bottom: 12px;
+    color: var(--primary-strong);
+    font-size: .82rem;
+    font-weight: 850;
+}
+
+.entry-title {
+    margin: 0;
+    color: var(--text-color);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    line-height: 1.12;
+    font-weight: 850;
+    overflow-wrap: anywhere;
+}
+
+.entry-title[contenteditable="true"] {
+    outline: none;
+    border-radius: var(--radius-sm);
+}
+
+.entry-title[contenteditable="true"]:focus {
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, .1);
+}
+
+.author-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 100%;
+    margin-top: 24px;
+    padding: 8px 14px 8px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    text-align: left;
+}
+
+.avatar {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    object-fit: cover;
+    background: var(--surface-muted);
+}
+
+.author-line p {
+    max-width: 18rem;
+    margin: 0;
+    color: var(--text-color);
+    font-size: .98rem;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.author-line span {
+    display: block;
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: .86rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.editor-section {
+    padding: 28px clamp(18px, 6vw, 72px);
+}
+
+.article-actions {
     display: flex;
+    align-items: center;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
+    padding: 18px clamp(18px, 6vw, 72px);
+    border-top: 1px solid var(--border-color);
+    background: rgba(248, 250, 252, .72);
 }
 
-img.avatar {
-    border-radius: 100px;
+.management-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-@media (min-width: 576px) {
-    .container {
-        padding-left: 10px;
-        padding-right: 10px;
+.management-actions button,
+.save-button {
+    border-radius: 999px;
+}
+
+.management-actions mat-icon,
+.save-button mat-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    font-size: 18px;
+}
+
+.comments-panel {
+    margin-top: 22px;
+    overflow: hidden;
+}
+
+@media (max-width: 48rem) {
+    .article-detail-page {
+        padding: 20px 12px 32px;
     }
-}
 
-@media (min-width: 768px) {
-    .container {
-        max-width: 720px;
+    .detail-header {
+        padding: 28px 16px 20px;
     }
-}
 
-@media (min-width: 992px) {
-    .container {
-        max-width: 960px;
+    .editor-section {
+        padding: 20px 14px;
     }
-}
 
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1140px;
+    .article-actions {
+        align-items: stretch;
+        padding: 14px;
     }
-}
 
-.container {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
+    .management-actions {
+        width: 100%;
+    }
 
-.content-area {
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    /* padding-right: 15px;
-    padding-left: 15px; */
-    background-color: #fff;
-}
-
-.postcontent {
-    margin-bottom: 2px;
-    padding-top: 60px;
-    padding-left: 12%;
-    padding-right: 12%;
-    padding-bottom: 20px;
-    border-radius: 4px 4px 0 0;
-}
-
-.justify-content-center {
-    justify-content: center!important;
-}
-
-.entry-time {
-    text-align: center;
-    font-size: 14px;
-    color: #616161;
-}
-
-
-.cattagsarea {
-    margin-bottom: 10px;
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 0 0 4px 4px;
-}
-
-.control {
-    padding-left: 20px;
-}
-
-p {
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
-h1.entry-title {
-    text-align: center;
-    font-size: 1.8rem;
-}
-
-
-/* * {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-} */
-
-button {
-    margin-right: 20px;
+    .management-actions button,
+    .save-button {
+        flex: 1 1 auto;
+    }
 }

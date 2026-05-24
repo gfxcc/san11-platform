@@ -1,21 +1,17 @@
 <div class="container">
-    <mat-card-header style="display: flex; justify-content: center;">
-        <mat-card-title style="margin-bottom: 30px;">{{this.title}}</mat-card-title>
-    </mat-card-header>
+    <header class="dialog-header">
+        <h1>{{this.title}}</h1>
+    </header>
     <form class="form" #form='ngForm' (ngSubmit)="onSubmit(form)">
 
-        <mat-card-content>
-
-            <mat-form-field class="form-field form-text-input">
-                <mat-label>{{this.inputTitle}}</mat-label>
-                <input matInput required [(ngModel)]="this.preSetText" name="input" autocomplete="off">
-            </mat-form-field>
-
-        </mat-card-content>
+        <mat-form-field appearance="outline">
+            <mat-label>{{this.inputTitle}}</mat-label>
+            <input matInput required [(ngModel)]="this.preSetText" name="input" autocomplete="off">
+        </mat-form-field>
 
         <div class="actions">
             <span class="example-spacer"></span>
-            <button class="button" [disabled]="!form.valid" type="submit" mat-stroked-button color="primary">确定</button>
+            <button [disabled]="!form.valid" type="submit" mat-flat-button color="primary">确定</button>
         </div>
     </form>
 

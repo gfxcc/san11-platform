@@ -1,5 +1,5 @@
-<div class="catalog-page">
-    <section class="catalog-header">
+<div class="catalog-page" [class.catalog-page-embedded]="!showCatalogHeader">
+    <section class="catalog-header" *ngIf="showCatalogHeader">
         <div class="catalog-title">
             <span class="catalog-kicker">资源库</span>
             <h1>San11 工具与 MOD</h1>
@@ -12,9 +12,9 @@
         </div>
     </section>
 
-    <section class="dashboard-toolbar">
+    <section class="dashboard-toolbar" *ngIf="listRequest">
         <div class="dashboard-actions">
-            <mat-form-field *ngIf="this.listRequest" appearance="outline" class="sort-field">
+            <mat-form-field appearance="outline" class="sort-field">
                 <mat-label>排序优先</mat-label>
                 <mat-select [(value)]="selectedOrder" (selectionChange)="onOrderChanged($event)">
                     <mat-option [value]="option.value" *ngFor="let option of orderOptions">

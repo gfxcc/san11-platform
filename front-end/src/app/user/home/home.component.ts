@@ -60,8 +60,14 @@ export class HomeComponent implements OnInit {
       case 'publishedPackages':
         this.selectedIndex = 0;
         break;
-      case 'timeline':
+      case 'articles':
         this.selectedIndex = 1;
+        break;
+      case 'timeline':
+        this.selectedIndex = 2;
+        break;
+      case 'inbox':
+        this.selectedIndex = 3;
         break;
       default:
         this.selectedIndex = 0;

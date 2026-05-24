@@ -1,33 +1,76 @@
-.container {
+.settings-page {
+    width: 100%;
+    max-width: var(--content-max-width);
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 22px;
+    margin: 0 auto;
+    padding: 28px clamp(14px, 3vw, 36px) 44px;
+}
+
+.settings-nav {
+    align-self: start;
+    overflow: hidden;
+}
+
+.settings-nav-header {
     display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 58px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: 850;
 }
 
-.sidebar {
-    min-width: 150px;
-    width: 200px;
-    height: calc(100vh - var(--header-height));
-    ;
-    padding-top: 1rem;
-    margin-left: -10px;
-    justify-content: stretch;
-    background-color: white;
-    border-right: solid 1px var(--border-color);
+.settings-nav-header mat-icon {
+    color: var(--primary-color);
 }
 
-.top-sidebar {
-    padding-left: 20px;
-    color: rgb(170 170 170);
-    font-size: 1.6em;
-    font-weight: 500;
+.settings-list {
+    padding: 10px;
 }
 
-.content-wrapper {
-    flex-grow: 1;
+.settings-link {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-weight: 750;
 }
 
-.content {
-    flex-grow: 1;
-    max-width: 1080px;
+.settings-link mat-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--text-subtle);
+    font-size: 20px;
+}
+
+.settings-content {
+    min-width: 0;
+}
+
+::ng-deep .settings-list .mat-mdc-list-option {
+    border-radius: var(--radius-md);
+    margin: 2px 0;
+}
+
+::ng-deep .settings-list .mat-mdc-list-option .mdc-list-item__end,
+::ng-deep .settings-list .mat-mdc-list-option .mat-pseudo-checkbox {
+    display: none;
+}
+
+::ng-deep .settings-list .mat-mdc-list-option[aria-selected="true"],
+::ng-deep .settings-list .mat-mdc-list-option.mdc-list-item--selected {
+    background: linear-gradient(90deg, rgba(37, 99, 235, .16), rgba(219, 234, 254, .72));
+}
+
+@media (max-width: 48rem) {
+    .settings-page {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 20px 12px 32px;
+    }
 }

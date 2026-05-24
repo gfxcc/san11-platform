@@ -7,7 +7,7 @@
         <div class="header">
             <span class="user-name clickable" (click)="onUserClick()">{{this.user?.username}}</span>
             <span *ngIf="this.user?.userId === this.resourceOwnerId"
-                style="margin-left: 5px; margin-right: 5px; color:#3f51b5">[发帖人]</span>
+                class="owner-badge">发帖人</span>
             <span class="create-time">{{getReplyAge()}}</span>
 
             <span class="example-spacer"></span>
@@ -18,11 +18,11 @@
                 </button>
             </div>
         </div>
-        <div style="white-space: pre-wrap;">
+        <div class="reply-text">
             {{this.reply.text}}
         </div>
         <div class="action-section">
-            <div class="feedback-card-wrapper" [style.transform]="'scale(0.8)'">
+            <div class="feedback-card-wrapper">
                 <app-feedback-card [target]="this.reply.name" [likeCount]="this.reply.likeCount"
                     [dislikeCount]="this.reply.dislikeCount" [disableClickableBackground]="true"></app-feedback-card>
             </div>

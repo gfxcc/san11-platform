@@ -1,22 +1,27 @@
-<div class="container">
-    <aside class="sidebar" data-sidebar>
-        <div class="top-sidebar">
+<div class="settings-page">
+    <aside class="settings-nav surface-panel" data-sidebar>
+        <div class="settings-nav-header">
+            <mat-icon>settings</mat-icon>
             <span>设置</span>
         </div>
 
-        <mat-selection-list [multiple]="false">
+        <mat-selection-list [multiple]="false" class="settings-list">
             <mat-list-option routerLink="notifications">
-                消息通知
+                <div class="settings-link">
+                    <mat-icon>notifications</mat-icon>
+                    <span>消息通知</span>
+                </div>
             </mat-list-option>
             <mat-list-option routerLink="account">
-                基本信息
+                <div class="settings-link">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>基本信息</span>
+                </div>
             </mat-list-option>
         </mat-selection-list>
     </aside>
 
-    <div class="content-wrapper">
-        <div class="content">
-            <router-outlet></router-outlet>
-        </div>
+    <div class="settings-content">
+        <router-outlet></router-outlet>
     </div>
 </div>

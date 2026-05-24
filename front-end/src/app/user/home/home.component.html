@@ -1,16 +1,15 @@
-<div class="top">
-    <app-user-info-with-sub-button class="user-section"
-        [user]="this.user" [updateAvatar]="true">
-    </app-user-info-with-sub-button>
-</div>
+<div class="profile-page">
+    <section class="profile-header surface-panel">
+        <app-user-info-with-sub-button class="user-section" [user]="this.user" [updateAvatar]="true">
+        </app-user-info-with-sub-button>
+    </section>
 
-<mat-tab-group class="tab-groups" mat-align-tabs="center"
-    (selectedTabChange)="selectedTabChange($event)"
-    [(selectedIndex)]="selectedIndex">
-    <mat-tab *ngFor="let tab of tabs" [label]="tab.label"
-        [disabled]="tab.disabled"></mat-tab>
-</mat-tab-group>
+    <mat-tab-group class="profile-tabs" mat-align-tabs="start" mat-stretch-tabs="false"
+        (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedIndex">
+        <mat-tab *ngFor="let tab of tabs" [label]="tab.label" [disabled]="tab.disabled"></mat-tab>
+    </mat-tab-group>
 
-<div class="bottom">
-    <router-outlet></router-outlet>
+    <div class="profile-content">
+        <router-outlet></router-outlet>
+    </div>
 </div>

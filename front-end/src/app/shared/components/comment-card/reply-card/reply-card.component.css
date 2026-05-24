@@ -4,7 +4,6 @@
 }
 
 .author-image {
-    /* background-image: url('../../../assets/images/zhuge.jpg'); */
     background-size: cover;
     width: 30px;
     height: 30px;
@@ -30,6 +29,25 @@
 .right>.header>.create-time {
     margin-left: 10px;
     color: #9e9fa2;
+}
+
+.owner-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 20px;
+    margin: 0 6px;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary-strong);
+    font-size: .75rem;
+    font-weight: 800;
+}
+
+.reply-text {
+    color: var(--text-color);
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .right>.bottom {
@@ -81,6 +99,7 @@
 }
 
 .feedback-card-wrapper {
+    transform: scale(0.8);
     transform-origin: left;
     display: inline-block;
 }

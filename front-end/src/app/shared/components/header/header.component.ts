@@ -44,10 +44,6 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
-    this.progressService.complete();
-  }
-
   toggleSideBar() {
     this.toggleSideBarForMe.emit();
     setTimeout(() => {

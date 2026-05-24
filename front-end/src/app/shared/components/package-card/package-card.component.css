@@ -72,7 +72,6 @@
     box-shadow: var(--shadow-sm);
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card-content {
     padding: 16px 16px 18px !important;
 }
@@ -90,21 +89,18 @@ mat-card-content {
     float: right;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card-title {
     margin: 0;
     display: grid;
     grid-auto-flow: column;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card-title>span {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card-content p {
     overflow-y: auto;
     white-space: pre-wrap;

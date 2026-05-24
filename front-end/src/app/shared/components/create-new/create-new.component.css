@@ -1,3 +1,83 @@
-.card-wrapper {
+.create-page {
     min-height: calc(100vh - var(--header-height));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 14px;
+}
+
+.create-panel {
+    width: min(100%, 480px);
+    padding: 28px;
+}
+
+.create-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.create-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(219, 234, 254, .95), rgba(191, 219, 254, .82));
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, .12);
+}
+
+.create-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.85rem;
+    line-height: 1.1;
+    font-weight: 850;
+}
+
+.create-header p {
+    margin: 6px 0 0;
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.create-form {
+    display: grid;
+    gap: 12px;
+}
+
+.create-form mat-form-field {
+    width: 100%;
+}
+
+.create-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.create-actions button {
+    border-radius: 999px;
+}
+
+.create-actions mat-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    font-size: 18px;
+}
+
+@media (max-width: 40rem) {
+    .create-page {
+        align-items: flex-start;
+        padding: 18px 12px 32px;
+    }
+
+    .create-panel {
+        padding: 20px 16px;
+    }
 }

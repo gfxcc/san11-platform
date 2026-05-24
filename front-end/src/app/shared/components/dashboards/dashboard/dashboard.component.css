@@ -6,6 +6,10 @@
     padding: 28px clamp(14px, 3vw, 36px) 40px;
 }
 
+.catalog-page-embedded {
+    padding-top: 0;
+}
+
 .catalog-header {
     display: flex;
     align-items: flex-end;

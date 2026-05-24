@@ -1,8 +1,10 @@
 <div class="main">
     <div class="status-section">
-        <span style="font-size: 1.25rem;">{{this.commentCount}}</span>
-        <span style="font-size: 1.25rem; margin-left: 5px; margin-right: 32px;">条评论</span>
-        <button mat-button [matMenuTriggerFor]="menu">
+        <div class="comment-count">
+            <span>{{this.commentCount}}</span>
+            <span>条评论</span>
+        </div>
+        <button mat-button class="sort-button" [matMenuTriggerFor]="menu">
             <mat-icon>sort</mat-icon>
             排序方式
         </button>
@@ -21,7 +23,7 @@
     </div>
 
     <div class="header">
-        <div *ngIf="!this.sendCommentLoading" style="width:100%; display: flex">
+        <div *ngIf="!this.sendCommentLoading" class="comment-editor-row">
             <div mat-card-avatar class="author-image">
                 <img [hidden]="this.hideAuthorImage" [src]="this.authorImage
                     |
@@ -38,8 +40,8 @@
                 <div class="actions-section" *ngIf="!disableInput &&
                     this.descEditor_updated">
                     <span class="example-spacer"></span>
-                    <button style="margin-left: 5px;" mat-button color="grey" (click)="onCancel()">取消</button>
-                    <button style="margin-left: 5px;" type="submit" mat-stroked-button color="primary" [disabled]="this.descEditor_element?.getData() ==
+                    <button mat-button color="grey" (click)="onCancel()">取消</button>
+                    <button type="submit" mat-stroked-button color="primary" [disabled]="this.descEditor_element?.getData() ==
                         &quot;&quot;" (click)="onCreateComment()">确定</button>
                 </div>
             </div>
@@ -60,6 +62,5 @@
         </ng-container>
     </div>
 
-    <div style="height: 100px;">
-    </div>
+    <div class="comment-bottom-space"></div>
 </div>

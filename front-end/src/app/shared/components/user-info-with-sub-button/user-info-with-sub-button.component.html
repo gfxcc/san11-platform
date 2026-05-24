@@ -1,14 +1,14 @@
-<div class="container">
+<div class="author-card">
     <div class="user-info-section">
 
         <div>
-            <button mat-button (click)="onAvatarClick()" class="user-image">
+            <button mat-button (click)="onAvatarClick()" class="avatar-button">
                 <!-- <div [hidden]="!this.displayUserImgLoading"
                     class="animated-background user-image"></div> -->
-                <p-skeleton *ngIf="this.displayUserImgLoading" shape="circle" width="5.8em" height="5.8em"></p-skeleton>
+                <p-skeleton *ngIf="this.displayUserImgLoading" shape="circle" width="74px" height="74px"></p-skeleton>
 
                 <img [hidden]="this.displayUserImgLoading" [src]="this.user?.imageUrl |
-                    fullUrl : '128_128'" (load)="this.displayUserImgLoading=false;" class="user-image">
+                    fullUrl : '128_128'" (load)="this.displayUserImgLoading=false;" class="avatar-image">
             </button>
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadUserAvatar(imageInput)">
         </div>
@@ -25,8 +25,7 @@
 
 
     </div>
-    <div style="flex-grow: 1;">
-    </div>
+    <span class="author-spacer"></span>
     <div class="subscribe-section">
         <button *ngIf="!this.loadingSubscription" mat-flat-button [class.clickable-button]="subscription"
             [color]="subscription?'':'warn'" (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>

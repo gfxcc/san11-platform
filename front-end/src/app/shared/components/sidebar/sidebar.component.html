@@ -15,8 +15,6 @@
                 </div>
             </mat-list-option>
 
-            <mat-divider class="side-bar-divier"></mat-divider>
-
             <div class="section-label">工具分类</div>
             <mat-list-option *ngFor="let category of categories" [value]="category"
                 [selected]="category.value===this.selectedCategory" (click)="onCategoryLabelClick(category)">
@@ -25,8 +23,6 @@
                     <span>{{category.text}}</span>
                 </div>
             </mat-list-option>
-
-            <mat-divider class="side-bar-divier"></mat-divider>
 
             <div class="section-label">社区</div>
             <mat-list-option *ngFor="let webModule of webModules" [value]="webModule"
@@ -37,8 +33,6 @@
                 </div>
             </mat-list-option>
 
-            <mat-divider class="side-bar-divier"></mat-divider>
-
             <div *ngIf="this.isAdmin()">
                 <div class="section-label">管理</div>
                 <mat-list-option *ngFor="let adminModule of adminModules" [value]="adminModule"
@@ -48,12 +42,15 @@
                         <span>{{adminModule.text}}</span>
                     </div>
                 </mat-list-option>
-                <mat-divider></mat-divider>
             </div>
         </mat-selection-list>
 
 
         <div *ngIf="this.isAdmin() || this.tags.length > 0" class="tag-panel">
+            <div class="tag-panel-header" *ngIf="this.tags.length>0">
+                <span>标签筛选</span>
+                <small>{{this.tags.length}}</small>
+            </div>
             <div *ngIf="this.tags.length>0" class="tag-list">
                 <mat-chip-listbox>
                     <mat-chip-option color="primary" *ngFor="let tag of this.tags" (click)="onClickTag(tag)"

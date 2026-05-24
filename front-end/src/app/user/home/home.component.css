@@ -1,39 +1,46 @@
-.top {
+.profile-page {
     width: 100%;
-    min-height: 100px;
-    display: flex;
-    justify-content: center;
-    align-content: center;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 28px clamp(14px, 3vw, 36px) 44px;
 }
 
-.bottom {
-    width: 100%;
-    /* height: calc(100% - 150px); */
-    /* background-color: #F1F1F1; */
+.profile-header {
+    padding: 18px;
 }
 
 .user-section {
-    padding: 20px 0 8px 0;
-    font-size: 1.2rem;
-    width: 80%;
-    max-width: 700px;
+    display: block;
 }
 
-.top-right {
-    flex-grow: 1;
-    display: flex;
+.profile-tabs {
+    margin-top: 18px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, .78);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
 }
 
-.tab-groups {
-    width: 100%;
+.profile-content {
+    margin-top: 18px;
 }
 
 .author-sub-count {
-    color: #606060;
+    color: var(--text-muted);
     margin-right: 4px;
     text-transform: none;
-    font-family: "Roboto", "Arial", sans-serif;
     font-size: 1rem;
     line-height: 1.8rem;
-    font-weight: 400;
+    font-weight: 650;
+}
+
+@media (max-width: 40rem) {
+    .profile-page {
+        padding: 20px 12px 32px;
+    }
+
+    .profile-header {
+        padding: 14px;
+    }
 }

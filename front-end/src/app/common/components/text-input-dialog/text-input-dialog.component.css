@@ -1,9 +1,10 @@
-.form-field {
-    width: 100%;
+.text-input-dialog {
+    width: min(80vw, 400px);
 }
 
-.form {
-    max-width: 400px;
+.form,
+.form mat-form-field {
+    width: 100%;
 }
 
 .actions {
@@ -11,6 +12,6 @@
     width: 100%;
 }
 
-.button {
-    float: right;
+.actions button {
+    border-radius: 999px;
 }

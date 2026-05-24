@@ -2,9 +2,9 @@
     min-height: calc(100vh - var(--header-height));
     display: flex;
     flex-direction: column;
-    padding: 14px 12px 12px;
+    padding: 14px 10px 12px;
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(248, 250, 252, .9)),
+        linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 250, 252, .92)),
         var(--surface);
 }
 
@@ -28,7 +28,7 @@
     display: block;
     flex: 1 1 auto;
     overflow-y: auto;
-    padding: 14px 0 10px;
+    padding: 12px 0 10px;
     scrollbar-width: thin;
 }
 
@@ -37,37 +37,41 @@
 }
 
 .section-label {
-    padding: 12px 10px 6px;
+    padding: 18px 10px 6px;
     color: var(--text-subtle);
-    font-size: .72rem;
+    font-size: .68rem;
     font-weight: 850;
     letter-spacing: 0;
     text-transform: uppercase;
+}
+
+.section-label:first-child {
+    padding-top: 8px;
 }
 
 .nav-link {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 11px;
-    min-height: 38px;
+    gap: 10px;
+    min-height: 36px;
     position: relative;
     color: var(--text-muted);
-    font-size: .95rem;
+    font-size: .93rem;
     font-weight: 750;
 }
 
 .nav-link mat-icon {
-    width: 21px;
-    height: 21px;
+    width: 20px;
+    height: 20px;
     color: var(--text-subtle);
-    font-size: 21px;
+    font-size: 20px;
 }
 
 ::ng-deep .nav-list .mat-mdc-list-option {
-    min-height: 42px;
+    min-height: 40px;
     border-radius: var(--radius-md);
-    margin: 2px 0;
+    margin: 1px 0;
     overflow: hidden;
     transition:
         background-color var(--animation-duration) var(--animation-timing-curve),
@@ -81,12 +85,12 @@
 }
 
 ::ng-deep .nav-list .mat-mdc-list-option:hover {
-    background: rgba(226, 232, 240, .66);
+    background: rgba(226, 232, 240, .58);
 }
 
 ::ng-deep .nav-list .mat-mdc-list-option[aria-selected="true"],
 ::ng-deep .nav-list .mat-mdc-list-option.mdc-list-item--selected {
-    background: linear-gradient(90deg, rgba(37, 99, 235, .16), rgba(219, 234, 254, .72));
+    background: rgba(219, 234, 254, .82);
     box-shadow: inset 3px 0 0 var(--primary-color);
 }
 
@@ -104,7 +108,6 @@
     letter-spacing: 0;
     line-height: 16px;
     align-items: center;
-    border-top: 1px solid var(--border-color);
     display: flex;
     gap: 8px;
     min-height: 24px;
@@ -113,11 +116,6 @@
     position: static;
     color: var(--text-subtle);
     background-color: var(--surface);
-}
-
-.side-bar-divier {
-    margin: 12px 2px;
-    border-top-color: var(--border-color);
 }
 
 .vertical-spacer {
@@ -134,17 +132,58 @@ footer>a:hover {
 }
 
 .tag-panel {
-    margin-top: 14px;
+    margin-top: 18px;
+    padding: 0 2px;
+}
+
+.tag-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 8px 8px;
+    color: var(--text-subtle);
+    font-size: .68rem;
+    font-weight: 850;
+}
+
+.tag-panel-header small {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(226, 232, 240, .9);
+    color: var(--text-muted);
+    font-size: .72rem;
+    font-weight: 800;
 }
 
 .tag-list {
     margin-bottom: 10px;
-    padding: 10px 8px;
-    border: 1px solid var(--border-color);
+    padding: 8px;
     border-radius: var(--radius-md);
-    background: rgba(248, 250, 252, .86);
+    background: rgba(241, 245, 249, .78);
 }
 
 .tag-input {
     width: 100%;
+}
+
+::ng-deep .tag-list .mat-mdc-chip-set {
+    --mdc-chip-container-height: 28px;
+}
+
+::ng-deep .tag-list .mat-mdc-chip-option {
+    border-radius: 999px;
+    font-size: .82rem;
+    font-weight: 700;
+}
+
+::ng-deep .tag-list .mat-mdc-chip-action-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }

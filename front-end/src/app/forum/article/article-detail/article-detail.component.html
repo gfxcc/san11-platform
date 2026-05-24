@@ -1,48 +1,53 @@
-<div class="wrapper">
-    <div class="container">
-        <div class="content-area shadow-border round-border">
-            <div class="postcontent">
-                <h1 #articleSubjectElement (focus)="this.descEditor_updated=true;" class="entry-title">
-                    {{article.subject}}</h1>
-                <div class="row justify-content-center">
-                    <div style="margin-bottom: 10px; text-align:center;">
-                        <img [src]="this.user?.imageUrl | fullUrl : '128_128'" width="58" height="58" class="avatar">
-                        <p style="font-size:20px; margin-bottom: 0px;">{{user?.username}}</p>
-                    </div>
-                </div>
+<div class="article-detail-page">
+    <article class="article-detail surface-panel">
+        <header class="detail-header">
+            <div class="article-kicker">社区文章</div>
+            <h1 #articleSubjectElement (focus)="this.descEditor_updated=true;" class="entry-title">
+                {{article.subject}}
+            </h1>
 
-                <p class="entry-time">{{getArticleUpdateTime()}}</p>
-
-                <ckeditor class="editor" [data]="this.article.content" [editor]="this.editorService.getEditorInstance()"
-                    (ready)="this.editorService.onReady($event)" (change)="onDescEditorChange($event)"
-                    [disabled]="this.editorService.disabled" [config]="this.editorService.getConfig()"></ckeditor>
-
-                <div style="width: 100%; display: flex; padding-top: 20px;">
-                    <span class="example-spacer"></span>
-                    <app-feedback-card [target]="this.article.name" [likeCount]="this.article.likeCount"
-                        [dislikeCount]="this.article.dislikeCount"></app-feedback-card>
+            <div class="author-line">
+                <img [src]="this.user?.imageUrl | fullUrl : '128_128'" width="58" height="58" class="avatar"
+                    [alt]="user?.username || '作者头像'">
+                <div>
+                    <p>{{user?.username}}</p>
+                    <span>{{getArticleUpdateTime()}}</span>
                 </div>
             </div>
+        </header>
 
-            <mat-divider></mat-divider>
+        <section class="editor-section">
+            <ckeditor class="editor" [data]="this.article.content" [editor]="this.editorService.getEditorInstance()"
+                (ready)="this.editorService.onReady($event)" (change)="onDescEditorChange($event)"
+                [disabled]="this.editorService.disabled" [config]="this.editorService.getConfig()"></ckeditor>
+        </section>
 
-            <footer class="cattagsarea">
-                <div *ngIf="(isAdmin() || isAuthor())" class="control row">
-                    <button class="button" mat-raised-button color="warn" (click)="onDelete()">删除</button>
-                    <button class="button" mat-stroked-button color="warn" (click)="onFlipState()">{{article.state===3?
-                        '发布' :
-                        '隐藏'}}</button>
+        <footer class="article-actions">
+            <div *ngIf="(isAdmin() || isAuthor())" class="management-actions">
+                <button mat-stroked-button color="warn" (click)="onDelete()">
+                    <mat-icon>delete</mat-icon>
+                    删除
+                </button>
+                <button mat-stroked-button color="warn" (click)="onFlipState()">
+                    <mat-icon>{{article.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
+                    {{article.state===3 ? '发布' : '隐藏'}}
+                </button>
+            </div>
 
-                    <span class="example-spacer"></span>
+            <span class="example-spacer"></span>
 
-                    <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary"
-                        (click)="onUpdate()">更新</button>
-                </div>
-            </footer>
+            <app-feedback-card [target]="this.article.name" [likeCount]="this.article.likeCount"
+                [dislikeCount]="this.article.dislikeCount"></app-feedback-card>
 
-            <mat-divider></mat-divider>
+            <button *ngIf="this.descEditor_updated" mat-flat-button color="primary" class="save-button"
+                (click)="onUpdate()">
+                <mat-icon>save</mat-icon>
+                更新
+            </button>
+        </footer>
+    </article>
 
-            <app-comment-board [parent]="article.name"></app-comment-board>
-        </div>
-    </div>
+    <section class="comments-panel surface-panel">
+        <app-comment-board [parent]="article.name"></app-comment-board>
+    </section>
 </div>

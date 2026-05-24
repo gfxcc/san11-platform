@@ -1,13 +1,12 @@
-<div *ngIf="!this.createThreadLoading" class="container">
-    <mat-card-header style="display: flex; justify-content: center;">
-        <mat-card-title style="margin-bottom: 30px;">新帖子</mat-card-title>
-    </mat-card-header>
+<div *ngIf="!this.createThreadLoading" class="thread-dialog">
+    <header class="thread-dialog-header">
+        <h1>新帖子</h1>
+    </header>
     <form class="form" [formGroup]="createThreadForm" (ngSubmit)="onCreateThread()">
-        <mat-card-content>
-
-            <mat-form-field class="input-field">
+        <div class="thread-dialog-body">
+            <mat-form-field appearance="outline">
                 <mat-label>标题</mat-label>
-                <input matInput required placeholder="标题" autocomplete="off" formControlName="subject">
+                <input matInput required autocomplete="off" formControlName="subject">
                 <mat-error *ngIf="subject.errors?.minlength &&
                     subject.touched" align="end">
                     至少需要2个字符
@@ -18,21 +17,22 @@
                 </mat-error>
             </mat-form-field>
 
-
-            <div class="context-wrapper bottom-board" style="margin-bottom:
-                10px;">
+            <div class="editor-frame">
                 <ckeditor [editor]="this.editorService.getEditorInstance()" (ready)="this.editorService.onReady($event)"
                     [config]="this.editorService.getConfig()"></ckeditor>
             </div>
-
-        </mat-card-content>
+        </div>
 
         <div class="actions">
             <span class="example-spacer"></span>
-            <button class="button" [disabled]="!createThreadForm.valid" type="submit" mat-stroked-button
-                color="primary">创建</button>
+            <button [disabled]="!createThreadForm.valid" type="submit" mat-flat-button color="primary">
+                <mat-icon>add</mat-icon>
+                创建
+            </button>
         </div>
     </form>
 
 </div>
-<mat-spinner *ngIf="this.createThreadLoading"></mat-spinner>
+<div *ngIf="this.createThreadLoading" class="loading-state">
+    <mat-spinner></mat-spinner>
+</div>

@@ -1,6 +1,109 @@
-.card-wrapper {
+.account-panel {
+    overflow: hidden;
+}
+
+.account-panel-header {
+    padding: 26px 28px 22px;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(248, 250, 252, .76);
+}
+
+.account-panel-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.15;
+    font-weight: 850;
+}
+
+.account-panel-header p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.account-panel-body {
+    padding: 24px 28px 28px;
+}
+
+.account-stepper {
+    max-width: 620px;
+}
+
+.account-form,
+.account-form mat-form-field {
     width: 100%;
+}
+
+.field-stack {
+    display: grid;
+    gap: 18px;
+    padding-top: 8px;
+}
+
+:host ::ng-deep .account-form .mat-mdc-form-field {
+    --mat-form-field-container-height: 56px;
+    --mat-form-field-container-vertical-padding: 16px;
+}
+
+:host ::ng-deep .account-form .mat-mdc-text-field-wrapper {
+    overflow: visible;
+}
+
+:host ::ng-deep .account-form .mdc-floating-label {
+    z-index: 1;
+    background: var(--surface);
+    padding: 0 4px;
+}
+
+:host ::ng-deep .account-form .mat-mdc-form-field-infix {
+    min-height: 56px;
+}
+
+.step-actions {
     display: flex;
-    justify-content: center;
     align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.step-actions button {
+    border-radius: 999px;
+}
+
+.step-actions mat-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    font-size: 18px;
+}
+
+.step-note {
+    margin: 0 0 14px;
+    color: var(--text-muted);
+    font-size: .95rem;
+    line-height: 1.5;
+}
+
+.update-summary {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.update-summary p {
+    margin: 0;
+    color: var(--primary-strong);
+    font-weight: 750;
+}
+
+@media (max-width: 48rem) {
+    .account-panel-header {
+        padding: 22px 16px 18px;
+    }
+
+    .account-panel-body {
+        padding: 20px 16px 24px;
+    }
 }

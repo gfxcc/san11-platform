@@ -1,79 +1,74 @@
-* {
-    box-sizing: border-box;
+.notifications-page {
+    min-width: 0;
 }
 
-.top {
-    padding-top: 48px;
+.settings-panel {
+    overflow: hidden;
 }
 
-.page-introduction {
-    font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1.6rem;
-    line-height: 2.2rem;
-    font-weight: 500;
+.settings-panel-header {
+    padding: 26px 28px 22px;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(248, 250, 252, .76);
 }
 
-.page-introduction {
-    margin: 40px 0 12px 0;
-    font-family: "Roboto", "Arial", sans-serif;
-    font-size: 2.4rem;
-    line-height: 3.2rem;
-    font-weight: 400;
+.settings-panel-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.15;
+    font-weight: 850;
+}
+
+.settings-panel-header p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+    line-height: 1.5;
 }
 
 .section {
-    padding: 20px 0;
-    position: relative;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 28px;
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.section::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: 100%;
-    border-top: 1px solid var(--border-color);
+.section:last-child {
+    border-bottom: 0;
 }
 
 .settings-options-renderer {
-    width: 160px;
-    min-width: 160px;
-    margin-right: 56px;
-    color: var(--yt-spec-text-primary);
-    font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1.4rem;
-    line-height: 2rem;
-    font-weight: 500;
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 850;
 }
 
 .section-content {
     display: grid;
+    gap: 14px;
 }
 
 .switch-box {
-    padding: 10px;
+    padding: 14px 0;
 }
 
 .switch-description {
     padding-left: 44px;
+    color: var(--text-muted);
+    font-size: .92rem;
+    line-height: 1.5;
 }
 
-@media (max-width: 40rem) {
+@media (max-width: 48rem) {
     .section {
-        display: contents;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 20px 16px;
     }
 
-    .section::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        width: 100%;
-        border-top: 1px solid var(--border-color);
+    .settings-panel-header {
+        padding: 22px 16px 18px;
     }
 }

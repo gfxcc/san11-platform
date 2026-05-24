@@ -1,13 +1,18 @@
 .container {
-    min-width: 400px;
+    width: min(80vw, 400px);
 }
 
-.form-field {
+.dialog-header h1 {
+    margin: 0 0 18px;
+    color: var(--text-color);
+    font-size: 1.35rem;
+    line-height: 1.25;
+    font-weight: 850;
+}
+
+.form,
+.form mat-form-field {
     width: 100%;
-}
-
-.form {
-    max-width: 400px;
 }
 
 .actions {
@@ -15,12 +20,12 @@
     width: 100%;
 }
 
-.button {
-    float: right;
+.actions button {
+    border-radius: 999px;
 }
 
 @media (max-width:40rem) {
     .container {
-        min-width: 10rem;
+        width: calc(100vw - 32px);
     }
 }

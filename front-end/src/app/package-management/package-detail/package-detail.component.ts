@@ -1,560 +1,624 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  HostListener,
+  inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
-import { finalize } from 'rxjs';
+import { filter, finalize, switchMap, take } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
-import { CreateImageRequest, CreateSubscriptionRequest, DeletePackageRequest, DeleteSubscriptionRequest, FieldMask, GetUserRequest, ImageType, ListSubscriptionsRequest, ListSubscriptionsResponse, ListTagsRequest, Package, ResourceState, Subscription, Tag, UpdatePackageRequest, User } from "../../../proto/san11-platform.pb";
+import {
+  CreateImageRequest,
+  CreateSubscriptionRequest,
+  DeletePackageRequest,
+  DeleteSubscriptionRequest,
+  FieldMask,
+  GetUserRequest,
+  ImageType,
+  ListSubscriptionsRequest,
+  ListSubscriptionsResponse,
+  ListTagsRequest,
+  Package,
+  ResourceState,
+  Subscription,
+  Tag,
+  UpdatePackageRequest,
+  User,
+} from '../../../proto/san11-platform.pb';
 import { GlobalConstants } from '../../common/global-constants';
-import { NotificationService } from "../../common/notification.service";
-import { EventEmiterService } from "../../service/event-emiter.service";
-import { San11PlatformServiceService } from "../../service/san11-platform-service.service";
+import { NotificationService } from '../../common/notification.service';
+import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { UploadService } from '../../service/upload.service';
 import { increment } from '../../utils/number_util';
-import { getCategoryId, getPackageUrl } from "../../utils/package_util";
-import { getFullUrl, parseName } from "../../utils/resrouce_util";
-import { getUserUri, isAdmin, loadUser, signedIn } from "../../utils/user_util";
+import { getCategoryId, getPackageUrl } from '../../utils/package_util';
+import { getFullUrl, parseName } from '../../utils/resrouce_util';
+import { getUserUri, isAdmin, loadUser, signedIn } from '../../utils/user_util';
 
+const DESCRIPTION_OVERFLOW_TOLERANCE_PX = 8;
+const SIRE_CATEGORY_ID = 1;
+const SIRE_FALLBACK_IMAGE = 'static/images/sire2.jpg';
+const UPLOAD_PLACEHOLDER_IMAGE = '../../../assets/images/upload.jpg';
 
-export interface DialogData {
-  package: Package
-}
 @Component({
   selector: 'app-package-detail',
   templateUrl: './package-detail.component.html',
-  styleUrls: ['./package-detail.component.css']
+  styleUrls: ['./package-detail.component.css'],
 })
-export class PackageDetailComponent implements OnInit {
-  @ViewChild('packageNameTitle') packageNameElement: ElementRef
-  @ViewChild('imageInput') imageInputElement: ElementRef
-  @ViewChild('gallery') galleryElementCatched: ElementRef
-  @ViewChild('description') descriptionElement: ElementRef;
+export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('packageNameTitle') packageNameElement: ElementRef<HTMLElement>;
+  @ViewChild('imageInput') imageInputElement: ElementRef<HTMLInputElement>;
+  @ViewChild('gallery') galleryElementCatched;
+  @ViewChild('descriptionContainer') descriptionElement: ElementRef<HTMLElement>;
   @ViewChild('versionsSection') versionsSection: ElementRef<HTMLElement>;
 
   images: ImageItem[] = [];
-  packageId: string;
   package: Package;
   author: User = new User({});
 
   packageNameUpdated = false;
-
-  galleryElement;
-
-  // zones
-  adminZone = false;
   authorZone = false;
 
   descEditor_updated = false;
   descEditor_onFocus = false;
-
-  allTags: Tag[];
-  tagCanEdit: boolean;
-
-  // NEW UI
   descFolded = true;
-  liked = false;
-  disliked = false;
+  descriptionCanExpand = false;
 
-  // The subscription of the current user to the package
+  allTags: Tag[] = [];
+  tagCanEdit = false;
   subscription: Subscription;
+
+  private readonly destroyRef = inject(DestroyRef);
+  private descriptionOverflowTimer: ReturnType<typeof setTimeout> | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     public san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
-    private dialog: MatDialog,
-    private _eventEmiter: EventEmiterService,
     private cd: ChangeDetectorRef,
     private uploadService: UploadService,
     public editorService: EditorService,
     private progressService: ProgressService,
-  ) {
-  }
+  ) { }
+
+  // Lifecycle
 
   ngOnInit(): void {
-    this.route.data.subscribe(
-      (data) => {
+    this.route.data
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(data => {
         this.package = data.package;
-        // Disable the logic which is used to set sidebar when directly load a packge-details from a link.
-        // this._eventEmiter.sendMessage({ categoryId: getCategoryId(this.package.name).toString() });
-      }
-    );
-
-    this.loadPage();
-    this.loadTags();
-    this.configDescEditor();
-
-    this.tagCanEdit = this.isAuthor() || this.isAdmin();
-    this.loadCollected();
-  }
-
-  @HostListener('document:keydown.meta.enter', ['$event'])
-  onEnter(event: KeyboardEvent) {
-    if (!this.descEditor_onFocus || !this.descEditor_updated) {
-      return;
-    }
-    // check if cmd+enter is pressed
-    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
-      // trigger button click event
-      this.onUpdateDesc();
-    }
-  }
-
-
-  get collectButtonText(): string {
-    if (this.isCollected) {
-      return '取消收藏';
-    } else {
-      return '收藏';
-    }
-  }
-
-  get isCollected(): boolean {
-    return this.subscription != undefined;
-  }
-
-  loadCollected() {
-    this.san11pkService.listSubscription(new ListSubscriptionsRequest({
-      parent: getUserUri(loadUser()),
-      filter: `target="${this.package.name}"`,
-    })).subscribe(
-      (resp: ListSubscriptionsResponse) => {
-        this.subscription = resp.subscriptions[0];
-      },
-      error => {
-        this.notificationService.warn(`载入收藏失败: ${error.statusMessage}`);
-      }
-    );
+        this.initializePage();
+      });
   }
 
   ngAfterViewInit(): void {
-    if (this.isAuthor()) {
-      this.packageNameElement.nativeElement.contentEditable = true;
+    if (this.isAuthor() && this.packageNameElement?.nativeElement) {
+      this.packageNameElement.nativeElement.contentEditable = 'true';
     }
   }
 
-  configDescEditor() {
-    this.editorService.configEditor(!this.isAuthor(), this.package.name);
+  ngOnDestroy(): void {
+    this.clearDescriptionOverflowTimer();
   }
 
-  onDescEditorChange(event) {
-    this.descEditor_updated = true;
+  // Keyboard and viewport events
+
+  @HostListener('document:keydown.meta.enter', ['$event'])
+  @HostListener('document:keydown.control.enter', ['$event'])
+  onEditorSaveShortcut(event: KeyboardEvent): void {
+    if (!this.descEditor_onFocus || !this.descEditor_updated) {
+      return;
+    }
+
+    event.preventDefault();
+    this.onUpdateDesc();
   }
 
-  onUpdateTitle() {
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.scheduleDescriptionOverflowCheck();
+  }
+
+  // Template state
+
+  get collectButtonText(): string {
+    return this.isCollected ? '取消收藏' : '收藏';
+  }
+
+  get descriptionIsEmpty(): boolean {
+    return this.descriptionText.length === 0;
+  }
+
+  get isCollected(): boolean {
+    return this.subscription !== undefined;
+  }
+
+  private get descriptionText(): string {
+    return (this.package?.description ?? '')
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .trim();
+  }
+
+  // Title and description editing
+
+  onUpdateTitle(): void {
     const updatedPackageName = this.packageNameElement.nativeElement.innerHTML;
-    const request = new UpdatePackageRequest({
-      package: new Package({
-        name: this.package.name,
-        packageName: updatedPackageName
-      }),
-      updateMask: new FieldMask({
-        paths: ['package_name']
-      })
-    });
-    this.san11pkService.updatePackage(request).subscribe(
-      san11Package => {
+
+    this.updatePackage(
+      { packageName: updatedPackageName },
+      ['package_name'],
+      () => {
         this.package.packageName = updatedPackageName;
         this.packageNameUpdated = false;
-        this.notificationService.success("更新成功");
+        this.notificationService.success('更新成功');
       },
-      error => {
-        this.notificationService.warn("更新失败: " + error.statusMessage);
-      }
+      '更新失败',
     );
   }
 
-  onUpdateDesc() {
-    const newDesc = this.editorService.getData();
-
-    if (newDesc != undefined) {
-      const request = new UpdatePackageRequest({
-        package: new Package({
-          name: this.package.name,
-          description: newDesc
-        }),
-        updateMask: new FieldMask({
-          paths: ['description']
-        })
-      });
-      this.san11pkService.updatePackage(request).subscribe({
-        next: (san11Package: Package) => {
-          this.package.description = san11Package.description;
-        },
-        error: error => {
-          this.notificationService.warn(`更新失败: ${error.statusMessage}`);
-        },
-        complete: () => {
-          this.descEditor_updated = false;
-          this.notificationService.success('更新成功');
-        }
-      });
-    }
+  onDescEditorChange(): void {
+    this.descEditor_updated = true;
+    this.scheduleDescriptionOverflowCheck();
   }
 
-
-  newTagSelected(newTag: Tag) {
-    for (const tag of this.package.tags) {
-      if (tag.name === newTag.name) {
-        return;
-      }
-    }
-    let updateTags = this.package.tags;
-    updateTags.push(newTag);
-
-    const request = new UpdatePackageRequest({
-      package: new Package({
-        name: this.package.name,
-        tags: updateTags
-      }),
-      updateMask: new FieldMask({
-        paths: ['tags']
-      })
-    });
-    this.san11pkService.updatePackage(request).subscribe(
-      resp => {
-        this.package.tags = resp.tags;
-        this.notificationService.success('添加标签成功');
-      },
-      error => {
-        this.notificationService.warn("添加标签失败: " + error.statusMessage);
-      }
-    );
+  onDescriptionEditorReady(editor): void {
+    this.editorService.onReady(editor);
+    this.scheduleDescriptionOverflowCheck();
   }
 
-  removeTag(tagToRemove: Tag) {
-    let updateTags = this.package.tags.filter((tag: Tag) => tag.name != tagToRemove.name);
-
-    const request = new UpdatePackageRequest({
-      package: new Package({
-        name: this.package.name,
-        tags: updateTags
-      }),
-      updateMask: new FieldMask({
-        paths: ['tags']
-      })
-    });
-    this.san11pkService.updatePackage(request).subscribe(
-      resp => {
-        this.package.tags = resp.tags;
-        this.notificationService.success('删除标签成功');
-      },
-      error => {
-        this.notificationService.warn("删除标签失败: " + error.statusMessage);
-      }
-    );
-  }
-
-  loadTags() {
-    const [parent, collection, packageId] = parseName(this.package.name)
-    this.san11pkService.listTags(new ListTagsRequest({ parent: parent })).subscribe(
-      resp => {
-        this.allTags = resp.tags;
-      },
-      error => {
-        this.notificationService.warn('加载便签失败:' + error.statusMessage);
-      }
-    );
-  }
-
-  loadPage() {
-    if (this.isAdmin() && this.package.state === ResourceState.UNDER_REVIEW) {
-      this.adminZone = true;
-    }
-    if (this.isAdmin() || this.isAuthor()) {
-      this.authorZone = true;
-    }
-
-    this.package.imageUrls.forEach(imageUrl => {
-      const fullImageUrl = getFullUrl(imageUrl);
-      this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
-    });
-
-    if (getCategoryId(this.package.name) === 1) {
-      // append a pre-set image for SIRE package
-      const fullImageUrl = getFullUrl('static/images/sire2.jpg');
-      this.images.push(new ImageItem({ src: fullImageUrl, thumb: fullImageUrl }));
-    }
-    // append image for upload 
-    if (this.isAuthor() || this.isAdmin()) {
-      this.images.push(new ImageItem({ src: '../../../assets/images/upload.jpg', thumb: '../../../assets/images/upload.jpg' }));
-    }
-
-    this.loadAuthor();
-
-  }
-
-  // admin
-  onApprove() {
-
-    const request = new UpdatePackageRequest({
-      package: new Package({
-        name: this.package.name,
-        state: ResourceState.NORMAL,
-      }),
-      updateMask: new FieldMask({
-        paths: ['state']
-      })
-    });
-    this.san11pkService.updatePackage(request).subscribe(
-      san11Package => {
-        this.notificationService.success('审核通过')
-
-        this.router.navigate(this.package.name.split('/')).then(() => {
-          window.location.reload();
-        });
-      },
-      error => {
-        this.notificationService.warn('操作失败');
-      }
-    );
-  }
-
-
-  onFlipHide() {
-    if (confirm('确认要' + (this.package.state === ResourceState.HIDDEN ? '显示' : '隐藏') + ' ' + this.package.packageName + ' 吗？') === false) {
-      return;
-    }
-    const request = new UpdatePackageRequest({
-      package: new Package({
-        name: this.package.name,
-        state: this.package.state === ResourceState.HIDDEN ? ResourceState.NORMAL : ResourceState.HIDDEN
-      }),
-      updateMask: new FieldMask({
-        paths: ['state']
-      })
-    });
-    this.san11pkService.updatePackage(request).subscribe(
-      (resp: Package) => {
-        this.notificationService.success('操作成功')
-        this.router.navigate(this.package.name.split('/')).then(() => {
-          window.location.reload();
-        });
-      },
-      error => {
-        this.notificationService.warn('操作失败');
-      }
-    );
-  }
-
-  // author
-  onDelete() {
-    if (confirm('确认要删除 ' + this.package.packageName + ' 吗？')) {
-      if (this.isAdmin()) {
-        this.san11pkService.deletePackage(new DeletePackageRequest({
-          name: this.package.name,
-        })).subscribe(
-          (resp: Package) => {
-            this.notificationService.success('成功删除');
-
-            this.router.navigate(['/']).then(() => {
-              window.location.reload();
-            });
-          },
-          error => {
-            this.notificationService.warn('删除失败:' + error.statusMessage);
-          }
-        );
-      } else {
-        const request = new UpdatePackageRequest({
-          package: new Package({
-            name: this.package.name,
-            state: ResourceState.SCHEDULED_DELETE,
-          }),
-          updateMask: new FieldMask({
-            paths: ['state']
-          })
-        });
-        this.san11pkService.updatePackage(request).subscribe(
-          san11Package => {
-            this.notificationService.success('成功删除');
-
-            this.router.navigate(['/']).then(() => {
-              window.location.reload();
-            });
-          },
-          error => {
-            this.notificationService.warn('删除失败: ' + error.statusMessage);
-          }
-        );
-
-      }
-    }
-  }
-
-  onGalleryItemClick(imageIndex: number) {
-    this.galleryElement = this.galleryElementCatched;
-    if (!(this.isAdmin() || this.isAuthor())) {
+  onUpdateDesc(): void {
+    const description = this.editorService.getData();
+    if (description === undefined) {
       return;
     }
 
-    if (imageIndex === this.images.length - 1) {
-      // upload new image
+    this.updatePackage(
+      { description },
+      ['description'],
+      (updatedPackage: Package) => {
+        this.package.description = updatedPackage.description;
+        this.descEditor_updated = false;
+        this.scheduleDescriptionOverflowCheck();
+        this.notificationService.success('更新成功');
+      },
+      '更新失败',
+    );
+  }
+
+  onDescription(): void {
+    this.descFolded = false;
+    this.descriptionCanExpand = false;
+  }
+
+  // Tags
+
+  newTagSelected(newTag: Tag): void {
+    if (this.package.tags.some(tag => tag.name === newTag.name)) {
+      return;
+    }
+
+    this.updateTags([...this.package.tags, newTag], '添加标签成功', '添加标签失败');
+  }
+
+  removeTag(tagToRemove: Tag): void {
+    const tags = this.package.tags.filter(tag => tag.name !== tagToRemove.name);
+    this.updateTags(tags, '删除标签成功', '删除标签失败');
+  }
+
+  // Admin and author actions
+
+  onApprove(): void {
+    this.updatePackage(
+      { state: ResourceState.NORMAL },
+      ['state'],
+      () => {
+        this.notificationService.success('审核通过');
+        this.reloadCurrentPackage();
+      },
+      '操作失败',
+    );
+  }
+
+  onFlipHide(): void {
+    const nextState = this.package.state === ResourceState.HIDDEN
+      ? ResourceState.NORMAL
+      : ResourceState.HIDDEN;
+    const actionText = this.package.state === ResourceState.HIDDEN ? '显示' : '隐藏';
+
+    if (!confirm(`确认要${actionText} ${this.package.packageName} 吗？`)) {
+      return;
+    }
+
+    this.updatePackage(
+      { state: nextState },
+      ['state'],
+      () => {
+        this.notificationService.success('操作成功');
+        this.reloadCurrentPackage();
+      },
+      '操作失败',
+    );
+  }
+
+  onDelete(): void {
+    if (!confirm(`确认要删除 ${this.package.packageName} 吗？`)) {
+      return;
+    }
+
+    if (this.isAdmin()) {
+      this.deletePackageImmediately();
+      return;
+    }
+
+    this.updatePackage(
+      { state: ResourceState.SCHEDULED_DELETE },
+      ['state'],
+      () => {
+        this.notificationService.success('成功删除');
+        this.navigateHomeAndReload();
+      },
+      '删除失败',
+    );
+  }
+
+  // Gallery and screenshots
+
+  onGalleryItemClick(imageIndex: number): void {
+    if (!this.canManagePackage()) {
+      return;
+    }
+
+    if (this.isUploadPlaceholderIndex(imageIndex)) {
       this.imageInputElement.nativeElement.click();
-
-    } else {
-      // ask for delete
-      if (confirm("确定要删除这张截图吗?")) {
-        if (getCategoryId(this.package.name) === 1 && imageIndex === this.images.length - 2) {
-          this.notificationService.warn('不可删除系统预设图片');
-          return;
-        }
-        this.package.imageUrls.splice(imageIndex, 1);
-
-        const request = new UpdatePackageRequest({
-          package: new Package({
-            name: this.package.name,
-            imageUrls: this.package.imageUrls
-          }),
-          updateMask: new FieldMask({
-            paths: ['image_urls']
-          })
-        });
-        this.san11pkService.updatePackage(request).subscribe(
-          san11Package => {
-            this.images.splice(imageIndex, 1);
-            this.notificationService.success("删除成功");
-            this.galleryElement.load(this.images);
-          },
-          error => {
-            this.notificationService.warn("删除截图失败:" + error.statusMessage);
-          }
-        );
-      }
+      return;
     }
+
+    this.deleteScreenshot(imageIndex);
   }
 
+  onUploadScreenshot(imageInput: HTMLInputElement): void {
+    const image = imageInput.files?.[0];
+    if (!image) {
+      return;
+    }
 
-  onUploadScreenshot(imageInput) {
-    const image = imageInput.files[0];
     if (image.size > GlobalConstants.maxImageSize) {
-      alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize / 1024 / 1024).toString() + 'MB');
+      alert(`上传图片必须小于: ${GlobalConstants.maxImageSize / 1024 / 1024}MB`);
       return;
     }
 
     const parent = getPackageUrl(this.package);
-    const filename = `${parent}/images/tmp.jpeg`
+    const filename = `${parent}/images/tmp.jpeg`;
+
+    const createImageRequest = new CreateImageRequest({
+        parent,
+        url: filename,
+        imageType: ImageType.SCREENSHOT,
+    });
 
     this.progressService.loading();
-    this.uploadService.upload(image, GlobalConstants.tmpBucket, filename).subscribe((upload) => {
-      if (upload.state === 'DONE') {
-        this.san11pkService.createImage(new CreateImageRequest({
-          parent: parent,
-          url: filename,
-          imageType: ImageType.SCREENSHOT,
-        }))
-          .pipe(finalize(() => this.progressService.complete()))
-          .subscribe({
-            next: (url) => {
-              this.package.imageUrls.push(url.url);
-              const fullUrl = getFullUrl(url.url);
-              if (getCategoryId(this.package.name) === 1) {
-                this.images.splice(this.images.length - 2, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
-              } else {
-                this.images.splice(this.images.length - 1, 0, new ImageItem({ src: fullUrl, thumb: fullUrl }));
-              }
-
-              this.galleryElement.load(this.images);
-
-              this.notificationService.success('图片上传成功');
-            },
-            error: (error) => {
-              this.notificationService.warn('上传截图失败: ' + error.statusMessage);
-            },
-          })
-      }
-    });
+    this.uploadService.upload(image, GlobalConstants.tmpBucket, filename)
+      .pipe(
+        filter(upload => upload.state === 'DONE'),
+        take(1),
+        switchMap(() => this.san11pkService.createImage(createImageRequest)),
+        finalize(() => this.progressService.complete()),
+      )
+      .subscribe({
+        next: url => this.addUploadedScreenshot(url.url),
+        error: error => this.notificationService.warn(`上传截图失败: ${error.statusMessage}`),
+      });
   }
 
-  onBack() {
+  // Child component events and page actions
+
+  onBack(): void {
     this.router.navigate(['categories', getCategoryId(this.package.name).toString()]);
   }
 
-
-  // childs
-  onChildDownload(msg) {
+  onChildDownload(_event?: unknown): void {
     this.package.downloadCount = increment(this.package.downloadCount);
   }
 
-  scrollToVersions() {
+  scrollToVersions(): void {
     this.versionsSection?.nativeElement.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
   }
 
-  // NEW UI
-  onAuthorNameClick() {
+  onAuthorNameClick(): void {
     this.router.navigate(['users', this.package.authorId]);
   }
 
-  onToggleCollect() {
-    if (this.isCollected) {
-      this.san11pkService.deleteSubscription(new DeleteSubscriptionRequest({
-        name: this.subscription.name,
-      })).subscribe(
-        (resp: Subscription) => {
-          this.subscription = undefined;
-          this.notificationService.success(`已取消收藏`);
-        }, error => {
-          this.notificationService.warn(`取消收藏失败: ${error.statusMessage}`);
-        }
-      );
-    } else {
-      this.san11pkService.createSubscription(new CreateSubscriptionRequest({
-        parent: getUserUri(loadUser()),
-        subscription: new Subscription({
-          target: this.package.name,
-        }),
-      })).subscribe(
-        (resp: Subscription) => {
-          this.subscription = resp;
-          this.notificationService.success(`收藏成功`);
-        }, error => {
-          this.notificationService.warn(`收藏失败: ${error.statusMessage}`);
-        }
-      );
-    }
-  }
-
-  onReport() {
+  onToggleCollect(): void {
     if (!signedIn()) {
       this.notificationService.warn('请登录');
       return;
     }
+
+    if (this.isCollected) {
+      this.deleteSubscription();
+      return;
+    }
+
+    this.createSubscription();
   }
 
-  loadAuthor() {
-    this.san11pkService.getUser(new GetUserRequest({
-      name: `users/${this.package.authorId}`,
-    })).subscribe({
-      next: user => {
-        this.author = user;
-      },
-      error: error => {
-        this.notificationService.warn('无法获取作者信息:' + error.statusMessage);
-      }
-    });
+  onReport(): void {
+    if (!signedIn()) {
+      this.notificationService.warn('请登录');
+    }
   }
 
-  onDescription() {
-    this.descFolded = false;
-  }
+  // Utilities used by the template
 
-
-  // utils
-
-  isAdmin() {
+  isAdmin(): boolean {
     return isAdmin();
   }
 
-  isAuthor() {
-    return this.package.authorId === localStorage.getItem('userId');
+  isAuthor(): boolean {
+    return this.package?.authorId === localStorage.getItem('userId');
   }
 
-  getPackageUrl() {
+  getPackageUrl(): string {
     return getPackageUrl(this.package);
+  }
+
+  // Page setup
+
+  private initializePage(): void {
+    this.resetPageState();
+    this.authorZone = this.canManagePackage();
+    this.tagCanEdit = this.canManagePackage();
+
+    this.buildGalleryImages();
+    this.configDescriptionEditor();
+    this.loadAuthor();
+    this.loadTags();
+    this.loadCollected();
+  }
+
+  private resetPageState(): void {
+    this.images = [];
+    this.allTags = [];
+    this.subscription = undefined;
+    this.packageNameUpdated = false;
+    this.descEditor_updated = false;
+    this.descEditor_onFocus = false;
+    this.descFolded = true;
+    this.descriptionCanExpand = false;
+  }
+
+  private buildGalleryImages(): void {
+    this.images = this.package.imageUrls.map(imageUrl => this.createGalleryImage(getFullUrl(imageUrl)));
+
+    if (this.isSirePackage()) {
+      this.images.push(this.createGalleryImage(getFullUrl(SIRE_FALLBACK_IMAGE)));
+    }
+
+    if (this.canManagePackage()) {
+      this.images.push(this.createGalleryImage(UPLOAD_PLACEHOLDER_IMAGE));
+    }
+  }
+
+  private configDescriptionEditor(): void {
+    this.editorService.configEditor(!this.isAuthor(), this.package.name);
+  }
+
+  private loadAuthor(): void {
+    this.san11pkService.getUser(new GetUserRequest({
+      name: `users/${this.package.authorId}`,
+    })).subscribe({
+      next: user => this.author = user,
+      error: error => this.notificationService.warn(`无法获取作者信息:${error.statusMessage}`),
+    });
+  }
+
+  private loadTags(): void {
+    const [parent] = parseName(this.package.name);
+
+    this.san11pkService.listTags(new ListTagsRequest({ parent })).subscribe({
+      next: resp => this.allTags = resp.tags,
+      error: error => this.notificationService.warn(`加载便签失败:${error.statusMessage}`),
+    });
+  }
+
+  private loadCollected(): void {
+    if (!signedIn()) {
+      this.subscription = undefined;
+      return;
+    }
+
+    this.san11pkService.listSubscription(new ListSubscriptionsRequest({
+      parent: getUserUri(loadUser()),
+      filter: `target="${this.package.name}"`,
+    })).subscribe({
+      next: (resp: ListSubscriptionsResponse) => this.subscription = resp.subscriptions[0],
+      error: error => this.notificationService.warn(`载入收藏失败: ${error.statusMessage}`),
+    });
+  }
+
+  // Persistence helpers
+
+  private updatePackage(
+    patch: Partial<Package>,
+    paths: string[],
+    onSuccess: (updatedPackage: Package) => void,
+    errorPrefix: string,
+  ): void {
+    this.san11pkService.updatePackage(new UpdatePackageRequest({
+      package: new Package({
+        name: this.package.name,
+        ...patch,
+      }),
+      updateMask: new FieldMask({ paths }),
+    })).subscribe({
+      next: onSuccess,
+      error: error => this.notificationService.warn(`${errorPrefix}: ${error.statusMessage ?? '操作失败'}`),
+    });
+  }
+
+  private updateTags(tags: Tag[], successMessage: string, errorPrefix: string): void {
+    this.updatePackage(
+      { tags },
+      ['tags'],
+      updatedPackage => {
+        this.package.tags = updatedPackage.tags;
+        this.notificationService.success(successMessage);
+      },
+      errorPrefix,
+    );
+  }
+
+  private deletePackageImmediately(): void {
+    this.san11pkService.deletePackage(new DeletePackageRequest({
+      name: this.package.name,
+    })).subscribe({
+      next: () => {
+        this.notificationService.success('成功删除');
+        this.navigateHomeAndReload();
+      },
+      error: error => this.notificationService.warn(`删除失败:${error.statusMessage}`),
+    });
+  }
+
+  private createSubscription(): void {
+    this.san11pkService.createSubscription(new CreateSubscriptionRequest({
+      parent: getUserUri(loadUser()),
+      subscription: new Subscription({
+        target: this.package.name,
+      }),
+    })).subscribe({
+      next: (resp: Subscription) => {
+        this.subscription = resp;
+        this.notificationService.success('收藏成功');
+      },
+      error: error => this.notificationService.warn(`收藏失败: ${error.statusMessage}`),
+    });
+  }
+
+  private deleteSubscription(): void {
+    this.san11pkService.deleteSubscription(new DeleteSubscriptionRequest({
+      name: this.subscription.name,
+    })).subscribe({
+      next: () => {
+        this.subscription = undefined;
+        this.notificationService.success('已取消收藏');
+      },
+      error: error => this.notificationService.warn(`取消收藏失败: ${error.statusMessage}`),
+    });
+  }
+
+  // Gallery helpers
+
+  private deleteScreenshot(imageIndex: number): void {
+    if (!confirm('确定要删除这张截图吗?')) {
+      return;
+    }
+
+    if (this.isSireFallbackImageIndex(imageIndex)) {
+      this.notificationService.warn('不可删除系统预设图片');
+      return;
+    }
+
+    const imageUrls = this.package.imageUrls.filter((_, index) => index !== imageIndex);
+
+    this.updatePackage(
+      { imageUrls },
+      ['image_urls'],
+      () => {
+        this.package.imageUrls = imageUrls;
+        this.images.splice(imageIndex, 1);
+        this.reloadGallery();
+        this.notificationService.success('删除成功');
+      },
+      '删除截图失败',
+    );
+  }
+
+  private addUploadedScreenshot(url: string): void {
+    this.package.imageUrls.push(url);
+    this.images.splice(this.uploadInsertIndex(), 0, this.createGalleryImage(getFullUrl(url)));
+    this.reloadGallery();
+    this.notificationService.success('图片上传成功');
+  }
+
+  private createGalleryImage(url: string): ImageItem {
+    return new ImageItem({ src: url, thumb: url });
+  }
+
+  private reloadGallery(): void {
+    this.galleryElementCatched?.load(this.images);
+  }
+
+  private uploadInsertIndex(): number {
+    return this.isSirePackage() ? this.images.length - 2 : this.images.length - 1;
+  }
+
+  private isUploadPlaceholderIndex(imageIndex: number): boolean {
+    return imageIndex === this.images.length - 1;
+  }
+
+  private isSireFallbackImageIndex(imageIndex: number): boolean {
+    return this.isSirePackage() && imageIndex === this.images.length - 2;
+  }
+
+  private isSirePackage(): boolean {
+    return getCategoryId(this.package.name) === SIRE_CATEGORY_ID;
+  }
+
+  // Description layout helpers
+
+  private scheduleDescriptionOverflowCheck(): void {
+    this.clearDescriptionOverflowTimer();
+    this.descriptionOverflowTimer = setTimeout(() => this.updateDescriptionOverflow(), 0);
+  }
+
+  private clearDescriptionOverflowTimer(): void {
+    if (this.descriptionOverflowTimer === undefined) {
+      return;
+    }
+
+    clearTimeout(this.descriptionOverflowTimer);
+    this.descriptionOverflowTimer = undefined;
+  }
+
+  private updateDescriptionOverflow(): void {
+    if (!this.descriptionElement?.nativeElement || this.descEditor_updated || !this.descFolded || this.descriptionIsEmpty) {
+      this.descriptionCanExpand = false;
+      return;
+    }
+
+    const descriptionContainer = this.descriptionElement.nativeElement;
+    this.descriptionCanExpand = descriptionContainer.scrollHeight >
+      descriptionContainer.clientHeight + DESCRIPTION_OVERFLOW_TOLERANCE_PX;
+    this.cd.detectChanges();
+  }
+
+  // Navigation and permission helpers
+
+  private canManagePackage(): boolean {
+    return this.isAdmin() || this.isAuthor();
+  }
+
+  private reloadCurrentPackage(): void {
+    this.router.navigate(this.package.name.split('/')).then(() => window.location.reload());
+  }
+
+  private navigateHomeAndReload(): void {
+    this.router.navigate(['/']).then(() => window.location.reload());
   }
 }

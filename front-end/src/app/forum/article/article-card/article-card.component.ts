@@ -92,7 +92,7 @@ export class ArticleCardComponent implements OnInit {
   }
 
   isAuthor() {
-    return loadUser().userId === this.article.authorId;
+    return loadUser()?.userId === this.article.authorId;
   }
 
   getStatusName() {

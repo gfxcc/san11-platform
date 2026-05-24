@@ -1,7 +1,11 @@
+.timeline-page {
+    padding: 10px 0 24px;
+}
+
 .custom-marker {
     display: flex;
-    width: 2rem;
-    height: 2rem;
+    width: 34px;
+    height: 34px;
     align-items: center;
     justify-content: center;
     color: #ffffff;
@@ -9,6 +13,49 @@
     z-index: 1;
 }
 
-::ng-deep .alternate-align-card>.mat-mdc-card-header {
-    display: initial !important;
+.custom-marker mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.timeline-card {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.timeline-card mat-card-content {
+    padding: 16px !important;
+}
+
+.timeline-card-header h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.35;
+    font-weight: 850;
+}
+
+.timeline-card-header span {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: .86rem;
+    font-weight: 650;
+}
+
+.timeline-card img {
+    max-width: 100%;
+    margin-top: 12px;
+    border-radius: var(--radius-sm);
+}
+
+.timeline-card p {
+    margin: 12px 0 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+    word-break: break-word;
 }

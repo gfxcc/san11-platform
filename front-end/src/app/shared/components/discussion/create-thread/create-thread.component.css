@@ -1,6 +1,32 @@
-.container {
-    min-width: 600px;
-    padding: 1rem;
+.thread-dialog {
+    width: min(86vw, 680px);
+}
+
+.thread-dialog-header {
+    padding: 6px 4px 18px;
+}
+
+.thread-dialog-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.55rem;
+    line-height: 1.2;
+    font-weight: 850;
+}
+
+.thread-dialog-body {
+    display: grid;
+    gap: 12px;
+}
+
+.thread-dialog-body mat-form-field {
+    width: 100%;
+}
+
+.editor-frame {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
 }
 
 .ck.ck-editor__editable_inline {
@@ -9,11 +35,32 @@
 
 .actions {
     display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
+    margin-top: 16px;
+}
+
+.actions button {
+    border-radius: 999px;
+}
+
+.actions mat-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    font-size: 18px;
+}
+
+.loading-state {
+    min-width: 220px;
+    min-height: 180px;
+    display: grid;
+    place-items: center;
 }
 
 @media (max-width: 40rem) {
-    .container {
-        min-width: 200px;
+    .thread-dialog {
+        width: calc(100vw - 32px);
     }
 }

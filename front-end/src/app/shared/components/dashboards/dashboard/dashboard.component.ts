@@ -20,6 +20,7 @@ export interface OrderOption {
 })
 export class DashboardComponent implements OnInit {
   @Input() packages: Package[];
+  @Input() showCatalogHeader = true;
   listRequest: ListPackagesRequest = undefined;
 
   orderOptions: OrderOption[] = [
@@ -41,6 +42,10 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.packages != undefined) {
+      this.showCatalogHeader = false;
+    }
+
     var obsComb = combineLatest(this.route.params, this.route.queryParams, this.route.parent.params,
       (params, qparams, parentParams) => ({ params, qparams, parentParams }));
 
@@ -63,6 +68,7 @@ export class DashboardComponent implements OnInit {
           }
           this.loadPackages();
         } else if (userId != undefined) {
+          this.showCatalogHeader = false;
           // TODO: Reimplement this with SearchPackage.
           this.packages = [];
           GlobalConstants.categories.forEach(c => {

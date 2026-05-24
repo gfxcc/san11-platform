@@ -24,7 +24,6 @@
 .author-section .span {}
 
 .author-image {
-    /* background-image: url('../../../assets/images/zhuge.jpg'); */
     background-size: cover;
     width: 80px;
     height: 80px;
@@ -38,7 +37,28 @@
 
 .header {
     display: flex;
-    color: #9e9fa2;
+    align-items: center;
+    color: var(--text-muted);
+}
+
+.owner-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    margin-left: 6px;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary-strong);
+    font-size: .78rem;
+    font-weight: 800;
+}
+
+.comment-index {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-subtle);
+    font-weight: 750;
 }
 
 .create-time {
@@ -72,6 +92,7 @@
 }
 
 .feedback-card-wrapper {
+    transform: scale(0.8);
     transform-origin: left;
     display: inline-block;
 }
@@ -86,6 +107,16 @@
     margin-top: 5px;
     display: flex;
     justify-content: center;
+}
+
+.replies-section {
+    margin-top: 15px;
+    margin-right: 10px;
+}
+
+.reply-editor-row {
+    width: 100%;
+    display: flex;
 }
 
 .right .author-image {
@@ -103,6 +134,14 @@
 .reply-section form {
     width: 90%;
     margin-left: 10px;
+}
+
+.reply-section mat-form-field {
+    width: 100%;
+}
+
+.reply-input {
+    min-height: 32px;
 }
 
 .actions-section button {

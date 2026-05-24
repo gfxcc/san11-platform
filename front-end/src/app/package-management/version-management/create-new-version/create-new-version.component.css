@@ -1,37 +1,127 @@
-.form-field {
+.version-dialog {
+    width: min(86vw, 620px);
+    padding: 0 2px 2px;
+}
+
+.version-dialog-header {
+    padding: 4px 0 18px;
+}
+
+.version-dialog-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.55rem;
+    line-height: 1.2;
+    font-weight: 850;
+}
+
+.form,
+.field-stack {
+    display: grid;
+    gap: 12px;
+}
+
+.form mat-form-field {
     width: 100%;
 }
 
-.form {
-    max-width: 400px;
+.field-stack {
+    grid-template-columns: 1fr 1fr;
 }
 
 .actions {
     display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
+    margin-top: 16px;
 }
 
 .version-section {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
 }
 
 .version-field {
-    width: 20%;
-    margin: 5px;
-    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.section-label {
+    color: var(--text-color);
+    font-weight: 800;
+}
+
+.editor-frame {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
 }
 
 .file-section {
-    padding: .8rem;
+    display: grid;
+    gap: 12px;
+    padding: 16px 0 4px;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-.upload-section mat-button-wrapper {
+.version-tabs {
+    margin-top: 4px;
+}
+
+.upload-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-name-button {
+    min-width: 0;
     max-width: 100%;
-    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-name-button mat-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    font-size: 18px;
+}
+
+.upload-progress {
+    height: 3px;
+}
+
+.auto-create-toggle {
+    margin-top: 2px;
+}
+
+.form-errors {
+    display: grid;
+    gap: 4px;
+}
+
+.actions button {
+    border-radius: 999px;
 }
 
 :host ::ng-deep .ck-editor__editable_inline {
     max-height: 500px;
+}
+
+@media (max-width: 48rem) {
+    .version-dialog {
+        width: calc(100vw - 32px);
+    }
+
+    .field-stack,
+    .version-section {
+        grid-template-columns: 1fr;
+    }
+
+    .upload-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
 }

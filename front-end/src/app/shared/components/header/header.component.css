@@ -1,5 +1,4 @@
 
-/* TODO(mdc-migration): The following rule targets internal classes of progress-bar that may no longer apply for the MDC version. */
 mat-progress-bar {
     position: fixed;
     left: 0;
@@ -160,7 +159,7 @@ h5 {
     display: inline-flex;
     align-items: center;
     height: 46px;
-    padding: 0 4px;
+    padding: 0 12px 0 8px;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     min-width: 0;
@@ -174,6 +173,25 @@ h5 {
 .account-trigger:hover {
     background: var(--surface);
     border-color: var(--border-strong);
+}
+
+::ng-deep .account-trigger .mdc-button__label {
+    display: inline-flex;
+    align-items: center;
+}
+
+::ng-deep .account-trigger .author-card {
+    min-height: 36px !important;
+}
+
+::ng-deep .account-trigger .avatar-frame {
+    width: 36px !important;
+    height: 36px !important;
+}
+
+::ng-deep .account-trigger .author-image {
+    width: 36px !important;
+    height: 36px !important;
 }
 
 ::ng-deep .mat-mdc-menu-panel {
@@ -205,6 +223,14 @@ h5 {
 
 .notification-button {
     height: auto !important;
+}
+
+.clear-notifications {
+    text-align: center;
+}
+
+.account-user-card {
+    z-index: 999;
 }
 
 .notification-card {

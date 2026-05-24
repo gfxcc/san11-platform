@@ -168,7 +168,6 @@ export class ArticleDetailComponent implements OnInit {
   }
 
   isAuthor() {
-    return this.article.authorId === loadUser().userId;
+    return this.article.authorId === loadUser()?.userId;
   }
 }
-

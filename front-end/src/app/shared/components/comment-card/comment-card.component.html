@@ -11,7 +11,7 @@
                 <div>
                     <a href="users/{{this.user?.userId}}" target="_blink">{{this.user?.username}}</a>
                     <span *ngIf="this.user?.userId === this.resourceOwnerId"
-                        style="margin-left: 5px; color:#3f51b5">[发帖人]</span>
+                        class="owner-badge">发帖人</span>
                     <span class="create-time">{{getCommentAge()}}</span>
                 </div>
 
@@ -32,8 +32,7 @@
                     </button>
                 </mat-menu>
 
-                <span *ngIf="this.comment.index != &quot;0&quot;" style="display: inline-flex;
-                    align-items: center;"> #{{this.comment.index}} </span>
+                <span *ngIf="this.comment.index != &quot;0&quot;" class="comment-index"> #{{this.comment.index}} </span>
                 <!-- <div *ngIf="!this.hideControl">
                     <button mat-icon-button class="icon-button" (click)="onDeleteComment()">
                     <mat-icon class="icon">delete</mat-icon>
@@ -49,7 +48,7 @@
                 </div>
             </div>
             <div class="action-section">
-                <div class="feedback-card-wrapper" [style.transform]="'scale(0.8)'">
+                <div class="feedback-card-wrapper">
                     <app-feedback-card [target]="this.comment.name" [likeCount]="this.comment.likeCount"
                         [dislikeCount]="this.comment.dislikeCount" 
                         [disableClickableBackground]="true"></app-feedback-card>
@@ -59,8 +58,7 @@
             </div>
         </div>
 
-        <div *ngIf="this.comment.replies.length!=0" style="margin-top: 15px;
-            margin-right: 10px;">
+        <div *ngIf="this.comment.replies.length!=0" class="replies-section">
             <ng-container *ngFor="let reply of this.comment.replies">
                 <app-reply-card [reply]="reply" [resourceOwnerId]="this.resourceOwnerId"
                     (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply($event)"></app-reply-card>
@@ -69,7 +67,7 @@
 
         <div *ngIf="!this.hideReplyEnter" class="reply-section">
 
-            <div *ngIf="!this.createReplyLoading" style="width:100%; display: flex;">
+            <div *ngIf="!this.createReplyLoading" class="reply-editor-row">
 
                 <div mat-card-avatar class="author-image">
                     <img [hidden]="this.hideAuthorImage" [src]="this.authorImage |
@@ -77,9 +75,9 @@
                 </div>
 
                 <form #replyForm="ngForm" (ngSubmit)="onCreateReply(replyForm.value);replyForm.resetForm();">
-                    <mat-form-field style="width: 100%;">
+                    <mat-form-field>
                         <textarea #replyInput matInput type="text" matInput placeholder="输入回复" ngModel name="input"
-                            style="height: 15px;" (keydown)="handleKeyDown($event, replyForm)"></textarea>
+                            class="reply-input" (keydown)="handleKeyDown($event, replyForm)"></textarea>
                     </mat-form-field>
 
                     <div class="actions-section">

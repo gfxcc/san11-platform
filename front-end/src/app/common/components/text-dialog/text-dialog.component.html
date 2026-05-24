@@ -1,18 +1,17 @@
 <div class="main">
-    <h3 style="margin-top: 0px;">{{this.title}}</h3>
+    <h3>{{this.title}}</h3>
 
-    <div class="show-border" style="margin-bottom: 10px;">
+    <div class="dialog-editor">
         <ckeditor [data]="this.content" [editor]="this.editorService.getEditorInstance()"
             [config]="this.editorService.getConfig()" [disabled]="!this.editable" 
             (ready)="this.editorService.onReady($event)">
         </ckeditor>
     </div>
 
-    <div style="display:inline-flex; width: 100%;">
+    <div class="dialog-actions">
         <span class="example-spacer"></span>
-        <button *ngIf="this.editable" mat-stroked-button mat-dialog-close color="accent"
-            style="margin-right: 5px">取消</button>
-        <button mat-stroked-button color="primary" (click)="this.onConfirm()">确认</button>
+        <button *ngIf="this.editable" mat-stroked-button mat-dialog-close color="accent">取消</button>
+        <button mat-flat-button color="primary" (click)="this.onConfirm()">确认</button>
     </div>
 
 </div>

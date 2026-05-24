@@ -4,6 +4,32 @@
     padding: 1rem;
 }
 
+.main h3 {
+    margin: 0 0 14px;
+    color: var(--text-color);
+    font-size: 1.35rem;
+    line-height: 1.25;
+    font-weight: 850;
+}
+
+.dialog-editor {
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+.dialog-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.dialog-actions button {
+    border-radius: 999px;
+}
+
 :host ::ng-deep .ck-editor__editable_inline {
     max-height: 500px;
 }

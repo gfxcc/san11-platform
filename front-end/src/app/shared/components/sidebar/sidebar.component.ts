@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { onMobile } from 'src/app/utils/layout_util';
 import { CreateTagRequest, CreateThreadRequest, DeleteTagRequest, ListTagsRequest, Tag, Thread } from '../../../../proto/san11-platform.pb';
 import { GlobalConstants } from '../../../common/global-constants';
@@ -42,6 +43,7 @@ export class SidebarComponent implements OnInit {
 
   selectedCategory = undefined;
   tags: Tag[] = [];
+  private categoryRouteActive = false;
 
   constructor(
     private notificationService: NotificationService,
@@ -55,7 +57,27 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadTags();
+    this.syncSelectionFromUrl();
+
+    if (this.categoryRouteActive) {
+      this.loadTags();
+    }
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const previousCategory = this.selectedCategory;
+        this.syncSelectionFromUrl();
+
+        if (!this.categoryRouteActive) {
+          this.tags = [];
+          return;
+        }
+
+        if (previousCategory !== this.selectedCategory) {
+          this.loadTags();
+        }
+      });
   }
 
   loadTags() {
@@ -119,12 +141,18 @@ export class SidebarComponent implements OnInit {
 
   onCategoryLabelClick(category) {
     this.selectedCategory = category.value;
+    this.categoryRouteActive = category.link?.[0] === '/categories';
 
     if (onMobile()) {
       this.sidenavService.close();
     }
     this.router.navigate(category.link);
-    this.loadTags();
+
+    if (this.categoryRouteActive) {
+      this.loadTags();
+    } else {
+      this.tags = [];
+    }
   }
 
   onClickCreateTool() {
@@ -205,5 +233,26 @@ export class SidebarComponent implements OnInit {
   // utilities wrapper
   isAdmin() {
     return isAdmin()
+  }
+
+  private syncSelectionFromUrl() {
+    const url = this.router.url.split('?')[0];
+    const categoryMatch = url.match(/^\/categories\/([^/]+)/);
+
+    if (categoryMatch) {
+      this.selectedCategory = decodeURIComponent(categoryMatch[1]);
+      this.categoryRouteActive = true;
+      return;
+    }
+
+    const activeWebModule = this.webModules.find(module => module.link[0] === url);
+    if (activeWebModule) {
+      this.selectedCategory = activeWebModule.value;
+      this.categoryRouteActive = false;
+      return;
+    }
+
+    this.selectedCategory = undefined;
+    this.categoryRouteActive = false;
   }
 }

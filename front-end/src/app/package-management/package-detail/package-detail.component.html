@@ -109,20 +109,31 @@
                 <app-user-info-with-sub-button class="user-info-with-sub-button" [user]="this.author">
                 </app-user-info-with-sub-button>
 
-                <div class="package-description-section" [class.package-description-section-folded]="descFolded"
-                    [class.package-description-section-expanded]="!descFolded" (click)="onDescription()">
-                    <div #description id="description-container" [class.desc-folded]="descFolded && !descEditor_updated"
+                <div class="package-description-section"
+                    [class.package-description-section-can-expand]="descriptionCanExpand"
+                    [class.package-description-section-folded]="descFolded"
+                    [class.package-description-section-expanded]="!descFolded">
+                    <div #descriptionContainer id="description-container" [class.desc-folded]="descFolded && !descEditor_updated"
                         [class.desc-full]="!(descFolded &&
                         !descEditor_updated)">
-                        <ckeditor #description [data]="this.package.description"
+                        <ckeditor *ngIf="!descriptionIsEmpty || isAuthor() || descEditor_updated" #description
+                            [data]="this.package.description"
                             [editor]="this.editorService.getEditorInstance()"
-                            (ready)="this.editorService.onReady($event)" [disabled]="this.editorService.disabled"
+                            (ready)="onDescriptionEditorReady($event)" [disabled]="this.editorService.disabled"
                             [config]="this.editorService.getConfig()" (change)="onDescEditorChange($event)"
                             (focus)="descEditor_onFocus=true" (blur)="descEditor_onFocus=false"></ckeditor>
+                        <div *ngIf="descriptionIsEmpty && !isAuthor() && !descEditor_updated"
+                            class="description-empty-state">
+                            <mat-icon>notes</mat-icon>
+                            <span>作者暂未填写资源介绍</span>
+                        </div>
                     </div>
-                    <div *ngIf="!descEditor_updated">
-                        <span id="more-button" *ngIf="descFolded" (click)="onDescription()"
-                            class="more-button">更多</span>
+                    <div class="description-expand-row" *ngIf="!descEditor_updated && descFolded && descriptionCanExpand">
+                        <button id="more-button" type="button" mat-stroked-button color="primary" class="more-button"
+                            (click)="onDescription()">
+                            <span>展开完整介绍</span>
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
                         <!-- <span id="more-button" *ngIf="!descFolded" (click)="this.descFolded = true;" class="more-button">折叠</span> -->
                     </div>
                 </div>

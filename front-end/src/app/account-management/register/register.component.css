@@ -1,11 +1,114 @@
-.card-wrapper {
-    width: 100%;
+.auth-page {
     min-height: calc(100vh - var(--header-height));
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 32px 14px;
 }
 
-.card {
-    max-width: 400px;
+.auth-panel {
+    width: min(100%, 500px);
+    padding: 28px;
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(219, 234, 254, .95), rgba(191, 219, 254, .82));
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, .12);
+}
+
+.auth-brand h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.85rem;
+    line-height: 1.1;
+    font-weight: 850;
+}
+
+.auth-form,
+.auth-form mat-form-field {
+    width: 100%;
+}
+
+.field-stack {
+    display: grid;
+    gap: 12px;
+}
+
+.auth-stepper {
+    margin: 0 -8px;
+}
+
+.step-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.step-actions button {
+    border-radius: 999px;
+}
+
+.step-actions mat-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    font-size: 18px;
+}
+
+.step-note {
+    margin: 0 0 14px;
+    color: var(--text-muted);
+    font-size: .95rem;
+    line-height: 1.5;
+}
+
+.complete-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: var(--text-muted);
+    font-weight: 750;
+}
+
+.complete-state mat-icon {
+    width: 28px;
+    height: 28px;
+    color: var(--success-color);
+    font-size: 28px;
+}
+
+.complete-state p {
+    margin: 0;
+}
+
+@media (max-width: 40rem) {
+    .auth-page {
+        align-items: flex-start;
+        padding: 18px 12px 32px;
+    }
+
+    .auth-panel {
+        padding: 20px 16px;
+    }
+
+    .auth-brand h1 {
+        font-size: 1.55rem;
+    }
 }
