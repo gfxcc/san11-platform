@@ -95,8 +95,25 @@
                     </mat-menu>
                 </div>
 
-                <div class="summary-tags" *ngIf="this.package.tags?.length">
-                    <span *ngFor="let tag of this.package.tags">{{tag.tagName}}</span>
+                <div class="summary-tags" *ngIf="this.package.tags?.length || tagCanEdit">
+                    <div class="summary-tags-header">
+                        <h3>标签</h3>
+                        <mat-form-field *ngIf="tagCanEdit" appearance="outline" class="summary-tag-select">
+                            <mat-select required placeholder="新标签" (selectionChange)="newTagSelected($event.value)">
+                                <mat-option *ngFor="let tag of this.allTags" [value]="tag">
+                                    {{tag.tagName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-chip-listbox #chipList>
+                        <mat-chip-option *ngFor="let tag of this.package.tags" selectable="false"
+                            [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
+                            {{tag.tagName}}
+                            <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
+                        </mat-chip-option>
+                    </mat-chip-listbox>
                 </div>
             </aside>
         </section>
@@ -145,28 +162,6 @@
 
             </div>
 
-        </section>
-
-        <section class="tags-section surface-panel" *ngIf="this.package.tags?.length || tagCanEdit">
-            <div>
-                <h2 class="panel-title">标签</h2>
-                <mat-chip-listbox #chipList>
-                    <mat-chip-option *ngFor="let tag of this.package.tags" selectable="false"
-                        [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
-                        {{tag.tagName}}
-                        <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
-                    </mat-chip-option>
-                </mat-chip-listbox>
-            </div>
-
-            <mat-form-field *ngIf="tagCanEdit" appearance="outline">
-                <mat-label>新标签...</mat-label>
-                <mat-select required (selectionChange)="newTagSelected($event.value)">
-                    <mat-option *ngFor="let tag of this.allTags" [value]="tag">
-                        {{tag.tagName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
         </section>
 
         <section class="version-info show-border-dev" id="versions" #versionsSection>

@@ -84,6 +84,59 @@ body {
     min-height: 150px;
 }
 
+.ck.ck-editor {
+    box-shadow: none;
+}
+
+.ck.ck-editor .ck-editor__top,
+.ck.ck-editor .ck-sticky-panel,
+.ck.ck-editor .ck-sticky-panel__content {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent;
+}
+
+.ck.ck-editor .ck-editor__top {
+    display: none;
+}
+
+.ck.ck-editor:focus-within .ck-editor__top,
+.ck.ck-editor:has(.ck-focused) .ck-editor__top {
+    display: block;
+}
+
+.ck.ck-editor .ck-toolbar {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: rgba(248, 250, 252, .72);
+}
+
+.ck.ck-editor .ck-editor__main {
+    border-top: 0;
+}
+
+.ck.ck-editor:focus-within .ck-editor__main,
+.ck.ck-editor:has(.ck-focused) .ck-editor__main {
+    border-top: 1px solid var(--border-color);
+}
+
+.ck.ck-editor .ck-editor__editable_inline {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent;
+}
+
+.ck.ck-editor .ck-editor__editable_inline.ck-focused {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.editor-frame:focus-within,
+.dialog-editor:focus-within {
+    border-color: rgba(37, 99, 235, .58);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+}
+
 .title {
     font-size: 2rem;
     font-weight: 700;
@@ -114,12 +167,6 @@ body {
     z-index: 2;
     box-shadow: var(--shadow-sm);
 }
-
-.positronx {
-    text-decoration: none;
-    color: #ffffff;
-}
-
 
 /* .box {
     border: 1px solid #dadce0;
@@ -198,38 +245,6 @@ body {
     display: flex;
 }
 
-.top-border {
-    border-top: 1px solid rgb(0, 0, 0, 0.1);
-}
-
-.bottom-board {
-    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
-}
-
-.show-border {
-    border: solid 1px var(--border-color);
-}
-
-.round-border {
-    border-radius: var(--radius-sm);
-    border: solid 1px var(--border-color);
-    /* padding: 5px; */
-}
-
-.help-icon {
-    height: 20px;
-    width: 20px;
-    display: block;
-    background: url('./assets/images/help_icon.png');
-    background-size: 20px 20px;
-}
-
-.shadow-border {
-    /* box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%); */
-    /* box-shadow: 2px 20px 20px rgb(0 0 0 / 8%); */
-    box-shadow: var(--shadow-sm);
-}
-
 .input-field {
     width: 100%;
     margin-top: 10px;
@@ -241,11 +256,6 @@ body {
 
 .input:invalid {
     color: orangered;
-}
-
-.radius-border {
-    /* box-shadow: 2px 2px 8px rgb(0 0 0 / 10%); */
-    border-radius: var(--radius-md);
 }
 
 .center-wrapper {

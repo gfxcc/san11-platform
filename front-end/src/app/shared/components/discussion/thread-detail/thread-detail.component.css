@@ -156,26 +156,143 @@ h1 {
     overflow: hidden;
 }
 
+.thread-content-card:focus-within:not(:has(.thread-footer :focus)) {
+    border-color: rgba(37, 99, 235, .58);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+}
+
 .editor {
     display: block;
+}
+
+:host ::ng-deep .thread-content-card .ck-editor {
+    box-shadow: none;
+}
+
+:host ::ng-deep .thread-content-card .ck-editor__top,
+:host ::ng-deep .thread-content-card .ck-sticky-panel,
+:host ::ng-deep .thread-content-card .ck-sticky-panel__content {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent;
+}
+
+:host ::ng-deep .thread-content-card .ck-editor__top {
+    display: none;
+}
+
+:host ::ng-deep .thread-content-card:focus-within:not(:has(.thread-footer :focus)) .ck-editor__top {
+    display: block;
+}
+
+:host ::ng-deep .thread-content-card .ck-toolbar {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: rgba(248, 250, 252, .72);
+}
+
+:host ::ng-deep .thread-content-card .ck-editor__main {
+    border-top: 0;
+}
+
+:host ::ng-deep .thread-content-card:focus-within:not(:has(.thread-footer :focus)) .ck-editor__main {
+    border-top: 1px solid var(--border-color);
+}
+
+:host ::ng-deep .thread-content-card .ck-editor__editable_inline {
+    border: 0;
+    box-shadow: none !important;
+    background: transparent;
+}
+
+:host ::ng-deep .thread-content-card .ck-editor__editable_inline.ck-focused {
+    border: 0 !important;
+    box-shadow: none !important;
 }
 
 .thread-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 14px 16px;
+    gap: 14px;
+    min-height: 52px;
+    padding: 8px 14px;
     border-top: 1px solid var(--border-color);
-    background: rgba(248, 250, 252, .82);
+    background: rgba(248, 250, 252, .58);
+}
+
+.thread-tags {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.thread-tags-label {
+    flex-shrink: 0;
+    color: var(--text-subtle);
+    font-size: .78rem;
+    font-weight: 800;
 }
 
 .tag-list {
-    width: min(560px, 100%);
+    width: auto;
+    max-width: min(520px, 55vw);
 }
 
 .thread-footer app-feedback-card {
     flex-shrink: 0;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-form-field {
+    display: inline-flex;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-text-field-wrapper {
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(241, 245, 249, .82);
+}
+
+:host ::ng-deep .thread-footer .mdc-notched-outline {
+    display: none;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-form-field-flex {
+    min-height: 34px;
+    align-items: center;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-form-field-infix {
+    width: auto;
+    min-width: 0;
+    min-height: 34px;
+    padding: 4px 0;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-chip-set {
+    display: block;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-chip-set .mdc-evolution-chip-set__chips {
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    min-height: 0;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-standard-chip {
+    --mdc-chip-container-height: 26px;
+}
+
+:host ::ng-deep .thread-footer .mat-mdc-chip-input {
+    flex: 0 0 76px;
+    width: 76px;
 }
 
 .comments-panel {

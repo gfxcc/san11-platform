@@ -1,32 +1,67 @@
+.branch-panel {
+    overflow-x: auto;
+}
+
 .version-table {
     width: 100%;
+    min-width: 720px;
 }
 
 .version-table th,
 .version-table td {
-    padding: 10px 12px;
+    padding: 12px 18px;
+    border-bottom-color: var(--border-color);
+}
+
+.version-table th {
+    color: var(--text-muted);
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+.version-table tr.mat-mdc-row {
+    transition: background-color var(--animation-duration) var(--animation-timing-curve);
+}
+
+.version-table tr.mat-mdc-row:hover {
+    background: rgba(248, 250, 252, .92);
 }
 
 .version-column-cell {
-    min-width: 150px;
-}
-
-.version-cell {
-    display: flex;
+    min-width: 170px;
 }
 
 .version-log-button {
+    min-height: 36px;
+    padding: 0 10px;
     border-radius: 999px;
+    color: var(--text-color);
     font-weight: 750;
 }
 
 .version-log-button mat-icon {
+    width: 18px;
+    height: 18px;
     margin-right: 6px;
+    color: var(--text-muted);
+    font-size: 18px;
 }
 
 .date-column,
 .size-column {
     width: 18%;
+}
+
+.count-column,
+.count-cell {
+    text-align: center;
+}
+
+.muted-cell,
+.count-cell {
+    color: var(--text-muted);
+    font-weight: 650;
 }
 
 .align-right {
@@ -43,15 +78,12 @@
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
 }
 
 .download-action {
     border-radius: 999px;
-    min-height: 34px;
-}
-
-.download-action {
+    min-height: 36px;
     font-weight: 800;
 }
 
@@ -64,7 +96,7 @@
 
 .row-menu-button {
     min-width: 82px;
-    min-height: 34px;
+    min-height: 36px;
     flex: 0 0 auto;
     color: var(--text-muted);
     background: var(--surface-subtle);
@@ -84,14 +116,29 @@
     color: var(--accent-color);
 }
 
-@media (max-width: 40rem) {
-    .version-table {
-        min-width: 760px;
-    }
+.empty-branch {
+    display: grid;
+    place-items: center;
+    gap: 8px;
+    min-height: 180px;
+    color: var(--text-subtle);
+}
 
+.empty-branch mat-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--text-subtle);
+    font-size: 32px;
+}
+
+.empty-branch p {
+    margin: 0;
+    font-weight: 750;
+}
+
+@media (max-width: 40rem) {
     :host {
         display: block;
-        overflow-x: auto;
     }
 
     .actions-cell {

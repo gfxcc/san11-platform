@@ -1,5 +1,4 @@
-import { ViewportScroller } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -18,16 +17,16 @@ import { CreateThreadComponent } from './create-thread/create-thread.component';
 export class DiscussionComponent implements OnInit {
   @Input() displayName: string = "讨论区";
   @Input() parent: string;
+  @Input() showTitle = true;
 
   threads: Thread[];
   pageSize = 20;
   totalThreadsCount = 200;
   reachedEnd = false;
+  isLoading = false;
 
   constructor(
-    private viewportScroller: ViewportScroller,
     private elementRef: ElementRef,
-    private renderer: Renderer2,
     private router: Router,
     private dialog: MatDialog,
     public san11pkService: San11PlatformServiceService,
@@ -44,6 +43,7 @@ export class DiscussionComponent implements OnInit {
   }
 
   loadThreads(watermark: number, pageSize: number, shouldScrollToTop = true) {
+    this.isLoading = true;
     this.progressService.loading();
     const request = new ListThreadsRequest({
       parent: this.parent,
@@ -51,7 +51,10 @@ export class DiscussionComponent implements OnInit {
       pageToken: `{ "watermark": "${watermark}" }`,
     })
     this.san11pkService.listThreads(request)
-      .pipe(finalize(() => this.progressService.complete()))
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        this.progressService.complete();
+      }))
       .subscribe({
         next: (resp: ListThreadsResponse) => {
           this.threads = resp.threads;

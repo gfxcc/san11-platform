@@ -32,7 +32,6 @@ export class SidebarComponent implements OnInit {
   webModules = [
     { value: '11', text: '讨论区', link: ['/discussion'], icon: 'forum' },
     { value: '12', text: '专栏文章', link: ['/articles'], icon: 'sticky_note_2' },
-    { value: '13', text: '留言板', link: ['/message-board'], icon: 'note_alt' },
   ]
 
   adminModules = [

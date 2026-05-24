@@ -10,8 +10,10 @@
 
 <div class="head">
     <div class="section-title">
+        <mat-icon>account_tree</mat-icon>
         <div class="section-copy">
             <h2>版本</h2>
+            <p *ngIf="branchs?.length">{{branchs.length}} 个分支</p>
         </div>
     </div>
     <span class="example-spacer"></span>

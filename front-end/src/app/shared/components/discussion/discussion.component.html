@@ -1,7 +1,7 @@
 <div class="main-container">
     <div class="table-wrapper">
-        <div class="caption" id=caption>
-            <div class="caption-title">
+        <div class="caption" [class.caption-compact]="!showTitle" id=caption>
+            <div class="caption-title" *ngIf="showTitle">
                 <h3>
                     {{this.displayName}}
                 </h3>
@@ -14,16 +14,27 @@
             </button>
         </div>
 
-        <div class="thread-list">
+        <div *ngIf="isLoading" class="thread-loading">
+            <div class="thread-loading-row" *ngFor="let item of [1, 2, 3]">
+                <p-skeleton shape="circle" width="42px" height="42px"></p-skeleton>
+                <div class="thread-loading-copy">
+                    <p-skeleton width="60%" height="16px"></p-skeleton>
+                    <p-skeleton width="34%" height="12px"></p-skeleton>
+                </div>
+                <p-skeleton width="112px" height="28px"></p-skeleton>
+            </div>
+        </div>
+
+        <div class="thread-list" *ngIf="!isLoading">
             <app-thread-card *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
         </div>
 
-        <div *ngIf="threads?.length === 0" class="dashboard-placeholder">
+        <div *ngIf="!isLoading && threads?.length === 0" class="dashboard-placeholder">
             <mat-icon>forum</mat-icon>
-            <p>空空如也</p>
+            <p>暂无讨论</p>
         </div>
 
-        <mat-paginator [length]="totalThreadsCount" [pageSize]="pageSize" [hidePageSize]="true"
+        <mat-paginator *ngIf="!isLoading && threads?.length > 0" [length]="totalThreadsCount" [pageSize]="pageSize" [hidePageSize]="true"
             (page)="changePage($event)">
         </mat-paginator>
     </div>

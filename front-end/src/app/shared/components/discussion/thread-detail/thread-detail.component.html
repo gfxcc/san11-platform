@@ -58,20 +58,22 @@
                     </ckeditor>
 
                     <div class="thread-footer">
-                        <mat-form-field class="tag-list" appearance="outline">
-                            <mat-label>标签</mat-label>
-                            <mat-chip-grid #chipList>
-                                <mat-chip-row *ngFor="let tag of this.thread.tags" [selectable]="selectable"
-                                    [removable]="editable" (removed)="remove(tag)">
-                                    {{tag}}
-                                    <mat-icon matChipRemove *ngIf="editable">cancel</mat-icon>
-                                </mat-chip-row>
-                                <input placeholder="新标签" [matChipInputFor]="chipList"
-                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                    [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
-                                    [hidden]="!editable">
-                            </mat-chip-grid>
-                        </mat-form-field>
+                        <div class="thread-tags">
+                            <span class="thread-tags-label">标签</span>
+                            <mat-form-field class="tag-list" appearance="outline">
+                                <mat-chip-grid #chipList>
+                                    <mat-chip-row *ngFor="let tag of this.thread.tags" [selectable]="selectable"
+                                        [removable]="editable" (removed)="remove(tag)">
+                                        {{tag}}
+                                        <mat-icon matChipRemove *ngIf="editable">cancel</mat-icon>
+                                    </mat-chip-row>
+                                    <input placeholder="新标签" [matChipInputFor]="chipList"
+                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
+                                        [hidden]="!editable">
+                                </mat-chip-grid>
+                            </mat-form-field>
+                        </div>
 
                         <app-feedback-card [target]="this.thread.name" [likeCount]="this.thread.likeCount"
                             [dislikeCount]="this.thread.dislikeCount"></app-feedback-card>

@@ -30,7 +30,7 @@
                     fullUrl : '256_256'" (load)="this.hideAuthorImage= false;" class="author-image">
             </div>
             <div class="right">
-                <div class="radius-border shadow-border">
+                <div class="comment-editor-frame">
                     <ckeditor class="editor" [data]="this.descEditor_data"
                         [editor]="this.editorService.getEditorInstance()" [config]="this.editorService.getConfig()"
                         (ready)="this.editorService.onReady($event)" (focus)="descEditor_onFocus=true;

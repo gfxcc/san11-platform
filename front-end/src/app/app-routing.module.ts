@@ -6,7 +6,6 @@ import { PackageDetailComponent } from "./package-management/package-detail/pack
 import { PackageResolverService } from "./package-management/package-detail/package-resolver.service";
 import { CreateNewComponent } from './shared/components/create-new/create-new.component';
 import { DashboardComponent } from './shared/components/dashboards/dashboard/dashboard.component';
-import { MessageBoardComponent } from "./shared/components/dashboards/message-board/message-board.component";
 import { ThreadDetailComponent } from './shared/components/discussion/thread-detail/thread-detail.component';
 import { ThreadResolverService } from './shared/components/discussion/thread-detail/thread-resolver.service';
 import { AdminMessageBoardComponent } from './website-management/admin-message-board/admin-message-board.component';
@@ -51,11 +50,6 @@ const routes: Routes = [
   },
 
   {
-    path: 'message-board',
-    component: MessageBoardComponent
-  },
-
-  {
     path: 'admin-message-board',
     component: AdminMessageBoardComponent
   },
@@ -63,6 +57,7 @@ const routes: Routes = [
 
   // deprecated links
   { path: 'sire-packages', redirectTo: '/categories/1' },
+  { path: 'message-board', redirectTo: '/discussion' },
 ];
 
 @NgModule({
@@ -70,4 +65,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-

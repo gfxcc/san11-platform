@@ -1,10 +1,11 @@
 .mat-mdc-progress-bar {
-    height: 2px;
+    height: 3px;
     width: 100%;
 }
 
 .progress-bar-container {
-    height: 2px;
+    height: 3px;
+    position: relative;
 }
 
 .download-speed-row {
@@ -12,17 +13,20 @@
 }
 
 .download-speed {
-    margin-right: 100px;
+    margin: 6px 18px 0 0;
+    color: var(--text-muted);
+    font-size: .82rem;
+    font-weight: 750;
 }
 
 .head {
     display: flex;
     align-items: center;
-    min-height: 64px;
+    min-height: 72px;
     gap: 16px;
-    padding: 0 18px;
+    padding: 0 20px;
     border-bottom: 1px solid var(--border-color);
-    background: var(--surface);
+    background: linear-gradient(180deg, rgba(248, 250, 252, .72), var(--surface));
 }
 
 .head > .update-button {
@@ -35,8 +39,16 @@
 .section-title {
     display: inline-flex;
     align-items: center;
+    gap: 12px;
     min-width: 0;
     color: var(--text-color);
+}
+
+.section-title > mat-icon {
+    width: 26px;
+    height: 26px;
+    color: var(--primary-color);
+    font-size: 26px;
 }
 
 .section-copy {
@@ -51,9 +63,25 @@
     font-weight: 800;
 }
 
+.section-title p {
+    margin: 2px 0 0;
+    color: var(--text-subtle);
+    font-size: .82rem;
+    line-height: 1.35;
+    font-weight: 700;
+}
+
 .version-tabs {
     box-shadow: none;
     background: var(--surface);
+}
+
+:host ::ng-deep .version-tabs .mat-mdc-tab-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+:host ::ng-deep .version-tabs .mat-mdc-tab-body-content {
+    overflow: hidden;
 }
 
 @media (max-width: 40rem) {

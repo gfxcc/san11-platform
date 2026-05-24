@@ -1,9 +1,9 @@
 .main {
-    padding: 10px;
+    padding: 16px 18px 22px;
 }
 
 .status-section {
-    margin: 12px 0;
+    margin: 4px 0 16px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -37,28 +37,33 @@
 .comment-editor-row {
     width: 100%;
     display: flex;
+    gap: 12px;
 }
 
 .author-image {
     background-size: cover;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .right {
-    width: calc(100% - 40px);
-    padding-left: 10px;
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
 .contents {
-    margin-top: 30px;
+    margin-top: 22px;
     display: grid;
+    gap: 14px;
 }
 
 .actions-section {
+    display: flex;
+    align-items: center;
     gap: 8px;
-    padding: 10px 0;
+    padding: 12px 0 0;
 }
 
 .actions-section button {
@@ -67,6 +72,64 @@
 
 .editor {
     height: 200px;
+}
+
+.comment-editor-frame {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+}
+
+.comment-editor-frame:focus-within {
+    border-color: rgba(37, 99, 235, .58);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+}
+
+:host ::ng-deep .comment-editor-frame .ck-editor {
+    box-shadow: none;
+}
+
+:host ::ng-deep .comment-editor-frame .ck-editor__top,
+:host ::ng-deep .comment-editor-frame .ck-sticky-panel,
+:host ::ng-deep .comment-editor-frame .ck-sticky-panel__content {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent;
+}
+
+:host ::ng-deep .comment-editor-frame .ck-editor__top {
+    display: none;
+}
+
+:host ::ng-deep .comment-editor-frame:focus-within .ck-editor__top {
+    display: block;
+}
+
+:host ::ng-deep .comment-editor-frame .ck-toolbar {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: rgba(248, 250, 252, .72);
+}
+
+:host ::ng-deep .comment-editor-frame .ck-editor__main {
+    border-top: 0;
+}
+
+:host ::ng-deep .comment-editor-frame:focus-within .ck-editor__main {
+    border-top: 1px solid var(--border-color);
+}
+
+:host ::ng-deep .comment-editor-frame .ck-editor__editable_inline {
+    min-height: 150px;
+    border: 0;
+    box-shadow: none !important;
+    background: transparent;
+}
+
+:host ::ng-deep .comment-editor-frame .ck-editor__editable_inline.ck-focused {
+    border: 0 !important;
+    box-shadow: none !important;
 }
 
 .highlighted {
@@ -94,6 +157,6 @@ h5 {
 
 @media (max-width: 40rem) {
     .main {
-        padding: 6px 0;
+        padding: 12px;
     }
 }

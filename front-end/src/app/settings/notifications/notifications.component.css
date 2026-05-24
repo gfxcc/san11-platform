@@ -47,15 +47,28 @@
 
 .section-content {
     display: grid;
-    gap: 14px;
+    gap: 10px;
 }
 
 .switch-box {
-    padding: 14px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+}
+
+.switch-box mat-slide-toggle {
+    grid-column: 1 / -1;
+    font-weight: 800;
 }
 
 .switch-description {
-    padding-left: 44px;
+    grid-column: 1 / -1;
+    padding-left: 0;
     color: var(--text-muted);
     font-size: .92rem;
     line-height: 1.5;

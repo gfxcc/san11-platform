@@ -1,34 +1,43 @@
 .main {
-    display: flex;
-    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .author-image {
     background-size: cover;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .right {
-    width: calc(100% - 40px);
-    padding-left: 10px;
+    min-width: 0;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    background: rgba(248, 250, 252, .78);
 }
 
 .right .header {
     display: flex;
     align-items: center;
+    gap: 6px;
     margin-bottom: 2px;
-    min-height: 40px;
+    min-height: 28px;
 }
 
 .right>.header>.user-name {
-    color: #9e9fa2;
+    color: var(--text-color);
+    font-weight: 800;
 }
 
 .right>.header>.create-time {
-    margin-left: 10px;
-    color: #9e9fa2;
+    margin-left: 4px;
+    color: var(--text-subtle);
+    font-size: .82rem;
 }
 
 .owner-badge {
@@ -60,7 +69,7 @@
 }
 
 .icon {
-    color: #9e9fa2;
+    color: var(--text-subtle);
     width: 18px;
     height: 18px;
     font-size: 18px;
@@ -71,8 +80,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--animation-duration) var(--animation-timing-curve);
@@ -84,8 +93,8 @@
 }
 
 .icon-button {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     display: inline-flex;
     align-items: center;
@@ -96,6 +105,8 @@
 .action-section {
     display: flex;
     align-items: center;
+    gap: 8px;
+    margin-top: 8px;
 }
 
 .feedback-card-wrapper {
@@ -104,10 +115,9 @@
     display: inline-block;
 }
 
-.right>.bottom>.button {
-    margin-left: 5px;
-    height: 32px;
-    color: #9e9fa2;
+.button {
+    border-radius: 999px;
+    min-height: 30px;
 }
 
 .reply-section {

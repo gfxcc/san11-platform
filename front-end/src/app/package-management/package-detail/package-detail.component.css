@@ -265,25 +265,89 @@
 }
 
 .summary-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: grid;
+    gap: 9px;
     margin-top: 22px;
-    padding-top: 0;
+    padding: 12px;
+    border: 1px solid rgba(17, 24, 39, .08);
+    border-radius: var(--radius-md);
+    background: rgba(248, 250, 252, .68);
+    overflow: hidden;
 }
 
-.summary-tags span {
-    max-width: 100%;
-    padding: 5px 10px;
-    border: 1px solid rgba(37, 99, 235, .14);
-    border-radius: 999px;
-    background: rgba(219, 234, 254, .72);
+.summary-tags-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 0;
+}
+
+.summary-tags h3 {
+    margin: 0;
     color: var(--primary-strong);
+    font-size: .9rem;
+    line-height: 1.35;
+    font-weight: 800;
+}
+
+.summary-tags mat-chip-listbox {
+    display: block;
+}
+
+.summary-tag-select {
+    flex: 0 1 104px;
+    width: 104px;
+    min-width: 0;
+    max-width: 100%;
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-chip-set {
+    --mdc-chip-container-height: 26px;
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-chip-option {
+    border-radius: 999px;
     font-size: .82rem;
     font-weight: 750;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-chip-set .mdc-evolution-chip-set__chips {
+    gap: 6px;
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-text-field-wrapper {
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .78);
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-form-field-flex {
+    min-height: 34px;
+    align-items: center;
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-form-field-infix {
+    min-height: 34px;
+    padding: 4px 0;
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-select-value {
+    max-width: calc(100% - 18px);
+    color: var(--text-muted);
+    font-size: .82rem;
+    font-weight: 700;
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-select-arrow-wrapper {
+    width: 18px;
+    transform: none;
+}
+
+:host ::ng-deep .summary-tags .mat-mdc-form-field-subscript-wrapper {
+    display: none;
 }
 
 .icon-button {
@@ -383,11 +447,19 @@
 }
 
 
-.desc-full {}
+.desc-full {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+}
 
 .desc-folded {
     max-height: 22rem;
     overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
 }
 
 .package-description-section-folded .desc-folded {
@@ -474,23 +546,6 @@
     width: 100%;
 }
 
-.tags-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 18px;
-    padding: 16px;
-}
-
-.tags-section .panel-title {
-    margin-bottom: 10px;
-}
-
-.tags-section mat-form-field {
-    min-width: 190px;
-}
-
 .version-info {
     margin-top: 18px;
     border: 1px solid var(--border-color);
@@ -547,12 +602,4 @@
         padding: 16px;
     }
 
-    .tags-section {
-        display: block;
-    }
-
-    .tags-section mat-form-field {
-        width: 100%;
-        margin-top: 12px;
-    }
 }

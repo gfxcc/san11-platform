@@ -1,10 +1,11 @@
 .version-dialog {
     width: min(86vw, 620px);
-    padding: 0 2px 2px;
+    box-sizing: border-box;
+    padding: 24px;
 }
 
 .version-dialog-header {
-    padding: 4px 0 18px;
+    padding: 0 0 18px;
 }
 
 .version-dialog-header h1 {
@@ -18,7 +19,7 @@
 .form,
 .field-stack {
     display: grid;
-    gap: 12px;
+    gap: 18px;
 }
 
 .form mat-form-field {
@@ -34,7 +35,7 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 .version-section {
@@ -56,12 +57,13 @@
     overflow: hidden;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
+    background: var(--surface);
 }
 
 .file-section {
     display: grid;
-    gap: 12px;
-    padding: 16px 0 4px;
+    gap: 16px;
+    padding: 18px 0 4px;
 }
 
 .version-tabs {
@@ -107,12 +109,14 @@
 }
 
 :host ::ng-deep .ck-editor__editable_inline {
+    min-height: 220px;
     max-height: 500px;
 }
 
 @media (max-width: 48rem) {
     .version-dialog {
         width: calc(100vw - 32px);
+        padding: 18px;
     }
 
     .field-stack,

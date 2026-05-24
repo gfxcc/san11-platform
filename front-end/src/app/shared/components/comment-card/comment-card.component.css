@@ -1,44 +1,50 @@
 .main {
-    display: flex;
-    margin-bottom: 16px;
-    transition-duration: .5s;
-    border-radius: 4px;
-    background: transparent;
-    padding: 12px;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 14px;
+    margin-bottom: 0;
+    padding: 0;
     min-width: 250px;
-    /* width: 100%; */
-}
-
-.main:hover {
-    /* box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%); */
 }
 
 .author-section {
-    width: 144px;
-    padding: 12px;
-    min-height: 100px;
+    width: auto;
+    padding: 10px 0 0;
+    min-height: 0;
     text-align: center;
-    color: #9e9fa2;
+    color: var(--text-subtle);
 }
 
 .author-section .span {}
 
 .author-image {
     background-size: cover;
-    width: 80px;
-    height: 80px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--border-color);
 }
 
 .right {
-    padding: 10px;
-    width: calc(100% - 40px);
+    min-width: 0;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
 }
 
 .header {
     display: flex;
     align-items: center;
+    gap: 8px;
     color: var(--text-muted);
+}
+
+.header a {
+    color: var(--text-color);
+    font-weight: 800;
 }
 
 .owner-badge {
@@ -63,7 +69,9 @@
 
 .create-time {
     margin-left: 10px;
-    padding-bottom: 12px;
+    padding-bottom: 0;
+    color: var(--text-subtle);
+    font-size: .84rem;
 }
 
 .right .bottom {
@@ -89,6 +97,8 @@
 .action-section {
     display: flex;
     align-items: center;
+    gap: 8px;
+    margin-top: 12px;
 }
 
 .feedback-card-wrapper {
@@ -104,25 +114,27 @@
 }
 
 .reply-section {
-    margin-top: 5px;
+    margin-top: 12px;
     display: flex;
     justify-content: center;
 }
 
 .replies-section {
-    margin-top: 15px;
-    margin-right: 10px;
+    margin-top: 12px;
+    padding-left: 14px;
+    border-left: 1px solid rgba(17, 24, 39, .12);
 }
 
 .reply-editor-row {
     width: 100%;
     display: flex;
+    gap: 10px;
 }
 
 .right .author-image {
     background-size: cover;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
 }
 
@@ -132,8 +144,8 @@
 }
 
 .reply-section form {
-    width: 90%;
-    margin-left: 10px;
+    width: 100%;
+    margin-left: 0;
 }
 
 .reply-section mat-form-field {
@@ -146,7 +158,8 @@
 
 .actions-section button {
     margin-left: 5px;
-    height: 32px;
+    min-height: 32px;
+    border-radius: 999px;
 }
 
 
@@ -163,21 +176,27 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
 @media (max-width: 40rem) {
     .main {
-        padding: 2px;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 10px;
     }
 
     .author-section {
-        width: 60px;
-        padding: 6px;
+        width: auto;
+        padding: 8px 0 0;
     }
 
     .author-image {
         width: 40px;
         height: 40px;
+    }
+
+    .right {
+        padding: 12px;
     }
 }
