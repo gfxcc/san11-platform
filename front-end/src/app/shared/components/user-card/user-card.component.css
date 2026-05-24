@@ -1,12 +1,25 @@
+:host {
+    display: inline-flex;
+    align-items: center;
+}
+
+.user-card-button {
+    padding: 0;
+}
+
+.user-card-static {
+    display: inline-flex;
+}
+
 .author-card {
     /* width: calc(100% - 20px); */
     min-width: 150px;
-    height: 100%;
-    padding-left: 10px;
+    min-height: 44px;
+    padding: 2px 0 2px 10px;
     transition-duration: .5s;
-    border-radius: 4px;
-    border: solid 1px #ebebeb;
-    background: white;
+    border-radius: var(--radius-sm);
+    border: 0;
+    background: transparent;
     display: inline-flex;
     align-items: center;
 }
@@ -16,6 +29,11 @@
     cursor: pointer;
     box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
     /* cursor: pointer; */
+}
+
+.avatar-frame {
+    display: flex;
+    justify-content: center;
 }
 
 .author-image {

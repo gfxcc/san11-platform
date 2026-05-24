@@ -1,74 +1,43 @@
-<div class="container">
-    <div class="state-cell">
-        <div [hidden]="! (isAdmin() && thread.state!=1)">
-            <button mat-button mat-raised-button color="accent">{{getStatusName()}}</button>
+<article class="thread-row">
+    <div class="status-cell" *ngIf="isAdmin() && thread.state!=1">
+        <span class="status-badge">{{getStatusName()}}</span>
+    </div>
+
+    <a class="avatar-cell" href="users/{{user?.userId}}" target="_blink" aria-label="作者">
+        <img [src]="getUserAvatar()" class="avatar-img" [hidden]="loadingAuthorImage" (load)="loadAvatar()"
+            (error)="loadAvatar()">
+        <p-skeleton *ngIf="this.loadingAuthorImage" [shape]="'circle'" height="40px" width="40px"></p-skeleton>
+    </a>
+
+    <div class="thread-main">
+        <div class="thread-title-line">
+            <a class="thread-title" href="{{thread.name}}" target="_blink">{{thread.subject}}</a>
+            <mat-icon *ngIf="thread.pinned" class="pin-icon" matTooltip="置顶">push_pin</mat-icon>
+        </div>
+
+        <div class="thread-meta">
+            <a href="users/{{user?.userId}}" target="_blink">{{user?.username}}</a>
+            <span>{{getThreadAge()}}</span>
+        </div>
+
+        <div class="thread-tags" *ngIf="this.thread.tags?.length">
+            <span *ngFor="let tag of this.thread.tags">{{tag}}</span>
         </div>
     </div>
 
-    <div class="author-cell">
-        <div class="avatar-wrapper">
-            <img [src]="this.user?.imageUrl | fullUrl : '128_128'" class="avatar-img" [hidden]="this.loadingAuthorImage"
-                (load)="loadAvatar()">
-            <p-skeleton *ngIf="this.loadingAuthorImage" [shape]="'circle'" height="36px" width="36px"></p-skeleton>
-        </div>
+    <div class="thread-stats" aria-label="帖子统计">
+        <span class="stat-pill" matTooltip="浏览">
+            <mat-icon>drafts</mat-icon>
+            {{thread.viewCount}}
+        </span>
+        <span class="stat-pill" matTooltip="回复">
+            <mat-icon>forum</mat-icon>
+            {{+thread.commentCount + +thread.replyCount}}
+        </span>
     </div>
 
-    <div class="content-cell">
-        <div class="main-content">
-            <div class="structItem-title">
-                <a href="{{thread.name}}" target="_blink">{{thread.subject}}</a>
-            </div>
-
-            <div class="structItem-minor">
-
-                <ul class="structItem-parts">
-                    <li style="margin-right: 3px;">
-                        <a href="users/{{user?.userId}}" target="_blink">{{user?.username}}</a>
-                    </li>
-                    <li class="structItem-createTime">
-                        {{getThreadAge()}}
-                    </li>
-                </ul>
-
-
-                <mat-chip-listbox #chipList aria-label="Fruit selection">
-                    <mat-chip-option color="primary" *ngFor="let tag of this.thread.tags">
-                        {{tag}}
-                    </mat-chip-option>
-                </mat-chip-listbox>
-
-
-                <div class="thread-stats">
-                    <div class="statistic-div pinned-stat">
-                        <mat-icon *ngIf="thread.pinned" width="24px " height="24px">
-                            push_pin
-                        </mat-icon>
-                    </div>
-                    <div class="statistic-div">
-                        <mat-icon width="24px " height="24px">
-                            drafts
-                        </mat-icon>
-
-                        <span>{{thread.viewCount}}</span>
-                    </div>
-
-                    <div class="statistic-div">
-                        <mat-icon>forum</mat-icon>
-                        <span>{{+thread.commentCount + +thread.replyCount}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="latest-cell" *ngIf="notMobile">
+        <span>{{getLatestCommentedAge()}}</span>
+        <a href="users/{{latestCommenter?.userId}}" target="_blink">{{latestCommenter?.username}}</a>
     </div>
-
-
-    <div class="structItem-cell structItem-cell--latest" *ngIf="notMobile">
-        <div>
-            <div class="">{{getLatestCommentedAge()}}</div>
-            <div class="">
-                <a href="users/{{latestCommenter?.userId}}" target="_blink">{{latestCommenter?.username}}</a>
-            </div>
-        </div>
-    </div>
-
-</div>
+</article>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { onMobile } from 'src/app/utils/layout_util';
@@ -33,8 +34,12 @@ export class ThreadCardComponent implements OnInit {
     })).subscribe(
       (resp: User) => {
         this.user = resp;
+        if (!resp.imageUrl) {
+          this.loadingAuthorImage = false;
+        }
       },
       error => {
+        this.loadingAuthorImage = false;
         this.notificationService.warn(`获取用户数据失败: ${error.statusMessage}`);
       }
     );
@@ -57,11 +62,11 @@ export class ThreadCardComponent implements OnInit {
   }
 
   getThreadAge() {
-    return getAge(this.thread.createTime);
+    return this.thread.createTime ? getAge(this.thread.createTime) : '';
   }
 
   getLatestCommentedAge() {
-    return getAge(this.thread.latestCommentedTime);
+    return this.thread.latestCommentedTime ? getAge(this.thread.latestCommentedTime) : this.getThreadAge();
   }
 
   getLatestCommenterName() {
@@ -69,7 +74,7 @@ export class ThreadCardComponent implements OnInit {
   }
 
   getUserAvatar(): string {
-    return getFullUrl(this.user?.imageUrl);
+    return getFullUrl(this.user?.imageUrl || GlobalConstants.defaultUserImage);
   }
 
   getCoverImage(): string {

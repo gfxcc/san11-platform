@@ -1,72 +1,91 @@
-<div class="page-wrapper">
-    <div class="page-content">
-        <div>
-            <div class="pageContent radius-border">
-                <div class="p-title">
+<div class="page-wrapper thread-page-wrapper">
+    <div class="page-content thread-page-content">
+        <article class="thread-panel surface-panel">
+            <header class="thread-header">
+                <div class="thread-title-block">
+                    <div class="panel-title">讨论</div>
                     <h1>{{this.thread.subject}}</h1>
-                </div>
-            </div>
-        </div>
-        <div class="main">
-            <div class="author-section">
-                <img [hidden]="this.hideUserImage" [src]="this.user?.imageUrl |
-                    fullUrl : '128_128'" (load)="this.hideUserImage= false;" class="author-image">
-            </div>
-
-            <div class="right radius-border shadow-border">
-                <div>
-                    <div class="header">
+                    <div class="thread-meta">
                         <a href="users/{{this.user?.userId}}" target="_blink">{{this.user?.username}}</a>
-                        <span class="create-time">{{getAge()}}</span>
+                        <span>{{getAge()}}</span>
+                        <span *ngIf="thread.pinned" class="pin-pill">
+                            <mat-icon>push_pin</mat-icon>
+                            置顶
+                        </span>
                     </div>
-                    <div>
-                        <ckeditor class="editor" [data]="this.thread.content"
-                            [editor]="this.editorService.getEditorInstance()"
-                            (ready)="this.editorService.onReady($event)" (focus)="descEditor_onFocus=true"
-                            (blur)="descEditor_onFocus=false" (change)="onDescEditorChange($event)"
-                            [disabled]="this.editorService.disabled" [config]="this.editorService.getConfig()">
-                        </ckeditor>
-                    </div>
-
                 </div>
 
-                <mat-form-field class="tag-list">
-                    <mat-label>标签</mat-label>
-                    <mat-chip-grid #chipList>
-                        <mat-chip-row *ngFor="let tag of this.thread.tags" [selectable]="selectable"
-                            [removable]="editable" (removed)="remove(tag)">
-                            {{tag}}
-                            <mat-icon matChipRemove *ngIf="editable">cancel</mat-icon>
-                        </mat-chip-row>
-                        <input placeholder="新标签" [matChipInputFor]="chipList"
-                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-                            (matChipInputTokenEnd)="add($event)" [hidden]="!editable">
-                    </mat-chip-grid>
-                </mat-form-field>
+                <div *ngIf="(isAdmin() || isAuthor())" class="thread-admin-actions">
+                    <button mat-stroked-button color="primary" *ngIf="this.descEditor_updated" (click)="onUpdate()">
+                        <mat-icon>save</mat-icon>
+                        更新
+                    </button>
 
-                <app-feedback-card [target]="this.thread.name" [likeCount]="this.thread.likeCount"
-                    [dislikeCount]="this.thread.dislikeCount"></app-feedback-card>
+                    <button mat-stroked-button [matMenuTriggerFor]="threadAdminMenu">
+                        <mat-icon>admin_panel_settings</mat-icon>
+                        管理
+                    </button>
+                    <mat-menu #threadAdminMenu="matMenu" xPosition="before">
+                        <button mat-menu-item *ngIf="isAdmin()" (click)="togglePin()">
+                            <mat-icon>{{thread.pinned===true ? 'push_pin' : 'push_pin'}}</mat-icon>
+                            <span>{{thread.pinned===true ? '取消置顶' : '置顶'}}</span>
+                        </button>
+                        <button mat-menu-item (click)="onFlipState()">
+                            <mat-icon>{{thread.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
+                            <span>{{thread.state===3? '发布' : '隐藏'}}</span>
+                        </button>
+                        <button mat-menu-item class="danger-menu-item" (click)="onDelete()">
+                            <mat-icon>delete</mat-icon>
+                            <span>删除</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </header>
+
+            <section class="thread-body">
+                <aside class="author-card">
+                    <img [hidden]="this.hideUserImage" [src]="getAuthorImage()" (load)="onAuthorImageLoad()"
+                        (error)="onAuthorImageLoad()" class="author-image">
+                    <div class="author-name">{{this.user?.username}}</div>
+                    <div class="author-subtitle">发帖人</div>
+                </aside>
+
+                <div class="thread-content-card">
+                    <ckeditor class="editor" [data]="this.thread.content" [editor]="this.editorService.getEditorInstance()"
+                        (ready)="this.editorService.onReady($event)" (focus)="descEditor_onFocus=true"
+                        (blur)="descEditor_onFocus=false" (change)="onDescEditorChange($event)"
+                        [disabled]="this.editorService.disabled" [config]="this.editorService.getConfig()">
+                    </ckeditor>
+
+                    <div class="thread-footer">
+                        <mat-form-field class="tag-list" appearance="outline">
+                            <mat-label>标签</mat-label>
+                            <mat-chip-grid #chipList>
+                                <mat-chip-row *ngFor="let tag of this.thread.tags" [selectable]="selectable"
+                                    [removable]="editable" (removed)="remove(tag)">
+                                    {{tag}}
+                                    <mat-icon matChipRemove *ngIf="editable">cancel</mat-icon>
+                                </mat-chip-row>
+                                <input placeholder="新标签" [matChipInputFor]="chipList"
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                    [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
+                                    [hidden]="!editable">
+                            </mat-chip-grid>
+                        </mat-form-field>
+
+                        <app-feedback-card [target]="this.thread.name" [likeCount]="this.thread.likeCount"
+                            [dislikeCount]="this.thread.dislikeCount"></app-feedback-card>
+                    </div>
+                </div>
+            </section>
+        </article>
+
+        <section class="comments-panel surface-panel">
+            <div class="comments-header">
+                <h2>评论</h2>
             </div>
-
-        </div>
-
-        <div *ngIf="(isAdmin() || isAuthor())" class="control-section">
-            <button class="button" mat-stroked-button color="warn" (click)="onDelete()">删除</button>
-            <button class="button" mat-stroked-button color="warn" (click)="onFlipState()">{{thread.state===3? '发布' :
-                '隐藏'}}</button>
-            <button class="button" mat-stroked-button color="primary" *ngIf="isAdmin()"
-                (click)="togglePin()">{{thread.pinned===true?
-                '取消置顶' : '置顶'}}</button>
-
-            <span class="example-spacer"></span>
-
-            <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdate()">更新</button>
-        </div>
-
-        <mat-divider></mat-divider>
-
-
-        <app-comment-board [parent]="this.thread.name" [resourceOwnerId]="this.thread.authorId"
-            commentsOrder="create_time"></app-comment-board>
+            <app-comment-board [parent]="this.thread.name" [resourceOwnerId]="this.thread.authorId"
+                commentsOrder="create_time"></app-comment-board>
+        </section>
     </div>
 </div>

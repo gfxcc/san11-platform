@@ -45,8 +45,8 @@
 
 .resource-hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
-    gap: 22px;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 330px);
+    gap: 18px;
     align-items: stretch;
 }
 
@@ -149,8 +149,9 @@
 .resource-summary {
     display: flex;
     flex-direction: column;
+    align-self: stretch;
     min-width: 0;
-    padding: 24px;
+    padding: 20px;
 }
 
 .section-kicker {
@@ -167,7 +168,7 @@
 
 .resource-summary .title {
     display: block;
-    font-size: clamp(1.85rem, 3vw, 2.65rem);
+    font-size: clamp(1.7rem, 2.5vw, 2.35rem);
     font-weight: 850;
 }
 
@@ -267,8 +268,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: auto;
-    padding-top: 22px;
+    margin-top: 22px;
+    padding-top: 0;
 }
 
 .summary-tags span {

@@ -12,15 +12,21 @@ mat-progress-bar {
     height: var(--header-height);
     gap: 12px;
     padding: 0 clamp(12px, 2vw, 24px);
-    background: var(--surface-raised);
+    background: rgba(255, 255, 255, .92);
     color: var(--text-color);
     border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 rgba(17, 24, 39, .04), 0 10px 28px rgba(16, 24, 40, .08);
+    backdrop-filter: blur(18px);
 }
 
 .toolbar-icon {
     color: var(--text-muted);
+    border-radius: 999px;
+    transition: background-color var(--animation-duration) var(--animation-timing-curve);
+}
+
+.toolbar-icon:hover {
+    background: var(--surface-subtle);
 }
 
 .brand-button {
@@ -32,13 +38,13 @@ mat-progress-bar {
     background: transparent;
     color: inherit;
     padding: 6px 8px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     cursor: pointer;
     transition: background-color var(--animation-duration) var(--animation-timing-curve);
 }
 
 .brand-button:hover {
-    background: var(--primary-soft);
+    background: rgba(219, 234, 254, .72);
 }
 
 .brand-mark {
@@ -47,14 +53,15 @@ mat-progress-bar {
     justify-content: center;
     width: 36px;
     height: 36px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     color: var(--primary-color);
-    background: var(--primary-soft);
+    background: linear-gradient(135deg, rgba(219, 234, 254, .95), rgba(191, 219, 254, .82));
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, .12);
 }
 
 .website-title {
-    font-size: 1.15rem;
-    font-weight: 700;
+    font-size: 1.08rem;
+    font-weight: 800;
     color: var(--text-color);
     letter-spacing: 0;
     white-space: nowrap;
@@ -81,9 +88,9 @@ mat-progress-bar {
 }
 
 .search-input {
-    background: var(--surface-muted);
+    background: rgba(248, 250, 252, .9);
     width: 100%;
-    height: 42px;
+    height: 40px;
     border-radius: 999px;
     border: 1px solid var(--border-color);
     outline: none;
@@ -95,8 +102,8 @@ mat-progress-bar {
 
 .search-input:focus {
     background: var(--surface);
-    border-color: rgba(47, 91, 234, .48);
-    box-shadow: 0 0 0 4px rgba(47, 91, 234, .1);
+    border-color: rgba(37, 99, 235, .42);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, .1);
 }
 
 .statistic {
@@ -150,9 +157,23 @@ h5 {
 }
 
 .account-trigger {
-    padding: 2px 4px;
-    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    height: 46px;
+    padding: 0 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     min-width: 0;
+    line-height: normal;
+    background: rgba(255, 255, 255, .72);
+    transition:
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        border-color var(--animation-duration) var(--animation-timing-curve);
+}
+
+.account-trigger:hover {
+    background: var(--surface);
+    border-color: var(--border-strong);
 }
 
 ::ng-deep .mat-mdc-menu-panel {

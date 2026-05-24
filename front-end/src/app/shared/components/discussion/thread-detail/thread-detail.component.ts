@@ -2,9 +2,11 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
 import { EditorService } from 'src/app/service/editor.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
+import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
 import { isAdmin, loadUser } from 'src/app/utils/user_util';
 import { DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
@@ -51,17 +53,20 @@ export class ThreadDetailComponent implements OnInit {
         })).subscribe({
           next: (user: User) => {
             this.user = user;
+            if (!user.imageUrl) {
+              this.hideUserImage = false;
+            }
           },
           error: error => {
+            this.hideUserImage = false;
             this.notificationService.warn('获取用户数据失败: ' + error.statusMessage);
           }
         });
 
         this.configTags();
+        this.editorService.configEditor(!this.isAuthor(), this.thread.name);
       }
     );
-
-    this.editorService.configEditor(!this.isAuthor(), this.thread.name);
   }
 
   @HostListener('document:keydown.meta.enter', ['$event'])
@@ -105,7 +110,15 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   getAge() {
-    return getAge(this.thread.createTime);
+    return this.thread?.createTime ? getAge(this.thread.createTime) : '';
+  }
+
+  getAuthorImage(): string {
+    return getFullUrl(this.user?.imageUrl || GlobalConstants.defaultUserImage);
+  }
+
+  onAuthorImageLoad() {
+    this.hideUserImage = false;
   }
 
   onDelete() {
@@ -181,7 +194,7 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   isAuthor() {
-    return this.thread.authorId === loadUser().userId;
+    return !!this.thread && this.thread.authorId === loadUser().userId;
   }
 
   isDiscussionAdmin() {

@@ -12,7 +12,7 @@
 
             <span class="example-spacer"></span>
 
-            <div *ngIf="!this.hideControl">
+            <div class="reply-control-slot" [class.reply-control-visible]="!this.hideControl">
                 <button mat-icon-button class="icon-button" (click)="onDeleteReply()">
                     <mat-icon class="icon">delete</mat-icon>
                 </button>

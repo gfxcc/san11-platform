@@ -1,5 +1,17 @@
-.discussion {
-    /* height: calc(100vh - var(--header-height)); */
-    /* display: block; */
+.discussion-page {
     width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 18px clamp(14px, 3vw, 32px) 32px;
+}
+
+.discussion {
+    display: block;
+    width: 100%;
+}
+
+@media (max-width: 40rem) {
+    .discussion-page {
+        padding: 12px 10px 24px;
+    }
 }
