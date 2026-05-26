@@ -18,8 +18,8 @@
                 <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
             </div>
 
-            <aside class="resource-summary surface-panel">
-                <h2 class="panel-title">资源详情</h2>
+            <aside class="resource-summary surface-panel app-detail-section">
+                <h2 class="panel-title app-section-title">资源详情</h2>
                 <h1>
                     <span #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;">
                         {{this.package.packageName}}
@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="summary-actions">
+                <div class="summary-actions app-action-stack">
                     <button mat-flat-button color="primary" class="download-cta" type="button"
                         (click)="scrollToVersions()">
                         <mat-icon>download</mat-icon>
@@ -54,7 +54,7 @@
                     </button>
                 </div>
 
-                <div class="top-level-buttons">
+                <div class="top-level-buttons app-action-row">
                     <app-feedback-card [target]="this.package.name" [likeCount]="this.package.likeCount"
                         [dislikeCount]="this.package.dislikeCount"></app-feedback-card>
 
@@ -118,9 +118,9 @@
             </aside>
         </section>
 
-        <section class="meta-content surface-panel">
-            <div class="detail-section-header">
-                <h2>资源介绍</h2>
+        <section class="meta-content surface-panel app-detail-section">
+            <div class="detail-section-header app-section-header">
+                <h2 class="app-section-title">资源介绍</h2>
             </div>
             <div class="description-layout">
                 <app-user-info-with-sub-button class="user-info-with-sub-button" [user]="this.author">
@@ -164,7 +164,7 @@
 
         </section>
 
-        <section class="version-info show-border-dev" id="versions" #versionsSection>
+        <section class="version-info show-border-dev app-detail-section" id="versions" #versionsSection>
             <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)">
             </app-version-panel>
         </section>

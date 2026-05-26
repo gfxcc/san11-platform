@@ -27,8 +27,9 @@
     </div>
     <span class="author-spacer"></span>
     <div class="subscribe-section">
-        <button *ngIf="!this.loadingSubscription" mat-flat-button [class.clickable-button]="subscription"
-            [color]="subscription?'':'warn'" (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>
+        <button *ngIf="!this.loadingSubscription" mat-flat-button
+            [class.unsubscribe-button]="subscription" color="primary"
+            (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>
         <p-skeleton *ngIf="this.loadingSubscription" width="64px" height="36px"></p-skeleton>
     </div>
 </div>

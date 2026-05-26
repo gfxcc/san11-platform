@@ -20,13 +20,7 @@
 }
 
 .head {
-    display: flex;
-    align-items: center;
-    min-height: 72px;
-    gap: 16px;
-    padding: 0 20px;
-    border-bottom: 1px solid var(--border-color);
-    background: linear-gradient(180deg, rgba(248, 250, 252, .72), var(--surface));
+    padding: 0 18px;
 }
 
 .head > .update-button {
@@ -39,36 +33,9 @@
 .section-title {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     min-width: 0;
     color: var(--text-color);
-}
-
-.section-title > mat-icon {
-    width: 26px;
-    height: 26px;
-    color: var(--primary-color);
-    font-size: 26px;
-}
-
-.section-copy {
-    min-width: 0;
-}
-
-.section-title h2 {
-    margin: 0;
-    color: var(--primary-strong);
-    line-height: 1.35;
-    font-size: 1.05rem;
-    font-weight: 800;
-}
-
-.section-title p {
-    margin: 2px 0 0;
-    color: var(--text-subtle);
-    font-size: .82rem;
-    line-height: 1.35;
-    font-weight: 700;
 }
 
 .version-tabs {

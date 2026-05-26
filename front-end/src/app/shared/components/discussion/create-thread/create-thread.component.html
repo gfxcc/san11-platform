@@ -1,6 +1,12 @@
 <div *ngIf="!this.createThreadLoading" class="thread-dialog">
     <header class="thread-dialog-header">
-        <h1>新帖子</h1>
+        <span class="dialog-icon">
+            <mat-icon>edit_note</mat-icon>
+        </span>
+        <div>
+            <h1>新帖子</h1>
+            <p>发布讨论、反馈或使用问题。</p>
+        </div>
     </header>
     <form class="form" [formGroup]="createThreadForm" (ngSubmit)="onCreateThread()">
         <div class="thread-dialog-body">

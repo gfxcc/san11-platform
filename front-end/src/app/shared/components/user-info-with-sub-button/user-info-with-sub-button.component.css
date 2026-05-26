@@ -74,7 +74,22 @@
 }
 
 .subscribe-section button {
+    min-height: 36px;
+    padding: 0 16px;
     border-radius: 999px;
+    font-weight: 800;
+}
+
+.subscribe-section .unsubscribe-button {
+    border: 1px solid var(--border-color);
+    background: var(--surface);
+    color: var(--text-muted);
+    box-shadow: none;
+}
+
+.subscribe-section .unsubscribe-button:hover {
+    background: var(--surface-muted);
+    color: var(--text-color);
 }
 
 @media (max-width: 40rem) {

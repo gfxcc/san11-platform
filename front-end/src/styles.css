@@ -131,6 +131,20 @@ body {
     box-shadow: none !important;
 }
 
+.package-description-section .ck.ck-editor,
+.editor-section .ck.ck-editor {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+}
+
+.package-description-section .ck.ck-editor:focus-within,
+.editor-section .ck.ck-editor:focus-within {
+    border-color: rgba(37, 99, 235, .58);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+}
+
 .editor-frame:focus-within,
 .dialog-editor:focus-within {
     border-color: rgba(37, 99, 235, .58);
@@ -313,6 +327,313 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
+.app-detail-section {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.app-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 58px;
+    padding: 0 22px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--surface);
+}
+
+.app-section-title {
+    margin: 0;
+    color: var(--primary-strong);
+    font-size: 1.05rem;
+    line-height: 1.35;
+    font-weight: 800;
+}
+
+.app-detail-header {
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 250, 252, .9));
+}
+
+.app-action-row {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.app-action-stack {
+    display: grid;
+    gap: 10px;
+}
+
+.app-action-stack button,
+.app-action-row button {
+    border-radius: 999px;
+}
+
+.app-list-panel {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.app-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 58px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--surface);
+}
+
+.app-data-table {
+    width: 100%;
+}
+
+.app-data-table th,
+.app-data-table td {
+    padding: 12px 18px;
+    border-bottom-color: var(--border-color);
+}
+
+.app-data-table th {
+    color: var(--text-muted);
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+.app-data-table tr.mat-mdc-row {
+    transition: background-color var(--animation-duration) var(--animation-timing-curve);
+}
+
+.app-data-table tr.mat-mdc-row:hover {
+    background: rgba(248, 250, 252, .92);
+}
+
+.app-data-table .muted-cell {
+    color: var(--text-muted);
+    font-weight: 650;
+}
+
+.app-data-table .align-right {
+    text-align: right;
+}
+
+.app-row-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.app-row-actions button {
+    border-radius: 999px;
+}
+
+.app-page {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 28px clamp(14px, 3vw, 36px) 40px;
+}
+
+.app-page-narrow {
+    max-width: min(920px, var(--content-max-width));
+}
+
+.app-page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.app-page-header h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: clamp(1.55rem, 2.6vw, 2.15rem);
+    line-height: 1.12;
+    font-weight: 850;
+    letter-spacing: 0;
+}
+
+.app-page-header p {
+    margin: 7px 0 0;
+    color: var(--text-muted);
+    font-size: .96rem;
+    line-height: 1.5;
+}
+
+.app-eyebrow {
+    display: inline-flex;
+    margin: 0 0 7px;
+    color: var(--primary-strong);
+    font-size: .8rem;
+    line-height: 1.35;
+    font-weight: 850;
+}
+
+.app-page-header .app-eyebrow {
+    margin: 0 0 7px;
+    color: var(--primary-strong);
+    font-size: .8rem;
+    line-height: 1.35;
+    font-weight: 850;
+}
+
+.app-header-note {
+    max-width: 28rem;
+    color: var(--text-muted);
+    font-size: .92rem;
+    line-height: 1.55;
+    text-align: right;
+}
+
+.app-count-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 11px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: .84rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.app-empty-state {
+    min-height: 220px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text-subtle);
+    font-weight: 750;
+}
+
+.app-empty-state mat-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 44px;
+}
+
+.app-activity-feed {
+    display: grid;
+    gap: 10px;
+}
+
+.app-activity-item {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.app-activity-item.is-disabled {
+    cursor: default;
+}
+
+.app-activity-marker {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border: 2px solid var(--surface);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--border-color);
+}
+
+.app-activity-marker mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.app-activity-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: start;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    transition: border-color var(--animation-duration) var(--animation-timing-curve), background-color var(--animation-duration) var(--animation-timing-curve), transform var(--animation-duration) var(--animation-timing-curve);
+}
+
+.app-activity-item:not(.is-disabled):hover .app-activity-card {
+    border-color: rgba(37, 99, 235, .24);
+    background: rgba(248, 250, 252, .72);
+    transform: translateY(-1px);
+}
+
+.app-activity-copy {
+    min-width: 0;
+}
+
+.app-activity-card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.app-activity-card-header h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.35;
+    font-weight: 850;
+}
+
+.app-activity-card-header span {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: .86rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.app-activity-card p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+.app-activity-card img {
+    width: 132px;
+    max-height: 82px;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--surface-muted);
+}
+
 .meta-pill {
     display: inline-flex;
     align-items: center;
@@ -345,6 +666,19 @@ body {
     --mdc-fab-container-color: var(--primary-color);
 }
 
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button,
+.mat-mdc-button {
+    border-radius: 999px !important;
+    font-weight: 750;
+    letter-spacing: 0;
+}
+
+.mat-mdc-icon-button {
+    border-radius: 999px;
+}
+
 .mat-mdc-form-field {
     --mdc-outlined-text-field-outline-color: var(--border-color);
     --mdc-outlined-text-field-hover-outline-color: var(--primary-color);
@@ -356,6 +690,39 @@ body {
 }
 
 @media (max-width: 40rem) {
+    .app-page {
+        padding: 20px 12px 32px;
+    }
+
+    .app-page-header {
+        display: block;
+        margin-bottom: 14px;
+    }
+
+    .app-header-note {
+        display: block;
+        margin-top: 8px;
+        text-align: left;
+    }
+
+    .app-count-pill {
+        margin-top: 12px;
+    }
+
+    .app-activity-card {
+        grid-template-columns: 1fr;
+    }
+
+    .app-activity-card-header {
+        display: grid;
+        gap: 4px;
+    }
+
+    .app-activity-card img {
+        width: 100%;
+        max-height: 160px;
+    }
+
     .page-wrapper {
         padding: 16px 12px;
     }

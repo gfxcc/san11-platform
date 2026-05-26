@@ -1,6 +1,12 @@
 <mat-dialog-content class="version-dialog">
     <header class="version-dialog-header">
-        <h1>更新版本</h1>
+        <span class="dialog-icon">
+            <mat-icon>new_releases</mat-icon>
+        </span>
+        <div>
+            <h1>更新版本</h1>
+            <p>填写版本号、更新日志和下载方式。</p>
+        </div>
     </header>
 
     <form class="form" [formGroup]="newBinaryForm" (ngSubmit)="onNewBinaryFormSubmit()">

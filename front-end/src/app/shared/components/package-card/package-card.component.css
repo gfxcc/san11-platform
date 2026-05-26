@@ -85,8 +85,54 @@ mat-card-content {
     display: flex;
 }
 
+.delete-dialog {
+    width: min(82vw, 420px);
+    padding: 4px 2px 0;
+}
+
+.delete-dialog-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 16px;
+}
+
+.delete-dialog-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    border-radius: var(--radius-md);
+    background: rgba(220, 38, 38, .1);
+    color: var(--accent-color);
+}
+
+.delete-dialog h1 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.35rem;
+    line-height: 1.25;
+    font-weight: 850;
+}
+
+.delete-dialog p {
+    margin: 6px 0 0;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
 .delete-dialog-actions {
-    float: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-color);
+}
+
+.delete-dialog-actions button {
+    border-radius: 999px;
 }
 
 mat-card-title {

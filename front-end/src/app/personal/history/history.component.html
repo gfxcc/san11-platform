@@ -1,21 +1,37 @@
-<div class="history-page">
-    <p-timeline [value]="events" align="alternate" styleClass="customized-timeline">
-        <ng-template pTemplate="marker" let-event>
-            <span class="custom-marker p-shadow-2" [style.backgroundColor]="event.color">
+<div class="history-page app-page app-page-narrow">
+    <section class="history-header app-page-header">
+        <div>
+            <h1>我的足迹</h1>
+            <p>最近浏览、互动和内容更新记录。</p>
+        </div>
+        <span *ngIf="events?.length" class="history-count app-count-pill">{{events.length}} 条</span>
+    </section>
+
+    <section class="history-feed app-activity-feed" *ngIf="events?.length; else emptyHistory">
+        <article *ngFor="let event of events" class="history-item app-activity-item" (click)="onDetailClick(event)"
+            [class.history-item-disabled]="!event.link" [class.is-disabled]="!event.link">
+            <span class="history-marker app-activity-marker" [style.backgroundColor]="event.color">
                 <mat-icon>{{event.icon}}</mat-icon>
             </span>
-        </ng-template>
-        <ng-template pTemplate="content" let-event>
-            <mat-card appearance="outlined" (click)="onDetailClick(event)" class="history-card clickable-card">
-                <mat-card-content>
-                    <div class="history-card-header">
+
+            <div class="history-card app-activity-card">
+                <div class="history-card-copy app-activity-copy">
+                    <div class="history-card-header app-activity-card-header">
                         <h2>{{event.displayName}}</h2>
                         <span>{{event.createTime}}</span>
                     </div>
-                    <img *ngIf="event.image" [src]="event.image" width="200" class="p-shadow-2" />
                     <p *ngIf="event.description">{{event.description}}</p>
-                </mat-card-content>
-            </mat-card>
-        </ng-template>
-    </p-timeline>
+                </div>
+
+                <img *ngIf="event.image" [src]="event.image" [alt]="event.displayName" />
+            </div>
+        </article>
+    </section>
+
+    <ng-template #emptyHistory>
+        <div class="history-empty app-empty-state">
+            <mat-icon>history</mat-icon>
+            <p>暂无足迹</p>
+        </div>
+    </ng-template>
 </div>

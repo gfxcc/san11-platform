@@ -9,20 +9,10 @@
     width: 100%;
     max-width: 100%;
     flex-grow: 1;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    background: var(--surface);
-    box-shadow: var(--shadow-sm);
 }
 
 .caption {
-    display: flex;
-    align-items: center;
     min-height: 72px;
-    padding: 0 20px;
-    border-bottom: 1px solid var(--border-color);
-    background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(248, 250, 252, .86));
     scroll-margin-top: 80px;
 }
 
@@ -88,20 +78,6 @@ mat-paginator {
 
 .dashboard-placeholder {
     min-height: 12rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-subtle);
-    font-size: 1rem;
-    font-weight: 650;
-}
-
-.dashboard-placeholder mat-icon {
-    font-size: 42px;
-    width: 42px;
-    height: 42px;
 }
 
 @media (max-width: 40rem) {

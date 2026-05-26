@@ -1,7 +1,13 @@
 <div class="text-input-dialog">
+    <header class="dialog-header">
+        <span class="dialog-icon">
+            <mat-icon>edit</mat-icon>
+        </span>
+        <h1>{{this.title}}</h1>
+    </header>
     <form class="form" #form='ngForm' (ngSubmit)="onSubmit(form)">
         <mat-form-field appearance="outline">
-            <mat-label>{{this.title}}</mat-label>
+            <mat-label>请输入</mat-label>
             <input matInput required [(ngModel)]="this.preSetText" name="input">
         </mat-form-field>
 

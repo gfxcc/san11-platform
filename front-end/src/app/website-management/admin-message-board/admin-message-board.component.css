@@ -41,9 +41,9 @@
     min-width: 0;
     padding: 12px;
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     background: var(--surface);
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 .summary-item mat-icon {
@@ -74,9 +74,9 @@
 .admin-tabs {
     overflow: hidden;
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     background: var(--surface);
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 .timeline-panel {
@@ -122,14 +122,14 @@
 
 .custom-marker {
     display: flex;
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    border: 3px solid var(--surface);
+    border: 2px solid var(--surface);
     border-radius: 50%;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 0 0 1px var(--border-color);
     z-index: 1;
 }
 
@@ -144,6 +144,13 @@
     border-color: var(--border-color);
     background: var(--surface);
     box-shadow: none;
+    transition: border-color var(--animation-duration) var(--animation-timing-curve), transform var(--animation-duration) var(--animation-timing-curve), background-color var(--animation-duration) var(--animation-timing-curve);
+}
+
+.event-card.clickable-card:hover {
+    border-color: rgba(37, 99, 235, .24);
+    background: rgba(248, 250, 252, .72);
+    transform: translateY(-1px);
 }
 
 .event-card.disabled-event {

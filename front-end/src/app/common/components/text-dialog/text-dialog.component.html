@@ -1,5 +1,10 @@
 <div class="main">
-    <h3>{{this.title}}</h3>
+    <header class="dialog-header">
+        <span class="dialog-icon">
+            <mat-icon>notes</mat-icon>
+        </span>
+        <h3>{{this.title}}</h3>
+    </header>
 
     <div class="dialog-editor">
         <ckeditor [data]="this.content" [editor]="this.editorService.getEditorInstance()"

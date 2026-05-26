@@ -1,5 +1,8 @@
 <div class="container">
     <header class="dialog-header">
+        <span class="dialog-icon">
+            <mat-icon>edit</mat-icon>
+        </span>
         <h1>{{this.title}}</h1>
     </header>
     <form class="form" #form='ngForm' (ngSubmit)="onSubmit(form)">

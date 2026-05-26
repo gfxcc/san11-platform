@@ -1,19 +1,15 @@
 <div class="catalog-page" [class.catalog-page-embedded]="!showCatalogHeader">
-    <section class="catalog-header" *ngIf="showCatalogHeader">
-        <div class="catalog-title">
-            <span class="catalog-kicker">资源库</span>
+    <section class="catalog-command" *ngIf="showCatalogHeader || listRequest">
+        <div class="catalog-title" *ngIf="showCatalogHeader">
+            <div class="catalog-title-row">
+                <span class="catalog-kicker">资源库</span>
+                <span class="catalog-summary app-count-pill" *ngIf="packages != undefined">{{packages.length}} 项资源</span>
+            </div>
             <h1>San11 工具与 MOD</h1>
             <p>按分类、标签和热度快速找到可用资源。</p>
         </div>
 
-        <div class="catalog-summary" *ngIf="packages != undefined">
-            <mat-icon>inventory_2</mat-icon>
-            <span>{{packages.length}} 项资源</span>
-        </div>
-    </section>
-
-    <section class="dashboard-toolbar" *ngIf="listRequest">
-        <div class="dashboard-actions">
+        <div class="dashboard-actions" *ngIf="listRequest">
             <mat-form-field appearance="outline" class="sort-field">
                 <mat-label>排序优先</mat-label>
                 <mat-select [(value)]="selectedOrder" (selectionChange)="onOrderChanged($event)">
@@ -29,7 +25,7 @@
         <app-package-card *ngFor="let package of packages" [package]="package" class="module"></app-package-card>
     </div>
 
-    <div *ngIf="packages?.length === 0" class="dashboard-placeholder surface-panel">
+    <div *ngIf="packages?.length === 0" class="dashboard-placeholder app-empty-state">
         <mat-icon>inventory_2</mat-icon>
         <p>空空如也</p>
     </div>

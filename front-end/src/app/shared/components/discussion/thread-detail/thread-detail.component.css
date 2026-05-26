@@ -17,9 +17,6 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 18px;
-    padding: 22px 24px;
-    border-bottom: 1px solid var(--border-color);
-    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 250, 252, .9));
 }
 
 .thread-title-block {
@@ -89,14 +86,7 @@ h1 {
 }
 
 .thread-admin-actions {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
     flex-shrink: 0;
-}
-
-.thread-admin-actions button {
-    border-radius: 999px;
 }
 
 .danger-menu-item mat-icon,
@@ -300,19 +290,7 @@ h1 {
 }
 
 .comments-header {
-    display: flex;
-    align-items: center;
-    min-height: 58px;
     padding: 0 22px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.comments-header h2 {
-    margin: 0;
-    color: var(--primary-strong);
-    font-size: 1.05rem;
-    line-height: 1.35;
-    font-weight: 800;
 }
 
 a {

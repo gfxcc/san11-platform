@@ -1,6 +1,6 @@
 <div class="main-container">
-    <div class="table-wrapper">
-        <div class="caption" [class.caption-compact]="!showTitle" id=caption>
+    <div class="table-wrapper app-list-panel">
+        <div class="caption app-list-header" [class.caption-compact]="!showTitle" id=caption>
             <div class="caption-title" *ngIf="showTitle">
                 <h3>
                     {{this.displayName}}
@@ -29,7 +29,7 @@
             <app-thread-card *ngFor="let thread of threads" [thread]="thread"></app-thread-card>
         </div>
 
-        <div *ngIf="!isLoading && threads?.length === 0" class="dashboard-placeholder">
+        <div *ngIf="!isLoading && threads?.length === 0" class="dashboard-placeholder app-empty-state">
             <mat-icon>forum</mat-icon>
             <p>暂无讨论</p>
         </div>

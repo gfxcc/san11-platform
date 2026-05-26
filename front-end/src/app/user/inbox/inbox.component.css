@@ -1,63 +1,9 @@
 .inbox-page {
-    max-width: 1000px;
-    padding: 10px 0 24px;
+    padding-top: 20px;
 }
 
-.custom-marker {
-    display: flex;
-    width: 34px;
-    height: 34px;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    border-radius: 50%;
-    z-index: 1;
-}
-
-.custom-marker mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-}
-
-.inbox-card {
-    margin-top: 28px;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    background: var(--surface);
-    box-shadow: var(--shadow-sm);
-}
-
-.inbox-card mat-card-content {
-    padding: 16px !important;
-}
-
-.inbox-card-header h2 {
-    margin: 0;
-    color: var(--text-color);
-    font-size: 1rem;
-    line-height: 1.35;
-    font-weight: 850;
-}
-
-.inbox-card-header span {
-    display: block;
-    margin-top: 4px;
-    color: var(--text-muted);
-    font-size: .86rem;
-    font-weight: 650;
-}
-
-.inbox-card img {
-    max-width: 100%;
-    margin-top: 12px;
-    border-radius: var(--radius-sm);
-}
-
-.inbox-card p {
-    margin: 12px 0 0;
-    color: var(--text-muted);
-    line-height: 1.55;
-    word-break: break-word;
+@media (max-width: 40rem) {
+    .inbox-page {
+        padding-top: 14px;
+    }
 }

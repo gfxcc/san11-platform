@@ -1,9 +1,9 @@
 <div class="page-wrapper thread-page-wrapper">
     <div class="page-content thread-page-content">
-        <article class="thread-panel surface-panel">
-            <header class="thread-header">
+        <article class="thread-panel surface-panel app-detail-section">
+            <header class="thread-header app-detail-header">
                 <div class="thread-title-block">
-                    <div class="panel-title">讨论</div>
+                    <div class="panel-title app-section-title">讨论</div>
                     <h1>{{this.thread.subject}}</h1>
                     <div class="thread-meta">
                         <a href="users/{{this.user?.userId}}" target="_blink">{{this.user?.username}}</a>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
 
-                <div *ngIf="(isAdmin() || isAuthor())" class="thread-admin-actions">
+                <div *ngIf="(isAdmin() || isAuthor())" class="thread-admin-actions app-action-row">
                     <button mat-stroked-button color="primary" *ngIf="this.descEditor_updated" (click)="onUpdate()">
                         <mat-icon>save</mat-icon>
                         更新
@@ -82,9 +82,9 @@
             </section>
         </article>
 
-        <section class="comments-panel surface-panel">
-            <div class="comments-header">
-                <h2>评论</h2>
+        <section class="comments-panel surface-panel app-detail-section">
+            <div class="comments-header app-section-header">
+                <h2 class="app-section-title">评论</h2>
             </div>
             <app-comment-board [parent]="this.thread.name" [resourceOwnerId]="this.thread.authorId"
                 commentsOrder="create_time"></app-comment-board>

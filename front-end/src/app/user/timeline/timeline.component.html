@@ -1,21 +1,29 @@
-<div class="timeline-page">
-    <p-timeline [value]="events" align="alternate" styleClass="customized-timeline">
-        <ng-template pTemplate="marker" let-event>
-            <span class="custom-marker p-shadow-2" [style.backgroundColor]="event.color">
+<div class="timeline-page app-page app-page-narrow">
+    <section class="timeline-feed app-activity-feed" *ngIf="events?.length; else emptyTimeline">
+        <article *ngFor="let event of events" class="timeline-item app-activity-item" (click)="onDetailClick(event)"
+            [class.timeline-item-disabled]="!event.link" [class.is-disabled]="!event.link">
+            <span class="timeline-marker app-activity-marker" [style.backgroundColor]="event.color">
                 <mat-icon>{{event.icon}}</mat-icon>
             </span>
-        </ng-template>
-        <ng-template pTemplate="content" let-event>
-            <mat-card appearance="outlined" (click)="onDetailClick(event)" class="timeline-card clickable-card">
-                <mat-card-content>
-                    <div class="timeline-card-header">
+
+            <div class="timeline-card app-activity-card">
+                <div class="timeline-card-copy app-activity-copy">
+                    <div class="timeline-card-header app-activity-card-header">
                         <h2>{{event.displayName}}</h2>
                         <span>{{event.createTime}}</span>
                     </div>
-                    <img *ngIf="event.image" [src]="event.image" width="200" class="p-shadow-2" />
                     <p *ngIf="event.description">{{event.description}}</p>
-                </mat-card-content>
-            </mat-card>
-        </ng-template>
-    </p-timeline>
+                </div>
+
+                <img *ngIf="event.image" [src]="event.image" [alt]="event.displayName" />
+            </div>
+        </article>
+    </section>
+
+    <ng-template #emptyTimeline>
+        <div class="timeline-empty app-empty-state">
+            <mat-icon>timeline</mat-icon>
+            <p>暂无时间线记录</p>
+        </div>
+    </ng-template>
 </div>

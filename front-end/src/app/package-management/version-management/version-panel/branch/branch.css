@@ -3,29 +3,7 @@
 }
 
 .version-table {
-    width: 100%;
     min-width: 720px;
-}
-
-.version-table th,
-.version-table td {
-    padding: 12px 18px;
-    border-bottom-color: var(--border-color);
-}
-
-.version-table th {
-    color: var(--text-muted);
-    font-size: .78rem;
-    font-weight: 800;
-    letter-spacing: 0;
-}
-
-.version-table tr.mat-mdc-row {
-    transition: background-color var(--animation-duration) var(--animation-timing-curve);
-}
-
-.version-table tr.mat-mdc-row:hover {
-    background: rgba(248, 250, 252, .92);
 }
 
 .version-column-cell {
@@ -74,11 +52,6 @@
 }
 
 .action-cluster {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 8px;
 }
 
 .download-action {
@@ -117,18 +90,7 @@
 }
 
 .empty-branch {
-    display: grid;
-    place-items: center;
-    gap: 8px;
     min-height: 180px;
-    color: var(--text-subtle);
-}
-
-.empty-branch mat-icon {
-    width: 32px;
-    height: 32px;
-    color: var(--text-subtle);
-    font-size: 32px;
 }
 
 .empty-branch p {

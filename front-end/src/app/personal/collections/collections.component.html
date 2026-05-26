@@ -1,1 +1,12 @@
-<app-dashboard [packages]="collectedPackages"></app-dashboard>
+<div class="collections-page app-page">
+    <section class="collections-header app-page-header">
+        <div>
+            <span class="collections-kicker app-eyebrow">个人</span>
+            <h1>收藏</h1>
+            <p>你收藏的资源会显示在这里，方便继续浏览和下载。</p>
+        </div>
+        <span class="collections-count app-count-pill" *ngIf="collectedPackages != undefined">{{collectedPackages.length}} 项资源</span>
+    </section>
+
+    <app-dashboard [packages]="collectedPackages"></app-dashboard>
+</div>
