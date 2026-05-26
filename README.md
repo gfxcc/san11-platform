@@ -1,6 +1,8 @@
 # [san11-platform](https://san11pk.org)
 A web platform to share San11 related tools
 
+![End-to-End System Architecture](resources/images/architecture_diagram.png)
+
 # Usage
 
 ## Prepare VM environment (ubuntu)

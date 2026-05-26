@@ -145,11 +145,11 @@ test.describe('anonymous critical user journeys', () => {
     await page.getByRole('button', { name: /创建/ }).click();
     await expect(page.getByText('上传工具需要登陆')).toBeVisible();
 
-    await page.getByText('登陆').click();
+    await page.getByText('登陆', { exact: true }).click();
     await expect(page).toHaveURL(/\/signin/);
     await expect(page.getByRole('button', { name: /登陆/ })).toBeVisible();
 
-    await page.getByText('注册').click();
+    await page.getByText('注册', { exact: true }).click();
     await expect(page).toHaveURL(/\/register/);
     await expect(page.getByRole('heading', { name: '注册' })).toBeVisible();
 
