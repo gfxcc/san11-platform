@@ -11,7 +11,7 @@ export function getUserUri(user: User): string {
 
 export function signedIn(): boolean {
     const user = loadUser();
-    return user.userId != '0' && user.username != '';
+    return !!user.userId && user.userId !== '0' && !!user.username;
 }
 
 export function saveUser(user: User) {
@@ -30,11 +30,16 @@ export function clearUser() {
 }
 
 export function loadUser(): User {
+    const userId = localStorage.getItem('userId') ?? '0';
+    const username = localStorage.getItem('username') ?? '';
+    const userType = localStorage.getItem('userType');
+    const imageUrl = localStorage.getItem('userImageUrl') ?? '';
+
     return new User({
-        name: `users/${localStorage.getItem('userId')}`,
-        userId: localStorage.getItem('userId'),
-        username: localStorage.getItem('username'),
-        type: User.UserType[localStorage.getItem('userType')],
-        imageUrl: localStorage.getItem('userImageUrl'),
+        name: `users/${userId}`,
+        userId: userId,
+        username: username,
+        type: userType ? User.UserType[userType] : User.UserType.USER_TYPE_UNSPECIFIED,
+        imageUrl: imageUrl,
     });
 }
