@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_RouteGuide_CreatePackage_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreatePackage_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreatePackageRequest
 	var metadata runtime.ServerMetadata
 
@@ -48,7 +48,7 @@ func request_RouteGuide_CreatePackage_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_CreatePackage_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreatePackage_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreatePackageRequest
 	var metadata runtime.ServerMetadata
 
@@ -65,7 +65,7 @@ func local_request_RouteGuide_CreatePackage_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_GetPackage_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_GetPackage_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetPackageRequest
 	var metadata runtime.ServerMetadata
 
@@ -82,7 +82,7 @@ func request_RouteGuide_GetPackage_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func local_request_RouteGuide_GetPackage_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_GetPackage_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetPackageRequest
 	var metadata runtime.ServerMetadata
 
@@ -100,10 +100,10 @@ func local_request_RouteGuide_GetPackage_0(ctx context.Context, marshaler runtim
 }
 
 var (
-	filter_RouteGuide_ListPackages_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 2, 0, 0}, Check: []int{0, 1, 2, 2}}
+	filter_San11Platform_ListPackages_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 2, 0, 0}, Check: []int{0, 1, 2, 2}}
 )
 
-func request_RouteGuide_ListPackages_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListPackages_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListPackagesRequest
 	var metadata runtime.ServerMetadata
 
@@ -127,7 +127,7 @@ func request_RouteGuide_ListPackages_0(ctx context.Context, marshaler runtime.Ma
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_RouteGuide_ListPackages_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_San11Platform_ListPackages_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -136,7 +136,7 @@ func request_RouteGuide_ListPackages_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_ListPackages_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListPackages_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListPackagesRequest
 	var metadata runtime.ServerMetadata
 
@@ -160,7 +160,7 @@ func local_request_RouteGuide_ListPackages_0(ctx context.Context, marshaler runt
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_RouteGuide_ListPackages_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_San11Platform_ListPackages_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -169,7 +169,7 @@ func local_request_RouteGuide_ListPackages_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_UpdatePackage_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdatePackage_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdatePackageRequest
 	var metadata runtime.ServerMetadata
 
@@ -186,7 +186,7 @@ func request_RouteGuide_UpdatePackage_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_UpdatePackage_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdatePackage_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdatePackageRequest
 	var metadata runtime.ServerMetadata
 
@@ -203,7 +203,7 @@ func local_request_RouteGuide_UpdatePackage_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_DeletePackage_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DeletePackage_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeletePackageRequest
 	var metadata runtime.ServerMetadata
 
@@ -220,7 +220,7 @@ func request_RouteGuide_DeletePackage_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_DeletePackage_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DeletePackage_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeletePackageRequest
 	var metadata runtime.ServerMetadata
 
@@ -237,7 +237,7 @@ func local_request_RouteGuide_DeletePackage_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_SearchPackages_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_SearchPackages_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SearchPackagesRequest
 	var metadata runtime.ServerMetadata
 
@@ -254,7 +254,7 @@ func request_RouteGuide_SearchPackages_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_RouteGuide_SearchPackages_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_SearchPackages_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SearchPackagesRequest
 	var metadata runtime.ServerMetadata
 
@@ -271,7 +271,7 @@ func local_request_RouteGuide_SearchPackages_0(ctx context.Context, marshaler ru
 
 }
 
-func request_RouteGuide_CreateBinary_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateBinary_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -288,7 +288,7 @@ func request_RouteGuide_CreateBinary_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_CreateBinary_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateBinary_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -305,7 +305,7 @@ func local_request_RouteGuide_CreateBinary_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_GetBinary_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_GetBinary_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -322,7 +322,7 @@ func request_RouteGuide_GetBinary_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-func local_request_RouteGuide_GetBinary_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_GetBinary_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -339,7 +339,7 @@ func local_request_RouteGuide_GetBinary_0(ctx context.Context, marshaler runtime
 
 }
 
-func request_RouteGuide_BatchGetBinary_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_BatchGetBinary_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq BatchGetBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -356,7 +356,7 @@ func request_RouteGuide_BatchGetBinary_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_RouteGuide_BatchGetBinary_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_BatchGetBinary_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq BatchGetBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -374,10 +374,10 @@ func local_request_RouteGuide_BatchGetBinary_0(ctx context.Context, marshaler ru
 }
 
 var (
-	filter_RouteGuide_ListBinaries_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 2, 0, 0}, Check: []int{0, 1, 2, 2}}
+	filter_San11Platform_ListBinaries_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 2, 0, 0}, Check: []int{0, 1, 2, 2}}
 )
 
-func request_RouteGuide_ListBinaries_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListBinaries_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListBinariesRequest
 	var metadata runtime.ServerMetadata
 
@@ -401,7 +401,7 @@ func request_RouteGuide_ListBinaries_0(ctx context.Context, marshaler runtime.Ma
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_RouteGuide_ListBinaries_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_San11Platform_ListBinaries_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -410,7 +410,7 @@ func request_RouteGuide_ListBinaries_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_ListBinaries_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListBinaries_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListBinariesRequest
 	var metadata runtime.ServerMetadata
 
@@ -434,7 +434,7 @@ func local_request_RouteGuide_ListBinaries_0(ctx context.Context, marshaler runt
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_RouteGuide_ListBinaries_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_San11Platform_ListBinaries_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -443,7 +443,7 @@ func local_request_RouteGuide_ListBinaries_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_UpdateBinary_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdateBinary_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -460,7 +460,7 @@ func request_RouteGuide_UpdateBinary_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_UpdateBinary_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdateBinary_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -477,7 +477,7 @@ func local_request_RouteGuide_UpdateBinary_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_DeleteBinary_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DeleteBinary_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -494,7 +494,7 @@ func request_RouteGuide_DeleteBinary_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_DeleteBinary_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DeleteBinary_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -511,7 +511,7 @@ func local_request_RouteGuide_DeleteBinary_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_DownloadBinary_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DownloadBinary_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DownloadBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -537,7 +537,7 @@ func request_RouteGuide_DownloadBinary_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_RouteGuide_DownloadBinary_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DownloadBinary_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DownloadBinaryRequest
 	var metadata runtime.ServerMetadata
 
@@ -563,7 +563,7 @@ func local_request_RouteGuide_DownloadBinary_0(ctx context.Context, marshaler ru
 
 }
 
-func request_RouteGuide_CreateImage_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateImage_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateImageRequest
 	var metadata runtime.ServerMetadata
 
@@ -580,7 +580,7 @@ func request_RouteGuide_CreateImage_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-func local_request_RouteGuide_CreateImage_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateImage_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateImageRequest
 	var metadata runtime.ServerMetadata
 
@@ -597,7 +597,7 @@ func local_request_RouteGuide_CreateImage_0(ctx context.Context, marshaler runti
 
 }
 
-func request_RouteGuide_CreateThread_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateThread_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateThreadRequest
 	var metadata runtime.ServerMetadata
 
@@ -614,7 +614,7 @@ func request_RouteGuide_CreateThread_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_CreateThread_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateThread_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateThreadRequest
 	var metadata runtime.ServerMetadata
 
@@ -631,7 +631,7 @@ func local_request_RouteGuide_CreateThread_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_GetThread_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_GetThread_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetThreadRequest
 	var metadata runtime.ServerMetadata
 
@@ -648,7 +648,7 @@ func request_RouteGuide_GetThread_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-func local_request_RouteGuide_GetThread_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_GetThread_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetThreadRequest
 	var metadata runtime.ServerMetadata
 
@@ -665,7 +665,7 @@ func local_request_RouteGuide_GetThread_0(ctx context.Context, marshaler runtime
 
 }
 
-func request_RouteGuide_ListThreads_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListThreads_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListThreadsRequest
 	var metadata runtime.ServerMetadata
 
@@ -682,7 +682,7 @@ func request_RouteGuide_ListThreads_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-func local_request_RouteGuide_ListThreads_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListThreads_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListThreadsRequest
 	var metadata runtime.ServerMetadata
 
@@ -699,7 +699,7 @@ func local_request_RouteGuide_ListThreads_0(ctx context.Context, marshaler runti
 
 }
 
-func request_RouteGuide_UpdateThread_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdateThread_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateThreadRequest
 	var metadata runtime.ServerMetadata
 
@@ -716,7 +716,7 @@ func request_RouteGuide_UpdateThread_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_UpdateThread_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdateThread_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateThreadRequest
 	var metadata runtime.ServerMetadata
 
@@ -733,7 +733,7 @@ func local_request_RouteGuide_UpdateThread_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_DeleteThread_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DeleteThread_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteThreadRequest
 	var metadata runtime.ServerMetadata
 
@@ -750,7 +750,7 @@ func request_RouteGuide_DeleteThread_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_DeleteThread_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DeleteThread_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteThreadRequest
 	var metadata runtime.ServerMetadata
 
@@ -767,7 +767,7 @@ func local_request_RouteGuide_DeleteThread_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_CreateComment_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateComment_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateCommentRequest
 	var metadata runtime.ServerMetadata
 
@@ -784,7 +784,7 @@ func request_RouteGuide_CreateComment_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_CreateComment_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateComment_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateCommentRequest
 	var metadata runtime.ServerMetadata
 
@@ -801,7 +801,7 @@ func local_request_RouteGuide_CreateComment_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_ListComments_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListComments_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListCommentsRequest
 	var metadata runtime.ServerMetadata
 
@@ -818,7 +818,7 @@ func request_RouteGuide_ListComments_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_ListComments_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListComments_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListCommentsRequest
 	var metadata runtime.ServerMetadata
 
@@ -835,7 +835,7 @@ func local_request_RouteGuide_ListComments_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_UpdateComment_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdateComment_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateCommentRequest
 	var metadata runtime.ServerMetadata
 
@@ -852,7 +852,7 @@ func request_RouteGuide_UpdateComment_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_UpdateComment_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdateComment_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateCommentRequest
 	var metadata runtime.ServerMetadata
 
@@ -869,7 +869,7 @@ func local_request_RouteGuide_UpdateComment_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_DeleteComment_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DeleteComment_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteCommentRequest
 	var metadata runtime.ServerMetadata
 
@@ -886,7 +886,7 @@ func request_RouteGuide_DeleteComment_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_DeleteComment_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DeleteComment_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteCommentRequest
 	var metadata runtime.ServerMetadata
 
@@ -903,7 +903,7 @@ func local_request_RouteGuide_DeleteComment_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_CreateReply_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateReply_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateReplyRequest
 	var metadata runtime.ServerMetadata
 
@@ -920,7 +920,7 @@ func request_RouteGuide_CreateReply_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-func local_request_RouteGuide_CreateReply_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateReply_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateReplyRequest
 	var metadata runtime.ServerMetadata
 
@@ -937,7 +937,7 @@ func local_request_RouteGuide_CreateReply_0(ctx context.Context, marshaler runti
 
 }
 
-func request_RouteGuide_UpdateReply_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdateReply_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateReplyRequest
 	var metadata runtime.ServerMetadata
 
@@ -954,7 +954,7 @@ func request_RouteGuide_UpdateReply_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-func local_request_RouteGuide_UpdateReply_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdateReply_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateReplyRequest
 	var metadata runtime.ServerMetadata
 
@@ -971,7 +971,7 @@ func local_request_RouteGuide_UpdateReply_0(ctx context.Context, marshaler runti
 
 }
 
-func request_RouteGuide_DeleteReply_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DeleteReply_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteReplyRequest
 	var metadata runtime.ServerMetadata
 
@@ -988,7 +988,7 @@ func request_RouteGuide_DeleteReply_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-func local_request_RouteGuide_DeleteReply_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DeleteReply_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteReplyRequest
 	var metadata runtime.ServerMetadata
 
@@ -1005,7 +1005,7 @@ func local_request_RouteGuide_DeleteReply_0(ctx context.Context, marshaler runti
 
 }
 
-func request_RouteGuide_CreateArticle_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateArticle_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateArticleRequest
 	var metadata runtime.ServerMetadata
 
@@ -1022,7 +1022,7 @@ func request_RouteGuide_CreateArticle_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_CreateArticle_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateArticle_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateArticleRequest
 	var metadata runtime.ServerMetadata
 
@@ -1039,7 +1039,7 @@ func local_request_RouteGuide_CreateArticle_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_GetArticle_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_GetArticle_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetArticleRequest
 	var metadata runtime.ServerMetadata
 
@@ -1056,7 +1056,7 @@ func request_RouteGuide_GetArticle_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func local_request_RouteGuide_GetArticle_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_GetArticle_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetArticleRequest
 	var metadata runtime.ServerMetadata
 
@@ -1073,7 +1073,7 @@ func local_request_RouteGuide_GetArticle_0(ctx context.Context, marshaler runtim
 
 }
 
-func request_RouteGuide_ListArticles_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListArticles_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListArticlesRequest
 	var metadata runtime.ServerMetadata
 
@@ -1090,7 +1090,7 @@ func request_RouteGuide_ListArticles_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_ListArticles_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListArticles_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListArticlesRequest
 	var metadata runtime.ServerMetadata
 
@@ -1107,7 +1107,7 @@ func local_request_RouteGuide_ListArticles_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_UpdateArticle_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdateArticle_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateArticleRequest
 	var metadata runtime.ServerMetadata
 
@@ -1124,7 +1124,7 @@ func request_RouteGuide_UpdateArticle_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_UpdateArticle_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdateArticle_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateArticleRequest
 	var metadata runtime.ServerMetadata
 
@@ -1141,7 +1141,7 @@ func local_request_RouteGuide_UpdateArticle_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_DeleteArticle_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DeleteArticle_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteArticleRequest
 	var metadata runtime.ServerMetadata
 
@@ -1158,7 +1158,7 @@ func request_RouteGuide_DeleteArticle_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_RouteGuide_DeleteArticle_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DeleteArticle_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteArticleRequest
 	var metadata runtime.ServerMetadata
 
@@ -1175,7 +1175,7 @@ func local_request_RouteGuide_DeleteArticle_0(ctx context.Context, marshaler run
 
 }
 
-func request_RouteGuide_SignIn_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_SignIn_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SignInRequest
 	var metadata runtime.ServerMetadata
 
@@ -1192,7 +1192,7 @@ func request_RouteGuide_SignIn_0(ctx context.Context, marshaler runtime.Marshale
 
 }
 
-func local_request_RouteGuide_SignIn_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_SignIn_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SignInRequest
 	var metadata runtime.ServerMetadata
 
@@ -1209,7 +1209,7 @@ func local_request_RouteGuide_SignIn_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func request_RouteGuide_SignOut_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_SignOut_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SignOutRequest
 	var metadata runtime.ServerMetadata
 
@@ -1226,7 +1226,7 @@ func request_RouteGuide_SignOut_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-func local_request_RouteGuide_SignOut_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_SignOut_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SignOutRequest
 	var metadata runtime.ServerMetadata
 
@@ -1243,7 +1243,7 @@ func local_request_RouteGuide_SignOut_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func request_RouteGuide_CreateUser_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateUser_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -1260,7 +1260,7 @@ func request_RouteGuide_CreateUser_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func local_request_RouteGuide_CreateUser_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateUser_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -1277,7 +1277,7 @@ func local_request_RouteGuide_CreateUser_0(ctx context.Context, marshaler runtim
 
 }
 
-func request_RouteGuide_GetUser_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_GetUser_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -1303,7 +1303,7 @@ func request_RouteGuide_GetUser_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-func local_request_RouteGuide_GetUser_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_GetUser_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -1329,7 +1329,7 @@ func local_request_RouteGuide_GetUser_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func request_RouteGuide_ListUsers_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListUsers_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListUsersRequest
 	var metadata runtime.ServerMetadata
 
@@ -1346,7 +1346,7 @@ func request_RouteGuide_ListUsers_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-func local_request_RouteGuide_ListUsers_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListUsers_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListUsersRequest
 	var metadata runtime.ServerMetadata
 
@@ -1363,7 +1363,7 @@ func local_request_RouteGuide_ListUsers_0(ctx context.Context, marshaler runtime
 
 }
 
-func request_RouteGuide_UpdateUser_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdateUser_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -1380,7 +1380,7 @@ func request_RouteGuide_UpdateUser_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func local_request_RouteGuide_UpdateUser_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdateUser_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -1397,7 +1397,7 @@ func local_request_RouteGuide_UpdateUser_0(ctx context.Context, marshaler runtim
 
 }
 
-func request_RouteGuide_SendVerificationCode_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_SendVerificationCode_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SendVerificationCodeRequest
 	var metadata runtime.ServerMetadata
 
@@ -1414,7 +1414,7 @@ func request_RouteGuide_SendVerificationCode_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_RouteGuide_SendVerificationCode_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_SendVerificationCode_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SendVerificationCodeRequest
 	var metadata runtime.ServerMetadata
 
@@ -1431,7 +1431,7 @@ func local_request_RouteGuide_SendVerificationCode_0(ctx context.Context, marsha
 
 }
 
-func request_RouteGuide_VerifyEmail_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_VerifyEmail_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq VerifyEmailRequest
 	var metadata runtime.ServerMetadata
 
@@ -1448,7 +1448,7 @@ func request_RouteGuide_VerifyEmail_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-func local_request_RouteGuide_VerifyEmail_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_VerifyEmail_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq VerifyEmailRequest
 	var metadata runtime.ServerMetadata
 
@@ -1465,7 +1465,7 @@ func local_request_RouteGuide_VerifyEmail_0(ctx context.Context, marshaler runti
 
 }
 
-func request_RouteGuide_ValidateNewUser_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ValidateNewUser_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ValidateNewUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -1482,7 +1482,7 @@ func request_RouteGuide_ValidateNewUser_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_RouteGuide_ValidateNewUser_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ValidateNewUser_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ValidateNewUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -1499,7 +1499,7 @@ func local_request_RouteGuide_ValidateNewUser_0(ctx context.Context, marshaler r
 
 }
 
-func request_RouteGuide_UpdatePassword_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdatePassword_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdatePasswordRequest
 	var metadata runtime.ServerMetadata
 
@@ -1516,7 +1516,7 @@ func request_RouteGuide_UpdatePassword_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_RouteGuide_UpdatePassword_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdatePassword_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdatePasswordRequest
 	var metadata runtime.ServerMetadata
 
@@ -1533,7 +1533,7 @@ func local_request_RouteGuide_UpdatePassword_0(ctx context.Context, marshaler ru
 
 }
 
-func request_RouteGuide_ListActivities_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListActivities_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListActivitiesRequest
 	var metadata runtime.ServerMetadata
 
@@ -1550,7 +1550,7 @@ func request_RouteGuide_ListActivities_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_RouteGuide_ListActivities_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListActivities_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListActivitiesRequest
 	var metadata runtime.ServerMetadata
 
@@ -1567,7 +1567,7 @@ func local_request_RouteGuide_ListActivities_0(ctx context.Context, marshaler ru
 
 }
 
-func request_RouteGuide_ToggleAction_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ToggleAction_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ToggleActionRequest
 	var metadata runtime.ServerMetadata
 
@@ -1584,7 +1584,7 @@ func request_RouteGuide_ToggleAction_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_ToggleAction_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ToggleAction_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ToggleActionRequest
 	var metadata runtime.ServerMetadata
 
@@ -1601,7 +1601,7 @@ func local_request_RouteGuide_ToggleAction_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_ListNotifications_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListNotifications_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListNotificationsRequest
 	var metadata runtime.ServerMetadata
 
@@ -1618,7 +1618,7 @@ func request_RouteGuide_ListNotifications_0(ctx context.Context, marshaler runti
 
 }
 
-func local_request_RouteGuide_ListNotifications_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListNotifications_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListNotificationsRequest
 	var metadata runtime.ServerMetadata
 
@@ -1635,7 +1635,7 @@ func local_request_RouteGuide_ListNotifications_0(ctx context.Context, marshaler
 
 }
 
-func request_RouteGuide_UpdateNotification_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdateNotification_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateNotificationRequest
 	var metadata runtime.ServerMetadata
 
@@ -1652,7 +1652,7 @@ func request_RouteGuide_UpdateNotification_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_RouteGuide_UpdateNotification_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdateNotification_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateNotificationRequest
 	var metadata runtime.ServerMetadata
 
@@ -1669,7 +1669,7 @@ func local_request_RouteGuide_UpdateNotification_0(ctx context.Context, marshale
 
 }
 
-func request_RouteGuide_CreateTag_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateTag_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateTagRequest
 	var metadata runtime.ServerMetadata
 
@@ -1686,7 +1686,7 @@ func request_RouteGuide_CreateTag_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-func local_request_RouteGuide_CreateTag_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateTag_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateTagRequest
 	var metadata runtime.ServerMetadata
 
@@ -1703,7 +1703,7 @@ func local_request_RouteGuide_CreateTag_0(ctx context.Context, marshaler runtime
 
 }
 
-func request_RouteGuide_ListTags_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListTags_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListTagsRequest
 	var metadata runtime.ServerMetadata
 
@@ -1720,7 +1720,7 @@ func request_RouteGuide_ListTags_0(ctx context.Context, marshaler runtime.Marsha
 
 }
 
-func local_request_RouteGuide_ListTags_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListTags_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListTagsRequest
 	var metadata runtime.ServerMetadata
 
@@ -1737,7 +1737,7 @@ func local_request_RouteGuide_ListTags_0(ctx context.Context, marshaler runtime.
 
 }
 
-func request_RouteGuide_DeleteTag_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DeleteTag_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteTagRequest
 	var metadata runtime.ServerMetadata
 
@@ -1754,7 +1754,7 @@ func request_RouteGuide_DeleteTag_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-func local_request_RouteGuide_DeleteTag_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DeleteTag_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteTagRequest
 	var metadata runtime.ServerMetadata
 
@@ -1771,7 +1771,7 @@ func local_request_RouteGuide_DeleteTag_0(ctx context.Context, marshaler runtime
 
 }
 
-func request_RouteGuide_GetStatistic_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_GetStatistic_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetStatisticRequest
 	var metadata runtime.ServerMetadata
 
@@ -1788,7 +1788,7 @@ func request_RouteGuide_GetStatistic_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_RouteGuide_GetStatistic_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_GetStatistic_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetStatisticRequest
 	var metadata runtime.ServerMetadata
 
@@ -1805,7 +1805,7 @@ func local_request_RouteGuide_GetStatistic_0(ctx context.Context, marshaler runt
 
 }
 
-func request_RouteGuide_GetAdminMessage_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_GetAdminMessage_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetAdminMessageRequest
 	var metadata runtime.ServerMetadata
 
@@ -1822,7 +1822,7 @@ func request_RouteGuide_GetAdminMessage_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_RouteGuide_GetAdminMessage_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_GetAdminMessage_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetAdminMessageRequest
 	var metadata runtime.ServerMetadata
 
@@ -1839,7 +1839,7 @@ func local_request_RouteGuide_GetAdminMessage_0(ctx context.Context, marshaler r
 
 }
 
-func request_RouteGuide_CreateSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_CreateSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateSubscriptionRequest
 	var metadata runtime.ServerMetadata
 
@@ -1856,7 +1856,7 @@ func request_RouteGuide_CreateSubscription_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_RouteGuide_CreateSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_CreateSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateSubscriptionRequest
 	var metadata runtime.ServerMetadata
 
@@ -1873,7 +1873,7 @@ func local_request_RouteGuide_CreateSubscription_0(ctx context.Context, marshale
 
 }
 
-func request_RouteGuide_ListSubscriptioins_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_ListSubscriptioins_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListSubscriptionsRequest
 	var metadata runtime.ServerMetadata
 
@@ -1890,7 +1890,7 @@ func request_RouteGuide_ListSubscriptioins_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_RouteGuide_ListSubscriptioins_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_ListSubscriptioins_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListSubscriptionsRequest
 	var metadata runtime.ServerMetadata
 
@@ -1907,7 +1907,7 @@ func local_request_RouteGuide_ListSubscriptioins_0(ctx context.Context, marshale
 
 }
 
-func request_RouteGuide_UpdateSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_UpdateSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateSubscriptionRequest
 	var metadata runtime.ServerMetadata
 
@@ -1924,7 +1924,7 @@ func request_RouteGuide_UpdateSubscription_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_RouteGuide_UpdateSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_UpdateSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UpdateSubscriptionRequest
 	var metadata runtime.ServerMetadata
 
@@ -1941,7 +1941,7 @@ func local_request_RouteGuide_UpdateSubscription_0(ctx context.Context, marshale
 
 }
 
-func request_RouteGuide_DeleteSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client RouteGuideClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_San11Platform_DeleteSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client San11PlatformClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteSubscriptionRequest
 	var metadata runtime.ServerMetadata
 
@@ -1958,7 +1958,7 @@ func request_RouteGuide_DeleteSubscription_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_RouteGuide_DeleteSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server RouteGuideServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_San11Platform_DeleteSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server San11PlatformServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteSubscriptionRequest
 	var metadata runtime.ServerMetadata
 
@@ -1975,13 +1975,13 @@ func local_request_RouteGuide_DeleteSubscription_0(ctx context.Context, marshale
 
 }
 
-// RegisterRouteGuideHandlerServer registers the http handlers for service RouteGuide to "mux".
-// UnaryRPC     :call RouteGuideServer directly.
+// RegisterSan11PlatformHandlerServer registers the http handlers for service San11Platform to "mux".
+// UnaryRPC     :call San11PlatformServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterRouteGuideHandlerFromEndpoint instead.
-func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux, server RouteGuideServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterSan11PlatformHandlerFromEndpoint instead.
+func RegisterSan11PlatformHandlerServer(ctx context.Context, mux *runtime.ServeMux, server San11PlatformServer) error {
 
-	mux.Handle("POST", pattern_RouteGuide_CreatePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreatePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -1989,12 +1989,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreatePackage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreatePackage"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreatePackage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreatePackage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreatePackage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreatePackage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2002,11 +2002,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreatePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreatePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetPackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetPackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2014,12 +2014,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/GetPackage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetPackage"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/GetPackage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetPackage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_GetPackage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_GetPackage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2027,11 +2027,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_GetPackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetPackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_RouteGuide_ListPackages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_San11Platform_ListPackages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2039,12 +2039,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListPackages", runtime.WithHTTPPathPattern("/v1/{parent=categories/*}/packages"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListPackages", runtime.WithHTTPPathPattern("/v1/{parent=categories/*}/packages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListPackages_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListPackages_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2052,11 +2052,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListPackages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListPackages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdatePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdatePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2064,12 +2064,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdatePackage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdatePackage"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdatePackage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdatePackage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdatePackage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdatePackage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2077,11 +2077,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdatePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdatePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeletePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeletePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2089,12 +2089,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DeletePackage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeletePackage"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DeletePackage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeletePackage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DeletePackage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DeletePackage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2102,11 +2102,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DeletePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeletePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_SearchPackages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_SearchPackages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2114,12 +2114,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/SearchPackages", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/SearchPackages"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/SearchPackages", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/SearchPackages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_SearchPackages_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_SearchPackages_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2127,11 +2127,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_SearchPackages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_SearchPackages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2139,12 +2139,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateBinary"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2152,11 +2152,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2164,12 +2164,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/GetBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetBinary"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/GetBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_GetBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_GetBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2177,11 +2177,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_GetBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_BatchGetBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_BatchGetBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2189,12 +2189,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/BatchGetBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/BatchGetBinary"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/BatchGetBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/BatchGetBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_BatchGetBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_BatchGetBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2202,11 +2202,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_BatchGetBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_BatchGetBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_RouteGuide_ListBinaries_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_San11Platform_ListBinaries_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2214,12 +2214,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListBinaries", runtime.WithHTTPPathPattern("/v1/{parent=categories/*/packages/*}/binaries"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListBinaries", runtime.WithHTTPPathPattern("/v1/{parent=categories/*/packages/*}/binaries"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListBinaries_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListBinaries_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2227,11 +2227,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListBinaries_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListBinaries_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2239,12 +2239,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateBinary"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdateBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdateBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2252,11 +2252,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdateBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2264,12 +2264,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteBinary"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DeleteBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DeleteBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2277,11 +2277,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DeleteBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DownloadBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DownloadBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2289,12 +2289,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DownloadBinary", runtime.WithHTTPPathPattern("/v1/{name=categories/*/packages/*/binaries/*}:download"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DownloadBinary", runtime.WithHTTPPathPattern("/v1/{name=categories/*/packages/*/binaries/*}:download"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DownloadBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DownloadBinary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2302,11 +2302,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DownloadBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DownloadBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2314,12 +2314,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateImage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateImage"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateImage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateImage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateImage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateImage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2327,11 +2327,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateImage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateImage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2339,12 +2339,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateThread", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateThread"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateThread", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateThread"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateThread_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateThread_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2352,11 +2352,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2364,12 +2364,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/GetThread", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetThread"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/GetThread", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetThread"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_GetThread_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_GetThread_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2377,11 +2377,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_GetThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListThreads_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListThreads_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2389,12 +2389,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListThreads", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListThreads"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListThreads", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListThreads"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListThreads_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListThreads_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2402,11 +2402,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListThreads_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListThreads_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2414,12 +2414,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateThread", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateThread"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateThread", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateThread"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdateThread_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdateThread_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2427,11 +2427,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdateThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2439,12 +2439,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteThread", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteThread"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteThread", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteThread"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DeleteThread_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DeleteThread_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2452,11 +2452,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DeleteThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2464,12 +2464,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateComment", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateComment"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateComment", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateComment"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateComment_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateComment_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2477,11 +2477,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListComments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListComments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2489,12 +2489,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListComments", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListComments"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListComments", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListComments"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListComments_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListComments_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2502,11 +2502,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListComments_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListComments_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2514,12 +2514,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateComment", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateComment"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateComment", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateComment"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdateComment_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdateComment_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2527,11 +2527,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdateComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2539,12 +2539,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteComment", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteComment"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteComment", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteComment"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DeleteComment_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DeleteComment_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2552,11 +2552,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DeleteComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2564,12 +2564,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateReply", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateReply"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateReply", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateReply"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateReply_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateReply_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2577,11 +2577,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2589,12 +2589,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateReply", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateReply"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateReply", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateReply"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdateReply_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdateReply_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2602,11 +2602,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdateReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2614,12 +2614,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteReply", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteReply"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteReply", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteReply"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DeleteReply_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DeleteReply_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2627,11 +2627,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DeleteReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2639,12 +2639,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateArticle", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateArticle"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateArticle", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateArticle"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateArticle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateArticle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2652,11 +2652,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2664,12 +2664,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/GetArticle", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetArticle"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/GetArticle", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetArticle"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_GetArticle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_GetArticle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2677,11 +2677,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_GetArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListArticles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListArticles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2689,12 +2689,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListArticles", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListArticles"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListArticles", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListArticles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListArticles_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListArticles_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2702,11 +2702,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListArticles_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListArticles_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2714,12 +2714,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateArticle", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateArticle"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateArticle", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateArticle"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdateArticle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdateArticle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2727,11 +2727,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdateArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2739,12 +2739,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteArticle", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteArticle"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteArticle", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteArticle"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DeleteArticle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DeleteArticle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2752,11 +2752,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DeleteArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_SignIn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_SignIn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2764,12 +2764,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/SignIn", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/SignIn"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/SignIn", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/SignIn"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_SignIn_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_SignIn_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2777,11 +2777,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_SignIn_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_SignIn_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_SignOut_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_SignOut_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2789,12 +2789,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/SignOut", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/SignOut"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/SignOut", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/SignOut"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_SignOut_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_SignOut_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2802,11 +2802,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_SignOut_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_SignOut_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2814,12 +2814,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateUser", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateUser"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateUser", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateUser_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateUser_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2827,11 +2827,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_RouteGuide_GetUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_San11Platform_GetUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2839,12 +2839,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/GetUser", runtime.WithHTTPPathPattern("/v1/{name=users/*}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/GetUser", runtime.WithHTTPPathPattern("/v1/{name=users/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_GetUser_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_GetUser_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2852,11 +2852,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_GetUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListUsers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListUsers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2864,12 +2864,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListUsers", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListUsers"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListUsers", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListUsers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListUsers_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListUsers_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2877,11 +2877,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListUsers_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListUsers_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2889,12 +2889,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateUser", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateUser"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateUser", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdateUser_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdateUser_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2902,11 +2902,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdateUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_SendVerificationCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_SendVerificationCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2914,12 +2914,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/SendVerificationCode", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/SendVerificationCode"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/SendVerificationCode", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/SendVerificationCode"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_SendVerificationCode_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_SendVerificationCode_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2927,11 +2927,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_SendVerificationCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_SendVerificationCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_VerifyEmail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_VerifyEmail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2939,12 +2939,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/VerifyEmail", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/VerifyEmail"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/VerifyEmail", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/VerifyEmail"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_VerifyEmail_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_VerifyEmail_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2952,11 +2952,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_VerifyEmail_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_VerifyEmail_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ValidateNewUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ValidateNewUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2964,12 +2964,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ValidateNewUser", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ValidateNewUser"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ValidateNewUser", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ValidateNewUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ValidateNewUser_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ValidateNewUser_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2977,11 +2977,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ValidateNewUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ValidateNewUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdatePassword_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdatePassword_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2989,12 +2989,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdatePassword", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdatePassword"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdatePassword", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdatePassword"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdatePassword_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdatePassword_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3002,11 +3002,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdatePassword_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdatePassword_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListActivities_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListActivities_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3014,12 +3014,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListActivities", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListActivities"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListActivities", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListActivities"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListActivities_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListActivities_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3027,11 +3027,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListActivities_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListActivities_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ToggleAction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ToggleAction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3039,12 +3039,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ToggleAction", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ToggleAction"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ToggleAction", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ToggleAction"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ToggleAction_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ToggleAction_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3052,11 +3052,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ToggleAction_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ToggleAction_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListNotifications_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListNotifications_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3064,12 +3064,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListNotifications", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListNotifications"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListNotifications", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListNotifications"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListNotifications_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListNotifications_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3077,11 +3077,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListNotifications_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListNotifications_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateNotification_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateNotification_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3089,12 +3089,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateNotification", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateNotification"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateNotification", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateNotification"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdateNotification_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdateNotification_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3102,11 +3102,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdateNotification_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateNotification_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3114,12 +3114,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateTag", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateTag"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateTag", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateTag"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3127,11 +3127,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListTags_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListTags_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3139,12 +3139,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListTags", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListTags"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListTags", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListTags"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListTags_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListTags_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3152,11 +3152,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListTags_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListTags_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3164,12 +3164,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteTag", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteTag"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteTag", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteTag"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DeleteTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DeleteTag_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3177,11 +3177,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DeleteTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetStatistic_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetStatistic_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3189,12 +3189,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/GetStatistic", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetStatistic"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/GetStatistic", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetStatistic"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_GetStatistic_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_GetStatistic_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3202,11 +3202,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_GetStatistic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetStatistic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetAdminMessage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetAdminMessage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3214,12 +3214,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/GetAdminMessage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetAdminMessage"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/GetAdminMessage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetAdminMessage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_GetAdminMessage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_GetAdminMessage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3227,11 +3227,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_GetAdminMessage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetAdminMessage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3239,12 +3239,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/CreateSubscription", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateSubscription"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/CreateSubscription", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateSubscription"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_CreateSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_CreateSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3252,11 +3252,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_CreateSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListSubscriptioins_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListSubscriptioins_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3264,12 +3264,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/ListSubscriptioins", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListSubscriptioins"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/ListSubscriptioins", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListSubscriptioins"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_ListSubscriptioins_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_ListSubscriptioins_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3277,11 +3277,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_ListSubscriptioins_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListSubscriptioins_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3289,12 +3289,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateSubscription", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateSubscription"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateSubscription", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateSubscription"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_UpdateSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_UpdateSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3302,11 +3302,11 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_UpdateSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3314,12 +3314,12 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteSubscription", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteSubscription"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteSubscription", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteSubscription"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_RouteGuide_DeleteSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_San11Platform_DeleteSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -3327,16 +3327,16 @@ func RegisterRouteGuideHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 
-		forward_RouteGuide_DeleteSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterRouteGuideHandlerFromEndpoint is same as RegisterRouteGuideHandler but
+// RegisterSan11PlatformHandlerFromEndpoint is same as RegisterSan11PlatformHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterRouteGuideHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterSan11PlatformHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.DialContext(ctx, endpoint, opts...)
 	if err != nil {
 		return err
@@ -3356,1207 +3356,1207 @@ func RegisterRouteGuideHandlerFromEndpoint(ctx context.Context, mux *runtime.Ser
 		}()
 	}()
 
-	return RegisterRouteGuideHandler(ctx, mux, conn)
+	return RegisterSan11PlatformHandler(ctx, mux, conn)
 }
 
-// RegisterRouteGuideHandler registers the http handlers for service RouteGuide to "mux".
+// RegisterSan11PlatformHandler registers the http handlers for service San11Platform to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterRouteGuideHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterRouteGuideHandlerClient(ctx, mux, NewRouteGuideClient(conn))
+func RegisterSan11PlatformHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterSan11PlatformHandlerClient(ctx, mux, NewSan11PlatformClient(conn))
 }
 
-// RegisterRouteGuideHandlerClient registers the http handlers for service RouteGuide
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "RouteGuideClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "RouteGuideClient"
+// RegisterSan11PlatformHandlerClient registers the http handlers for service San11Platform
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "San11PlatformClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "San11PlatformClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "RouteGuideClient" to call the correct interceptors.
-func RegisterRouteGuideHandlerClient(ctx context.Context, mux *runtime.ServeMux, client RouteGuideClient) error {
+// "San11PlatformClient" to call the correct interceptors.
+func RegisterSan11PlatformHandlerClient(ctx context.Context, mux *runtime.ServeMux, client San11PlatformClient) error {
 
-	mux.Handle("POST", pattern_RouteGuide_CreatePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreatePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreatePackage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreatePackage"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreatePackage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreatePackage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreatePackage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreatePackage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreatePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreatePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetPackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetPackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/GetPackage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetPackage"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/GetPackage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetPackage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_GetPackage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_GetPackage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_GetPackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetPackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_RouteGuide_ListPackages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_San11Platform_ListPackages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListPackages", runtime.WithHTTPPathPattern("/v1/{parent=categories/*}/packages"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListPackages", runtime.WithHTTPPathPattern("/v1/{parent=categories/*}/packages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListPackages_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListPackages_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListPackages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListPackages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdatePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdatePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdatePackage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdatePackage"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdatePackage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdatePackage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdatePackage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdatePackage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdatePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdatePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeletePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeletePackage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DeletePackage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeletePackage"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DeletePackage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeletePackage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DeletePackage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DeletePackage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DeletePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeletePackage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_SearchPackages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_SearchPackages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/SearchPackages", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/SearchPackages"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/SearchPackages", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/SearchPackages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_SearchPackages_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_SearchPackages_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_SearchPackages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_SearchPackages_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateBinary"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/GetBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetBinary"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/GetBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_GetBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_GetBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_GetBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_BatchGetBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_BatchGetBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/BatchGetBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/BatchGetBinary"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/BatchGetBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/BatchGetBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_BatchGetBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_BatchGetBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_BatchGetBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_BatchGetBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_RouteGuide_ListBinaries_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_San11Platform_ListBinaries_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListBinaries", runtime.WithHTTPPathPattern("/v1/{parent=categories/*/packages/*}/binaries"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListBinaries", runtime.WithHTTPPathPattern("/v1/{parent=categories/*/packages/*}/binaries"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListBinaries_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListBinaries_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListBinaries_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListBinaries_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateBinary"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdateBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdateBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdateBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteBinary", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteBinary"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteBinary", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteBinary"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DeleteBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DeleteBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DeleteBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DownloadBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DownloadBinary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DownloadBinary", runtime.WithHTTPPathPattern("/v1/{name=categories/*/packages/*/binaries/*}:download"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DownloadBinary", runtime.WithHTTPPathPattern("/v1/{name=categories/*/packages/*/binaries/*}:download"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DownloadBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DownloadBinary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DownloadBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DownloadBinary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateImage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateImage"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateImage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateImage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateImage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateImage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateImage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateImage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateThread", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateThread"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateThread", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateThread"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateThread_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateThread_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/GetThread", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetThread"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/GetThread", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetThread"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_GetThread_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_GetThread_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_GetThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListThreads_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListThreads_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListThreads", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListThreads"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListThreads", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListThreads"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListThreads_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListThreads_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListThreads_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListThreads_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateThread", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateThread"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateThread", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateThread"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdateThread_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdateThread_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdateThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteThread_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteThread", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteThread"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteThread", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteThread"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DeleteThread_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DeleteThread_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DeleteThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteThread_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateComment", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateComment"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateComment", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateComment"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateComment_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateComment_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListComments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListComments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListComments", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListComments"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListComments", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListComments"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListComments_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListComments_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListComments_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListComments_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateComment", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateComment"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateComment", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateComment"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdateComment_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdateComment_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdateComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteComment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteComment", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteComment"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteComment", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteComment"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DeleteComment_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DeleteComment_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DeleteComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteComment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateReply", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateReply"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateReply", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateReply"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateReply_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateReply_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateReply", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateReply"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateReply", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateReply"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdateReply_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdateReply_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdateReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteReply_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteReply", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteReply"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteReply", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteReply"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DeleteReply_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DeleteReply_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DeleteReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteReply_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateArticle", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateArticle"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateArticle", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateArticle"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateArticle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateArticle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/GetArticle", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetArticle"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/GetArticle", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetArticle"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_GetArticle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_GetArticle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_GetArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListArticles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListArticles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListArticles", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListArticles"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListArticles", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListArticles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListArticles_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListArticles_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListArticles_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListArticles_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateArticle", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateArticle"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateArticle", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateArticle"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdateArticle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdateArticle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdateArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteArticle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteArticle", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteArticle"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteArticle", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteArticle"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DeleteArticle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DeleteArticle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DeleteArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteArticle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_SignIn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_SignIn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/SignIn", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/SignIn"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/SignIn", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/SignIn"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_SignIn_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_SignIn_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_SignIn_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_SignIn_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_SignOut_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_SignOut_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/SignOut", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/SignOut"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/SignOut", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/SignOut"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_SignOut_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_SignOut_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_SignOut_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_SignOut_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateUser", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateUser"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateUser", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateUser_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateUser_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_RouteGuide_GetUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_San11Platform_GetUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/GetUser", runtime.WithHTTPPathPattern("/v1/{name=users/*}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/GetUser", runtime.WithHTTPPathPattern("/v1/{name=users/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_GetUser_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_GetUser_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_GetUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListUsers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListUsers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListUsers", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListUsers"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListUsers", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListUsers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListUsers_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListUsers_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListUsers_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListUsers_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateUser", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateUser"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateUser", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdateUser_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdateUser_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdateUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_SendVerificationCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_SendVerificationCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/SendVerificationCode", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/SendVerificationCode"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/SendVerificationCode", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/SendVerificationCode"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_SendVerificationCode_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_SendVerificationCode_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_SendVerificationCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_SendVerificationCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_VerifyEmail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_VerifyEmail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/VerifyEmail", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/VerifyEmail"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/VerifyEmail", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/VerifyEmail"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_VerifyEmail_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_VerifyEmail_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_VerifyEmail_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_VerifyEmail_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ValidateNewUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ValidateNewUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ValidateNewUser", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ValidateNewUser"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ValidateNewUser", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ValidateNewUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ValidateNewUser_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ValidateNewUser_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ValidateNewUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ValidateNewUser_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdatePassword_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdatePassword_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdatePassword", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdatePassword"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdatePassword", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdatePassword"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdatePassword_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdatePassword_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdatePassword_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdatePassword_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListActivities_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListActivities_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListActivities", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListActivities"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListActivities", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListActivities"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListActivities_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListActivities_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListActivities_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListActivities_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ToggleAction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ToggleAction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ToggleAction", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ToggleAction"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ToggleAction", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ToggleAction"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ToggleAction_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ToggleAction_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ToggleAction_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ToggleAction_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListNotifications_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListNotifications_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListNotifications", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListNotifications"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListNotifications", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListNotifications"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListNotifications_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListNotifications_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListNotifications_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListNotifications_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateNotification_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateNotification_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateNotification", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateNotification"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateNotification", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateNotification"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdateNotification_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdateNotification_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdateNotification_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateNotification_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateTag", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateTag"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateTag", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateTag"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListTags_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListTags_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListTags", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListTags"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListTags", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListTags"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListTags_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListTags_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListTags_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListTags_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteTag_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteTag", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteTag"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteTag", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteTag"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DeleteTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DeleteTag_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DeleteTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteTag_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetStatistic_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetStatistic_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/GetStatistic", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetStatistic"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/GetStatistic", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetStatistic"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_GetStatistic_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_GetStatistic_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_GetStatistic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetStatistic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_GetAdminMessage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_GetAdminMessage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/GetAdminMessage", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/GetAdminMessage"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/GetAdminMessage", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/GetAdminMessage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_GetAdminMessage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_GetAdminMessage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_GetAdminMessage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_GetAdminMessage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_CreateSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_CreateSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/CreateSubscription", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/CreateSubscription"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/CreateSubscription", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/CreateSubscription"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_CreateSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_CreateSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_CreateSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_CreateSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_ListSubscriptioins_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_ListSubscriptioins_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/ListSubscriptioins", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/ListSubscriptioins"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/ListSubscriptioins", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/ListSubscriptioins"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_ListSubscriptioins_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_ListSubscriptioins_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_ListSubscriptioins_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_ListSubscriptioins_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_UpdateSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_UpdateSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/UpdateSubscription", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/UpdateSubscription"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/UpdateSubscription", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/UpdateSubscription"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_UpdateSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_UpdateSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_UpdateSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_UpdateSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_RouteGuide_DeleteSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_San11Platform_DeleteSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/routeguide.RouteGuide/DeleteSubscription", runtime.WithHTTPPathPattern("/routeguide.RouteGuide/DeleteSubscription"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/san11_platform.San11Platform/DeleteSubscription", runtime.WithHTTPPathPattern("/san11_platform.San11Platform/DeleteSubscription"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_RouteGuide_DeleteSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_San11Platform_DeleteSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_RouteGuide_DeleteSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_San11Platform_DeleteSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -4564,221 +4564,221 @@ func RegisterRouteGuideHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 }
 
 var (
-	pattern_RouteGuide_CreatePackage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreatePackage"}, ""))
+	pattern_San11Platform_CreatePackage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreatePackage"}, ""))
 
-	pattern_RouteGuide_GetPackage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "GetPackage"}, ""))
+	pattern_San11Platform_GetPackage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "GetPackage"}, ""))
 
-	pattern_RouteGuide_ListPackages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "categories", "parent", "packages"}, ""))
+	pattern_San11Platform_ListPackages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "categories", "parent", "packages"}, ""))
 
-	pattern_RouteGuide_UpdatePackage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdatePackage"}, ""))
+	pattern_San11Platform_UpdatePackage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdatePackage"}, ""))
 
-	pattern_RouteGuide_DeletePackage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "DeletePackage"}, ""))
+	pattern_San11Platform_DeletePackage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "DeletePackage"}, ""))
 
-	pattern_RouteGuide_SearchPackages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "SearchPackages"}, ""))
+	pattern_San11Platform_SearchPackages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "SearchPackages"}, ""))
 
-	pattern_RouteGuide_CreateBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateBinary"}, ""))
+	pattern_San11Platform_CreateBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateBinary"}, ""))
 
-	pattern_RouteGuide_GetBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "GetBinary"}, ""))
+	pattern_San11Platform_GetBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "GetBinary"}, ""))
 
-	pattern_RouteGuide_BatchGetBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "BatchGetBinary"}, ""))
+	pattern_San11Platform_BatchGetBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "BatchGetBinary"}, ""))
 
-	pattern_RouteGuide_ListBinaries_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "categories", "packages", "parent", "binaries"}, ""))
+	pattern_San11Platform_ListBinaries_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "categories", "packages", "parent", "binaries"}, ""))
 
-	pattern_RouteGuide_UpdateBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdateBinary"}, ""))
+	pattern_San11Platform_UpdateBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdateBinary"}, ""))
 
-	pattern_RouteGuide_DeleteBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "DeleteBinary"}, ""))
+	pattern_San11Platform_DeleteBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "DeleteBinary"}, ""))
 
-	pattern_RouteGuide_DownloadBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "categories", "packages", "binaries", "name"}, "download"))
+	pattern_San11Platform_DownloadBinary_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "categories", "packages", "binaries", "name"}, "download"))
 
-	pattern_RouteGuide_CreateImage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateImage"}, ""))
+	pattern_San11Platform_CreateImage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateImage"}, ""))
 
-	pattern_RouteGuide_CreateThread_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateThread"}, ""))
+	pattern_San11Platform_CreateThread_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateThread"}, ""))
 
-	pattern_RouteGuide_GetThread_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "GetThread"}, ""))
+	pattern_San11Platform_GetThread_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "GetThread"}, ""))
 
-	pattern_RouteGuide_ListThreads_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ListThreads"}, ""))
+	pattern_San11Platform_ListThreads_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ListThreads"}, ""))
 
-	pattern_RouteGuide_UpdateThread_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdateThread"}, ""))
+	pattern_San11Platform_UpdateThread_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdateThread"}, ""))
 
-	pattern_RouteGuide_DeleteThread_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "DeleteThread"}, ""))
+	pattern_San11Platform_DeleteThread_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "DeleteThread"}, ""))
 
-	pattern_RouteGuide_CreateComment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateComment"}, ""))
+	pattern_San11Platform_CreateComment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateComment"}, ""))
 
-	pattern_RouteGuide_ListComments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ListComments"}, ""))
+	pattern_San11Platform_ListComments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ListComments"}, ""))
 
-	pattern_RouteGuide_UpdateComment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdateComment"}, ""))
+	pattern_San11Platform_UpdateComment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdateComment"}, ""))
 
-	pattern_RouteGuide_DeleteComment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "DeleteComment"}, ""))
+	pattern_San11Platform_DeleteComment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "DeleteComment"}, ""))
 
-	pattern_RouteGuide_CreateReply_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateReply"}, ""))
+	pattern_San11Platform_CreateReply_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateReply"}, ""))
 
-	pattern_RouteGuide_UpdateReply_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdateReply"}, ""))
+	pattern_San11Platform_UpdateReply_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdateReply"}, ""))
 
-	pattern_RouteGuide_DeleteReply_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "DeleteReply"}, ""))
+	pattern_San11Platform_DeleteReply_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "DeleteReply"}, ""))
 
-	pattern_RouteGuide_CreateArticle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateArticle"}, ""))
+	pattern_San11Platform_CreateArticle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateArticle"}, ""))
 
-	pattern_RouteGuide_GetArticle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "GetArticle"}, ""))
+	pattern_San11Platform_GetArticle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "GetArticle"}, ""))
 
-	pattern_RouteGuide_ListArticles_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ListArticles"}, ""))
+	pattern_San11Platform_ListArticles_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ListArticles"}, ""))
 
-	pattern_RouteGuide_UpdateArticle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdateArticle"}, ""))
+	pattern_San11Platform_UpdateArticle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdateArticle"}, ""))
 
-	pattern_RouteGuide_DeleteArticle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "DeleteArticle"}, ""))
+	pattern_San11Platform_DeleteArticle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "DeleteArticle"}, ""))
 
-	pattern_RouteGuide_SignIn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "SignIn"}, ""))
+	pattern_San11Platform_SignIn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "SignIn"}, ""))
 
-	pattern_RouteGuide_SignOut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "SignOut"}, ""))
+	pattern_San11Platform_SignOut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "SignOut"}, ""))
 
-	pattern_RouteGuide_CreateUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateUser"}, ""))
+	pattern_San11Platform_CreateUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateUser"}, ""))
 
-	pattern_RouteGuide_GetUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2}, []string{"v1", "users", "name"}, ""))
+	pattern_San11Platform_GetUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2}, []string{"v1", "users", "name"}, ""))
 
-	pattern_RouteGuide_ListUsers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ListUsers"}, ""))
+	pattern_San11Platform_ListUsers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ListUsers"}, ""))
 
-	pattern_RouteGuide_UpdateUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdateUser"}, ""))
+	pattern_San11Platform_UpdateUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdateUser"}, ""))
 
-	pattern_RouteGuide_SendVerificationCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "SendVerificationCode"}, ""))
+	pattern_San11Platform_SendVerificationCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "SendVerificationCode"}, ""))
 
-	pattern_RouteGuide_VerifyEmail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "VerifyEmail"}, ""))
+	pattern_San11Platform_VerifyEmail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "VerifyEmail"}, ""))
 
-	pattern_RouteGuide_ValidateNewUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ValidateNewUser"}, ""))
+	pattern_San11Platform_ValidateNewUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ValidateNewUser"}, ""))
 
-	pattern_RouteGuide_UpdatePassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdatePassword"}, ""))
+	pattern_San11Platform_UpdatePassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdatePassword"}, ""))
 
-	pattern_RouteGuide_ListActivities_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ListActivities"}, ""))
+	pattern_San11Platform_ListActivities_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ListActivities"}, ""))
 
-	pattern_RouteGuide_ToggleAction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ToggleAction"}, ""))
+	pattern_San11Platform_ToggleAction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ToggleAction"}, ""))
 
-	pattern_RouteGuide_ListNotifications_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ListNotifications"}, ""))
+	pattern_San11Platform_ListNotifications_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ListNotifications"}, ""))
 
-	pattern_RouteGuide_UpdateNotification_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdateNotification"}, ""))
+	pattern_San11Platform_UpdateNotification_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdateNotification"}, ""))
 
-	pattern_RouteGuide_CreateTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateTag"}, ""))
+	pattern_San11Platform_CreateTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateTag"}, ""))
 
-	pattern_RouteGuide_ListTags_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ListTags"}, ""))
+	pattern_San11Platform_ListTags_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ListTags"}, ""))
 
-	pattern_RouteGuide_DeleteTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "DeleteTag"}, ""))
+	pattern_San11Platform_DeleteTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "DeleteTag"}, ""))
 
-	pattern_RouteGuide_GetStatistic_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "GetStatistic"}, ""))
+	pattern_San11Platform_GetStatistic_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "GetStatistic"}, ""))
 
-	pattern_RouteGuide_GetAdminMessage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "GetAdminMessage"}, ""))
+	pattern_San11Platform_GetAdminMessage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "GetAdminMessage"}, ""))
 
-	pattern_RouteGuide_CreateSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "CreateSubscription"}, ""))
+	pattern_San11Platform_CreateSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "CreateSubscription"}, ""))
 
-	pattern_RouteGuide_ListSubscriptioins_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "ListSubscriptioins"}, ""))
+	pattern_San11Platform_ListSubscriptioins_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "ListSubscriptioins"}, ""))
 
-	pattern_RouteGuide_UpdateSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "UpdateSubscription"}, ""))
+	pattern_San11Platform_UpdateSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "UpdateSubscription"}, ""))
 
-	pattern_RouteGuide_DeleteSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"routeguide.RouteGuide", "DeleteSubscription"}, ""))
+	pattern_San11Platform_DeleteSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"san11_platform.San11Platform", "DeleteSubscription"}, ""))
 )
 
 var (
-	forward_RouteGuide_CreatePackage_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreatePackage_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_GetPackage_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_GetPackage_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListPackages_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListPackages_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdatePackage_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdatePackage_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DeletePackage_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DeletePackage_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_SearchPackages_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_SearchPackages_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateBinary_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateBinary_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_GetBinary_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_GetBinary_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_BatchGetBinary_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_BatchGetBinary_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListBinaries_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListBinaries_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdateBinary_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdateBinary_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DeleteBinary_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DeleteBinary_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DownloadBinary_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DownloadBinary_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateImage_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateImage_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateThread_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateThread_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_GetThread_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_GetThread_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListThreads_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListThreads_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdateThread_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdateThread_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DeleteThread_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DeleteThread_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateComment_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateComment_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListComments_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListComments_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdateComment_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdateComment_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DeleteComment_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DeleteComment_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateReply_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateReply_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdateReply_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdateReply_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DeleteReply_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DeleteReply_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateArticle_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateArticle_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_GetArticle_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_GetArticle_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListArticles_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListArticles_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdateArticle_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdateArticle_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DeleteArticle_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DeleteArticle_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_SignIn_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_SignIn_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_SignOut_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_SignOut_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateUser_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateUser_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_GetUser_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_GetUser_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListUsers_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListUsers_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdateUser_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdateUser_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_SendVerificationCode_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_SendVerificationCode_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_VerifyEmail_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_VerifyEmail_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ValidateNewUser_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ValidateNewUser_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdatePassword_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdatePassword_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListActivities_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListActivities_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ToggleAction_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ToggleAction_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListNotifications_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListNotifications_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdateNotification_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdateNotification_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateTag_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateTag_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListTags_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListTags_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DeleteTag_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DeleteTag_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_GetStatistic_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_GetStatistic_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_GetAdminMessage_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_GetAdminMessage_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_CreateSubscription_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_CreateSubscription_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_ListSubscriptioins_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_ListSubscriptioins_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_UpdateSubscription_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_UpdateSubscription_0 = runtime.ForwardResponseMessage
 
-	forward_RouteGuide_DeleteSubscription_0 = runtime.ForwardResponseMessage
+	forward_San11Platform_DeleteSubscription_0 = runtime.ForwardResponseMessage
 )

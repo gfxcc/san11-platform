@@ -24,12 +24,12 @@ import * as googleApi000 from './google/api/http.pb';
 import * as googleProtobuf001 from '@ngx-grpc/well-known-types';
 import * as googleProtobuf002 from '@ngx-grpc/well-known-types';
 import * as googleApi003 from './google/api/annotations.pb';
-import { GRPC_ROUTE_GUIDE_CLIENT_SETTINGS } from './san11-platform.pbconf';
+import { GRPC_SAN11_PLATFORM_CLIENT_SETTINGS } from './san11-platform.pbconf';
 /**
- * Service client implementation for routeguide.RouteGuide
+ * Service client implementation for san11_platform.San11Platform
  */
 @Injectable({ providedIn: 'any' })
-export class RouteGuideClient {
+export class San11PlatformClient {
   private client: GrpcClient<any>;
 
   /**
@@ -39,7 +39,7 @@ export class RouteGuideClient {
    */
   $raw = {
     /**
-     * Unary call: /routeguide.RouteGuide/CreatePackage
+     * Unary call: /san11_platform.San11Platform/CreatePackage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -52,7 +52,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreatePackage',
+        path: '/san11_platform.San11Platform/CreatePackage',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreatePackageRequest,
@@ -60,7 +60,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/GetPackage
+     * Unary call: /san11_platform.San11Platform/GetPackage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -73,7 +73,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/GetPackage',
+        path: '/san11_platform.San11Platform/GetPackage',
         requestData,
         requestMetadata,
         requestClass: thisProto.GetPackageRequest,
@@ -81,7 +81,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListPackages
+     * Unary call: /san11_platform.San11Platform/ListPackages
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -94,7 +94,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListPackages',
+        path: '/san11_platform.San11Platform/ListPackages',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListPackagesRequest,
@@ -102,7 +102,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdatePackage
+     * Unary call: /san11_platform.San11Platform/UpdatePackage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -115,7 +115,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdatePackage',
+        path: '/san11_platform.San11Platform/UpdatePackage',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdatePackageRequest,
@@ -123,7 +123,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DeletePackage
+     * Unary call: /san11_platform.San11Platform/DeletePackage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -136,7 +136,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeletePackage',
+        path: '/san11_platform.San11Platform/DeletePackage',
         requestData,
         requestMetadata,
         requestClass: thisProto.DeletePackageRequest,
@@ -144,7 +144,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/SearchPackages
+     * Unary call: /san11_platform.San11Platform/SearchPackages
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -157,7 +157,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/SearchPackages',
+        path: '/san11_platform.San11Platform/SearchPackages',
         requestData,
         requestMetadata,
         requestClass: thisProto.SearchPackagesRequest,
@@ -165,7 +165,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateBinary
+     * Unary call: /san11_platform.San11Platform/CreateBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -178,7 +178,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateBinary',
+        path: '/san11_platform.San11Platform/CreateBinary',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateBinaryRequest,
@@ -186,7 +186,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/GetBinary
+     * Unary call: /san11_platform.San11Platform/GetBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -199,7 +199,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/GetBinary',
+        path: '/san11_platform.San11Platform/GetBinary',
         requestData,
         requestMetadata,
         requestClass: thisProto.GetBinaryRequest,
@@ -207,7 +207,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/BatchGetBinary
+     * Unary call: /san11_platform.San11Platform/BatchGetBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -220,7 +220,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/BatchGetBinary',
+        path: '/san11_platform.San11Platform/BatchGetBinary',
         requestData,
         requestMetadata,
         requestClass: thisProto.BatchGetBinaryRequest,
@@ -228,7 +228,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListBinaries
+     * Unary call: /san11_platform.San11Platform/ListBinaries
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -241,7 +241,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListBinaries',
+        path: '/san11_platform.San11Platform/ListBinaries',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListBinariesRequest,
@@ -249,7 +249,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdateBinary
+     * Unary call: /san11_platform.San11Platform/UpdateBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -262,7 +262,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateBinary',
+        path: '/san11_platform.San11Platform/UpdateBinary',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdateBinaryRequest,
@@ -270,7 +270,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DeleteBinary
+     * Unary call: /san11_platform.San11Platform/DeleteBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -283,7 +283,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeleteBinary',
+        path: '/san11_platform.San11Platform/DeleteBinary',
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteBinaryRequest,
@@ -291,7 +291,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DownloadBinary
+     * Unary call: /san11_platform.San11Platform/DownloadBinary
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -304,7 +304,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DownloadBinary',
+        path: '/san11_platform.San11Platform/DownloadBinary',
         requestData,
         requestMetadata,
         requestClass: thisProto.DownloadBinaryRequest,
@@ -312,7 +312,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateImage
+     * Unary call: /san11_platform.San11Platform/CreateImage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -325,7 +325,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateImage',
+        path: '/san11_platform.San11Platform/CreateImage',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateImageRequest,
@@ -333,7 +333,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateThread
+     * Unary call: /san11_platform.San11Platform/CreateThread
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -346,7 +346,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateThread',
+        path: '/san11_platform.San11Platform/CreateThread',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateThreadRequest,
@@ -354,7 +354,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/GetThread
+     * Unary call: /san11_platform.San11Platform/GetThread
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -367,7 +367,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/GetThread',
+        path: '/san11_platform.San11Platform/GetThread',
         requestData,
         requestMetadata,
         requestClass: thisProto.GetThreadRequest,
@@ -375,7 +375,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListThreads
+     * Unary call: /san11_platform.San11Platform/ListThreads
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -388,7 +388,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListThreads',
+        path: '/san11_platform.San11Platform/ListThreads',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListThreadsRequest,
@@ -396,7 +396,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdateThread
+     * Unary call: /san11_platform.San11Platform/UpdateThread
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -409,7 +409,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateThread',
+        path: '/san11_platform.San11Platform/UpdateThread',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdateThreadRequest,
@@ -417,7 +417,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DeleteThread
+     * Unary call: /san11_platform.San11Platform/DeleteThread
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -430,7 +430,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeleteThread',
+        path: '/san11_platform.San11Platform/DeleteThread',
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteThreadRequest,
@@ -438,7 +438,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateComment
+     * Unary call: /san11_platform.San11Platform/CreateComment
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -451,7 +451,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateComment',
+        path: '/san11_platform.San11Platform/CreateComment',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateCommentRequest,
@@ -459,7 +459,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListComments
+     * Unary call: /san11_platform.San11Platform/ListComments
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -472,7 +472,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListComments',
+        path: '/san11_platform.San11Platform/ListComments',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListCommentsRequest,
@@ -480,7 +480,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdateComment
+     * Unary call: /san11_platform.San11Platform/UpdateComment
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -493,7 +493,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateComment',
+        path: '/san11_platform.San11Platform/UpdateComment',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdateCommentRequest,
@@ -501,7 +501,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DeleteComment
+     * Unary call: /san11_platform.San11Platform/DeleteComment
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -514,7 +514,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeleteComment',
+        path: '/san11_platform.San11Platform/DeleteComment',
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteCommentRequest,
@@ -522,7 +522,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateReply
+     * Unary call: /san11_platform.San11Platform/CreateReply
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -535,7 +535,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateReply',
+        path: '/san11_platform.San11Platform/CreateReply',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateReplyRequest,
@@ -543,7 +543,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdateReply
+     * Unary call: /san11_platform.San11Platform/UpdateReply
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -556,7 +556,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateReply',
+        path: '/san11_platform.San11Platform/UpdateReply',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdateReplyRequest,
@@ -564,7 +564,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DeleteReply
+     * Unary call: /san11_platform.San11Platform/DeleteReply
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -577,7 +577,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeleteReply',
+        path: '/san11_platform.San11Platform/DeleteReply',
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteReplyRequest,
@@ -585,7 +585,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateArticle
+     * Unary call: /san11_platform.San11Platform/CreateArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -598,7 +598,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateArticle',
+        path: '/san11_platform.San11Platform/CreateArticle',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateArticleRequest,
@@ -606,7 +606,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/GetArticle
+     * Unary call: /san11_platform.San11Platform/GetArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -619,7 +619,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/GetArticle',
+        path: '/san11_platform.San11Platform/GetArticle',
         requestData,
         requestMetadata,
         requestClass: thisProto.GetArticleRequest,
@@ -627,7 +627,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListArticles
+     * Unary call: /san11_platform.San11Platform/ListArticles
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -640,7 +640,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListArticles',
+        path: '/san11_platform.San11Platform/ListArticles',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListArticlesRequest,
@@ -648,7 +648,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdateArticle
+     * Unary call: /san11_platform.San11Platform/UpdateArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -661,7 +661,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateArticle',
+        path: '/san11_platform.San11Platform/UpdateArticle',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdateArticleRequest,
@@ -669,7 +669,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DeleteArticle
+     * Unary call: /san11_platform.San11Platform/DeleteArticle
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -682,7 +682,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeleteArticle',
+        path: '/san11_platform.San11Platform/DeleteArticle',
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteArticleRequest,
@@ -690,7 +690,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/SignIn
+     * Unary call: /san11_platform.San11Platform/SignIn
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -703,7 +703,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/SignIn',
+        path: '/san11_platform.San11Platform/SignIn',
         requestData,
         requestMetadata,
         requestClass: thisProto.SignInRequest,
@@ -711,7 +711,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/SignOut
+     * Unary call: /san11_platform.San11Platform/SignOut
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -724,7 +724,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/SignOut',
+        path: '/san11_platform.San11Platform/SignOut',
         requestData,
         requestMetadata,
         requestClass: thisProto.SignOutRequest,
@@ -732,7 +732,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateUser
+     * Unary call: /san11_platform.San11Platform/CreateUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -745,7 +745,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateUser',
+        path: '/san11_platform.San11Platform/CreateUser',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateUserRequest,
@@ -753,7 +753,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/GetUser
+     * Unary call: /san11_platform.San11Platform/GetUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -766,7 +766,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/GetUser',
+        path: '/san11_platform.San11Platform/GetUser',
         requestData,
         requestMetadata,
         requestClass: thisProto.GetUserRequest,
@@ -774,7 +774,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListUsers
+     * Unary call: /san11_platform.San11Platform/ListUsers
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -787,7 +787,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListUsers',
+        path: '/san11_platform.San11Platform/ListUsers',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListUsersRequest,
@@ -795,7 +795,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdateUser
+     * Unary call: /san11_platform.San11Platform/UpdateUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -808,7 +808,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateUser',
+        path: '/san11_platform.San11Platform/UpdateUser',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdateUserRequest,
@@ -816,7 +816,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/SendVerificationCode
+     * Unary call: /san11_platform.San11Platform/SendVerificationCode
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -829,7 +829,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/SendVerificationCode',
+        path: '/san11_platform.San11Platform/SendVerificationCode',
         requestData,
         requestMetadata,
         requestClass: thisProto.SendVerificationCodeRequest,
@@ -837,7 +837,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/VerifyEmail
+     * Unary call: /san11_platform.San11Platform/VerifyEmail
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -850,7 +850,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/VerifyEmail',
+        path: '/san11_platform.San11Platform/VerifyEmail',
         requestData,
         requestMetadata,
         requestClass: thisProto.VerifyEmailRequest,
@@ -858,7 +858,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ValidateNewUser
+     * Unary call: /san11_platform.San11Platform/ValidateNewUser
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -871,7 +871,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ValidateNewUser',
+        path: '/san11_platform.San11Platform/ValidateNewUser',
         requestData,
         requestMetadata,
         requestClass: thisProto.ValidateNewUserRequest,
@@ -879,7 +879,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdatePassword
+     * Unary call: /san11_platform.San11Platform/UpdatePassword
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -892,7 +892,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdatePassword',
+        path: '/san11_platform.San11Platform/UpdatePassword',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdatePasswordRequest,
@@ -900,7 +900,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListActivities
+     * Unary call: /san11_platform.San11Platform/ListActivities
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -913,7 +913,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListActivities',
+        path: '/san11_platform.San11Platform/ListActivities',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListActivitiesRequest,
@@ -921,7 +921,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ToggleAction
+     * Unary call: /san11_platform.San11Platform/ToggleAction
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -934,7 +934,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ToggleAction',
+        path: '/san11_platform.San11Platform/ToggleAction',
         requestData,
         requestMetadata,
         requestClass: thisProto.ToggleActionRequest,
@@ -942,7 +942,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListNotifications
+     * Unary call: /san11_platform.San11Platform/ListNotifications
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -955,7 +955,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListNotifications',
+        path: '/san11_platform.San11Platform/ListNotifications',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListNotificationsRequest,
@@ -963,7 +963,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdateNotification
+     * Unary call: /san11_platform.San11Platform/UpdateNotification
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -976,7 +976,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateNotification',
+        path: '/san11_platform.San11Platform/UpdateNotification',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdateNotificationRequest,
@@ -984,7 +984,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateTag
+     * Unary call: /san11_platform.San11Platform/CreateTag
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -997,7 +997,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateTag',
+        path: '/san11_platform.San11Platform/CreateTag',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateTagRequest,
@@ -1005,7 +1005,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListTags
+     * Unary call: /san11_platform.San11Platform/ListTags
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1018,7 +1018,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListTags',
+        path: '/san11_platform.San11Platform/ListTags',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListTagsRequest,
@@ -1026,7 +1026,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DeleteTag
+     * Unary call: /san11_platform.San11Platform/DeleteTag
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1039,7 +1039,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeleteTag',
+        path: '/san11_platform.San11Platform/DeleteTag',
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteTagRequest,
@@ -1047,7 +1047,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/GetStatistic
+     * Unary call: /san11_platform.San11Platform/GetStatistic
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1060,7 +1060,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/GetStatistic',
+        path: '/san11_platform.San11Platform/GetStatistic',
         requestData,
         requestMetadata,
         requestClass: thisProto.GetStatisticRequest,
@@ -1068,7 +1068,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/GetAdminMessage
+     * Unary call: /san11_platform.San11Platform/GetAdminMessage
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1081,7 +1081,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/GetAdminMessage',
+        path: '/san11_platform.San11Platform/GetAdminMessage',
         requestData,
         requestMetadata,
         requestClass: thisProto.GetAdminMessageRequest,
@@ -1089,7 +1089,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/CreateSubscription
+     * Unary call: /san11_platform.San11Platform/CreateSubscription
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1102,7 +1102,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/CreateSubscription',
+        path: '/san11_platform.San11Platform/CreateSubscription',
         requestData,
         requestMetadata,
         requestClass: thisProto.CreateSubscriptionRequest,
@@ -1110,7 +1110,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/ListSubscriptioins
+     * Unary call: /san11_platform.San11Platform/ListSubscriptioins
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1123,7 +1123,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/ListSubscriptioins',
+        path: '/san11_platform.San11Platform/ListSubscriptioins',
         requestData,
         requestMetadata,
         requestClass: thisProto.ListSubscriptionsRequest,
@@ -1131,7 +1131,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/UpdateSubscription
+     * Unary call: /san11_platform.San11Platform/UpdateSubscription
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1144,7 +1144,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/UpdateSubscription',
+        path: '/san11_platform.San11Platform/UpdateSubscription',
         requestData,
         requestMetadata,
         requestClass: thisProto.UpdateSubscriptionRequest,
@@ -1152,7 +1152,7 @@ export class RouteGuideClient {
       });
     },
     /**
-     * Unary call: /routeguide.RouteGuide/DeleteSubscription
+     * Unary call: /san11_platform.San11Platform/DeleteSubscription
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -1165,7 +1165,7 @@ export class RouteGuideClient {
       return this.handler.handle({
         type: GrpcCallType.unary,
         client: this.client,
-        path: '/routeguide.RouteGuide/DeleteSubscription',
+        path: '/san11_platform.San11Platform/DeleteSubscription',
         requestData,
         requestMetadata,
         requestClass: thisProto.DeleteSubscriptionRequest,
@@ -1175,15 +1175,18 @@ export class RouteGuideClient {
   };
 
   constructor(
-    @Optional() @Inject(GRPC_ROUTE_GUIDE_CLIENT_SETTINGS) settings: any,
+    @Optional() @Inject(GRPC_SAN11_PLATFORM_CLIENT_SETTINGS) settings: any,
     @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory<any>,
     private handler: GrpcHandler
   ) {
-    this.client = clientFactory.createClient('routeguide.RouteGuide', settings);
+    this.client = clientFactory.createClient(
+      'san11_platform.San11Platform',
+      settings
+    );
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreatePackage
+   * Unary call @/san11_platform.San11Platform/CreatePackage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1199,7 +1202,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/GetPackage
+   * Unary call @/san11_platform.San11Platform/GetPackage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1215,7 +1218,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListPackages
+   * Unary call @/san11_platform.San11Platform/ListPackages
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1231,7 +1234,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdatePackage
+   * Unary call @/san11_platform.San11Platform/UpdatePackage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1247,7 +1250,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DeletePackage
+   * Unary call @/san11_platform.San11Platform/DeletePackage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1263,7 +1266,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/SearchPackages
+   * Unary call @/san11_platform.San11Platform/SearchPackages
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1279,7 +1282,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateBinary
+   * Unary call @/san11_platform.San11Platform/CreateBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1295,7 +1298,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/GetBinary
+   * Unary call @/san11_platform.San11Platform/GetBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1311,7 +1314,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/BatchGetBinary
+   * Unary call @/san11_platform.San11Platform/BatchGetBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1327,7 +1330,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListBinaries
+   * Unary call @/san11_platform.San11Platform/ListBinaries
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1343,7 +1346,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdateBinary
+   * Unary call @/san11_platform.San11Platform/UpdateBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1359,7 +1362,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DeleteBinary
+   * Unary call @/san11_platform.San11Platform/DeleteBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1375,7 +1378,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DownloadBinary
+   * Unary call @/san11_platform.San11Platform/DownloadBinary
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1391,7 +1394,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateImage
+   * Unary call @/san11_platform.San11Platform/CreateImage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1407,7 +1410,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateThread
+   * Unary call @/san11_platform.San11Platform/CreateThread
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1423,7 +1426,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/GetThread
+   * Unary call @/san11_platform.San11Platform/GetThread
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1439,7 +1442,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListThreads
+   * Unary call @/san11_platform.San11Platform/ListThreads
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1455,7 +1458,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdateThread
+   * Unary call @/san11_platform.San11Platform/UpdateThread
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1471,7 +1474,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DeleteThread
+   * Unary call @/san11_platform.San11Platform/DeleteThread
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1487,7 +1490,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateComment
+   * Unary call @/san11_platform.San11Platform/CreateComment
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1503,7 +1506,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListComments
+   * Unary call @/san11_platform.San11Platform/ListComments
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1519,7 +1522,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdateComment
+   * Unary call @/san11_platform.San11Platform/UpdateComment
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1535,7 +1538,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DeleteComment
+   * Unary call @/san11_platform.San11Platform/DeleteComment
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1551,7 +1554,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateReply
+   * Unary call @/san11_platform.San11Platform/CreateReply
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1567,7 +1570,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdateReply
+   * Unary call @/san11_platform.San11Platform/UpdateReply
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1583,7 +1586,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DeleteReply
+   * Unary call @/san11_platform.San11Platform/DeleteReply
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1599,7 +1602,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateArticle
+   * Unary call @/san11_platform.San11Platform/CreateArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1615,7 +1618,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/GetArticle
+   * Unary call @/san11_platform.San11Platform/GetArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1631,7 +1634,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListArticles
+   * Unary call @/san11_platform.San11Platform/ListArticles
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1647,7 +1650,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdateArticle
+   * Unary call @/san11_platform.San11Platform/UpdateArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1663,7 +1666,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DeleteArticle
+   * Unary call @/san11_platform.San11Platform/DeleteArticle
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1679,7 +1682,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/SignIn
+   * Unary call @/san11_platform.San11Platform/SignIn
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1695,7 +1698,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/SignOut
+   * Unary call @/san11_platform.San11Platform/SignOut
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1711,7 +1714,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateUser
+   * Unary call @/san11_platform.San11Platform/CreateUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1727,7 +1730,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/GetUser
+   * Unary call @/san11_platform.San11Platform/GetUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1743,7 +1746,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListUsers
+   * Unary call @/san11_platform.San11Platform/ListUsers
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1759,7 +1762,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdateUser
+   * Unary call @/san11_platform.San11Platform/UpdateUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1775,7 +1778,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/SendVerificationCode
+   * Unary call @/san11_platform.San11Platform/SendVerificationCode
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1791,7 +1794,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/VerifyEmail
+   * Unary call @/san11_platform.San11Platform/VerifyEmail
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1807,7 +1810,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ValidateNewUser
+   * Unary call @/san11_platform.San11Platform/ValidateNewUser
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1823,7 +1826,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdatePassword
+   * Unary call @/san11_platform.San11Platform/UpdatePassword
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1839,7 +1842,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListActivities
+   * Unary call @/san11_platform.San11Platform/ListActivities
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1855,7 +1858,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ToggleAction
+   * Unary call @/san11_platform.San11Platform/ToggleAction
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1871,7 +1874,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListNotifications
+   * Unary call @/san11_platform.San11Platform/ListNotifications
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1887,7 +1890,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdateNotification
+   * Unary call @/san11_platform.San11Platform/UpdateNotification
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1903,7 +1906,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateTag
+   * Unary call @/san11_platform.San11Platform/CreateTag
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1919,7 +1922,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListTags
+   * Unary call @/san11_platform.San11Platform/ListTags
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1935,7 +1938,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DeleteTag
+   * Unary call @/san11_platform.San11Platform/DeleteTag
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1951,7 +1954,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/GetStatistic
+   * Unary call @/san11_platform.San11Platform/GetStatistic
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1967,7 +1970,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/GetAdminMessage
+   * Unary call @/san11_platform.San11Platform/GetAdminMessage
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1983,7 +1986,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/CreateSubscription
+   * Unary call @/san11_platform.San11Platform/CreateSubscription
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -1999,7 +2002,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/ListSubscriptioins
+   * Unary call @/san11_platform.San11Platform/ListSubscriptioins
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -2015,7 +2018,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/UpdateSubscription
+   * Unary call @/san11_platform.San11Platform/UpdateSubscription
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -2031,7 +2034,7 @@ export class RouteGuideClient {
   }
 
   /**
-   * Unary call @/routeguide.RouteGuide/DeleteSubscription
+   * Unary call @/san11_platform.San11Platform/DeleteSubscription
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata

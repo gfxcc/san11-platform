@@ -5,10 +5,10 @@ import "google/api/annotations.proto";
 
 option go_package = "san11-platform/service/v1";
 
-package routeguide;
+package san11_platform;
 
 // Interface exported by the server.
-service RouteGuide {
+service San11Platform {
   // package related
   rpc CreatePackage(CreatePackageRequest) returns (Package) {}
   rpc GetPackage(GetPackageRequest) returns (Package) {}

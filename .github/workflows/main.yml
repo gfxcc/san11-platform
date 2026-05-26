@@ -23,19 +23,114 @@ env:
   GCP_PROD_REPO_PATH: ${{ secrets.GCP_PROD_REPO_PATH }}
 
 jobs:
-  test:
-    name: Test
+  backend-test:
+    name: Backend tests
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run tests
-        run: make test
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install backend dependencies
+        working-directory: back-end
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Run backend tests
+        working-directory: back-end
+        run: make utest itest PY=python
+
+  frontend-build:
+    name: Frontend build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        working-directory: front-end
+        run: npm install
+
+      - name: Build frontend
+        working-directory: front-end
+        run: npm run build
+
+  gateway-test:
+    name: Gateway tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.3'
+
+      - name: Run gateway tests
+        working-directory: back-end/gateway
+        run: go test ./...
+
+  ui-e2e:
+    name: UI end-to-end
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        working-directory: front-end
+        run: npm install
+
+      - name: Install Playwright browser
+        working-directory: front-end
+        run: npx playwright install --with-deps chromium
+
+      - name: Start development stack
+        run: docker compose -f compose.yaml -f compose.dev.yaml up -d --build
+
+      - name: Wait for frontend
+        run: |
+          for attempt in {1..60}; do
+            if curl --fail --silent --show-error http://localhost:4200 > /dev/null; then
+              exit 0
+            fi
+            sleep 5
+          done
+          docker compose -f compose.yaml -f compose.dev.yaml ps
+          docker compose -f compose.yaml -f compose.dev.yaml logs --tail=200
+          exit 1
+
+      - name: Run UI regression test
+        working-directory: front-end
+        run: npm run e2e:playwright
+
+      - name: Dump container logs on failure
+        if: failure()
+        run: docker compose -f compose.yaml -f compose.dev.yaml logs --tail=200
 
   deploy-prod:
     name: Deploy production
-    needs: test
+    needs:
+      - backend-test
+      - frontend-build
+      - gateway-test
+      - ui-e2e
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production

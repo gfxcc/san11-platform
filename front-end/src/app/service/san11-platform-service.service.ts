@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Cacheable } from 'ts-cacheable';
 import * as pb from '../../proto/san11-platform.pb';
 import { AdminMessage, Article, Binary, Comment, CreateArticleRequest, CreateBinaryRequest, CreateCommentRequest, CreateImageRequest, CreatePackageRequest, CreateReplyRequest, CreateSubscriptionRequest, CreateTagRequest, CreateThreadRequest, CreateUserRequest, CreateUserResponse, DeleteArticleRequest, DeleteBinaryRequest, DeleteCommentRequest, DeletePackageRequest, DeleteReplyRequest, DeleteTagRequest, DeleteThreadRequest, DownloadBinaryRequest, Empty, GetArticleRequest, GetPackageRequest, GetStatisticRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListCommentsRequest, ListCommentsResponse, ListNotificationsRequest, ListNotificationsResponse, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, ListTagsResponse, ListThreadsRequest, ListThreadsResponse, ListUsersRequest, ListUsersResponse, Notification, Package, Reply, SearchPackagesRequest, SearchPackagesResponse, SendVerificationCodeRequest, SignInRequest, SignInResponse, SignOutRequest, Statistic, Status, Tag, Thread, UpdateArticleRequest, UpdateBinaryRequest, UpdateCommentRequest, UpdateNotificationRequest, UpdatePackageRequest, UpdatePasswordRequest, UpdateReplyRequest, UpdateThreadRequest, UpdateUserRequest, Url, User, ValidateNewUserRequest, VerifyEmailRequest, VerifyEmailResponse } from '../../proto/san11-platform.pb';
-import { RouteGuideClient } from '../../proto/san11-platform.pbsc';
+import { San11PlatformClient } from '../../proto/san11-platform.pbsc';
 
 
 
@@ -20,7 +20,7 @@ export class San11PlatformServiceService {
   events: any[] = [];
   private sub: Subscription;
 
-  constructor(private severClient: RouteGuideClient) {
+  constructor(private severClient: San11PlatformClient) {
 
   }
   // threads

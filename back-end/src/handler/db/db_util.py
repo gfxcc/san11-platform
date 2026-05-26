@@ -1,8 +1,10 @@
 import logging
 import os
-from typing import Dict, Iterable, List, Tuple
+from contextlib import contextmanager
+from typing import Dict, Iterable, Iterator, List, Tuple
 
 import psycopg2
+from psycopg2.extensions import connection as PgConnection
 from psycopg2.pool import ThreadedConnectionPool
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -25,6 +27,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 MIN_CONNECTION = 10
 MAX_CONNECTION = 200
+DEFAULT_DB_HOST = 'db'
 
 _pgpool: ThreadedConnectionPool = None
 
@@ -33,26 +36,42 @@ def pgpool() -> ThreadedConnectionPool:
     global _pgpool
     if not _pgpool:
         try:
-            _pgpool = ThreadedConnectionPool(MIN_CONNECTION, MAX_CONNECTION, host="db",
-                                             database=os.environ['DB_NAME'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'])
+            _pgpool = ThreadedConnectionPool(
+                MIN_CONNECTION,
+                MAX_CONNECTION,
+                host=os.environ.get('DB_HOST', DEFAULT_DB_HOST),
+                database=os.environ['DB_NAME'],
+                user=os.environ['DB_USER'],
+                password=os.environ['DB_PASSWORD'])
         except psycopg2.OperationalError as exc:
             _pgpool = None
+            logger.error(f'Failed to create PostgreSQL connection pool: {exc}')
+            raise
     return _pgpool
 
 
-def run_sql_with_param(sql: str, param: Dict) -> None:
-    conn = pgpool().getconn()
+@contextmanager
+def connection() -> Iterator[PgConnection]:
+    pool = pgpool()
+    conn = pool.getconn()
     try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        pool.putconn(conn)
+
+
+def run_sql_with_param(sql: str, param: Dict) -> None:
+    with connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(sql, param)
-    finally:
-        conn.commit()
-        pgpool().putconn(conn)
 
 
 def run_sql_with_param_and_fetch_all(sql: str, param: Dict, transaction: bool = False) -> List[Tuple]:
-    db_conn = pgpool().getconn()
-    try:
+    with connection() as db_conn:
         if not transaction:
             with db_conn.cursor() as cursor:
                 cursor.execute(sql, param)
@@ -63,14 +82,10 @@ def run_sql_with_param_and_fetch_all(sql: str, param: Dict, transaction: bool = 
                     cursor.execute(sql, param)
                     resp = cursor.fetchall()
         return resp
-    finally:
-        db_conn.commit()
-        pgpool().putconn(db_conn)
 
 
 def run_sql_with_param_and_fetch_one(sql: str, param: Dict, transaction: bool = False) -> List[Tuple]:
-    db_conn = pgpool().getconn()
-    try:
+    with connection() as db_conn:
         if not transaction:
             with db_conn.cursor() as cursor:
                 cursor.execute(sql, param)
@@ -81,9 +96,6 @@ def run_sql_with_param_and_fetch_one(sql: str, param: Dict, transaction: bool = 
                     cursor.execute(sql, param)
                     resp = cursor.fetchone()
         return resp
-    finally:
-        db_conn.commit()
-        pgpool().putconn(db_conn)
 
 
 def get_db_fields_str(fields: List[str]) -> str:

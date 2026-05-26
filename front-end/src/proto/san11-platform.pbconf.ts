@@ -7,9 +7,9 @@
 import { InjectionToken } from '@angular/core';
 
 /**
- * Specific GrpcClientSettings for RouteGuide.
+ * Specific GrpcClientSettings for San11Platform.
  * Use it only if your default settings are not set or the service requires other settings.
  */
-export const GRPC_ROUTE_GUIDE_CLIENT_SETTINGS = new InjectionToken<any>(
-  'GRPC_ROUTE_GUIDE_CLIENT_SETTINGS'
+export const GRPC_SAN11_PLATFORM_CLIENT_SETTINGS = new InjectionToken<any>(
+  'GRPC_SAN11_PLATFORM_CLIENT_SETTINGS'
 );

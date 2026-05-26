@@ -19,66 +19,66 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	RouteGuide_CreatePackage_FullMethodName        = "/routeguide.RouteGuide/CreatePackage"
-	RouteGuide_GetPackage_FullMethodName           = "/routeguide.RouteGuide/GetPackage"
-	RouteGuide_ListPackages_FullMethodName         = "/routeguide.RouteGuide/ListPackages"
-	RouteGuide_UpdatePackage_FullMethodName        = "/routeguide.RouteGuide/UpdatePackage"
-	RouteGuide_DeletePackage_FullMethodName        = "/routeguide.RouteGuide/DeletePackage"
-	RouteGuide_SearchPackages_FullMethodName       = "/routeguide.RouteGuide/SearchPackages"
-	RouteGuide_CreateBinary_FullMethodName         = "/routeguide.RouteGuide/CreateBinary"
-	RouteGuide_GetBinary_FullMethodName            = "/routeguide.RouteGuide/GetBinary"
-	RouteGuide_BatchGetBinary_FullMethodName       = "/routeguide.RouteGuide/BatchGetBinary"
-	RouteGuide_ListBinaries_FullMethodName         = "/routeguide.RouteGuide/ListBinaries"
-	RouteGuide_UpdateBinary_FullMethodName         = "/routeguide.RouteGuide/UpdateBinary"
-	RouteGuide_DeleteBinary_FullMethodName         = "/routeguide.RouteGuide/DeleteBinary"
-	RouteGuide_DownloadBinary_FullMethodName       = "/routeguide.RouteGuide/DownloadBinary"
-	RouteGuide_CreateImage_FullMethodName          = "/routeguide.RouteGuide/CreateImage"
-	RouteGuide_CreateThread_FullMethodName         = "/routeguide.RouteGuide/CreateThread"
-	RouteGuide_GetThread_FullMethodName            = "/routeguide.RouteGuide/GetThread"
-	RouteGuide_ListThreads_FullMethodName          = "/routeguide.RouteGuide/ListThreads"
-	RouteGuide_UpdateThread_FullMethodName         = "/routeguide.RouteGuide/UpdateThread"
-	RouteGuide_DeleteThread_FullMethodName         = "/routeguide.RouteGuide/DeleteThread"
-	RouteGuide_CreateComment_FullMethodName        = "/routeguide.RouteGuide/CreateComment"
-	RouteGuide_ListComments_FullMethodName         = "/routeguide.RouteGuide/ListComments"
-	RouteGuide_UpdateComment_FullMethodName        = "/routeguide.RouteGuide/UpdateComment"
-	RouteGuide_DeleteComment_FullMethodName        = "/routeguide.RouteGuide/DeleteComment"
-	RouteGuide_CreateReply_FullMethodName          = "/routeguide.RouteGuide/CreateReply"
-	RouteGuide_UpdateReply_FullMethodName          = "/routeguide.RouteGuide/UpdateReply"
-	RouteGuide_DeleteReply_FullMethodName          = "/routeguide.RouteGuide/DeleteReply"
-	RouteGuide_CreateArticle_FullMethodName        = "/routeguide.RouteGuide/CreateArticle"
-	RouteGuide_GetArticle_FullMethodName           = "/routeguide.RouteGuide/GetArticle"
-	RouteGuide_ListArticles_FullMethodName         = "/routeguide.RouteGuide/ListArticles"
-	RouteGuide_UpdateArticle_FullMethodName        = "/routeguide.RouteGuide/UpdateArticle"
-	RouteGuide_DeleteArticle_FullMethodName        = "/routeguide.RouteGuide/DeleteArticle"
-	RouteGuide_SignIn_FullMethodName               = "/routeguide.RouteGuide/SignIn"
-	RouteGuide_SignOut_FullMethodName              = "/routeguide.RouteGuide/SignOut"
-	RouteGuide_CreateUser_FullMethodName           = "/routeguide.RouteGuide/CreateUser"
-	RouteGuide_GetUser_FullMethodName              = "/routeguide.RouteGuide/GetUser"
-	RouteGuide_ListUsers_FullMethodName            = "/routeguide.RouteGuide/ListUsers"
-	RouteGuide_UpdateUser_FullMethodName           = "/routeguide.RouteGuide/UpdateUser"
-	RouteGuide_SendVerificationCode_FullMethodName = "/routeguide.RouteGuide/SendVerificationCode"
-	RouteGuide_VerifyEmail_FullMethodName          = "/routeguide.RouteGuide/VerifyEmail"
-	RouteGuide_ValidateNewUser_FullMethodName      = "/routeguide.RouteGuide/ValidateNewUser"
-	RouteGuide_UpdatePassword_FullMethodName       = "/routeguide.RouteGuide/UpdatePassword"
-	RouteGuide_ListActivities_FullMethodName       = "/routeguide.RouteGuide/ListActivities"
-	RouteGuide_ToggleAction_FullMethodName         = "/routeguide.RouteGuide/ToggleAction"
-	RouteGuide_ListNotifications_FullMethodName    = "/routeguide.RouteGuide/ListNotifications"
-	RouteGuide_UpdateNotification_FullMethodName   = "/routeguide.RouteGuide/UpdateNotification"
-	RouteGuide_CreateTag_FullMethodName            = "/routeguide.RouteGuide/CreateTag"
-	RouteGuide_ListTags_FullMethodName             = "/routeguide.RouteGuide/ListTags"
-	RouteGuide_DeleteTag_FullMethodName            = "/routeguide.RouteGuide/DeleteTag"
-	RouteGuide_GetStatistic_FullMethodName         = "/routeguide.RouteGuide/GetStatistic"
-	RouteGuide_GetAdminMessage_FullMethodName      = "/routeguide.RouteGuide/GetAdminMessage"
-	RouteGuide_CreateSubscription_FullMethodName   = "/routeguide.RouteGuide/CreateSubscription"
-	RouteGuide_ListSubscriptioins_FullMethodName   = "/routeguide.RouteGuide/ListSubscriptioins"
-	RouteGuide_UpdateSubscription_FullMethodName   = "/routeguide.RouteGuide/UpdateSubscription"
-	RouteGuide_DeleteSubscription_FullMethodName   = "/routeguide.RouteGuide/DeleteSubscription"
+	San11Platform_CreatePackage_FullMethodName        = "/san11_platform.San11Platform/CreatePackage"
+	San11Platform_GetPackage_FullMethodName           = "/san11_platform.San11Platform/GetPackage"
+	San11Platform_ListPackages_FullMethodName         = "/san11_platform.San11Platform/ListPackages"
+	San11Platform_UpdatePackage_FullMethodName        = "/san11_platform.San11Platform/UpdatePackage"
+	San11Platform_DeletePackage_FullMethodName        = "/san11_platform.San11Platform/DeletePackage"
+	San11Platform_SearchPackages_FullMethodName       = "/san11_platform.San11Platform/SearchPackages"
+	San11Platform_CreateBinary_FullMethodName         = "/san11_platform.San11Platform/CreateBinary"
+	San11Platform_GetBinary_FullMethodName            = "/san11_platform.San11Platform/GetBinary"
+	San11Platform_BatchGetBinary_FullMethodName       = "/san11_platform.San11Platform/BatchGetBinary"
+	San11Platform_ListBinaries_FullMethodName         = "/san11_platform.San11Platform/ListBinaries"
+	San11Platform_UpdateBinary_FullMethodName         = "/san11_platform.San11Platform/UpdateBinary"
+	San11Platform_DeleteBinary_FullMethodName         = "/san11_platform.San11Platform/DeleteBinary"
+	San11Platform_DownloadBinary_FullMethodName       = "/san11_platform.San11Platform/DownloadBinary"
+	San11Platform_CreateImage_FullMethodName          = "/san11_platform.San11Platform/CreateImage"
+	San11Platform_CreateThread_FullMethodName         = "/san11_platform.San11Platform/CreateThread"
+	San11Platform_GetThread_FullMethodName            = "/san11_platform.San11Platform/GetThread"
+	San11Platform_ListThreads_FullMethodName          = "/san11_platform.San11Platform/ListThreads"
+	San11Platform_UpdateThread_FullMethodName         = "/san11_platform.San11Platform/UpdateThread"
+	San11Platform_DeleteThread_FullMethodName         = "/san11_platform.San11Platform/DeleteThread"
+	San11Platform_CreateComment_FullMethodName        = "/san11_platform.San11Platform/CreateComment"
+	San11Platform_ListComments_FullMethodName         = "/san11_platform.San11Platform/ListComments"
+	San11Platform_UpdateComment_FullMethodName        = "/san11_platform.San11Platform/UpdateComment"
+	San11Platform_DeleteComment_FullMethodName        = "/san11_platform.San11Platform/DeleteComment"
+	San11Platform_CreateReply_FullMethodName          = "/san11_platform.San11Platform/CreateReply"
+	San11Platform_UpdateReply_FullMethodName          = "/san11_platform.San11Platform/UpdateReply"
+	San11Platform_DeleteReply_FullMethodName          = "/san11_platform.San11Platform/DeleteReply"
+	San11Platform_CreateArticle_FullMethodName        = "/san11_platform.San11Platform/CreateArticle"
+	San11Platform_GetArticle_FullMethodName           = "/san11_platform.San11Platform/GetArticle"
+	San11Platform_ListArticles_FullMethodName         = "/san11_platform.San11Platform/ListArticles"
+	San11Platform_UpdateArticle_FullMethodName        = "/san11_platform.San11Platform/UpdateArticle"
+	San11Platform_DeleteArticle_FullMethodName        = "/san11_platform.San11Platform/DeleteArticle"
+	San11Platform_SignIn_FullMethodName               = "/san11_platform.San11Platform/SignIn"
+	San11Platform_SignOut_FullMethodName              = "/san11_platform.San11Platform/SignOut"
+	San11Platform_CreateUser_FullMethodName           = "/san11_platform.San11Platform/CreateUser"
+	San11Platform_GetUser_FullMethodName              = "/san11_platform.San11Platform/GetUser"
+	San11Platform_ListUsers_FullMethodName            = "/san11_platform.San11Platform/ListUsers"
+	San11Platform_UpdateUser_FullMethodName           = "/san11_platform.San11Platform/UpdateUser"
+	San11Platform_SendVerificationCode_FullMethodName = "/san11_platform.San11Platform/SendVerificationCode"
+	San11Platform_VerifyEmail_FullMethodName          = "/san11_platform.San11Platform/VerifyEmail"
+	San11Platform_ValidateNewUser_FullMethodName      = "/san11_platform.San11Platform/ValidateNewUser"
+	San11Platform_UpdatePassword_FullMethodName       = "/san11_platform.San11Platform/UpdatePassword"
+	San11Platform_ListActivities_FullMethodName       = "/san11_platform.San11Platform/ListActivities"
+	San11Platform_ToggleAction_FullMethodName         = "/san11_platform.San11Platform/ToggleAction"
+	San11Platform_ListNotifications_FullMethodName    = "/san11_platform.San11Platform/ListNotifications"
+	San11Platform_UpdateNotification_FullMethodName   = "/san11_platform.San11Platform/UpdateNotification"
+	San11Platform_CreateTag_FullMethodName            = "/san11_platform.San11Platform/CreateTag"
+	San11Platform_ListTags_FullMethodName             = "/san11_platform.San11Platform/ListTags"
+	San11Platform_DeleteTag_FullMethodName            = "/san11_platform.San11Platform/DeleteTag"
+	San11Platform_GetStatistic_FullMethodName         = "/san11_platform.San11Platform/GetStatistic"
+	San11Platform_GetAdminMessage_FullMethodName      = "/san11_platform.San11Platform/GetAdminMessage"
+	San11Platform_CreateSubscription_FullMethodName   = "/san11_platform.San11Platform/CreateSubscription"
+	San11Platform_ListSubscriptioins_FullMethodName   = "/san11_platform.San11Platform/ListSubscriptioins"
+	San11Platform_UpdateSubscription_FullMethodName   = "/san11_platform.San11Platform/UpdateSubscription"
+	San11Platform_DeleteSubscription_FullMethodName   = "/san11_platform.San11Platform/DeleteSubscription"
 )
 
-// RouteGuideClient is the client API for RouteGuide service.
+// San11PlatformClient is the client API for San11Platform service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type RouteGuideClient interface {
+type San11PlatformClient interface {
 	// package related
 	CreatePackage(ctx context.Context, in *CreatePackageRequest, opts ...grpc.CallOption) (*Package, error)
 	GetPackage(ctx context.Context, in *GetPackageRequest, opts ...grpc.CallOption) (*Package, error)
@@ -148,504 +148,504 @@ type RouteGuideClient interface {
 	DeleteSubscription(ctx context.Context, in *DeleteSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error)
 }
 
-type routeGuideClient struct {
+type san11PlatformClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewRouteGuideClient(cc grpc.ClientConnInterface) RouteGuideClient {
-	return &routeGuideClient{cc}
+func NewSan11PlatformClient(cc grpc.ClientConnInterface) San11PlatformClient {
+	return &san11PlatformClient{cc}
 }
 
-func (c *routeGuideClient) CreatePackage(ctx context.Context, in *CreatePackageRequest, opts ...grpc.CallOption) (*Package, error) {
+func (c *san11PlatformClient) CreatePackage(ctx context.Context, in *CreatePackageRequest, opts ...grpc.CallOption) (*Package, error) {
 	out := new(Package)
-	err := c.cc.Invoke(ctx, RouteGuide_CreatePackage_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreatePackage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) GetPackage(ctx context.Context, in *GetPackageRequest, opts ...grpc.CallOption) (*Package, error) {
+func (c *san11PlatformClient) GetPackage(ctx context.Context, in *GetPackageRequest, opts ...grpc.CallOption) (*Package, error) {
 	out := new(Package)
-	err := c.cc.Invoke(ctx, RouteGuide_GetPackage_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_GetPackage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListPackages(ctx context.Context, in *ListPackagesRequest, opts ...grpc.CallOption) (*ListPackagesResponse, error) {
+func (c *san11PlatformClient) ListPackages(ctx context.Context, in *ListPackagesRequest, opts ...grpc.CallOption) (*ListPackagesResponse, error) {
 	out := new(ListPackagesResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListPackages_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListPackages_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdatePackage(ctx context.Context, in *UpdatePackageRequest, opts ...grpc.CallOption) (*Package, error) {
+func (c *san11PlatformClient) UpdatePackage(ctx context.Context, in *UpdatePackageRequest, opts ...grpc.CallOption) (*Package, error) {
 	out := new(Package)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdatePackage_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdatePackage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DeletePackage(ctx context.Context, in *DeletePackageRequest, opts ...grpc.CallOption) (*Package, error) {
+func (c *san11PlatformClient) DeletePackage(ctx context.Context, in *DeletePackageRequest, opts ...grpc.CallOption) (*Package, error) {
 	out := new(Package)
-	err := c.cc.Invoke(ctx, RouteGuide_DeletePackage_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DeletePackage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) SearchPackages(ctx context.Context, in *SearchPackagesRequest, opts ...grpc.CallOption) (*SearchPackagesResponse, error) {
+func (c *san11PlatformClient) SearchPackages(ctx context.Context, in *SearchPackagesRequest, opts ...grpc.CallOption) (*SearchPackagesResponse, error) {
 	out := new(SearchPackagesResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_SearchPackages_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_SearchPackages_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateBinary(ctx context.Context, in *CreateBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
+func (c *san11PlatformClient) CreateBinary(ctx context.Context, in *CreateBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
 	out := new(Binary)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateBinary_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateBinary_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) GetBinary(ctx context.Context, in *GetBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
+func (c *san11PlatformClient) GetBinary(ctx context.Context, in *GetBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
 	out := new(Binary)
-	err := c.cc.Invoke(ctx, RouteGuide_GetBinary_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_GetBinary_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) BatchGetBinary(ctx context.Context, in *BatchGetBinaryRequest, opts ...grpc.CallOption) (*BatchGetBinaryResponse, error) {
+func (c *san11PlatformClient) BatchGetBinary(ctx context.Context, in *BatchGetBinaryRequest, opts ...grpc.CallOption) (*BatchGetBinaryResponse, error) {
 	out := new(BatchGetBinaryResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_BatchGetBinary_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_BatchGetBinary_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListBinaries(ctx context.Context, in *ListBinariesRequest, opts ...grpc.CallOption) (*ListBinariesResponse, error) {
+func (c *san11PlatformClient) ListBinaries(ctx context.Context, in *ListBinariesRequest, opts ...grpc.CallOption) (*ListBinariesResponse, error) {
 	out := new(ListBinariesResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListBinaries_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListBinaries_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdateBinary(ctx context.Context, in *UpdateBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
+func (c *san11PlatformClient) UpdateBinary(ctx context.Context, in *UpdateBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
 	out := new(Binary)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdateBinary_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdateBinary_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DeleteBinary(ctx context.Context, in *DeleteBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
+func (c *san11PlatformClient) DeleteBinary(ctx context.Context, in *DeleteBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
 	out := new(Binary)
-	err := c.cc.Invoke(ctx, RouteGuide_DeleteBinary_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DeleteBinary_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DownloadBinary(ctx context.Context, in *DownloadBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
+func (c *san11PlatformClient) DownloadBinary(ctx context.Context, in *DownloadBinaryRequest, opts ...grpc.CallOption) (*Binary, error) {
 	out := new(Binary)
-	err := c.cc.Invoke(ctx, RouteGuide_DownloadBinary_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DownloadBinary_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateImage(ctx context.Context, in *CreateImageRequest, opts ...grpc.CallOption) (*Url, error) {
+func (c *san11PlatformClient) CreateImage(ctx context.Context, in *CreateImageRequest, opts ...grpc.CallOption) (*Url, error) {
 	out := new(Url)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateImage_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateImage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateThread(ctx context.Context, in *CreateThreadRequest, opts ...grpc.CallOption) (*Thread, error) {
+func (c *san11PlatformClient) CreateThread(ctx context.Context, in *CreateThreadRequest, opts ...grpc.CallOption) (*Thread, error) {
 	out := new(Thread)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateThread_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateThread_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) GetThread(ctx context.Context, in *GetThreadRequest, opts ...grpc.CallOption) (*Thread, error) {
+func (c *san11PlatformClient) GetThread(ctx context.Context, in *GetThreadRequest, opts ...grpc.CallOption) (*Thread, error) {
 	out := new(Thread)
-	err := c.cc.Invoke(ctx, RouteGuide_GetThread_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_GetThread_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListThreads(ctx context.Context, in *ListThreadsRequest, opts ...grpc.CallOption) (*ListThreadsResponse, error) {
+func (c *san11PlatformClient) ListThreads(ctx context.Context, in *ListThreadsRequest, opts ...grpc.CallOption) (*ListThreadsResponse, error) {
 	out := new(ListThreadsResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListThreads_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListThreads_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdateThread(ctx context.Context, in *UpdateThreadRequest, opts ...grpc.CallOption) (*Thread, error) {
+func (c *san11PlatformClient) UpdateThread(ctx context.Context, in *UpdateThreadRequest, opts ...grpc.CallOption) (*Thread, error) {
 	out := new(Thread)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdateThread_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdateThread_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DeleteThread(ctx context.Context, in *DeleteThreadRequest, opts ...grpc.CallOption) (*Thread, error) {
+func (c *san11PlatformClient) DeleteThread(ctx context.Context, in *DeleteThreadRequest, opts ...grpc.CallOption) (*Thread, error) {
 	out := new(Thread)
-	err := c.cc.Invoke(ctx, RouteGuide_DeleteThread_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DeleteThread_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*Comment, error) {
+func (c *san11PlatformClient) CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*Comment, error) {
 	out := new(Comment)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateComment_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateComment_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListComments(ctx context.Context, in *ListCommentsRequest, opts ...grpc.CallOption) (*ListCommentsResponse, error) {
+func (c *san11PlatformClient) ListComments(ctx context.Context, in *ListCommentsRequest, opts ...grpc.CallOption) (*ListCommentsResponse, error) {
 	out := new(ListCommentsResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListComments_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListComments_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdateComment(ctx context.Context, in *UpdateCommentRequest, opts ...grpc.CallOption) (*Comment, error) {
+func (c *san11PlatformClient) UpdateComment(ctx context.Context, in *UpdateCommentRequest, opts ...grpc.CallOption) (*Comment, error) {
 	out := new(Comment)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdateComment_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdateComment_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*Comment, error) {
+func (c *san11PlatformClient) DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*Comment, error) {
 	out := new(Comment)
-	err := c.cc.Invoke(ctx, RouteGuide_DeleteComment_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DeleteComment_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateReply(ctx context.Context, in *CreateReplyRequest, opts ...grpc.CallOption) (*Reply, error) {
+func (c *san11PlatformClient) CreateReply(ctx context.Context, in *CreateReplyRequest, opts ...grpc.CallOption) (*Reply, error) {
 	out := new(Reply)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateReply_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateReply_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdateReply(ctx context.Context, in *UpdateReplyRequest, opts ...grpc.CallOption) (*Reply, error) {
+func (c *san11PlatformClient) UpdateReply(ctx context.Context, in *UpdateReplyRequest, opts ...grpc.CallOption) (*Reply, error) {
 	out := new(Reply)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdateReply_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdateReply_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DeleteReply(ctx context.Context, in *DeleteReplyRequest, opts ...grpc.CallOption) (*Reply, error) {
+func (c *san11PlatformClient) DeleteReply(ctx context.Context, in *DeleteReplyRequest, opts ...grpc.CallOption) (*Reply, error) {
 	out := new(Reply)
-	err := c.cc.Invoke(ctx, RouteGuide_DeleteReply_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DeleteReply_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateArticle(ctx context.Context, in *CreateArticleRequest, opts ...grpc.CallOption) (*Article, error) {
+func (c *san11PlatformClient) CreateArticle(ctx context.Context, in *CreateArticleRequest, opts ...grpc.CallOption) (*Article, error) {
 	out := new(Article)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateArticle_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateArticle_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) GetArticle(ctx context.Context, in *GetArticleRequest, opts ...grpc.CallOption) (*Article, error) {
+func (c *san11PlatformClient) GetArticle(ctx context.Context, in *GetArticleRequest, opts ...grpc.CallOption) (*Article, error) {
 	out := new(Article)
-	err := c.cc.Invoke(ctx, RouteGuide_GetArticle_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_GetArticle_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListArticles(ctx context.Context, in *ListArticlesRequest, opts ...grpc.CallOption) (*ListArticlesResponse, error) {
+func (c *san11PlatformClient) ListArticles(ctx context.Context, in *ListArticlesRequest, opts ...grpc.CallOption) (*ListArticlesResponse, error) {
 	out := new(ListArticlesResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListArticles_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListArticles_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdateArticle(ctx context.Context, in *UpdateArticleRequest, opts ...grpc.CallOption) (*Article, error) {
+func (c *san11PlatformClient) UpdateArticle(ctx context.Context, in *UpdateArticleRequest, opts ...grpc.CallOption) (*Article, error) {
 	out := new(Article)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdateArticle_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdateArticle_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DeleteArticle(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*Article, error) {
+func (c *san11PlatformClient) DeleteArticle(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*Article, error) {
 	out := new(Article)
-	err := c.cc.Invoke(ctx, RouteGuide_DeleteArticle_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DeleteArticle_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error) {
+func (c *san11PlatformClient) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error) {
 	out := new(SignInResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_SignIn_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_SignIn_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) SignOut(ctx context.Context, in *SignOutRequest, opts ...grpc.CallOption) (*Status, error) {
+func (c *san11PlatformClient) SignOut(ctx context.Context, in *SignOutRequest, opts ...grpc.CallOption) (*Status, error) {
 	out := new(Status)
-	err := c.cc.Invoke(ctx, RouteGuide_SignOut_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_SignOut_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+func (c *san11PlatformClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
 	out := new(CreateUserResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateUser_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error) {
+func (c *san11PlatformClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	err := c.cc.Invoke(ctx, RouteGuide_GetUser_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_GetUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error) {
+func (c *san11PlatformClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error) {
 	out := new(ListUsersResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListUsers_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListUsers_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*User, error) {
+func (c *san11PlatformClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdateUser_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdateUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) SendVerificationCode(ctx context.Context, in *SendVerificationCodeRequest, opts ...grpc.CallOption) (*Empty, error) {
+func (c *san11PlatformClient) SendVerificationCode(ctx context.Context, in *SendVerificationCodeRequest, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, RouteGuide_SendVerificationCode_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_SendVerificationCode_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error) {
+func (c *san11PlatformClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error) {
 	out := new(VerifyEmailResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_VerifyEmail_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_VerifyEmail_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ValidateNewUser(ctx context.Context, in *ValidateNewUserRequest, opts ...grpc.CallOption) (*Status, error) {
+func (c *san11PlatformClient) ValidateNewUser(ctx context.Context, in *ValidateNewUserRequest, opts ...grpc.CallOption) (*Status, error) {
 	out := new(Status)
-	err := c.cc.Invoke(ctx, RouteGuide_ValidateNewUser_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ValidateNewUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*User, error) {
+func (c *san11PlatformClient) UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdatePassword_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdatePassword_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListActivities(ctx context.Context, in *ListActivitiesRequest, opts ...grpc.CallOption) (*ListActivitiesResponse, error) {
+func (c *san11PlatformClient) ListActivities(ctx context.Context, in *ListActivitiesRequest, opts ...grpc.CallOption) (*ListActivitiesResponse, error) {
 	out := new(ListActivitiesResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListActivities_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListActivities_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ToggleAction(ctx context.Context, in *ToggleActionRequest, opts ...grpc.CallOption) (*ToggleActionResponse, error) {
+func (c *san11PlatformClient) ToggleAction(ctx context.Context, in *ToggleActionRequest, opts ...grpc.CallOption) (*ToggleActionResponse, error) {
 	out := new(ToggleActionResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ToggleAction_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ToggleAction_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListNotifications(ctx context.Context, in *ListNotificationsRequest, opts ...grpc.CallOption) (*ListNotificationsResponse, error) {
+func (c *san11PlatformClient) ListNotifications(ctx context.Context, in *ListNotificationsRequest, opts ...grpc.CallOption) (*ListNotificationsResponse, error) {
 	out := new(ListNotificationsResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListNotifications_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListNotifications_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdateNotification(ctx context.Context, in *UpdateNotificationRequest, opts ...grpc.CallOption) (*Notification, error) {
+func (c *san11PlatformClient) UpdateNotification(ctx context.Context, in *UpdateNotificationRequest, opts ...grpc.CallOption) (*Notification, error) {
 	out := new(Notification)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdateNotification_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdateNotification_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*Tag, error) {
+func (c *san11PlatformClient) CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*Tag, error) {
 	out := new(Tag)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateTag_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*ListTagsResponse, error) {
+func (c *san11PlatformClient) ListTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*ListTagsResponse, error) {
 	out := new(ListTagsResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListTags_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListTags_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*Tag, error) {
+func (c *san11PlatformClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*Tag, error) {
 	out := new(Tag)
-	err := c.cc.Invoke(ctx, RouteGuide_DeleteTag_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DeleteTag_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) GetStatistic(ctx context.Context, in *GetStatisticRequest, opts ...grpc.CallOption) (*Statistic, error) {
+func (c *san11PlatformClient) GetStatistic(ctx context.Context, in *GetStatisticRequest, opts ...grpc.CallOption) (*Statistic, error) {
 	out := new(Statistic)
-	err := c.cc.Invoke(ctx, RouteGuide_GetStatistic_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_GetStatistic_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) GetAdminMessage(ctx context.Context, in *GetAdminMessageRequest, opts ...grpc.CallOption) (*AdminMessage, error) {
+func (c *san11PlatformClient) GetAdminMessage(ctx context.Context, in *GetAdminMessageRequest, opts ...grpc.CallOption) (*AdminMessage, error) {
 	out := new(AdminMessage)
-	err := c.cc.Invoke(ctx, RouteGuide_GetAdminMessage_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_GetAdminMessage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error) {
+func (c *san11PlatformClient) CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error) {
 	out := new(Subscription)
-	err := c.cc.Invoke(ctx, RouteGuide_CreateSubscription_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_CreateSubscription_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) ListSubscriptioins(ctx context.Context, in *ListSubscriptionsRequest, opts ...grpc.CallOption) (*ListSubscriptionsResponse, error) {
+func (c *san11PlatformClient) ListSubscriptioins(ctx context.Context, in *ListSubscriptionsRequest, opts ...grpc.CallOption) (*ListSubscriptionsResponse, error) {
 	out := new(ListSubscriptionsResponse)
-	err := c.cc.Invoke(ctx, RouteGuide_ListSubscriptioins_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_ListSubscriptioins_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) UpdateSubscription(ctx context.Context, in *UpdateSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error) {
+func (c *san11PlatformClient) UpdateSubscription(ctx context.Context, in *UpdateSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error) {
 	out := new(Subscription)
-	err := c.cc.Invoke(ctx, RouteGuide_UpdateSubscription_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_UpdateSubscription_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *routeGuideClient) DeleteSubscription(ctx context.Context, in *DeleteSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error) {
+func (c *san11PlatformClient) DeleteSubscription(ctx context.Context, in *DeleteSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error) {
 	out := new(Subscription)
-	err := c.cc.Invoke(ctx, RouteGuide_DeleteSubscription_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, San11Platform_DeleteSubscription_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// RouteGuideServer is the server API for RouteGuide service.
-// All implementations must embed UnimplementedRouteGuideServer
+// San11PlatformServer is the server API for San11Platform service.
+// All implementations must embed UnimplementedSan11PlatformServer
 // for forward compatibility
-type RouteGuideServer interface {
+type San11PlatformServer interface {
 	// package related
 	CreatePackage(context.Context, *CreatePackageRequest) (*Package, error)
 	GetPackage(context.Context, *GetPackageRequest) (*Package, error)
@@ -713,1382 +713,1382 @@ type RouteGuideServer interface {
 	ListSubscriptioins(context.Context, *ListSubscriptionsRequest) (*ListSubscriptionsResponse, error)
 	UpdateSubscription(context.Context, *UpdateSubscriptionRequest) (*Subscription, error)
 	DeleteSubscription(context.Context, *DeleteSubscriptionRequest) (*Subscription, error)
-	mustEmbedUnimplementedRouteGuideServer()
+	mustEmbedUnimplementedSan11PlatformServer()
 }
 
-// UnimplementedRouteGuideServer must be embedded to have forward compatible implementations.
-type UnimplementedRouteGuideServer struct {
+// UnimplementedSan11PlatformServer must be embedded to have forward compatible implementations.
+type UnimplementedSan11PlatformServer struct {
 }
 
-func (UnimplementedRouteGuideServer) CreatePackage(context.Context, *CreatePackageRequest) (*Package, error) {
+func (UnimplementedSan11PlatformServer) CreatePackage(context.Context, *CreatePackageRequest) (*Package, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePackage not implemented")
 }
-func (UnimplementedRouteGuideServer) GetPackage(context.Context, *GetPackageRequest) (*Package, error) {
+func (UnimplementedSan11PlatformServer) GetPackage(context.Context, *GetPackageRequest) (*Package, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPackage not implemented")
 }
-func (UnimplementedRouteGuideServer) ListPackages(context.Context, *ListPackagesRequest) (*ListPackagesResponse, error) {
+func (UnimplementedSan11PlatformServer) ListPackages(context.Context, *ListPackagesRequest) (*ListPackagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPackages not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdatePackage(context.Context, *UpdatePackageRequest) (*Package, error) {
+func (UnimplementedSan11PlatformServer) UpdatePackage(context.Context, *UpdatePackageRequest) (*Package, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePackage not implemented")
 }
-func (UnimplementedRouteGuideServer) DeletePackage(context.Context, *DeletePackageRequest) (*Package, error) {
+func (UnimplementedSan11PlatformServer) DeletePackage(context.Context, *DeletePackageRequest) (*Package, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePackage not implemented")
 }
-func (UnimplementedRouteGuideServer) SearchPackages(context.Context, *SearchPackagesRequest) (*SearchPackagesResponse, error) {
+func (UnimplementedSan11PlatformServer) SearchPackages(context.Context, *SearchPackagesRequest) (*SearchPackagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchPackages not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateBinary(context.Context, *CreateBinaryRequest) (*Binary, error) {
+func (UnimplementedSan11PlatformServer) CreateBinary(context.Context, *CreateBinaryRequest) (*Binary, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBinary not implemented")
 }
-func (UnimplementedRouteGuideServer) GetBinary(context.Context, *GetBinaryRequest) (*Binary, error) {
+func (UnimplementedSan11PlatformServer) GetBinary(context.Context, *GetBinaryRequest) (*Binary, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBinary not implemented")
 }
-func (UnimplementedRouteGuideServer) BatchGetBinary(context.Context, *BatchGetBinaryRequest) (*BatchGetBinaryResponse, error) {
+func (UnimplementedSan11PlatformServer) BatchGetBinary(context.Context, *BatchGetBinaryRequest) (*BatchGetBinaryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchGetBinary not implemented")
 }
-func (UnimplementedRouteGuideServer) ListBinaries(context.Context, *ListBinariesRequest) (*ListBinariesResponse, error) {
+func (UnimplementedSan11PlatformServer) ListBinaries(context.Context, *ListBinariesRequest) (*ListBinariesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBinaries not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdateBinary(context.Context, *UpdateBinaryRequest) (*Binary, error) {
+func (UnimplementedSan11PlatformServer) UpdateBinary(context.Context, *UpdateBinaryRequest) (*Binary, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBinary not implemented")
 }
-func (UnimplementedRouteGuideServer) DeleteBinary(context.Context, *DeleteBinaryRequest) (*Binary, error) {
+func (UnimplementedSan11PlatformServer) DeleteBinary(context.Context, *DeleteBinaryRequest) (*Binary, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBinary not implemented")
 }
-func (UnimplementedRouteGuideServer) DownloadBinary(context.Context, *DownloadBinaryRequest) (*Binary, error) {
+func (UnimplementedSan11PlatformServer) DownloadBinary(context.Context, *DownloadBinaryRequest) (*Binary, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DownloadBinary not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateImage(context.Context, *CreateImageRequest) (*Url, error) {
+func (UnimplementedSan11PlatformServer) CreateImage(context.Context, *CreateImageRequest) (*Url, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateImage not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateThread(context.Context, *CreateThreadRequest) (*Thread, error) {
+func (UnimplementedSan11PlatformServer) CreateThread(context.Context, *CreateThreadRequest) (*Thread, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateThread not implemented")
 }
-func (UnimplementedRouteGuideServer) GetThread(context.Context, *GetThreadRequest) (*Thread, error) {
+func (UnimplementedSan11PlatformServer) GetThread(context.Context, *GetThreadRequest) (*Thread, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetThread not implemented")
 }
-func (UnimplementedRouteGuideServer) ListThreads(context.Context, *ListThreadsRequest) (*ListThreadsResponse, error) {
+func (UnimplementedSan11PlatformServer) ListThreads(context.Context, *ListThreadsRequest) (*ListThreadsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListThreads not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdateThread(context.Context, *UpdateThreadRequest) (*Thread, error) {
+func (UnimplementedSan11PlatformServer) UpdateThread(context.Context, *UpdateThreadRequest) (*Thread, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateThread not implemented")
 }
-func (UnimplementedRouteGuideServer) DeleteThread(context.Context, *DeleteThreadRequest) (*Thread, error) {
+func (UnimplementedSan11PlatformServer) DeleteThread(context.Context, *DeleteThreadRequest) (*Thread, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteThread not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateComment(context.Context, *CreateCommentRequest) (*Comment, error) {
+func (UnimplementedSan11PlatformServer) CreateComment(context.Context, *CreateCommentRequest) (*Comment, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateComment not implemented")
 }
-func (UnimplementedRouteGuideServer) ListComments(context.Context, *ListCommentsRequest) (*ListCommentsResponse, error) {
+func (UnimplementedSan11PlatformServer) ListComments(context.Context, *ListCommentsRequest) (*ListCommentsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListComments not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdateComment(context.Context, *UpdateCommentRequest) (*Comment, error) {
+func (UnimplementedSan11PlatformServer) UpdateComment(context.Context, *UpdateCommentRequest) (*Comment, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateComment not implemented")
 }
-func (UnimplementedRouteGuideServer) DeleteComment(context.Context, *DeleteCommentRequest) (*Comment, error) {
+func (UnimplementedSan11PlatformServer) DeleteComment(context.Context, *DeleteCommentRequest) (*Comment, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteComment not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateReply(context.Context, *CreateReplyRequest) (*Reply, error) {
+func (UnimplementedSan11PlatformServer) CreateReply(context.Context, *CreateReplyRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateReply not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdateReply(context.Context, *UpdateReplyRequest) (*Reply, error) {
+func (UnimplementedSan11PlatformServer) UpdateReply(context.Context, *UpdateReplyRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateReply not implemented")
 }
-func (UnimplementedRouteGuideServer) DeleteReply(context.Context, *DeleteReplyRequest) (*Reply, error) {
+func (UnimplementedSan11PlatformServer) DeleteReply(context.Context, *DeleteReplyRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteReply not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateArticle(context.Context, *CreateArticleRequest) (*Article, error) {
+func (UnimplementedSan11PlatformServer) CreateArticle(context.Context, *CreateArticleRequest) (*Article, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateArticle not implemented")
 }
-func (UnimplementedRouteGuideServer) GetArticle(context.Context, *GetArticleRequest) (*Article, error) {
+func (UnimplementedSan11PlatformServer) GetArticle(context.Context, *GetArticleRequest) (*Article, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetArticle not implemented")
 }
-func (UnimplementedRouteGuideServer) ListArticles(context.Context, *ListArticlesRequest) (*ListArticlesResponse, error) {
+func (UnimplementedSan11PlatformServer) ListArticles(context.Context, *ListArticlesRequest) (*ListArticlesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListArticles not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdateArticle(context.Context, *UpdateArticleRequest) (*Article, error) {
+func (UnimplementedSan11PlatformServer) UpdateArticle(context.Context, *UpdateArticleRequest) (*Article, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateArticle not implemented")
 }
-func (UnimplementedRouteGuideServer) DeleteArticle(context.Context, *DeleteArticleRequest) (*Article, error) {
+func (UnimplementedSan11PlatformServer) DeleteArticle(context.Context, *DeleteArticleRequest) (*Article, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteArticle not implemented")
 }
-func (UnimplementedRouteGuideServer) SignIn(context.Context, *SignInRequest) (*SignInResponse, error) {
+func (UnimplementedSan11PlatformServer) SignIn(context.Context, *SignInRequest) (*SignInResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
 }
-func (UnimplementedRouteGuideServer) SignOut(context.Context, *SignOutRequest) (*Status, error) {
+func (UnimplementedSan11PlatformServer) SignOut(context.Context, *SignOutRequest) (*Status, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignOut not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+func (UnimplementedSan11PlatformServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedRouteGuideServer) GetUser(context.Context, *GetUserRequest) (*User, error) {
+func (UnimplementedSan11PlatformServer) GetUser(context.Context, *GetUserRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedRouteGuideServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error) {
+func (UnimplementedSan11PlatformServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdateUser(context.Context, *UpdateUserRequest) (*User, error) {
+func (UnimplementedSan11PlatformServer) UpdateUser(context.Context, *UpdateUserRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedRouteGuideServer) SendVerificationCode(context.Context, *SendVerificationCodeRequest) (*Empty, error) {
+func (UnimplementedSan11PlatformServer) SendVerificationCode(context.Context, *SendVerificationCodeRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendVerificationCode not implemented")
 }
-func (UnimplementedRouteGuideServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error) {
+func (UnimplementedSan11PlatformServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
 }
-func (UnimplementedRouteGuideServer) ValidateNewUser(context.Context, *ValidateNewUserRequest) (*Status, error) {
+func (UnimplementedSan11PlatformServer) ValidateNewUser(context.Context, *ValidateNewUserRequest) (*Status, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidateNewUser not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdatePassword(context.Context, *UpdatePasswordRequest) (*User, error) {
+func (UnimplementedSan11PlatformServer) UpdatePassword(context.Context, *UpdatePasswordRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePassword not implemented")
 }
-func (UnimplementedRouteGuideServer) ListActivities(context.Context, *ListActivitiesRequest) (*ListActivitiesResponse, error) {
+func (UnimplementedSan11PlatformServer) ListActivities(context.Context, *ListActivitiesRequest) (*ListActivitiesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListActivities not implemented")
 }
-func (UnimplementedRouteGuideServer) ToggleAction(context.Context, *ToggleActionRequest) (*ToggleActionResponse, error) {
+func (UnimplementedSan11PlatformServer) ToggleAction(context.Context, *ToggleActionRequest) (*ToggleActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ToggleAction not implemented")
 }
-func (UnimplementedRouteGuideServer) ListNotifications(context.Context, *ListNotificationsRequest) (*ListNotificationsResponse, error) {
+func (UnimplementedSan11PlatformServer) ListNotifications(context.Context, *ListNotificationsRequest) (*ListNotificationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListNotifications not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdateNotification(context.Context, *UpdateNotificationRequest) (*Notification, error) {
+func (UnimplementedSan11PlatformServer) UpdateNotification(context.Context, *UpdateNotificationRequest) (*Notification, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateNotification not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateTag(context.Context, *CreateTagRequest) (*Tag, error) {
+func (UnimplementedSan11PlatformServer) CreateTag(context.Context, *CreateTagRequest) (*Tag, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTag not implemented")
 }
-func (UnimplementedRouteGuideServer) ListTags(context.Context, *ListTagsRequest) (*ListTagsResponse, error) {
+func (UnimplementedSan11PlatformServer) ListTags(context.Context, *ListTagsRequest) (*ListTagsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListTags not implemented")
 }
-func (UnimplementedRouteGuideServer) DeleteTag(context.Context, *DeleteTagRequest) (*Tag, error) {
+func (UnimplementedSan11PlatformServer) DeleteTag(context.Context, *DeleteTagRequest) (*Tag, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTag not implemented")
 }
-func (UnimplementedRouteGuideServer) GetStatistic(context.Context, *GetStatisticRequest) (*Statistic, error) {
+func (UnimplementedSan11PlatformServer) GetStatistic(context.Context, *GetStatisticRequest) (*Statistic, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStatistic not implemented")
 }
-func (UnimplementedRouteGuideServer) GetAdminMessage(context.Context, *GetAdminMessageRequest) (*AdminMessage, error) {
+func (UnimplementedSan11PlatformServer) GetAdminMessage(context.Context, *GetAdminMessageRequest) (*AdminMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAdminMessage not implemented")
 }
-func (UnimplementedRouteGuideServer) CreateSubscription(context.Context, *CreateSubscriptionRequest) (*Subscription, error) {
+func (UnimplementedSan11PlatformServer) CreateSubscription(context.Context, *CreateSubscriptionRequest) (*Subscription, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSubscription not implemented")
 }
-func (UnimplementedRouteGuideServer) ListSubscriptioins(context.Context, *ListSubscriptionsRequest) (*ListSubscriptionsResponse, error) {
+func (UnimplementedSan11PlatformServer) ListSubscriptioins(context.Context, *ListSubscriptionsRequest) (*ListSubscriptionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSubscriptioins not implemented")
 }
-func (UnimplementedRouteGuideServer) UpdateSubscription(context.Context, *UpdateSubscriptionRequest) (*Subscription, error) {
+func (UnimplementedSan11PlatformServer) UpdateSubscription(context.Context, *UpdateSubscriptionRequest) (*Subscription, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSubscription not implemented")
 }
-func (UnimplementedRouteGuideServer) DeleteSubscription(context.Context, *DeleteSubscriptionRequest) (*Subscription, error) {
+func (UnimplementedSan11PlatformServer) DeleteSubscription(context.Context, *DeleteSubscriptionRequest) (*Subscription, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSubscription not implemented")
 }
-func (UnimplementedRouteGuideServer) mustEmbedUnimplementedRouteGuideServer() {}
+func (UnimplementedSan11PlatformServer) mustEmbedUnimplementedSan11PlatformServer() {}
 
-// UnsafeRouteGuideServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to RouteGuideServer will
+// UnsafeSan11PlatformServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to San11PlatformServer will
 // result in compilation errors.
-type UnsafeRouteGuideServer interface {
-	mustEmbedUnimplementedRouteGuideServer()
+type UnsafeSan11PlatformServer interface {
+	mustEmbedUnimplementedSan11PlatformServer()
 }
 
-func RegisterRouteGuideServer(s grpc.ServiceRegistrar, srv RouteGuideServer) {
-	s.RegisterService(&RouteGuide_ServiceDesc, srv)
+func RegisterSan11PlatformServer(s grpc.ServiceRegistrar, srv San11PlatformServer) {
+	s.RegisterService(&San11Platform_ServiceDesc, srv)
 }
 
-func _RouteGuide_CreatePackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreatePackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreatePackageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreatePackage(ctx, in)
+		return srv.(San11PlatformServer).CreatePackage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreatePackage_FullMethodName,
+		FullMethod: San11Platform_CreatePackage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreatePackage(ctx, req.(*CreatePackageRequest))
+		return srv.(San11PlatformServer).CreatePackage(ctx, req.(*CreatePackageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_GetPackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_GetPackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetPackageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).GetPackage(ctx, in)
+		return srv.(San11PlatformServer).GetPackage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_GetPackage_FullMethodName,
+		FullMethod: San11Platform_GetPackage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).GetPackage(ctx, req.(*GetPackageRequest))
+		return srv.(San11PlatformServer).GetPackage(ctx, req.(*GetPackageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListPackages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListPackages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListPackagesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListPackages(ctx, in)
+		return srv.(San11PlatformServer).ListPackages(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListPackages_FullMethodName,
+		FullMethod: San11Platform_ListPackages_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListPackages(ctx, req.(*ListPackagesRequest))
+		return srv.(San11PlatformServer).ListPackages(ctx, req.(*ListPackagesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdatePackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdatePackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdatePackageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdatePackage(ctx, in)
+		return srv.(San11PlatformServer).UpdatePackage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdatePackage_FullMethodName,
+		FullMethod: San11Platform_UpdatePackage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdatePackage(ctx, req.(*UpdatePackageRequest))
+		return srv.(San11PlatformServer).UpdatePackage(ctx, req.(*UpdatePackageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DeletePackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DeletePackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeletePackageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DeletePackage(ctx, in)
+		return srv.(San11PlatformServer).DeletePackage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DeletePackage_FullMethodName,
+		FullMethod: San11Platform_DeletePackage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DeletePackage(ctx, req.(*DeletePackageRequest))
+		return srv.(San11PlatformServer).DeletePackage(ctx, req.(*DeletePackageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_SearchPackages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_SearchPackages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SearchPackagesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).SearchPackages(ctx, in)
+		return srv.(San11PlatformServer).SearchPackages(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_SearchPackages_FullMethodName,
+		FullMethod: San11Platform_SearchPackages_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).SearchPackages(ctx, req.(*SearchPackagesRequest))
+		return srv.(San11PlatformServer).SearchPackages(ctx, req.(*SearchPackagesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateBinaryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateBinary(ctx, in)
+		return srv.(San11PlatformServer).CreateBinary(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateBinary_FullMethodName,
+		FullMethod: San11Platform_CreateBinary_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateBinary(ctx, req.(*CreateBinaryRequest))
+		return srv.(San11PlatformServer).CreateBinary(ctx, req.(*CreateBinaryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_GetBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_GetBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetBinaryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).GetBinary(ctx, in)
+		return srv.(San11PlatformServer).GetBinary(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_GetBinary_FullMethodName,
+		FullMethod: San11Platform_GetBinary_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).GetBinary(ctx, req.(*GetBinaryRequest))
+		return srv.(San11PlatformServer).GetBinary(ctx, req.(*GetBinaryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_BatchGetBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_BatchGetBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BatchGetBinaryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).BatchGetBinary(ctx, in)
+		return srv.(San11PlatformServer).BatchGetBinary(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_BatchGetBinary_FullMethodName,
+		FullMethod: San11Platform_BatchGetBinary_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).BatchGetBinary(ctx, req.(*BatchGetBinaryRequest))
+		return srv.(San11PlatformServer).BatchGetBinary(ctx, req.(*BatchGetBinaryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListBinaries_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListBinaries_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListBinariesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListBinaries(ctx, in)
+		return srv.(San11PlatformServer).ListBinaries(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListBinaries_FullMethodName,
+		FullMethod: San11Platform_ListBinaries_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListBinaries(ctx, req.(*ListBinariesRequest))
+		return srv.(San11PlatformServer).ListBinaries(ctx, req.(*ListBinariesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdateBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdateBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateBinaryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdateBinary(ctx, in)
+		return srv.(San11PlatformServer).UpdateBinary(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdateBinary_FullMethodName,
+		FullMethod: San11Platform_UpdateBinary_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdateBinary(ctx, req.(*UpdateBinaryRequest))
+		return srv.(San11PlatformServer).UpdateBinary(ctx, req.(*UpdateBinaryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DeleteBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DeleteBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteBinaryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DeleteBinary(ctx, in)
+		return srv.(San11PlatformServer).DeleteBinary(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DeleteBinary_FullMethodName,
+		FullMethod: San11Platform_DeleteBinary_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DeleteBinary(ctx, req.(*DeleteBinaryRequest))
+		return srv.(San11PlatformServer).DeleteBinary(ctx, req.(*DeleteBinaryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DownloadBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DownloadBinary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DownloadBinaryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DownloadBinary(ctx, in)
+		return srv.(San11PlatformServer).DownloadBinary(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DownloadBinary_FullMethodName,
+		FullMethod: San11Platform_DownloadBinary_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DownloadBinary(ctx, req.(*DownloadBinaryRequest))
+		return srv.(San11PlatformServer).DownloadBinary(ctx, req.(*DownloadBinaryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateImage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateImage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateImageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateImage(ctx, in)
+		return srv.(San11PlatformServer).CreateImage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateImage_FullMethodName,
+		FullMethod: San11Platform_CreateImage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateImage(ctx, req.(*CreateImageRequest))
+		return srv.(San11PlatformServer).CreateImage(ctx, req.(*CreateImageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateThreadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateThread(ctx, in)
+		return srv.(San11PlatformServer).CreateThread(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateThread_FullMethodName,
+		FullMethod: San11Platform_CreateThread_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateThread(ctx, req.(*CreateThreadRequest))
+		return srv.(San11PlatformServer).CreateThread(ctx, req.(*CreateThreadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_GetThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_GetThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetThreadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).GetThread(ctx, in)
+		return srv.(San11PlatformServer).GetThread(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_GetThread_FullMethodName,
+		FullMethod: San11Platform_GetThread_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).GetThread(ctx, req.(*GetThreadRequest))
+		return srv.(San11PlatformServer).GetThread(ctx, req.(*GetThreadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListThreads_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListThreads_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListThreadsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListThreads(ctx, in)
+		return srv.(San11PlatformServer).ListThreads(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListThreads_FullMethodName,
+		FullMethod: San11Platform_ListThreads_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListThreads(ctx, req.(*ListThreadsRequest))
+		return srv.(San11PlatformServer).ListThreads(ctx, req.(*ListThreadsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdateThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdateThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateThreadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdateThread(ctx, in)
+		return srv.(San11PlatformServer).UpdateThread(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdateThread_FullMethodName,
+		FullMethod: San11Platform_UpdateThread_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdateThread(ctx, req.(*UpdateThreadRequest))
+		return srv.(San11PlatformServer).UpdateThread(ctx, req.(*UpdateThreadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DeleteThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DeleteThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteThreadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DeleteThread(ctx, in)
+		return srv.(San11PlatformServer).DeleteThread(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DeleteThread_FullMethodName,
+		FullMethod: San11Platform_DeleteThread_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DeleteThread(ctx, req.(*DeleteThreadRequest))
+		return srv.(San11PlatformServer).DeleteThread(ctx, req.(*DeleteThreadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateCommentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateComment(ctx, in)
+		return srv.(San11PlatformServer).CreateComment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateComment_FullMethodName,
+		FullMethod: San11Platform_CreateComment_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateComment(ctx, req.(*CreateCommentRequest))
+		return srv.(San11PlatformServer).CreateComment(ctx, req.(*CreateCommentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListComments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListComments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListCommentsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListComments(ctx, in)
+		return srv.(San11PlatformServer).ListComments(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListComments_FullMethodName,
+		FullMethod: San11Platform_ListComments_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListComments(ctx, req.(*ListCommentsRequest))
+		return srv.(San11PlatformServer).ListComments(ctx, req.(*ListCommentsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdateComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdateComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateCommentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdateComment(ctx, in)
+		return srv.(San11PlatformServer).UpdateComment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdateComment_FullMethodName,
+		FullMethod: San11Platform_UpdateComment_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdateComment(ctx, req.(*UpdateCommentRequest))
+		return srv.(San11PlatformServer).UpdateComment(ctx, req.(*UpdateCommentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DeleteComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DeleteComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteCommentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DeleteComment(ctx, in)
+		return srv.(San11PlatformServer).DeleteComment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DeleteComment_FullMethodName,
+		FullMethod: San11Platform_DeleteComment_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DeleteComment(ctx, req.(*DeleteCommentRequest))
+		return srv.(San11PlatformServer).DeleteComment(ctx, req.(*DeleteCommentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateReply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateReply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateReplyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateReply(ctx, in)
+		return srv.(San11PlatformServer).CreateReply(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateReply_FullMethodName,
+		FullMethod: San11Platform_CreateReply_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateReply(ctx, req.(*CreateReplyRequest))
+		return srv.(San11PlatformServer).CreateReply(ctx, req.(*CreateReplyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdateReply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdateReply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateReplyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdateReply(ctx, in)
+		return srv.(San11PlatformServer).UpdateReply(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdateReply_FullMethodName,
+		FullMethod: San11Platform_UpdateReply_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdateReply(ctx, req.(*UpdateReplyRequest))
+		return srv.(San11PlatformServer).UpdateReply(ctx, req.(*UpdateReplyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DeleteReply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DeleteReply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteReplyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DeleteReply(ctx, in)
+		return srv.(San11PlatformServer).DeleteReply(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DeleteReply_FullMethodName,
+		FullMethod: San11Platform_DeleteReply_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DeleteReply(ctx, req.(*DeleteReplyRequest))
+		return srv.(San11PlatformServer).DeleteReply(ctx, req.(*DeleteReplyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateArticle(ctx, in)
+		return srv.(San11PlatformServer).CreateArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateArticle_FullMethodName,
+		FullMethod: San11Platform_CreateArticle_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateArticle(ctx, req.(*CreateArticleRequest))
+		return srv.(San11PlatformServer).CreateArticle(ctx, req.(*CreateArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_GetArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_GetArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).GetArticle(ctx, in)
+		return srv.(San11PlatformServer).GetArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_GetArticle_FullMethodName,
+		FullMethod: San11Platform_GetArticle_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).GetArticle(ctx, req.(*GetArticleRequest))
+		return srv.(San11PlatformServer).GetArticle(ctx, req.(*GetArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListArticles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListArticles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListArticlesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListArticles(ctx, in)
+		return srv.(San11PlatformServer).ListArticles(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListArticles_FullMethodName,
+		FullMethod: San11Platform_ListArticles_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListArticles(ctx, req.(*ListArticlesRequest))
+		return srv.(San11PlatformServer).ListArticles(ctx, req.(*ListArticlesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdateArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdateArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdateArticle(ctx, in)
+		return srv.(San11PlatformServer).UpdateArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdateArticle_FullMethodName,
+		FullMethod: San11Platform_UpdateArticle_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdateArticle(ctx, req.(*UpdateArticleRequest))
+		return srv.(San11PlatformServer).UpdateArticle(ctx, req.(*UpdateArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DeleteArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DeleteArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DeleteArticle(ctx, in)
+		return srv.(San11PlatformServer).DeleteArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DeleteArticle_FullMethodName,
+		FullMethod: San11Platform_DeleteArticle_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DeleteArticle(ctx, req.(*DeleteArticleRequest))
+		return srv.(San11PlatformServer).DeleteArticle(ctx, req.(*DeleteArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_SignIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_SignIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SignInRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).SignIn(ctx, in)
+		return srv.(San11PlatformServer).SignIn(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_SignIn_FullMethodName,
+		FullMethod: San11Platform_SignIn_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).SignIn(ctx, req.(*SignInRequest))
+		return srv.(San11PlatformServer).SignIn(ctx, req.(*SignInRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_SignOut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_SignOut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SignOutRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).SignOut(ctx, in)
+		return srv.(San11PlatformServer).SignOut(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_SignOut_FullMethodName,
+		FullMethod: San11Platform_SignOut_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).SignOut(ctx, req.(*SignOutRequest))
+		return srv.(San11PlatformServer).SignOut(ctx, req.(*SignOutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateUser(ctx, in)
+		return srv.(San11PlatformServer).CreateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateUser_FullMethodName,
+		FullMethod: San11Platform_CreateUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateUser(ctx, req.(*CreateUserRequest))
+		return srv.(San11PlatformServer).CreateUser(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).GetUser(ctx, in)
+		return srv.(San11PlatformServer).GetUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_GetUser_FullMethodName,
+		FullMethod: San11Platform_GetUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).GetUser(ctx, req.(*GetUserRequest))
+		return srv.(San11PlatformServer).GetUser(ctx, req.(*GetUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListUsersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListUsers(ctx, in)
+		return srv.(San11PlatformServer).ListUsers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListUsers_FullMethodName,
+		FullMethod: San11Platform_ListUsers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListUsers(ctx, req.(*ListUsersRequest))
+		return srv.(San11PlatformServer).ListUsers(ctx, req.(*ListUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdateUser(ctx, in)
+		return srv.(San11PlatformServer).UpdateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdateUser_FullMethodName,
+		FullMethod: San11Platform_UpdateUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+		return srv.(San11PlatformServer).UpdateUser(ctx, req.(*UpdateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_SendVerificationCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_SendVerificationCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SendVerificationCodeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).SendVerificationCode(ctx, in)
+		return srv.(San11PlatformServer).SendVerificationCode(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_SendVerificationCode_FullMethodName,
+		FullMethod: San11Platform_SendVerificationCode_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).SendVerificationCode(ctx, req.(*SendVerificationCodeRequest))
+		return srv.(San11PlatformServer).SendVerificationCode(ctx, req.(*SendVerificationCodeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_VerifyEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_VerifyEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(VerifyEmailRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).VerifyEmail(ctx, in)
+		return srv.(San11PlatformServer).VerifyEmail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_VerifyEmail_FullMethodName,
+		FullMethod: San11Platform_VerifyEmail_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).VerifyEmail(ctx, req.(*VerifyEmailRequest))
+		return srv.(San11PlatformServer).VerifyEmail(ctx, req.(*VerifyEmailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ValidateNewUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ValidateNewUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ValidateNewUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ValidateNewUser(ctx, in)
+		return srv.(San11PlatformServer).ValidateNewUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ValidateNewUser_FullMethodName,
+		FullMethod: San11Platform_ValidateNewUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ValidateNewUser(ctx, req.(*ValidateNewUserRequest))
+		return srv.(San11PlatformServer).ValidateNewUser(ctx, req.(*ValidateNewUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdatePasswordRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdatePassword(ctx, in)
+		return srv.(San11PlatformServer).UpdatePassword(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdatePassword_FullMethodName,
+		FullMethod: San11Platform_UpdatePassword_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdatePassword(ctx, req.(*UpdatePasswordRequest))
+		return srv.(San11PlatformServer).UpdatePassword(ctx, req.(*UpdatePasswordRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListActivitiesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListActivities(ctx, in)
+		return srv.(San11PlatformServer).ListActivities(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListActivities_FullMethodName,
+		FullMethod: San11Platform_ListActivities_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListActivities(ctx, req.(*ListActivitiesRequest))
+		return srv.(San11PlatformServer).ListActivities(ctx, req.(*ListActivitiesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ToggleAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ToggleAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ToggleActionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ToggleAction(ctx, in)
+		return srv.(San11PlatformServer).ToggleAction(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ToggleAction_FullMethodName,
+		FullMethod: San11Platform_ToggleAction_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ToggleAction(ctx, req.(*ToggleActionRequest))
+		return srv.(San11PlatformServer).ToggleAction(ctx, req.(*ToggleActionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListNotificationsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListNotifications(ctx, in)
+		return srv.(San11PlatformServer).ListNotifications(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListNotifications_FullMethodName,
+		FullMethod: San11Platform_ListNotifications_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListNotifications(ctx, req.(*ListNotificationsRequest))
+		return srv.(San11PlatformServer).ListNotifications(ctx, req.(*ListNotificationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdateNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdateNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateNotificationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdateNotification(ctx, in)
+		return srv.(San11PlatformServer).UpdateNotification(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdateNotification_FullMethodName,
+		FullMethod: San11Platform_UpdateNotification_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdateNotification(ctx, req.(*UpdateNotificationRequest))
+		return srv.(San11PlatformServer).UpdateNotification(ctx, req.(*UpdateNotificationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateTag(ctx, in)
+		return srv.(San11PlatformServer).CreateTag(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateTag_FullMethodName,
+		FullMethod: San11Platform_CreateTag_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateTag(ctx, req.(*CreateTagRequest))
+		return srv.(San11PlatformServer).CreateTag(ctx, req.(*CreateTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListTagsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListTags(ctx, in)
+		return srv.(San11PlatformServer).ListTags(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListTags_FullMethodName,
+		FullMethod: San11Platform_ListTags_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListTags(ctx, req.(*ListTagsRequest))
+		return srv.(San11PlatformServer).ListTags(ctx, req.(*ListTagsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DeleteTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DeleteTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DeleteTag(ctx, in)
+		return srv.(San11PlatformServer).DeleteTag(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DeleteTag_FullMethodName,
+		FullMethod: San11Platform_DeleteTag_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DeleteTag(ctx, req.(*DeleteTagRequest))
+		return srv.(San11PlatformServer).DeleteTag(ctx, req.(*DeleteTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_GetStatistic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_GetStatistic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetStatisticRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).GetStatistic(ctx, in)
+		return srv.(San11PlatformServer).GetStatistic(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_GetStatistic_FullMethodName,
+		FullMethod: San11Platform_GetStatistic_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).GetStatistic(ctx, req.(*GetStatisticRequest))
+		return srv.(San11PlatformServer).GetStatistic(ctx, req.(*GetStatisticRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_GetAdminMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_GetAdminMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAdminMessageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).GetAdminMessage(ctx, in)
+		return srv.(San11PlatformServer).GetAdminMessage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_GetAdminMessage_FullMethodName,
+		FullMethod: San11Platform_GetAdminMessage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).GetAdminMessage(ctx, req.(*GetAdminMessageRequest))
+		return srv.(San11PlatformServer).GetAdminMessage(ctx, req.(*GetAdminMessageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_CreateSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_CreateSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).CreateSubscription(ctx, in)
+		return srv.(San11PlatformServer).CreateSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_CreateSubscription_FullMethodName,
+		FullMethod: San11Platform_CreateSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).CreateSubscription(ctx, req.(*CreateSubscriptionRequest))
+		return srv.(San11PlatformServer).CreateSubscription(ctx, req.(*CreateSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_ListSubscriptioins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_ListSubscriptioins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListSubscriptionsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).ListSubscriptioins(ctx, in)
+		return srv.(San11PlatformServer).ListSubscriptioins(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_ListSubscriptioins_FullMethodName,
+		FullMethod: San11Platform_ListSubscriptioins_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).ListSubscriptioins(ctx, req.(*ListSubscriptionsRequest))
+		return srv.(San11PlatformServer).ListSubscriptioins(ctx, req.(*ListSubscriptionsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_UpdateSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_UpdateSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).UpdateSubscription(ctx, in)
+		return srv.(San11PlatformServer).UpdateSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_UpdateSubscription_FullMethodName,
+		FullMethod: San11Platform_UpdateSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).UpdateSubscription(ctx, req.(*UpdateSubscriptionRequest))
+		return srv.(San11PlatformServer).UpdateSubscription(ctx, req.(*UpdateSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RouteGuide_DeleteSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _San11Platform_DeleteSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RouteGuideServer).DeleteSubscription(ctx, in)
+		return srv.(San11PlatformServer).DeleteSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RouteGuide_DeleteSubscription_FullMethodName,
+		FullMethod: San11Platform_DeleteSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RouteGuideServer).DeleteSubscription(ctx, req.(*DeleteSubscriptionRequest))
+		return srv.(San11PlatformServer).DeleteSubscription(ctx, req.(*DeleteSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// RouteGuide_ServiceDesc is the grpc.ServiceDesc for RouteGuide service.
+// San11Platform_ServiceDesc is the grpc.ServiceDesc for San11Platform service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var RouteGuide_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "routeguide.RouteGuide",
-	HandlerType: (*RouteGuideServer)(nil),
+var San11Platform_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "san11_platform.San11Platform",
+	HandlerType: (*San11PlatformServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreatePackage",
-			Handler:    _RouteGuide_CreatePackage_Handler,
+			Handler:    _San11Platform_CreatePackage_Handler,
 		},
 		{
 			MethodName: "GetPackage",
-			Handler:    _RouteGuide_GetPackage_Handler,
+			Handler:    _San11Platform_GetPackage_Handler,
 		},
 		{
 			MethodName: "ListPackages",
-			Handler:    _RouteGuide_ListPackages_Handler,
+			Handler:    _San11Platform_ListPackages_Handler,
 		},
 		{
 			MethodName: "UpdatePackage",
-			Handler:    _RouteGuide_UpdatePackage_Handler,
+			Handler:    _San11Platform_UpdatePackage_Handler,
 		},
 		{
 			MethodName: "DeletePackage",
-			Handler:    _RouteGuide_DeletePackage_Handler,
+			Handler:    _San11Platform_DeletePackage_Handler,
 		},
 		{
 			MethodName: "SearchPackages",
-			Handler:    _RouteGuide_SearchPackages_Handler,
+			Handler:    _San11Platform_SearchPackages_Handler,
 		},
 		{
 			MethodName: "CreateBinary",
-			Handler:    _RouteGuide_CreateBinary_Handler,
+			Handler:    _San11Platform_CreateBinary_Handler,
 		},
 		{
 			MethodName: "GetBinary",
-			Handler:    _RouteGuide_GetBinary_Handler,
+			Handler:    _San11Platform_GetBinary_Handler,
 		},
 		{
 			MethodName: "BatchGetBinary",
-			Handler:    _RouteGuide_BatchGetBinary_Handler,
+			Handler:    _San11Platform_BatchGetBinary_Handler,
 		},
 		{
 			MethodName: "ListBinaries",
-			Handler:    _RouteGuide_ListBinaries_Handler,
+			Handler:    _San11Platform_ListBinaries_Handler,
 		},
 		{
 			MethodName: "UpdateBinary",
-			Handler:    _RouteGuide_UpdateBinary_Handler,
+			Handler:    _San11Platform_UpdateBinary_Handler,
 		},
 		{
 			MethodName: "DeleteBinary",
-			Handler:    _RouteGuide_DeleteBinary_Handler,
+			Handler:    _San11Platform_DeleteBinary_Handler,
 		},
 		{
 			MethodName: "DownloadBinary",
-			Handler:    _RouteGuide_DownloadBinary_Handler,
+			Handler:    _San11Platform_DownloadBinary_Handler,
 		},
 		{
 			MethodName: "CreateImage",
-			Handler:    _RouteGuide_CreateImage_Handler,
+			Handler:    _San11Platform_CreateImage_Handler,
 		},
 		{
 			MethodName: "CreateThread",
-			Handler:    _RouteGuide_CreateThread_Handler,
+			Handler:    _San11Platform_CreateThread_Handler,
 		},
 		{
 			MethodName: "GetThread",
-			Handler:    _RouteGuide_GetThread_Handler,
+			Handler:    _San11Platform_GetThread_Handler,
 		},
 		{
 			MethodName: "ListThreads",
-			Handler:    _RouteGuide_ListThreads_Handler,
+			Handler:    _San11Platform_ListThreads_Handler,
 		},
 		{
 			MethodName: "UpdateThread",
-			Handler:    _RouteGuide_UpdateThread_Handler,
+			Handler:    _San11Platform_UpdateThread_Handler,
 		},
 		{
 			MethodName: "DeleteThread",
-			Handler:    _RouteGuide_DeleteThread_Handler,
+			Handler:    _San11Platform_DeleteThread_Handler,
 		},
 		{
 			MethodName: "CreateComment",
-			Handler:    _RouteGuide_CreateComment_Handler,
+			Handler:    _San11Platform_CreateComment_Handler,
 		},
 		{
 			MethodName: "ListComments",
-			Handler:    _RouteGuide_ListComments_Handler,
+			Handler:    _San11Platform_ListComments_Handler,
 		},
 		{
 			MethodName: "UpdateComment",
-			Handler:    _RouteGuide_UpdateComment_Handler,
+			Handler:    _San11Platform_UpdateComment_Handler,
 		},
 		{
 			MethodName: "DeleteComment",
-			Handler:    _RouteGuide_DeleteComment_Handler,
+			Handler:    _San11Platform_DeleteComment_Handler,
 		},
 		{
 			MethodName: "CreateReply",
-			Handler:    _RouteGuide_CreateReply_Handler,
+			Handler:    _San11Platform_CreateReply_Handler,
 		},
 		{
 			MethodName: "UpdateReply",
-			Handler:    _RouteGuide_UpdateReply_Handler,
+			Handler:    _San11Platform_UpdateReply_Handler,
 		},
 		{
 			MethodName: "DeleteReply",
-			Handler:    _RouteGuide_DeleteReply_Handler,
+			Handler:    _San11Platform_DeleteReply_Handler,
 		},
 		{
 			MethodName: "CreateArticle",
-			Handler:    _RouteGuide_CreateArticle_Handler,
+			Handler:    _San11Platform_CreateArticle_Handler,
 		},
 		{
 			MethodName: "GetArticle",
-			Handler:    _RouteGuide_GetArticle_Handler,
+			Handler:    _San11Platform_GetArticle_Handler,
 		},
 		{
 			MethodName: "ListArticles",
-			Handler:    _RouteGuide_ListArticles_Handler,
+			Handler:    _San11Platform_ListArticles_Handler,
 		},
 		{
 			MethodName: "UpdateArticle",
-			Handler:    _RouteGuide_UpdateArticle_Handler,
+			Handler:    _San11Platform_UpdateArticle_Handler,
 		},
 		{
 			MethodName: "DeleteArticle",
-			Handler:    _RouteGuide_DeleteArticle_Handler,
+			Handler:    _San11Platform_DeleteArticle_Handler,
 		},
 		{
 			MethodName: "SignIn",
-			Handler:    _RouteGuide_SignIn_Handler,
+			Handler:    _San11Platform_SignIn_Handler,
 		},
 		{
 			MethodName: "SignOut",
-			Handler:    _RouteGuide_SignOut_Handler,
+			Handler:    _San11Platform_SignOut_Handler,
 		},
 		{
 			MethodName: "CreateUser",
-			Handler:    _RouteGuide_CreateUser_Handler,
+			Handler:    _San11Platform_CreateUser_Handler,
 		},
 		{
 			MethodName: "GetUser",
-			Handler:    _RouteGuide_GetUser_Handler,
+			Handler:    _San11Platform_GetUser_Handler,
 		},
 		{
 			MethodName: "ListUsers",
-			Handler:    _RouteGuide_ListUsers_Handler,
+			Handler:    _San11Platform_ListUsers_Handler,
 		},
 		{
 			MethodName: "UpdateUser",
-			Handler:    _RouteGuide_UpdateUser_Handler,
+			Handler:    _San11Platform_UpdateUser_Handler,
 		},
 		{
 			MethodName: "SendVerificationCode",
-			Handler:    _RouteGuide_SendVerificationCode_Handler,
+			Handler:    _San11Platform_SendVerificationCode_Handler,
 		},
 		{
 			MethodName: "VerifyEmail",
-			Handler:    _RouteGuide_VerifyEmail_Handler,
+			Handler:    _San11Platform_VerifyEmail_Handler,
 		},
 		{
 			MethodName: "ValidateNewUser",
-			Handler:    _RouteGuide_ValidateNewUser_Handler,
+			Handler:    _San11Platform_ValidateNewUser_Handler,
 		},
 		{
 			MethodName: "UpdatePassword",
-			Handler:    _RouteGuide_UpdatePassword_Handler,
+			Handler:    _San11Platform_UpdatePassword_Handler,
 		},
 		{
 			MethodName: "ListActivities",
-			Handler:    _RouteGuide_ListActivities_Handler,
+			Handler:    _San11Platform_ListActivities_Handler,
 		},
 		{
 			MethodName: "ToggleAction",
-			Handler:    _RouteGuide_ToggleAction_Handler,
+			Handler:    _San11Platform_ToggleAction_Handler,
 		},
 		{
 			MethodName: "ListNotifications",
-			Handler:    _RouteGuide_ListNotifications_Handler,
+			Handler:    _San11Platform_ListNotifications_Handler,
 		},
 		{
 			MethodName: "UpdateNotification",
-			Handler:    _RouteGuide_UpdateNotification_Handler,
+			Handler:    _San11Platform_UpdateNotification_Handler,
 		},
 		{
 			MethodName: "CreateTag",
-			Handler:    _RouteGuide_CreateTag_Handler,
+			Handler:    _San11Platform_CreateTag_Handler,
 		},
 		{
 			MethodName: "ListTags",
-			Handler:    _RouteGuide_ListTags_Handler,
+			Handler:    _San11Platform_ListTags_Handler,
 		},
 		{
 			MethodName: "DeleteTag",
-			Handler:    _RouteGuide_DeleteTag_Handler,
+			Handler:    _San11Platform_DeleteTag_Handler,
 		},
 		{
 			MethodName: "GetStatistic",
-			Handler:    _RouteGuide_GetStatistic_Handler,
+			Handler:    _San11Platform_GetStatistic_Handler,
 		},
 		{
 			MethodName: "GetAdminMessage",
-			Handler:    _RouteGuide_GetAdminMessage_Handler,
+			Handler:    _San11Platform_GetAdminMessage_Handler,
 		},
 		{
 			MethodName: "CreateSubscription",
-			Handler:    _RouteGuide_CreateSubscription_Handler,
+			Handler:    _San11Platform_CreateSubscription_Handler,
 		},
 		{
 			MethodName: "ListSubscriptioins",
-			Handler:    _RouteGuide_ListSubscriptioins_Handler,
+			Handler:    _San11Platform_ListSubscriptioins_Handler,
 		},
 		{
 			MethodName: "UpdateSubscription",
-			Handler:    _RouteGuide_UpdateSubscription_Handler,
+			Handler:    _San11Platform_UpdateSubscription_Handler,
 		},
 		{
 			MethodName: "DeleteSubscription",
-			Handler:    _RouteGuide_DeleteSubscription_Handler,
+			Handler:    _San11Platform_DeleteSubscription_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

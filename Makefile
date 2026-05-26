@@ -10,6 +10,12 @@ help:
 	@echo "General:"
 	@echo "  help              Show this help message (default)"
 	@echo "  test              Run test suite in Docker (uses docker-compose.test.yaml)"
+	@echo "  verify           Run backend, frontend, gateway, and UI release gates"
+	@echo "  verify-backend   Run Python unit and integration tests"
+	@echo "  verify-frontend  Build the Angular frontend"
+	@echo "  verify-gateway   Compile/test the Go gateway"
+	@echo "  verify-ui        Start dev stack and run Playwright CUJ tests"
+	@echo "  verify-ui-rebuild Rebuild dev stack and run Playwright CUJ tests"
 	@echo "  cleanup           Clean test temp data and stop test containers"
 	@echo "  fetch-local-ca    Copy Caddy local root CA cert from front-end container"
 	@echo ""
@@ -44,6 +50,31 @@ help:
 test: cleanup
 	mkdir -p $(TMP_DB_DATA)
 	docker compose -f docker-compose.test.yaml run --rm sut
+
+.PHONY: verify
+verify: verify-backend verify-frontend verify-gateway verify-ui
+
+.PHONY: verify-backend
+verify-backend:
+	cd back-end && make utest itest
+
+.PHONY: verify-frontend
+verify-frontend:
+	cd front-end && npm run build
+
+.PHONY: verify-gateway
+verify-gateway:
+	cd back-end/gateway && GOCACHE=/tmp/san11-go-build-cache go test ./...
+
+.PHONY: verify-ui
+verify-ui:
+	docker compose -f compose.yaml -f compose.dev.yaml up -d
+	cd front-end && npm run e2e:playwright
+
+.PHONY: verify-ui-rebuild
+verify-ui-rebuild:
+	docker compose -f compose.yaml -f compose.dev.yaml up -d --build
+	cd front-end && npm run e2e:playwright
 
 .PHONY: cleanup
 cleanup:

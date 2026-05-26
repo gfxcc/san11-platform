@@ -44,10 +44,10 @@ export enum ImageType {
   DESCRIPTION = 3
 }
 /**
- * Message implementation for routeguide.CreatePackageRequest
+ * Message implementation for san11_platform.CreatePackageRequest
  */
 export class CreatePackageRequest implements GrpcMessage {
-  static id = 'routeguide.CreatePackageRequest';
+  static id = 'san11_platform.CreatePackageRequest';
 
   /**
    * Deserialize binary data to message
@@ -210,10 +210,10 @@ export module CreatePackageRequest {
 }
 
 /**
- * Message implementation for routeguide.GetPackageRequest
+ * Message implementation for san11_platform.GetPackageRequest
  */
 export class GetPackageRequest implements GrpcMessage {
-  static id = 'routeguide.GetPackageRequest';
+  static id = 'san11_platform.GetPackageRequest';
 
   /**
    * Deserialize binary data to message
@@ -349,10 +349,10 @@ export module GetPackageRequest {
 }
 
 /**
- * Message implementation for routeguide.UpdatePackageRequest
+ * Message implementation for san11_platform.UpdatePackageRequest
  */
 export class UpdatePackageRequest implements GrpcMessage {
-  static id = 'routeguide.UpdatePackageRequest';
+  static id = 'san11_platform.UpdatePackageRequest';
 
   /**
    * Deserialize binary data to message
@@ -527,10 +527,10 @@ export module UpdatePackageRequest {
 }
 
 /**
- * Message implementation for routeguide.DeletePackageRequest
+ * Message implementation for san11_platform.DeletePackageRequest
  */
 export class DeletePackageRequest implements GrpcMessage {
-  static id = 'routeguide.DeletePackageRequest';
+  static id = 'san11_platform.DeletePackageRequest';
 
   /**
    * Deserialize binary data to message
@@ -666,10 +666,10 @@ export module DeletePackageRequest {
 }
 
 /**
- * Message implementation for routeguide.ListPackagesRequest
+ * Message implementation for san11_platform.ListPackagesRequest
  */
 export class ListPackagesRequest implements GrpcMessage {
-  static id = 'routeguide.ListPackagesRequest';
+  static id = 'san11_platform.ListPackagesRequest';
 
   /**
    * Deserialize binary data to message
@@ -881,10 +881,10 @@ export module ListPackagesRequest {
 }
 
 /**
- * Message implementation for routeguide.ListPackagesResponse
+ * Message implementation for san11_platform.ListPackagesResponse
  */
 export class ListPackagesResponse implements GrpcMessage {
-  static id = 'routeguide.ListPackagesResponse';
+  static id = 'san11_platform.ListPackagesResponse';
 
   /**
    * Deserialize binary data to message
@@ -1050,10 +1050,10 @@ export module ListPackagesResponse {
 }
 
 /**
- * Message implementation for routeguide.SearchPackagesRequest
+ * Message implementation for san11_platform.SearchPackagesRequest
  */
 export class SearchPackagesRequest implements GrpcMessage {
-  static id = 'routeguide.SearchPackagesRequest';
+  static id = 'san11_platform.SearchPackagesRequest';
 
   /**
    * Deserialize binary data to message
@@ -1227,10 +1227,10 @@ export module SearchPackagesRequest {
 }
 
 /**
- * Message implementation for routeguide.SearchPackagesResponse
+ * Message implementation for san11_platform.SearchPackagesResponse
  */
 export class SearchPackagesResponse implements GrpcMessage {
-  static id = 'routeguide.SearchPackagesResponse';
+  static id = 'san11_platform.SearchPackagesResponse';
 
   /**
    * Deserialize binary data to message
@@ -1396,10 +1396,10 @@ export module SearchPackagesResponse {
 }
 
 /**
- * Message implementation for routeguide.GetBinaryRequest
+ * Message implementation for san11_platform.GetBinaryRequest
  */
 export class GetBinaryRequest implements GrpcMessage {
-  static id = 'routeguide.GetBinaryRequest';
+  static id = 'san11_platform.GetBinaryRequest';
 
   /**
    * Deserialize binary data to message
@@ -1535,10 +1535,10 @@ export module GetBinaryRequest {
 }
 
 /**
- * Message implementation for routeguide.UploadBinaryRequest
+ * Message implementation for san11_platform.UploadBinaryRequest
  */
 export class UploadBinaryRequest implements GrpcMessage {
-  static id = 'routeguide.UploadBinaryRequest';
+  static id = 'san11_platform.UploadBinaryRequest';
 
   /**
    * Deserialize binary data to message
@@ -1821,10 +1821,10 @@ export module UploadBinaryRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateBinaryRequest
+ * Message implementation for san11_platform.CreateBinaryRequest
  */
 export class CreateBinaryRequest implements GrpcMessage {
-  static id = 'routeguide.CreateBinaryRequest';
+  static id = 'san11_platform.CreateBinaryRequest';
 
   /**
    * Deserialize binary data to message
@@ -1987,10 +1987,10 @@ export module CreateBinaryRequest {
 }
 
 /**
- * Message implementation for routeguide.BatchGetBinaryRequest
+ * Message implementation for san11_platform.BatchGetBinaryRequest
  */
 export class BatchGetBinaryRequest implements GrpcMessage {
-  static id = 'routeguide.BatchGetBinaryRequest';
+  static id = 'san11_platform.BatchGetBinaryRequest';
 
   /**
    * Deserialize binary data to message
@@ -2128,10 +2128,10 @@ export module BatchGetBinaryRequest {
 }
 
 /**
- * Message implementation for routeguide.BatchGetBinaryResponse
+ * Message implementation for san11_platform.BatchGetBinaryResponse
  */
 export class BatchGetBinaryResponse implements GrpcMessage {
-  static id = 'routeguide.BatchGetBinaryResponse';
+  static id = 'san11_platform.BatchGetBinaryResponse';
 
   /**
    * Deserialize binary data to message
@@ -2278,10 +2278,10 @@ export module BatchGetBinaryResponse {
 }
 
 /**
- * Message implementation for routeguide.DownloadBinaryRequest
+ * Message implementation for san11_platform.DownloadBinaryRequest
  */
 export class DownloadBinaryRequest implements GrpcMessage {
-  static id = 'routeguide.DownloadBinaryRequest';
+  static id = 'san11_platform.DownloadBinaryRequest';
 
   /**
    * Deserialize binary data to message
@@ -2417,10 +2417,10 @@ export module DownloadBinaryRequest {
 }
 
 /**
- * Message implementation for routeguide.DeleteBinaryRequest
+ * Message implementation for san11_platform.DeleteBinaryRequest
  */
 export class DeleteBinaryRequest implements GrpcMessage {
-  static id = 'routeguide.DeleteBinaryRequest';
+  static id = 'san11_platform.DeleteBinaryRequest';
 
   /**
    * Deserialize binary data to message
@@ -2556,10 +2556,10 @@ export module DeleteBinaryRequest {
 }
 
 /**
- * Message implementation for routeguide.UpdateBinaryRequest
+ * Message implementation for san11_platform.UpdateBinaryRequest
  */
 export class UpdateBinaryRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateBinaryRequest';
+  static id = 'san11_platform.UpdateBinaryRequest';
 
   /**
    * Deserialize binary data to message
@@ -2734,10 +2734,10 @@ export module UpdateBinaryRequest {
 }
 
 /**
- * Message implementation for routeguide.ListBinariesRequest
+ * Message implementation for san11_platform.ListBinariesRequest
  */
 export class ListBinariesRequest implements GrpcMessage {
-  static id = 'routeguide.ListBinariesRequest';
+  static id = 'san11_platform.ListBinariesRequest';
 
   /**
    * Deserialize binary data to message
@@ -2949,10 +2949,10 @@ export module ListBinariesRequest {
 }
 
 /**
- * Message implementation for routeguide.ListBinariesResponse
+ * Message implementation for san11_platform.ListBinariesResponse
  */
 export class ListBinariesResponse implements GrpcMessage {
-  static id = 'routeguide.ListBinariesResponse';
+  static id = 'san11_platform.ListBinariesResponse';
 
   /**
    * Deserialize binary data to message
@@ -3118,10 +3118,10 @@ export module ListBinariesResponse {
 }
 
 /**
- * Message implementation for routeguide.UploadImageRequest
+ * Message implementation for san11_platform.UploadImageRequest
  */
 export class UploadImageRequest implements GrpcMessage {
-  static id = 'routeguide.UploadImageRequest';
+  static id = 'san11_platform.UploadImageRequest';
 
   /**
    * Deserialize binary data to message
@@ -3276,10 +3276,10 @@ export module UploadImageRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateImageRequest
+ * Message implementation for san11_platform.CreateImageRequest
  */
 export class CreateImageRequest implements GrpcMessage {
-  static id = 'routeguide.CreateImageRequest';
+  static id = 'san11_platform.CreateImageRequest';
 
   /**
    * Deserialize binary data to message
@@ -3458,10 +3458,10 @@ export module CreateImageRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateThreadRequest
+ * Message implementation for san11_platform.CreateThreadRequest
  */
 export class CreateThreadRequest implements GrpcMessage {
-  static id = 'routeguide.CreateThreadRequest';
+  static id = 'san11_platform.CreateThreadRequest';
 
   /**
    * Deserialize binary data to message
@@ -3624,10 +3624,10 @@ export module CreateThreadRequest {
 }
 
 /**
- * Message implementation for routeguide.GetThreadRequest
+ * Message implementation for san11_platform.GetThreadRequest
  */
 export class GetThreadRequest implements GrpcMessage {
-  static id = 'routeguide.GetThreadRequest';
+  static id = 'san11_platform.GetThreadRequest';
 
   /**
    * Deserialize binary data to message
@@ -3763,10 +3763,10 @@ export module GetThreadRequest {
 }
 
 /**
- * Message implementation for routeguide.ListThreadsRequest
+ * Message implementation for san11_platform.ListThreadsRequest
  */
 export class ListThreadsRequest implements GrpcMessage {
-  static id = 'routeguide.ListThreadsRequest';
+  static id = 'san11_platform.ListThreadsRequest';
 
   /**
    * Deserialize binary data to message
@@ -3978,10 +3978,10 @@ export module ListThreadsRequest {
 }
 
 /**
- * Message implementation for routeguide.ListThreadsResponse
+ * Message implementation for san11_platform.ListThreadsResponse
  */
 export class ListThreadsResponse implements GrpcMessage {
-  static id = 'routeguide.ListThreadsResponse';
+  static id = 'san11_platform.ListThreadsResponse';
 
   /**
    * Deserialize binary data to message
@@ -4147,10 +4147,10 @@ export module ListThreadsResponse {
 }
 
 /**
- * Message implementation for routeguide.UpdateThreadRequest
+ * Message implementation for san11_platform.UpdateThreadRequest
  */
 export class UpdateThreadRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateThreadRequest';
+  static id = 'san11_platform.UpdateThreadRequest';
 
   /**
    * Deserialize binary data to message
@@ -4325,10 +4325,10 @@ export module UpdateThreadRequest {
 }
 
 /**
- * Message implementation for routeguide.DeleteThreadRequest
+ * Message implementation for san11_platform.DeleteThreadRequest
  */
 export class DeleteThreadRequest implements GrpcMessage {
-  static id = 'routeguide.DeleteThreadRequest';
+  static id = 'san11_platform.DeleteThreadRequest';
 
   /**
    * Deserialize binary data to message
@@ -4464,10 +4464,10 @@ export module DeleteThreadRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateCommentRequest
+ * Message implementation for san11_platform.CreateCommentRequest
  */
 export class CreateCommentRequest implements GrpcMessage {
-  static id = 'routeguide.CreateCommentRequest';
+  static id = 'san11_platform.CreateCommentRequest';
 
   /**
    * Deserialize binary data to message
@@ -4630,10 +4630,10 @@ export module CreateCommentRequest {
 }
 
 /**
- * Message implementation for routeguide.DeleteCommentRequest
+ * Message implementation for san11_platform.DeleteCommentRequest
  */
 export class DeleteCommentRequest implements GrpcMessage {
-  static id = 'routeguide.DeleteCommentRequest';
+  static id = 'san11_platform.DeleteCommentRequest';
 
   /**
    * Deserialize binary data to message
@@ -4769,10 +4769,10 @@ export module DeleteCommentRequest {
 }
 
 /**
- * Message implementation for routeguide.UpdateCommentRequest
+ * Message implementation for san11_platform.UpdateCommentRequest
  */
 export class UpdateCommentRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateCommentRequest';
+  static id = 'san11_platform.UpdateCommentRequest';
 
   /**
    * Deserialize binary data to message
@@ -4947,10 +4947,10 @@ export module UpdateCommentRequest {
 }
 
 /**
- * Message implementation for routeguide.ListCommentsRequest
+ * Message implementation for san11_platform.ListCommentsRequest
  */
 export class ListCommentsRequest implements GrpcMessage {
-  static id = 'routeguide.ListCommentsRequest';
+  static id = 'san11_platform.ListCommentsRequest';
 
   /**
    * Deserialize binary data to message
@@ -5162,10 +5162,10 @@ export module ListCommentsRequest {
 }
 
 /**
- * Message implementation for routeguide.ListCommentsResponse
+ * Message implementation for san11_platform.ListCommentsResponse
  */
 export class ListCommentsResponse implements GrpcMessage {
-  static id = 'routeguide.ListCommentsResponse';
+  static id = 'san11_platform.ListCommentsResponse';
 
   /**
    * Deserialize binary data to message
@@ -5331,10 +5331,10 @@ export module ListCommentsResponse {
 }
 
 /**
- * Message implementation for routeguide.CreateReplyRequest
+ * Message implementation for san11_platform.CreateReplyRequest
  */
 export class CreateReplyRequest implements GrpcMessage {
-  static id = 'routeguide.CreateReplyRequest';
+  static id = 'san11_platform.CreateReplyRequest';
 
   /**
    * Deserialize binary data to message
@@ -5497,10 +5497,10 @@ export module CreateReplyRequest {
 }
 
 /**
- * Message implementation for routeguide.DeleteReplyRequest
+ * Message implementation for san11_platform.DeleteReplyRequest
  */
 export class DeleteReplyRequest implements GrpcMessage {
-  static id = 'routeguide.DeleteReplyRequest';
+  static id = 'san11_platform.DeleteReplyRequest';
 
   /**
    * Deserialize binary data to message
@@ -5636,10 +5636,10 @@ export module DeleteReplyRequest {
 }
 
 /**
- * Message implementation for routeguide.UpdateReplyRequest
+ * Message implementation for san11_platform.UpdateReplyRequest
  */
 export class UpdateReplyRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateReplyRequest';
+  static id = 'san11_platform.UpdateReplyRequest';
 
   /**
    * Deserialize binary data to message
@@ -5814,10 +5814,10 @@ export module UpdateReplyRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateArticleRequest
+ * Message implementation for san11_platform.CreateArticleRequest
  */
 export class CreateArticleRequest implements GrpcMessage {
-  static id = 'routeguide.CreateArticleRequest';
+  static id = 'san11_platform.CreateArticleRequest';
 
   /**
    * Deserialize binary data to message
@@ -5980,10 +5980,10 @@ export module CreateArticleRequest {
 }
 
 /**
- * Message implementation for routeguide.GetArticleRequest
+ * Message implementation for san11_platform.GetArticleRequest
  */
 export class GetArticleRequest implements GrpcMessage {
-  static id = 'routeguide.GetArticleRequest';
+  static id = 'san11_platform.GetArticleRequest';
 
   /**
    * Deserialize binary data to message
@@ -6119,10 +6119,10 @@ export module GetArticleRequest {
 }
 
 /**
- * Message implementation for routeguide.ListArticlesRequest
+ * Message implementation for san11_platform.ListArticlesRequest
  */
 export class ListArticlesRequest implements GrpcMessage {
-  static id = 'routeguide.ListArticlesRequest';
+  static id = 'san11_platform.ListArticlesRequest';
 
   /**
    * Deserialize binary data to message
@@ -6334,10 +6334,10 @@ export module ListArticlesRequest {
 }
 
 /**
- * Message implementation for routeguide.ListArticlesResponse
+ * Message implementation for san11_platform.ListArticlesResponse
  */
 export class ListArticlesResponse implements GrpcMessage {
-  static id = 'routeguide.ListArticlesResponse';
+  static id = 'san11_platform.ListArticlesResponse';
 
   /**
    * Deserialize binary data to message
@@ -6503,10 +6503,10 @@ export module ListArticlesResponse {
 }
 
 /**
- * Message implementation for routeguide.UpdateArticleRequest
+ * Message implementation for san11_platform.UpdateArticleRequest
  */
 export class UpdateArticleRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateArticleRequest';
+  static id = 'san11_platform.UpdateArticleRequest';
 
   /**
    * Deserialize binary data to message
@@ -6681,10 +6681,10 @@ export module UpdateArticleRequest {
 }
 
 /**
- * Message implementation for routeguide.DeleteArticleRequest
+ * Message implementation for san11_platform.DeleteArticleRequest
  */
 export class DeleteArticleRequest implements GrpcMessage {
-  static id = 'routeguide.DeleteArticleRequest';
+  static id = 'san11_platform.DeleteArticleRequest';
 
   /**
    * Deserialize binary data to message
@@ -6820,10 +6820,10 @@ export module DeleteArticleRequest {
 }
 
 /**
- * Message implementation for routeguide.GetUserRequest
+ * Message implementation for san11_platform.GetUserRequest
  */
 export class GetUserRequest implements GrpcMessage {
-  static id = 'routeguide.GetUserRequest';
+  static id = 'san11_platform.GetUserRequest';
 
   /**
    * Deserialize binary data to message
@@ -6959,10 +6959,10 @@ export module GetUserRequest {
 }
 
 /**
- * Message implementation for routeguide.GetUserResponse
+ * Message implementation for san11_platform.GetUserResponse
  */
 export class GetUserResponse implements GrpcMessage {
-  static id = 'routeguide.GetUserResponse';
+  static id = 'san11_platform.GetUserResponse';
 
   /**
    * Deserialize binary data to message
@@ -7103,10 +7103,10 @@ export module GetUserResponse {
 }
 
 /**
- * Message implementation for routeguide.SignInRequest
+ * Message implementation for san11_platform.SignInRequest
  */
 export class SignInRequest implements GrpcMessage {
-  static id = 'routeguide.SignInRequest';
+  static id = 'san11_platform.SignInRequest';
 
   /**
    * Deserialize binary data to message
@@ -7261,10 +7261,10 @@ export module SignInRequest {
 }
 
 /**
- * Message implementation for routeguide.SignInResponse
+ * Message implementation for san11_platform.SignInResponse
  */
 export class SignInResponse implements GrpcMessage {
-  static id = 'routeguide.SignInResponse';
+  static id = 'san11_platform.SignInResponse';
 
   /**
    * Deserialize binary data to message
@@ -7424,10 +7424,10 @@ export module SignInResponse {
 }
 
 /**
- * Message implementation for routeguide.SignOutRequest
+ * Message implementation for san11_platform.SignOutRequest
  */
 export class SignOutRequest implements GrpcMessage {
-  static id = 'routeguide.SignOutRequest';
+  static id = 'san11_platform.SignOutRequest';
 
   /**
    * Deserialize binary data to message
@@ -7537,10 +7537,10 @@ export module SignOutRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateUserRequest
+ * Message implementation for san11_platform.CreateUserRequest
  */
 export class CreateUserRequest implements GrpcMessage {
-  static id = 'routeguide.CreateUserRequest';
+  static id = 'san11_platform.CreateUserRequest';
 
   /**
    * Deserialize binary data to message
@@ -7738,10 +7738,10 @@ export module CreateUserRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateUserResponse
+ * Message implementation for san11_platform.CreateUserResponse
  */
 export class CreateUserResponse implements GrpcMessage {
-  static id = 'routeguide.CreateUserResponse';
+  static id = 'san11_platform.CreateUserResponse';
 
   /**
    * Deserialize binary data to message
@@ -7901,10 +7901,10 @@ export module CreateUserResponse {
 }
 
 /**
- * Message implementation for routeguide.UpdateUserRequest
+ * Message implementation for san11_platform.UpdateUserRequest
  */
 export class UpdateUserRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateUserRequest';
+  static id = 'san11_platform.UpdateUserRequest';
 
   /**
    * Deserialize binary data to message
@@ -8076,10 +8076,10 @@ export module UpdateUserRequest {
 }
 
 /**
- * Message implementation for routeguide.UpdatePasswordRequest
+ * Message implementation for san11_platform.UpdatePasswordRequest
  */
 export class UpdatePasswordRequest implements GrpcMessage {
-  static id = 'routeguide.UpdatePasswordRequest';
+  static id = 'san11_platform.UpdatePasswordRequest';
 
   /**
    * Deserialize binary data to message
@@ -8253,10 +8253,10 @@ export module UpdatePasswordRequest {
 }
 
 /**
- * Message implementation for routeguide.ListUsersRequest
+ * Message implementation for san11_platform.ListUsersRequest
  */
 export class ListUsersRequest implements GrpcMessage {
-  static id = 'routeguide.ListUsersRequest';
+  static id = 'san11_platform.ListUsersRequest';
 
   /**
    * Deserialize binary data to message
@@ -8468,10 +8468,10 @@ export module ListUsersRequest {
 }
 
 /**
- * Message implementation for routeguide.ListUsersResponse
+ * Message implementation for san11_platform.ListUsersResponse
  */
 export class ListUsersResponse implements GrpcMessage {
-  static id = 'routeguide.ListUsersResponse';
+  static id = 'san11_platform.ListUsersResponse';
 
   /**
    * Deserialize binary data to message
@@ -8635,10 +8635,10 @@ export module ListUsersResponse {
 }
 
 /**
- * Message implementation for routeguide.SendVerificationCodeRequest
+ * Message implementation for san11_platform.SendVerificationCodeRequest
  */
 export class SendVerificationCodeRequest implements GrpcMessage {
-  static id = 'routeguide.SendVerificationCodeRequest';
+  static id = 'san11_platform.SendVerificationCodeRequest';
 
   /**
    * Deserialize binary data to message
@@ -8774,10 +8774,10 @@ export module SendVerificationCodeRequest {
 }
 
 /**
- * Message implementation for routeguide.VerifyEmailRequest
+ * Message implementation for san11_platform.VerifyEmailRequest
  */
 export class VerifyEmailRequest implements GrpcMessage {
-  static id = 'routeguide.VerifyEmailRequest';
+  static id = 'san11_platform.VerifyEmailRequest';
 
   /**
    * Deserialize binary data to message
@@ -8932,10 +8932,10 @@ export module VerifyEmailRequest {
 }
 
 /**
- * Message implementation for routeguide.VerifyEmailResponse
+ * Message implementation for san11_platform.VerifyEmailResponse
  */
 export class VerifyEmailResponse implements GrpcMessage {
-  static id = 'routeguide.VerifyEmailResponse';
+  static id = 'san11_platform.VerifyEmailResponse';
 
   /**
    * Deserialize binary data to message
@@ -9095,10 +9095,10 @@ export module VerifyEmailResponse {
 }
 
 /**
- * Message implementation for routeguide.ValidateNewUserRequest
+ * Message implementation for san11_platform.ValidateNewUserRequest
  */
 export class ValidateNewUserRequest implements GrpcMessage {
-  static id = 'routeguide.ValidateNewUserRequest';
+  static id = 'san11_platform.ValidateNewUserRequest';
 
   /**
    * Deserialize binary data to message
@@ -9239,10 +9239,10 @@ export module ValidateNewUserRequest {
 }
 
 /**
- * Message implementation for routeguide.ListActivitiesRequest
+ * Message implementation for san11_platform.ListActivitiesRequest
  */
 export class ListActivitiesRequest implements GrpcMessage {
-  static id = 'routeguide.ListActivitiesRequest';
+  static id = 'san11_platform.ListActivitiesRequest';
 
   /**
    * Deserialize binary data to message
@@ -9454,10 +9454,10 @@ export module ListActivitiesRequest {
 }
 
 /**
- * Message implementation for routeguide.ListActivitiesResponse
+ * Message implementation for san11_platform.ListActivitiesResponse
  */
 export class ListActivitiesResponse implements GrpcMessage {
-  static id = 'routeguide.ListActivitiesResponse';
+  static id = 'san11_platform.ListActivitiesResponse';
 
   /**
    * Deserialize binary data to message
@@ -9623,10 +9623,10 @@ export module ListActivitiesResponse {
 }
 
 /**
- * Message implementation for routeguide.ToggleActionRequest
+ * Message implementation for san11_platform.ToggleActionRequest
  */
 export class ToggleActionRequest implements GrpcMessage {
-  static id = 'routeguide.ToggleActionRequest';
+  static id = 'san11_platform.ToggleActionRequest';
 
   /**
    * Deserialize binary data to message
@@ -9784,10 +9784,10 @@ export module ToggleActionRequest {
 }
 
 /**
- * Message implementation for routeguide.ToggleActionResponse
+ * Message implementation for san11_platform.ToggleActionResponse
  */
 export class ToggleActionResponse implements GrpcMessage {
-  static id = 'routeguide.ToggleActionResponse';
+  static id = 'san11_platform.ToggleActionResponse';
 
   /**
    * Deserialize binary data to message
@@ -9942,10 +9942,10 @@ export module ToggleActionResponse {
 }
 
 /**
- * Message implementation for routeguide.ListNotificationsRequest
+ * Message implementation for san11_platform.ListNotificationsRequest
  */
 export class ListNotificationsRequest implements GrpcMessage {
-  static id = 'routeguide.ListNotificationsRequest';
+  static id = 'san11_platform.ListNotificationsRequest';
 
   /**
    * Deserialize binary data to message
@@ -10157,10 +10157,10 @@ export module ListNotificationsRequest {
 }
 
 /**
- * Message implementation for routeguide.ListNotificationsResponse
+ * Message implementation for san11_platform.ListNotificationsResponse
  */
 export class ListNotificationsResponse implements GrpcMessage {
-  static id = 'routeguide.ListNotificationsResponse';
+  static id = 'san11_platform.ListNotificationsResponse';
 
   /**
    * Deserialize binary data to message
@@ -10330,10 +10330,10 @@ export module ListNotificationsResponse {
 }
 
 /**
- * Message implementation for routeguide.UpdateNotificationRequest
+ * Message implementation for san11_platform.UpdateNotificationRequest
  */
 export class UpdateNotificationRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateNotificationRequest';
+  static id = 'san11_platform.UpdateNotificationRequest';
 
   /**
    * Deserialize binary data to message
@@ -10514,10 +10514,10 @@ export module UpdateNotificationRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateTagRequest
+ * Message implementation for san11_platform.CreateTagRequest
  */
 export class CreateTagRequest implements GrpcMessage {
-  static id = 'routeguide.CreateTagRequest';
+  static id = 'san11_platform.CreateTagRequest';
 
   /**
    * Deserialize binary data to message
@@ -10677,10 +10677,10 @@ export module CreateTagRequest {
 }
 
 /**
- * Message implementation for routeguide.ListTagsRequest
+ * Message implementation for san11_platform.ListTagsRequest
  */
 export class ListTagsRequest implements GrpcMessage {
-  static id = 'routeguide.ListTagsRequest';
+  static id = 'san11_platform.ListTagsRequest';
 
   /**
    * Deserialize binary data to message
@@ -10892,10 +10892,10 @@ export module ListTagsRequest {
 }
 
 /**
- * Message implementation for routeguide.ListTagsResponse
+ * Message implementation for san11_platform.ListTagsResponse
  */
 export class ListTagsResponse implements GrpcMessage {
-  static id = 'routeguide.ListTagsResponse';
+  static id = 'san11_platform.ListTagsResponse';
 
   /**
    * Deserialize binary data to message
@@ -11059,10 +11059,10 @@ export module ListTagsResponse {
 }
 
 /**
- * Message implementation for routeguide.DeleteTagRequest
+ * Message implementation for san11_platform.DeleteTagRequest
  */
 export class DeleteTagRequest implements GrpcMessage {
-  static id = 'routeguide.DeleteTagRequest';
+  static id = 'san11_platform.DeleteTagRequest';
 
   /**
    * Deserialize binary data to message
@@ -11198,10 +11198,10 @@ export module DeleteTagRequest {
 }
 
 /**
- * Message implementation for routeguide.GetStatisticRequest
+ * Message implementation for san11_platform.GetStatisticRequest
  */
 export class GetStatisticRequest implements GrpcMessage {
-  static id = 'routeguide.GetStatisticRequest';
+  static id = 'san11_platform.GetStatisticRequest';
 
   /**
    * Deserialize binary data to message
@@ -11337,10 +11337,10 @@ export module GetStatisticRequest {
 }
 
 /**
- * Message implementation for routeguide.GetAdminMessageRequest
+ * Message implementation for san11_platform.GetAdminMessageRequest
  */
 export class GetAdminMessageRequest implements GrpcMessage {
-  static id = 'routeguide.GetAdminMessageRequest';
+  static id = 'san11_platform.GetAdminMessageRequest';
 
   /**
    * Deserialize binary data to message
@@ -11450,10 +11450,10 @@ export module GetAdminMessageRequest {
 }
 
 /**
- * Message implementation for routeguide.CreateSubscriptionRequest
+ * Message implementation for san11_platform.CreateSubscriptionRequest
  */
 export class CreateSubscriptionRequest implements GrpcMessage {
-  static id = 'routeguide.CreateSubscriptionRequest';
+  static id = 'san11_platform.CreateSubscriptionRequest';
 
   /**
    * Deserialize binary data to message
@@ -11620,10 +11620,10 @@ export module CreateSubscriptionRequest {
 }
 
 /**
- * Message implementation for routeguide.ListSubscriptionsRequest
+ * Message implementation for san11_platform.ListSubscriptionsRequest
  */
 export class ListSubscriptionsRequest implements GrpcMessage {
-  static id = 'routeguide.ListSubscriptionsRequest';
+  static id = 'san11_platform.ListSubscriptionsRequest';
 
   /**
    * Deserialize binary data to message
@@ -11835,10 +11835,10 @@ export module ListSubscriptionsRequest {
 }
 
 /**
- * Message implementation for routeguide.ListSubscriptionsResponse
+ * Message implementation for san11_platform.ListSubscriptionsResponse
  */
 export class ListSubscriptionsResponse implements GrpcMessage {
-  static id = 'routeguide.ListSubscriptionsResponse';
+  static id = 'san11_platform.ListSubscriptionsResponse';
 
   /**
    * Deserialize binary data to message
@@ -12008,10 +12008,10 @@ export module ListSubscriptionsResponse {
 }
 
 /**
- * Message implementation for routeguide.UpdateSubscriptionRequest
+ * Message implementation for san11_platform.UpdateSubscriptionRequest
  */
 export class UpdateSubscriptionRequest implements GrpcMessage {
-  static id = 'routeguide.UpdateSubscriptionRequest';
+  static id = 'san11_platform.UpdateSubscriptionRequest';
 
   /**
    * Deserialize binary data to message
@@ -12192,10 +12192,10 @@ export module UpdateSubscriptionRequest {
 }
 
 /**
- * Message implementation for routeguide.DeleteSubscriptionRequest
+ * Message implementation for san11_platform.DeleteSubscriptionRequest
  */
 export class DeleteSubscriptionRequest implements GrpcMessage {
-  static id = 'routeguide.DeleteSubscriptionRequest';
+  static id = 'san11_platform.DeleteSubscriptionRequest';
 
   /**
    * Deserialize binary data to message
@@ -12331,10 +12331,10 @@ export module DeleteSubscriptionRequest {
 }
 
 /**
- * Message implementation for routeguide.Empty
+ * Message implementation for san11_platform.Empty
  */
 export class Empty implements GrpcMessage {
-  static id = 'routeguide.Empty';
+  static id = 'san11_platform.Empty';
 
   /**
    * Deserialize binary data to message
@@ -12435,10 +12435,10 @@ export module Empty {
 }
 
 /**
- * Message implementation for routeguide.Status
+ * Message implementation for san11_platform.Status
  */
 export class Status implements GrpcMessage {
-  static id = 'routeguide.Status';
+  static id = 'san11_platform.Status';
 
   /**
    * Deserialize binary data to message
@@ -12584,10 +12584,10 @@ export module Status {
 }
 
 /**
- * Message implementation for routeguide.Package
+ * Message implementation for san11_platform.Package
  */
 export class Package implements GrpcMessage {
-  static id = 'routeguide.Package';
+  static id = 'san11_platform.Package';
 
   /**
    * Deserialize binary data to message
@@ -12940,10 +12940,10 @@ export module Package {
 }
 
 /**
- * Message implementation for routeguide.Binary
+ * Message implementation for san11_platform.Binary
  */
 export class Binary implements GrpcMessage {
-  static id = 'routeguide.Binary';
+  static id = 'san11_platform.Binary';
 
   /**
    * Deserialize binary data to message
@@ -13310,10 +13310,10 @@ export module Binary {
 }
 
 /**
- * Message implementation for routeguide.User
+ * Message implementation for san11_platform.User
  */
 export class User implements GrpcMessage {
-  static id = 'routeguide.User';
+  static id = 'san11_platform.User';
 
   /**
    * Deserialize binary data to message
@@ -13673,10 +13673,10 @@ export module User {
 }
 
 /**
- * Message implementation for routeguide.Version
+ * Message implementation for san11_platform.Version
  */
 export class Version implements GrpcMessage {
-  static id = 'routeguide.Version';
+  static id = 'san11_platform.Version';
 
   /**
    * Deserialize binary data to message
@@ -13844,10 +13844,10 @@ export module Version {
 }
 
 /**
- * Message implementation for routeguide.Statistic
+ * Message implementation for san11_platform.Statistic
  */
 export class Statistic implements GrpcMessage {
-  static id = 'routeguide.Statistic';
+  static id = 'san11_platform.Statistic';
 
   /**
    * Deserialize binary data to message
@@ -13996,10 +13996,10 @@ export module Statistic {
 }
 
 /**
- * Message implementation for routeguide.Url
+ * Message implementation for san11_platform.Url
  */
 export class Url implements GrpcMessage {
-  static id = 'routeguide.Url';
+  static id = 'san11_platform.Url';
 
   /**
    * Deserialize binary data to message
@@ -14126,10 +14126,10 @@ export module Url {
 }
 
 /**
- * Message implementation for routeguide.Thread
+ * Message implementation for san11_platform.Thread
  */
 export class Thread implements GrpcMessage {
-  static id = 'routeguide.Thread';
+  static id = 'san11_platform.Thread';
 
   /**
    * Deserialize binary data to message
@@ -14582,10 +14582,10 @@ export module Thread {
 }
 
 /**
- * Message implementation for routeguide.Comment
+ * Message implementation for san11_platform.Comment
  */
 export class Comment implements GrpcMessage {
-  static id = 'routeguide.Comment';
+  static id = 'san11_platform.Comment';
 
   /**
    * Deserialize binary data to message
@@ -14902,10 +14902,10 @@ export module Comment {
 }
 
 /**
- * Message implementation for routeguide.Reply
+ * Message implementation for san11_platform.Reply
  */
 export class Reply implements GrpcMessage {
-  static id = 'routeguide.Reply';
+  static id = 'san11_platform.Reply';
 
   /**
    * Deserialize binary data to message
@@ -15170,10 +15170,10 @@ export module Reply {
 }
 
 /**
- * Message implementation for routeguide.Tag
+ * Message implementation for san11_platform.Tag
  */
 export class Tag implements GrpcMessage {
-  static id = 'routeguide.Tag';
+  static id = 'san11_platform.Tag';
 
   /**
    * Deserialize binary data to message
@@ -15338,10 +15338,10 @@ export module Tag {
 }
 
 /**
- * Message implementation for routeguide.AdminMessage
+ * Message implementation for san11_platform.AdminMessage
  */
 export class AdminMessage implements GrpcMessage {
-  static id = 'routeguide.AdminMessage';
+  static id = 'san11_platform.AdminMessage';
 
   /**
    * Deserialize binary data to message
@@ -15474,10 +15474,10 @@ export module AdminMessage {
 }
 
 /**
- * Message implementation for routeguide.Auth
+ * Message implementation for san11_platform.Auth
  */
 export class Auth implements GrpcMessage {
-  static id = 'routeguide.Auth';
+  static id = 'san11_platform.Auth';
 
   /**
    * Deserialize binary data to message
@@ -15604,10 +15604,10 @@ export module Auth {
 }
 
 /**
- * Message implementation for routeguide.Activity
+ * Message implementation for san11_platform.Activity
  */
 export class Activity implements GrpcMessage {
-  static id = 'routeguide.Activity';
+  static id = 'san11_platform.Activity';
 
   /**
    * Deserialize binary data to message
@@ -15809,10 +15809,10 @@ export module Activity {
 }
 
 /**
- * Message implementation for routeguide.Notification
+ * Message implementation for san11_platform.Notification
  */
 export class Notification implements GrpcMessage {
-  static id = 'routeguide.Notification';
+  static id = 'san11_platform.Notification';
 
   /**
    * Deserialize binary data to message
@@ -16102,10 +16102,10 @@ export module Notification {
 }
 
 /**
- * Message implementation for routeguide.ResourceView
+ * Message implementation for san11_platform.ResourceView
  */
 export class ResourceView implements GrpcMessage {
-  static id = 'routeguide.ResourceView';
+  static id = 'san11_platform.ResourceView';
 
   /**
    * Deserialize binary data to message
@@ -16295,10 +16295,10 @@ export module ResourceView {
 }
 
 /**
- * Message implementation for routeguide.Article
+ * Message implementation for san11_platform.Article
  */
 export class Article implements GrpcMessage {
-  static id = 'routeguide.Article';
+  static id = 'san11_platform.Article';
 
   /**
    * Deserialize binary data to message
@@ -16645,10 +16645,10 @@ export module Article {
 }
 
 /**
- * Message implementation for routeguide.File
+ * Message implementation for san11_platform.File
  */
 export class File implements GrpcMessage {
-  static id = 'routeguide.File';
+  static id = 'san11_platform.File';
 
   /**
    * Deserialize binary data to message
@@ -16859,10 +16859,10 @@ export module File {
 }
 
 /**
- * Message implementation for routeguide.CloudDiskFile
+ * Message implementation for san11_platform.CloudDiskFile
  */
 export class CloudDiskFile implements GrpcMessage {
-  static id = 'routeguide.CloudDiskFile';
+  static id = 'san11_platform.CloudDiskFile';
 
   /**
    * Deserialize binary data to message
@@ -17017,10 +17017,10 @@ export module CloudDiskFile {
 }
 
 /**
- * Message implementation for routeguide.Subscription
+ * Message implementation for san11_platform.Subscription
  */
 export class Subscription implements GrpcMessage {
-  static id = 'routeguide.Subscription';
+  static id = 'san11_platform.Subscription';
 
   /**
    * Deserialize binary data to message
@@ -17234,10 +17234,10 @@ export module Subscription {
 }
 
 /**
- * Message implementation for routeguide.LegacySubscription
+ * Message implementation for san11_platform.LegacySubscription
  */
 export class LegacySubscription implements GrpcMessage {
-  static id = 'routeguide.LegacySubscription';
+  static id = 'san11_platform.LegacySubscription';
 
   /**
    * Deserialize binary data to message
@@ -17480,10 +17480,10 @@ export module LegacySubscription {
 }
 
 /**
- * Message implementation for routeguide.UserSettings
+ * Message implementation for san11_platform.UserSettings
  */
 export class UserSettings implements GrpcMessage {
-  static id = 'routeguide.UserSettings';
+  static id = 'san11_platform.UserSettings';
 
   /**
    * Deserialize binary data to message
@@ -17627,10 +17627,10 @@ export module UserSettings {
   }
 
   /**
-   * Message implementation for routeguide.UserSettings.NotificationSetting
+   * Message implementation for san11_platform.UserSettings.NotificationSetting
    */
   export class NotificationSetting implements GrpcMessage {
-    static id = 'routeguide.UserSettings.NotificationSetting';
+    static id = 'san11_platform.UserSettings.NotificationSetting';
 
     /**
      * Deserialize binary data to message
@@ -17881,10 +17881,10 @@ export module UserSettings {
 }
 
 /**
- * Message implementation for routeguide.FieldMask
+ * Message implementation for san11_platform.FieldMask
  */
 export class FieldMask implements GrpcMessage {
-  static id = 'routeguide.FieldMask';
+  static id = 'san11_platform.FieldMask';
 
   /**
    * Deserialize binary data to message
