@@ -50,9 +50,9 @@ function expectNoTransportFailures(probe: NetworkProbe): void {
 
 async function expectCatalogLoaded(page: Page, probe: NetworkProbe): Promise<void> {
   await expect(page.getByText('资源库')).toBeVisible();
-  await expect(page.getByText(/\d+\s*项资源/)).toBeVisible();
-  await expect.poll(() => page.locator('app-package-card').count()).toBeGreaterThan(0);
   await expectRpcOk(probe, 'ListPackages');
+  await expect.poll(() => page.locator('app-package-card').count()).toBeGreaterThan(0);
+  await expect(page.locator('app-package-card').first()).toBeVisible();
 }
 
 test.describe('anonymous critical user journeys', () => {
@@ -130,8 +130,8 @@ test.describe('anonymous critical user journeys', () => {
     await page.goto('/articles');
     await expect(page.getByText('社区文章')).toBeVisible();
     await expect(page.getByRole('heading', { name: '攻略、教程与更新' })).toBeVisible();
-    await expect(page.getByText(/\d+\s*篇文章|空空如也/)).toBeVisible();
     await expectRpcOk(probe, 'ListArticles');
+    await expect(page.locator('.article-summary').getByText(/\d+\s*篇文章/)).toBeVisible();
 
     expectNoTransportFailures(probe);
   });
