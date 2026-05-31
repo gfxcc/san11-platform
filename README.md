@@ -39,6 +39,11 @@ make deploy-dev
 make test
 ```
 
+## Architecture notes
+
+- [Resource model](playbook/resource-model.md): explains how a resource exists
+  as storage state, in-memory backend state, and external protobuf/API state.
+
 ## Production auto-deploy
 
 Merges to `main` are deployed by GitHub Actions after `make test` passes. The
