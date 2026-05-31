@@ -19,7 +19,7 @@ RUN apt-get update -y && \
 # Have a different layer will prevent us from rebuild them whenever 
 #   requirements.txt get updated
 RUN python3.8 -m pip install --upgrade setuptools
-RUN python3.8 -m pip install grpcio grpcio-tools
+RUN python3.8 -m pip install grpcio==1.70.0 grpcio-tools==1.70.0
 
 COPY ./requirements.txt /tmp/requirements.txt
 RUN python3.8 -m pip install --upgrade pip
