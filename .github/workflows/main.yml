@@ -140,7 +140,7 @@ jobs:
       - backend-test
       - frontend-build
       - gateway-test
-      # - ui-e2e
+      - ui-e2e
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
