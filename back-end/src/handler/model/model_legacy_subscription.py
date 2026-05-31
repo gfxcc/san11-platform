@@ -1,11 +1,9 @@
 import datetime
-from typing import List, Tuple
-
 import attrs
 
 from handler.common.exception import NotFound
-from handler.model.base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel,
-                                IntAttrib, ListOptions, ModelBase, StrAttrib)
+from handler.model.base import (DatetimeAttrib, InitModel, IntAttrib,
+                                ListOptions, ModelBase, StrAttrib)
 from handler.model.plugins.tracklifecycle import ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
@@ -30,23 +28,19 @@ class ModelLegacySubscription(TrackLifecycle, ModelBase):
 
     def create(self, parent: str, user_id: int) -> None:
         ret = super().create(parent, actor_info=None)
-        ModelActivity(name='',
-                      create_time=get_now(),
-                      action=pb.Action.SUBSCRIBE,
-                      resource_name=parent).create(parent=f'users/{user_id}')
+        from handler.repository import repository_for
+        repository_for(ModelActivity).create(
+            parent=f'users/{user_id}',
+            resource=ModelActivity(name='',
+                                   create_time=get_now(),
+                                   action=pb.Action.SUBSCRIBE,
+                                   resource_name=parent))
         return ret
-
-    @classmethod
-    def from_name(cls, name: str) -> 'ModelLegacySubscription':
-        return super().from_name(name)
-
-    @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List['ModelLegacySubscription'], str]:
-        return super().list(list_options)
 
 
 def find_subscription(subscribed: str, subscriber_id: int) -> ModelLegacySubscription:
-    subscriptions = ModelLegacySubscription.list(ListOptions(
+    from handler.repository import repository_for
+    subscriptions = repository_for(ModelLegacySubscription).list(ListOptions(
         parent=subscribed, filter=f'subscriber_id={subscriber_id}'))[0]
     if not subscriptions:
         raise NotFound()

@@ -21,6 +21,7 @@ from handler.model.model_package import ModelPackage
 from handler.model.model_reply import ModelReply
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import DEFAULT_USER_AVATAR, ModelUser, get_user_by_username
+from handler.repository import repository_for
 from handler.util.html_util import get_mentioned_users
 from handler.util.name_util import get_parent
 from handler.util.resource_parser import find_resource
@@ -87,7 +88,8 @@ def _send_notification(sender_id: int, receiver_id: int, content: str,
         image_preview=image_preview,
         link=link,
     )
-    noti.create(parent=f'users/{receiver_id}')
+    repository_for(ModelNotification).create(
+        parent=f'users/{receiver_id}', resource=noti)
 
 
 def notify(sender: ModelUser, receiver: ModelUser, content: str,
@@ -147,7 +149,7 @@ class CreationNotifier:
         # Don't notify the author.
         notified_users = {package.author_id}
         for sub in package.list_subscriptions():
-            subscriber = ModelUser.from_name(sub.subscriber_name)
+            subscriber = repository_for(ModelUser).get(sub.subscriber_name)
             if subscriber.user_id in notified_users:
                 continue
             if not subscriber.settings.notification.subscriptions:
@@ -167,7 +169,7 @@ class CreationNotifier:
             * subscribers of the author
             * subscribers of the package
         '''
-        package = ModelPackage.from_name(get_parent(binary.name))
+        package = repository_for(ModelPackage).get(get_parent(binary.name))
         author = ModelUser.from_user_id(package.author_id)
         view = ResourceViewVisitor().visit(binary)  # type: ignore
         link = get_resource_url(binary)
@@ -175,7 +177,7 @@ class CreationNotifier:
         # Don't notify the author.
         notified_users = {package.author_id}
         for sub in package.list_subscriptions():
-            subscriber = ModelUser.from_name(sub.subscriber_name)
+            subscriber = repository_for(ModelUser).get(sub.subscriber_name)
             if subscriber.user_id in notified_users:
                 continue
             if not subscriber.settings.notification.subscriptions:
@@ -191,7 +193,7 @@ class CreationNotifier:
             notified_users.add(subscriber.user_id)
 
         for sub in author.list_subscriptions():
-            subscriber = ModelUser.from_name(sub.subscriber_name)
+            subscriber = repository_for(ModelUser).get(sub.subscriber_name)
             if subscriber.user_id in notified_users:
                 continue
             if not subscriber.settings.notification.subscriptions:
@@ -218,7 +220,7 @@ class CreationNotifier:
         # Don't notify the author.
         notified_users = {article.author_id}
         for sub in author.list_subscriptions():
-            subscriber = ModelUser.from_name(sub.subscriber_name)
+            subscriber = repository_for(ModelUser).get(sub.subscriber_name)
             if subscriber.user_id in notified_users:
                 continue
             if not subscriber.settings.notification.subscriptions:
@@ -324,7 +326,7 @@ class CreationNotifier:
         
         if isinstance(post, ModelThread):
             for sub in author.list_subscriptions():
-                subscriber = ModelUser.from_name(sub.subscriber_name)
+                subscriber = repository_for(ModelUser).get(sub.subscriber_name)
                 if subscriber.user_id in notified_users:
                     continue
                 if not subscriber.settings.notification.subscriptions:

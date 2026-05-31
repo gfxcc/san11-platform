@@ -11,6 +11,7 @@ from handler.model.base import (FieldMask, HandlerBase, ListOptions,
                                 merge_resource)
 from handler.model.model_user import ModelUser
 from handler.model.plugins.subscribable import ModelSubscription, Subscribable
+from handler.repository import repository_for
 from handler.util.name_util import ResourceName
 from handler.util.resource_parser import find_resource
 
@@ -20,6 +21,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class SubscriptionHandler(HandlerBase):
+    def __init__(self, subscription_repository=None):
+        self.subscription_repository = (
+            subscription_repository or repository_for(ModelSubscription))
+
     def create(self, parent: str, sub: ModelSubscription,
                handler_context: HandlerContext) -> ModelSubscription:
         target = find_resource(sub.target)
@@ -29,7 +34,7 @@ class SubscriptionHandler(HandlerBase):
 
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelSubscription], str]:
         logger.debug(ModelSubscription.__annotations__)
-        subs, next_page_token = ModelSubscription.list(list_options)
+        subs, next_page_token = self.subscription_repository.list(list_options)
         return subs, next_page_token
 
     def update(self,
@@ -37,12 +42,12 @@ class SubscriptionHandler(HandlerBase):
                update_mask: FieldMask,
                handler_context: HandlerContext) -> ModelSubscription:
         resource: ModelSubscription = merge_resource(
-            ModelSubscription.from_name(update_resource.name), update_resource, update_mask)
-        resource.update(actor_info=handler_context.user.user_id)
-        return resource
+            self.subscription_repository.get(update_resource.name), update_resource, update_mask)
+        return self.subscription_repository.update(
+            resource, actor_info=handler_context.user.user_id)
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelSubscription:
-        sub: ModelSubscription = ModelSubscription.from_name(name)
+        sub: ModelSubscription = self.subscription_repository.get(name)
         target = find_resource(sub.target)
         logger.debug(target)
         if not isinstance(target, Subscribable):

@@ -41,6 +41,8 @@ class ModelThread(Likeable, TrackLifecycle, ModelBase):
     dislike_count: int = IntAttrib()
 
     def delete(self, actor_info: Optional[int] = None) -> None:
-        for comment in ModelComment.list(ListOptions(parent=self.name))[0]:
-            comment.delete()
+        from handler.repository import repository_for
+        comment_repository = repository_for(ModelComment)
+        for comment in comment_repository.list(ListOptions(parent=self.name))[0]:
+            comment_repository.delete(comment)
         super().delete(actor_info=actor_info)

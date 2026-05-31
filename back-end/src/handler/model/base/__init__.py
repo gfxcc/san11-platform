@@ -5,7 +5,7 @@ In most case, a resource could exists in 3 differnt layers.
     --------------------+-------------------+---------------
     Grpc layer          | protobuff message | san11_platform_pb2.py (generated)
     Logic/Handler layer | ModelBase         | handler/xxxx_handler.py
-    Data layer          | Db schema         | base_db.py
+    Data layer          | Db schema         | base_storage.py
 
 # Dependency
 
@@ -25,7 +25,7 @@ In most case, a resource could exists in 3 differnt layers.
     implementation │                  │                                               │
                    │                  │                                               │
                    │            ┌─────▼────┐                                          │
-                   │            │base_db.py│                                          │
+                   │            │base_storage.py│                                          │
                    │            └─────┬────┘                                          │
                    │                  │                                               │
                    │                  │                                               │
@@ -80,12 +80,13 @@ import attrs
 # from handler.model.model_activity import Action, ModelActivity, TrackLifecycle
 from handler.util.time_util import get_now
 
+from . import base_proto, base_storage
 # Export sections
 from .base import (Attrib, BoolAttrib, BoolListAttrib, DatetimeAttrib,
                    DatetimeListAttrib, InitModel, IntAttrib, IntListAttrib,
                    NestedAttrib, StrAttrib, StrListAttrib)
 from .base_core import is_repeated
-from .base_db import DbConverter  # noqa
+from .base_storage import StorageConverter  # noqa
 from .base_proto import DatetimeProtoConverter  # noqa
 from .base_proto import ProtoConverter  # noqa
 from .base_proto import LegacyDatetimeProtoConverter
@@ -108,23 +109,22 @@ class LifecycleEventsBase(ABC):
         ...
 
 
-class ModelBase(base_db.DbModel, base_proto.ProtoModelBase, LifecycleEventsBase):
+class ModelBase(base_storage.StorageSerializable, base_proto.ProtoSerializable, LifecycleEventsBase):
     name: str
 
-    # TODO: Migrate callers to pass `actor_info` in `str`. E.g. `users/123`
+    # Lifecycle hooks. Persistence is owned by ResourceRepository.
     def create(self, parent: str, actor_info: Optional[Union[int, str]] = None) -> None:
-        base_db.DbModel.create(self, parent)
+        pass
 
-    # TODO: Migrate callers to pass `actor_info` in `str`. E.g. `users/123`
     def update(self, update_update_time: bool = True, actor_info: Optional[Union[int, str]] = None) -> None:
-        base_db.DbModel.update(self, update_update_time=update_update_time)
+        if update_update_time and hasattr(self, 'update_time'):
+            self.update_time = get_now()
 
-    # TODO: Migrate callers to pass `actor_info` in `str`. E.g. `users/123`
     def delete(self, actor_info: Optional[Union[int, str]]) -> None:
-        base_db.DbModel.delete(self)
+        pass
 
 
-class NestedModel(base_proto.ProtoModelBase, base_db.DbModelBase):
+class NestedModel(base_proto.ProtoSerializable, base_storage.StorageSerializable):
     '''A nested model which only exist as a submessage of another model.'''
     ...
 

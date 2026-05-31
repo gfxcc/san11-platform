@@ -18,8 +18,8 @@ logger = logging.getLogger(os.path.basename(__file__))
 _MODEL_T = TypeVar('_MODEL_T')
 _PROTO_T = TypeVar('_PROTO_T')
 
-_SUB_PROTO_MODEL_BASE_T = TypeVar(
-    '_SUB_PROTO_MODEL_BASE_T', bound='ProtoModelBase')
+_SUB_PROTO_SERIALIZABLE_T = TypeVar(
+    '_SUB_PROTO_SERIALIZABLE_T', bound='ProtoSerializable')
 
 
 class ProtoConverter(Generic[_MODEL_T, _PROTO_T]):
@@ -80,7 +80,7 @@ class NestedProtoConverter(ProtoConverter):
         return self.to_model_exec(proto_value)
 
 
-def build_nested_converter(cls: Type[_SUB_PROTO_MODEL_BASE_T]):
+def build_nested_converter(cls: Type[_SUB_PROTO_SERIALIZABLE_T]):
     return NestedProtoConverter(from_model_exec=lambda v: v.to_pb(), to_model_exec=cls.from_pb)
 
 
@@ -91,12 +91,12 @@ class ProtoField:
     model_path: str
 
 
-class ProtoModelBase(ABC):
+class ProtoSerializable(ABC):
     _PROTO_CLASS: type
     _PROTO_FIELDS: Iterable[attrs.Attribute] = []
 
     @classmethod
-    def from_pb(cls: Type[_SUB_PROTO_MODEL_BASE_T], proto_model: message.Message) -> _SUB_PROTO_MODEL_BASE_T:
+    def from_pb(cls: Type[_SUB_PROTO_SERIALIZABLE_T], proto_model: message.Message) -> _SUB_PROTO_SERIALIZABLE_T:
         '''
         Construct a data model from its protobuf message representation.
         '''
@@ -151,7 +151,7 @@ class ProtoModelBase(ABC):
         return proto_model
 
 
-def init_proto_model(cls: Type[_SUB_PROTO_MODEL_BASE_T], proto_class) -> None:
+def init_proto_serializable(cls: Type[_SUB_PROTO_SERIALIZABLE_T], proto_class) -> None:
     cls._PROTO_CLASS = proto_class
     for attribute in attrs.fields(cls):
         if not attribute.metadata[base_core.IS_PROTO_FIELD]:

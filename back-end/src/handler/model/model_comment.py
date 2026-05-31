@@ -36,21 +36,20 @@ class ModelComment(Likeable, TrackLifecycle, ModelBase):
 
     def to_pb(self) -> pb.Comment:
         proto = super(ModelComment, self).to_pb()
-        replies, _ = ModelReply.list(ListOptions(
+        from handler.repository import repository_for
+        replies, _ = repository_for(ModelReply).list(ListOptions(
             parent=self.name, order_by='create_time'))
         getattr(proto, 'replies').extend([reply.to_pb() for reply in replies])
         return proto
 
     def delete(self, actor_info: Optional[int] = None) -> None:
-        for reply in ModelReply.list(ListOptions(parent=self.name))[0]:
-            reply.delete()
+        from handler.repository import repository_for
+        reply_repository = repository_for(ModelReply)
+        for reply in reply_repository.list(ListOptions(parent=self.name))[0]:
+            reply_repository.delete(reply)
         super().delete(actor_info=actor_info)
 
     @property
     def content(self) -> str:
         '''Alias for text. Prefer to use content instead of text.'''
         return self.text
-
-    @classmethod
-    def from_name(cls, name: str) -> 'ModelComment':
-        return super().from_name(name)

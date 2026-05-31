@@ -5,6 +5,7 @@ import uuid
 
 from handler.common.exception import NotFound, Unauthenticated
 from handler.model.model_user import ModelUser
+from handler.repository import repository_for
 
 from ..db import run_sql_with_param, run_sql_with_param_and_fetch_one
 
@@ -15,7 +16,7 @@ class Session:
     def __init__(self, sid: str, user_id: int, expiration: int):
         self.sid = sid
         self.expiration = expiration
-        self.user = ModelUser.from_name(f'users/{user_id}')
+        self.user = repository_for(ModelUser).get(f'users/{user_id}')
 
     def __str__(self):
         return f'{{sid: {self.sid}, user_id: {self.user.user_id}, expiration: {self.expiration}}}'

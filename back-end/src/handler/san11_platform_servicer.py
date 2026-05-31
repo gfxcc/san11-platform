@@ -20,6 +20,7 @@ from handler.model.model_user import (ModelUser, get_user_by_email,
                                       validate_password, validate_username)
 from handler.model.plugins.subscribable import ModelSubscription
 from handler.model.plugins.tracklifecycle import Action
+from handler.repository import repository_for
 from handler.grpc_service_registration import GeneratedSan11PlatformServicer
 from handler.protos import san11_platform_pb2 as pb
 from handler.service_dependencies import San11PlatformDependencies
@@ -51,6 +52,9 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
         self.thread_handler = dependencies.thread_handler
         self.notification_handler = dependencies.notification_handler
         self.subscription_handler = dependencies.subscription_handler
+        self.thread_repository = repository_for(ModelThread)
+        self.user_repository = repository_for(ModelUser)
+        self.binary_repository = repository_for(ModelBinary)
     #############
     # New model #
     #############
@@ -90,7 +94,7 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
     @GrpcAbortOnExcep
     @iam_util.assert_resource_owner('name')
     def DeleteArticle(self, request, context):
-        return self.article_handler.delete(ModelArticle.from_name(request.name), context).to_pb()
+        return self.article_handler.delete_by_name(request.name, context).to_pb()
 
     # binaries
     @GrpcAbortOnExcep
@@ -126,7 +130,8 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
 
     @GrpcAbortOnExcep
     def DownloadBinary(self, request, context):
-        return self.binary_handler.download_binary(ModelBinary.from_name(request.name), context).to_pb()
+        return self.binary_handler.download_binary(
+            self.binary_repository.get(request.name), context).to_pb()
 
     # Comments
     @GrpcAbortOnExcep
@@ -207,7 +212,7 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
     @iam_util.assert_resource_owner('thread.name')
     def UpdateThread(self, request, context):
         update_mask = FieldMask.from_pb(request.update_mask)
-        thread = ModelThread.from_name(request.thread.name)
+        thread = self.thread_repository.get(request.thread.name)
         if 'pinned' in update_mask.paths:
             if not context.user or not (context.user.is_admin() or
                                         find_resource(ResourceName.from_str(thread.name).parent).author_id == context.user.user_id):
@@ -429,7 +434,7 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
 
     @GrpcAbortOnExcep
     def UpdatePassword(self, request, context):
-        update_user = ModelUser.from_name(request.name)
+        update_user = self.user_repository.get(request.name)
         # User may update password on following scenarios
         # 1. Update password while loged in.
         # 2. Fetch verification_code when password is forgot.

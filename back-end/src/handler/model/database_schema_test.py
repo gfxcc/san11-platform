@@ -3,7 +3,7 @@ import re
 import unittest
 
 from handler.model.base import base as model_registry
-from handler.model.base.base_db import DbModel
+from handler.model.base.base_storage import StorageSerializable
 
 # Import model modules so their @InitModel decorators populate the registry.
 from handler.model import model_article  # noqa: F401
@@ -51,8 +51,8 @@ class DatabaseSchemaTest(unittest.TestCase):
             model._DB_TABLE
             for model in model_registry.MODELS.values()
             if isinstance(model, type)
-            and issubclass(model, DbModel)
-            and model._DB_TABLE
+            and issubclass(model, StorageSerializable)
+            and getattr(model, '_DB_TABLE', None)
         })
 
         self.assertGreater(len(model_tables), 0)

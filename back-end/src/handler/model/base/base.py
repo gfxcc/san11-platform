@@ -1,12 +1,11 @@
 import datetime
 import typing
-from collections import Iterable
 from typing import Any, Callable, Dict, List, Optional, TypedDict, TypeVar
 
 import attr
 import attrs
 
-from . import base_core, base_db, base_proto
+from . import base_core, base_storage, base_proto
 
 
 def Attrib(
@@ -17,7 +16,7 @@ def Attrib(
         # db section
         is_db_field: bool = True,
         db_path: Optional[str] = None,
-        db_converter: Optional[base_db.DbConverter] = None,
+        db_converter: Optional[base_storage.StorageConverter] = None,
         # general section
         repeated: bool = False,
         # TODO: update type of nested_type to NestedModel
@@ -87,7 +86,7 @@ def NestedAttrib(nested_type: type, **kwargs) -> attrs.field:
     return Attrib(nested_type=nested_type,
                   proto_converter=base_proto.build_nested_converter(
                       nested_type),
-                  db_converter=base_db.build_nested_converter(nested_type),
+                  db_converter=base_storage.build_nested_converter(nested_type),
                   **kwargs)
 
 
@@ -130,10 +129,10 @@ def StrListAttrib(**kwargs) -> attrs.field:
     )
 
 
-def DatetimeAttrib(proto_converter: Optional[base_proto.ProtoConverter] = None, db_converter: Optional[base_db.DbConverter] = None, **kwargs) -> attrs.field:
+def DatetimeAttrib(proto_converter: Optional[base_proto.ProtoConverter] = None, db_converter: Optional[base_storage.StorageConverter] = None, **kwargs) -> attrs.field:
     return Attrib(
         proto_converter=proto_converter or base_proto.DatetimeProtoConverter(),
-        db_converter=db_converter or base_db.DatetimeDbConverter(),
+        db_converter=db_converter or base_storage.DatetimeStorageConverter(),
         **kwargs,
     )
 
@@ -151,14 +150,12 @@ def InitModel(
     proto_class: Optional[Any],
 ) -> Callable:
     def wraps(cls):
-        if issubclass(cls, base_db.DbModel):
-            if not db_table:
-                raise ValueError(
-                    'db_table is required for subclass of DbModel')
-            base_db.init_db_model(cls, db_table)
-        if issubclass(cls, base_proto.ProtoModelBase):
-            base_proto.init_proto_model(cls, proto_class)
+        if db_table:
+            base_storage.init_storage_model(cls, db_table)
+        if issubclass(cls, base_proto.ProtoSerializable):
+            base_proto.init_proto_serializable(cls, proto_class)
         MODELS[cls.__name__] = cls
-        COLLECTION_TO_MODEL[db_table] = cls
+        if db_table:
+            COLLECTION_TO_MODEL[db_table] = cls
         return cls
     return wraps

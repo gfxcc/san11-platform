@@ -11,6 +11,7 @@ from handler.model.model_user import (DEFAULT_USER_AVATAR, ModelUser,
                                       validate_email, validate_new_user,
                                       validate_username)
 from handler.model.plugins.tracklifecycle import Action, ModelActivity
+from handler.repository import repository_for
 from handler.util.file_server import (BucketClass, FileServer, FileServerType,
                                       get_file_server)
 from handler.util.time_util import get_now
@@ -26,6 +27,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class UserHandler(HandlerBase):
+    def __init__(self, user_repository=None, activity_repository=None):
+        self.user_repository = user_repository or repository_for(ModelUser)
+        self.activity_repository = activity_repository or repository_for(ModelActivity)
+
     def create_user(self, parent: str, user: ModelUser,
                     handler_context: HandlerContext) -> Tuple[ModelUser, Session]:
         user = self.create(parent, user, handler_context)
@@ -38,29 +43,31 @@ class UserHandler(HandlerBase):
         user.settings = default_user_settings()
         validate_new_user(user)
 
-        user.create(parent)
+        self.user_repository.create(parent=parent, resource=user)
 
         # actor_info is not available since the user_id is not avaiable until the user is created.
         # Create the activity after the user is created.
-        ModelActivity(name='',
-                      create_time=get_now(),
-                      action=Action.CREATE.value,
-                      resource_name=user.name).create(parent=user.name)
+        self.activity_repository.create(
+            parent=user.name,
+            resource=ModelActivity(name='',
+                                   create_time=get_now(),
+                                   action=Action.CREATE.value,
+                                   resource_name=user.name))
         return user
 
     def get(self, name: str, handler_context) -> ModelBase:
-        user = ModelUser.from_name(name=name)
+        user = self.user_repository.get(name)
         return user
 
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelUser], str]:
         # (TODO): Consider bucket user fields into different sections
         # and only populate certain section with permission check.
         # E.g. public_section, private_section, admin_section, ...
-        users, next_page_token = ModelUser.list(list_options)
+        users, next_page_token = self.user_repository.list(list_options)
         return users, next_page_token
 
     def update(self, update_resource: ModelUser, update_mask: FieldMask, handler_context: HandlerContext) -> ModelUser:
-        base_user = ModelUser.from_name(update_resource.name)
+        base_user = self.user_repository.get(update_resource.name)
         user: ModelUser = merge_resource(
             base_user, update_resource, update_mask)
         if user.image_url != base_user.image_url:
@@ -76,8 +83,7 @@ class UserHandler(HandlerBase):
             validate_username(user.username)
         if user.email != base_user.email:
             validate_email(user.email)
-        user.update(actor_info=user.user_id)
-        return user
+        return self.user_repository.update(user, actor_info=user.user_id)
 
     def sign_in(self, user: ModelUser, password: str, handler_context: HandlerContext) -> Tuple[ModelUser, str]:
         if not verify_password(password, user.hashed_password):

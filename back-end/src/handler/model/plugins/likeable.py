@@ -44,19 +44,23 @@ class Likeable:
         }
         prev_act = search_activity(
             actor, action, self.name)
+        from handler.repository import repository_for
+        activity_repository = repository_for(ModelActivity)
         if prev_act:
-            prev_act.delete()
+            activity_repository.delete(prev_act)
             setattr(self, ACTION2FIELD[action], getattr(
                 self, ACTION2FIELD[action]) - 1)
         else:
-            ModelActivity('', get_now(), action.value,
-                          self.name).create(parent=actor)
+            activity_repository.create(
+                parent=actor,
+                resource=ModelActivity('', get_now(), action.value,
+                                       self.name))
             setattr(self, ACTION2FIELD[action], getattr(
                 self, ACTION2FIELD[action]) + 1)
 
             reversed_action = Action.DISLIKE if action == Action.LIKE else Action.LIKE
             reversed_act = search_activity(actor, reversed_action, self.name)
             if reversed_act:
-                reversed_act.delete()
+                activity_repository.delete(reversed_act)
                 setattr(self, ACTION2FIELD[reversed_action], getattr(
                     self, ACTION2FIELD[reversed_action]) - 1)

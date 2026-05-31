@@ -31,10 +31,6 @@ class ModelReply(Likeable, TrackLifecycle, ModelBase):
         db_path='upvote_count')
     dislike_count: int = IntAttrib()
 
-    @classmethod
-    def from_name(cls, name: str) -> 'ModelReply':
-        return super().from_name(name)
-
     @property
     def content(self) -> str:
         '''Alias for text. Prefer to use content instead of text.'''

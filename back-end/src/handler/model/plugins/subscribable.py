@@ -52,8 +52,10 @@ class Subscribable:
         '''
         assert isinstance(
             self, ModelBase), 'Only a `ModelBase` can subclass `Subscribable`'
+        from handler.repository import repository_for
+        subscription_repository = repository_for(ModelSubscription)
         try:
-            sub = ModelSubscription.find(
+            sub = subscription_repository.find(
                 subscriber_name, filter=f'target = "{self.name}"')  # type: ignore
         except NotFound:
             pass
@@ -62,12 +64,15 @@ class Subscribable:
             return sub
 
         sub = ModelSubscription.new(self.name)
-        sub.create(parent=subscriber_name, actor_info=subscriber_name)
+        subscription_repository.create(
+            parent=subscriber_name, resource=sub, actor_info=subscriber_name)
         self.subscriber_count += 1
-        self.update(update_update_time=False)
+        repository_for(type(self)).update(self, update_update_time=False)
 
-        ModelActivity(name='', create_time=get_now(
-        ), action=Action.SUBSCRIBE.value, resource_name=self.name).create(subscriber_name)
+        repository_for(ModelActivity).create(
+            parent=subscriber_name,
+            resource=ModelActivity(name='', create_time=get_now(
+            ), action=Action.SUBSCRIBE.value, resource_name=self.name))
 
         return sub
 
@@ -78,8 +83,10 @@ class Subscribable:
         '''
         assert isinstance(
             self, ModelBase), 'Only a `ModelBase` can subclass `Subscribable`'
+        from handler.repository import repository_for
+        subscription_repository = repository_for(ModelSubscription)
         try:
-            sub: ModelSubscription = ModelSubscription.find(
+            sub: ModelSubscription = subscription_repository.find(
                 subscriber_name, filter=f'target = "{self.name}"')  # type: ignore
         except NotFound:
             # No-op as there is not an existing match subscription.
@@ -87,12 +94,14 @@ class Subscribable:
         else:
             pass
 
-        sub.delete(actor_info=subscriber_name)
+        subscription_repository.delete(sub, actor_info=subscriber_name)
         self.subscriber_count -= 1
-        self.update(update_update_time=False)
+        repository_for(type(self)).update(self, update_update_time=False)
 
-        ModelActivity(name='', create_time=get_now(
-        ), action=Action.UNSUBSCRIBE.value, resource_name=self.name).create(subscriber_name)
+        repository_for(ModelActivity).create(
+            parent=subscriber_name,
+            resource=ModelActivity(name='', create_time=get_now(
+            ), action=Action.UNSUBSCRIBE.value, resource_name=self.name))
 
     def list_subscriptions(self) -> Iterable[ModelSubscription]:
         '''
@@ -101,7 +110,8 @@ class Subscribable:
         '''
         assert isinstance(
             self, ModelBase), 'Only a `ModelBase` can subclass `Subscribable`'
-        return ModelSubscription.list(ListOptions(
+        from handler.repository import repository_for
+        return repository_for(ModelSubscription).list(ListOptions(
             parent=None, page_size=MAX_PAGE_SIZE, watermark=0, order_by='', filter=f'target="{self.name}"'))[0]
 
 
@@ -109,6 +119,7 @@ def list_subscriptions(target: str) -> Iterable[ModelSubscription]:
     '''
     A utility func to list all subscriptions against a specific target.
     '''
-    subs = ModelSubscription.list(ListOptions(
+    from handler.repository import repository_for
+    subs = repository_for(ModelSubscription).list(ListOptions(
         parent=None, page_size=MAX_PAGE_SIZE, watermark=0, order_by='', filter=f'target="{target}"'))[0]
     return subs

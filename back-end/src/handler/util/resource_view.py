@@ -8,6 +8,7 @@ from handler.model.model_reply import ModelReply
 from handler.model.model_tag import ModelTag
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser
+from handler.repository import repository_for
 from handler.util.html_util import get_text_from_html
 from handler.util.name_util import ResourceName, get_parent
 from handler.util.resource_parser import find_resource
@@ -31,7 +32,7 @@ class ResourceViewVisitor:
 
     @visitor(ModelBinary)
     def visit(self, resource: ModelBinary) -> pb.ResourceView:
-        package = ModelPackage.from_name(
+        package = repository_for(ModelPackage).get(
             str(ResourceName.from_str(resource.name).parent))
         return pb.ResourceView(
             name=package.name,

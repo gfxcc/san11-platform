@@ -6,6 +6,7 @@ from handler.common.exception import NotFound, InvalidArgument
 from handler.model.base import ListOptions, ModelBase
 from handler.model.plugins.tracklifecycle import Action, ModelActivity
 from handler.model.plugins.likeable import Likeable
+from handler.repository import repository_for
 from handler.util.resource_view import ResourceViewVisitor
 from handler.handler_context import HandlerContext
 
@@ -17,14 +18,11 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class ActivityHandler:
+    def __init__(self, activity_repository=None):
+        self.activity_repository = activity_repository or repository_for(ModelActivity)
+
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[pb.Activity], str]:
-        # # (TODO): BEGIN = Remove logic for model migration.
-        # if not ModelActivity.list(ListOptions(parent='users/1'))[0]:
-        #     for activity in Activity.list(page_size=1000, page_token=''):
-        #         new_model = ModelActivity.from_v1(activity)
-        #         new_model.create(parent=f'users/{activity.user_id}')
-        # # END
-        activities, next_page_token = ModelActivity.list(list_options)
+        activities, next_page_token = self.activity_repository.list(list_options)
 
         enriched_activities = []
         view_visitor = ResourceViewVisitor()
@@ -57,7 +55,7 @@ class ActivityHandler:
         else:
             raise InvalidArgument(f'Invalid action {action.name} on {target}')
 
-        target.update(update_update_time=False)
+        repository_for(type(target)).update(target, update_update_time=False)
         return pb.ToggleActionResponse(
             like_count=target.like_count,
             dislike_count=target.dislike_count,

@@ -1,17 +1,16 @@
 import datetime
 import logging
 import os
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import attrs
-from handler.model.base import ListOptions
 from handler.model.plugins.tracklifecycle import TrackLifecycle
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
 
 from ..protos import san11_platform_pb2 as pb
 from ..util.time_util import get_now
-from .base import (Attrib, DatetimeAttrib, DbConverter, InitModel, IntAttrib,
+from .base import (Attrib, DatetimeAttrib, StorageConverter, InitModel, IntAttrib,
                    LegacyDatetimeProtoConverter, ModelBase, NestedAttrib,
                    NestedModel, ProtoConverter, StrAttrib)
 
@@ -53,7 +52,7 @@ class VersionProtoConverter(ProtoConverter):
         return Version.from_pb(proto_value)
 
 
-class VersionDbConverter(DbConverter):
+class VersionStorageConverter(StorageConverter):
     def from_model(self, value: Version) -> str:
         return str(value)
 
@@ -94,7 +93,7 @@ class VersionDbConverter(DbConverter):
 #         )
 
 
-# class FileDbConverter(DbConverter):
+# class FileStorageConverter(StorageConverter):
 #     def from_model(self, value: Optional[File]) -> Optional[Dict]:
 #         if value is None:
 #             return None
@@ -142,7 +141,7 @@ class ModelBinary(TrackLifecycle, ModelBase):
     # TODO: Migrate to `NestedAttrib`
     version: Version = Attrib(
         proto_converter=VersionProtoConverter(),
-        db_converter=VersionDbConverter(),
+        db_converter=VersionStorageConverter(),
     )
     description: str = StrAttrib()
     tag: str = StrAttrib()
@@ -173,11 +172,3 @@ class ModelBinary(TrackLifecycle, ModelBase):
     def delete(self, actor_info: Optional[int] = None) -> None:
         self.remove_resource()
         return super(ModelBinary, self).delete(actor_info=actor_info)
-
-    @classmethod
-    def from_name(cls, name: str) -> 'ModelBinary':
-        return super().from_name(name)
-
-    @classmethod
-    def list(cls, list_options: ListOptions) -> Tuple[List['ModelBinary'], str]:
-        return super().list(list_options)

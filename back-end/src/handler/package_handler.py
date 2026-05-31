@@ -8,13 +8,14 @@ from handler.common.exception import PermissionDenied
 from handler.handler_context import HandlerContext
 from handler.model.base import (Context, FieldMask, HandlerBase, ModelBase,
                                 merge_resource)
-from handler.model.base.base_db import ListOptions
+from handler.model.base import ListOptions
 from handler.model.model_binary import ModelBinary
 from handler.model.model_package import ModelPackage
 from handler.model.model_thread import ModelThread
 from handler.model.model_user import ModelUser, get_admins
 from handler.model.plugins.tracklifecycle import (Action, ModelActivity,
                                                   search_activity)
+from handler.repository import repository_for
 from handler.util.file_server import (BucketClass, FileServerType,
                                       get_file_server)
 from handler.util.name_util import get_parent
@@ -49,10 +50,17 @@ def filter_packages_based_on_requester(packages: Iterable[ModelPackage],
 
 
 class PackageHandler(HandlerBase):
+    def __init__(self, package_repository=None, binary_repository=None,
+                 thread_repository=None):
+        self.package_repository = package_repository or repository_for(ModelPackage)
+        self.binary_repository = binary_repository or repository_for(ModelBinary)
+        self.thread_repository = thread_repository or repository_for(ModelThread)
+
     def create(self, parent: str, package: ModelPackage, handler_context: HandlerContext) -> ModelPackage:
         package.author_id = handler_context.user.user_id
         package.state = pb.ResourceState.UNDER_REVIEW
-        package.create(parent=parent, actor_info=handler_context.user.user_id)
+        self.package_repository.create(
+            parent=parent, resource=package, actor_info=handler_context.user.user_id)
         # Post creation actions
         try:
             view = ResourceViewVisitor().visit(package)  # type: ignore
@@ -68,14 +76,14 @@ class PackageHandler(HandlerBase):
         return package
 
     def get(self, name: str, handler_context: HandlerContext) -> ModelPackage:
-        return ModelPackage.from_name(name)
+        return self.package_repository.get(name)
 
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelPackage], str]:
         # (TODO): Due to ListOptions.filter does not support `OR` operation, we
         # will do list without any filter and hide content later manually.
         # This should be replaced with different `filter` expression later when
         # possible.
-        packages, next_page_token = ModelPackage.list(list_options)
+        packages, next_page_token = self.package_repository.list(list_options)
         return filter_packages_based_on_requester(packages, handler_context.user), next_page_token
 
     def update(self, update_package: ModelPackage, update_mask: FieldMask, handler_context: HandlerContext) -> ModelPackage:
@@ -85,7 +93,7 @@ class PackageHandler(HandlerBase):
                 if not handler_context.user.is_admin():
                     raise PermissionDenied(message='审核通过新工具需要管理员权限')
 
-        base_package = ModelPackage.from_name(update_package.name)
+        base_package = self.package_repository.get(update_package.name)
         if update_mask.has('state'):
             verify_permission_on_update(
                 base_package, update_package, update_mask)
@@ -118,9 +126,9 @@ class PackageHandler(HandlerBase):
         is_visitor = True if set(update_mask.paths) <= {
             'like_count', 'dislike_count'} else False
         if is_visitor:
-            package.update(update_update_time=False)
+            self.package_repository.update(package, update_update_time=False)
         else:
-            package.update(actor_info=user_id)
+            self.package_repository.update(package, actor_info=user_id)
 
         if on_approve(
                 pb.ResourceState.DESCRIPTOR.values_by_number[base_package.state],
@@ -129,16 +137,18 @@ class PackageHandler(HandlerBase):
         return package
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelPackage:
-        package = ModelPackage.from_name(name)
-        for binary in ModelBinary.list(ListOptions(parent=package.name))[0]:
+        package = self.package_repository.get(name)
+        for binary in self.binary_repository.list(ListOptions(parent=package.name))[0]:
             try:
-                binary.delete(actor_info=handler_context.user.user_id)
+                self.binary_repository.delete(
+                    binary, actor_info=handler_context.user.user_id)
             except Exception as err:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
-        for thread in ModelThread.list(ListOptions(parent=package.name))[0]:
+        for thread in self.thread_repository.list(ListOptions(parent=package.name))[0]:
             try:
-                thread.delete(actor_info=handler_context.user.user_id)
+                self.thread_repository.delete(
+                    thread, actor_info=handler_context.user.user_id)
             except Exception as err:
                 logger.error(f'Failed to delete {thread} under {self}: {err}')
 
@@ -146,12 +156,12 @@ class PackageHandler(HandlerBase):
             BucketClass.REGULAR, package.name)
         get_file_server(FileServerType.S3).delete_by_prefix(
             BucketClass.REGULAR, package.name)
-        package.delete(actor_info=handler_context.user.user_id)
-        return package
+        return self.package_repository.delete(
+            package, actor_info=handler_context.user.user_id)
 
     def search_packages(self, request, context):
         # (TODO): Reimplement this with ModelPackage
-        # packages, next_page_token = ModelPackage.list(list_options=ListOptions(
+        # packages, next_page_token = self.package_repository.list(list_options=ListOptions(
         #     parent=None,
         #     filter=request.query,
         # ))

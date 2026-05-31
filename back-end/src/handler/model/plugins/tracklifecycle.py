@@ -4,8 +4,8 @@ from typing import Mapping, Optional, Union
 
 import attrs
 from handler.model.base import (DatetimeAttrib, InitModel, IntAttrib,
-                                LifecycleEventsBase, ModelBase, StrAttrib,
-                                base_db, base_proto)
+                                LifecycleEventsBase, ListOptions, ModelBase,
+                                StrAttrib)
 from handler.protos import san11_platform_pb2 as pb
 from handler.util.time_util import get_now
 
@@ -48,30 +48,39 @@ class TrackLifecycle(LifecycleEventsBase):
             self, ModelBase), 'Only subclass of ModelBase can be tracked'
         super().create(parent, actor_info)
         if actor_info:
-            ModelActivity(name='',
-                          create_time=get_now(),
-                          action=self._create_action.value,
-                          resource_name=self.name).create(parent=f'users/{actor_info}' if isinstance(actor_info, int) else actor_info)
+            from handler.repository import repository_for
+            repository_for(ModelActivity).create(
+                parent=f'users/{actor_info}' if isinstance(actor_info, int) else actor_info,
+                resource=ModelActivity(name='',
+                                       create_time=get_now(),
+                                       action=self._create_action.value,
+                                       resource_name=self.name))
 
     def update(self, update_update_time: bool = True, actor_info: Optional[Union[int, str]] = None):
         assert isinstance(
             self, ModelBase), 'Only subclass of ModelBase can be tracked'
         super().update(update_update_time, actor_info)
         if actor_info:
-            ModelActivity(name='',
-                          create_time=get_now(),
-                          action=self._update_action.value,
-                          resource_name=self.name).create(parent=f'users/{actor_info}' if isinstance(actor_info, int) else actor_info)
+            from handler.repository import repository_for
+            repository_for(ModelActivity).create(
+                parent=f'users/{actor_info}' if isinstance(actor_info, int) else actor_info,
+                resource=ModelActivity(name='',
+                                       create_time=get_now(),
+                                       action=self._update_action.value,
+                                       resource_name=self.name))
 
     def delete(self, actor_info: Optional[Union[int, str]] = None):
         assert isinstance(
             self, ModelBase), 'Only subclass of ModelBase can be tracked'
         super().delete(actor_info)
         if actor_info:
-            ModelActivity(name='',
-                          create_time=get_now(),
-                          action=self._delete_action.value,
-                          resource_name=self.name).create(parent=f'users/{actor_info}' if isinstance(actor_info, int) else actor_info)
+            from handler.repository import repository_for
+            repository_for(ModelActivity).create(
+                parent=f'users/{actor_info}' if isinstance(actor_info, int) else actor_info,
+                resource=ModelActivity(name='',
+                                       create_time=get_now(),
+                                       action=self._delete_action.value,
+                                       resource_name=self.name))
 
 
 @InitModel(
@@ -79,7 +88,7 @@ class TrackLifecycle(LifecycleEventsBase):
     proto_class=pb.Activity,
 )
 @attrs.define
-class ModelActivity(base_db.DbModel, base_proto.ProtoModelBase):
+class ModelActivity(ModelBase):
     # Resource name. It is `{parent}/activities/{resource_id}`
     # E.g. `users/123/activities/12345`
     name: str = StrAttrib()
@@ -89,9 +98,10 @@ class ModelActivity(base_db.DbModel, base_proto.ProtoModelBase):
 
 
 def search_activity(parent: str, action: Action, resource_name: str) -> Optional[ModelActivity]:
-    activities = ModelActivity.list(
-        base_db.ListOptions(parent=parent,
-                            filter=f"action={action.value} AND resource_name=\"{resource_name}\"")
+    from handler.repository import repository_for
+    activities = repository_for(ModelActivity).list(
+        ListOptions(parent=parent,
+                    filter=f"action={action.value} AND resource_name=\"{resource_name}\"")
     )[0]
     if not activities:
         return None

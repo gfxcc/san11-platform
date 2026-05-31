@@ -8,6 +8,7 @@ from PIL import Image
 from handler.model.model_package import ModelPackage
 from handler.model.model_user import (DEFAULT_USER_AVATAR, PRESET_USER_AVATARS,
                                       ModelUser)
+from handler.repository import repository_for
 from handler.util.file_server import (BucketClass, FileServer, FileServerType,
                                       get_file_server)
 
@@ -20,6 +21,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class ImageHandler:
+    def __init__(self, package_repository=None, user_repository=None):
+        self.package_repository = package_repository or repository_for(ModelPackage)
+        self.user_repository = user_repository or repository_for(ModelUser)
+
     def create_image(self, request: pb.CreateImageRequest, context):
         logger.info(f'In create_image: parent={request.parent}')
         parent = Url(request.parent)
@@ -33,16 +38,16 @@ class ImageHandler:
 
         if request.image_type != pb.ImageType.DESCRIPTION:
             if parent.type == 'packages':
-                package = ModelPackage.from_name(request.parent)
+                package = self.package_repository.get(request.parent)
                 package.image_urls.append(new_uri)
-                package.update()
+                self.package_repository.update(package)
             elif parent.type == 'users':
-                user = ModelUser.from_name(f'users/{parent.id}')
+                user = self.user_repository.get(f'users/{parent.id}')
                 delete_user_avatar(file_server, user)
                 resample_img_for_user_avatar(
                     file_server, new_uri)
                 user.image_url = new_uri
-                user.update(actor_info=user.user_id)
+                self.user_repository.update(user, actor_info=user.user_id)
             else:
                 raise Exception(f'Invalid parent: {parent}')
         return pb.Url(url=new_uri)

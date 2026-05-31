@@ -14,7 +14,7 @@ from handler.model.plugins.tracklifecycle import TrackLifecycle
 from handler.model.plugins.likeable import Likeable
 
 from ..protos import san11_platform_pb2 as pb
-from .base import (Attrib, DatetimeAttrib, DbConverter, InitModel, IntAttrib,
+from .base import (Attrib, DatetimeAttrib, StorageConverter, InitModel, IntAttrib,
                    LegacyDatetimeProtoConverter, ModelBase, ProtoConverter,
                    StrAttrib, StrListAttrib)
 
@@ -29,13 +29,14 @@ class TagProtoConverter(ProtoConverter):
         return ModelTag.from_pb(proto_value)
 
 
-class TagDbConverter(DbConverter):
+class TagStorageConverter(StorageConverter):
     def from_model(self, value: ModelTag) -> str:
         return value.name
 
     def to_model(self, db_value: str) -> ModelTag:
         try:
-            return ModelTag.from_name(db_value)
+            from handler.repository import repository_for
+            return repository_for(ModelTag).get(db_value)
         except (NotFound, ValueError) as err:
             logger.error(
                 f'A ModelTag might be deleted before removing all references: {err}')
@@ -65,7 +66,7 @@ class ModelPackage(Likeable, Subscribable, TrackLifecycle, ModelBase):
     # TODO: Migrate to NestedAttrib.
     tags: ModelTag = Attrib(
         proto_converter=TagProtoConverter(),
-        db_converter=TagDbConverter(),
+        db_converter=TagStorageConverter(),
         repeated=True,
     )  # type: ignore
     download_count: int = IntAttrib()

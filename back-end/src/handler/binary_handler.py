@@ -10,6 +10,7 @@ from handler.model.model_binary import File, ModelBinary
 from handler.model.model_user import ModelUser
 from handler.model.plugins.tracklifecycle import ModelActivity
 from handler.protos import san11_platform_pb2 as pb
+from handler.repository import repository_for
 from handler.util.file_server import (PACKAGE_SIZE_LIMIT, BucketClass,
                                       FileServerType, get_file_server)
 from handler.util.name_util import ResourceName, get_parent
@@ -30,6 +31,12 @@ def generate_binary_canonical_uri(parent: str, binary: ModelBinary):
 
 
 class BinaryHandler(HandlerBase):
+    def __init__(self, binary_repository=None, package_repository=None,
+                 activity_repository=None):
+        self.binary_repository = binary_repository or repository_for(ModelBinary)
+        self.package_repository = package_repository or repository_for(ModelPackage)
+        self.activity_repository = activity_repository or repository_for(ModelActivity)
+
     def create(self, parent: str, binary: ModelBinary, handler_context: HandlerContext) -> ModelBinary:
         if binary.file:
             file_server = get_file_server(FileServerType(binary.file.server))
@@ -54,49 +61,53 @@ class BinaryHandler(HandlerBase):
         else:
             raise InvalidArgument(
                 'Either `file` or `download_method` has be specified.')
-        binary.create(parent=parent, actor_info=handler_context.user.user_id)
+        self.binary_repository.create(
+            parent=parent, resource=binary, actor_info=handler_context.user.user_id)
         # Post creation
         notify_on_creation(binary)
         # Update the `update_time` in package.
-        find_resource(parent).update()
+        parent_resource = find_resource(parent)
+        repository_for(type(parent_resource)).update(parent_resource)
         return binary
 
     def update(self, update_binary: ModelBinary, update_mask: FieldMask, handler_context: HandlerContext) -> ModelBinary:
-        base_binary = ModelBinary.from_name(update_binary.name)
+        base_binary = self.binary_repository.get(update_binary.name)
         if update_mask.has('file') and update_binary.file is None:
             base_binary.remove_resource()
         binary = merge_resource(base_resource=base_binary,
                                 update_request=update_binary,
                                 field_mask=update_mask)
-        binary.update(actor_info=handler_context.user.user_id)
-        return binary
+        return self.binary_repository.update(
+            binary, actor_info=handler_context.user.user_id)
 
     def list_binaries(self, request, handler_context) -> Tuple[List[ModelBinary], str]:
         list_options = ListOptions.from_request(request)
-        return ModelBinary.list(list_options)
+        return self.binary_repository.list(list_options)
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelBinary:
-        binary = ModelBinary.from_name(name)
+        binary = self.binary_repository.get(name)
 
-        binary.delete(actor_info=handler_context.user.user_id)
-        return binary
+        return self.binary_repository.delete(
+            binary, actor_info=handler_context.user.user_id)
 
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
         # website statistic
         Statistic.load_today().increment_download()  # Package statistic
-        package = ModelPackage.from_name(get_parent(binary.name))
+        package = self.package_repository.get(get_parent(binary.name))
         package.download_count += 1
-        package.update(update_update_time=False)
+        self.package_repository.update(package, update_update_time=False)
         try:
-            ModelActivity(
+            self.activity_repository.create(
+                parent=f'users/{handler_context.user.user_id}',
+                resource=ModelActivity(
                 name='', create_time=get_now(),
                 action=pb.Action.DOWNLOAD, resource_name=binary.name
-            ).create(parent=f'users/{handler_context.user.user_id}')
+                ))
         except Exception:
             pass
 
         binary.download_count += 1
-        binary.update()
+        self.binary_repository.update(binary)
         if binary.file:
             # Populate url for download.
             file = binary.file
