@@ -170,3 +170,35 @@ jobs:
               git checkout main
               git pull --ff-only origin main
               make deploy-prod"
+
+      - name: Verify production frontend
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error https://san11pk.org > /dev/null; then
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
+
+      - name: Verify production API health
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error https://api.san11pk.org/v1/healthz | grep -q '"status":"ok"'; then
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
+
+      - name: Dump production diagnostics
+        if: failure()
+        run: |
+          gcloud compute ssh \
+            --quiet \
+            --zone "${GCP_ZONE}" \
+            "${GCP_PROD_SSH_USER}@${GCP_PROD_INSTANCE}" \
+            --project "${GCP_PROJECT_ID}" \
+            --command "cd '${GCP_PROD_REPO_PATH}' && \
+              docker compose -f compose.yaml -f compose.prod.yaml ps && \
+              docker compose -f compose.yaml -f compose.prod.yaml logs --tail=200"

@@ -1,5 +1,7 @@
 UUID := $(shell uuidgen)
 TMP_DIR := /tmp/san11pk-platform-test
+TAIL ?= 200
+SERVICE ?=
 .DEFAULT_GOAL := help
 test: export TMP_DB_DATA=/tmp/san11pk-platform-test/$(UUID)
 
@@ -28,23 +30,31 @@ help:
 	@echo "  up-prod           Start production stack"
 	@echo "  down-prod         Stop production stack"
 	@echo "  deploy-prod       Rebuild and restart production stack"
+	@echo "  logs-prod         Print production logs (TAIL=200 SERVICE=optional)"
+	@echo "  tail-prod         Follow production logs (TAIL=200 SERVICE=optional)"
 	@echo ""
 	@echo "Staging:"
 	@echo "  build-staging     Build staging images"
 	@echo "  up-staging        Start staging stack"
 	@echo "  down-staging      Stop staging stack"
 	@echo "  deploy-staging    Rebuild and restart staging stack"
+	@echo "  logs-staging      Print staging logs (TAIL=200 SERVICE=optional)"
+	@echo "  tail-staging      Follow staging logs (TAIL=200 SERVICE=optional)"
 	@echo ""
 	@echo "Autopush:"
 	@echo "  build-autopush    Build autopush images"
 	@echo "  up-autopush       Start autopush stack"
 	@echo "  down-autopush     Stop autopush stack"
 	@echo "  deploy-autopush   Rebuild and restart autopush stack"
+	@echo "  logs-autopush     Print autopush logs (TAIL=200 SERVICE=optional)"
+	@echo "  tail-autopush     Follow autopush logs (TAIL=200 SERVICE=optional)"
 	@echo ""
 	@echo "Dev:"
 	@echo "  build-dev         Build development images"
 	@echo "  up-dev            Start development stack"
 	@echo "  deploy-dev        Build and start development stack"
+	@echo "  logs-dev          Print development logs (TAIL=200 SERVICE=optional)"
+	@echo "  tail-dev          Follow development logs (TAIL=200 SERVICE=optional)"
 
 .PHONY: test
 test: cleanup
@@ -111,6 +121,14 @@ down-prod:
 .PHONY: deploy-prod
 deploy-prod: down-prod build-prod up-prod
 
+.PHONY: logs-prod
+logs-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml logs --tail=$(TAIL) $(SERVICE)
+
+.PHONY: tail-prod
+tail-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml logs --tail=$(TAIL) -f $(SERVICE)
+
 # Staging deployment
 .PHONY: build-staging
 build-staging:
@@ -126,6 +144,14 @@ down-staging:
 
 .PHONY: deploy-staging
 deploy-staging: down-staging build-staging up-staging
+
+.PHONY: logs-staging
+logs-staging:
+	docker compose -f compose.yaml -f compose.staging.yaml logs --tail=$(TAIL) $(SERVICE)
+
+.PHONY: tail-staging
+tail-staging:
+	docker compose -f compose.yaml -f compose.staging.yaml logs --tail=$(TAIL) -f $(SERVICE)
 
 # Autopush deployment
 .PHONY: build-autopush
@@ -143,6 +169,14 @@ down-autopush:
 .PHONY: deploy-autopush
 deploy-autopush: down-autopush build-autopush up-autopush
 
+.PHONY: logs-autopush
+logs-autopush:
+	docker compose -f compose.yaml -f compose.autopush.yaml logs --tail=$(TAIL) $(SERVICE)
+
+.PHONY: tail-autopush
+tail-autopush:
+	docker compose -f compose.yaml -f compose.autopush.yaml logs --tail=$(TAIL) -f $(SERVICE)
+
 # Dev deployment
 .PHONY: build-dev
 build-dev:
@@ -155,6 +189,13 @@ up-dev:
 .PHONY: deploy-dev
 deploy-dev: build-dev up-dev
 
+.PHONY: logs-dev
+logs-dev:
+	docker compose -f compose.yaml -f compose.dev.yaml logs --tail=$(TAIL) $(SERVICE)
+
+.PHONY: tail-dev
+tail-dev:
+	docker compose -f compose.yaml -f compose.dev.yaml logs --tail=$(TAIL) -f $(SERVICE)
 
 # For development
 .PHONY: fetch-local-ca
