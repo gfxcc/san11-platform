@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import inspect
 import copy
-import json
 import logging
 import os
 from typing import Dict, Generic, List, Optional, Tuple, Type, TypeVar, Union
@@ -12,10 +11,7 @@ from handler.model.base import base_storage
 from handler.model.base.base import COLLECTION_TO_MODEL
 from handler.util.name_util import ResourceName
 from handler.common.exception import FailedPrecondition, InvalidArgument, NotFound
-from handler.db.db_util import (auto_adjust_resource_id_next_val,
-                                run_sql_with_param,
-                                run_sql_with_param_and_fetch_all,
-                                run_sql_with_param_and_fetch_one)
+from handler.storage import PostgresResourceStorage, ResourceStorage
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -30,20 +26,18 @@ class ResourceRepository(Generic[_RESOURCE_T]):
     model-owned storage methods directly.
     """
 
-    def __init__(self, model_class: Type[_RESOURCE_T]):
+    def __init__(self, model_class: Type[_RESOURCE_T],
+                 storage: Optional[ResourceStorage] = None):
         self.model_class = model_class
+        self.storage = storage or PostgresResourceStorage()
 
     def get(self, name: str) -> _RESOURCE_T:
         parent, resource_id = base_storage.parse_name(self.model_class._DB_TABLE, name)
-        sql = f'SELECT data FROM {self.model_class._DB_TABLE} WHERE parent=%(parent)s AND resource_id=%(resource_id)s'
-        resp = run_sql_with_param_and_fetch_one(sql, {
-            'parent': parent,
-            'resource_id': resource_id,
-        })
-        if not resp:
+        data = self.storage.get(self.model_class._DB_TABLE, parent, resource_id)
+        if not data:
             raise NotFound(
                 message=f'parent={parent}, resource_id={resource_id} can not be found in table={self.model_class._DB_TABLE}')
-        return self.model_class.from_db(resp[0])
+        return self.model_class.from_db(data)
 
     def list(self, list_options: ListOptions) -> Tuple[List[_RESOURCE_T], str]:
         try:
@@ -56,9 +50,13 @@ class ResourceRepository(Generic[_RESOURCE_T]):
             raise InvalidArgument(
                 message=f'Invalid list_options = {list_options}: {err}')
 
-        sql = f"SELECT data FROM {self.model_class._DB_TABLE} {where_statement} {order_statement} {limit_statement}"
-        logger.debug(sql)
-        resp = run_sql_with_param_and_fetch_all(sql, params)
+        resp = self.storage.list(
+            self.model_class._DB_TABLE,
+            where_statement,
+            order_statement,
+            limit_statement,
+            params,
+        )
 
         next_page_options = copy.copy(list_options)
         next_page_options.watermark = list_options.watermark + len(resp)
@@ -75,12 +73,7 @@ class ResourceRepository(Generic[_RESOURCE_T]):
 
     def exists(self, name: str) -> bool:
         parent, resource_id = base_storage.parse_name(self.model_class._DB_TABLE, name)
-        sql = f'SELECT count(*) FROM {self.model_class._DB_TABLE} WHERE parent=%(parent)s AND resource_id=%(resource_id)s'
-        resp = run_sql_with_param_and_fetch_one(sql, {
-            'parent': parent,
-            'resource_id': resource_id,
-        })
-        return resp[0] == 1
+        return self.storage.exists(self.model_class._DB_TABLE, parent, resource_id)
 
     def create(self,
                parent: str,
@@ -93,22 +86,12 @@ class ResourceRepository(Generic[_RESOURCE_T]):
     def _create(self, parent: str, resource: _RESOURCE_T,
                 resource_id: Optional[int]) -> None:
         data = resource.to_db()
-        if resource_id is None:
-            sql = f"INSERT INTO {self.model_class._DB_TABLE} (parent, data) VALUES (%(parent)s, %(data)s) RETURNING resource_id"
-            resp = run_sql_with_param_and_fetch_one(sql, {
-                'parent': parent,
-                'data': json.dumps(data, default=str),
-            })
-            resource_id = resp[0]
-        else:
-            sql = f"INSERT INTO {self.model_class._DB_TABLE} (parent, resource_id, data) VALUES (%(parent)s, %(resource_id)s, %(data)s)"
-            run_sql_with_param(sql, {
-                'parent': parent,
-                'resource_id': resource_id,
-                'data': json.dumps(data, default=str),
-            })
-            auto_adjust_resource_id_next_val(self.model_class._DB_TABLE)
-
+        resource_id = self.storage.insert(
+            self.model_class._DB_TABLE,
+            parent,
+            data,
+            resource_id,
+        )
         resource.name = base_storage.build_resource_name(
             parent, self.model_class._DB_TABLE, resource_id)
         self._update(resource)
@@ -125,12 +108,12 @@ class ResourceRepository(Generic[_RESOURCE_T]):
     def _update(self, resource: _RESOURCE_T) -> None:
         parent, resource_id = base_storage.parse_name(
             self.model_class._DB_TABLE, resource.name)
-        sql = f"UPDATE {self.model_class._DB_TABLE} SET data=%(data)s WHERE parent=%(parent)s AND resource_id=%(resource_id)s"
-        run_sql_with_param(sql, {
-            'parent': parent,
-            'resource_id': resource_id,
-            'data': json.dumps(resource.to_db(), default=str),
-        })
+        self.storage.update(
+            self.model_class._DB_TABLE,
+            parent,
+            resource_id,
+            resource.to_db(),
+        )
         logger.debug(f'UPDATED {resource}')
 
     def delete(self,
@@ -139,11 +122,7 @@ class ResourceRepository(Generic[_RESOURCE_T]):
         _invoke_delete_hook(resource, actor_info)
         parent, resource_id = base_storage.parse_name(
             self.model_class._DB_TABLE, resource.name)
-        sql = f'DELETE FROM {self.model_class._DB_TABLE} WHERE parent=%(parent)s AND resource_id=%(resource_id)s'
-        run_sql_with_param(sql, {
-            'parent': parent,
-            'resource_id': resource_id,
-        })
+        self.storage.delete(self.model_class._DB_TABLE, parent, resource_id)
         logger.debug(f'DELETED: {resource}')
         return resource
 

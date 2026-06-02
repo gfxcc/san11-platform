@@ -5,6 +5,8 @@ import os
 
 import iam_util
 from handler.common.exception import *
+from handler.common.validation import (require_authenticated_condition,
+                                       require_permission)
 from handler.grpc_adapter import grpc_abort_on_exception
 from handler.model.base import FieldMask, ListOptions
 from handler.model.model_article import ModelArticle
@@ -214,9 +216,12 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
         update_mask = FieldMask.from_pb(request.update_mask)
         thread = self.thread_repository.get(request.thread.name)
         if 'pinned' in update_mask.paths:
-            if not context.user or not (context.user.is_admin() or
-                                        find_resource(ResourceName.from_str(thread.name).parent).author_id == context.user.user_id):
-                raise PermissionDenied()
+            require_permission(
+                bool(context.user) and (
+                    context.user.is_admin() or
+                    find_resource(ResourceName.from_str(thread.name).parent).author_id == context.user.user_id
+                )
+            )
         return self.thread_handler.update(ModelThread.from_pb(request.thread),
                                           update_mask,
                                           context).to_pb()
@@ -443,8 +448,10 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
                 raise Unauthenticated(message='验证码不正确')
         else:
             current_user = iam_util.load_user(context)
-            if current_user.user_id != update_user.user_id:
-                raise Unauthenticated()
+            require_authenticated_condition(
+                current_user.user_id == update_user.user_id,
+                message='未验证的用户',
+            )
         validate_password(request.password)
 
         update_user.hashed_password = hash_password(request.password)

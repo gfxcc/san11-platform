@@ -4,7 +4,7 @@ from email import message
 from typing import Iterable, List, Optional, Tuple, Type, Union
 
 from handler.common.env import Env, get_env
-from handler.common.exception import PermissionDenied
+from handler.common.validation import require_admin
 from handler.handler_context import HandlerContext
 from handler.model.base import (Context, FieldMask, HandlerBase, ModelBase,
                                 merge_resource)
@@ -89,9 +89,8 @@ class PackageHandler(HandlerBase):
     def update(self, update_package: ModelPackage, update_mask: FieldMask, handler_context: HandlerContext) -> ModelPackage:
         def verify_permission_on_update(curr: ModelPackage, dest: ModelPackage, update_mask: FieldMask) -> None:
             if on_approve(curr.state, dest.state):
-                # Approve new package
-                if not handler_context.user.is_admin():
-                    raise PermissionDenied(message='审核通过新工具需要管理员权限')
+                require_admin(handler_context.user,
+                              message='审核通过新工具需要管理员权限')
 
         base_package = self.package_repository.get(update_package.name)
         if update_mask.has('state'):
