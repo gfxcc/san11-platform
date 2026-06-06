@@ -25,6 +25,7 @@ export class BranchComponent {
     @Input() package: Package;
     @Input() branch: Branch;
     @Input() editorPermission: boolean;
+    @Input() descriptionEditable: boolean;
     @Output() updateDownloadProgress = new EventEmitter();
     @Output() downloadEvent = new EventEmitter<Binary>();
     @Output() reload = new EventEmitter();
@@ -69,11 +70,11 @@ export class BranchComponent {
             data: {
                 title: "更新日志",
                 content: binary.description,
-                editable: this.editorPermission,
+                editable: this.descriptionEditable,
             }
         }).afterClosed().subscribe(
             data => {
-                if (this.editorPermission && data && data.data != binary.description) {
+                if (this.descriptionEditable && data && data.data != binary.description) {
                     const request = new UpdateBinaryRequest({
                         binary: new Binary({
                             name: binary.name,

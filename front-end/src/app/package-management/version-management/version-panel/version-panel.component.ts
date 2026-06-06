@@ -96,6 +96,10 @@ export class VersionPanelComponent implements OnInit {
     return isAdmin() || this.package.authorId === localStorage.getItem('userId');
   }
 
+  get isAuthor() {
+    return this.package.authorId === localStorage.getItem('userId');
+  }
+
   updateDownloadProgress(event) {
     this.downloadProgressBar = true;
     this.downloadProgress = event.progress;

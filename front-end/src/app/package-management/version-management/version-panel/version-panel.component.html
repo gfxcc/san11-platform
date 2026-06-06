@@ -25,6 +25,7 @@
         <mat-tab [label]="branch.name" [disabled]="branch.disabled">
             <branch [branch]="branch" [package]="package"
                 [editorPermission]="hasEditPermission"
+                [descriptionEditable]="isAuthor"
                 (reload)="this.loadBinaries()"
                 (downloadEvent)="downloadEvent.emit($event)"
                 (updateDownloadProgress)="this.updateDownloadProgress($event)">

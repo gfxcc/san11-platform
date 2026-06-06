@@ -1,21 +1,22 @@
 .main {
-    width: min(86vw, 620px);
-    padding: 6px 2px 0;
+    box-sizing: border-box;
+    width: min(86vw, 680px);
+    padding: 24px;
 }
 
 .dialog-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 14px;
+    padding: 0 0 18px;
 }
 
 .dialog-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     flex: 0 0 auto;
     border-radius: var(--radius-md);
     background: var(--primary-soft);
@@ -26,13 +27,12 @@
 .main h3 {
     margin: 0;
     color: var(--text-color);
-    font-size: 1.35rem;
-    line-height: 1.25;
+    font-size: 1.55rem;
+    line-height: 1.2;
     font-weight: 850;
 }
 
 .dialog-editor {
-    margin-bottom: 12px;
     overflow: hidden;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
@@ -43,8 +43,8 @@
     align-items: center;
     gap: 8px;
     width: 100%;
-    padding-top: 14px;
-    border-top: 1px solid var(--border-color);
+    margin-top: 18px;
+    padding-top: 16px;
 }
 
 .dialog-actions button {
@@ -53,4 +53,11 @@
 
 :host ::ng-deep .ck-editor__editable_inline {
     max-height: 500px;
+}
+
+@media (max-width: 40rem) {
+    .main {
+        width: calc(100vw - 32px);
+        padding: 18px;
+    }
 }
