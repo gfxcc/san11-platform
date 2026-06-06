@@ -3,10 +3,10 @@ from unittest import mock
 
 import grpc
 
-from handler.protos import san11_platform_pb2 as pb
-from handler.protos import san11_platform_pb2_grpc
-from handler.service_dependencies import San11PlatformDependencies
-from san11_platform_server import create_server
+from app.protos import san11_platform_pb2 as pb
+from app.protos import san11_platform_pb2_grpc
+from app.service_dependencies import San11PlatformDependencies
+from app.san11_platform_server import create_server
 
 
 class _GrpcPackage:

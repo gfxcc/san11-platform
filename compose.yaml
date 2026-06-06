@@ -34,7 +34,8 @@ services:
         "/utils/wait-for-postgres.sh",
         "db",
         "python3.8",
-        "san11_platform_server.py",
+        "-m",
+        "app.san11_platform_server",
       ]
     depends_on:
       - db

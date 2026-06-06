@@ -2,19 +2,19 @@ import argparse
 import re
 from typing import List, Optional
 
-from handler.image_handler import resample_img_for_user_avatar
-from handler.model.base import ListOptions
-from handler.model.model_binary import ModelBinary
-from handler.model.model_legacy_subscription import ModelLegacySubscription
-from handler.model.model_user import (DEFAULT_USER_AVATAR, ModelUser,
+from handlers.image_handler import resample_img_for_user_avatar
+from core.models.base import ListOptions
+from models.model_binary import ModelBinary
+from models.model_legacy_subscription import ModelLegacySubscription
+from models.model_user import (DEFAULT_USER_AVATAR, ModelUser,
                                       NotificationSettings, UserSettings)
-from handler.model.plugins.subscribable import ModelSubscription
-from handler.model.plugins.tracklifecycle import ModelActivity
-from handler.util.file_server import (BucketClass, FileServerType,
+from models.plugins.subscribable import ModelSubscription
+from models.plugins.tracklifecycle import ModelActivity
+from integrations.files.file_server import (BucketClass, FileServerType,
                                       get_file_server)
-from handler.util.name_util import ResourceName
-from handler.util.resource_parser import parse_resource_name
-from handler.util.time_util import get_now
+from core.resources.name_util import ResourceName
+from core.resources.resource_parser import parse_resource_name
+from core.time_util import get_now
 
 MAX_RESOURCE_COUNT = 100000000000
 
