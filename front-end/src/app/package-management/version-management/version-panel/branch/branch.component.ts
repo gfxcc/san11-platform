@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { saveAs } from 'file-saver';
 import { TextDialogComponent } from "src/app/common/components/text-dialog/text-dialog.component";
 import { NotificationService } from "src/app/common/notification.service";
+import { InteractionService } from "src/app/common/interaction.service";
 import { DownloadService } from "src/app/service/download.service";
 import { San11PlatformServiceService } from "src/app/service/san11-platform-service.service";
 import { version2str } from "src/app/utils/binary_util";
@@ -48,6 +49,7 @@ export class BranchComponent {
         private dialog: MatDialog,
         private san11pkService: San11PlatformServiceService,
         private notificationService: NotificationService,
+        private interactionService: InteractionService,
         private downloads: DownloadService,
     ) {
     }
@@ -114,9 +116,6 @@ export class BranchComponent {
                         }
                     });
                 } else if (binary.cloudDiskFile) {
-                    if (binary.cloudDiskFile.code) {
-                        confirm(`请复制密钥 ${binary.cloudDiskFile.code}`);
-                    }
                     window.open(binary.cloudDiskFile.url, '_blank');
                 }
             },
@@ -126,11 +125,19 @@ export class BranchComponent {
         });
     }
 
+    copyCloudDiskCode(binary: Binary): void {
+        navigator.clipboard.writeText(binary.cloudDiskFile.code).then(() => {
+            this.notificationService.success('网盘密码已复制');
+        });
+    }
+
     onDelete(binary: Binary) {
-        if (!confirm('确定要删除 ' + version2str(binary.version) + ' 吗?')) {
-            return;
-        }
-        this.san11pkService.deleteBinary(new DeleteBinaryRequest({
+        this.interactionService.confirm({
+            title: '删除版本',
+            message: `确定要删除版本 ${version2str(binary.version)} 吗？此操作不可撤销。`,
+            confirmText: '删除版本',
+            danger: true,
+        }).subscribe(confirmed => confirmed && this.san11pkService.deleteBinary(new DeleteBinaryRequest({
             name: binary.name
         })).subscribe(
             empty => {
@@ -140,14 +147,16 @@ export class BranchComponent {
             error => {
                 this.notificationService.warn('删除失败:' + error.statusMessage);
             }
-        );
+        ));
     }
 
     onOffload(binary: Binary) {
-        if (!confirm('确定要卸载 ' + version2str(binary.version) + ' 的文件资源吗? (只清除资源，版本将会保留)')) {
-            return;
-        }
-        this.san11pkService.updateBinary(new UpdateBinaryRequest({
+        this.interactionService.confirm({
+            title: '卸载版本文件',
+            message: `将清除版本 ${version2str(binary.version)} 的文件，但保留版本记录。`,
+            confirmText: '卸载文件',
+            danger: true,
+        }).subscribe(confirmed => confirmed && this.san11pkService.updateBinary(new UpdateBinaryRequest({
             binary: new Binary({
                 name: binary.name,
             }),
@@ -162,6 +171,6 @@ export class BranchComponent {
             error => {
                 this.notificationService.warn('卸载失败:' + error.statusMessage);
             }
-        );
+        ));
     }
 }

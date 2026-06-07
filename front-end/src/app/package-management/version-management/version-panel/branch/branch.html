@@ -33,24 +33,31 @@
             <td mat-cell *matCellDef="let binary" class="actions-cell">
                 <div class="action-cluster app-row-actions">
                     <button *ngIf="binary.file" mat-flat-button color="primary" (click)="onDownload(binary)"
-                        class="download-action">
+                        class="action-button action-primary download-action">
                         <mat-icon>download</mat-icon>
                         <span>下载</span>
                     </button>
 
                     <button *ngIf="binary.downloadMethod" mat-flat-button color="primary" (click)="onDownload(binary)"
-                        class="download-action">
+                        class="action-button action-primary download-action">
                         <mat-icon>info</mat-icon>
                         <span>下载方式</span>
                     </button>
 
                     <button *ngIf="binary.cloudDiskFile" mat-flat-button color="primary" (click)="onDownload(binary)"
-                        class="download-action">
+                        class="action-button action-primary download-action">
                         <mat-icon>cloud_download</mat-icon>
                         <span>网盘下载</span>
                     </button>
+                    <button *ngIf="binary.cloudDiskFile?.code" mat-stroked-button
+                        class="action-button action-secondary" type="button"
+                        (click)="copyCloudDiskCode(binary)">
+                        <mat-icon>content_copy</mat-icon>
+                        复制密码
+                    </button>
 
-                    <button *ngIf="editorPermission" mat-stroked-button class="row-menu-button"
+                    <button *ngIf="editorPermission" mat-stroked-button
+                        class="action-button action-tertiary row-menu-button"
                         [matMenuTriggerFor]="rowMenu" matTooltip="管理版本">
                         <mat-icon>settings</mat-icon>
                         <span>管理</span>

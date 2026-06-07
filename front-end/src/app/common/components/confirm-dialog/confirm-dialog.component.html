@@ -1,0 +1,17 @@
+<section class="confirm-dialog">
+    <header>
+        <span class="confirm-icon" [class.confirm-icon-danger]="data.danger">
+            <mat-icon>{{data.icon || (data.danger ? 'warning' : 'help_outline')}}</mat-icon>
+        </span>
+        <div>
+            <h2>{{data.title}}</h2>
+            <p>{{data.message}}</p>
+        </div>
+    </header>
+    <footer>
+        <button mat-stroked-button type="button" (click)="close(false)">{{data.cancelText || '取消'}}</button>
+        <button mat-flat-button type="button" [color]="data.danger ? 'warn' : 'primary'" (click)="close(true)">
+            {{data.confirmText || '确认'}}
+        </button>
+    </footer>
+</section>

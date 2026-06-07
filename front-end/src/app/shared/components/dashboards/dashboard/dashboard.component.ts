@@ -133,4 +133,12 @@ export class DashboardComponent implements OnInit {
     this.listRequest.orderBy = this.selectedOrder;
     this.loadPackages()
   }
+
+  clearFilter(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tagId: null },
+      queryParamsHandling: 'merge',
+    });
+  }
 }

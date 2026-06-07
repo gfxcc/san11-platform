@@ -53,6 +53,32 @@
     width: 100%;
 }
 
+.creation-step {
+    display: grid;
+    gap: 14px;
+    padding-top: 18px;
+}
+
+.creation-review {
+    display: grid;
+    gap: 5px;
+    padding: 18px;
+    border: 1px solid rgba(37, 99, 235, .2);
+    border-radius: var(--radius-md);
+    background: rgba(37, 99, 235, .05);
+}
+
+.creation-review span {
+    color: var(--text-muted);
+    font-size: .82rem;
+    font-weight: 700;
+}
+
+.creation-review strong {
+    color: var(--text-color);
+    font-size: 1.15rem;
+}
+
 .create-actions {
     display: flex;
     align-items: center;
@@ -68,6 +94,34 @@
     width: 18px;
     height: 18px;
     margin-right: 4px;
+    font-size: 18px;
+}
+
+.creation-roadmap {
+    display: grid;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
+}
+
+.creation-roadmap strong {
+    color: var(--text-color);
+}
+
+.creation-roadmap div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: .88rem;
+}
+
+.creation-roadmap mat-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--primary-color);
     font-size: 18px;
 }
 

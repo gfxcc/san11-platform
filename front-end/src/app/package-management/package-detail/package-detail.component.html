@@ -1,28 +1,209 @@
 <div class="page-wrapper">
     <div class="page-content">
+        <nav class="resource-breadcrumb" aria-label="资源导航">
+            <a routerLink="/">
+                <mat-icon>home</mat-icon>
+                主页
+            </a>
+            <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+            <a [routerLink]="['/categories', categoryId]">{{categoryName}}</a>
+            <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+            <span aria-current="page">{{this.package.packageName}}</span>
+        </nav>
 
-        <div class="detail-admin-bar show-border-dev">
-            <span class="example-spacer"></span>
+        <div class="detail-layout">
+            <main class="detail-main">
+                <section class="resource-hero">
+                    <div class="image-gallery">
+                        <gallery class="gallery" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free"
+                            [counter]="false" slidingDirection="vertical" [nav]="false"
+                            [autoPlay]="false" [playerInterval]="5000" #gallery></gallery>
+                    </div>
+                </section>
 
-            <button mat-stroked-button color="primary" *ngIf="this.packageNameUpdated" (click)="onUpdateTitle()"
-                class="title-update-button">更新标题</button>
+                <section *ngIf="isAuthor()" #screenshotsSection
+                    class="screenshot-manager permission-surface permission-author-surface surface-panel app-detail-section">
+                    <div class="screenshot-manager-header">
+                        <div>
+                            <div class="permission-section-heading">
+                                <span class="permission-label">
+                                    <mat-icon>edit</mat-icon>
+                                    作者专属
+                                </span>
+                                <h3>截图管理</h3>
+                            </div>
+                            <p>第一张截图会作为资源封面。可批量上传、调整展示顺序或删除截图。</p>
+                        </div>
+                        <div class="screenshot-manager-actions">
+                            <span class="screenshot-count">{{this.package.imageUrls.length}} 张截图</span>
+                            <button mat-flat-button color="primary" class="action-button action-primary" type="button"
+                                [disabled]="isUploadingScreenshots"
+                                (click)="imageInput.click()">
+                                <mat-icon>add_photo_alternate</mat-icon>
+                                {{isUploadingScreenshots ? '正在上传…' : '选择图片'}}
+                            </button>
+                        </div>
+                    </div>
 
-        </div>
+                    <input type="file" accept="image/*" multiple hidden #imageInput
+                        (change)="onUploadScreenshots(imageInput.files, imageInput)">
 
-        <section class="resource-hero">
-            <div class="image-gallery">
-                <gallery class="gallery" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free"
-                    [counter]="false" slidingDirection="vertical" [nav]="false"
-                    [autoPlay]="false" [playerInterval]="5000" #gallery></gallery>
-            </div>
+                    <button type="button" class="screenshot-dropzone" [class.screenshot-dropzone-active]="isScreenshotDragActive"
+                        [disabled]="isUploadingScreenshots" (click)="imageInput.click()" (dragenter)="onScreenshotDragEnter($event)"
+                        (dragover)="onScreenshotDragOver($event)" (dragleave)="onScreenshotDragLeave($event)"
+                        (drop)="onScreenshotDrop($event)">
+                        <mat-icon>{{isUploadingScreenshots ? 'cloud_sync' : 'cloud_upload'}}</mat-icon>
+                        <span class="dropzone-title">{{isUploadingScreenshots ? screenshotUploadStatus : '拖拽截图到这里上传'}}</span>
+                        <span class="dropzone-hint">支持一次选择多张图片，单张不超过 {{maxImageSizeMb}}MB</span>
+                    </button>
 
-            <aside class="resource-summary surface-panel app-detail-section">
+                    <div *ngIf="this.package.imageUrls.length; else screenshotEmptyState" class="screenshot-grid">
+                        <article *ngFor="let imageUrl of this.package.imageUrls; let index = index; trackBy: trackScreenshot"
+                            class="screenshot-card" [class.screenshot-card-cover]="index === 0">
+                            <div class="screenshot-preview">
+                                <img [src]="screenshotUrl(imageUrl)" [alt]="'资源截图 ' + (index + 1)">
+                                <span *ngIf="index === 0" class="cover-badge">
+                                    <mat-icon>star</mat-icon>
+                                    当前封面
+                                </span>
+                                <span class="screenshot-order">{{index + 1}}</span>
+                            </div>
+                            <div class="screenshot-card-actions">
+                                <button mat-stroked-button type="button" class="action-button action-secondary"
+                                    [disabled]="index === 0"
+                                    (click)="setScreenshotAsCover(index)">
+                                    <mat-icon>wallpaper</mat-icon>
+                                    设为封面
+                                </button>
+                                <div class="screenshot-order-actions">
+                                    <button mat-icon-button type="button" class="action-icon action-tertiary"
+                                        matTooltip="向前移动" [disabled]="index === 0"
+                                        (click)="moveScreenshot(index, -1)">
+                                        <mat-icon>arrow_back</mat-icon>
+                                    </button>
+                                    <button mat-icon-button type="button" class="action-icon action-tertiary"
+                                        matTooltip="向后移动"
+                                        [disabled]="index === this.package.imageUrls.length - 1"
+                                        (click)="moveScreenshot(index, 1)">
+                                        <mat-icon>arrow_forward</mat-icon>
+                                    </button>
+                                    <button mat-icon-button type="button" class="action-icon action-danger-icon"
+                                        matTooltip="删除截图"
+                                        (click)="deleteScreenshot(index)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <ng-template #screenshotEmptyState>
+                        <div class="screenshot-empty-state">
+                            <mat-icon>collections</mat-icon>
+                            <strong>还没有截图</strong>
+                            <span>上传几张能展示玩法、界面或主要功能的图片，让用户更快了解这个资源。</span>
+                        </div>
+                    </ng-template>
+                </section>
+
+                <section #descriptionSection class="meta-content surface-panel app-detail-section">
+                    <div class="detail-section-header app-section-header">
+                        <h2 class="app-section-title">资源介绍</h2>
+                        <button *ngIf="isAuthor() && !descriptionEditing" mat-stroked-button
+                            class="action-button action-secondary" type="button"
+                            (click)="startDescriptionEdit()">
+                            <mat-icon>edit_note</mat-icon>
+                            编辑介绍
+                        </button>
+                    </div>
+                    <div class="description-layout">
+                        <app-user-info-with-sub-button class="user-info-with-sub-button" [user]="this.author">
+                        </app-user-info-with-sub-button>
+
+                        <div class="package-description-section"
+                            [class.package-description-section-editing]="descriptionEditing"
+                            [class.package-description-section-can-expand]="descriptionCanExpand"
+                            [class.package-description-section-folded]="descFolded"
+                            [class.package-description-section-expanded]="!descFolded">
+                            <div #descriptionContainer id="description-container" [class.desc-folded]="descFolded && !descEditor_updated"
+                                [class.desc-full]="!(descFolded &&
+                                !descEditor_updated)">
+                                <ckeditor *ngIf="!descriptionIsEmpty || isAuthor() || descEditor_updated" #description
+                                    [data]="this.package.description"
+                                    [editor]="this.editorService.getEditorInstance()"
+                                    (ready)="onDescriptionEditorReady($event)" [disabled]="this.editorService.disabled"
+                                    [config]="this.editorService.getConfig()" (change)="onDescEditorChange($event)"
+                                    (focus)="descEditor_onFocus=true" (blur)="descEditor_onFocus=false"></ckeditor>
+                                <div *ngIf="descriptionIsEmpty && !isAuthor() && !descEditor_updated"
+                                    class="description-empty-state">
+                                    <mat-icon>notes</mat-icon>
+                                    <span>作者暂未填写资源介绍</span>
+                                </div>
+                            </div>
+                            <div class="description-expand-row" *ngIf="!descEditor_updated && descFolded && descriptionCanExpand">
+                                <button id="more-button" type="button" mat-stroked-button color="primary" class="more-button"
+                                    (click)="onDescription()">
+                                    <span>展开完整介绍</span>
+                                    <mat-icon>keyboard_arrow_down</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="description-actions">
+                            <button *ngIf="isAuthor() && descriptionEditing" mat-stroked-button
+                                class="action-button action-secondary update-button"
+                                (click)="cancelDescriptionEdit()">取消</button>
+                            <button *ngIf="isAuthor() && descriptionEditing && this.descEditor_updated" mat-flat-button color="primary"
+                                (click)="onUpdateDesc()" class="action-button action-primary update-button">保存介绍</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="version-info show-border-dev app-detail-section" id="versions" #versionsSection>
+                    <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)">
+                    </app-version-panel>
+                </section>
+
+                <section #discussionSection class="discussion-panel" id="discussion">
+                    <app-discussion [parent]="this.package.name" class="discussion-section"></app-discussion>
+                </section>
+            </main>
+
+            <aside class="detail-side-rail">
+                <section *ngIf="isAuthor() || isAdmin()"
+                    class="resource-status-card surface-panel app-detail-section"
+                    [ngClass]="'resource-status-' + resourceStatus.tone">
+                    <div class="resource-status-icon">
+                        <mat-icon>{{resourceStatus.icon}}</mat-icon>
+                    </div>
+                    <div class="resource-status-copy">
+                        <span>内部状态</span>
+                        <strong>{{resourceStatus.label}}</strong>
+                        <p>{{resourceStatus.description}}</p>
+                    </div>
+                </section>
+
+                <section class="resource-summary surface-panel app-detail-section">
                 <h2 class="panel-title app-section-title">资源详情</h2>
                 <h1>
-                    <span #packageNameTitle class="title" (focus)="this.packageNameUpdated=true;">
+                    <span *ngIf="!isAuthor()" #packageNameTitle class="title">
                         {{this.package.packageName}}
                     </span>
+                    <mat-form-field *ngIf="isAuthor()" appearance="outline" class="package-name-field">
+                        <mat-label>资源名称</mat-label>
+                        <input matInput [(ngModel)]="packageNameDraft" maxlength="80"
+                            (keydown.enter)="onUpdateTitle()">
+                    </mat-form-field>
                 </h1>
+                <div *ngIf="isAuthor() && packageNameChanged" class="package-name-actions">
+                    <button mat-stroked-button class="action-button action-secondary" type="button"
+                        (click)="cancelPackageNameEdit()">撤销</button>
+                    <button mat-flat-button color="primary" type="button"
+                        class="action-button action-primary"
+                        [disabled]="!packageNameDraft.trim()" (click)="onUpdateTitle()">
+                        保存名称
+                    </button>
+                </div>
 
                 <div class="primary-info-render">
                     <div class="meta-pill">
@@ -40,13 +221,13 @@
                 </div>
 
                 <div class="summary-actions app-action-stack">
-                    <button mat-flat-button color="primary" class="download-cta" type="button"
+                    <button mat-flat-button color="primary" class="action-button action-primary download-cta" type="button"
                         (click)="scrollToVersions()">
                         <mat-icon>download</mat-icon>
                         查看版本
                     </button>
 
-                    <button mat-stroked-button color="primary" class="collect-action" (click)="onToggleCollect()">
+                    <button mat-stroked-button class="action-button action-secondary collect-action" (click)="onToggleCollect()">
                         <mat-icon>{{isCollected ? 'playlist_remove' : 'playlist_add'}}</mat-icon>
                         {{collectButtonText}}
                     </button>
@@ -56,27 +237,14 @@
                     <app-feedback-card [target]="this.package.name" [likeCount]="this.package.likeCount"
                         [dislikeCount]="this.package.dislikeCount"></app-feedback-card>
 
-                    <button mat-icon-button matTooltip="分享 (未开放)" disabled="true" class="summary-icon-button">
-                        <mat-icon>share</mat-icon>
-                    </button>
-
-                    <button mat-icon-button matTooltip="更多" class="summary-icon-button" [matMenuTriggerFor]="menu">
-                        <mat-icon>more_horiz</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item (click)="onReport()" [disabled]="true">
-                            <mat-icon>flag</mat-icon>
-                            <span>举报(未开放)</span>
-                        </button>
-                    </mat-menu>
                 </div>
 
                 <div class="summary-tags" *ngIf="this.package.tags?.length || tagCanEdit">
                     <div class="summary-tags-header">
                         <h3>标签</h3>
                         <mat-form-field *ngIf="tagCanEdit" appearance="outline" class="summary-tag-select">
-                            <mat-select required placeholder="新标签" (selectionChange)="newTagSelected($event.value)">
-                                <mat-option *ngFor="let tag of this.allTags" [value]="tag">
+                            <mat-select required placeholder="添加标签" (selectionChange)="newTagSelected($event.value)">
+                                <mat-option *ngFor="let tag of availableTags" [value]="tag">
                                     {{tag.tagName}}
                                 </mat-option>
                             </mat-select>
@@ -91,167 +259,78 @@
                         </mat-chip-option>
                     </mat-chip-listbox>
                 </div>
-            </aside>
-        </section>
+                </section>
 
-        <section *ngIf="canManagePackage()" class="screenshot-manager surface-panel app-detail-section">
-            <div class="resource-management-header">
-                <div class="resource-management-title">
-                    <span class="section-kicker">{{isAdmin() && !isAuthor() ? '管理员工具' : '作者工具'}}</span>
-                    <h2 class="app-section-title">资源管理</h2>
-                    <p>管理这个资源的展示内容与发布状态。</p>
-                </div>
-                <button mat-stroked-button type="button" class="management-trigger"
-                    [matMenuTriggerFor]="packageManagementMenu">
-                    <mat-icon>settings</mat-icon>
-                    管理操作
-                    <mat-icon>expand_more</mat-icon>
-                </button>
-                <mat-menu #packageManagementMenu="matMenu" xPosition="before">
-                    <button mat-menu-item *ngIf="isAdmin() && this.package.state===2" (click)="onApprove()">
+                <section *ngIf="isAuthor()"
+                    class="author-workspace role-workspace permission-surface permission-author-surface surface-panel app-detail-section">
+                    <div class="author-workspace-heading">
+                        <span class="section-kicker">作者专属</span>
+                        <h2>作者工作台</h2>
+                        <p>维护资源内容并发布更新。</p>
+                    </div>
+                    <div class="author-workspace-actions">
+                        <button mat-stroked-button class="action-button action-secondary" type="button"
+                            (click)="scrollToScreenshots()">
+                            <mat-icon>photo_library</mat-icon>
+                            管理截图
+                        </button>
+                        <button mat-stroked-button class="action-button action-secondary" type="button"
+                            (click)="startDescriptionEdit()">
+                            <mat-icon>edit_note</mat-icon>
+                            编辑介绍
+                        </button>
+                        <button mat-stroked-button class="action-button action-secondary" type="button"
+                            (click)="scrollToVersions()">
+                            <mat-icon>new_releases</mat-icon>
+                            管理版本
+                        </button>
+                        <button mat-stroked-button class="action-button action-tertiary" type="button"
+                            [matMenuTriggerFor]="packageManagementMenu">
+                            <mat-icon>more_horiz</mat-icon>
+                            更多操作
+                        </button>
+                    </div>
+                    <mat-menu #packageManagementMenu="matMenu" xPosition="before">
+                        <button mat-menu-item class="danger-menu-item" (click)="onRequestDelete()">
+                            <mat-icon>delete</mat-icon>
+                            <span>删除资源</span>
+                        </button>
+                    </mat-menu>
+                </section>
+
+                <section *ngIf="isAdmin()"
+                    class="admin-management role-workspace permission-surface permission-admin-surface surface-panel app-detail-section">
+                    <div class="resource-management-title">
+                    <span class="section-kicker">管理员专属</span>
+                    <h2 class="app-section-title">资源状态管理</h2>
+                    <p>处理审核、可见性和紧急下架。资源内容由作者维护。</p>
+                    </div>
+                    <div class="resource-management-quick-actions">
+                    <button mat-flat-button color="primary" class="action-button action-primary" type="button"
+                        *ngIf="this.package.state===2" (click)="onApprove()">
                         <mat-icon>verified</mat-icon>
-                        <span>通过审核</span>
+                        通过审核
                     </button>
-                    <button mat-menu-item *ngIf="isAdmin() && (this.package.state===1 || this.package.state===3)"
-                        (click)="onFlipHide()">
+                    <button mat-stroked-button class="action-button action-secondary" type="button"
+                        *ngIf="this.package.state===1 || this.package.state===3" (click)="onFlipHide()">
                         <mat-icon>{{this.package.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
-                        <span>{{this.package.state===3 ? '取消隐藏' : '隐藏资源'}}</span>
+                        {{this.package.state===3 ? '恢复显示' : '隐藏资源'}}
                     </button>
-                    <button mat-menu-item class="danger-menu-item" *ngIf="authorZone" (click)="onDelete()">
-                        <mat-icon>delete</mat-icon>
-                        <span>删除资源</span>
+                    <button mat-stroked-button type="button" class="action-button action-tertiary"
+                        [matMenuTriggerFor]="adminMoreMenu">
+                        <mat-icon>more_horiz</mat-icon>
+                        更多操作
                     </button>
-                </mat-menu>
-            </div>
-
-            <div class="management-divider"></div>
-
-            <div class="screenshot-manager-header">
-                <div>
-                    <h3>截图管理</h3>
-                    <p>第一张截图会作为资源封面。可批量上传、调整展示顺序或删除截图。</p>
-                </div>
-                <div class="screenshot-manager-actions">
-                    <span class="screenshot-count">{{this.package.imageUrls.length}} 张截图</span>
-                    <button mat-flat-button color="primary" type="button" [disabled]="isUploadingScreenshots"
-                        (click)="imageInput.click()">
-                        <mat-icon>add_photo_alternate</mat-icon>
-                        {{isUploadingScreenshots ? '正在上传…' : '选择图片'}}
-                    </button>
-                </div>
-            </div>
-
-            <input type="file" accept="image/*" multiple hidden #imageInput
-                (change)="onUploadScreenshots(imageInput.files, imageInput)">
-
-            <button type="button" class="screenshot-dropzone" [class.screenshot-dropzone-active]="isScreenshotDragActive"
-                [disabled]="isUploadingScreenshots" (click)="imageInput.click()" (dragenter)="onScreenshotDragEnter($event)"
-                (dragover)="onScreenshotDragOver($event)" (dragleave)="onScreenshotDragLeave($event)"
-                (drop)="onScreenshotDrop($event)">
-                <mat-icon>{{isUploadingScreenshots ? 'cloud_sync' : 'cloud_upload'}}</mat-icon>
-                <span class="dropzone-title">{{isUploadingScreenshots ? screenshotUploadStatus : '拖拽截图到这里上传'}}</span>
-                <span class="dropzone-hint">支持一次选择多张图片，单张不超过 {{maxImageSizeMb}}MB</span>
-            </button>
-
-            <div *ngIf="this.package.imageUrls.length; else screenshotEmptyState" class="screenshot-grid">
-                <article *ngFor="let imageUrl of this.package.imageUrls; let index = index; trackBy: trackScreenshot"
-                    class="screenshot-card" [class.screenshot-card-cover]="index === 0">
-                    <div class="screenshot-preview">
-                        <img [src]="screenshotUrl(imageUrl)" [alt]="'资源截图 ' + (index + 1)">
-                        <span *ngIf="index === 0" class="cover-badge">
-                            <mat-icon>star</mat-icon>
-                            当前封面
-                        </span>
-                        <span class="screenshot-order">{{index + 1}}</span>
-                    </div>
-                    <div class="screenshot-card-actions">
-                        <button mat-stroked-button type="button" color="primary" [disabled]="index === 0"
-                            (click)="setScreenshotAsCover(index)">
-                            <mat-icon>wallpaper</mat-icon>
-                            设为封面
+                    <mat-menu #adminMoreMenu="matMenu" xPosition="before">
+                        <button mat-menu-item class="danger-menu-item" (click)="onDelete()">
+                            <mat-icon>delete_forever</mat-icon>
+                            <span>永久删除资源</span>
                         </button>
-                        <div class="screenshot-order-actions">
-                            <button mat-icon-button type="button" matTooltip="向前移动" [disabled]="index === 0"
-                                (click)="moveScreenshot(index, -1)">
-                                <mat-icon>arrow_back</mat-icon>
-                            </button>
-                            <button mat-icon-button type="button" matTooltip="向后移动"
-                                [disabled]="index === this.package.imageUrls.length - 1"
-                                (click)="moveScreenshot(index, 1)">
-                                <mat-icon>arrow_forward</mat-icon>
-                            </button>
-                            <button mat-icon-button type="button" class="delete-screenshot" matTooltip="删除截图"
-                                (click)="deleteScreenshot(index)">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button>
-                        </div>
+                    </mat-menu>
                     </div>
-                </article>
-            </div>
-
-            <ng-template #screenshotEmptyState>
-                <div class="screenshot-empty-state">
-                    <mat-icon>collections</mat-icon>
-                    <strong>还没有截图</strong>
-                    <span>上传几张能展示玩法、界面或主要功能的图片，让用户更快了解这个资源。</span>
-                </div>
-            </ng-template>
-        </section>
-
-        <section class="meta-content surface-panel app-detail-section">
-            <div class="detail-section-header app-section-header">
-                <h2 class="app-section-title">资源介绍</h2>
-            </div>
-            <div class="description-layout">
-                <app-user-info-with-sub-button class="user-info-with-sub-button" [user]="this.author">
-                </app-user-info-with-sub-button>
-
-                <div class="package-description-section"
-                    [class.package-description-section-can-expand]="descriptionCanExpand"
-                    [class.package-description-section-folded]="descFolded"
-                    [class.package-description-section-expanded]="!descFolded">
-                    <div #descriptionContainer id="description-container" [class.desc-folded]="descFolded && !descEditor_updated"
-                        [class.desc-full]="!(descFolded &&
-                        !descEditor_updated)">
-                        <ckeditor *ngIf="!descriptionIsEmpty || isAuthor() || descEditor_updated" #description
-                            [data]="this.package.description"
-                            [editor]="this.editorService.getEditorInstance()"
-                            (ready)="onDescriptionEditorReady($event)" [disabled]="this.editorService.disabled"
-                            [config]="this.editorService.getConfig()" (change)="onDescEditorChange($event)"
-                            (focus)="descEditor_onFocus=true" (blur)="descEditor_onFocus=false"></ckeditor>
-                        <div *ngIf="descriptionIsEmpty && !isAuthor() && !descEditor_updated"
-                            class="description-empty-state">
-                            <mat-icon>notes</mat-icon>
-                            <span>作者暂未填写资源介绍</span>
-                        </div>
-                    </div>
-                    <div class="description-expand-row" *ngIf="!descEditor_updated && descFolded && descriptionCanExpand">
-                        <button id="more-button" type="button" mat-stroked-button color="primary" class="more-button"
-                            (click)="onDescription()">
-                            <span>展开完整介绍</span>
-                            <mat-icon>keyboard_arrow_down</mat-icon>
-                        </button>
-                        <!-- <span id="more-button" *ngIf="!descFolded" (click)="this.descFolded = true;" class="more-button">折叠</span> -->
-                    </div>
-                </div>
-
-                <div class="description-actions">
-                    <button *ngIf="this.descEditor_updated" mat-stroked-button color="primary" (click)="onUpdateDesc()"
-                        class="update-button">更新</button>
-                </div>
-
-            </div>
-
-        </section>
-
-        <section class="version-info show-border-dev app-detail-section" id="versions" #versionsSection>
-            <app-version-panel [package]="this.package" (downloadEvent)="onChildDownload($event)">
-            </app-version-panel>
-        </section>
-
-        <section class="discussion-panel">
-            <app-discussion [parent]="this.package.name" class="discussion-section"></app-discussion>
-        </section>
+                </section>
+            </aside>
+        </div>
 
     </div>
 </div>

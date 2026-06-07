@@ -19,11 +19,11 @@ export class NotificationService {
 
   success(msg) {
     this.config['panelClass'] = ['notification', 'success'];
-    this.snackBar.open(msg, 'Done', this.config);
+    this.snackBar.open(msg, '关闭', this.config);
   }
 
   warn(msg) {
     this.config['panelClass'] = ['notification', 'warn'];
-    this.snackBar.open(msg, 'Done', this.config);
+    this.snackBar.open(msg, '关闭', this.config);
   }
 }

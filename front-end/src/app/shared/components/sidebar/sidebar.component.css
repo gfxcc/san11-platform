@@ -61,6 +61,24 @@
     font-weight: 750;
 }
 
+.admin-pending-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    margin-left: auto;
+    padding: 0 7px;
+    border: 2px solid rgba(255, 255, 255, .92);
+    border-radius: 999px;
+    background: #dc2626;
+    color: #fff;
+    font-size: .72rem;
+    line-height: 1;
+    font-weight: 850;
+    box-shadow: 0 3px 9px rgba(220, 38, 38, .25);
+}
+
 .nav-link mat-icon {
     width: 20px;
     height: 20px;

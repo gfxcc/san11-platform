@@ -17,6 +17,7 @@ import { FieldMask, UpdateUserRequest, User } from "../../../proto/san11-platfor
 
 export class NotificationsComponent implements OnInit {
   @Input() user: User;
+  saving = false;
 
   constructor(
     public san11pkService: San11PlatformServiceService,
@@ -33,6 +34,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   updateSetting() {
+    this.saving = true;
     const request = new UpdateUserRequest({
       user: this.user,
       updateMask: new FieldMask({
@@ -41,9 +43,11 @@ export class NotificationsComponent implements OnInit {
     });
     this.san11pkService.updateUser(request).subscribe(
       (user: User) => {
+        this.saving = false;
         this.notificationService.success('更新成功');
       },
       error => {
+        this.saving = false;
         this.notificationService.warn(`更新失败: ${error.statusMessage}`)
       }
     );

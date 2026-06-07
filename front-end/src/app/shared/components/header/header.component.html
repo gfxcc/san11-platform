@@ -14,13 +14,24 @@
         <div class="search-bar-input-wrapper">
             <mat-icon class="search-icon">search</mat-icon>
             <input #searchInput [(ngModel)]="this.searchQuery" type="text" spellcheck="false" autocomplete="off"
-                placeholder="搜索工具、MOD 或插件" (ngModelChange)="this.searchChanged()" class="search-input">
+                placeholder="搜索工具、MOD 或插件" (ngModelChange)="this.searchChanged()"
+                (keydown.enter)="submitSearch()" class="search-input">
             <mat-icon matTooltip="支持 工具名" class="help-icon">help_outline</mat-icon>
+        </div>
+        <div *ngIf="searchQuery.trim().length >= 2" class="search-suggestions surface-panel">
+            <button *ngFor="let package of searchSuggestions" type="button" (click)="openSearchSuggestion(package)">
+                <mat-icon>extension</mat-icon>
+                <span>{{package.packageName}}</span>
+                <small>{{package.name}}</small>
+            </button>
+            <div *ngIf="!searching && searchSuggestions.length === 0" class="search-suggestion-empty">
+                没有匹配资源，按 Enter 查看完整搜索结果
+            </div>
         </div>
     </div>
 
     <div *ngIf="this.user === undefined" class="auth-actions">
-        <a mat-button class="signin-button" (click)="onSignInClick()">登陆</a>
+        <a mat-button class="signin-button" (click)="onSignInClick()">登录</a>
         <a mat-flat-button color="primary" class="signup-button" (click)="onSignUpClick()">注册</a>
     </div>
     <div *ngIf="this.user != undefined" class="control-panel">

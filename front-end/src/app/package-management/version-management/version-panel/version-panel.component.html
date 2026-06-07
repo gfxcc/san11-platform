@@ -13,7 +13,8 @@
         <h2 class="app-section-title">版本</h2>
     </div>
     <span class="example-spacer"></span>
-    <button *ngIf="hasEditPermission" class="update-button" mat-flat-button color="primary" (click)="onUpdate()">
+    <button *ngIf="hasEditPermission" class="action-button action-primary update-button"
+        mat-flat-button color="primary" (click)="onUpdate()">
         <mat-icon>add</mat-icon>
         发布新版本
     </button>

@@ -6,7 +6,7 @@
         </div>
         <button mat-button class="sort-button" [matMenuTriggerFor]="menu">
             <mat-icon>sort</mat-icon>
-            排序方式
+            {{commentsOrder === 'create_time desc' ? '最新评论' : '最早评论'}}
         </button>
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="this.loadComments(&quot;create_time&quot;)">
@@ -15,9 +15,6 @@
             <button mat-menu-item (click)="this.loadComments(&quot;create_time
                 desc&quot;)">
                 <span>最新评论</span>
-            </button>
-            <button mat-menu-item disabled>
-                <span>热门评论</span>
             </button>
         </mat-menu>
     </div>
@@ -60,6 +57,11 @@
                 (replyCreateEvent)="onReplyCreate($event)"></app-comment-card>
             <!-- <div id="comment-{{comment.index}}">hi</div> -->
         </ng-container>
+    </div>
+
+    <div *ngIf="comments.length === 0" class="app-empty-state">
+        <mat-icon>chat_bubble_outline</mat-icon>
+        <p>{{disableInput ? '暂无评论' : '还没有评论，来发表第一条吧'}}</p>
     </div>
 
     <div class="comment-bottom-space"></div>

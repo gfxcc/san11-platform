@@ -96,7 +96,7 @@ export class SigninComponent implements OnInit {
       password: input.password
     })).subscribe(
       resp => {
-        this.notificationService.success('登陆成功');
+        this.notificationService.success('登录成功');
 
         localStorage.setItem('sid', resp.sid);
         saveUser(resp.user);

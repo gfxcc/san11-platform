@@ -5,6 +5,7 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 import { getAge } from 'src/app/utils/time_util';
 import { Comment, CreateReplyRequest, DeleteCommentRequest, GetUserRequest, Reply, User } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
+import { InteractionService } from "../../../common/interaction.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { isAdmin } from '../../../utils/user_util';
 
@@ -38,6 +39,7 @@ export class CommentCardComponent implements OnInit {
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private interactionService: InteractionService,
   ) {
     this.authorId = localStorage.getItem('userId');
     if (this.authorId != null) {
@@ -92,11 +94,12 @@ export class CommentCardComponent implements OnInit {
   }
 
   onDeleteComment() {
-    if (!confirm('确定要删除评论吗?')) {
-      return;
-    }
-
-    this.san11pkService.deleteComment(new DeleteCommentRequest({
+    this.interactionService.confirm({
+      title: '删除评论',
+      message: '确定要删除这条评论及其回复吗？',
+      confirmText: '删除评论',
+      danger: true,
+    }).subscribe(confirmed => confirmed && this.san11pkService.deleteComment(new DeleteCommentRequest({
       name: this.comment.name,
     })).subscribe(
       empty => {
@@ -106,7 +109,7 @@ export class CommentCardComponent implements OnInit {
       error => {
         this.notificationService.warn('删除评论 失败: ' + error.statusMessage);
       }
-    );
+    ));
 
   }
 
@@ -146,7 +149,7 @@ export class CommentCardComponent implements OnInit {
       },
       error: error => {
         this.createReplyLoading = false;
-        this.notificationService.warn('failed' + error.statusMessage);
+        this.notificationService.warn(`回复失败: ${error.statusMessage}`);
       }
     });
   }
@@ -168,5 +171,9 @@ export class CommentCardComponent implements OnInit {
 
   mouseLeave() {
     this.hideControl = true;
+  }
+
+  canDelete(): boolean {
+    return isAdmin() || this.authorId === this.comment.authorId;
   }
 }

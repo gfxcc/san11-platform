@@ -15,7 +15,7 @@ import { San11PlatformServiceService } from '../../service/san11-platform-servic
   styleUrls: ['./account-info.component.css']
 })
 export class AccountInfoComponent implements OnInit {
-  PASSWORD_PLACEHOLDER = 'password-placeholder';
+  PASSWORD_PLACEHOLDER = '';
   user = new User();
   updatedUser = new User();
   basicInfoForm: FormGroup;
@@ -59,10 +59,8 @@ export class AccountInfoComponent implements OnInit {
             ]],
             password: [{ value: this.PASSWORD_PLACEHOLDER, disabled: !this.iAmTheUser() },
             [
-              Validators.required,
-              Validators.minLength(6),
               Validators.maxLength(32),
-              Validators.pattern(/^[0-9a-zA-Z\-_]*$/),
+              Validators.pattern(/^$|^[0-9a-zA-Z\-_]{6,}$/),
             ]],
           });
 
@@ -91,6 +89,11 @@ export class AccountInfoComponent implements OnInit {
 
   get verificationCode() {
     return this.emailVerificationForm.get('verificationCode')
+  }
+
+  get requiresVerification(): boolean {
+    return !!this.basicInfoForm &&
+      (this.email.value !== this.user.email || this.password.value !== this.PASSWORD_PLACEHOLDER);
   }
   //
   iAmTheUser() {
@@ -142,10 +145,16 @@ export class AccountInfoComponent implements OnInit {
     }, 1000);
   }
 
-  onBasicInfoNext() {
+  onBasicInfoNext(stepper: MatStepper) {
+    if (!this.requiresVerification) {
+      this.prepareUpdateUser();
+      this.onUpdateUser();
+      return;
+    }
     if (this.timeToResend === undefined) {
       this.onResendVerificationCodeClick();
     }
+    stepper.next();
   }
 
   prepareUpdateUser() {
@@ -188,7 +197,7 @@ export class AccountInfoComponent implements OnInit {
       });
     }
 
-    if (this.password.value != this.PASSWORD_PLACEHOLDER) {
+    if (this.password.value) {
       this.san11pkService.updatePassword(new UpdatePasswordRequest({
         name: this.user.name,
         password: this.password.value,

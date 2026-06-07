@@ -102,7 +102,7 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
 
     # binaries
     @GrpcAbortOnExcep
-    @iam_util.assert_resource_owner('parent')
+    @iam_util.assert_resource_owner('parent', allow_admin=False)
     def CreateBinary(self, request, context):
         return self.binary_handler.create(
             request.parent,
@@ -121,7 +121,7 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
         )
 
     @GrpcAbortOnExcep
-    @iam_util.assert_resource_owner('binary.name')
+    @iam_util.assert_resource_owner('binary.name', allow_admin=False)
     def UpdateBinary(self, request, context):
         return self.binary_handler.update(ModelBinary.from_pb(request.binary),
                                           FieldMask.from_pb(
@@ -129,6 +129,7 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
                                           context).to_pb()
 
     @GrpcAbortOnExcep
+    @iam_util.assert_resource_owner('name', allow_admin=False)
     def DeleteBinary(self, request, context):
         return self.binary_handler.delete(request.name, context).to_pb()
 
@@ -304,8 +305,6 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
         )
 
     @GrpcAbortOnExcep
-    @iam_util.assert_resource_owner(resource_name_path='package.name',
-                                    bypass="set(request.update_mask.paths) <= {'like_count', 'dislike_count'}")
     def UpdatePackage(self, request, context):
         return self.package_handler.update(
             ModelPackage.from_pb(request.package),
@@ -503,7 +502,7 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
     # image
 
     @GrpcAbortOnExcep
-    @iam_util.assert_resource_owner('parent')
+    @iam_util.assert_resource_owner('parent', allow_admin=False)
     def CreateImage(self, request, context):
         return self.image_handler.create_image(request, context)
 

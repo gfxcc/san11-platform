@@ -4,12 +4,14 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
+import { InteractionService } from 'src/app/common/interaction.service';
 import { EditorService } from 'src/app/service/editor.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
+import { getCategoryId } from 'src/app/utils/package_util';
 import { getFullUrl } from 'src/app/utils/resrouce_util';
 import { getAge } from 'src/app/utils/time_util';
 import { isAdmin, loadUser } from 'src/app/utils/user_util';
-import { DeleteThreadRequest, FieldMask, GetUserRequest, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
+import { DeleteThreadRequest, FieldMask, GetPackageRequest, GetUserRequest, Package, ResourceState, Thread, UpdateThreadRequest, User } from 'src/proto/san11-platform.pb';
 
 export interface Fruit {
   name: string;
@@ -23,6 +25,7 @@ export interface Fruit {
 export class ThreadDetailComponent implements OnInit {
   thread: Thread;
   user: User;
+  parentPackage: Package;
 
   hideUserImage: boolean = true;
 
@@ -39,6 +42,7 @@ export class ThreadDetailComponent implements OnInit {
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private interactionService: InteractionService,
     public editorService: EditorService,
   ) { }
 
@@ -65,8 +69,46 @@ export class ThreadDetailComponent implements OnInit {
 
         this.configTags();
         this.editorService.configEditor(!this.isAuthor(), this.thread.name);
+        this.loadParentPackage();
       }
     );
+  }
+
+  get parentPackageName(): string {
+    return this.parentPackage?.packageName ?? '资源详情';
+  }
+
+  get parentPackageRoute(): string[] {
+    return ['/', ...this.parentPackageResourceName.split('/')];
+  }
+
+  get parentCategoryRoute(): string[] {
+    return ['/categories', this.parentCategoryId.toString()];
+  }
+
+  get parentCategoryName(): string {
+    return GlobalConstants.categories.find(category => Number(category.value) === this.parentCategoryId)?.text ?? '资源分类';
+  }
+
+  private get parentPackageResourceName(): string {
+    return this.thread?.name.split('/threads/')[0] ?? '';
+  }
+
+  private get parentCategoryId(): number {
+    return this.parentPackage ? getCategoryId(this.parentPackage.name) : Number(this.route.snapshot.paramMap.get('categoryId'));
+  }
+
+  private loadParentPackage(): void {
+    if (!this.parentPackageResourceName) {
+      return;
+    }
+
+    this.san11pkService.getPackage(new GetPackageRequest({
+      name: this.parentPackageResourceName,
+    })).subscribe({
+      next: san11Package => this.parentPackage = san11Package,
+      error: error => this.notificationService.warn(`获取资源信息失败: ${error.statusMessage}`),
+    });
   }
 
   @HostListener('document:keydown.meta.enter', ['$event'])
@@ -122,21 +164,22 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   onDelete() {
-    if (!confirm(`确定要删除 ${this.thread.subject} 吗？`)) {
-      return;
-    }
-
-    this.san11pkService.deleteThread(new DeleteThreadRequest({
+    this.interactionService.confirm({
+      title: '删除讨论',
+      message: `确定要删除“${this.thread.subject}”吗？相关评论也将无法访问。`,
+      confirmText: '删除讨论',
+      danger: true,
+    }).subscribe(confirmed => confirmed && this.san11pkService.deleteThread(new DeleteThreadRequest({
       name: this.thread.name
     })).subscribe(
       (resp: Thread) => {
         this.notificationService.success('删除成功');
-        this.router.navigate(['discussion']);
+        this.router.navigate(this.parentPackageRoute, { fragment: 'discussion' });
       },
       error => {
         this.notificationService.warn(`删除失败: ${error.statusMessage}`);
       }
-    );
+    ));
   }
 
   onFlipState() {

@@ -33,6 +33,7 @@
 }
 
 .avatar-button {
+    position: relative;
     width: 74px;
     height: 74px;
     min-width: 0;
@@ -42,6 +43,35 @@
     overflow: hidden;
     line-height: 0;
     flex: 0 0 auto;
+}
+
+.avatar-edit-label {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 5px;
+    border-radius: 0 0 999px 999px;
+    background: rgba(17, 24, 39, .76);
+    color: #fff;
+    font-size: .68rem;
+    opacity: 0;
+    transition: opacity var(--animation-duration);
+}
+
+.avatar-button:hover .avatar-edit-label,
+.avatar-button:focus-visible .avatar-edit-label {
+    opacity: 1;
+}
+
+.avatar-edit-label mat-icon {
+    width: 13px;
+    height: 13px;
+    font-size: 13px;
 }
 
 .avatar-image {
@@ -92,6 +122,40 @@
     color: var(--text-color);
 }
 
+.avatar-preview-panel {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 12px;
+    border: 1px solid rgba(37, 99, 235, .24);
+    border-radius: var(--radius-md);
+    background: rgba(37, 99, 235, .05);
+}
+
+.avatar-preview-panel img {
+    width: 58px;
+    height: 58px;
+    border-radius: 999px;
+    object-fit: cover;
+}
+
+.avatar-preview-panel strong,
+.avatar-preview-panel span {
+    display: block;
+}
+
+.avatar-preview-panel span {
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: .82rem;
+}
+
+.avatar-preview-panel button {
+    border-radius: 999px;
+}
+
 @media (max-width: 40rem) {
     .author-card {
         align-items: flex-start;
@@ -106,5 +170,9 @@
     .avatar-image {
         width: 58px;
         height: 58px;
+    }
+
+    .avatar-preview-panel {
+        grid-template-columns: auto minmax(0, 1fr);
     }
 }

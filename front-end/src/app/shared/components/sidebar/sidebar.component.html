@@ -36,10 +36,16 @@
             <div *ngIf="this.isAdmin()">
                 <div class="section-label">管理</div>
                 <mat-list-option *ngFor="let adminModule of adminModules" [value]="adminModule"
+                    [selected]="isAdminModuleActive(adminModule)"
                     (click)="onClickSidenav(adminModule)">
                     <div class="nav-link">
                         <mat-icon>{{adminModule.icon}}</mat-icon>
                         <span>{{adminModule.text}}</span>
+                        <span *ngIf="pendingReviewCount > 0" class="admin-pending-badge"
+                            [attr.aria-label]="pendingReviewCount + ' 个待处理事项'"
+                            [matTooltip]="pendingReviewCount + ' 个待处理事项'">
+                            {{pendingReviewCount > 99 ? '99+' : pendingReviewCount}}
+                        </span>
                     </div>
                 </mat-list-option>
             </div>

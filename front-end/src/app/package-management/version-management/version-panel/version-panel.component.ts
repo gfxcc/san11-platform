@@ -7,7 +7,6 @@ import { BinaryService } from "../../../service/binary-service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { getCategoryId, getPackageUrl } from "../../../utils/package_util";
 import { getAcceptFileType } from "../../../utils/resrouce_util";
-import { isAdmin } from '../../../utils/user_util';
 import { CreateNewVersionComponent } from "../create-new-version/create-new-version.component";
 import { Branch } from "./branch/branch.component";
 import { inject } from '@angular/core';
@@ -93,7 +92,7 @@ export class VersionPanelComponent implements OnInit {
   }
 
   get hasEditPermission() {
-    return isAdmin() || this.package.authorId === localStorage.getItem('userId');
+    return this.isAuthor;
   }
 
   get isAuthor() {

@@ -27,6 +27,9 @@
 
     <div *ngIf="packages?.length === 0" class="dashboard-placeholder app-empty-state">
         <mat-icon>inventory_2</mat-icon>
-        <p>空空如也</p>
+        <p>{{listRequest?.filter ? '当前筛选条件下没有资源' : '这里还没有资源'}}</p>
+        <button *ngIf="listRequest?.filter" mat-stroked-button color="primary" type="button" (click)="clearFilter()">
+            清除筛选
+        </button>
     </div>
 </div>

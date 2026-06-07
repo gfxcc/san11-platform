@@ -12,7 +12,7 @@
     <form class="form" [formGroup]="newBinaryForm" (ngSubmit)="onNewBinaryFormSubmit()">
         <div class="field-stack">
             <mat-form-field appearance="outline">
-                <mat-label>分支</mat-label>
+                <mat-label>发布分支</mat-label>
                 <mat-select required (selectionChange)="newTagSelected($event.value)" [(value)]="this.tag">
                     <mat-option *ngFor="let tag of this.tags" [value]="tag">
                         {{tag}}
@@ -21,31 +21,40 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-                <mat-label>更新类型</mat-label>
+                <mat-label>版本变化</mat-label>
                 <mat-select name="updateType" (selectionChange)="onVersionSelectorUpdate($event.value)"
                     [(value)]="this.updateType">
-                    <mat-option value="major">major</mat-option>
-                    <mat-option value="minor">minor</mat-option>
-                    <mat-option value="patch">patch</mat-option>
-                    <mat-option value="custom">custom</mat-option>
+                    <mat-option value="major">重大更新</mat-option>
+                    <mat-option value="minor">功能更新</mat-option>
+                    <mat-option value="patch">问题修复</mat-option>
+                    <mat-option value="custom">自定义版本号</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
 
-        <div class="version-section">
+        <div class="version-preview">
+            <span>即将发布</span>
+            <strong>{{newVersion.major}}.{{newVersion.minor}}.{{newVersion.patch}}</strong>
+            <small>{{tag}}</small>
+        </div>
+
+        <div *ngIf="updateType === 'custom'" class="version-section">
             <mat-form-field class="version-field" appearance="outline" floatLabel="always">
-                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="major"
-                    autocomplete="off" [value]="this.newVersion.major.toString()" #majorInput name="majorInput"
+                <mat-label>主版本</mat-label>
+                <input matInput type="number" placeholder="major" autocomplete="off"
+                    [value]="this.newVersion.major.toString()" #majorInput name="majorInput"
                     (change)="updateMajor(majorInput)" />
             </mat-form-field>
             <mat-form-field class="version-field" appearance="outline" floatLabel="always">
-                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="minor"
-                    autocomplete="off" [value]="this.newVersion.minor.toString()" #minorInput name="minorInput"
+                <mat-label>次版本</mat-label>
+                <input matInput type="number" placeholder="minor" autocomplete="off"
+                    [value]="this.newVersion.minor.toString()" #minorInput name="minorInput"
                     (change)="updateMinor(minorInput)" />
             </mat-form-field>
             <mat-form-field class="version-field" appearance="outline" floatLabel="always">
-                <input matInput [disabled]="this.updateType!=&quot;custom&quot;" type="number" placeholder="patch"
-                    autocomplete="off" [value]="this.newVersion.patch.toString()" #patchInput name="patchInput"
+                <mat-label>修订号</mat-label>
+                <input matInput type="number" placeholder="patch" autocomplete="off"
+                    [value]="this.newVersion.patch.toString()" #patchInput name="patchInput"
                     (change)="updatePatch(patchInput)" />
             </mat-form-field>
         </div>
@@ -58,8 +67,9 @@
             </ckeditor>
         </div>
 
+        <label class="section-label">选择下载方式</label>
         <mat-tab-group mat-align-tabs="start" class="version-tabs">
-            <mat-tab label="网盘链接">
+            <mat-tab label="使用网盘链接">
                 <div class="file-section">
                     <mat-form-field appearance="outline">
                         <mat-label>链接</mat-label>
@@ -73,8 +83,9 @@
                 </div>
             </mat-tab>
 
-            <mat-tab label="上传文件 (限10M)">
+            <mat-tab label="直接上传文件">
                 <div class="file-section">
+                    <p class="file-section-hint">选择文件后自动上传，单个文件不超过 10MB。</p>
                     <div class="upload-actions">
                         <input hidden #fileInput type="file" [accept]="acceptFileType" name="fileInput"
                             (change)="selectFile(fileInput.files)">
@@ -84,21 +95,16 @@
                             {{ file ? file.name : '选择文件' }}
                         </button>
                         <span class="example-spacer"></span>
-                        <button [disabled]="!(this.file != undefined && this.upload ===
-                undefined)" type="button" mat-stroked-button color="primary" (click)="uploadTmpFile()">
-                            {{this.upload ? (this.upload.state != 'DONE' ?
-                            this.speed.toFixed(1) + this.unit: '已上传') : '上传'}}
-                        </button>
+                        <span class="upload-state" *ngIf="upload">
+                            <mat-icon>{{upload.state === 'DONE' ? 'check_circle' : 'cloud_upload'}}</mat-icon>
+                            {{upload.state === 'DONE' ? '上传完成' : ('正在上传 ' + upload.progress.toFixed(0) + '%')}}
+                        </span>
                     </div>
 
                     <mat-progress-bar *ngIf="upload" [mode]="upload.state ==
                     'PENDING' ?
                     'buffer' : 'determinate'" [value]="upload.progress" class="upload-progress">
                     </mat-progress-bar>
-                    <mat-slide-toggle class="auto-create-toggle" [checked]="this.autoCreateChecked" color='primary'
-                        (change)="toggleAutoCreate($event)">上传完成后自动创建</mat-slide-toggle>
-
-                    <div *ngIf="showExperimentalRegion"></div>
                 </div>
             </mat-tab>
         </mat-tab-group>
@@ -116,7 +122,10 @@
 
             <span class="example-spacer"></span>
             <button mat-stroked-button type="button" (click)="onCancel()" color="accent">取消</button>
-            <button type="submit" [disabled]="!newBinaryForm.valid" mat-flat-button color="primary">创建</button>
+            <button type="submit" [disabled]="!newBinaryForm.valid" mat-flat-button color="primary">
+                <mat-icon>publish</mat-icon>
+                发布版本
+            </button>
         </div>
     </form>
 </mat-dialog-content>

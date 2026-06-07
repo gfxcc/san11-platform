@@ -274,3 +274,57 @@ h5 {
         display: none;
     }
 }
+.search-bar-container {
+    position: relative;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+    z-index: 20;
+    overflow: hidden;
+    padding: 6px;
+    box-shadow: var(--shadow-lg);
+}
+
+.search-suggestions button {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 2px 9px;
+    width: 100%;
+    padding: 9px 10px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-color);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.search-suggestions button:hover {
+    background: var(--surface-muted);
+}
+
+.search-suggestions mat-icon {
+    grid-row: span 2;
+    align-self: center;
+    color: var(--primary-color);
+}
+
+.search-suggestions span {
+    font-weight: 800;
+}
+
+.search-suggestions small {
+    color: var(--text-muted);
+}
+
+.search-suggestion-empty {
+    padding: 12px;
+    color: var(--text-muted);
+    font-size: .84rem;
+    text-align: center;
+}

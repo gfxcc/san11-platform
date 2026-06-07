@@ -11,7 +11,7 @@
 
     <div class="thread-main">
         <div class="thread-title-line">
-            <a class="thread-title" href="{{thread.name}}" target="_blink">{{thread.subject}}</a>
+            <a class="thread-title" [routerLink]="'/' + thread.name">{{thread.subject}}</a>
             <mat-icon *ngIf="thread.pinned" class="pin-icon" matTooltip="置顶">push_pin</mat-icon>
         </div>
 

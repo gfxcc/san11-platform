@@ -8,6 +8,57 @@
     min-width: 0;
 }
 
+.thread-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    min-height: 38px;
+    color: var(--text-muted);
+    font-size: .9rem;
+    font-weight: 700;
+}
+
+.thread-breadcrumb a,
+.thread-breadcrumb span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    padding: 6px 8px;
+    border-radius: 8px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.thread-breadcrumb a {
+    flex: 0 0 auto;
+    transition: color var(--animation-duration), background-color var(--animation-duration);
+}
+
+.thread-breadcrumb a:hover {
+    background: rgba(37, 99, 235, .08);
+    color: var(--primary-strong);
+}
+
+.thread-breadcrumb span {
+    overflow: hidden;
+    color: var(--text-color);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.thread-breadcrumb mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.thread-breadcrumb .breadcrumb-separator {
+    flex: 0 0 auto;
+    color: var(--text-subtle);
+}
+
 .thread-panel {
     overflow: hidden;
 }
@@ -302,6 +353,20 @@ a:hover {
 }
 
 @media (max-width: 48rem) {
+    .thread-breadcrumb {
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .thread-breadcrumb::-webkit-scrollbar {
+        display: none;
+    }
+
+    .thread-breadcrumb span {
+        overflow: visible;
+        text-overflow: clip;
+    }
+
     .thread-header {
         display: block;
         padding: 18px 16px;

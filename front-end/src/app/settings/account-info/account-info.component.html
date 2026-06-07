@@ -12,8 +12,12 @@
                 <ng-template matStepLabel>1. 基本信息</ng-template>
                 <ng-template matStepContent>
 
-                    <form class="account-form" [formGroup]="basicInfoForm" (ngSubmit)="onBasicInfoNext()">
+                    <form class="account-form" [formGroup]="basicInfoForm" (ngSubmit)="onBasicInfoNext(stepper)">
                         <div class="field-stack">
+                            <div class="account-field-heading">
+                                <mat-icon>badge</mat-icon>
+                                <div><strong>公开资料</strong><span>修改用户名不需要邮箱验证</span></div>
+                            </div>
                             <mat-form-field appearance="outline">
                                 <mat-label>用户名</mat-label>
                                 <input matInput autocomplete="off" formControlName="username">
@@ -31,8 +35,13 @@
                                 </mat-error>
                             </mat-form-field>
 
+                            <div class="account-field-heading" *ngIf="this.iAmTheUser()">
+                                <mat-icon>lock</mat-icon>
+                                <div><strong>登录安全</strong><span>修改邮箱或密码时需要验证码</span></div>
+                            </div>
+
                             <mat-form-field appearance="outline" *ngIf="this.iAmTheUser()">
-                                <mat-label>密码</mat-label>
+                                <mat-label>新密码（留空则不修改）</mat-label>
                                 <input matInput type="password" autocomplete="off" formControlName="password">
                                 <mat-error *ngIf="password.errors?.minlength && password.touched" align="end">
                                     至少需要6个字符
@@ -58,8 +67,8 @@
                         </div>
 
                         <div class="step-actions">
-                            <button mat-flat-button color="primary" matStepperNext [disabled]="!basicInfoForm.valid"
-                                type="submit">下一步</button>
+                            <button mat-flat-button color="primary" [disabled]="!basicInfoForm.valid"
+                                type="submit">{{requiresVerification ? '验证身份并继续' : '保存基本信息'}}</button>
                         </div>
                     </form>
 
@@ -90,7 +99,7 @@
                 <div class="update-summary">
                     <p *ngIf="this.updatedUser.username">新用户名: {{this.updatedUser.username}}</p>
                     <p *ngIf="this.updatedUser.email">新邮箱: {{this.updatedUser.email}}</p>
-                    <p *ngIf="password.value != this.PASSWORD_PLACEHOLDER">更新密码</p>
+                    <p *ngIf="password.value">更新密码</p>
                 </div>
 
                 <div class="step-actions">

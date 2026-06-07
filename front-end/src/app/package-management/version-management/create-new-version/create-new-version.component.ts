@@ -11,6 +11,7 @@ import { Binary, CloudDiskFile, CreateBinaryRequest, File, Version } from "../..
 import { TextInputDialogComponent } from "../../../common/components/text-input-dialog/text-input-dialog.component";
 import { GlobalConstants } from "../../../common/global-constants";
 import { NotificationService } from "../../../common/notification.service";
+import { InteractionService } from "../../../common/interaction.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { Upload } from '../../../service/upload';
 import { UploadService } from "../../../service/upload.service";
@@ -77,10 +78,7 @@ export class CreateNewVersionComponent implements OnInit {
   useAwsS3 = true;
 
   @HostListener('window:keyup.esc') onKeyUp() {
-    let cn = confirm('放弃编辑?');
-    if (cn) {
-      this.dialogRef.close();
-    }
+    this.requestCancel();
   }
 
   @HostListener('window:beforeunload', ['$event']) unloadHandler(event: Event) {
@@ -93,6 +91,7 @@ export class CreateNewVersionComponent implements OnInit {
     private dialog: MatDialog,
     private san11PkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private interactionService: InteractionService,
     public dialogRef: MatDialogRef<CreateNewVersionComponent>,
     public uploadService: UploadService,
     private fb: FormBuilder,
@@ -150,10 +149,7 @@ export class CreateNewVersionComponent implements OnInit {
   ngOnInit(): void {
     this.dialogRef.disableClose = true;
     this.dialogRef.backdropClick().subscribe((_) => {
-      let cn = confirm('放弃编辑?');
-      if (cn) {
-        this.dialogRef.close();
-      }
+      this.requestCancel();
     });
 
     this.onVersionSelectorUpdate(this.updateType);
@@ -208,7 +204,7 @@ export class CreateNewVersionComponent implements OnInit {
       this.newBinaryForm.get('fileUploaded').setValue(false);
       return;
     } else if (file.size > GlobalConstants.maxBinarySize) {
-      alert('上传文件必须小于: ' + (GlobalConstants.maxBinarySize / 1024 / 1024).toString() + 'MB');
+      this.notificationService.warn(`上传文件必须小于 ${GlobalConstants.maxBinarySize / 1024 / 1024}MB`);
       this.fileInputElement.nativeElement.value = '';
       this.newBinaryForm.get('fileUploaded').setValue(false);
       return;
@@ -228,6 +224,7 @@ export class CreateNewVersionComponent implements OnInit {
         this.convertedSireVersion = '2';
       }
     }
+    this.uploadTmpFile();
   }
 
   uploadTmpFile(): void {
@@ -250,9 +247,6 @@ export class CreateNewVersionComponent implements OnInit {
 
         if (upload.state === 'DONE') {
           this.newBinaryForm.get('fileUploaded').setValue(true);
-          if (this.autoCreateChecked) {
-            this.onNewBinaryFormSubmit();
-          }
         }
       });
     } else {
@@ -286,9 +280,6 @@ export class CreateNewVersionComponent implements OnInit {
         }
         this.upload.state = 'DONE';
         this.newBinaryForm.get('fileUploaded').setValue(true);
-        if (this.autoCreateChecked) {
-          this.onNewBinaryFormSubmit();
-        }
       });
     }
   }
@@ -321,6 +312,9 @@ export class CreateNewVersionComponent implements OnInit {
 
 
   onNewBinaryFormSubmit() {
+    if (this.newBinaryForm.invalid) {
+      return;
+    }
     let binary: Binary = new Binary({
       version: this.newVersion,
       description: this.editorService.getData(),
@@ -395,19 +389,20 @@ export class CreateNewVersionComponent implements OnInit {
   }
 
   onCancel() {
-    if (this.uploadSub) {
-      if (!this.uploadSub.closed) {
-        if (!confirm('上传尚未完成，确定要取消吗？')) {
-          return;
-        }
-      } else {
-        if (!confirm('创建尚未完成，确定要取消吗？')) {
-          return;
-        }
-      }
-      this.uploadSub.unsubscribe();
-    }
-    this.dialogRef.close();
+    this.requestCancel();
+  }
+
+  private requestCancel(): void {
+    this.interactionService.confirm({
+      title: this.upload && this.upload.state !== 'DONE' ? '取消上传并退出？' : '放弃本次发布？',
+      message: '尚未发布的版本信息和上传进度将不会保留。',
+      confirmText: '放弃并退出',
+      danger: true,
+    }).subscribe(confirmed => {
+      if (!confirmed) return;
+      this.uploadSub?.unsubscribe();
+      this.dialogRef.close();
+    });
   }
 
   onClose() {
@@ -485,4 +480,3 @@ export class CreateNewVersionComponent implements OnInit {
     return this.latestVersions[tag];
   }
 }
-

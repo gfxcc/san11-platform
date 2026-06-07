@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
 import { ActivatedRoute, Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
 import { NotificationService } from 'src/app/common/notification.service';
+import { InteractionService } from 'src/app/common/interaction.service';
 import { EditorService } from 'src/app/service/editor.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
@@ -21,12 +22,14 @@ export class ArticleDetailComponent implements OnInit {
   user: User;
 
   descEditor_updated = false;
+  editing = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private interactionService: InteractionService,
     private uploadService: UploadService,
     public editorService: EditorService,
   ) { }
@@ -44,10 +47,22 @@ export class ArticleDetailComponent implements OnInit {
 
   ngAfterViewInit(): void {
 
-    if (this.isAuthor()) {
-      this.articleSubjectElement.nativeElement.contentEditable = true;
-    }
+  }
 
+  startEditing(): void {
+    this.editing = true;
+    this.editorService.disabled = false;
+    this.articleSubjectElement.nativeElement.contentEditable = 'true';
+    this.articleSubjectElement.nativeElement.focus();
+  }
+
+  cancelEditing(): void {
+    this.editing = false;
+    this.descEditor_updated = false;
+    this.editorService.disabled = true;
+    this.articleSubjectElement.nativeElement.contentEditable = 'false';
+    this.articleSubjectElement.nativeElement.innerText = this.article.subject;
+    this.editorService.setData(this.article.content);
   }
 
   @HostListener('document:keydown.meta.enter', ['$event'])
@@ -80,10 +95,12 @@ export class ArticleDetailComponent implements OnInit {
   }
 
   onDelete() {
-    if (!confirm(`确定要删除文章 ${this.article.subject} 吗？`)) {
-      return;
-    }
-    this.san11pkService.deleteArticle(new DeleteArticleRequest({
+    this.interactionService.confirm({
+      title: '删除文章',
+      message: `确定要删除“${this.article.subject}”吗？此操作不可撤销。`,
+      confirmText: '删除文章',
+      danger: true,
+    }).subscribe(confirmed => confirmed && this.san11pkService.deleteArticle(new DeleteArticleRequest({
       name: this.article.name
     })).subscribe(
       (resp: Article) => {
@@ -93,7 +110,7 @@ export class ArticleDetailComponent implements OnInit {
       error => {
         this.notificationService.warn(`删除失败: ${error.statusMessage}`);
       }
-    );
+    ));
   }
 
   onFlipState() {
@@ -135,6 +152,9 @@ export class ArticleDetailComponent implements OnInit {
       })).subscribe({
         next: (resp: Article) => {
           this.article = resp;
+          this.editing = false;
+          this.editorService.disabled = true;
+          this.articleSubjectElement.nativeElement.contentEditable = 'false';
         },
         error: error => {
           this.notificationService.warn(`更新失败: ${error.statusMessage}`);

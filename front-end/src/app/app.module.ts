@@ -16,6 +16,7 @@ import { AngularMaterialModule } from './angular-material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoadingComponent } from './common/components/loading/loading.component';
+import { ConfirmDialogComponent } from './common/components/confirm-dialog/confirm-dialog.component';
 import { TextDialogComponent } from './common/components/text-dialog/text-dialog.component';
 import { TextInputDialogComponent } from './common/components/text-input-dialog/text-input-dialog.component';
 import { GlobalConstants } from './common/global-constants';
@@ -35,6 +36,7 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
         SigninComponent,
         RegisterComponent,
         LoadingComponent,
+        ConfirmDialogComponent,
         PackageDetailComponent,
         VersionPanelComponent,
         BranchComponent,

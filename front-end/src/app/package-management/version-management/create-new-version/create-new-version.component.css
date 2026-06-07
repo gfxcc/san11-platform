@@ -73,6 +73,27 @@
     min-width: 0;
 }
 
+.version-preview {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 14px 16px;
+    border: 1px solid rgba(37, 99, 235, .18);
+    border-radius: var(--radius-md);
+    background: rgba(37, 99, 235, .06);
+    color: var(--text-muted);
+}
+
+.version-preview strong {
+    color: var(--primary-strong);
+    font-size: 1.35rem;
+}
+
+.version-preview small {
+    margin-left: auto;
+    font-weight: 700;
+}
+
 .section-label {
     color: var(--text-color);
     font-weight: 800;
@@ -89,6 +110,12 @@
     display: grid;
     gap: 16px;
     padding: 18px 0 4px;
+}
+
+.file-section-hint {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: .88rem;
 }
 
 .version-tabs {
@@ -118,6 +145,22 @@
 
 .upload-progress {
     height: 3px;
+}
+
+.upload-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-muted);
+    font-size: .86rem;
+    font-weight: 700;
+}
+
+.upload-state mat-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--success-color);
+    font-size: 18px;
 }
 
 .auto-create-toggle {

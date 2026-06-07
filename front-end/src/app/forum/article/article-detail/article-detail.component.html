@@ -2,7 +2,7 @@
     <article class="article-detail surface-panel">
         <header class="detail-header">
             <div class="article-kicker">社区文章</div>
-            <h1 #articleSubjectElement (focus)="this.descEditor_updated=true;" class="entry-title">
+            <h1 #articleSubjectElement class="entry-title">
                 {{article.subject}}
             </h1>
 
@@ -24,14 +24,25 @@
 
         <footer class="article-actions">
             <div *ngIf="(isAdmin() || isAuthor())" class="management-actions">
-                <button mat-stroked-button color="warn" (click)="onDelete()">
-                    <mat-icon>delete</mat-icon>
-                    删除
+                <button *ngIf="isAuthor() && !editing" mat-stroked-button color="primary" (click)="startEditing()">
+                    <mat-icon>edit</mat-icon>
+                    编辑文章
                 </button>
-                <button mat-stroked-button color="warn" (click)="onFlipState()">
-                    <mat-icon>{{article.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
-                    {{article.state===3 ? '发布' : '隐藏'}}
+                <button *ngIf="editing" mat-stroked-button (click)="cancelEditing()">取消编辑</button>
+                <button mat-stroked-button [matMenuTriggerFor]="articleMenu">
+                    <mat-icon>settings</mat-icon>
+                    管理
                 </button>
+                <mat-menu #articleMenu="matMenu">
+                    <button mat-menu-item (click)="onFlipState()">
+                        <mat-icon>{{article.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
+                        {{article.state===3 ? '发布文章' : '隐藏文章'}}
+                    </button>
+                    <button mat-menu-item class="danger-menu-item" (click)="onDelete()">
+                        <mat-icon>delete</mat-icon>
+                        删除文章
+                    </button>
+                </mat-menu>
             </div>
 
             <span class="example-spacer"></span>
@@ -39,7 +50,7 @@
             <app-feedback-card [target]="this.article.name" [likeCount]="this.article.likeCount"
                 [dislikeCount]="this.article.dislikeCount"></app-feedback-card>
 
-            <button *ngIf="this.descEditor_updated" mat-flat-button color="primary" class="save-button"
+            <button *ngIf="editing && this.descEditor_updated" mat-flat-button color="primary" class="save-button"
                 (click)="onUpdate()">
                 <mat-icon>save</mat-icon>
                 更新

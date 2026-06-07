@@ -6,8 +6,9 @@ import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
 import { activityToEvent } from 'src/app/utils/activity_util';
 import { notificationToEvent } from 'src/app/utils/notification_util';
-import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse, ListNotificationsRequest, ListNotificationsResponse, Notification } from 'src/proto/san11-platform.pb';
+import { Action, Activity, ListActivitiesRequest, ListActivitiesResponse, ListNotificationsRequest, ListNotificationsResponse, ListPackagesRequest, Notification, Package, ResourceState } from 'src/proto/san11-platform.pb';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
+import { GlobalConstants } from 'src/app/common/global-constants';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class AdminMessageBoardComponent implements OnInit {
   socialActivaties: any[] = [];
   downloads: any[] = [];
   notifications: any[] = [];
+  pendingReviews: Package[] = [];
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -37,7 +39,23 @@ export class AdminMessageBoardComponent implements OnInit {
       this.userId = params.userId;
       this.load_activities();
       this.loadNotifications();
+      this.loadPendingReviews();
     });
+  }
+
+  loadPendingReviews(): void {
+    this.pendingReviews = [];
+    GlobalConstants.categories.forEach(category => {
+      this.san11pkService.listPackages(new ListPackagesRequest({
+        parent: `categories/${category.value}`,
+      })).subscribe(resp => {
+        this.pendingReviews.push(...resp.packages.filter(item => item.state === ResourceState.UNDER_REVIEW));
+      });
+    });
+  }
+
+  openPackage(san11Package: Package): void {
+    this.router.navigate(san11Package.name.split('/'));
   }
 
   load_activities() {

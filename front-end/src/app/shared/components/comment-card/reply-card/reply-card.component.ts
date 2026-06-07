@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { getAge } from 'src/app/utils/time_util';
 import { DeleteReplyRequest, GetUserRequest, Reply, User } from "../../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../../common/notification.service";
+import { InteractionService } from "../../../../common/interaction.service";
 import { San11PlatformServiceService } from "../../../../service/san11-platform-service.service";
 import { isAdmin } from "../../../../utils/user_util";
 
@@ -31,6 +32,7 @@ export class ReplyCardComponent implements OnInit {
     private router: Router,
     private san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private interactionService: InteractionService,
   ) {
     this.authorId = localStorage.getItem('userId');
   }
@@ -48,10 +50,12 @@ export class ReplyCardComponent implements OnInit {
   }
 
   onDeleteReply() {
-    if (!confirm('确定要删除评论 ' + this.reply.text + ' 吗?')) {
-      return;
-    }
-    this.san11pkService.deleteReply(new DeleteReplyRequest({
+    this.interactionService.confirm({
+      title: '删除回复',
+      message: '确定要删除这条回复吗？',
+      confirmText: '删除回复',
+      danger: true,
+    }).subscribe(confirmed => confirmed && this.san11pkService.deleteReply(new DeleteReplyRequest({
       name: this.reply.name,
     })).subscribe(
       empty => {
@@ -61,7 +65,7 @@ export class ReplyCardComponent implements OnInit {
       error => {
         this.notificationService.warn('回复删除失败');
       }
-    );
+    ));
   }
 
   onUserClick() {
@@ -85,5 +89,9 @@ export class ReplyCardComponent implements OnInit {
 
   mouseLeave() {
     this.hideControl = true;
+  }
+
+  canDelete(): boolean {
+    return isAdmin() || this.authorId === this.reply.authorId;
   }
 }

@@ -329,3 +329,50 @@
         padding-left: 12px;
     }
 }
+.review-queue {
+    margin-bottom: 18px;
+    padding: 20px;
+}
+
+.review-grid {
+    display: grid;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.review-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text-color);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.review-item:hover {
+    border-color: rgba(37, 99, 235, .35);
+    background: rgba(37, 99, 235, .04);
+}
+
+.review-item span {
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.review-item small {
+    color: var(--text-muted);
+}
+
+.compact-empty-state {
+    min-height: 100px;
+}

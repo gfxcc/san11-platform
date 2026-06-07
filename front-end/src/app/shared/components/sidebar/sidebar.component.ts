@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { catchError, filter, forkJoin, map, of } from 'rxjs';
 import { onMobile } from 'src/app/utils/layout_util';
-import { CreateTagRequest, CreateThreadRequest, DeleteTagRequest, ListTagsRequest, Tag, Thread } from '../../../../proto/san11-platform.pb';
+import { CreateTagRequest, CreateThreadRequest, DeleteTagRequest, ListPackagesRequest, ListTagsRequest, ResourceState, Tag, Thread } from '../../../../proto/san11-platform.pb';
 import { GlobalConstants } from '../../../common/global-constants';
 import { NotificationService } from '../../../common/notification.service';
+import { InteractionService } from '../../../common/interaction.service';
 import { ComponentMessage, EventEmiterService } from '../../../service/event-emiter.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { isAdmin, loadUser, signedIn } from '../../../utils/user_util';
@@ -42,10 +43,12 @@ export class SidebarComponent implements OnInit {
 
   selectedCategory = undefined;
   tags: Tag[] = [];
+  pendingReviewCount = 0;
   private categoryRouteActive = false;
 
   constructor(
     private notificationService: NotificationService,
+    private interactionService: InteractionService,
     private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private router: Router,
@@ -61,6 +64,9 @@ export class SidebarComponent implements OnInit {
     if (this.categoryRouteActive) {
       this.loadTags();
     }
+    if (this.isAdmin()) {
+      this.loadPendingReviewCount();
+    }
 
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -70,13 +76,33 @@ export class SidebarComponent implements OnInit {
 
         if (!this.categoryRouteActive) {
           this.tags = [];
+          if (this.isAdmin()) {
+            this.loadPendingReviewCount();
+          }
           return;
         }
 
         if (previousCategory !== this.selectedCategory) {
           this.loadTags();
         }
+
+        if (this.isAdmin()) {
+          this.loadPendingReviewCount();
+        }
       });
+  }
+
+  loadPendingReviewCount(): void {
+    forkJoin(GlobalConstants.categories.map(category =>
+      this.san11pkService.listPackages(new ListPackagesRequest({
+        parent: `categories/${category.value}`,
+      })).pipe(
+        map(response => response.packages.filter(item => item.state === ResourceState.UNDER_REVIEW).length),
+        catchError(() => of(0)),
+      )
+    )).subscribe(counts => {
+      this.pendingReviewCount = counts.reduce((total, count) => total + count, 0);
+    });
   }
 
   loadTags() {
@@ -112,10 +138,12 @@ export class SidebarComponent implements OnInit {
   }
 
   removeTag(tag: Tag) {
-    if (!confirm(`删除标签【${tag.name}】?`)) {
-      return;
-    }
-    this.san11pkService.deleteTag(new DeleteTagRequest({ name: tag.name })).subscribe(
+    this.interactionService.confirm({
+      title: '删除标签',
+      message: `确定要删除“${tag.tagName}”吗？使用该标签的筛选入口也会消失。`,
+      confirmText: '删除标签',
+      danger: true,
+    }).subscribe(confirmed => confirmed && this.san11pkService.deleteTag(new DeleteTagRequest({ name: tag.name })).subscribe(
       resp => {
         this.notificationService.success('删除标签 成功');
         this.loadTags();
@@ -123,7 +151,7 @@ export class SidebarComponent implements OnInit {
       error => {
         this.notificationService.warn(`无法删除标签【${tag.name}】: ${error.statusMessage}`)
       }
-    );
+    ));
   }
 
   onClickTag(tag: Tag) {
@@ -156,7 +184,7 @@ export class SidebarComponent implements OnInit {
 
   onClickCreateTool() {
     if (!signedIn()) {
-      this.notificationService.warn('上传工具需要登陆');
+      this.notificationService.warn('上传工具需要登录');
     } else {
       this.navigateToCreate();
       this.categoryNav.deselectAll();
@@ -232,6 +260,10 @@ export class SidebarComponent implements OnInit {
   // utilities wrapper
   isAdmin() {
     return isAdmin()
+  }
+
+  isAdminModuleActive(adminModule): boolean {
+    return this.router.url.split('?')[0] === adminModule.link[0];
   }
 
   private syncSelectionFromUrl() {

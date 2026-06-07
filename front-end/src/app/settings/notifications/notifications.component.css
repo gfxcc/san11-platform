@@ -85,3 +85,18 @@
         padding: 22px 16px 18px;
     }
 }
+.settings-save-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-muted);
+    font-size: .82rem;
+    font-weight: 700;
+}
+
+.settings-save-state mat-icon {
+    width: 17px;
+    height: 17px;
+    color: var(--success-color);
+    font-size: 17px;
+}

@@ -226,6 +226,15 @@ export class EditorService {
     this.editorElement.setData(data);
   }
 
+  setDisabled(disabled: boolean): void {
+    this.disabled = disabled;
+    this.updateToolbarVisibility();
+  }
+
+  focus(): void {
+    this.editorElement?.editing.view.focus();
+  }
+
   onReady(editor) {
     this.editorElement = editor;
     if (this.imageUploadPath !== undefined) {
@@ -233,13 +242,17 @@ export class EditorService {
         return new MyUploadAdapter(loader, this.san11pkService, this.uploadService, this.imageUploadPath, this.progressService, this.ngZone);
       };
     }
-    if (this.disabled) {
-      const toolbarElement = editor.ui.view.toolbar.element;
-      toolbarElement.style.display = 'none';
-    }
+    this.updateToolbarVisibility();
   }
 
   onFocus() { }
   onBlur() { }
+
+  private updateToolbarVisibility(): void {
+    const toolbarElement = this.editorElement?.ui.view.toolbar.element;
+    if (toolbarElement) {
+      toolbarElement.style.display = this.disabled ? 'none' : '';
+    }
+  }
 
 }

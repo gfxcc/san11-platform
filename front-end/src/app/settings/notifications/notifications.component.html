@@ -5,6 +5,10 @@
                 <h1>消息通知</h1>
                 <p>选择站内消息和邮件通知的接收方式。</p>
             </div>
+            <span class="settings-save-state">
+                <mat-icon>{{saving ? 'sync' : 'cloud_done'}}</mat-icon>
+                {{saving ? '正在保存' : '更改会自动保存'}}
+            </span>
         </header>
 
         <div class="section">

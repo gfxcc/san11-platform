@@ -28,7 +28,7 @@ interface ResourceGroup {
 })
 export class CreateNewComponent implements OnInit {
 
-  selectedCategory: string;
+  selectedCategory: ResourceType;
   categories = GlobalConstants.categories;
   resourceGroups: ResourceGroup[] = [
     {

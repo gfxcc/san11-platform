@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -36,6 +35,7 @@ import {
 } from '../../../proto/san11-platform.pb';
 import { GlobalConstants } from '../../common/global-constants';
 import { NotificationService } from '../../common/notification.service';
+import { InteractionService } from '../../common/interaction.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { UploadService } from '../../service/upload.service';
 import { increment } from '../../utils/number_util';
@@ -50,20 +50,21 @@ const DESCRIPTION_OVERFLOW_TOLERANCE_PX = 8;
   templateUrl: './package-detail.component.html',
   styleUrls: ['./package-detail.component.css'],
 })
-export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('packageNameTitle') packageNameElement: ElementRef<HTMLElement>;
+export class PackageDetailComponent implements OnInit, OnDestroy {
   @ViewChild('gallery') galleryElementCatched;
   @ViewChild('descriptionContainer') descriptionElement: ElementRef<HTMLElement>;
+  @ViewChild('descriptionSection') descriptionSection: ElementRef<HTMLElement>;
+  @ViewChild('discussionSection') discussionSection: ElementRef<HTMLElement>;
+  @ViewChild('screenshotsSection') screenshotsSection: ElementRef<HTMLElement>;
   @ViewChild('versionsSection') versionsSection: ElementRef<HTMLElement>;
 
   images: ImageItem[] = [];
   package: Package;
   author: User = new User({});
 
-  packageNameUpdated = false;
-  authorZone = false;
-
+  packageNameDraft = '';
   descEditor_updated = false;
+  descriptionEditing = false;
   descEditor_onFocus = false;
   descFolded = true;
   descriptionCanExpand = false;
@@ -77,12 +78,14 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private readonly destroyRef = inject(DestroyRef);
   private descriptionOverflowTimer: ReturnType<typeof setTimeout> | undefined;
+  private discussionScrollTimer: ReturnType<typeof setTimeout> | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     public san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private interactionService: InteractionService,
     private cd: ChangeDetectorRef,
     private uploadService: UploadService,
     public editorService: EditorService,
@@ -98,16 +101,19 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
         this.package = data.package;
         this.initializePage();
       });
-  }
 
-  ngAfterViewInit(): void {
-    if (this.isAuthor() && this.packageNameElement?.nativeElement) {
-      this.packageNameElement.nativeElement.contentEditable = 'true';
-    }
+    this.route.fragment
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(fragment => {
+        if (fragment === 'discussion') {
+          this.scheduleDiscussionScroll();
+        }
+      });
   }
 
   ngOnDestroy(): void {
     this.clearDescriptionOverflowTimer();
+    clearTimeout(this.discussionScrollTimer);
   }
 
   // Keyboard and viewport events
@@ -146,6 +152,69 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     return GlobalConstants.maxImageSize / 1024 / 1024;
   }
 
+  get packageNameChanged(): boolean {
+    return this.packageNameDraft.trim() !== this.package.packageName;
+  }
+
+  get categoryId(): number {
+    return getCategoryId(this.package.name);
+  }
+
+  get categoryName(): string {
+    return GlobalConstants.categories.find(category => Number(category.value) === this.categoryId)?.text ?? '资源分类';
+  }
+
+  get resourceStatus(): { label: string; description: string; icon: string; tone: string } {
+    switch (this.package.state) {
+      case ResourceState.NORMAL:
+        return {
+          label: '正常展示',
+          description: '资源已公开，访客可以浏览和下载。',
+          icon: 'check_circle',
+          tone: 'normal',
+        };
+      case ResourceState.UNDER_REVIEW:
+        return {
+          label: '待审核',
+          description: '资源正在等待管理员审核，暂未公开展示。',
+          icon: 'pending_actions',
+          tone: 'review',
+        };
+      case ResourceState.HIDDEN:
+        return {
+          label: '已隐藏',
+          description: '资源已停止公开展示，作者与管理员仍可访问。',
+          icon: 'visibility_off',
+          tone: 'hidden',
+        };
+      case ResourceState.SCHEDULED_DELETE:
+        return {
+          label: '待删除',
+          description: '作者已申请删除，等待系统或管理员处理。',
+          icon: 'schedule',
+          tone: 'danger',
+        };
+      case ResourceState.DELETED:
+        return {
+          label: '已删除',
+          description: '资源已被删除，不再对访客开放。',
+          icon: 'delete',
+          tone: 'danger',
+        };
+      default:
+        return {
+          label: '状态未知',
+          description: '当前资源状态无法识别，请联系管理员检查。',
+          icon: 'help_outline',
+          tone: 'unknown',
+        };
+    }
+  }
+
+  get availableTags(): Tag[] {
+    return this.allTags.filter(tag => !this.package.tags.some(selected => selected.name === tag.name));
+  }
+
   private get descriptionText(): string {
     return (this.package?.description ?? '')
       .replace(/<[^>]*>/g, '')
@@ -157,18 +226,25 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   // Title and description editing
 
   onUpdateTitle(): void {
-    const updatedPackageName = this.packageNameElement.nativeElement.innerHTML;
+    const updatedPackageName = this.packageNameDraft.trim();
+    if (!updatedPackageName) {
+      return;
+    }
 
     this.updatePackage(
       { packageName: updatedPackageName },
       ['package_name'],
       () => {
         this.package.packageName = updatedPackageName;
-        this.packageNameUpdated = false;
+        this.packageNameDraft = updatedPackageName;
         this.notificationService.success('更新成功');
       },
       '更新失败',
     );
+  }
+
+  cancelPackageNameEdit(): void {
+    this.packageNameDraft = this.package.packageName;
   }
 
   onDescEditorChange(): void {
@@ -182,6 +258,10 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   onUpdateDesc(): void {
+    if (!this.isAuthor() || !this.descriptionEditing) {
+      return;
+    }
+
     const description = this.editorService.getData();
     if (description === undefined) {
       return;
@@ -193,6 +273,8 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
       (updatedPackage: Package) => {
         this.package.description = updatedPackage.description;
         this.descEditor_updated = false;
+        this.descriptionEditing = false;
+        this.editorService.setDisabled(true);
         this.scheduleDescriptionOverflowCheck();
         this.notificationService.success('更新成功');
       },
@@ -203,6 +285,28 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   onDescription(): void {
     this.descFolded = false;
     this.descriptionCanExpand = false;
+  }
+
+  startDescriptionEdit(): void {
+    if (!this.isAuthor()) {
+      return;
+    }
+
+    this.descriptionEditing = true;
+    this.descFolded = false;
+    this.editorService.setDisabled(false);
+    this.cd.detectChanges();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      this.editorService.focus();
+      this.scrollToDescriptionEditor();
+    }));
+  }
+
+  cancelDescriptionEdit(): void {
+    this.descriptionEditing = false;
+    this.descEditor_updated = false;
+    this.editorService.setDisabled(true);
+    this.editorService.setData(this.package.description);
   }
 
   // Tags
@@ -240,11 +344,12 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
       : ResourceState.HIDDEN;
     const actionText = this.package.state === ResourceState.HIDDEN ? '显示' : '隐藏';
 
-    if (!confirm(`确认要${actionText} ${this.package.packageName} 吗？`)) {
-      return;
-    }
-
-    this.updatePackage(
+    this.interactionService.confirm({
+      title: `${actionText}资源`,
+      message: `确认要${actionText}“${this.package.packageName}”吗？`,
+      confirmText: actionText,
+      danger: nextState === ResourceState.HIDDEN,
+    }).subscribe(confirmed => confirmed && this.updatePackage(
       { state: nextState },
       ['state'],
       () => {
@@ -252,20 +357,38 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
         this.reloadCurrentPackage();
       },
       '操作失败',
-    );
+    ));
   }
 
   onDelete(): void {
-    if (!confirm(`确认要删除 ${this.package.packageName} 吗？`)) {
+    if (!this.isAdmin()) {
       return;
     }
 
-    if (this.isAdmin()) {
+    this.interactionService.confirm({
+      title: '永久删除资源',
+      message: `确认要永久删除“${this.package.packageName}”吗？所有版本和讨论都将被删除，此操作不可撤销。`,
+      confirmText: '永久删除',
+      danger: true,
+    }).subscribe(confirmed => {
+      if (!confirmed) return;
       this.deletePackageImmediately();
+    });
+  }
+
+  onRequestDelete(): void {
+    if (!this.isAuthor()) {
       return;
     }
 
-    this.updatePackage(
+    this.interactionService.confirm({
+      title: '删除资源',
+      message: `确认要删除“${this.package.packageName}”吗？资源将进入计划删除状态。`,
+      confirmText: '删除资源',
+      danger: true,
+    }).subscribe(confirmed => {
+      if (!confirmed) return;
+      this.updatePackage(
       { state: ResourceState.SCHEDULED_DELETE },
       ['state'],
       () => {
@@ -273,7 +396,8 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
         this.navigateHomeAndReload();
       },
       '删除失败',
-    );
+      );
+    });
   }
 
   // Gallery and screenshots
@@ -372,13 +496,15 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   deleteScreenshot(imageIndex: number): void {
-    if (!confirm('确定要删除这张截图吗?')) {
-      return;
-    }
-
-    const imageUrls = this.package.imageUrls.filter((_, index) => index !== imageIndex);
-
-    this.updatePackage(
+    this.interactionService.confirm({
+      title: '删除截图',
+      message: imageIndex === 0 ? '这是当前封面。删除后下一张截图将成为封面。' : '确定要删除这张截图吗？',
+      confirmText: '删除截图',
+      danger: true,
+    }).subscribe(confirmed => {
+      if (!confirmed) return;
+      const imageUrls = this.package.imageUrls.filter((_, index) => index !== imageIndex);
+      this.updatePackage(
       { imageUrls },
       ['image_urls'],
       () => {
@@ -388,7 +514,8 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
         this.notificationService.success('删除成功');
       },
       '删除截图失败',
-    );
+      );
+    });
   }
 
   screenshotUrl(imageUrl: string): string {
@@ -412,6 +539,28 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   scrollToVersions(): void {
     this.versionsSection?.nativeElement.scrollIntoView({
       behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
+  scrollToScreenshots(): void {
+    this.screenshotsSection?.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
+  private scheduleDiscussionScroll(): void {
+    clearTimeout(this.discussionScrollTimer);
+    this.discussionScrollTimer = setTimeout(() => {
+      this.scrollToDiscussion('smooth');
+      this.discussionScrollTimer = setTimeout(() => this.scrollToDiscussion('auto'), 1200);
+    }, 500);
+  }
+
+  private scrollToDiscussion(behavior: ScrollBehavior): void {
+    this.discussionSection?.nativeElement.scrollIntoView({
+      behavior,
       block: 'start',
     });
   }
@@ -458,8 +607,7 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private initializePage(): void {
     this.resetPageState();
-    this.authorZone = this.canManagePackage();
-    this.tagCanEdit = this.canManagePackage();
+    this.tagCanEdit = this.isAuthor();
 
     this.buildGalleryImages();
     this.configDescriptionEditor();
@@ -472,8 +620,9 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.images = [];
     this.allTags = [];
     this.subscription = undefined;
-    this.packageNameUpdated = false;
+    this.packageNameDraft = this.package.packageName;
     this.descEditor_updated = false;
+    this.descriptionEditing = false;
     this.descEditor_onFocus = false;
     this.descFolded = true;
     this.descriptionCanExpand = false;
@@ -491,7 +640,7 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private configDescriptionEditor(): void {
-    this.editorService.configEditor(!this.isAuthor(), this.package.name);
+    this.editorService.configEditor(true, this.package.name);
   }
 
   private loadAuthor(): void {
@@ -592,7 +741,9 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     })).subscribe({
       next: () => {
         this.subscription = undefined;
-        this.notificationService.success('已取消收藏');
+        this.interactionService.undo('已取消收藏').subscribe(() => {
+          this.createSubscription();
+        });
       },
       error: error => this.notificationService.warn(`取消收藏失败: ${error.statusMessage}`),
     });
@@ -676,10 +827,18 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.cd.detectChanges();
   }
 
-  // Navigation and permission helpers
+  private scrollToDescriptionEditor(): void {
+    const descriptionSection = this.descriptionSection?.nativeElement;
+    if (!descriptionSection) {
+      return;
+    }
 
-  canManagePackage(): boolean {
-    return this.isAdmin() || this.isAuthor();
+    const headerOffset = 80;
+    const targetTop = window.scrollY + descriptionSection.getBoundingClientRect().top - headerOffset;
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: 'smooth',
+    });
   }
 
   private reloadCurrentPackage(): void {

@@ -146,3 +146,17 @@
     margin-left: 5px;
     height: 32px;
 }
+.reply-control-slot {
+    opacity: .45;
+}
+
+.reply-control-slot:hover,
+.reply-control-visible {
+    opacity: 1;
+}
+
+@media (hover: none) {
+    .reply-control-slot {
+        opacity: 1;
+    }
+}

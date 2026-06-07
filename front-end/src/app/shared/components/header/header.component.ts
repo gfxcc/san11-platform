@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
 import { ProgressService } from 'src/app/progress.service';
 import { openInNewTab } from 'src/app/utils/url_util';
-import { ListNotificationsRequest, ListNotificationsResponse, Notification, SignOutRequest, UpdateNotificationRequest, User } from '../../../../proto/san11-platform.pb';
+import { ListNotificationsRequest, ListNotificationsResponse, Notification, Package, SignOutRequest, UpdateNotificationRequest, User } from '../../../../proto/san11-platform.pb';
 import { NotificationService } from '../../../common/notification.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { clearUser, isAdmin, loadUser, signedIn } from '../../../utils/user_util';
@@ -26,6 +26,9 @@ export class HeaderComponent implements OnInit {
   menuItems = ['a', 'b', 'c'];
 
   searchQuery: string = '';
+  private searchTimer: ReturnType<typeof setTimeout> | undefined;
+  searchSuggestions: Package[] = [];
+  searching = false;
 
   constructor(
     public router: Router,
@@ -98,7 +101,33 @@ export class HeaderComponent implements OnInit {
   }
 
   searchChanged() {
-    this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {
+      const query = this.searchQuery.trim();
+      if (query.length >= 2) {
+        this.searching = true;
+        this.san11pkService.searchPackages(query, 5, '').subscribe({
+          next: response => this.searchSuggestions = response.packages,
+          error: () => this.searchSuggestions = [],
+          complete: () => this.searching = false,
+        });
+      } else {
+        this.searchSuggestions = [];
+      }
+    }, 350);
+  }
+
+  submitSearch(): void {
+    const query = this.searchQuery.trim();
+    if (!query) return;
+    this.searchSuggestions = [];
+    this.router.navigate(['/search'], { queryParams: { query } });
+  }
+
+  openSearchSuggestion(san11Package: Package): void {
+    this.searchSuggestions = [];
+    this.searchQuery = '';
+    this.router.navigate(san11Package.name.split('/'));
   }
 
   onUserDetail() {

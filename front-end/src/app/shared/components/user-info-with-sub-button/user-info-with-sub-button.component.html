@@ -9,6 +9,10 @@
 
                 <img [hidden]="this.displayUserImgLoading" [src]="this.user?.imageUrl |
                     fullUrl : '128_128'" (load)="this.displayUserImgLoading=false;" class="avatar-image">
+                <span *ngIf="updateAvatar && this.user.userId === currentUserId" class="avatar-edit-label">
+                    <mat-icon>photo_camera</mat-icon>
+                    更换头像
+                </span>
             </button>
             <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadUserAvatar(imageInput)">
         </div>
@@ -18,7 +22,7 @@
                 <a class="user-name clickable" [matTooltip]="this.user.username"
                     [href]="this.user.name">{{this.user.username}}</a>
                 <div class="user-sub-count">{{this.user.subscriberCount}}
-                    subscribers
+                    位订阅者
                 </div>
             </div>
         </div>
@@ -32,4 +36,14 @@
             (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>
         <p-skeleton *ngIf="this.loadingSubscription" width="64px" height="36px"></p-skeleton>
     </div>
+</div>
+
+<div *ngIf="avatarPreviewUrl" class="avatar-preview-panel">
+    <img [src]="avatarPreviewUrl" alt="新头像预览">
+    <div>
+        <strong>确认新头像</strong>
+        <span>上传前请检查头像显示效果。</span>
+    </div>
+    <button mat-stroked-button type="button" (click)="cancelAvatarUpload()">取消</button>
+    <button mat-flat-button color="primary" type="button" (click)="confirmAvatarUpload()">保存头像</button>
 </div>

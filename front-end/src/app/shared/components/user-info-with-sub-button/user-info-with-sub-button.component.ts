@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { NotificationService } from 'src/app/common/notification.service';
+import { InteractionService } from 'src/app/common/interaction.service';
 import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { UploadService } from 'src/app/service/upload.service';
@@ -25,12 +26,19 @@ export class UserInfoWithSubButtonComponent implements OnInit {
   displayUserImgLoading: boolean = true;
   subscription: Subscription;
   loadingSubscription: boolean = true;
+  pendingAvatar: File | undefined;
+  avatarPreviewUrl = '';
+
+  get currentUserId(): string {
+    return loadUser().userId;
+  }
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     public san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
+    private interactionService: InteractionService,
     private dialog: MatDialog,
     private uploadService: UploadService,
     private progressService: ProgressService,
@@ -68,16 +76,13 @@ export class UserInfoWithSubButtonComponent implements OnInit {
       return;
     }
     if (this.subscription != undefined) {
-      if (!confirm('确定要退订吗?')) {
-        return;
-      }
       this.san11pkService.deleteSubscription(new DeleteSubscriptionRequest({
         name: this.subscription.name
       })).subscribe(
         (resp: Subscription) => {
           this.user.subscriberCount = decrement(this.user.subscriberCount);
           this.subscription = undefined;
-          this.notificationService.success('退订成功');
+          this.interactionService.undo('已取消订阅').subscribe(() => this.onSubscribe());
         }, error => {
           this.notificationService.warn(`退订失败: ${error.statusMessage}`);
         }
@@ -106,18 +111,37 @@ export class UserInfoWithSubButtonComponent implements OnInit {
       return;
     }
 
-    if (confirm('要更换头像吗?')) {
-      this.imageInputElement.nativeElement.click();
-    }
+    this.imageInputElement.nativeElement.click();
   }
 
   onUploadUserAvatar(imageInput) {
     const image = imageInput.files[0];
+    if (!image) {
+      return;
+    }
     if (image.size > GlobalConstants.maxImageSize) {
-      alert('上传图片必须小于: ' + (GlobalConstants.maxImageSize / 1024 / 1024).toString() + 'MB');
+      this.notificationService.warn(`上传图片必须小于 ${GlobalConstants.maxImageSize / 1024 / 1024}MB`);
       return;
     }
 
+    this.pendingAvatar = image;
+    this.avatarPreviewUrl = URL.createObjectURL(image);
+    imageInput.value = '';
+  }
+
+  cancelAvatarUpload(): void {
+    if (this.avatarPreviewUrl) {
+      URL.revokeObjectURL(this.avatarPreviewUrl);
+    }
+    this.avatarPreviewUrl = '';
+    this.pendingAvatar = undefined;
+  }
+
+  confirmAvatarUpload(): void {
+    const image = this.pendingAvatar;
+    if (!image) {
+      return;
+    }
     const parent = getUserUri(this.user);
     const filename = `${parent}/images/${uuid()}.jpeg`
     this.progressService.loading();
@@ -133,7 +157,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
             next: (resp) => {
               this.user.imageUrl = resp.url;
               saveUser(this.user);
-
+              this.cancelAvatarUpload();
               this.notificationService.success('图片上传成功');
             },
             error: (error) => {

@@ -11,29 +11,62 @@
         </header>
 
         <form class="create-form" #createForm='ngForm' (ngSubmit)='onCreate(createForm)'>
-            <mat-form-field appearance="outline">
-                <mat-label>名称</mat-label>
-                <input matInput required ngModel name="name">
-            </mat-form-field>
+            <mat-horizontal-stepper linear #creationStepper>
+                <mat-step [stepControl]="createForm.form">
+                    <ng-template matStepLabel>基本信息</ng-template>
+                    <div class="creation-step">
+                        <mat-form-field appearance="outline">
+                            <mat-label>{{isCreateArticle ? '文章标题' : '资源名称'}}</mat-label>
+                            <input matInput required ngModel name="name" maxlength="80">
+                        </mat-form-field>
 
-            <mat-form-field *ngIf="isCreateArticle === false" appearance="outline">
-                <mat-label>类别</mat-label>
-                <mat-select [(ngModel)]="selectedCategory" required name="resourceType">
-                    <mat-optgroup *ngFor="let group of resourceGroups" [label]="group.name" [disabled]="group.disabled">
-                        <mat-option *ngFor="let resourceType of group.resourceTypes" [value]="resourceType">
-                            {{resourceType.text}}
-                        </mat-option>
-                    </mat-optgroup>
-                </mat-select>
-            </mat-form-field>
+                        <mat-form-field *ngIf="isCreateArticle === false" appearance="outline">
+                            <mat-label>资源类别</mat-label>
+                            <mat-select [(ngModel)]="selectedCategory" required name="resourceType">
+                                <mat-optgroup *ngFor="let group of resourceGroups" [label]="group.name" [disabled]="group.disabled">
+                                    <mat-option *ngFor="let resourceType of group.resourceTypes" [value]="resourceType">
+                                        {{resourceType.text}}
+                                    </mat-option>
+                                </mat-optgroup>
+                            </mat-select>
+                        </mat-form-field>
 
-            <div class="create-actions">
-                <span class="example-spacer"></span>
-                <button [disabled]="!createForm.valid" type="submit" mat-flat-button color="primary">
-                    <mat-icon>add</mat-icon>
-                    创建
-                </button>
-            </div>
+                        <div class="create-actions">
+                            <span class="example-spacer"></span>
+                            <button [disabled]="!createForm.valid" type="button" mat-flat-button color="primary" matStepperNext>
+                                下一步
+                                <mat-icon>arrow_forward</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </mat-step>
+
+                <mat-step>
+                    <ng-template matStepLabel>检查并创建</ng-template>
+                    <div class="creation-step">
+                        <div class="creation-review">
+                            <span>{{isCreateArticle ? '文章' : selectedCategory?.text}}</span>
+                            <strong>{{createForm.value.name}}</strong>
+                        </div>
+
+                        <div *ngIf="isCreateArticle === false" class="creation-roadmap">
+                            <strong>创建后继续完善</strong>
+                            <div><mat-icon>image</mat-icon><span>上传截图并设置封面</span></div>
+                            <div><mat-icon>description</mat-icon><span>填写资源介绍和标签</span></div>
+                            <div><mat-icon>new_releases</mat-icon><span>发布首个可下载版本</span></div>
+                        </div>
+
+                        <div class="create-actions">
+                            <button type="button" mat-stroked-button matStepperPrevious>返回修改</button>
+                            <span class="example-spacer"></span>
+                            <button [disabled]="!createForm.valid" type="submit" mat-flat-button color="primary">
+                                <mat-icon>add</mat-icon>
+                                {{this.isCreateArticle ? '创建文章' : '创建并开始完善'}}
+                            </button>
+                        </div>
+                    </div>
+                </mat-step>
+            </mat-horizontal-stepper>
         </form>
     </section>
 </div>

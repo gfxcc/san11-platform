@@ -66,10 +66,11 @@ def assert_user(path_to_user_id: str):
     return wrap
 
 
-def assert_resource_owner(resource_name_path: str, bypass: Optional[str] = None):
+def assert_resource_owner(resource_name_path: str, bypass: Optional[str] = None,
+                          allow_admin: bool = True):
     '''
     (TODO): Support inherited ownership.
-    Admin user will always overpass this check.
+    Admin users only bypass this check when `allow_admin` is true.
     Args:
         resource_name_path: Path from request to resource_name.
         bypass: bypass the assertion if the given statement is evaluated as `True`.
@@ -85,7 +86,10 @@ def assert_resource_owner(resource_name_path: str, bypass: Optional[str] = None)
         @functools.wraps(func)
         def iam_wrapper(this, request, context):
             current_user = context.user
-            if not ((current_user and current_user.is_admin()) or (bypass and eval(bypass) == True)):
+            if not ((allow_admin and current_user and current_user.is_admin()) or
+                    (bypass and eval(bypass) == True)):
+                if current_user is None:
+                    raise Unauthenticated()
                 cur = request
                 for segment in resource_name_path.split('.'):
                     cur = getattr(cur, segment)

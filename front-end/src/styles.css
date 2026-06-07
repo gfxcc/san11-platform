@@ -56,6 +56,8 @@
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
+    --button-radius: 15px;
+    --icon-button-radius: 999px;
     --content-max-width: 1240px;
     --clickable-background-color: #eef2f7;
     --clickable-background-color-hover: #e2e8f0;
@@ -374,7 +376,7 @@ body {
 
 .app-action-stack button,
 .app-action-row button {
-    border-radius: 999px;
+    border-radius: var(--button-radius);
 }
 
 .app-list-panel {
@@ -439,7 +441,7 @@ body {
 }
 
 .app-row-actions button {
-    border-radius: 999px;
+    border-radius: var(--button-radius);
 }
 
 .app-page {
@@ -670,13 +672,93 @@ body {
 .mat-mdc-unelevated-button,
 .mat-mdc-outlined-button,
 .mat-mdc-button {
-    border-radius: 999px !important;
+    border-radius: var(--button-radius) !important;
     font-weight: 750;
     letter-spacing: 0;
 }
 
 .mat-mdc-icon-button {
-    border-radius: 999px;
+    border-radius: var(--icon-button-radius);
+}
+
+button:not(.mat-mdc-icon-button):not(.mat-mdc-fab):not(.mat-mdc-mini-fab):not(.mat-mdc-menu-item):not(.mat-mdc-chip-action):not(.ck-button):not(.avatar-button):not(.user-card-button) {
+    border-radius: var(--button-radius) !important;
+}
+
+button.mat-mdc-chip-action {
+    border-radius: 999px !important;
+}
+
+/* Button semantics: fill = priority, color = meaning, permission = surrounding surface. */
+.action-button {
+    min-height: 38px;
+    border-radius: var(--button-radius) !important;
+    font-weight: 800;
+    transition:
+        border-color var(--animation-duration),
+        background-color var(--animation-duration),
+        color var(--animation-duration),
+        transform var(--animation-duration);
+}
+
+.action-button mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.action-secondary {
+    border-color: rgba(71, 85, 105, .24) !important;
+    background: rgba(255, 255, 255, .88);
+    color: var(--text-color);
+}
+
+.action-secondary:hover:not(:disabled) {
+    border-color: rgba(37, 99, 235, .36) !important;
+    background: #fff;
+    color: var(--primary-strong);
+}
+
+.action-tertiary {
+    border-color: transparent !important;
+    background: rgba(100, 116, 139, .09);
+    color: var(--text-muted);
+}
+
+.action-tertiary:hover:not(:disabled) {
+    background: rgba(100, 116, 139, .16);
+    color: var(--text-color);
+}
+
+.action-danger,
+.action-danger mat-icon {
+    color: var(--accent-color);
+}
+
+.action-danger {
+    border-color: rgba(220, 38, 38, .28) !important;
+    background: rgba(255, 255, 255, .86);
+}
+
+.action-danger:hover:not(:disabled) {
+    border-color: rgba(220, 38, 38, .46) !important;
+    background: rgba(220, 38, 38, .07);
+}
+
+.action-icon {
+    width: 34px;
+    height: 34px;
+    padding: 5px;
+    border-radius: 11px;
+}
+
+.action-danger-icon,
+.action-danger-icon mat-icon {
+    color: var(--accent-color);
+}
+
+.action-danger-icon:hover:not(:disabled) {
+    background: rgba(220, 38, 38, .08);
 }
 
 .mat-mdc-form-field {

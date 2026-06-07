@@ -4,7 +4,8 @@ from email import message
 from typing import Iterable, List, Optional, Tuple, Type, Union
 
 from core.common.env import Env, get_env
-from core.errors.validation import require_admin
+from core.errors.exceptions import PermissionDenied
+from core.errors.validation import require_admin, require_authenticated, require_permission
 from app.handler_context import HandlerContext
 from core.models.base import (Context, FieldMask, HandlerBase, ModelBase,
                                 merge_resource)
@@ -27,6 +28,35 @@ from app.protos import san11_platform_pb2 as pb
 from integrations.notifications.notifier import notify, notify_on_creation, send_email
 
 logger = logging.getLogger(os.path.basename(__file__))
+
+PACKAGE_CONTENT_FIELDS = {'package_name', 'description', 'image_urls', 'tags'}
+PACKAGE_VISITOR_FIELDS = {'like_count', 'dislike_count'}
+
+
+def verify_package_update_permission(
+        current: ModelPackage,
+        destination: ModelPackage,
+        update_mask: FieldMask,
+        requester: Optional[ModelUser]) -> None:
+    paths = set(update_mask.paths)
+    if paths <= PACKAGE_VISITOR_FIELDS:
+        require_authenticated(requester)
+        return
+
+    requester = require_authenticated(requester)
+    is_author = requester.user_id == current.author_id
+
+    if paths <= PACKAGE_CONTENT_FIELDS:
+        require_permission(is_author, '只有资源作者可以编辑资源内容')
+        return
+
+    if paths == {'state'}:
+        if is_author and destination.state == pb.ResourceState.SCHEDULED_DELETE:
+            return
+        require_admin(requester, '只有管理员可以更改资源发布状态')
+        return
+
+    raise PermissionDenied('不允许更新这些资源字段')
 
 
 def filter_packages_based_on_requester(packages: Iterable[ModelPackage],
@@ -87,15 +117,9 @@ class PackageHandler(HandlerBase):
         return filter_packages_based_on_requester(packages, handler_context.user), next_page_token
 
     def update(self, update_package: ModelPackage, update_mask: FieldMask, handler_context: HandlerContext) -> ModelPackage:
-        def verify_permission_on_update(curr: ModelPackage, dest: ModelPackage, update_mask: FieldMask) -> None:
-            if on_approve(curr.state, dest.state):
-                require_admin(handler_context.user,
-                              message='审核通过新工具需要管理员权限')
-
         base_package = self.package_repository.get(update_package.name)
-        if update_mask.has('state'):
-            verify_permission_on_update(
-                base_package, update_package, update_mask)
+        verify_package_update_permission(
+            base_package, update_package, update_mask, handler_context.user)
 
         # Remove `like_count`, `dislike_count` from update_mask here and handle the count update
         #   explicitly later.

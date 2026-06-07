@@ -29,6 +29,31 @@
         </div>
     </section>
 
+    <section class="review-queue surface-panel">
+        <div class="panel-header">
+            <div>
+                <h2>待处理</h2>
+                <p>需要管理员审核的新资源</p>
+            </div>
+            <span>{{pendingReviews.length}} 项</span>
+        </div>
+        <div *ngIf="pendingReviews.length; else noPendingReviews" class="review-grid">
+            <button *ngFor="let package of pendingReviews" type="button" class="review-item"
+                (click)="openPackage(package)">
+                <mat-icon>pending_actions</mat-icon>
+                <span>{{package.packageName}}</span>
+                <small>{{package.name}}</small>
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+        <ng-template #noPendingReviews>
+            <div class="empty-state compact-empty-state">
+                <mat-icon>task_alt</mat-icon>
+                <p>当前没有待审核资源</p>
+            </div>
+        </ng-template>
+    </section>
+
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="admin-tabs">
         <mat-tab label="资源">
             <section class="timeline-panel">

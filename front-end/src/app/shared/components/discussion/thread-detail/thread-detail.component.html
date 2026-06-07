@@ -1,5 +1,20 @@
 <div class="page-wrapper thread-page-wrapper">
     <div class="page-content thread-page-content">
+        <nav class="thread-breadcrumb" aria-label="讨论导航">
+            <a routerLink="/">
+                <mat-icon>home</mat-icon>
+                主页
+            </a>
+            <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+            <a [routerLink]="parentCategoryRoute">{{parentCategoryName}}</a>
+            <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+            <a [routerLink]="parentPackageRoute">{{parentPackageName}}</a>
+            <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+            <a [routerLink]="parentPackageRoute" fragment="discussion">讨论区</a>
+            <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+            <span aria-current="page">{{this.thread.subject}}</span>
+        </nav>
+
         <article class="thread-panel surface-panel app-detail-section">
             <header class="thread-header app-detail-header">
                 <div class="thread-title-block">
@@ -67,7 +82,7 @@
                                         {{tag}}
                                         <mat-icon matChipRemove *ngIf="editable">cancel</mat-icon>
                                     </mat-chip-row>
-                                    <input placeholder="新标签" [matChipInputFor]="chipList"
+                                    <input placeholder="输入标签后按回车" [matChipInputFor]="chipList"
                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                         [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
                                         [hidden]="!editable">
