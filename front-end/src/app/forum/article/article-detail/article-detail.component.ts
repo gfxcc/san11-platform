@@ -23,6 +23,7 @@ export class ArticleDetailComponent implements OnInit {
 
   descEditor_updated = false;
   editing = false;
+  editingTarget: 'title' | 'content' | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,17 +50,56 @@ export class ArticleDetailComponent implements OnInit {
 
   }
 
-  startEditing(): void {
+  startEditing(focusTarget: 'title' | 'content' = 'title'): void {
     this.editing = true;
-    this.editorService.disabled = false;
-    this.articleSubjectElement.nativeElement.contentEditable = 'true';
-    this.articleSubjectElement.nativeElement.focus();
+    this.editingTarget = focusTarget;
+    this.editorService.setDisabled(false);
+    this.articleSubjectElement.nativeElement.contentEditable = focusTarget === 'title' ? 'true' : 'false';
+
+    if (focusTarget === 'title') {
+      this.articleSubjectElement.nativeElement.focus();
+      return;
+    }
+
+    setTimeout(() => this.editorService.focus());
+  }
+
+  onTitleClick(): void {
+    if (!this.isAuthor()) {
+      return;
+    }
+    this.startEditing('title');
+  }
+
+  onContentClick(): void {
+    if (!this.isAuthor()) {
+      return;
+    }
+    this.startEditing('content');
+  }
+
+  onTitleEnter(event: KeyboardEvent): void {
+    if (!this.isAuthor()) {
+      return;
+    }
+
+    event.preventDefault();
+    if (!this.editing) {
+      this.startEditing('title');
+    }
+  }
+
+  onTitleChange(): void {
+    if (this.editing) {
+      this.descEditor_updated = true;
+    }
   }
 
   cancelEditing(): void {
     this.editing = false;
+    this.editingTarget = null;
     this.descEditor_updated = false;
-    this.editorService.disabled = true;
+    this.editorService.setDisabled(true);
     this.articleSubjectElement.nativeElement.contentEditable = 'false';
     this.articleSubjectElement.nativeElement.innerText = this.article.subject;
     this.editorService.setData(this.article.content);
@@ -137,7 +177,7 @@ export class ArticleDetailComponent implements OnInit {
 
   onUpdate() {
     const updateContent = this.editorService.getData();
-    const updatedSubject = this.articleSubjectElement.nativeElement.innerHTML;
+    const updatedSubject = this.articleSubjectElement.nativeElement.textContent?.trim() || this.article.subject;
 
     if (updateContent != undefined) {
       this.san11pkService.updateArticle(new UpdateArticleRequest({
@@ -153,7 +193,8 @@ export class ArticleDetailComponent implements OnInit {
         next: (resp: Article) => {
           this.article = resp;
           this.editing = false;
-          this.editorService.disabled = true;
+          this.editingTarget = null;
+          this.editorService.setDisabled(true);
           this.articleSubjectElement.nativeElement.contentEditable = 'false';
         },
         error: error => {
@@ -179,6 +220,69 @@ export class ArticleDetailComponent implements OnInit {
   getArticleUpdateTime() {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return this.article.updateTime.toDate().toLocaleString("en-US", { timeZone: tz });
+  }
+
+  getArticleStatusLabel(): string {
+    return this.getArticleStatus().label;
+  }
+
+  getArticleStatusIcon(): string {
+    return this.getArticleStatus().icon;
+  }
+
+  getArticleStatusTone(): string {
+    return this.getArticleStatus().tone;
+  }
+
+  getArticleStatusDescription(): string {
+    return this.getArticleStatus().description;
+  }
+
+  private getArticleStatus() {
+    switch (this.article?.state) {
+      case ResourceState.NORMAL:
+        return {
+          label: '已发布',
+          icon: 'visibility',
+          tone: 'normal',
+          description: '文章正在公开展示，所有用户都可以访问。',
+        };
+      case ResourceState.UNDER_REVIEW:
+        return {
+          label: '待审核',
+          icon: 'hourglass_top',
+          tone: 'review',
+          description: '文章尚未公开，需要管理员处理。',
+        };
+      case ResourceState.HIDDEN:
+        return {
+          label: '已隐藏',
+          icon: 'visibility_off',
+          tone: 'hidden',
+          description: '文章已停止公开展示，作者和管理员仍可访问。',
+        };
+      case ResourceState.SCHEDULED_DELETE:
+        return {
+          label: '待删除',
+          icon: 'event_busy',
+          tone: 'danger',
+          description: '文章已进入删除流程，请谨慎处理。',
+        };
+      case ResourceState.DELETED:
+        return {
+          label: '已删除',
+          icon: 'delete_outline',
+          tone: 'danger',
+          description: '文章已删除，不再面向普通用户展示。',
+        };
+      default:
+        return {
+          label: '未知状态',
+          icon: 'help_outline',
+          tone: 'hidden',
+          description: '当前文章状态未明确标记。',
+        };
+    }
   }
 
 

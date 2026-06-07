@@ -1,52 +1,96 @@
 .confirm-dialog {
-    width: min(82vw, 440px);
-    padding: 24px;
+    width: min(86vw, 460px);
+    box-sizing: border-box;
+    padding: 22px;
+    border: 1px solid rgba(148, 163, 184, .22);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .99), rgba(248, 250, 252, .96));
+    box-shadow: 0 22px 60px rgba(15, 23, 42, .22);
 }
 
-.confirm-dialog header {
+.confirm-dialog-header {
     display: flex;
     align-items: flex-start;
-    gap: 14px;
+    gap: 16px;
 }
 
 .confirm-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     flex: 0 0 auto;
-    border-radius: var(--radius-md);
+    border-radius: 14px;
     background: var(--primary-soft);
     color: var(--primary-color);
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, .12);
 }
 
 .confirm-icon-danger {
-    background: #fee2e2;
-    color: var(--accent-color);
+    background: rgba(239, 68, 68, .1);
+    color: #dc2626;
+    box-shadow: inset 0 0 0 1px rgba(239, 68, 68, .16);
+}
+
+.confirm-icon mat-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+}
+
+.confirm-dialog-copy {
+    min-width: 0;
 }
 
 .confirm-dialog h2 {
     margin: 0;
     color: var(--text-color);
-    font-size: 1.25rem;
+    font-size: 1.18rem;
+    line-height: 1.35;
+    font-weight: 850;
 }
 
 .confirm-dialog p {
-    margin: 7px 0 0;
+    margin: 6px 0 0;
     color: var(--text-muted);
+    font-size: .94rem;
     line-height: 1.55;
 }
 
-.confirm-dialog footer {
+.confirm-dialog-actions {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
-    gap: 8px;
-    margin-top: 22px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(148, 163, 184, .2);
 }
 
-.confirm-dialog button {
-    border-radius: 999px;
+.confirm-dialog-actions .action-button {
+    min-height: 38px;
+    padding: 0 16px;
+    border-radius: var(--button-radius);
+    font-weight: 800;
+}
+
+.confirm-action-danger {
+    color: #fff;
+}
+
+@media (max-width: 36rem) {
+    .confirm-dialog {
+        width: calc(100vw - 32px);
+        padding: 20px;
+    }
+
+    .confirm-dialog-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+
+    .confirm-dialog-actions .action-button {
+        width: 100%;
+    }
 }

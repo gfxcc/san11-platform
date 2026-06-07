@@ -14,7 +14,7 @@ help:
 	@echo "  test              Run test suite in Docker (uses docker-compose.test.yaml)"
 	@echo "  verify           Run backend, frontend, gateway, and UI release gates"
 	@echo "  verify-backend   Run Python unit and integration tests"
-	@echo "  verify-frontend  Build the Angular frontend"
+	@echo "  verify-frontend  Build the production frontend image"
 	@echo "  verify-gateway   Compile/test the Go gateway"
 	@echo "  verify-ui        Start dev stack and run Playwright CUJ tests"
 	@echo "  verify-ui-rebuild Rebuild dev stack and run Playwright CUJ tests"
@@ -70,7 +70,7 @@ verify-backend:
 
 .PHONY: verify-frontend
 verify-frontend:
-	cd front-end && npm run build
+	docker compose -f compose.yaml -f compose.prod.yaml build front-end
 
 .PHONY: verify-gateway
 verify-gateway:

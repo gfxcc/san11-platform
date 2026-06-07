@@ -76,6 +76,7 @@ export class CreateNewVersionComponent implements OnInit {
 
   autoCreateChecked = false;
   useAwsS3 = true;
+  formSubmitted = false;
 
   @HostListener('window:keyup.esc') onKeyUp() {
     this.requestCancel();
@@ -83,6 +84,70 @@ export class CreateNewVersionComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event']) unloadHandler(event: Event) {
     event.returnValue = false;
+  }
+
+  get uploadProgressValue(): number {
+    return Math.max(0, Math.min(100, this.upload?.progress ?? 0));
+  }
+
+  get uploadProgressPercent(): string {
+    return `${this.uploadProgressValue.toFixed(0)}%`;
+  }
+
+  get uploadStatusText(): string {
+    if (!this.upload) {
+      return '等待上传';
+    }
+
+    if (this.upload.state === 'DONE') {
+      return '上传完成';
+    }
+
+    if (this.upload.state === 'PENDING') {
+      return '准备上传';
+    }
+
+    return '正在上传';
+  }
+
+  get uploadSizeText(): string {
+    if (!this.upload) {
+      return this.file ? this.formatBytes(this.file.size) : '未选择文件';
+    }
+
+    if (this.upload.total > 0) {
+      return `${this.formatBytes(this.upload.loaded)} / ${this.formatBytes(this.upload.total)}`;
+    }
+
+    return this.file ? this.formatBytes(this.file.size) : '计算文件大小中';
+  }
+
+  get missingPublishRequirements(): string[] {
+    const missing: string[] = [];
+    if (this.editorService.getData() === '') {
+      missing.push('更新日志');
+    }
+
+    const cloudDiskFileUrl = this.newBinaryForm?.get('cloudDiskFileUrl')?.value;
+    const fileUploaded = this.newBinaryForm?.get('fileUploaded')?.value;
+    if (cloudDiskFileUrl === '' && fileUploaded === false) {
+      missing.push('下载方式');
+    }
+
+    if (cloudDiskFileUrl !== '' && !isValidUrl(cloudDiskFileUrl)) {
+      missing.push('有效的网盘链接');
+    }
+
+    return missing;
+  }
+
+  get publishStatusText(): string {
+    const missing = this.missingPublishRequirements;
+    if (missing.length === 0) {
+      return '已准备好发布';
+    }
+
+    return `发布前还需要：${missing.join('、')}`;
   }
 
 
@@ -163,6 +228,7 @@ export class CreateNewVersionComponent implements OnInit {
     if (this.editorService.getData() === '') {
       this.autoCreateChecked = false;
     }
+    this.newBinaryForm?.updateValueAndValidity();
   }
 
   onVersionSelectorUpdate(updateTypeValue) {
@@ -310,8 +376,28 @@ export class CreateNewVersionComponent implements OnInit {
     this.oldbytes = this.bytesReceied;
   }
 
+  private formatBytes(bytes: number): string {
+    if (!Number.isFinite(bytes) || bytes <= 0) {
+      return '0 B';
+    }
+
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let value = bytes;
+    let unitIndex = 0;
+    while (value >= 1024 && unitIndex < units.length - 1) {
+      value /= 1024;
+      unitIndex++;
+    }
+
+    const precision = value >= 10 || unitIndex === 0 ? 0 : 1;
+    return `${value.toFixed(precision)} ${units[unitIndex]}`;
+  }
+
 
   onNewBinaryFormSubmit() {
+    this.formSubmitted = true;
+    this.newBinaryForm.markAllAsTouched();
+    this.newBinaryForm.updateValueAndValidity();
     if (this.newBinaryForm.invalid) {
       return;
     }

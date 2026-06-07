@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -18,7 +18,7 @@ import { v4 as uuid } from 'uuid';
   templateUrl: './user-info-with-sub-button.component.html',
   styleUrls: ['./user-info-with-sub-button.component.css']
 })
-export class UserInfoWithSubButtonComponent implements OnInit {
+export class UserInfoWithSubButtonComponent implements OnChanges {
   @Input() user: User;
   @Input() updateAvatar: false;
   @ViewChild('imageInput') imageInputElement: ElementRef
@@ -28,9 +28,14 @@ export class UserInfoWithSubButtonComponent implements OnInit {
   loadingSubscription: boolean = true;
   pendingAvatar: File | undefined;
   avatarPreviewUrl = '';
+  private subscriptionStatusTarget = '';
 
   get currentUserId(): string {
     return loadUser().userId;
+  }
+
+  get canSubscribeToUser(): boolean {
+    return !!this.user?.userId && this.user.userId !== this.currentUserId;
   }
 
   constructor(
@@ -44,19 +49,44 @@ export class UserInfoWithSubButtonComponent implements OnInit {
     private progressService: ProgressService,
   ) { }
 
-  ngOnInit(): void {
-    this.setSubscriptionStatus();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.user) {
+      this.setSubscriptionStatus();
+    }
   }
 
   setSubscriptionStatus() {
+    if (!this.user?.userId) {
+      this.subscriptionStatusTarget = '';
+      this.subscription = undefined;
+      this.loadingSubscription = true;
+      return;
+    }
+
+    if (!this.canSubscribeToUser) {
+      this.subscriptionStatusTarget = getUserUri(this.user);
+      this.subscription = undefined;
+      this.loadingSubscription = false;
+      return;
+    }
+
+    const target = getUserUri(this.user);
+    if (target === this.subscriptionStatusTarget) {
+      return;
+    }
+
+    this.subscriptionStatusTarget = target;
+    this.subscription = undefined;
+
     if (!signedIn()) {
       this.loadingSubscription = false;
       return;
     }
 
+    this.loadingSubscription = true;
     this.san11pkService.listSubscription(new ListSubscriptionsRequest({
       parent: `users/${loadUser().userId}`,
-      filter: `target="users/${this.user.userId}"`,
+      filter: `target="${target}"`,
     })).subscribe({
       next: (resp: ListSubscriptionsResponse) => {
         if (resp.subscriptions.length > 0) {
@@ -65,6 +95,7 @@ export class UserInfoWithSubButtonComponent implements OnInit {
         this.loadingSubscription = false;
       },
       error: error => {
+        this.loadingSubscription = false;
         this.notificationService.warn(`载入订阅状态失败: ${error.statusMessage}`);
       }
     });

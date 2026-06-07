@@ -94,30 +94,35 @@
                             <mat-icon>attach_file</mat-icon>
                             {{ file ? file.name : '选择文件' }}
                         </button>
-                        <span class="example-spacer"></span>
-                        <span class="upload-state" *ngIf="upload">
-                            <mat-icon>{{upload.state === 'DONE' ? 'check_circle' : 'cloud_upload'}}</mat-icon>
-                            {{upload.state === 'DONE' ? '上传完成' : ('正在上传 ' + upload.progress.toFixed(0) + '%')}}
-                        </span>
                     </div>
 
-                    <mat-progress-bar *ngIf="upload" [mode]="upload.state ==
-                    'PENDING' ?
-                    'buffer' : 'determinate'" [value]="upload.progress" class="upload-progress">
-                    </mat-progress-bar>
+                    <div class="upload-status-card" *ngIf="upload">
+                        <div class="upload-status-header">
+                            <span class="upload-status-icon"
+                                [class.upload-status-icon-complete]="upload.state === 'DONE'">
+                                <mat-icon>{{upload.state === 'DONE' ? 'check_circle' : 'cloud_upload'}}</mat-icon>
+                            </span>
+                            <div class="upload-status-copy">
+                                <strong>{{uploadStatusText}}</strong>
+                                <span>{{file?.name || '正在准备文件'}} · {{uploadSizeText}}</span>
+                            </div>
+                            <span class="upload-percent">{{uploadProgressPercent}}</span>
+                        </div>
+
+                        <mat-progress-bar [mode]="upload.state === 'PENDING' ? 'buffer' : 'determinate'"
+                            [value]="uploadProgressValue" class="upload-progress">
+                        </mat-progress-bar>
+                    </div>
                 </div>
             </mat-tab>
         </mat-tab-group>
 
         <div class="actions">
-            <div class="form-errors">
-                <mat-error *ngIf="newBinaryForm.errors?.fileMissing" align="end">
-                    请提供网盘链接 或 上传文件
-                </mat-error>
-
-                <mat-error *ngIf="newBinaryForm.errors?.invalidUrl" align="end">
-                    无效的网盘链接
-                </mat-error>
+            <div class="publish-status"
+                [class.publish-status-ready]="newBinaryForm.valid"
+                [class.publish-status-error]="formSubmitted && newBinaryForm.invalid">
+                <mat-icon>{{newBinaryForm.valid ? 'check_circle' : (formSubmitted ? 'error_outline' : 'info')}}</mat-icon>
+                <span>{{publishStatusText}}</span>
             </div>
 
             <span class="example-spacer"></span>

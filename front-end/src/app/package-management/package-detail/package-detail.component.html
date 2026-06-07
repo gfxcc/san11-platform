@@ -24,17 +24,15 @@
                 <section *ngIf="isAuthor()" #screenshotsSection
                     class="screenshot-manager permission-surface permission-author-surface surface-panel app-detail-section">
                     <div class="screenshot-manager-header">
-                        <div>
-                            <div class="detail-card-heading">
-                                <div class="detail-card-title-row">
-                                    <h2 class="detail-card-title">截图管理</h2>
-                                    <span class="permission-badge permission-badge-author">
-                                        <mat-icon>edit</mat-icon>
-                                        作者可见
-                                    </span>
-                                </div>
-                                <p>第一张截图会作为资源封面。可批量上传、调整展示顺序或删除截图。</p>
+                        <div class="detail-card-heading">
+                            <div class="detail-card-title-row">
+                                <h2 class="detail-card-title">截图管理</h2>
+                                <span class="permission-badge permission-badge-author">
+                                    <mat-icon>edit</mat-icon>
+                                    作者可见
+                                </span>
                             </div>
+                            <p>第一张截图会作为资源封面。可批量上传、调整展示顺序或删除截图。</p>
                         </div>
                         <div class="screenshot-manager-actions">
                             <span class="screenshot-count">{{this.package.imageUrls.length}} 张截图</span>
@@ -186,85 +184,85 @@
                 </section>
 
                 <section class="resource-summary surface-panel app-detail-section">
-                <div class="detail-card-heading">
-                    <div class="detail-card-title-row">
-                        <h2 class="detail-card-title">资源详情</h2>
+                    <div class="detail-card-heading">
+                        <div class="detail-card-title-row">
+                            <h2 class="detail-card-title">资源详情</h2>
+                        </div>
                     </div>
-                </div>
-                <h1>
-                    <span *ngIf="!isAuthor()" #packageNameTitle class="title">
-                        {{this.package.packageName}}
-                    </span>
-                    <mat-form-field *ngIf="isAuthor()" appearance="outline" class="package-name-field">
-                        <mat-label>资源名称</mat-label>
-                        <input matInput [(ngModel)]="packageNameDraft" maxlength="80"
-                            (keydown.enter)="onUpdateTitle()">
-                    </mat-form-field>
-                </h1>
-                <div *ngIf="isAuthor() && packageNameChanged" class="package-name-actions">
-                    <button mat-stroked-button class="action-button action-secondary" type="button"
-                        (click)="cancelPackageNameEdit()">撤销</button>
-                    <button mat-flat-button color="primary" type="button"
-                        class="action-button action-primary"
-                        [disabled]="!packageNameDraft.trim()" (click)="onUpdateTitle()">
-                        保存名称
-                    </button>
-                </div>
-
-                <div class="primary-info-render">
-                    <div class="meta-pill">
-                        <mat-icon>download</mat-icon>
-                        <span>{{this.package.downloadCount}} 下载</span>
-                    </div>
-                    <div class="meta-pill">
-                        <mat-icon>calendar_today</mat-icon>
-                        <span matTooltip="创建日期">{{this.package.createTime}}</span>
-                    </div>
-                    <div class="meta-pill">
-                        <mat-icon>update</mat-icon>
-                        <span matTooltip="最近更新">{{this.package.updateTime}}</span>
-                    </div>
-                </div>
-
-                <div class="summary-actions app-action-stack">
-                    <button mat-flat-button color="primary" class="action-button action-primary download-cta" type="button"
-                        (click)="scrollToVersions()">
-                        <mat-icon>download</mat-icon>
-                        查看版本
-                    </button>
-
-                    <button mat-stroked-button class="action-button action-secondary collect-action" (click)="onToggleCollect()">
-                        <mat-icon>{{isCollected ? 'playlist_remove' : 'playlist_add'}}</mat-icon>
-                        {{collectButtonText}}
-                    </button>
-                </div>
-
-                <div class="top-level-buttons app-action-row">
-                    <app-feedback-card [target]="this.package.name" [likeCount]="this.package.likeCount"
-                        [dislikeCount]="this.package.dislikeCount"></app-feedback-card>
-
-                </div>
-
-                <div class="summary-tags" *ngIf="this.package.tags?.length || tagCanEdit">
-                    <div class="summary-tags-header">
-                        <h3>标签</h3>
-                        <mat-form-field *ngIf="tagCanEdit" appearance="outline" class="summary-tag-select">
-                            <mat-select required placeholder="添加标签" (selectionChange)="newTagSelected($event.value)">
-                                <mat-option *ngFor="let tag of availableTags" [value]="tag">
-                                    {{tag.tagName}}
-                                </mat-option>
-                            </mat-select>
+                    <h1>
+                        <span *ngIf="!isAuthor()" #packageNameTitle class="title">
+                            {{this.package.packageName}}
+                        </span>
+                        <mat-form-field *ngIf="isAuthor()" appearance="outline" class="package-name-field">
+                            <mat-label>资源名称</mat-label>
+                            <input matInput [(ngModel)]="packageNameDraft" maxlength="80"
+                                (keydown.enter)="onUpdateTitle()">
                         </mat-form-field>
+                    </h1>
+                    <div *ngIf="isAuthor() && packageNameChanged" class="package-name-actions">
+                        <button mat-stroked-button class="action-button action-secondary" type="button"
+                            (click)="cancelPackageNameEdit()">撤销</button>
+                        <button mat-flat-button color="primary" type="button"
+                            class="action-button action-primary"
+                            [disabled]="!packageNameDraft.trim()" (click)="onUpdateTitle()">
+                            保存名称
+                        </button>
                     </div>
 
-                    <mat-chip-listbox #chipList>
-                        <mat-chip-option *ngFor="let tag of this.package.tags" selectable="false"
-                            [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
-                            {{tag.tagName}}
-                            <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
-                        </mat-chip-option>
-                    </mat-chip-listbox>
-                </div>
+                    <div class="primary-info-render">
+                        <div class="meta-pill">
+                            <mat-icon>download</mat-icon>
+                            <span>{{this.package.downloadCount}} 下载</span>
+                        </div>
+                        <div class="meta-pill">
+                            <mat-icon>calendar_today</mat-icon>
+                            <span matTooltip="创建日期">{{this.package.createTime}}</span>
+                        </div>
+                        <div class="meta-pill">
+                            <mat-icon>update</mat-icon>
+                            <span matTooltip="最近更新">{{this.package.updateTime}}</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-actions app-action-stack">
+                        <button mat-flat-button color="primary" class="action-button action-primary download-cta" type="button"
+                            (click)="scrollToVersions()">
+                            <mat-icon>download</mat-icon>
+                            查看版本
+                        </button>
+
+                        <button mat-stroked-button class="action-button action-secondary collect-action" (click)="onToggleCollect()">
+                            <mat-icon>{{isCollected ? 'playlist_remove' : 'playlist_add'}}</mat-icon>
+                            {{collectButtonText}}
+                        </button>
+                    </div>
+
+                    <div class="top-level-buttons app-action-row">
+                        <app-feedback-card [target]="this.package.name" [likeCount]="this.package.likeCount"
+                            [dislikeCount]="this.package.dislikeCount"></app-feedback-card>
+
+                    </div>
+
+                    <div class="summary-tags" *ngIf="this.package.tags?.length || tagCanEdit">
+                        <div class="summary-tags-header">
+                            <h3>标签</h3>
+                            <mat-form-field *ngIf="tagCanEdit" appearance="outline" class="summary-tag-select">
+                                <mat-select required placeholder="添加标签" (selectionChange)="newTagSelected($event.value)">
+                                    <mat-option *ngFor="let tag of availableTags" [value]="tag">
+                                        {{tag.tagName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <mat-chip-listbox #chipList>
+                            <mat-chip-option *ngFor="let tag of this.package.tags" selectable="false"
+                                [removable]="this.tagCanEdit" (removed)="removeTag(tag)">
+                                {{tag.tagName}}
+                                <mat-icon matChipRemove *ngIf="this.tagCanEdit">cancel</mat-icon>
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                    </div>
                 </section>
 
                 <section *ngIf="isAuthor()"
@@ -312,37 +310,37 @@
                 <section *ngIf="isAdmin()"
                     class="admin-management role-workspace permission-surface permission-admin-surface surface-panel app-detail-section">
                     <div class="detail-card-heading">
-                    <div class="detail-card-title-row">
-                        <h2 class="detail-card-title">状态管理</h2>
-                        <span class="permission-badge permission-badge-admin">
-                            <mat-icon>admin_panel_settings</mat-icon>
-                            管理员可见
-                        </span>
-                    </div>
-                    <p>处理审核、可见性和紧急下架。资源内容由作者维护。</p>
+                        <div class="detail-card-title-row">
+                            <h2 class="detail-card-title">状态管理</h2>
+                            <span class="permission-badge permission-badge-admin">
+                                <mat-icon>admin_panel_settings</mat-icon>
+                                管理员可见
+                            </span>
+                        </div>
+                        <p>处理审核、可见性和紧急下架。资源内容由作者维护。</p>
                     </div>
                     <div class="resource-management-quick-actions">
-                    <button mat-flat-button color="primary" class="action-button action-primary" type="button"
-                        *ngIf="this.package.state===2" (click)="onApprove()">
-                        <mat-icon>verified</mat-icon>
-                        通过审核
-                    </button>
-                    <button mat-stroked-button class="action-button action-secondary" type="button"
-                        *ngIf="this.package.state===1 || this.package.state===3" (click)="onFlipHide()">
-                        <mat-icon>{{this.package.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
-                        {{this.package.state===3 ? '恢复显示' : '隐藏资源'}}
-                    </button>
-                    <button mat-stroked-button type="button" class="action-button action-tertiary"
-                        [matMenuTriggerFor]="adminMoreMenu">
-                        <mat-icon>more_horiz</mat-icon>
-                        更多操作
-                    </button>
-                    <mat-menu #adminMoreMenu="matMenu" xPosition="before">
-                        <button mat-menu-item class="danger-menu-item" (click)="onDelete()">
-                            <mat-icon>delete_forever</mat-icon>
-                            <span>永久删除资源</span>
+                        <button mat-flat-button color="primary" class="action-button action-primary" type="button"
+                            *ngIf="this.package.state===2" (click)="onApprove()">
+                            <mat-icon>verified</mat-icon>
+                            通过审核
                         </button>
-                    </mat-menu>
+                        <button mat-stroked-button class="action-button action-secondary" type="button"
+                            *ngIf="this.package.state===1 || this.package.state===3" (click)="onFlipHide()">
+                            <mat-icon>{{this.package.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
+                            {{this.package.state===3 ? '恢复显示' : '隐藏资源'}}
+                        </button>
+                        <button mat-stroked-button type="button" class="action-button action-tertiary"
+                            [matMenuTriggerFor]="adminMoreMenu">
+                            <mat-icon>more_horiz</mat-icon>
+                            更多操作
+                        </button>
+                        <mat-menu #adminMoreMenu="matMenu" xPosition="before">
+                            <button mat-menu-item class="danger-menu-item" (click)="onDelete()">
+                                <mat-icon>delete_forever</mat-icon>
+                                <span>永久删除资源</span>
+                            </button>
+                        </mat-menu>
                     </div>
                 </section>
             </aside>

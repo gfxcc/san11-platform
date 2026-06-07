@@ -1,16 +1,20 @@
 <section class="confirm-dialog">
-    <header>
-        <span class="confirm-icon" [class.confirm-icon-danger]="data.danger">
+    <header class="confirm-dialog-header">
+        <span class="confirm-icon" [class.confirm-icon-danger]="data.danger" aria-hidden="true">
             <mat-icon>{{data.icon || (data.danger ? 'warning' : 'help_outline')}}</mat-icon>
         </span>
-        <div>
+        <div class="confirm-dialog-copy">
             <h2>{{data.title}}</h2>
             <p>{{data.message}}</p>
         </div>
     </header>
-    <footer>
-        <button mat-stroked-button type="button" (click)="close(false)">{{data.cancelText || '取消'}}</button>
-        <button mat-flat-button type="button" [color]="data.danger ? 'warn' : 'primary'" (click)="close(true)">
+    <footer class="confirm-dialog-actions">
+        <button mat-stroked-button class="action-button action-secondary" type="button" (click)="close(false)">
+            {{data.cancelText || '取消'}}
+        </button>
+        <button mat-flat-button class="action-button confirm-action"
+            [class.confirm-action-danger]="data.danger" type="button" [color]="data.danger ? 'warn' : 'primary'"
+            (click)="close(true)">
             {{data.confirmText || '确认'}}
         </button>
     </footer>

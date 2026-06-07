@@ -6,8 +6,9 @@
             <img [hidden]="this.displayScreenshotLoading" [src]="screenshot" (load)="this.displayScreenshotLoading=false;"
                 class="fit-image">
 
-            <div class="status-badge" [hidden]="! (isAdmin() && package.state!=1)">
-                {{getStatusName()}}
+            <div *ngIf="shouldShowStatusBadge" class="status-badge" [ngClass]="'status-badge-' + resourceStatus.tone">
+                <mat-icon>{{resourceStatus.icon}}</mat-icon>
+                {{resourceStatus.label}}
             </div>
         </div>
 

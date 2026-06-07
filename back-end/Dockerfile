@@ -15,12 +15,11 @@ RUN apt-get update -y && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install python3 python3-pip python3.8-dev libpq-dev python3-setuptools -y
 
-# Install grpc related lib here as it takes a long time to build
-# Have a different layer will prevent us from rebuild them whenever 
-#   requirements.txt get updated
-RUN python3.8 -m pip install --upgrade setuptools
-RUN python3.8 -m pip install grpcio==1.70.0 grpcio-tools==1.70.0
+# Install grpc related libs in a separate layer so requirements.txt changes do
+# not invalidate them. Upgrade pip first so it can resolve manylinux aarch64
+# wheels instead of compiling grpc from source.
+RUN python3.8 -m pip install --upgrade pip setuptools
+RUN python3.8 -m pip install --only-binary=:all: grpcio==1.70.0 grpcio-tools==1.70.0
 
 COPY ./requirements.txt /tmp/requirements.txt
-RUN python3.8 -m pip install --upgrade pip
 RUN python3.8 -m pip install -r /tmp/requirements.txt

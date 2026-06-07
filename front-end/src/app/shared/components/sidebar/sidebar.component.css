@@ -54,6 +54,8 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
+    width: 100%;
+    min-width: 0;
     min-height: 36px;
     position: relative;
     color: var(--text-muted);
@@ -61,19 +63,31 @@
     font-weight: 750;
 }
 
+.nav-link span:not(.admin-pending-badge) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-nav-option .nav-link {
+    padding-right: 6px;
+}
+
 .admin-pending-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 22px;
-    height: 22px;
+    min-width: 20px;
+    height: 20px;
     margin-left: auto;
-    padding: 0 7px;
+    margin-right: 2px;
+    padding: 0 6px;
     border: 2px solid rgba(255, 255, 255, .92);
     border-radius: 999px;
     background: #dc2626;
     color: #fff;
-    font-size: .72rem;
+    font-size: .7rem;
     line-height: 1;
     font-weight: 850;
     box-shadow: 0 3px 9px rgba(220, 38, 38, .25);

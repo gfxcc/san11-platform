@@ -14,6 +14,7 @@ export class InteractionService {
   confirm(data: ConfirmDialogData): Observable<boolean> {
     return this.dialog.open(ConfirmDialogComponent, {
       autoFocus: false,
+      panelClass: 'app-confirm-dialog-panel',
       data,
     }).afterClosed();
   }

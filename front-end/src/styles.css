@@ -379,6 +379,13 @@ body {
     border-radius: var(--button-radius);
 }
 
+.app-confirm-dialog-panel .mat-mdc-dialog-surface {
+    overflow: visible;
+    border-radius: var(--radius-lg);
+    background: transparent;
+    box-shadow: none;
+}
+
 .app-list-panel {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);

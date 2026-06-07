@@ -1,64 +1,158 @@
 <div class="article-detail-page">
-    <article class="article-detail surface-panel">
-        <header class="detail-header">
-            <div class="article-kicker">社区文章</div>
-            <h1 #articleSubjectElement class="entry-title">
-                {{article.subject}}
-            </h1>
+    <nav class="article-breadcrumb" aria-label="文章导航">
+        <a routerLink="/">
+            <mat-icon>home</mat-icon>
+            主页
+        </a>
+        <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+        <a routerLink="/articles">专栏文章</a>
+        <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+        <span>{{article.subject}}</span>
+    </nav>
 
-            <div class="author-line">
-                <img [src]="this.user?.imageUrl | fullUrl : '128_128'" width="58" height="58" class="avatar"
-                    [alt]="user?.username || '作者头像'">
-                <div>
-                    <p>{{user?.username}}</p>
-                    <span>{{getArticleUpdateTime()}}</span>
+    <div class="article-layout">
+        <main class="article-main">
+            <article class="article-detail surface-panel app-detail-section">
+                <header class="detail-header">
+                    <div class="title-edit-shell" [class.title-edit-shell-author]="isAuthor()">
+                        <h1 #articleSubjectElement class="entry-title" [class.author-editable-title]="isAuthor()"
+                            [class.title-editing]="editingTarget === 'title'"
+                            [attr.tabindex]="isAuthor() ? 0 : null"
+                            (click)="onTitleClick()" (keydown.enter)="onTitleEnter($event)" (input)="onTitleChange()">
+                            {{article.subject}}
+                        </h1>
+                        <span *ngIf="isAuthor() && editingTarget !== 'content'" class="inline-edit-cue"
+                            aria-hidden="true">
+                            <mat-icon>edit</mat-icon>
+                        </span>
+                    </div>
+                </header>
+
+                <section class="editor-section">
+                    <div class="content-edit-frame" [class.author-editable-content]="isAuthor()"
+                        [class.content-editing]="editingTarget === 'content'" (click)="onContentClick()">
+                        <span *ngIf="isAuthor() && editingTarget !== 'content'" class="content-edit-cue"
+                            aria-hidden="true">
+                            <mat-icon>edit</mat-icon>
+                        </span>
+                        <ckeditor class="editor" [data]="this.article.content"
+                            [editor]="this.editorService.getEditorInstance()"
+                            (ready)="this.editorService.onReady($event)" (change)="onDescEditorChange($event)"
+                            [disabled]="this.editorService.disabled" [config]="this.editorService.getConfig()">
+                        </ckeditor>
+                    </div>
+                </section>
+            </article>
+
+            <section class="comments-panel surface-panel app-detail-section">
+                <app-comment-board [parent]="article.name"></app-comment-board>
+            </section>
+        </main>
+
+        <aside class="article-side-rail">
+            <section *ngIf="isAdmin() || isAuthor()" class="article-status-card surface-panel app-detail-section"
+                [ngClass]="'article-status-' + getArticleStatusTone()">
+                <span class="article-status-icon">
+                    <mat-icon>{{getArticleStatusIcon()}}</mat-icon>
+                </span>
+                <div class="article-status-copy">
+                    <span>内部状态</span>
+                    <strong>{{getArticleStatusLabel()}}</strong>
+                    <p>{{getArticleStatusDescription()}}</p>
                 </div>
-            </div>
-        </header>
+            </section>
 
-        <section class="editor-section">
-            <ckeditor class="editor" [data]="this.article.content" [editor]="this.editorService.getEditorInstance()"
-                (ready)="this.editorService.onReady($event)" (change)="onDescEditorChange($event)"
-                [disabled]="this.editorService.disabled" [config]="this.editorService.getConfig()"></ckeditor>
-        </section>
+            <section *ngIf="isAuthor()"
+                class="author-workspace role-workspace permission-surface permission-author-surface surface-panel app-detail-section">
+                <div class="detail-card-heading">
+                    <div class="detail-card-title-row">
+                        <h2 class="detail-card-title">作者工具</h2>
+                        <span class="permission-badge permission-badge-author">
+                            <mat-icon>edit</mat-icon>
+                            作者可见
+                        </span>
+                    </div>
+                    <p>控制编辑模式；标题也可以在主栏直接点击修改。</p>
+                </div>
 
-        <footer class="article-actions">
-            <div *ngIf="(isAdmin() || isAuthor())" class="management-actions">
-                <button *ngIf="isAuthor() && !editing" mat-stroked-button color="primary" (click)="startEditing()">
-                    <mat-icon>edit</mat-icon>
-                    编辑文章
-                </button>
-                <button *ngIf="editing" mat-stroked-button (click)="cancelEditing()">取消编辑</button>
-                <button mat-stroked-button [matMenuTriggerFor]="articleMenu">
-                    <mat-icon>settings</mat-icon>
-                    管理
-                </button>
-                <mat-menu #articleMenu="matMenu">
-                    <button mat-menu-item (click)="onFlipState()">
+                <div class="rail-action-grid">
+                    <button mat-stroked-button class="action-button action-secondary" type="button"
+                        [disabled]="editing" (click)="startEditing()">
+                        <mat-icon>edit</mat-icon>
+                        编辑文章
+                    </button>
+                    <button mat-stroked-button class="action-button action-secondary" type="button"
+                        [disabled]="!editing" (click)="cancelEditing()">
+                        <mat-icon>close</mat-icon>
+                        取消编辑
+                    </button>
+                    <button mat-flat-button color="primary" class="action-button action-primary" type="button"
+                        [disabled]="!editing || !descEditor_updated" (click)="onUpdate()">
+                        <mat-icon>save</mat-icon>
+                        保存更新
+                    </button>
+                </div>
+            </section>
+
+            <section *ngIf="isAdmin()"
+                class="admin-workspace role-workspace permission-surface permission-admin-surface surface-panel app-detail-section">
+                <div class="detail-card-heading">
+                    <div class="detail-card-title-row">
+                        <h2 class="detail-card-title">状态管理</h2>
+                        <span class="permission-badge permission-badge-admin">
+                            <mat-icon>admin_panel_settings</mat-icon>
+                            管理员可见
+                        </span>
+                    </div>
+                    <p>处理文章公开状态和删除操作。正文内容由作者维护。</p>
+                </div>
+
+                <div class="rail-action-stack">
+                    <button mat-stroked-button class="action-button action-secondary" type="button"
+                        (click)="onFlipState()">
                         <mat-icon>{{article.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
                         {{article.state===3 ? '发布文章' : '隐藏文章'}}
                     </button>
-                    <button mat-menu-item class="danger-menu-item" (click)="onDelete()">
-                        <mat-icon>delete</mat-icon>
-                        删除文章
+                    <button mat-stroked-button type="button" class="action-button action-tertiary"
+                        [matMenuTriggerFor]="articleAdminMenu">
+                        <mat-icon>more_horiz</mat-icon>
+                        更多操作
                     </button>
-                </mat-menu>
-            </div>
+                    <mat-menu #articleAdminMenu="matMenu">
+                        <button mat-menu-item class="danger-menu-item" (click)="onDelete()">
+                            <mat-icon>delete</mat-icon>
+                            删除文章
+                        </button>
+                    </mat-menu>
+                </div>
+            </section>
 
-            <span class="example-spacer"></span>
+            <section class="article-summary surface-panel app-detail-section">
+                <h2>文章详情</h2>
+                <div class="summary-author">
+                    <img [src]="this.user?.imageUrl | fullUrl : '128_128'" width="40" height="40" class="summary-avatar"
+                        [alt]="user?.username || '作者头像'">
+                    <div>
+                        <span>作者</span>
+                        <strong>{{user?.username}}</strong>
+                    </div>
+                </div>
+                <div class="summary-meta">
+                    <span class="meta-item">
+                        <mat-icon>schedule</mat-icon>
+                        <span>创建于</span>
+                        <strong>{{getArticleCreateTime()}}</strong>
+                    </span>
+                    <span class="meta-item">
+                        <mat-icon>update</mat-icon>
+                        <span>更新于</span>
+                        <strong>{{getArticleUpdateTime()}}</strong>
+                    </span>
+                </div>
 
-            <app-feedback-card [target]="this.article.name" [likeCount]="this.article.likeCount"
-                [dislikeCount]="this.article.dislikeCount"></app-feedback-card>
-
-            <button *ngIf="editing && this.descEditor_updated" mat-flat-button color="primary" class="save-button"
-                (click)="onUpdate()">
-                <mat-icon>save</mat-icon>
-                更新
-            </button>
-        </footer>
-    </article>
-
-    <section class="comments-panel surface-panel">
-        <app-comment-board [parent]="article.name"></app-comment-board>
-    </section>
+                <app-feedback-card [target]="this.article.name" [likeCount]="this.article.likeCount"
+                    [dislikeCount]="this.article.dislikeCount"></app-feedback-card>
+            </section>
+        </aside>
+    </div>
 </div>

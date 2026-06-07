@@ -31,10 +31,10 @@
     </div>
     <span class="author-spacer"></span>
     <div class="subscribe-section">
-        <button *ngIf="!this.loadingSubscription" mat-flat-button
+        <button *ngIf="!this.loadingSubscription && canSubscribeToUser" mat-flat-button
             [class.unsubscribe-button]="subscription" color="primary"
             (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>
-        <p-skeleton *ngIf="this.loadingSubscription" width="64px" height="36px"></p-skeleton>
+        <p-skeleton *ngIf="this.loadingSubscription && canSubscribeToUser" width="64px" height="36px"></p-skeleton>
     </div>
 </div>
 

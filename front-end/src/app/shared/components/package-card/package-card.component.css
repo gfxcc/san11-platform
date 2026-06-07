@@ -61,15 +61,54 @@
 
 .status-badge {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 6px 10px;
+    top: 10px;
+    left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    max-width: calc(100% - 20px);
+    padding: 5px 9px;
     border-radius: 999px;
-    background: rgba(216, 59, 42, .94);
-    color: white;
-    font-size: .78rem;
-    font-weight: 800;
-    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(255, 255, 255, .52);
+    background: rgba(15, 23, 42, .74);
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, .16);
+    backdrop-filter: blur(10px);
+    font-size: .74rem;
+    font-weight: 850;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.status-badge mat-icon {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+}
+
+.status-badge-review {
+    border-color: rgba(253, 230, 138, .62);
+    background: rgba(146, 64, 14, .82);
+}
+
+.status-badge-hidden {
+    border-color: rgba(254, 202, 202, .64);
+    background: rgba(153, 27, 27, .82);
+}
+
+.status-badge-deleted {
+    border-color: rgba(203, 213, 225, .64);
+    background: rgba(51, 65, 85, .84);
+}
+
+.status-badge-scheduled {
+    border-color: rgba(251, 191, 36, .64);
+    background: rgba(180, 83, 9, .84);
+}
+
+.status-badge-default {
+    border-color: rgba(203, 213, 225, .64);
+    background: rgba(51, 65, 85, .84);
 }
 
 mat-card-content {

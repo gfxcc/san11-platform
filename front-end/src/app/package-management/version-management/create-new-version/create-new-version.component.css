@@ -1,22 +1,24 @@
 .version-dialog {
-    width: min(88vw, 680px);
+    width: min(86vw, 640px);
+    max-height: calc(100vh - 48px);
     box-sizing: border-box;
-    padding: 24px;
+    overflow: visible;
+    padding: 20px 22px;
 }
 
 .version-dialog-header {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 0 0 18px;
+    padding: 0 0 14px;
 }
 
 .dialog-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     flex: 0 0 auto;
     border-radius: var(--radius-md);
     background: var(--primary-soft);
@@ -27,7 +29,7 @@
 .version-dialog-header h1 {
     margin: 0;
     color: var(--text-color);
-    font-size: 1.55rem;
+    font-size: 1.38rem;
     line-height: 1.2;
     font-weight: 850;
 }
@@ -42,7 +44,7 @@
 .form,
 .field-stack {
     display: grid;
-    gap: 16px;
+    gap: 12px;
 }
 
 .form mat-form-field {
@@ -58,8 +60,8 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    margin-top: 18px;
-    padding-top: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
     border-top: 1px solid var(--border-color);
 }
 
@@ -77,7 +79,7 @@
     display: flex;
     align-items: baseline;
     gap: 10px;
-    padding: 14px 16px;
+    padding: 12px 16px;
     border: 1px solid rgba(37, 99, 235, .18);
     border-radius: var(--radius-md);
     background: rgba(37, 99, 235, .06);
@@ -86,7 +88,7 @@
 
 .version-preview strong {
     color: var(--primary-strong);
-    font-size: 1.35rem;
+    font-size: 1.22rem;
 }
 
 .version-preview small {
@@ -108,8 +110,8 @@
 
 .file-section {
     display: grid;
-    gap: 16px;
-    padding: 18px 0 4px;
+    gap: 12px;
+    padding: 14px 0 2px;
 }
 
 .file-section-hint {
@@ -143,33 +145,130 @@
     font-size: 18px;
 }
 
-.upload-progress {
-    height: 3px;
+.upload-status-card {
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid rgba(37, 99, 235, .14);
+    border-radius: var(--radius-md);
+    background:
+        linear-gradient(135deg, rgba(37, 99, 235, .065), rgba(255, 255, 255, .96) 58%),
+        var(--surface);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, .06);
 }
 
-.upload-state {
+.upload-status-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.upload-status-icon {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    color: var(--text-muted);
-    font-size: .86rem;
-    font-weight: 700;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    border-radius: 14px;
+    background: rgba(37, 99, 235, .1);
+    color: var(--primary-color);
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, .14);
 }
 
-.upload-state mat-icon {
-    width: 18px;
-    height: 18px;
+.upload-status-icon-complete {
+    background: rgba(22, 163, 74, .1);
     color: var(--success-color);
-    font-size: 18px;
+    box-shadow: inset 0 0 0 1px rgba(22, 163, 74, .16);
+}
+
+.upload-status-icon mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+.upload-status-copy {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+
+.upload-status-copy strong {
+    color: var(--text-color);
+    font-size: .94rem;
+    font-weight: 850;
+}
+
+.upload-status-copy span {
+    color: var(--text-muted);
+    font-size: .82rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.upload-percent {
+    margin-left: auto;
+    color: var(--primary-strong);
+    font-size: 1.08rem;
+    font-weight: 900;
+    letter-spacing: -.02em;
+}
+
+.upload-progress {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+}
+
+:host ::ng-deep .upload-progress .mdc-linear-progress__buffer-bar,
+:host ::ng-deep .upload-progress .mdc-linear-progress__bar-inner {
+    border-radius: 999px;
 }
 
 .auto-create-toggle {
     margin-top: 2px;
 }
 
-.form-errors {
-    display: grid;
-    gap: 4px;
+.publish-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 7px 10px;
+    border: 1px solid rgba(148, 163, 184, .22);
+    border-radius: 999px;
+    background: rgba(248, 250, 252, .86);
+    color: var(--text-muted);
+    font-size: .84rem;
+    font-weight: 750;
+}
+
+.publish-status mat-icon {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 auto;
+    font-size: 17px;
+}
+
+.publish-status span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.publish-status-ready {
+    border-color: rgba(22, 163, 74, .18);
+    background: rgba(22, 163, 74, .08);
+    color: #15803d;
+}
+
+.publish-status-error {
+    border-color: rgba(239, 68, 68, .2);
+    background: rgba(239, 68, 68, .08);
+    color: #dc2626;
 }
 
 .actions button {
@@ -177,13 +276,15 @@
 }
 
 :host ::ng-deep .ck-editor__editable_inline {
-    min-height: 220px;
-    max-height: 500px;
+    min-height: 150px;
+    max-height: 320px;
 }
 
 @media (max-width: 48rem) {
     .version-dialog {
         width: calc(100vw - 32px);
+        max-height: calc(100vh - 32px);
+        overflow: auto;
         padding: 18px;
     }
 
@@ -195,5 +296,15 @@
     .upload-actions {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .publish-status {
+        width: 100%;
+        box-sizing: border-box;
     }
 }

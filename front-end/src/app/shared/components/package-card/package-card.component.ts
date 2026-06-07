@@ -86,6 +86,25 @@ export class PackageCardComponent implements OnInit {
     return ResourceState[this.package.state];
   }
 
+  get shouldShowStatusBadge(): boolean {
+    return this.isAdmin() && this.package.state !== ResourceState.NORMAL;
+  }
+
+  get resourceStatus(): { label: string; icon: string; tone: 'review' | 'hidden' | 'scheduled' | 'deleted' | 'default' } {
+    switch (this.package.state) {
+      case ResourceState.UNDER_REVIEW:
+        return { label: '待审核', icon: 'hourglass_top', tone: 'review' };
+      case ResourceState.HIDDEN:
+        return { label: '已隐藏', icon: 'visibility_off', tone: 'hidden' };
+      case ResourceState.SCHEDULED_DELETE:
+        return { label: '待删除', icon: 'event_busy', tone: 'scheduled' };
+      case ResourceState.DELETED:
+        return { label: '已删除', icon: 'delete_outline', tone: 'deleted' };
+      default:
+        return { label: '状态异常', icon: 'info', tone: 'default' };
+    }
+  }
+
 }
 
 export interface DialogData {

@@ -35,7 +35,7 @@
 
             <div *ngIf="this.isAdmin()">
                 <div class="section-label">管理</div>
-                <mat-list-option *ngFor="let adminModule of adminModules" [value]="adminModule"
+                <mat-list-option *ngFor="let adminModule of adminModules" class="admin-nav-option" [value]="adminModule"
                     [selected]="isAdminModuleActive(adminModule)"
                     (click)="onClickSidenav(adminModule)">
                     <div class="nav-link">
