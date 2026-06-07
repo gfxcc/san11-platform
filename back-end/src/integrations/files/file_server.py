@@ -6,10 +6,11 @@ import urllib.parse
 from abc import ABC, abstractproperty
 from enum import Enum
 from io import BytesIO
-from typing import Iterable, Optional, Union
+from typing import Any, Iterable, Optional, Union
 
 import boto3
 from boto3.resources.base import ServiceResource as S3ServiceResource
+from botocore.config import Config
 from google.cloud import storage
 from PIL import Image
 from requests import delete
@@ -204,7 +205,7 @@ class Gcs(FileServer):
 
 
 class S3(FileServer):
-    credentials_environment_variable = 'AWS_CREDENTIALS_FILE'
+    credentials_environment_variable: str = 'AWS_CREDENTIALS_FILE'
 
     def __init__(self) -> None:
         self.creds: Optional[AwsCredentials] = None
@@ -292,14 +293,14 @@ class S3(FileServer):
         # TODO: This is a workaround due to https://github.com/boto/boto3/issues/3015
         s3 = boto3.client('s3', aws_access_key_id=creds.access_key_id,
                           aws_secret_access_key=creds.secret_access_key,
-                          region_name='ap-east-1', config=boto3.session.Config(s3={'addressing_style': 'virtual'}))
+                          region_name='ap-east-1', config=Config(s3={'addressing_style': 'virtual'}))
         endpointUrl = s3.meta.endpoint_url
         return boto3.client('s3', aws_access_key_id=creds.access_key_id,
                             aws_secret_access_key=creds.secret_access_key,
-                            region_name='ap-east-1', config=boto3.session.Config(s3={'addressing_style': 'virtual'}),
+                            region_name='ap-east-1', config=Config(s3={'addressing_style': 'virtual'}),
                             endpoint_url=endpointUrl)
 
-    def _get_resource(self):
+    def _get_resource(self) -> Any:
         creds = self._get_credentials()
         return boto3.resource('s3', aws_access_key_id=creds.access_key_id,
                               aws_secret_access_key=creds.secret_access_key,

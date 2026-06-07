@@ -1,0 +1,21 @@
+{
+  "include": [
+    "src",
+    "tests"
+  ],
+  "exclude": [
+    "src/app/protos/*_pb2.py",
+    "src/app/protos/*_pb2_grpc.py",
+    "src/app/protos/*.pyi",
+    "src/core/models/base/common/list_options/*_pb2.py",
+    "src/core/models/base/common/list_options/*.pyi"
+  ],
+  "extraPaths": [
+    "src"
+  ],
+  "venvPath": ".",
+  "venv": ".venv",
+  "pythonVersion": "3.9",
+  "typeCheckingMode": "basic",
+  "reportMissingModuleSource": false
+}

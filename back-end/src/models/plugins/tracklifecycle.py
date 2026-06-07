@@ -31,7 +31,7 @@ class Action(Enum):
     def from_pb(cls, pb_obj: pb.Action):
         return cls(pb_obj)
 
-    def to_pb(self) -> pb.Action:
+    def to_pb(self) -> int:
         return self.value
 
 
@@ -88,7 +88,7 @@ class TrackLifecycle(LifecycleEventsBase):
     proto_class=pb.Activity,
 )
 @attrs.define
-class ModelActivity(ModelBase):
+class ModelActivity(ModelBase[pb.Activity]):
     # Resource name. It is `{parent}/activities/{resource_id}`
     # E.g. `users/123/activities/12345`
     name: str = StrAttrib()

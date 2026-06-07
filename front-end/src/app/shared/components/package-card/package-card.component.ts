@@ -7,6 +7,7 @@ import { DeletePackageRequest, GetUserRequest, Package, ResourceState, User } fr
 import { NotificationService } from "../../../common/notification.service";
 import { DownloadService } from "../../../service/download.service";
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
+import { getDefaultPackageScreenshot } from '../../../utils/package_util';
 import { getFullUrl } from "../../../utils/resrouce_util";
 
 @Component({
@@ -62,12 +63,8 @@ export class PackageCardComponent implements OnInit {
 
   loadImage() {
     if (this.package.imageUrls.length === 0) {
-      // load default image
-      if (this.package.name.startsWith('categories/4/')) {
-        this.screenshot = getFullUrl('static/images/pk2_2.jpeg');
-      } else {
-        this.screenshot = getFullUrl('static/images/sire2.jpg');
-      }
+      const defaultScreenshot = getDefaultPackageScreenshot(this.package);
+      this.screenshot = defaultScreenshot ? getFullUrl(defaultScreenshot) : undefined;
     } else {
       this.screenshot = getFullUrl(this.package.imageUrls[0]);
     }

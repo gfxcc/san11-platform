@@ -1,7 +1,7 @@
 import logging
 import os
 from contextlib import contextmanager
-from typing import Dict, Iterable, Iterator, List, Tuple
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple
 
 import psycopg2
 from psycopg2.extensions import connection as PgConnection
@@ -29,7 +29,7 @@ MIN_CONNECTION = 10
 MAX_CONNECTION = 200
 DEFAULT_DB_HOST = 'db'
 
-_pgpool: ThreadedConnectionPool = None
+_pgpool: Optional[ThreadedConnectionPool] = None
 
 
 def pgpool() -> ThreadedConnectionPool:
@@ -70,7 +70,9 @@ def run_sql_with_param(sql: str, param: Dict) -> None:
             cursor.execute(sql, param)
 
 
-def run_sql_with_param_and_fetch_all(sql: str, param: Dict, transaction: bool = False) -> List[Tuple]:
+def run_sql_with_param_and_fetch_all(
+        sql: str, param: Dict, transaction: bool = False
+) -> List[Tuple[Any, ...]]:
     with connection() as db_conn:
         if not transaction:
             with db_conn.cursor() as cursor:
@@ -84,7 +86,9 @@ def run_sql_with_param_and_fetch_all(sql: str, param: Dict, transaction: bool = 
         return resp
 
 
-def run_sql_with_param_and_fetch_one(sql: str, param: Dict, transaction: bool = False) -> List[Tuple]:
+def run_sql_with_param_and_fetch_one(
+        sql: str, param: Dict, transaction: bool = False
+) -> Optional[Tuple[Any, ...]]:
     with connection() as db_conn:
         if not transaction:
             with db_conn.cursor() as cursor:

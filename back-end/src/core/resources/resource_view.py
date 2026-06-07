@@ -13,11 +13,40 @@ from core.html_util import get_text_from_html
 from core.resources.name_util import ResourceName, get_parent
 from core.resources.resource_parser import find_resource
 
-from core.common.visitor import visitor
 from app.protos import san11_platform_pb2 as pb
+
+ViewableResource = Union[
+    ModelArticle,
+    ModelBinary,
+    ModelComment,
+    ModelPackage,
+    ModelReply,
+    ModelTag,
+    ModelThread,
+    ModelUser,
+]
 
 
 class ResourceViewVisitor:
+    def visit(self, resource: ViewableResource) -> pb.ResourceView:
+        if isinstance(resource, ModelPackage):
+            return self._visit_package(resource)
+        if isinstance(resource, ModelBinary):
+            return self._visit_binary(resource)
+        if isinstance(resource, ModelThread):
+            return self._visit_thread(resource)
+        if isinstance(resource, ModelComment):
+            return self._visit_comment(resource)
+        if isinstance(resource, ModelReply):
+            return self._visit_reply(resource)
+        if isinstance(resource, ModelArticle):
+            return self._visit_article(resource)
+        if isinstance(resource, ModelUser):
+            return self._visit_user(resource)
+        if isinstance(resource, ModelTag):
+            return self._visit_tag(resource)
+        raise TypeError(f'Cannot create resource view for {type(resource)}')
+
     def _visit_package(self, resource: ModelPackage) -> pb.ResourceView:
         return pb.ResourceView(
             name=resource.name,
@@ -26,12 +55,7 @@ class ResourceViewVisitor:
             image_url=resource.image_urls[0] if resource.image_urls else '',
         )
 
-    @visitor(ModelPackage)
-    def visit(self, resource: ModelPackage) -> pb.ResourceView:
-        return self._visit_package(resource)
-
-    @visitor(ModelBinary)
-    def visit(self, resource: ModelBinary) -> pb.ResourceView:
+    def _visit_binary(self, resource: ModelBinary) -> pb.ResourceView:
         package = repository_for(ModelPackage).get(
             str(ResourceName.from_str(resource.name).parent))
         return pb.ResourceView(
@@ -41,9 +65,8 @@ class ResourceViewVisitor:
             image_url=package.image_urls[0] if package.image_urls else '',
         )
 
-    @visitor(ModelThread)
-    def visit(self, resource: ModelThread) -> pb.ResourceView:
-        image_url = None
+    def _visit_thread(self, resource: ModelThread) -> pb.ResourceView:
+        image_url = ''
         try:
             parent_obj = find_resource(
                 ResourceName.from_str(resource.name).parent)
@@ -58,40 +81,38 @@ class ResourceViewVisitor:
             image_url=image_url,
         )
 
-    @visitor(ModelComment)
-    def visit(self, resource: ModelComment) -> pb.ResourceView:
+    def _visit_comment(self, resource: ModelComment) -> pb.ResourceView:
         name = ResourceName.from_str(resource.name)
         return pb.ResourceView(
             name=f'{name.parent}#comment-{resource.index}',
             display_name='评论',
             description=get_text_from_html(resource.text),
-            image_url=None,
+            image_url='',
         )
 
-    @visitor(ModelReply)
-    def visit(self, resource: ModelReply) -> pb.ResourceView:
+    def _visit_reply(self, resource: ModelReply) -> pb.ResourceView:
         reply_name = ResourceName.from_str(resource.name)
         comment_name = reply_name.parent
-        comment: ModelComment = find_resource(comment_name)
+        comment = find_resource(comment_name)
+        if not isinstance(comment, ModelComment):
+            raise TypeError(f'{comment_name} is not a comment')
         thread_name = reply_name.parent
         return pb.ResourceView(
             name=f'{thread_name}#comment-{comment.index}',
             display_name='回复',
             description=get_text_from_html(resource.text),
-            image_url=None,
+            image_url='',
         )
 
-    @visitor(ModelArticle)
-    def visit(self, resource: ModelArticle) -> pb.ResourceView:
+    def _visit_article(self, resource: ModelArticle) -> pb.ResourceView:
         return pb.ResourceView(
             name=resource.name,
             display_name=resource.subject,
             description='',
-            image_url=None,
+            image_url='',
         )
 
-    @visitor(ModelUser)
-    def visit(self, resource: ModelUser) -> pb.ResourceView:
+    def _visit_user(self, resource: ModelUser) -> pb.ResourceView:
         return pb.ResourceView(
             name=resource.name,
             display_name=resource.username,
@@ -99,13 +120,12 @@ class ResourceViewVisitor:
             image_url=resource.image_url,
         )
 
-    @visitor(ModelTag)
-    def visit(self, resource: ModelTag) -> pb.ResourceView:
+    def _visit_tag(self, resource: ModelTag) -> pb.ResourceView:
         return pb.ResourceView(
             name=resource.name,
             display_name=f'标签 {resource.tag_name}',
             description='',
-            image_url=None,
+            image_url='',
         )
 
 
@@ -118,7 +138,9 @@ def get_resource_url(resource) -> str:
     elif isinstance(resource, ModelComment):
         return f'{get_parent(resource.name)}#comment-{resource.index}'
     elif isinstance(resource, ModelReply):
-        comment: ModelComment = find_resource(get_parent(resource.name))
+        comment = find_resource(get_parent(resource.name))
+        if not isinstance(comment, ModelComment):
+            raise TypeError(f'Parent of {resource.name} is not a comment')
         return f'{get_parent(resource.name)}#comment-{comment.index}'
     else:
         raise ValueError(f'Unknown resource type {type(resource)}')

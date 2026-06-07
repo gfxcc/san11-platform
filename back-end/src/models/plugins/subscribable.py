@@ -19,7 +19,7 @@ from .tracklifecycle import Action, ModelActivity
     proto_class=pb.Subscription,
 )
 @attrs.define
-class ModelSubscription(ModelBase):
+class ModelSubscription(ModelBase[pb.Subscription]):
     # Resource name. It is `{parent}/subscriptions/{subscription_id}/`
     # `parent` should be the resource name of the subscriber.
     # E.g. `users/123/subscriptions/456`

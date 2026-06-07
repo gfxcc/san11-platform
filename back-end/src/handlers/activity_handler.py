@@ -6,6 +6,14 @@ from core.errors.exceptions import NotFound, InvalidArgument
 from core.models.base import ListOptions, ModelBase
 from models.plugins.tracklifecycle import Action, ModelActivity
 from models.plugins.likeable import Likeable
+from models.model_article import ModelArticle
+from models.model_binary import ModelBinary
+from models.model_comment import ModelComment
+from models.model_package import ModelPackage
+from models.model_reply import ModelReply
+from models.model_tag import ModelTag
+from models.model_thread import ModelThread
+from models.model_user import ModelUser
 from repositories.resource_repository import repository_for
 from core.resources.resource_view import ResourceViewVisitor
 from app.handler_context import HandlerContext
@@ -31,11 +39,15 @@ class ActivityHandler:
                 resource = find_resource(activity.resource_name)
             except NotFound:
                 resource = None
-            view = view_visitor.visit(resource) if resource else None
+            view = view_visitor.visit(resource) if isinstance(
+                resource,
+                (ModelArticle, ModelBinary, ModelComment, ModelPackage,
+                 ModelReply, ModelTag, ModelThread, ModelUser),
+            ) else None
             enriched_activities.append(pb.Activity(
                 name=activity.name,
                 create_time=get_age(activity.create_time),
-                action=activity.action,
+                action=pb.Action.ValueType(activity.action),
                 resource_view=view,
             ))
 
@@ -47,7 +59,7 @@ class ActivityHandler:
         assert isinstance(
             target, ModelBase), f'Resource {type(target)} is not Likeable'
 
-        actor = handler_context.user
+        actor = handler_context.authenticated_user
         if action == Action.LIKE:
             target.toggle_like(actor.name)
         elif action == Action.DISLIKE:

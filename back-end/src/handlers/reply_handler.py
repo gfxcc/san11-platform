@@ -2,6 +2,7 @@ import logging
 import os
 
 from app.handler_context import HandlerContext
+from core.errors.exceptions import InvalidArgument
 from core.models.base import FieldMask, HandlerBase, merge_resource
 from models.model_reply import ModelReply
 from models.model_thread import ModelThread
@@ -21,7 +22,7 @@ class ReplyHandler(HandlerBase):
 
     def create(self, parent: str, reply: ModelReply,
                handler_context: HandlerContext) -> ModelReply:
-        user_id = handler_context.user.user_id
+        user_id = handler_context.authenticated_user.user_id
         reply.author_id = user_id
         grand_parent = find_resource(ResourceName.from_str(parent).parent)
         if isinstance(grand_parent, ModelThread):
@@ -45,7 +46,7 @@ class ReplyHandler(HandlerBase):
         reply = merge_resource(base_resource=self.reply_repository.get(update_reply.name),
                                update_request=update_reply,
                                field_mask=sanitized_update_mask)
-        actor = handler_context.user
+        actor = handler_context.authenticated_user
 
         if update_mask.has('like_count'):
             reply.toggle_like(actor.name)
@@ -60,10 +61,12 @@ class ReplyHandler(HandlerBase):
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelReply:
         reply = self.reply_repository.get(name)
-        grandparent = find_resource(
-            ResourceName.from_str(reply.name).parent.parent)
+        parent = ResourceName.from_str(reply.name).parent
+        if not isinstance(parent, ResourceName):
+            raise InvalidArgument(f'Reply {reply.name} has no comment parent')
+        grandparent = find_resource(parent.parent)
         if isinstance(grandparent, ModelThread):
             grandparent.reply_count -= 1
             self.thread_repository.update(grandparent, update_update_time=False)
         return self.reply_repository.delete(
-            reply, actor_info=handler_context.user.user_id)
+            reply, actor_info=handler_context.authenticated_user.user_id)

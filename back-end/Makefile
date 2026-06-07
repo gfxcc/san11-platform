@@ -7,6 +7,10 @@ OUTPUT_PATH:=./src/handler/protos
 test: itest utest
 	date
 
+.PHONY: typecheck
+typecheck:
+	npx --yes pyright --project pyrightconfig.json
+
 .PHONY: itest
 itest:
 	PYTHONPATH=./src $(PY) -m pytest -q ./tests/itest/

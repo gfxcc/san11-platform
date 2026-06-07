@@ -57,18 +57,18 @@ class PackageHandler(HandlerBase):
         self.thread_repository = thread_repository or repository_for(ModelThread)
 
     def create(self, parent: str, package: ModelPackage, handler_context: HandlerContext) -> ModelPackage:
-        package.author_id = handler_context.user.user_id
+        package.author_id = handler_context.authenticated_user.user_id
         package.state = pb.ResourceState.UNDER_REVIEW
         self.package_repository.create(
-            parent=parent, resource=package, actor_info=handler_context.user.user_id)
+            parent=parent, resource=package, actor_info=handler_context.authenticated_user.user_id)
         # Post creation actions
         try:
             view = ResourceViewVisitor().visit(package)  # type: ignore
             for admin in get_admins():
                 notify(
-                    sender=handler_context.user,
+                    sender=handler_context.authenticated_user,
                     receiver=admin,
-                    content=f'【待审核】{handler_context.user.username} 创建了 {view.display_name}。',
+                    content=f'【待审核】{handler_context.authenticated_user.username} 创建了 {view.display_name}。',
                     link=view.name,
                     image_preview=view.image_url)
         except Exception as err:
@@ -104,12 +104,12 @@ class PackageHandler(HandlerBase):
         package = merge_resource(base_resource=base_package,
                                  update_request=update_package,
                                  field_mask=sanitized_update_mask)
-        user_id = handler_context.user.user_id
+        user_id = handler_context.authenticated_user.user_id
 
         if update_mask.has('like_count'):
-            package.toggle_like(handler_context.user.name)
+            package.toggle_like(handler_context.authenticated_user.name)
         if update_mask.has('dislike_count'):
-            package.toggle_dislike(handler_context.user.name)
+            package.toggle_dislike(handler_context.authenticated_user.name)
 
         # Delete image resources
         if update_mask.has('image_urls'):
@@ -140,14 +140,14 @@ class PackageHandler(HandlerBase):
         for binary in self.binary_repository.list(ListOptions(parent=package.name))[0]:
             try:
                 self.binary_repository.delete(
-                    binary, actor_info=handler_context.user.user_id)
+                    binary, actor_info=handler_context.authenticated_user.user_id)
             except Exception as err:
                 logger.error(
                     f'Failed to delete binary: binary={binary} err={err}')
         for thread in self.thread_repository.list(ListOptions(parent=package.name))[0]:
             try:
                 self.thread_repository.delete(
-                    thread, actor_info=handler_context.user.user_id)
+                    thread, actor_info=handler_context.authenticated_user.user_id)
             except Exception as err:
                 logger.error(f'Failed to delete {thread} under {self}: {err}')
 
@@ -156,7 +156,7 @@ class PackageHandler(HandlerBase):
         get_file_server(FileServerType.S3).delete_by_prefix(
             BucketClass.REGULAR, package.name)
         return self.package_repository.delete(
-            package, actor_info=handler_context.user.user_id)
+            package, actor_info=handler_context.authenticated_user.user_id)
 
     def search_packages(self, request, context):
         # (TODO): Reimplement this with ModelPackage

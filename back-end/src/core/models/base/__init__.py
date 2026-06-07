@@ -73,9 +73,10 @@ from __future__ import annotations
 
 from abc import ABC
 from copy import deepcopy
-from typing import List, Optional, Tuple, Type, TypeVar, Union
+from typing import Generic, List, Optional, Tuple, Type, TypeVar, Union
 
 import attrs
+from google.protobuf import message
 
 # from models.model_activity import Action, ModelActivity, TrackLifecycle
 from core.time_util import get_now
@@ -94,6 +95,7 @@ from .common.field_mask import FieldMask  # noqa
 from .common.list_options import MAX_PAGE_SIZE, ListOptions  # noqa
 
 _SUB_MODEL_BASE_T = TypeVar('_SUB_MODEL_BASE_T', bound='ModelBase')
+_PROTO_MESSAGE_T = TypeVar('_PROTO_MESSAGE_T', bound=message.Message)
 
 # TODO: integrate TrackLifecycle
 
@@ -105,11 +107,14 @@ class LifecycleEventsBase(ABC):
     def update(self, update_update_time: bool = True, actor_info: Optional[Union[int, str]] = None):
         ...
 
-    def delete(self, actor_info: Optional[Union[int, str]]):
+    def delete(self, actor_info: Optional[Union[int, str]] = None):
         ...
 
 
-class ModelBase(base_storage.StorageSerializable, base_proto.ProtoSerializable, LifecycleEventsBase):
+class ModelBase(base_storage.StorageSerializable,
+                base_proto.ProtoSerializable[_PROTO_MESSAGE_T],
+                LifecycleEventsBase,
+                Generic[_PROTO_MESSAGE_T]):
     name: str
 
     # Lifecycle hooks. Persistence is owned by ResourceRepository.
@@ -120,11 +125,13 @@ class ModelBase(base_storage.StorageSerializable, base_proto.ProtoSerializable, 
         if update_update_time and hasattr(self, 'update_time'):
             self.update_time = get_now()
 
-    def delete(self, actor_info: Optional[Union[int, str]]) -> None:
+    def delete(self, actor_info: Optional[Union[int, str]] = None) -> None:
         pass
 
 
-class NestedModel(base_proto.ProtoSerializable, base_storage.StorageSerializable):
+class NestedModel(base_proto.ProtoSerializable[_PROTO_MESSAGE_T],
+                  base_storage.StorageSerializable,
+                  Generic[_PROTO_MESSAGE_T]):
     '''A nested model which only exist as a submessage of another model.'''
     ...
 
@@ -141,19 +148,19 @@ class HandlerBase(ABC):
     Provides CRUD operations on resource classes.
     '''
 
-    def create(self, parent: str, resource: Type[ModelBase], handler_context: Type[Context]) -> Type[ModelBase]:
+    def create(self, parent: str, resource: ModelBase, handler_context: Context) -> ModelBase:
         ...
 
-    def get(self, name: str, handler_context: Type[Context]) -> Type[ModelBase]:
+    def get(self, name: str, handler_context: Context) -> ModelBase:
         ...
 
-    def list(self, list_options: ListOptions, handler_context: Type[Context]) -> Tuple[List[Type[ModelBase]], str]:
+    def list(self, list_options: ListOptions, handler_context: Context) -> Tuple[List[ModelBase], str]:
         ...
 
-    def update(self, update_resource: Type[ModelBase], update_mask: FieldMask, handler_context: Type[Context]) -> Type[ModelBase]:
+    def update(self, update_resource: ModelBase, update_mask: FieldMask, handler_context: Context) -> ModelBase:
         ...
 
-    def delete(self, name: str, handler_context: Type[Context]) -> Type[ModelBase]:
+    def delete(self, name: str, handler_context: Context) -> ModelBase:
         ...
 
 

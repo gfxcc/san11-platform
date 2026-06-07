@@ -17,7 +17,7 @@ from app.protos import san11_platform_pb2 as pb
     proto_class=pb.Comment,
 )
 @attrs.define
-class ModelComment(Likeable, TrackLifecycle, ModelBase):
+class ModelComment(Likeable, TrackLifecycle, ModelBase[pb.Comment]):
     # Resource name. It is `{parent}/comments/{resource_id}`
     # E.g. `comments/123`, `categories/123/packages/456/comments/789`
     name: str = StrAttrib()

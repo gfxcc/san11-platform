@@ -20,6 +20,7 @@ from models.model_comment import ModelComment
 from models.model_notification import ModelNotification
 from models.model_package import ModelPackage
 from models.model_reply import ModelReply
+from models.model_tag import ModelTag
 from models.model_thread import ModelThread
 from models.model_user import DEFAULT_USER_AVATAR, ModelUser, get_user_by_username
 from repositories.resource_repository import repository_for
@@ -306,10 +307,17 @@ class CreationNotifier:
             # Parent is not a resource, don't notify.
             pass
         else:
-            parent_resource_view = ResourceViewVisitor().visit(
-                parent_resource)
+            if not isinstance(
+                    parent_resource,
+                    (ModelPackage, ModelBinary, ModelArticle, ModelThread,
+                     ModelComment, ModelReply, ModelUser, ModelTag)):
+                return
+            parent_resource_view = ResourceViewVisitor().visit(parent_resource)
+            parent_author_id = getattr(parent_resource, 'author_id', None)
+            if not isinstance(parent_author_id, int):
+                return
             parent_resource_author = ModelUser.from_user_id(
-                parent_resource.author_id)
+                parent_author_id)
 
             enabled = False
             if isinstance(post, ModelThread):

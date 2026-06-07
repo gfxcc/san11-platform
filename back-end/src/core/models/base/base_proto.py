@@ -4,7 +4,7 @@ import datetime
 import logging
 import os
 from abc import ABC
-from typing import Any, Callable, Generic, Iterable, Type, TypeVar
+from typing import Any, Callable, ClassVar, Generic, Iterable, Type, TypeVar, cast
 
 import attrs
 from google.protobuf import descriptor, message, timestamp_pb2
@@ -16,23 +16,25 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 _MODEL_T = TypeVar('_MODEL_T')
-_PROTO_T = TypeVar('_PROTO_T')
+_PROTO_INPUT_T = TypeVar('_PROTO_INPUT_T')
+_PROTO_OUTPUT_T = TypeVar('_PROTO_OUTPUT_T')
+_PROTO_MESSAGE_T = TypeVar('_PROTO_MESSAGE_T', bound=message.Message)
 
 _SUB_PROTO_SERIALIZABLE_T = TypeVar(
     '_SUB_PROTO_SERIALIZABLE_T', bound='ProtoSerializable')
 
 
-class ProtoConverter(Generic[_MODEL_T, _PROTO_T]):
+class ProtoConverter(Generic[_MODEL_T, _PROTO_INPUT_T, _PROTO_OUTPUT_T]):
     '''Convert attribute between value and proto_value'''
 
-    def to_model(self, proto_value: _PROTO_T) -> _MODEL_T:
+    def to_model(self, proto_value: _PROTO_INPUT_T) -> _MODEL_T:
         raise NotImplementedError()
 
-    def from_model(self, value: _MODEL_T) -> _PROTO_T:
+    def from_model(self, value: _MODEL_T) -> _PROTO_OUTPUT_T:
         raise NotImplementedError()
 
 
-class PassThroughConverter(ProtoConverter[Any, Any]):
+class PassThroughConverter(ProtoConverter[Any, Any, Any]):
     def to_model(self, proto_value: Any) -> Any:
         return proto_value
 
@@ -40,7 +42,9 @@ class PassThroughConverter(ProtoConverter[Any, Any]):
         return value
 
 
-class DatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Timestamp]):
+class DatetimeProtoConverter(
+        ProtoConverter[datetime.datetime, timestamp_pb2.Timestamp,
+                       timestamp_pb2.Timestamp]):
     def to_model(self, proto_value: timestamp_pb2.Timestamp) -> datetime.datetime:
         # Set value to now() if the datetime type field is uninitialized.
         if proto_value == timestamp_pb2.Timestamp():
@@ -55,7 +59,8 @@ class DatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Tim
         return proto_value
 
 
-class LegacyDatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_pb2.Timestamp]):
+class LegacyDatetimeProtoConverter(
+        ProtoConverter[datetime.datetime, timestamp_pb2.Timestamp, str]):
     '''
     For legacy proto message which datetime field is represented as string.
     '''
@@ -69,34 +74,40 @@ class LegacyDatetimeProtoConverter(ProtoConverter[datetime.datetime, timestamp_p
 
 
 @attrs.define
-class NestedProtoConverter(ProtoConverter):
-    from_model_exec: Callable[[Any], Any] = lambda x: x
-    to_model_exec: Callable[[Any], Any] = lambda x: x
+class NestedProtoConverter(
+        ProtoConverter[_MODEL_T, _PROTO_INPUT_T, _PROTO_OUTPUT_T],
+        Generic[_MODEL_T, _PROTO_INPUT_T, _PROTO_OUTPUT_T]):
+    from_model_exec: Callable[[_MODEL_T], _PROTO_OUTPUT_T]
+    to_model_exec: Callable[[_PROTO_INPUT_T], _MODEL_T]
 
-    def from_model(self, value: _MODEL_T) -> _PROTO_T:
+    def from_model(self, value: _MODEL_T) -> _PROTO_OUTPUT_T:
         return self.from_model_exec(value)
 
-    def to_model(self, proto_value: _PROTO_T) -> _MODEL_T:
+    def to_model(self, proto_value: _PROTO_INPUT_T) -> _MODEL_T:
         return self.to_model_exec(proto_value)
 
 
-def build_nested_converter(cls: Type[_SUB_PROTO_SERIALIZABLE_T]):
+def build_nested_converter(
+        cls: Type[_SUB_PROTO_SERIALIZABLE_T],
+) -> NestedProtoConverter[
+        _SUB_PROTO_SERIALIZABLE_T, message.Message, message.Message]:
     return NestedProtoConverter(from_model_exec=lambda v: v.to_pb(), to_model_exec=cls.from_pb)
 
 
 @attrs.define(auto_attribs=True)
 class ProtoField:
     name: str
-    converter: ProtoConverter
+    converter: ProtoConverter[Any, Any, Any]
     model_path: str
 
 
-class ProtoSerializable(ABC):
-    _PROTO_CLASS: type
+class ProtoSerializable(ABC, Generic[_PROTO_MESSAGE_T]):
+    _PROTO_CLASS: ClassVar[Type[message.Message]]
     _PROTO_FIELDS: Iterable[attrs.Attribute] = []
 
     @classmethod
-    def from_pb(cls: Type[_SUB_PROTO_SERIALIZABLE_T], proto_model: message.Message) -> _SUB_PROTO_SERIALIZABLE_T:
+    def from_pb(cls: Type[_SUB_PROTO_SERIALIZABLE_T],
+                proto_model: _PROTO_MESSAGE_T) -> _SUB_PROTO_SERIALIZABLE_T:
         '''
         Construct a data model from its protobuf message representation.
         '''
@@ -114,11 +125,11 @@ class ProtoSerializable(ABC):
                 attribute, proto_value)
         return cls(**properties)
 
-    def to_pb(self) -> message.Message:
+    def to_pb(self) -> _PROTO_MESSAGE_T:
         '''
         Returns the data model's protobuf representation.
         '''
-        proto_model = self._PROTO_CLASS()
+        proto_model = cast(_PROTO_MESSAGE_T, self._PROTO_CLASS())
         for attribute in attrs.fields(type(self)):
             if not attribute.metadata[base_core.IS_PROTO_FIELD]:
                 continue
@@ -151,15 +162,19 @@ class ProtoSerializable(ABC):
         return proto_model
 
 
-def init_proto_serializable(cls: Type[_SUB_PROTO_SERIALIZABLE_T], proto_class) -> None:
+def init_proto_serializable(
+        cls: Type[ProtoSerializable[Any]],
+        proto_class: Type[message.Message]) -> None:
     cls._PROTO_CLASS = proto_class
     for attribute in attrs.fields(cls):
         if not attribute.metadata[base_core.IS_PROTO_FIELD]:
             continue
 
 
-def _attribute_pb_converter(attribute: attrs.Attribute) -> ProtoConverter:
-    converter: ProtoConverter = attribute.metadata.get(
+def _attribute_pb_converter(
+        attribute: attrs.Attribute,
+) -> ProtoConverter[Any, Any, Any]:
+    converter: ProtoConverter[Any, Any, Any] = attribute.metadata.get(
         base_core.PROTO_CONVERTER)  # type: ignore
     return converter or PassThroughConverter()
 
@@ -178,7 +193,7 @@ def _attribute_from_pb(attribute: attrs.Attribute, proto_value: Any) -> Any:
 
 
 def _attribute_to_proto(attribute: attrs.Attribute, model_value: Any) -> Any:
-    converter: ProtoConverter = _attribute_pb_converter(attribute)
+    converter = _attribute_pb_converter(attribute)
     if attribute.metadata[base_core.REPEATED]:
         ret = [converter.from_model(v) for v in model_value]
     else:

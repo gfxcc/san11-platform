@@ -32,4 +32,4 @@ class NotificationHandler(HandlerBase):
         notification: ModelNotification = merge_resource(
             self.notification_repository.get(dest.name), dest, update_mask)
         return self.notification_repository.update(
-            notification, actor_info=handler_context.user.user_id)
+            notification, actor_info=handler_context.authenticated_user.user_id)

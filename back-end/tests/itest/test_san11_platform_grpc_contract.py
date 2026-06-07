@@ -1,5 +1,6 @@
 import unittest
 from unittest import mock
+from typing import cast
 
 import grpc
 
@@ -7,6 +8,7 @@ from app.protos import san11_platform_pb2 as pb
 from app.protos import san11_platform_pb2_grpc
 from app.service_dependencies import San11PlatformDependencies
 from app.san11_platform_server import create_server
+from handlers.package_handler import PackageHandler
 
 
 class _GrpcPackage:
@@ -47,7 +49,9 @@ def _test_dependencies() -> San11PlatformDependencies:
 class San11PlatformGrpcContractTest(unittest.TestCase):
     def setUp(self):
         self.dependencies = _test_dependencies()
-        self.dependencies.package_handler.list.return_value = (
+        self.package_handler_mock = cast(
+            mock.Mock, self.dependencies.package_handler)
+        self.package_handler_mock.list.return_value = (
             [
                 _GrpcPackage('categories/1/packages/101', 'contract-package-a'),
                 _GrpcPackage('categories/1/packages/102', 'contract-package-b'),
@@ -81,9 +85,9 @@ class San11PlatformGrpcContractTest(unittest.TestCase):
         )
         self.assertEqual(response.next_page_token, 'next-page-token')
 
-        list_options = self.dependencies.package_handler.list.call_args.kwargs[
+        list_options = self.package_handler_mock.list.call_args.kwargs[
             'list_options']
-        handler_context = self.dependencies.package_handler.list.call_args.kwargs[
+        handler_context = self.package_handler_mock.list.call_args.kwargs[
             'handler_context']
         self.assertEqual(list_options.parent, 'categories/1')
         self.assertEqual(list_options.page_size, 10)

@@ -16,16 +16,18 @@ class Statistic:
         self.download_count = download_count
 
     def increment_visit(self, delta: int = 1) -> int:
-        self.visit_count += 1
+        self.visit_count += delta
         sql = 'UPDATE statistics SET visit_count=%(visit_count)s WHERE date=%(date)s'
         run_sql_with_param(sql, {'visit_count': self.visit_count,
                                  'date': self.date})
+        return self.visit_count
 
     def increment_download(self, delta: int = 1) -> int:
-        self.download_count += 1
+        self.download_count += delta
         sql = 'UPDATE statistics SET download_count=%(download_count)s WHERE date=%(date)s'
         run_sql_with_param(sql, {'download_count': self.download_count,
                                  'date': self.date})
+        return self.download_count
 
     def to_pb(self) -> san11_platform_pb2.Statistic:
         return san11_platform_pb2.Statistic(

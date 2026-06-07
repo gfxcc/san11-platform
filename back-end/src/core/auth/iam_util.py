@@ -96,6 +96,8 @@ def assert_resource_owner(resource_name_path: str, bypass: Optional[str] = None)
                         resource = find_resource(name)
                         if get_owner_id(resource) == current_user.user_id:
                             return func(this, request, context)
+                        if not isinstance(name.parent, ResourceName):
+                            break
                         name = name.parent
                 except NotFound:
                     ...

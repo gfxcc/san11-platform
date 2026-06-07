@@ -6,7 +6,7 @@ import os
 import re
 from abc import ABC
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Generic, Tuple, TypeVar, Union
+from typing import Any, Callable, Dict, Generic, Tuple, Type, TypeVar, Union, cast
 
 import attrs
 
@@ -17,22 +17,23 @@ from .common.list_options import FieldTrait, PostgresAdaptor
 logger = logging.getLogger(os.path.basename(__file__))
 
 _MODEL_T = TypeVar('_MODEL_T')
-_STORAGE_VALUE_T = TypeVar('_STORAGE_VALUE_T')
+_STORAGE_INPUT_T = TypeVar('_STORAGE_INPUT_T')
+_STORAGE_OUTPUT_T = TypeVar('_STORAGE_OUTPUT_T')
 _SUB_STORAGE_SERIALIZABLE_T = TypeVar(
     '_SUB_STORAGE_SERIALIZABLE_T', bound='StorageSerializable')
 
 
-class StorageConverter(Generic[_MODEL_T, _STORAGE_VALUE_T]):
+class StorageConverter(Generic[_MODEL_T, _STORAGE_INPUT_T, _STORAGE_OUTPUT_T]):
     '''Convert an attribute between model value and storage value.'''
 
-    def to_model(self, db_value: _STORAGE_VALUE_T) -> _MODEL_T:
+    def to_model(self, db_value: _STORAGE_INPUT_T) -> _MODEL_T:
         raise NotImplementedError()
 
-    def from_model(self, value: _MODEL_T) -> _STORAGE_VALUE_T:
+    def from_model(self, value: _MODEL_T) -> _STORAGE_OUTPUT_T:
         raise NotImplementedError()
 
 
-class PassThroughConverter(StorageConverter[Any, Any]):
+class PassThroughConverter(StorageConverter[Any, Any, Any]):
     def to_model(self, db_value: Any) -> Any:
         return db_value
 
@@ -40,7 +41,8 @@ class PassThroughConverter(StorageConverter[Any, Any]):
         return value
 
 
-class DatetimeStorageConverter(StorageConverter[datetime.datetime, str]):
+class DatetimeStorageConverter(
+        StorageConverter[datetime.datetime, str, datetime.datetime]):
     def to_model(self, db_value: str) -> datetime.datetime:
         if db_value:
             return datetime.datetime.fromisoformat(db_value).replace(tzinfo=datetime.timezone.utc)
@@ -53,37 +55,48 @@ class DatetimeStorageConverter(StorageConverter[datetime.datetime, str]):
 
 
 @attrs.define
-class NestedStorageConverter(StorageConverter):
-    from_model_exec: Callable[[Any], Any] = lambda x: x
-    to_model_exec: Callable[[Any], Any] = lambda x: x
+class NestedStorageConverter(
+        StorageConverter[_MODEL_T, _STORAGE_INPUT_T, _STORAGE_OUTPUT_T],
+        Generic[_MODEL_T, _STORAGE_INPUT_T, _STORAGE_OUTPUT_T]):
+    from_model_exec: Callable[[_MODEL_T], _STORAGE_OUTPUT_T]
+    to_model_exec: Callable[[_STORAGE_INPUT_T], _MODEL_T]
 
-    def from_model(self, value: _MODEL_T) -> Union[_STORAGE_VALUE_T, None]:
+    def from_model(
+            self, value: _MODEL_T) -> Union[_STORAGE_OUTPUT_T, None]:
         if value is None:
             return None
         return self.from_model_exec(value)
 
-    def to_model(self, db_value: _STORAGE_VALUE_T) -> Union[_MODEL_T, None]:
+    def to_model(
+            self, db_value: _STORAGE_INPUT_T) -> Union[_MODEL_T, None]:
         if db_value is None:
             return None
         return self.to_model_exec(db_value)
 
 
-def build_nested_converter(cls: StorageSerializable):
+def build_nested_converter(
+        cls: Type[_SUB_STORAGE_SERIALIZABLE_T],
+) -> NestedStorageConverter[_SUB_STORAGE_SERIALIZABLE_T, Dict, Dict]:
     return NestedStorageConverter(from_model_exec=lambda v: v.to_db(), to_model_exec=cls.from_db)
 
 
 @dataclass
 class StorageField:
     name: str
-    converter: StorageConverter
+    converter: StorageConverter[Any, Any, Any]
     model_path: str
     repeated: bool
     type: type
 
 
 class StorageSerializable(ABC):
+    name: str
+    _DB_TABLE: str
+    _LIST_OPTIONS_ADAPTOR: PostgresAdaptor
+
     @classmethod
-    def from_db(cls, db_value: Dict) -> _SUB_STORAGE_SERIALIZABLE_T:
+    def from_db(cls: Type[_SUB_STORAGE_SERIALIZABLE_T],
+                db_value: Dict) -> _SUB_STORAGE_SERIALIZABLE_T:
         obj_args = {}
         for attribute in attrs.fields(cls):
             name = attribute.name
@@ -159,7 +172,7 @@ def _attribute_from_db(attribute: attrs.Attribute, value: Any):
         if value is None and type in [str, int, bool]:
             return type()
         return value
-    converter: StorageConverter = _attribute_db_converter(attribute)
+    converter = _attribute_db_converter(attribute)
     if base_core.is_repeated(attribute):
         return [populate_default(converter.to_model(item), attribute.type)
                 for item in (value or [])]
@@ -177,6 +190,11 @@ def _attribute_to_data(attribute: attrs.Attribute, value: Any):
         return converter.from_model(value)
 
 
-def _attribute_db_converter(attribute: attrs.Attribute) -> StorageConverter:
-    converter: StorageConverter = attribute.metadata.get(base_core.DB_CONVERTER)
+def _attribute_db_converter(
+        attribute: attrs.Attribute,
+) -> StorageConverter[Any, Any, Any]:
+    converter = cast(
+        Union[StorageConverter[Any, Any, Any], None],
+        attribute.metadata.get(base_core.DB_CONVERTER),
+    )
     return converter or PassThroughConverter()

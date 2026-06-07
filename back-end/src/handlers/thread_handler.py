@@ -27,10 +27,10 @@ class ThreadHandler(HandlerBase):
         self.thread_repository = thread_repository or repository_for(ModelThread)
 
     def create(self, parent: str, thread: ModelThread, handler_context) -> ModelThread:
-        thread.author_id = handler_context.user.user_id
+        thread.author_id = handler_context.authenticated_user.user_id
         thread.state = pb.ResourceState.NORMAL
         self.thread_repository.create(
-            parent=parent, resource=thread, actor_info=handler_context.user.user_id)
+            parent=parent, resource=thread, actor_info=handler_context.authenticated_user.user_id)
 
         # post creation actions
         notify_on_creation(thread)
@@ -57,11 +57,11 @@ class ThreadHandler(HandlerBase):
         thread: ModelThread = merge_resource(
             self.thread_repository.get(update_thread.name), update_thread, update_mask)
         return self.thread_repository.update(
-            thread, actor_info=handler_context.user.user_id)
+            thread, actor_info=handler_context.authenticated_user.user_id)
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelThread:
         thread = self.thread_repository.get(name)
         get_file_server(FileServerType.GCS).delete_by_prefix(
             BucketClass.REGULAR, thread.name)
         return self.thread_repository.delete(
-            thread, actor_info=handler_context.user.user_id)
+            thread, actor_info=handler_context.authenticated_user.user_id)

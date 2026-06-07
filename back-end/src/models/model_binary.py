@@ -110,7 +110,7 @@ class VersionStorageConverter(StorageConverter):
     proto_class=pb.File,
 )
 @attrs.define
-class File(NestedModel):
+class File(NestedModel[pb.File]):
     ext: str = StrAttrib()
     uri: str = StrAttrib()
     filename: str = StrAttrib()
@@ -123,7 +123,7 @@ class File(NestedModel):
     proto_class=pb.CloudDiskFile
 )
 @attrs.define
-class CloudDiskFile(NestedModel):
+class CloudDiskFile(NestedModel[pb.CloudDiskFile]):
     url: str = StrAttrib()
     code: str = StrAttrib()
 
@@ -133,7 +133,7 @@ class CloudDiskFile(NestedModel):
     proto_class=pb.Binary,
 )
 @attrs.define
-class ModelBinary(TrackLifecycle, ModelBase):
+class ModelBinary(TrackLifecycle, ModelBase[pb.Binary]):
     # Resource name. It is `{parent}/packages/{package_id}`
     # E.g. `categories/1/packages/123/binaries/1`
     name: str = StrAttrib()

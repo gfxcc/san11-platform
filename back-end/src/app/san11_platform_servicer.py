@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
+from typing import Optional
 
 import core.auth.iam_util as iam_util
 from core.errors.exceptions import *
@@ -38,7 +39,8 @@ GrpcAbortOnExcep = grpc_abort_on_exception
 
 
 class San11PlatformServicer(GeneratedSan11PlatformServicer):
-    def __init__(self, dependencies: San11PlatformDependencies = None):
+    def __init__(
+            self, dependencies: Optional[San11PlatformDependencies] = None):
         dependencies = dependencies or San11PlatformDependencies.create()
         self.package_handler = dependencies.package_handler
         self.binary_handler = dependencies.binary_handler
@@ -219,7 +221,9 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
             require_permission(
                 bool(context.user) and (
                     context.user.is_admin() or
-                    find_resource(ResourceName.from_str(thread.name).parent).author_id == context.user.user_id
+                    getattr(find_resource(
+                        ResourceName.from_str(thread.name).parent),
+                        'author_id', None) == context.user.user_id
                 )
             )
         return self.thread_handler.update(ModelThread.from_pb(request.thread),

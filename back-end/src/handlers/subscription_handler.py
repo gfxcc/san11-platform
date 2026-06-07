@@ -44,7 +44,7 @@ class SubscriptionHandler(HandlerBase):
         resource: ModelSubscription = merge_resource(
             self.subscription_repository.get(update_resource.name), update_resource, update_mask)
         return self.subscription_repository.update(
-            resource, actor_info=handler_context.user.user_id)
+            resource, actor_info=handler_context.authenticated_user.user_id)
 
     def delete(self, name: str, handler_context: HandlerContext) -> ModelSubscription:
         sub: ModelSubscription = self.subscription_repository.get(name)

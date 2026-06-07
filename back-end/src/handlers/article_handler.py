@@ -19,9 +19,9 @@ class ArticleHandler(HandlerBase):
         self.article_repository = article_repository or repository_for(ModelArticle)
 
     def create(self, parent: str, article: ModelArticle, handler_context: HandlerContext) -> ModelArticle:
-        article.author_id = handler_context.user.user_id
+        article.author_id = handler_context.authenticated_user.user_id
         self.article_repository.create(
-            parent=parent, resource=article, actor_info=handler_context.user.user_id)
+            parent=parent, resource=article, actor_info=handler_context.authenticated_user.user_id)
 
         # Post creation
         notify_on_creation(article)
@@ -38,7 +38,7 @@ class ArticleHandler(HandlerBase):
         public_articles = []
         for article in articles:
             if article.state == pb.ResourceState.NORMAL or \
-                (handler_context.user and handler_context.user.user_id == article.author_id) or \
+                (handler_context.user and handler_context.authenticated_user.user_id == article.author_id) or \
                     (handler_context.user and handler_context.user.is_admin()):
                 public_articles.append(article)
         return public_articles, next_page_token
@@ -47,11 +47,11 @@ class ArticleHandler(HandlerBase):
         article: ModelArticle = merge_resource(
             self.article_repository.get(update_article.name), update_article, update_mask)
         return self.article_repository.update(
-            article, actor_info=handler_context.user.user_id)
+            article, actor_info=handler_context.authenticated_user.user_id)
 
     def delete(self, article: ModelArticle, handler_context: HandlerContext) -> ModelArticle:
         return self.article_repository.delete(
-            article, actor_info=handler_context.user.user_id)
+            article, actor_info=handler_context.authenticated_user.user_id)
 
     def delete_by_name(self, name: str, handler_context: HandlerContext) -> ModelArticle:
         return self.delete(self.article_repository.get(name), handler_context)

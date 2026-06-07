@@ -16,7 +16,7 @@ class PostgresResourceStorage:
             'parent': parent,
             'resource_id': resource_id,
         })
-        return row[0] if row else None
+        return row[0] if row is not None else None
 
     def list(self, table: str, where_statement: str, order_statement: str,
              limit_statement: str, params: Dict) -> List[Tuple]:
@@ -29,7 +29,7 @@ class PostgresResourceStorage:
             'parent': parent,
             'resource_id': resource_id,
         })
-        return row[0] == 1
+        return row is not None and row[0] == 1
 
     def insert(self, table: str, parent: Optional[str], data: Dict,
                resource_id: Optional[int] = None) -> int:
@@ -39,6 +39,9 @@ class PostgresResourceStorage:
                 'parent': parent,
                 'data': json.dumps(data, default=str),
             })
+            if row is None:
+                raise RuntimeError(
+                    f'PostgreSQL did not return a resource id for {table}')
             return row[0]
 
         sql = f"INSERT INTO {table} (parent, resource_id, data) VALUES (%(parent)s, %(resource_id)s, %(data)s)"

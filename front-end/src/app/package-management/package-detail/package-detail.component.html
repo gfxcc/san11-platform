@@ -12,10 +12,8 @@
         <section class="resource-hero">
             <div class="image-gallery">
                 <gallery class="gallery" [items]="images" [thumb]="true" thumbPosition="left" thumbMode="free"
-                    [counter]="false" slidingDirection="vertical" [nav]="false" (itemClick)="onGalleryItemClick($event)"
+                    [counter]="false" slidingDirection="vertical" [nav]="false"
                     [autoPlay]="false" [playerInterval]="5000" #gallery></gallery>
-
-                <input type="file" accept="image/*" hidden="true" #imageInput (change)="onUploadScreenshot(imageInput)">
             </div>
 
             <aside class="resource-summary surface-panel app-detail-section">
@@ -73,28 +71,6 @@
                     </mat-menu>
                 </div>
 
-                <div *ngIf="isAdmin() || isAuthor()" class="package-management">
-                    <button mat-stroked-button class="management-trigger" [matMenuTriggerFor]="packageManagementMenu">
-                        <mat-icon>admin_panel_settings</mat-icon>
-                        管理资源
-                    </button>
-                    <mat-menu #packageManagementMenu="matMenu" xPosition="before">
-                        <button mat-menu-item *ngIf="isAdmin() && this.package.state===2" (click)="onApprove()">
-                            <mat-icon>verified</mat-icon>
-                            <span>通过审核</span>
-                        </button>
-                        <button mat-menu-item *ngIf="isAdmin() && (this.package.state===1 || this.package.state===3)"
-                            (click)="onFlipHide()">
-                            <mat-icon>{{this.package.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
-                            <span>{{this.package.state===3 ? '取消隐藏' : '隐藏资源'}}</span>
-                        </button>
-                        <button mat-menu-item class="danger-menu-item" *ngIf="authorZone" (click)="onDelete()">
-                            <mat-icon>delete</mat-icon>
-                            <span>删除资源</span>
-                        </button>
-                    </mat-menu>
-                </div>
-
                 <div class="summary-tags" *ngIf="this.package.tags?.length || tagCanEdit">
                     <div class="summary-tags-header">
                         <h3>标签</h3>
@@ -116,6 +92,110 @@
                     </mat-chip-listbox>
                 </div>
             </aside>
+        </section>
+
+        <section *ngIf="canManagePackage()" class="screenshot-manager surface-panel app-detail-section">
+            <div class="resource-management-header">
+                <div class="resource-management-title">
+                    <span class="section-kicker">{{isAdmin() && !isAuthor() ? '管理员工具' : '作者工具'}}</span>
+                    <h2 class="app-section-title">资源管理</h2>
+                    <p>管理这个资源的展示内容与发布状态。</p>
+                </div>
+                <button mat-stroked-button type="button" class="management-trigger"
+                    [matMenuTriggerFor]="packageManagementMenu">
+                    <mat-icon>settings</mat-icon>
+                    管理操作
+                    <mat-icon>expand_more</mat-icon>
+                </button>
+                <mat-menu #packageManagementMenu="matMenu" xPosition="before">
+                    <button mat-menu-item *ngIf="isAdmin() && this.package.state===2" (click)="onApprove()">
+                        <mat-icon>verified</mat-icon>
+                        <span>通过审核</span>
+                    </button>
+                    <button mat-menu-item *ngIf="isAdmin() && (this.package.state===1 || this.package.state===3)"
+                        (click)="onFlipHide()">
+                        <mat-icon>{{this.package.state===3 ? 'visibility' : 'visibility_off'}}</mat-icon>
+                        <span>{{this.package.state===3 ? '取消隐藏' : '隐藏资源'}}</span>
+                    </button>
+                    <button mat-menu-item class="danger-menu-item" *ngIf="authorZone" (click)="onDelete()">
+                        <mat-icon>delete</mat-icon>
+                        <span>删除资源</span>
+                    </button>
+                </mat-menu>
+            </div>
+
+            <div class="management-divider"></div>
+
+            <div class="screenshot-manager-header">
+                <div>
+                    <h3>截图管理</h3>
+                    <p>第一张截图会作为资源封面。可批量上传、调整展示顺序或删除截图。</p>
+                </div>
+                <div class="screenshot-manager-actions">
+                    <span class="screenshot-count">{{this.package.imageUrls.length}} 张截图</span>
+                    <button mat-flat-button color="primary" type="button" [disabled]="isUploadingScreenshots"
+                        (click)="imageInput.click()">
+                        <mat-icon>add_photo_alternate</mat-icon>
+                        {{isUploadingScreenshots ? '正在上传…' : '选择图片'}}
+                    </button>
+                </div>
+            </div>
+
+            <input type="file" accept="image/*" multiple hidden #imageInput
+                (change)="onUploadScreenshots(imageInput.files, imageInput)">
+
+            <button type="button" class="screenshot-dropzone" [class.screenshot-dropzone-active]="isScreenshotDragActive"
+                [disabled]="isUploadingScreenshots" (click)="imageInput.click()" (dragenter)="onScreenshotDragEnter($event)"
+                (dragover)="onScreenshotDragOver($event)" (dragleave)="onScreenshotDragLeave($event)"
+                (drop)="onScreenshotDrop($event)">
+                <mat-icon>{{isUploadingScreenshots ? 'cloud_sync' : 'cloud_upload'}}</mat-icon>
+                <span class="dropzone-title">{{isUploadingScreenshots ? screenshotUploadStatus : '拖拽截图到这里上传'}}</span>
+                <span class="dropzone-hint">支持一次选择多张图片，单张不超过 {{maxImageSizeMb}}MB</span>
+            </button>
+
+            <div *ngIf="this.package.imageUrls.length; else screenshotEmptyState" class="screenshot-grid">
+                <article *ngFor="let imageUrl of this.package.imageUrls; let index = index; trackBy: trackScreenshot"
+                    class="screenshot-card" [class.screenshot-card-cover]="index === 0">
+                    <div class="screenshot-preview">
+                        <img [src]="screenshotUrl(imageUrl)" [alt]="'资源截图 ' + (index + 1)">
+                        <span *ngIf="index === 0" class="cover-badge">
+                            <mat-icon>star</mat-icon>
+                            当前封面
+                        </span>
+                        <span class="screenshot-order">{{index + 1}}</span>
+                    </div>
+                    <div class="screenshot-card-actions">
+                        <button mat-stroked-button type="button" color="primary" [disabled]="index === 0"
+                            (click)="setScreenshotAsCover(index)">
+                            <mat-icon>wallpaper</mat-icon>
+                            设为封面
+                        </button>
+                        <div class="screenshot-order-actions">
+                            <button mat-icon-button type="button" matTooltip="向前移动" [disabled]="index === 0"
+                                (click)="moveScreenshot(index, -1)">
+                                <mat-icon>arrow_back</mat-icon>
+                            </button>
+                            <button mat-icon-button type="button" matTooltip="向后移动"
+                                [disabled]="index === this.package.imageUrls.length - 1"
+                                (click)="moveScreenshot(index, 1)">
+                                <mat-icon>arrow_forward</mat-icon>
+                            </button>
+                            <button mat-icon-button type="button" class="delete-screenshot" matTooltip="删除截图"
+                                (click)="deleteScreenshot(index)">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <ng-template #screenshotEmptyState>
+                <div class="screenshot-empty-state">
+                    <mat-icon>collections</mat-icon>
+                    <strong>还没有截图</strong>
+                    <span>上传几张能展示玩法、界面或主要功能的图片，让用户更快了解这个资源。</span>
+                </div>
+            </ng-template>
         </section>
 
         <section class="meta-content surface-panel app-detail-section">

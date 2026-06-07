@@ -12,6 +12,8 @@ class Category:
     def from_name(cls, name: str) -> Category:
         sql = 'SELECT category_id, name FROM categories WHERE name=%(name)s'
         resp = run_sql_with_param_and_fetch_one(sql, {'name': name})
+        if resp is None:
+            raise KeyError(f'Category {name} is not found')
         return cls(resp[0], resp[1])
 
     @classmethod
@@ -19,6 +21,8 @@ class Category:
         sql = 'SELECT category_id, name FROM categories WHERE category_id=%(category_id)s'
         resp = run_sql_with_param_and_fetch_one(
             sql, {'category_id': category_id})
+        if resp is None:
+            raise KeyError(f'Category {category_id} is not found')
         return cls(resp[0], resp[1])
 
     @classmethod

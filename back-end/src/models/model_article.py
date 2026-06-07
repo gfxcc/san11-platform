@@ -2,7 +2,6 @@ import datetime
 from typing import List, Optional
 
 import attrs
-from google.protobuf import message
 
 from core.models.base import ListOptions
 from models.model_comment import ModelComment
@@ -20,7 +19,7 @@ from core.models.base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, Int
     proto_class=pb.Article,
 )
 @attrs.define
-class ModelArticle(Likeable, TrackLifecycle, ModelBase):
+class ModelArticle(Likeable, TrackLifecycle, ModelBase[pb.Article]):
     # Resource name. It is `{parent}/articles/{article_id}`
     # E.g. `articles/12345`
     name: str = StrAttrib()
@@ -43,7 +42,3 @@ class ModelArticle(Likeable, TrackLifecycle, ModelBase):
         for comment in comment_repository.list(ListOptions(parent=self.name))[0]:
             comment_repository.delete(comment)
         super().delete(actor_info=actor_info)
-
-    @classmethod
-    def from_pb(cls, proto_model: message.Message) -> 'ModelArticle':
-        return super().from_pb(proto_model)

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import logging
 from concurrent import futures
+from typing import Optional
 
 import grpc
 from google.cloud import logging as cloud_logging
@@ -18,7 +19,7 @@ DEFAULT_MAX_WORKERS = 10
 
 
 def create_server(
-        dependencies: San11PlatformDependencies = None,
+        dependencies: Optional[San11PlatformDependencies] = None,
         max_workers: int = DEFAULT_MAX_WORKERS) -> grpc.Server:
     options = [('grpc.max_receive_message_length',
                 MAX_RECEIVE_MESSAGE_LENGTH_BYTES)]

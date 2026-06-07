@@ -15,7 +15,7 @@ from app.protos import san11_platform_pb2 as pb
     proto_class=pb.Reply,
 )
 @attrs.define
-class ModelReply(Likeable, TrackLifecycle, ModelBase):
+class ModelReply(Likeable, TrackLifecycle, ModelBase[pb.Reply]):
     # Resource name. It is `{parent}/replies/{resource_id}/`
     # E.g. `categories/123/packages/456/comments/789/replies/234`
     name: str = StrAttrib()

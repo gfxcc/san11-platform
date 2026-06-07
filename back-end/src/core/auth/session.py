@@ -51,8 +51,10 @@ class Session:
         '''
         sql = "SELECT user_id, expiration FROM sessions WHERE sid=%(sid)s"
         try:
-            user_id, expiration = run_sql_with_param_and_fetch_one(sql, {
-                                                                   'sid': sid})
+            row = run_sql_with_param_and_fetch_one(sql, {'sid': sid})
+            if row is None:
+                raise NotFound(f'Failed to find session: sid={sid}')
+            user_id, expiration = row
             assert isinstance(user_id, int)
             assert isinstance(expiration, int)
         except Exception as err:
@@ -70,8 +72,11 @@ class Session:
         '''
         sql = "SELECT sid, expiration FROM sessions WHERE user_id=%(user_id)s"
         try:
-            sid, expiration = run_sql_with_param_and_fetch_one(
-                sql, {'user_id': user_id})
+            row = run_sql_with_param_and_fetch_one(sql, {'user_id': user_id})
+            if row is None:
+                raise NotFound(
+                    message=f'Failed to find session: user_id={user_id}')
+            sid, expiration = row
             assert isinstance(sid, str)
             assert isinstance(expiration, int)
         except Exception:

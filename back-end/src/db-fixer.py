@@ -10,6 +10,7 @@ from models.model_user import (DEFAULT_USER_AVATAR, ModelUser,
                                       NotificationSettings, UserSettings)
 from models.plugins.subscribable import ModelSubscription
 from models.plugins.tracklifecycle import ModelActivity
+from repositories.resource_repository import repository_for
 from integrations.files.file_server import (BucketClass, FileServerType,
                                       get_file_server)
 from core.resources.name_util import ResourceName
@@ -20,9 +21,9 @@ MAX_RESOURCE_COUNT = 100000000000
 
 
 def _get_earlist_activity(user: ModelUser) -> Optional[ModelActivity]:
-    activities = ModelActivity.list(ListOptions(
+    activities = repository_for(ModelActivity).list(ListOptions(
         parent=user.name, order_by='create_time'))[0]
-    return next(activities, None)
+    return activities[0] if activities else None
 
 
 def backfill_user_create_update_time():
@@ -31,12 +32,13 @@ def backfill_user_create_update_time():
     `create_time` of earlist activity created by given user or current time if 
     no activity is found.
     '''
-    users = ModelUser.list(ListOptions(parent=None))[0]
+    user_repository = repository_for(ModelUser)
+    users = user_repository.list(ListOptions(parent=None))[0]
     for i, user in enumerate(users):
         activity = _get_earlist_activity(user)
         user.create_time = activity.create_time if activity else get_now()
         user.update_time = user.create_time
-        user.update(update_update_time=False)
+        user_repository.update(user, update_update_time=False)
         print(
             f'Progress idx-{i}: set {user.username}\'s create_time to {user.create_time}')
 
@@ -45,28 +47,30 @@ def backfill_user_settings():
     '''
     Traverse table `users` and set fields `settings`
     '''
-    users = ModelUser.list(ListOptions(
+    user_repository = repository_for(ModelUser)
+    users = user_repository.list(ListOptions(
         parent=None, page_size=MAX_RESOURCE_COUNT))[0]
     for i, user in enumerate(users):
         user.settings = UserSettings(notification=NotificationSettings(
             send_emails=True, subscriptions=True, recommendations=True, mentions=True, threads=True, comments=True, replies=True))
-        user.update(update_update_time=False)
+        user_repository.update(user, update_update_time=False)
         print(
             f'Progress idx-{i}: set {user.username}\'s settings to {user.settings}')
 
 
 def backfill_binaries_file_server():
-    binaries = ModelBinary.list(ListOptions(parent=None))[0]
+    binary_repository = repository_for(ModelBinary)
+    binaries = binary_repository.list(ListOptions(parent=None))[0]
     for i, binary in enumerate(binaries):
         if binary.file:
             binary.file.server = 2
-        binary.update(update_update_time=False)
+        binary_repository.update(binary, update_update_time=False)
         print(
             f'Progress idx-{i}: updated {binary}')
 
 
 def backfill_binary_file_ext():
-    binaries = ModelBinary.list(ListOptions(parent=None))[0]
+    binaries = repository_for(ModelBinary).list(ListOptions(parent=None))[0]
     for i, binary in enumerate(binaries):
         file = binary.file
         if not file:
@@ -75,35 +79,38 @@ def backfill_binary_file_ext():
             continue
         if new_ext := re.search(r'.[^.]+$', file.uri):
             print(f'Assigning {new_ext} to {file}')
-            file.ext = new_ext
+            file.ext = new_ext.group(0)
         # binary.update(update_update_time=False)
 
 
 def backfill_subscriptions():
-    legacy_subs: List[ModelLegacySubscription] = ModelLegacySubscription.list(
+    legacy_subs: List[ModelLegacySubscription] = repository_for(
+        ModelLegacySubscription).list(
         ListOptions(parent=None))[0]
     for i, legacy_sub in enumerate(legacy_subs):
         target = str(ResourceName.from_str(legacy_sub.name).parent)
         sub = ModelSubscription(name='',
                                 target=target, create_time=get_now(), update_time=get_now())
-        sub.create(parent=f'users/{legacy_sub.subscriber_id}')
+        repository_for(ModelSubscription).create(
+            parent=f'users/{legacy_sub.subscriber_id}', resource=sub)
         print(
             f'Progress {i}/{len(legacy_subs)}')
 
 
 def migrate_user_image_url_default_value():
-    for i, user in enumerate(ModelUser.list(ListOptions(parent=None, page_size=MAX_RESOURCE_COUNT))[0]):
+    user_repository = repository_for(ModelUser)
+    for i, user in enumerate(user_repository.list(ListOptions(parent=None, page_size=MAX_RESOURCE_COUNT))[0]):
         if user.image_url:
             if user.image_url != 'users/default_avatar.jpg':
                 continue
             user.image_url = DEFAULT_USER_AVATAR
-            user.update(update_update_time=False)
+            user_repository.update(user, update_update_time=False)
             print(f'Progress {i}: updated {user}')
 
 
 def migrate_user_image_url():
     file_server = get_file_server(FileServerType.GCS)
-    for i, user in enumerate(ModelUser.list(ListOptions(parent=None, page_size=MAX_RESOURCE_COUNT))[0]):
+    for i, user in enumerate(repository_for(ModelUser).list(ListOptions(parent=None, page_size=MAX_RESOURCE_COUNT))[0]):
         if user.image_url:
             if user.image_url == DEFAULT_USER_AVATAR:
                 continue

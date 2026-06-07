@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
-import { filter, finalize, switchMap, take } from 'rxjs';
+import { concatMap, filter, finalize, from, Observable, switchMap, take } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
@@ -39,14 +39,11 @@ import { NotificationService } from '../../common/notification.service';
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { UploadService } from '../../service/upload.service';
 import { increment } from '../../utils/number_util';
-import { getCategoryId, getPackageUrl } from '../../utils/package_util';
+import { getCategoryId, getDefaultPackageScreenshot, getPackageUrl } from '../../utils/package_util';
 import { getFullUrl, parseName } from '../../utils/resrouce_util';
 import { getUserUri, isAdmin, loadUser, signedIn } from '../../utils/user_util';
 
 const DESCRIPTION_OVERFLOW_TOLERANCE_PX = 8;
-const SIRE_CATEGORY_ID = 1;
-const SIRE_FALLBACK_IMAGE = 'static/images/sire2.jpg';
-const UPLOAD_PLACEHOLDER_IMAGE = '../../../assets/images/upload.jpg';
 
 @Component({
   selector: 'app-package-detail',
@@ -55,7 +52,6 @@ const UPLOAD_PLACEHOLDER_IMAGE = '../../../assets/images/upload.jpg';
 })
 export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('packageNameTitle') packageNameElement: ElementRef<HTMLElement>;
-  @ViewChild('imageInput') imageInputElement: ElementRef<HTMLInputElement>;
   @ViewChild('gallery') galleryElementCatched;
   @ViewChild('descriptionContainer') descriptionElement: ElementRef<HTMLElement>;
   @ViewChild('versionsSection') versionsSection: ElementRef<HTMLElement>;
@@ -75,6 +71,9 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   allTags: Tag[] = [];
   tagCanEdit = false;
   subscription: Subscription;
+  isScreenshotDragActive = false;
+  isUploadingScreenshots = false;
+  screenshotUploadStatus = '';
 
   private readonly destroyRef = inject(DestroyRef);
   private descriptionOverflowTimer: ReturnType<typeof setTimeout> | undefined;
@@ -141,6 +140,10 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
   get isCollected(): boolean {
     return this.subscription !== undefined;
+  }
+
+  get maxImageSizeMb(): number {
+    return GlobalConstants.maxImageSize / 1024 / 1024;
   }
 
   private get descriptionText(): string {
@@ -275,51 +278,125 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
   // Gallery and screenshots
 
-  onGalleryItemClick(imageIndex: number): void {
-    if (!this.canManagePackage()) {
+  onUploadScreenshots(files: FileList | null, imageInput?: HTMLInputElement): void {
+    const images = Array.from(files ?? []);
+    if (!images.length || this.isUploadingScreenshots) {
       return;
     }
 
-    if (this.isUploadPlaceholderIndex(imageIndex)) {
-      this.imageInputElement.nativeElement.click();
+    const validImages = images.filter(image => image.type.startsWith('image/') &&
+      image.size <= GlobalConstants.maxImageSize);
+    const rejectedCount = images.length - validImages.length;
+
+    if (imageInput) {
+      imageInput.value = '';
+    }
+
+    if (rejectedCount) {
+      this.notificationService.warn(`${rejectedCount} 张图片格式不支持或超过 ${this.maxImageSizeMb}MB，已跳过`);
+    }
+
+    if (!validImages.length) {
       return;
     }
 
-    this.deleteScreenshot(imageIndex);
-  }
-
-  onUploadScreenshot(imageInput: HTMLInputElement): void {
-    const image = imageInput.files?.[0];
-    if (!image) {
-      return;
-    }
-
-    if (image.size > GlobalConstants.maxImageSize) {
-      alert(`上传图片必须小于: ${GlobalConstants.maxImageSize / 1024 / 1024}MB`);
-      return;
-    }
-
-    const parent = getPackageUrl(this.package);
-    const filename = `${parent}/images/tmp.jpeg`;
-
-    const createImageRequest = new CreateImageRequest({
-        parent,
-        url: filename,
-        imageType: ImageType.SCREENSHOT,
-    });
-
+    let uploadedCount = 0;
+    this.isUploadingScreenshots = true;
+    this.screenshotUploadStatus = `正在上传 1 / ${validImages.length}`;
     this.progressService.loading();
-    this.uploadService.upload(image, GlobalConstants.tmpBucket, filename)
+
+    from(validImages)
       .pipe(
-        filter(upload => upload.state === 'DONE'),
-        take(1),
-        switchMap(() => this.san11pkService.createImage(createImageRequest)),
-        finalize(() => this.progressService.complete()),
+        concatMap(image => this.uploadScreenshot(image)),
+        finalize(() => {
+          this.isUploadingScreenshots = false;
+          this.screenshotUploadStatus = '';
+          this.progressService.complete();
+        }),
       )
       .subscribe({
-        next: url => this.addUploadedScreenshot(url.url),
-        error: error => this.notificationService.warn(`上传截图失败: ${error.statusMessage}`),
+        next: url => {
+          uploadedCount += 1;
+          this.addUploadedScreenshot(url.url, false);
+          this.screenshotUploadStatus = `正在上传 ${Math.min(uploadedCount + 1, validImages.length)} / ${validImages.length}`;
+        },
+        error: error => this.notificationService.warn(`上传截图失败: ${error.statusMessage ?? '操作失败'}`),
+        complete: () => this.notificationService.success(`${uploadedCount} 张截图上传成功`),
       });
+  }
+
+  onScreenshotDragEnter(event: DragEvent): void {
+    event.preventDefault();
+    this.isScreenshotDragActive = true;
+  }
+
+  onScreenshotDragOver(event: DragEvent): void {
+    event.preventDefault();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'copy';
+    }
+    this.isScreenshotDragActive = true;
+  }
+
+  onScreenshotDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    this.isScreenshotDragActive = false;
+  }
+
+  onScreenshotDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isScreenshotDragActive = false;
+    this.onUploadScreenshots(event.dataTransfer?.files ?? null);
+  }
+
+  setScreenshotAsCover(imageIndex: number): void {
+    if (imageIndex <= 0) {
+      return;
+    }
+
+    const imageUrls = [...this.package.imageUrls];
+    const [cover] = imageUrls.splice(imageIndex, 1);
+    imageUrls.unshift(cover);
+    this.updateScreenshotOrder(imageUrls, '封面已更新');
+  }
+
+  moveScreenshot(imageIndex: number, offset: number): void {
+    const targetIndex = imageIndex + offset;
+    if (targetIndex < 0 || targetIndex >= this.package.imageUrls.length) {
+      return;
+    }
+
+    const imageUrls = [...this.package.imageUrls];
+    [imageUrls[imageIndex], imageUrls[targetIndex]] = [imageUrls[targetIndex], imageUrls[imageIndex]];
+    this.updateScreenshotOrder(imageUrls, '截图顺序已更新');
+  }
+
+  deleteScreenshot(imageIndex: number): void {
+    if (!confirm('确定要删除这张截图吗?')) {
+      return;
+    }
+
+    const imageUrls = this.package.imageUrls.filter((_, index) => index !== imageIndex);
+
+    this.updatePackage(
+      { imageUrls },
+      ['image_urls'],
+      () => {
+        this.package.imageUrls = imageUrls;
+        this.buildGalleryImages();
+        this.reloadGallery();
+        this.notificationService.success('删除成功');
+      },
+      '删除截图失败',
+    );
+  }
+
+  screenshotUrl(imageUrl: string): string {
+    return getFullUrl(imageUrl);
+  }
+
+  trackScreenshot(_index: number, imageUrl: string): string {
+    return imageUrl;
   }
 
   // Child component events and page actions
@@ -400,17 +477,16 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.descEditor_onFocus = false;
     this.descFolded = true;
     this.descriptionCanExpand = false;
+    this.isScreenshotDragActive = false;
+    this.isUploadingScreenshots = false;
+    this.screenshotUploadStatus = '';
   }
 
   private buildGalleryImages(): void {
     this.images = this.package.imageUrls.map(imageUrl => this.createGalleryImage(getFullUrl(imageUrl)));
-
-    if (this.isSirePackage()) {
-      this.images.push(this.createGalleryImage(getFullUrl(SIRE_FALLBACK_IMAGE)));
-    }
-
-    if (this.canManagePackage()) {
-      this.images.push(this.createGalleryImage(UPLOAD_PLACEHOLDER_IMAGE));
+    const defaultScreenshot = getDefaultPackageScreenshot(this.package);
+    if (!this.images.length && defaultScreenshot) {
+      this.images.push(this.createGalleryImage(getFullUrl(defaultScreenshot)));
     }
   }
 
@@ -524,36 +600,30 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
   // Gallery helpers
 
-  private deleteScreenshot(imageIndex: number): void {
-    if (!confirm('确定要删除这张截图吗?')) {
-      return;
-    }
+  private uploadScreenshot(image: File): Observable<{ url: string }> {
+    const parent = getPackageUrl(this.package);
+    const filename = `${parent}/images/tmp.jpeg`;
+    const createImageRequest = new CreateImageRequest({
+      parent,
+      url: filename,
+      imageType: ImageType.SCREENSHOT,
+    });
 
-    if (this.isSireFallbackImageIndex(imageIndex)) {
-      this.notificationService.warn('不可删除系统预设图片');
-      return;
-    }
-
-    const imageUrls = this.package.imageUrls.filter((_, index) => index !== imageIndex);
-
-    this.updatePackage(
-      { imageUrls },
-      ['image_urls'],
-      () => {
-        this.package.imageUrls = imageUrls;
-        this.images.splice(imageIndex, 1);
-        this.reloadGallery();
-        this.notificationService.success('删除成功');
-      },
-      '删除截图失败',
-    );
+    return this.uploadService.upload(image, GlobalConstants.tmpBucket, filename)
+      .pipe(
+        filter(upload => upload.state === 'DONE'),
+        take(1),
+        switchMap(() => this.san11pkService.createImage(createImageRequest)),
+      );
   }
 
-  private addUploadedScreenshot(url: string): void {
+  private addUploadedScreenshot(url: string, notify = true): void {
     this.package.imageUrls.push(url);
-    this.images.splice(this.uploadInsertIndex(), 0, this.createGalleryImage(getFullUrl(url)));
+    this.buildGalleryImages();
     this.reloadGallery();
-    this.notificationService.success('图片上传成功');
+    if (notify) {
+      this.notificationService.success('图片上传成功');
+    }
   }
 
   private createGalleryImage(url: string): ImageItem {
@@ -564,20 +634,18 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.galleryElementCatched?.load(this.images);
   }
 
-  private uploadInsertIndex(): number {
-    return this.isSirePackage() ? this.images.length - 2 : this.images.length - 1;
-  }
-
-  private isUploadPlaceholderIndex(imageIndex: number): boolean {
-    return imageIndex === this.images.length - 1;
-  }
-
-  private isSireFallbackImageIndex(imageIndex: number): boolean {
-    return this.isSirePackage() && imageIndex === this.images.length - 2;
-  }
-
-  private isSirePackage(): boolean {
-    return getCategoryId(this.package.name) === SIRE_CATEGORY_ID;
+  private updateScreenshotOrder(imageUrls: string[], successMessage: string): void {
+    this.updatePackage(
+      { imageUrls },
+      ['image_urls'],
+      () => {
+        this.package.imageUrls = imageUrls;
+        this.buildGalleryImages();
+        this.reloadGallery();
+        this.notificationService.success(successMessage);
+      },
+      '更新截图顺序失败',
+    );
   }
 
   // Description layout helpers
@@ -610,7 +678,7 @@ export class PackageDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
   // Navigation and permission helpers
 
-  private canManagePackage(): boolean {
+  canManagePackage(): boolean {
     return this.isAdmin() || this.isAuthor();
   }
 

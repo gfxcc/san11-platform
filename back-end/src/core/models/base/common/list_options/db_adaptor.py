@@ -51,6 +51,7 @@ class DbAdaptor(ABC):
         '''
         Generate a SQL limit statement which can be used by postgres.
         '''
+        raise NotImplementedError()
 
     def get_field_trait(self, field_name: str) -> FieldTrait:
         return self._db_fields_dict.get(field_name, FieldTrait(name=field_name, is_repeated=False, type=str))

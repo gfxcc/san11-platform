@@ -1,29 +1,41 @@
 import datetime
 import typing
-from typing import Any, Callable, Dict, List, Optional, TypedDict, TypeVar
+from typing import (Any, Callable, Dict, List, Optional, Type, TypeVar,
+                    TypedDict, cast)
 
 import attr
 import attrs
+from google.protobuf import message
 
 from . import base_core, base_storage, base_proto
+
+_FIELD_T = TypeVar('_FIELD_T')
+_PROTO_INPUT_T = TypeVar('_PROTO_INPUT_T')
+_PROTO_OUTPUT_T = TypeVar('_PROTO_OUTPUT_T')
+_STORAGE_INPUT_T = TypeVar('_STORAGE_INPUT_T')
+_STORAGE_OUTPUT_T = TypeVar('_STORAGE_OUTPUT_T')
 
 
 def Attrib(
         # proto section
         is_proto_field: bool = True,
         proto_path: Optional[str] = None,
-        proto_converter: Optional[base_proto.ProtoConverter] = None,
+        proto_converter: Optional[
+            base_proto.ProtoConverter[
+                _FIELD_T, _PROTO_INPUT_T, _PROTO_OUTPUT_T]] = None,
         # db section
         is_db_field: bool = True,
         db_path: Optional[str] = None,
-        db_converter: Optional[base_storage.StorageConverter] = None,
+        db_converter: Optional[
+            base_storage.StorageConverter[
+                _FIELD_T, _STORAGE_INPUT_T, _STORAGE_OUTPUT_T]] = None,
         # general section
         repeated: bool = False,
         # TODO: update type of nested_type to NestedModel
         nested_type: Optional[Any] = None,
         deprecated: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
-        **kwargs) -> attrs.Attribute:
+        **kwargs) -> _FIELD_T:
     '''
     Args:
         # Proto section
@@ -67,10 +79,10 @@ def Attrib(
 
     if deprecated:
         kwargs['default'] = None
-    return attrs.field(metadata=metadata, **kwargs)
+    return cast(_FIELD_T, attrs.field(metadata=metadata, **kwargs))
 
 
-def NestedAttrib(nested_type: type, **kwargs) -> attrs.field:
+def NestedAttrib(nested_type: Type[_FIELD_T], **kwargs) -> _FIELD_T:
     '''
     Provide a nested attribute.
     E.g. The UserSettings fields in the following User message.
@@ -84,61 +96,72 @@ def NestedAttrib(nested_type: type, **kwargs) -> attrs.field:
     }
     '''
     return Attrib(nested_type=nested_type,
-                  proto_converter=base_proto.build_nested_converter(
-                      nested_type),
-                  db_converter=base_storage.build_nested_converter(nested_type),
+                  proto_converter=cast(
+                      base_proto.ProtoConverter[
+                          _FIELD_T, message.Message, message.Message],
+                      base_proto.build_nested_converter(
+                          cast(Type[base_proto.ProtoSerializable], nested_type))),
+                  db_converter=cast(
+                      base_storage.StorageConverter[_FIELD_T, Dict, Dict],
+                      base_storage.build_nested_converter(
+                          cast(Type[base_storage.StorageSerializable], nested_type))),
                   **kwargs)
 
 
-def BoolAttrib(**kwargs) -> attrs.field:
-    return Attrib(
+def BoolAttrib(**kwargs) -> bool:
+    return cast(bool, Attrib(
         **kwargs,
-    )
+    ))
 
 
-def BoolListAttrib(**kwargs) -> attrs.field:
-    return BoolAttrib(
+def BoolListAttrib(**kwargs) -> List[bool]:
+    return cast(List[bool], BoolAttrib(
         repeated=True,
         **kwargs,
-    )
+    ))
 
 
-def IntAttrib(**kwargs) -> attrs.field:
-    return Attrib(
+def IntAttrib(**kwargs) -> int:
+    return cast(int, Attrib(
         **kwargs,
-    )
+    ))
 
 
-def IntListAttrib(**kwargs) -> attrs.field:
-    return IntAttrib(
+def IntListAttrib(**kwargs) -> List[int]:
+    return cast(List[int], IntAttrib(
         repeated=True,
         **kwargs,
-    )
+    ))
 
 
-def StrAttrib(**kwargs) -> attrs.field:
-    return Attrib(
+def StrAttrib(**kwargs) -> str:
+    return cast(str, Attrib(
         **kwargs,
-    )
+    ))
 
 
-def StrListAttrib(**kwargs) -> attrs.field:
-    return StrAttrib(
+def StrListAttrib(**kwargs) -> List[str]:
+    return cast(List[str], StrAttrib(
         repeated=True,
         **kwargs,
-    )
+    ))
 
 
-def DatetimeAttrib(proto_converter: Optional[base_proto.ProtoConverter] = None, db_converter: Optional[base_storage.StorageConverter] = None, **kwargs) -> attrs.field:
-    return Attrib(
+def DatetimeAttrib(
+        proto_converter: Optional[
+            base_proto.ProtoConverter[datetime.datetime, Any, Any]] = None,
+        db_converter: Optional[
+            base_storage.StorageConverter[datetime.datetime, Any, Any]] = None,
+        **kwargs) -> datetime.datetime:
+    return cast(datetime.datetime, Attrib(
         proto_converter=proto_converter or base_proto.DatetimeProtoConverter(),
         db_converter=db_converter or base_storage.DatetimeStorageConverter(),
         **kwargs,
-    )
+    ))
 
 
-def DatetimeListAttrib(**kwargs) -> attrs.field:
-    return DatetimeAttrib(repeated=True)
+def DatetimeListAttrib(**kwargs) -> List[datetime.datetime]:
+    return cast(List[datetime.datetime], DatetimeAttrib(repeated=True))
 
 
 MODELS = {}
@@ -147,7 +170,7 @@ COLLECTION_TO_MODEL = {}
 
 def InitModel(
     db_table: Optional[str],
-    proto_class: Optional[Any],
+    proto_class: type,
 ) -> Callable:
     def wraps(cls):
         if db_table:

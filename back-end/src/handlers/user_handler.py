@@ -55,7 +55,7 @@ class UserHandler(HandlerBase):
                                    resource_name=user.name))
         return user
 
-    def get(self, name: str, handler_context) -> ModelBase:
+    def get(self, name: str, handler_context) -> ModelUser:
         user = self.user_repository.get(name)
         return user
 

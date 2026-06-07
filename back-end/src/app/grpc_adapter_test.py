@@ -1,6 +1,8 @@
 import unittest
 from unittest import mock
 
+import grpc
+
 from core.errors.exceptions import InvalidArgument
 from app.grpc_adapter import grpc_abort_on_exception
 from app.handler_context import HandlerContext
@@ -35,7 +37,8 @@ class GrpcAbortOnExceptionTest(unittest.TestCase):
                                return_value=mock.Mock()):
             grpc_abort_on_exception(rpc)(mock.Mock(), mock.Mock(), context)
 
-        context.abort.assert_called_once_with(code=3, details='bad request')
+        context.abort.assert_called_once_with(
+            code=grpc.StatusCode.INVALID_ARGUMENT, details='bad request')
 
     def test_aborts_unknown_errors_as_internal(self):
         context = mock.Mock()
@@ -48,7 +51,8 @@ class GrpcAbortOnExceptionTest(unittest.TestCase):
                                return_value=mock.Mock()):
             grpc_abort_on_exception(rpc)(mock.Mock(), mock.Mock(), context)
 
-        context.abort.assert_called_once_with(code=255, details='Internal error')
+        context.abort.assert_called_once_with(
+            code=grpc.StatusCode.INTERNAL, details='Internal error')
 
 
 if __name__ == '__main__':

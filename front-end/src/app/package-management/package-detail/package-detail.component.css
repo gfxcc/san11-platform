@@ -68,6 +68,251 @@
     background-color: transparent;
 }
 
+.screenshot-manager {
+    display: grid;
+    gap: 18px;
+    margin-top: 18px;
+    padding: 22px;
+}
+
+.resource-management-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.resource-management-title h2 {
+    margin: 0;
+}
+
+.resource-management-title p {
+    margin: 6px 0 0;
+    color: var(--text-muted);
+    font-size: .9rem;
+}
+
+.management-divider {
+    height: 1px;
+    background: var(--border-color);
+}
+
+.screenshot-manager-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.screenshot-manager-header h3 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 800;
+}
+
+.screenshot-manager-header p {
+    max-width: 620px;
+    margin: 7px 0 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.screenshot-manager-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.screenshot-manager-actions button {
+    border-radius: 999px;
+}
+
+.screenshot-count {
+    color: var(--text-muted);
+    font-size: .88rem;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.screenshot-dropzone {
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    width: 100%;
+    min-height: 132px;
+    padding: 20px;
+    border: 1.5px dashed rgba(37, 99, 235, .38);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, rgba(37, 99, 235, .07), rgba(5, 150, 105, .04));
+    color: var(--primary-strong);
+    font: inherit;
+    cursor: pointer;
+    transition: border-color var(--animation-duration), background-color var(--animation-duration), transform var(--animation-duration);
+}
+
+.screenshot-dropzone:hover,
+.screenshot-dropzone-active {
+    border-color: var(--primary-color);
+    background: rgba(37, 99, 235, .1);
+    transform: translateY(-1px);
+}
+
+.screenshot-dropzone:disabled {
+    cursor: progress;
+    opacity: .72;
+}
+
+.screenshot-dropzone mat-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+}
+
+.dropzone-title {
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.dropzone-hint {
+    color: var(--text-muted);
+    font-size: .84rem;
+}
+
+.screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+}
+
+.screenshot-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.screenshot-card-cover {
+    border-color: rgba(37, 99, 235, .42);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, .08), var(--shadow-sm);
+}
+
+.screenshot-preview {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--surface-subtle);
+}
+
+.screenshot-preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.cover-badge,
+.screenshot-order {
+    position: absolute;
+    top: 9px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, .78);
+    color: #fff;
+    font-size: .76rem;
+    font-weight: 800;
+    backdrop-filter: blur(8px);
+}
+
+.cover-badge {
+    left: 9px;
+    gap: 4px;
+    padding: 0 9px;
+}
+
+.cover-badge mat-icon {
+    width: 14px;
+    height: 14px;
+    color: #fbbf24;
+    font-size: 14px;
+}
+
+.screenshot-order {
+    right: 9px;
+    justify-content: center;
+    min-width: 26px;
+    padding: 0 7px;
+}
+
+.screenshot-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px;
+}
+
+.screenshot-card-actions > button {
+    min-width: 0;
+    padding: 0 11px;
+    border-radius: 999px;
+    font-size: .82rem;
+}
+
+.screenshot-card-actions > button mat-icon {
+    width: 17px;
+    height: 17px;
+    font-size: 17px;
+}
+
+.screenshot-order-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.screenshot-order-actions button {
+    width: 34px;
+    height: 34px;
+    padding: 5px;
+}
+
+.screenshot-order-actions mat-icon {
+    width: 19px;
+    height: 19px;
+    font-size: 19px;
+}
+
+.delete-screenshot {
+    color: var(--accent-color);
+}
+
+.screenshot-empty-state {
+    display: grid;
+    justify-items: center;
+    gap: 7px;
+    padding: 18px 20px 4px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.screenshot-empty-state mat-icon {
+    width: 30px;
+    height: 30px;
+    color: var(--text-subtle);
+    font-size: 30px;
+}
+
+.screenshot-empty-state strong {
+    color: var(--text-color);
+}
+
 .detail-admin-bar {
     display: inline-flex;
     align-items: center;
@@ -231,24 +476,17 @@
     background: var(--clickable-background-color);
 }
 
-.package-management {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border-color);
-}
-
 .management-trigger {
-    width: 100%;
     min-height: 40px;
     border-radius: 999px;
     color: var(--text-muted);
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .management-trigger mat-icon {
     width: 19px;
     height: 19px;
-    margin-right: 6px;
     font-size: 19px;
 }
 
@@ -580,6 +818,41 @@
 
     .resource-summary {
         padding: 16px;
+    }
+
+    .screenshot-manager {
+        gap: 14px;
+        padding: 16px;
+    }
+
+    .screenshot-manager-header {
+        display: grid;
+        gap: 14px;
+    }
+
+    .resource-management-header {
+        align-items: flex-start;
+    }
+
+    .resource-management-header .management-trigger {
+        padding: 0 10px;
+    }
+
+    .resource-management-header .management-trigger mat-icon:last-child {
+        display: none;
+    }
+
+    .screenshot-manager-actions {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .screenshot-dropzone {
+        min-height: 116px;
+    }
+
+    .screenshot-grid {
+        grid-template-columns: 1fr;
     }
 
     .detail-section-header {

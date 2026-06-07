@@ -20,7 +20,7 @@ class TagHandler(HandlerBase):
 
     def create(self, parent: str, tag: ModelTag, handler_context: HandlerContext) -> ModelTag:
         return self.tag_repository.create(
-            parent=parent, resource=tag, actor_info=handler_context.user.user_id)
+            parent=parent, resource=tag, actor_info=handler_context.authenticated_user.user_id)
 
     def list(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelTag], str]:
         tags, next_page_token = self.tag_repository.list(list_options)
@@ -37,4 +37,4 @@ class TagHandler(HandlerBase):
         if taged_packages:
             raise FailedPrecondition(message='标签仍在使用')
         return self.tag_repository.delete(
-            tag, actor_info=handler_context.user.user_id)
+            tag, actor_info=handler_context.authenticated_user.user_id)

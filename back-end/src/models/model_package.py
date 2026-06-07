@@ -48,7 +48,7 @@ class TagStorageConverter(StorageConverter):
     proto_class=pb.Package,
 )
 @attrs.define
-class ModelPackage(Likeable, Subscribable, TrackLifecycle, ModelBase):
+class ModelPackage(Likeable, Subscribable, TrackLifecycle, ModelBase[pb.Package]):
     # Resource name. It is `{parent}/packages/{package_id}`
     # E.g. `categories/1/packages/123`
     name: str = StrAttrib()

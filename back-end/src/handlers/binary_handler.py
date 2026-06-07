@@ -62,7 +62,7 @@ class BinaryHandler(HandlerBase):
             raise InvalidArgument(
                 'Either `file` or `download_method` has be specified.')
         self.binary_repository.create(
-            parent=parent, resource=binary, actor_info=handler_context.user.user_id)
+            parent=parent, resource=binary, actor_info=handler_context.authenticated_user.user_id)
         # Post creation
         notify_on_creation(binary)
         # Update the `update_time` in package.
@@ -78,7 +78,7 @@ class BinaryHandler(HandlerBase):
                                 update_request=update_binary,
                                 field_mask=update_mask)
         return self.binary_repository.update(
-            binary, actor_info=handler_context.user.user_id)
+            binary, actor_info=handler_context.authenticated_user.user_id)
 
     def list_binaries(self, request, handler_context) -> Tuple[List[ModelBinary], str]:
         list_options = ListOptions.from_request(request)
@@ -88,7 +88,7 @@ class BinaryHandler(HandlerBase):
         binary = self.binary_repository.get(name)
 
         return self.binary_repository.delete(
-            binary, actor_info=handler_context.user.user_id)
+            binary, actor_info=handler_context.authenticated_user.user_id)
 
     def download_binary(self, binary: ModelBinary, handler_context) -> ModelBinary:
         # website statistic
@@ -98,7 +98,7 @@ class BinaryHandler(HandlerBase):
         self.package_repository.update(package, update_update_time=False)
         try:
             self.activity_repository.create(
-                parent=f'users/{handler_context.user.user_id}',
+                parent=f'users/{handler_context.authenticated_user.user_id}',
                 resource=ModelActivity(
                 name='', create_time=get_now(),
                 action=pb.Action.DOWNLOAD, resource_name=binary.name

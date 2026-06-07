@@ -45,7 +45,7 @@ class TestFilterExpr(unittest.TestCase):
         expr = FilterExpr.from_str(expr_str)
 
         self.assertEqual(expr.logic_op, None)
-        self.assertIsInstance(expr.value, List)
+        assert isinstance(expr.value, list)
         self.assertListEqual(expr.value, [
             FilterExpr(None, FilterItem('state', Comp_Op.EQ, 123)),
             FilterExpr(Logic_Op.OR, FilterItem('name', Comp_Op.NOT_EQ, 456)),
@@ -58,7 +58,7 @@ class TestFilterExpr(unittest.TestCase):
         expr = FilterExpr.from_str(expr_str)
 
         self.assertEqual(expr.logic_op, None)
-        self.assertIsInstance(expr.value, List)
+        assert isinstance(expr.value, list)
         self.assertListEqual(expr.value, [
             FilterExpr(None, FilterItem('state', Comp_Op.EQ, 123)),
             FilterExpr(Logic_Op.OR, [
@@ -75,7 +75,7 @@ class TestFilterExpr(unittest.TestCase):
         expr = FilterExpr.from_str(expr_str)
 
         self.assertEqual(expr.logic_op, None)
-        self.assertIsInstance(expr.value, List)
+        assert isinstance(expr.value, list)
         self.assertListEqual(expr.value, [
             FilterExpr(None, FilterItem('state', Comp_Op.EQ, 123)),
             FilterExpr(Logic_Op.OR, [

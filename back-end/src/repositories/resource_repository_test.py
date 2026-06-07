@@ -1,13 +1,15 @@
 import unittest
 from unittest import mock
+from typing import Any, Dict, List, Optional, Tuple
 
 from core.errors.exceptions import FailedPrecondition, NotFound
 from core.models.base import ListOptions
+from core.models.base.base_storage import StorageSerializable
 from core.models.base.common.list_options import PostgresAdaptor
 from repositories.resource_repository import ResourceRepository, repository_for
 
 
-class FakeModel:
+class FakeModel(StorageSerializable):
     _DB_TABLE = 'packages'
     _LIST_OPTIONS_ADAPTOR = PostgresAdaptor({})
 
@@ -41,11 +43,11 @@ class FakeModel:
 
 class FakeStorage:
     def __init__(self):
-        self.get_result = None
-        self.list_result = []
-        self.exists_result = False
-        self.insert_result = 7
-        self.calls = []
+        self.get_result: Optional[Dict[str, str]] = None
+        self.list_result: List[Tuple[Dict[str, str]]] = []
+        self.exists_result: bool = False
+        self.insert_result: int = 7
+        self.calls: List[Tuple[Any, ...]] = []
 
     def get(self, table, parent, resource_id):
         self.calls.append(('get', table, parent, resource_id))

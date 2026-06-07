@@ -15,7 +15,7 @@ from app.protos import san11_platform_pb2 as pb
     proto_class=pb.LegacySubscription,
 )
 @attrs.define
-class ModelLegacySubscription(TrackLifecycle, ModelBase):
+class ModelLegacySubscription(TrackLifecycle, ModelBase[pb.LegacySubscription]):
     # Resource name. It is `{parent}/subscriptions/{subscription_id}/`
     # E.g. `users/123/subscriptions/456`
     name: str = StrAttrib()

@@ -1,14 +1,16 @@
 import unittest
+from typing import cast
 
 from core.errors.exceptions import PermissionDenied, Unauthenticated
 from core.errors.validation import (require_authenticated,
                                        require_authenticated_condition,
                                        require_permission)
+from models.model_user import ModelUser
 
 
 class ValidationTest(unittest.TestCase):
     def test_require_authenticated_returns_user(self):
-        user = object()
+        user = cast(ModelUser, object())
 
         self.assertIs(user, require_authenticated(user))
 

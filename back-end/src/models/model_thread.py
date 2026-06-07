@@ -18,7 +18,7 @@ from core.models.base import (Attrib, BoolAttrib, DatetimeAttrib, InitModel, Int
     proto_class=pb.Thread,
 )
 @attrs.define
-class ModelThread(Likeable, TrackLifecycle, ModelBase):
+class ModelThread(Likeable, TrackLifecycle, ModelBase[pb.Thread]):
     # Resource name. It is `{parent}/threads/{thread_id}`
     # E.g. `threads/12345`
     name: str = StrAttrib()

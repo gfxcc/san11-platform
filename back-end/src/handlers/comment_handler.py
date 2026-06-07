@@ -27,7 +27,7 @@ class CommentHandler(HandlerBase):
         self.user_repository = user_repository or repository_for(ModelUser)
 
     def create(self, parent: str, comment: ModelComment, handler_context: HandlerContext) -> ModelComment:
-        user_id = handler_context.user.user_id
+        user_id = handler_context.authenticated_user.user_id
         username = self.user_repository.get(f'users/{user_id}').username
         comment.author_id = user_id
         parent_obj = find_resource(parent)
@@ -57,7 +57,7 @@ class CommentHandler(HandlerBase):
         comment = merge_resource(base_resource=self.comment_repository.get(update_comment.name),
                                  update_request=update_comment,
                                  field_mask=sanitized_update_mask)
-        actor = handler_context.user
+        actor = handler_context.authenticated_user
 
         if update_mask.has('like_count'):
             comment.toggle_like(actor.name)
@@ -80,4 +80,4 @@ class CommentHandler(HandlerBase):
             thread.reply_count -= len(replies)
             self.thread_repository.update(thread, update_update_time=False)
         return self.comment_repository.delete(
-            comment, actor_info=handler_context.user.user_id)
+            comment, actor_info=handler_context.authenticated_user.user_id)

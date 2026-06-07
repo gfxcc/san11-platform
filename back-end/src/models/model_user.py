@@ -56,7 +56,7 @@ class EmailStorageConverter(StorageConverter):
     proto_class=pb.UserSettings.NotificationSetting
 )
 @attrs.define
-class NotificationSettings(NestedModel):
+class NotificationSettings(NestedModel[pb.UserSettings.NotificationSetting]):
     send_emails: bool = BoolAttrib()
     subscriptions: bool = BoolAttrib()
     recommendations: bool = BoolAttrib()
@@ -71,7 +71,7 @@ class NotificationSettings(NestedModel):
     proto_class=pb.UserSettings
 )
 @attrs.define
-class UserSettings(NestedModel):
+class UserSettings(NestedModel[pb.UserSettings]):
     notification: NotificationSettings = NestedAttrib(
         nested_type=NotificationSettings
     )
@@ -82,7 +82,7 @@ class UserSettings(NestedModel):
     proto_class=pb.User,
 )
 @attrs.define
-class ModelUser(Subscribable, TrackLifecycle, ModelBase):
+class ModelUser(Subscribable, TrackLifecycle, ModelBase[pb.User]):
     # Resource name. It is `{parent}/users/{user_id}`
     # E.g. `users/12345`
     name: str = StrAttrib()
@@ -107,7 +107,7 @@ class ModelUser(Subscribable, TrackLifecycle, ModelBase):
         from repositories.resource_repository import repository_for
         return repository_for(cls).get(f'users/{user_id}')
 
-    def to_pb(self) -> message.Message:
+    def to_pb(self) -> pb.User:
         # Field `user_id` only exist in public proto for easy access.
         ret = super().to_pb()
         setattr(ret, 'user_id', self.user_id)

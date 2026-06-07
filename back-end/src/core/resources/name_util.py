@@ -25,7 +25,7 @@ def _parse_name(name: str) -> Tuple[str, str, int]:
 
 @attrs.define(auto_attribs=True)
 class ResourceName:
-    parent: ResourceName
+    parent: Union[ResourceName, str]
     collection: str
     resource_id: int
 
@@ -51,4 +51,3 @@ def get_parent(name: str) -> str:
     A utility func to get parent part of a resourec name.
     '''
     return str(ResourceName.from_str(name).parent)
-

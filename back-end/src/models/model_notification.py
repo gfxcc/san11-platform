@@ -12,7 +12,7 @@ from app.protos import san11_platform_pb2 as pb
     proto_class=pb.Notification,
 )
 @attrs.define
-class ModelNotification(ModelBase):
+class ModelNotification(ModelBase[pb.Notification]):
     # Resource name. It is `{parent}/notifications/{resource_id}`
     # E.g. `notifications/123`
     name: str = StrAttrib()

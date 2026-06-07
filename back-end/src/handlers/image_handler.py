@@ -70,7 +70,7 @@ def get_image_uri(parent: str, image_type: pb.ImageType.ValueType) -> str:
 def resample_image(url: str, width: int, height: int) -> Image.Image:
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
-    img = img.resize((width, height), resample=Image.LANCZOS)
+    img = img.resize((width, height), resample=Image.Resampling.LANCZOS)
     return img.convert('RGB')
 
 
