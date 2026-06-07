@@ -25,14 +25,16 @@
                     class="screenshot-manager permission-surface permission-author-surface surface-panel app-detail-section">
                     <div class="screenshot-manager-header">
                         <div>
-                            <div class="permission-section-heading">
-                                <span class="permission-label">
-                                    <mat-icon>edit</mat-icon>
-                                    作者专属
-                                </span>
-                                <h3>截图管理</h3>
+                            <div class="detail-card-heading">
+                                <div class="detail-card-title-row">
+                                    <h2 class="detail-card-title">截图管理</h2>
+                                    <span class="permission-badge permission-badge-author">
+                                        <mat-icon>edit</mat-icon>
+                                        作者可见
+                                    </span>
+                                </div>
+                                <p>第一张截图会作为资源封面。可批量上传、调整展示顺序或删除截图。</p>
                             </div>
-                            <p>第一张截图会作为资源封面。可批量上传、调整展示顺序或删除截图。</p>
                         </div>
                         <div class="screenshot-manager-actions">
                             <span class="screenshot-count">{{this.package.imageUrls.length}} 张截图</span>
@@ -184,7 +186,11 @@
                 </section>
 
                 <section class="resource-summary surface-panel app-detail-section">
-                <h2 class="panel-title app-section-title">资源详情</h2>
+                <div class="detail-card-heading">
+                    <div class="detail-card-title-row">
+                        <h2 class="detail-card-title">资源详情</h2>
+                    </div>
+                </div>
                 <h1>
                     <span *ngIf="!isAuthor()" #packageNameTitle class="title">
                         {{this.package.packageName}}
@@ -263,9 +269,14 @@
 
                 <section *ngIf="isAuthor()"
                     class="author-workspace role-workspace permission-surface permission-author-surface surface-panel app-detail-section">
-                    <div class="author-workspace-heading">
-                        <span class="section-kicker">作者专属</span>
-                        <h2>作者工作台</h2>
+                    <div class="detail-card-heading">
+                        <div class="detail-card-title-row">
+                            <h2 class="detail-card-title">作者工具</h2>
+                            <span class="permission-badge permission-badge-author">
+                                <mat-icon>edit</mat-icon>
+                                作者可见
+                            </span>
+                        </div>
                         <p>维护资源内容并发布更新。</p>
                     </div>
                     <div class="author-workspace-actions">
@@ -300,9 +311,14 @@
 
                 <section *ngIf="isAdmin()"
                     class="admin-management role-workspace permission-surface permission-admin-surface surface-panel app-detail-section">
-                    <div class="resource-management-title">
-                    <span class="section-kicker">管理员专属</span>
-                    <h2 class="app-section-title">资源状态管理</h2>
+                    <div class="detail-card-heading">
+                    <div class="detail-card-title-row">
+                        <h2 class="detail-card-title">状态管理</h2>
+                        <span class="permission-badge permission-badge-admin">
+                            <mat-icon>admin_panel_settings</mat-icon>
+                            管理员可见
+                        </span>
+                    </div>
                     <p>处理审核、可见性和紧急下架。资源内容由作者维护。</p>
                     </div>
                     <div class="resource-management-quick-actions">

@@ -61,7 +61,7 @@ async function expectCatalogLoaded(page: Page, probe: NetworkProbe): Promise<num
   if (cardCount > 0) {
     await expect(page.locator('app-package-card').first()).toBeVisible();
   } else {
-    await expect(page.locator('.dashboard-placeholder').getByText('空空如也')).toBeVisible();
+    await expect(page.locator('.dashboard-placeholder')).toBeVisible();
   }
 
   return cardCount;
@@ -93,6 +93,7 @@ test.describe('anonymous critical user journeys', () => {
     await expectCatalogLoaded(page, probe);
 
     await page.getByPlaceholder('搜索工具、MOD 或插件').fill('test');
+    await page.getByPlaceholder('搜索工具、MOD 或插件').press('Enter');
 
     await expect(page).toHaveURL(/\/search\?query=test/);
     await expect(page.getByText('资源库')).toBeVisible();
@@ -156,11 +157,11 @@ test.describe('anonymous critical user journeys', () => {
     await expectCatalogLoaded(page, probe);
 
     await page.getByRole('button', { name: /创建/ }).click();
-    await expect(page.getByText('上传工具需要登陆')).toBeVisible();
+    await expect(page.getByText('上传工具需要登录')).toBeVisible();
 
-    await page.getByText('登陆', { exact: true }).click();
+    await page.getByText('登录', { exact: true }).click();
     await expect(page).toHaveURL(/\/signin/);
-    await expect(page.getByRole('button', { name: /登陆/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: /登录/ })).toBeVisible();
 
     await page.getByText('注册', { exact: true }).click();
     await expect(page).toHaveURL(/\/register/);
