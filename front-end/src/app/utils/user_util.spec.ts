@@ -1,5 +1,5 @@
 import { User } from "../../proto/san11-platform.pb";
-import { clearUser, loadUser, saveUser, signedIn } from "./user_util";
+import { clearUser, isAdmin, loadUser, saveUser, signedIn } from "./user_util";
 
 describe('user_util', () => {
     beforeEach(() => {
@@ -43,5 +43,23 @@ describe('user_util', () => {
 
         expect(signedIn()).toBeFalse();
         expect(loadUser().userId).toBe('0');
+    });
+
+    it('detects a saved admin user', () => {
+        saveUser(new User({
+            userId: '910001',
+            username: 'dev_admin',
+            type: User.UserType.ADMIN,
+        }));
+
+        expect(isAdmin()).toBeTrue();
+        expect(loadUser().type).toBe(User.UserType.ADMIN);
+    });
+
+    it('detects admin from legacy numeric local storage', () => {
+        localStorage.setItem('userType', String(User.UserType.ADMIN));
+
+        expect(isAdmin()).toBeTrue();
+        expect(loadUser().type).toBe(User.UserType.ADMIN);
     });
 });

@@ -2,7 +2,7 @@ import { User } from "../../proto/san11-platform.pb";
 
 
 export function isAdmin(): boolean {
-    return localStorage.getItem('userType') === User.UserType[User.UserType.ADMIN];
+    return parseUserType(localStorage.getItem('userType')) === User.UserType.ADMIN;
 }
 
 export function getUserUri(user: User): string {
@@ -17,7 +17,7 @@ export function signedIn(): boolean {
 export function saveUser(user: User) {
     localStorage.setItem('userId', user.userId);
     localStorage.setItem('username', user.username);
-    localStorage.setItem('userType', User.UserType[user.type]);
+    localStorage.setItem('userType', User.UserType[parseUserType(user.type)]);
     localStorage.setItem('userImageUrl', user.imageUrl);
 }
 
@@ -39,7 +39,24 @@ export function loadUser(): User {
         name: `users/${userId}`,
         userId: userId,
         username: username,
-        type: userType ? User.UserType[userType] : User.UserType.USER_TYPE_UNSPECIFIED,
+        type: parseUserType(userType),
         imageUrl: imageUrl,
     });
+}
+
+function parseUserType(userType: User.UserType | string | null | undefined): User.UserType {
+    if (typeof userType === 'number') {
+        return userType;
+    }
+
+    if (!userType) {
+        return User.UserType.USER_TYPE_UNSPECIFIED;
+    }
+
+    const numericUserType = Number(userType);
+    if (!Number.isNaN(numericUserType) && User.UserType[numericUserType] !== undefined) {
+        return numericUserType as User.UserType;
+    }
+
+    return User.UserType[userType] ?? User.UserType.USER_TYPE_UNSPECIFIED;
 }
