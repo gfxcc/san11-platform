@@ -5,4 +5,5 @@ export const environment = {
   domain: 'localhost',
   schema: 'https',
   serverPort: 8090,
+  devAccounts: [],
 };

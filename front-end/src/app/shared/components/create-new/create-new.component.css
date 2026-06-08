@@ -7,7 +7,7 @@
 }
 
 .create-panel {
-    width: min(100%, 480px);
+    width: min(100%, 720px);
     padding: 28px;
 }
 
@@ -79,6 +79,96 @@
     font-size: 1.15rem;
 }
 
+.creation-review small {
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.quality-panel {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(260px, 1.05fr);
+    gap: 16px;
+    padding: 18px;
+    border: 1px solid rgba(37, 99, 235, .16);
+    border-radius: var(--radius-lg);
+    background:
+        linear-gradient(135deg, rgba(37, 99, 235, .06), rgba(255, 255, 255, .94) 58%),
+        var(--surface);
+}
+
+.quality-panel-copy h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.22rem;
+    line-height: 1.25;
+    font-weight: 850;
+}
+
+.quality-panel-copy p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.quality-checklist {
+    display: grid;
+    gap: 9px;
+}
+
+.quality-check-item {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, .82);
+}
+
+.quality-check-item mat-icon {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(100, 116, 139, .1);
+    color: var(--text-muted);
+    font-size: 18px;
+}
+
+.quality-check-item span {
+    min-width: 0;
+    color: var(--text-color);
+    font-weight: 750;
+    line-height: 1.35;
+}
+
+.quality-check-item small {
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--surface-muted);
+    color: var(--text-muted);
+    font-size: .74rem;
+    font-weight: 850;
+}
+
+.quality-check-required {
+    border-color: rgba(37, 99, 235, .2);
+}
+
+.quality-check-required mat-icon {
+    background: var(--primary-soft);
+    color: var(--primary-color);
+}
+
+.quality-check-required small {
+    background: rgba(37, 99, 235, .1);
+    color: var(--primary-strong);
+}
+
 .create-actions {
     display: flex;
     align-items: center;
@@ -133,5 +223,10 @@
 
     .create-panel {
         padding: 20px 16px;
+    }
+
+    .quality-panel {
+        grid-template-columns: 1fr;
+        padding: 14px;
     }
 }

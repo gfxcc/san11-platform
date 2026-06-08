@@ -9,6 +9,7 @@ import grpc
 from google.cloud import logging as cloud_logging
 
 from core.common.env import is_prod
+from app.dev_seed import seed_dev_data
 from app.grpc_service_registration import register_san11_platform_servicer
 from app.san11_platform_servicer import San11PlatformServicer
 from app.service_dependencies import San11PlatformDependencies
@@ -30,6 +31,7 @@ def create_server(
 
 
 def serve(address: str = DEFAULT_ADDRESS) -> None:
+    seed_dev_data()
     server = create_server()
     server.add_insecure_port(address)
     server.start()

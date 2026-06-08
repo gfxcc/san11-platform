@@ -342,7 +342,7 @@
 
 .review-item {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-columns: 38px minmax(0, 1fr) auto auto;
     align-items: center;
     gap: 10px;
     width: 100%;
@@ -361,16 +361,54 @@
     background: rgba(37, 99, 235, .04);
 }
 
-.review-item span {
+.review-item-icon {
+    display: inline-flex;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(245, 158, 11, .12);
+    color: var(--warning-color);
+}
+
+.review-item-icon mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+.review-item-copy {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+
+.review-item-copy strong,
+.review-item-copy small {
     min-width: 0;
     overflow: hidden;
-    font-weight: 800;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.review-item small {
+.review-item-copy strong {
+    color: var(--text-color);
+    font-weight: 850;
+}
+
+.review-item-copy small {
     color: var(--text-muted);
+}
+
+.review-item-status {
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: rgba(245, 158, 11, .12);
+    color: var(--warning-color);
+    font-size: .76rem;
+    font-weight: 850;
+    white-space: nowrap;
 }
 
 .compact-empty-state {

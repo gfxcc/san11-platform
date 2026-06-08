@@ -2,11 +2,81 @@
     margin-top: 16px;
 }
 
-.package-name {
+.published-header h2 {
+    margin: 0;
     color: var(--text-color);
+    font-size: 1.05rem;
     font-weight: 800;
 }
 
-.package-name:hover {
+.published-header p {
+    margin: 4px 0 0;
+    color: var(--text-muted);
+    font-size: .88rem;
+}
+
+.package-name-cell {
+    display: grid;
+    gap: 3px;
+    min-width: 220px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.package-name-cell strong,
+.package-name-cell small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.package-name-cell strong {
+    font-weight: 850;
+}
+
+.package-name-cell small {
+    color: var(--text-muted);
+    font-size: .8rem;
+}
+
+.package-name-cell:hover strong {
     color: var(--primary-color);
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: var(--surface-muted);
+    color: var(--text-muted);
+    font-size: .78rem;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+.status-pill-normal {
+    background: rgba(5, 150, 105, .1);
+    color: #047857;
+}
+
+.status-pill-review {
+    background: rgba(245, 158, 11, .14);
+    color: var(--warning-color);
+}
+
+.status-pill-hidden,
+.status-pill-default {
+    background: rgba(100, 116, 139, .12);
+    color: var(--text-muted);
+}
+
+.status-pill-danger {
+    background: rgba(220, 38, 38, .1);
+    color: var(--accent-color);
+}
+
+.published-empty {
+    margin: 16px;
 }

@@ -95,6 +95,22 @@ export class VersionPanelComponent implements OnInit {
     return this.isAuthor;
   }
 
+  get totalVersionCount(): number {
+    return this.branchs?.reduce((total, branch) => total + branch.binaries.length, 0) || 0;
+  }
+
+  get availableBranchCount(): number {
+    return this.branchs?.filter(branch => !branch.disabled).length || 0;
+  }
+
+  get versionHealthText(): string {
+    if (this.totalVersionCount === 0) {
+      return this.isAuthor ? '还没有可下载版本' : '作者暂未发布可下载版本';
+    }
+
+    return `${this.availableBranchCount} 个分支，${this.totalVersionCount} 个版本`;
+  }
+
   get isAuthor() {
     return this.package.authorId === localStorage.getItem('userId');
   }

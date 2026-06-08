@@ -8,6 +8,7 @@ import { Empty, SendVerificationCodeRequest, SignInRequest, UpdatePasswordReques
 import { NotificationService } from "../../common/notification.service";
 import { San11PlatformServiceService } from '../../service/san11-platform-service.service';
 import { saveUser } from '../../utils/user_util';
+import { environment } from '../../../environments/environment';
 
 
 
@@ -34,6 +35,7 @@ export class SigninComponent implements OnInit {
   resetPasswordForm: FormGroup;
 
   hidePassword = true;
+  devAccounts = environment.devAccounts || [];
 
   constructor(
     private notificationService: NotificationService,
@@ -109,6 +111,13 @@ export class SigninComponent implements OnInit {
         this.notificationService.warn(`登录失败: ${error.statusMessage}`);
       }
     );
+  }
+
+  fillDevAccount(account, signInForm) {
+    signInForm.form.patchValue({
+      identity: account.identity,
+      password: account.password,
+    });
   }
 
   onForgetPasswordClick() {

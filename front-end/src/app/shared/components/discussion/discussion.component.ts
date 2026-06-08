@@ -24,6 +24,12 @@ export class DiscussionComponent implements OnInit {
   totalThreadsCount = 200;
   reachedEnd = false;
   isLoading = false;
+  discussionModes = [
+    { label: '全部讨论', icon: 'forum' },
+    { label: '问题反馈', icon: 'help_outline' },
+    { label: '建议想法', icon: 'tips_and_updates' },
+    { label: '更新反馈', icon: 'new_releases' },
+  ];
 
   constructor(
     private elementRef: ElementRef,

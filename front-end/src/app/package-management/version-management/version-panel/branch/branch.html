@@ -1,5 +1,52 @@
 <div class="branch-panel" *ngIf="branch.binaries.length > 0; else emptyBranch">
-    <table mat-table [dataSource]="dataSource" class="version-table app-data-table">
+    <section class="recommended-version" *ngIf="recommendedBinary as binary">
+        <div class="recommended-version-copy">
+            <span class="recommended-kicker">
+                <mat-icon>verified</mat-icon>
+                推荐版本
+            </span>
+            <h3>{{this.getVersionStr(binary)}}</h3>
+            <div class="recommended-meta">
+                <span class="meta-pill">
+                    <mat-icon>schedule</mat-icon>
+                    {{binary.createTime}}
+                </span>
+                <span class="meta-pill">
+                    <mat-icon>inventory_2</mat-icon>
+                    {{binary.size || '未知大小'}}
+                </span>
+                <span class="meta-pill">
+                    <mat-icon>download</mat-icon>
+                    {{binary.downloadCount || 0}} 次
+                </span>
+            </div>
+        </div>
+        <div class="recommended-actions">
+            <button mat-flat-button color="primary" (click)="onDownload(binary)"
+                class="action-button action-primary recommended-download">
+                <mat-icon>{{getDownloadIcon(binary)}}</mat-icon>
+                <span>{{getDownloadLabel(binary)}}</span>
+            </button>
+            <button mat-stroked-button class="action-button action-secondary" type="button"
+                (click)="onDescription(binary)">
+                <mat-icon>description</mat-icon>
+                更新日志
+            </button>
+            <button *ngIf="binary.cloudDiskFile?.code" mat-stroked-button
+                class="action-button action-secondary" type="button"
+                (click)="copyCloudDiskCode(binary)">
+                <mat-icon>content_copy</mat-icon>
+                复制密码
+            </button>
+        </div>
+    </section>
+
+    <div class="history-header" *ngIf="hasHistory">
+        <h3>历史版本</h3>
+        <span>{{historicalBinaries.length}} 个版本</span>
+    </div>
+
+    <table *ngIf="hasHistory" mat-table [dataSource]="dataSource" class="version-table app-data-table">
         <ng-container matColumnDef="version">
             <th mat-header-cell *matHeaderCellDef> 版本 </th>
             <td mat-cell *matCellDef="let binary" class="version-column-cell">
@@ -79,12 +126,13 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSize]="5" [hidePageSize]="true"></mat-paginator>
+    <mat-paginator *ngIf="hasHistory" [pageSize]="5" [hidePageSize]="true"></mat-paginator>
 </div>
 
 <ng-template #emptyBranch>
     <div class="empty-branch app-empty-state">
         <mat-icon>inventory_2</mat-icon>
         <p>暂无版本</p>
+        <span>作者发布首个版本后，用户会在这里看到推荐下载入口。</span>
     </div>
 </ng-template>

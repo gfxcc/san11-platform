@@ -215,6 +215,38 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
     return this.allTags.filter(tag => !this.package.tags.some(selected => selected.name === tag.name));
   }
 
+  get maintenanceItems(): { icon: string; text: string; done: boolean }[] {
+    return [
+      {
+        icon: 'image',
+        text: '截图和封面',
+        done: (this.package?.imageUrls?.length || 0) > 0,
+      },
+      {
+        icon: 'description',
+        text: '资源介绍',
+        done: this.descriptionText.length >= 80,
+      },
+      {
+        icon: 'sell',
+        text: '标签',
+        done: (this.package?.tags?.length || 0) > 0,
+      },
+    ];
+  }
+
+  get maintenanceCompleteCount(): number {
+    return this.maintenanceItems.filter(item => item.done).length;
+  }
+
+  get maintenanceHealthText(): string {
+    if (this.maintenanceCompleteCount === this.maintenanceItems.length) {
+      return '资料完整';
+    }
+
+    return `${this.maintenanceCompleteCount}/${this.maintenanceItems.length} 项完成`;
+  }
+
   private get descriptionText(): string {
     return (this.package?.description ?? '')
       .replace(/<[^>]*>/g, '')

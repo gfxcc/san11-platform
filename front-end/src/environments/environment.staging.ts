@@ -5,4 +5,5 @@ export const environment = {
   domain: 'staging.san11pk.org',
   schema: 'https',
   serverPort: 8090,
+  devAccounts: [],
 };

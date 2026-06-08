@@ -5,8 +5,8 @@
                 <mat-icon>{{this.isCreateArticle ? 'article' : 'add_box'}}</mat-icon>
             </span>
             <div>
-                <h1>创建{{this.isCreateArticle ? '文章' : '资源'}}</h1>
-                <p>{{this.isCreateArticle ? '发布新的专栏内容。' : '选择资源类别并创建新的作品页面。'}}</p>
+                <h1>{{createTitle}}</h1>
+                <p>{{createSubtitle}}</p>
             </div>
         </header>
 
@@ -42,15 +42,47 @@
                 </mat-step>
 
                 <mat-step>
+                    <ng-template matStepLabel>发布质量</ng-template>
+                    <div class="creation-step">
+                        <div class="quality-panel">
+                            <div class="quality-panel-copy">
+                                <span class="app-eyebrow">{{isCreateArticle ? '文章发布检查' : '资源发布检查'}}</span>
+                                <h2>创建后按这个顺序完善</h2>
+                                <p>{{isCreateArticle ? '文章创建后会进入详情页，正文和评论区都在那里维护。' : '资源页创建后不会一次性完成，作者工作台会继续引导截图、介绍和版本维护。'}}</p>
+                            </div>
+
+                            <div class="quality-checklist">
+                                <div *ngFor="let item of publishChecklist" class="quality-check-item"
+                                    [class.quality-check-required]="item.required">
+                                    <mat-icon>{{item.icon}}</mat-icon>
+                                    <span>{{item.text}}</span>
+                                    <small>{{item.required ? '关键' : '建议'}}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="create-actions">
+                            <button type="button" mat-stroked-button matStepperPrevious>返回修改</button>
+                            <span class="example-spacer"></span>
+                            <button [disabled]="!createForm.valid" type="button" mat-flat-button color="primary" matStepperNext>
+                                预览
+                                <mat-icon>arrow_forward</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </mat-step>
+
+                <mat-step>
                     <ng-template matStepLabel>检查并创建</ng-template>
                     <div class="creation-step">
                         <div class="creation-review">
-                            <span>{{isCreateArticle ? '文章' : selectedCategory?.text}}</span>
+                            <span>{{selectedResourceLabel}}</span>
                             <strong>{{createForm.value.name}}</strong>
+                            <small>{{isCreateArticle ? '创建后进入文章详情页继续编辑正文。' : '创建后进入资源详情页继续完善截图、介绍、标签和版本。'}}</small>
                         </div>
 
                         <div *ngIf="isCreateArticle === false" class="creation-roadmap">
-                            <strong>创建后继续完善</strong>
+                            <strong>资源上线路径</strong>
                             <div><mat-icon>image</mat-icon><span>上传截图并设置封面</span></div>
                             <div><mat-icon>description</mat-icon><span>填写资源介绍和标签</span></div>
                             <div><mat-icon>new_releases</mat-icon><span>发布首个可下载版本</span></div>

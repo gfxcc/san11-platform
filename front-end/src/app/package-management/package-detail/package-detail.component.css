@@ -645,6 +645,56 @@
     border-radius: var(--radius-md);
 }
 
+.maintenance-card {
+    display: grid;
+    gap: 13px;
+    padding: 15px;
+    border-radius: var(--radius-md);
+}
+
+.maintenance-score {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, .1);
+    color: var(--primary-strong);
+    font-size: .74rem;
+    font-weight: 850;
+}
+
+.maintenance-list {
+    display: grid;
+    gap: 8px;
+}
+
+.maintenance-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 34px;
+    padding: 0 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .72);
+    color: var(--text-muted);
+    font-size: .83rem;
+    font-weight: 800;
+}
+
+.maintenance-item mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.maintenance-item-done {
+    border-color: rgba(5, 150, 105, .18);
+    background: rgba(5, 150, 105, .08);
+    color: #047857;
+}
+
 .role-workspace {
     margin: 0;
     order: 1;

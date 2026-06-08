@@ -33,9 +33,24 @@
 .section-title {
     display: inline-flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
     min-width: 0;
     color: var(--text-color);
+}
+
+.version-summary-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 9px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--surface-muted);
+    color: var(--text-muted);
+    font-size: .78rem;
+    font-weight: 800;
+    white-space: nowrap;
 }
 
 .version-tabs {

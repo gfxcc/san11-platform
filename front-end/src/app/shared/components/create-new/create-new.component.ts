@@ -49,6 +49,41 @@ export class CreateNewComponent implements OnInit {
 
   isCreateArticle = false;
 
+  get selectedResourceLabel(): string {
+    if (this.isCreateArticle) {
+      return '专栏文章';
+    }
+    return this.selectedCategory?.text || '未选择类别';
+  }
+
+  get createTitle(): string {
+    return this.isCreateArticle ? '创建文章' : '创建资源';
+  }
+
+  get createSubtitle(): string {
+    return this.isCreateArticle
+      ? '先写下标题，创建后进入正文编辑和发布检查。'
+      : '先建立资源页面，再按截图、介绍、标签和版本逐步完善。';
+  }
+
+  get publishChecklist() {
+    if (this.isCreateArticle) {
+      return [
+        { icon: 'title', text: '确认标题清楚具体', required: true },
+        { icon: 'edit_note', text: '进入详情页撰写正文', required: true },
+        { icon: 'visibility', text: '由作者或管理员确认公开状态', required: false },
+      ];
+    }
+
+    return [
+      { icon: 'image', text: '上传截图并把第一张设为封面', required: true },
+      { icon: 'description', text: '填写资源介绍、玩法和使用说明', required: true },
+      { icon: 'sell', text: '添加能帮助检索的标签', required: false },
+      { icon: 'new_releases', text: '发布首个可下载版本', required: true },
+      { icon: 'task_alt', text: '提交审核后再对普通用户展示', required: false },
+    ];
+  }
+
   constructor(
     private dialog: MatDialog,
     private san11pkService: San11PlatformServiceService,

@@ -2,6 +2,86 @@
     overflow-x: auto;
 }
 
+.recommended-version {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: center;
+    margin: 18px;
+    padding: 18px;
+    border: 1px solid rgba(37, 99, 235, .18);
+    border-radius: var(--radius-lg);
+    background:
+        linear-gradient(135deg, rgba(37, 99, 235, .08), rgba(255, 255, 255, .96) 58%),
+        var(--surface);
+}
+
+.recommended-version-copy {
+    min-width: 0;
+}
+
+.recommended-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary-strong);
+    font-size: .82rem;
+    font-weight: 850;
+}
+
+.recommended-kicker mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.recommended-version h3 {
+    margin: 8px 0 12px;
+    color: var(--text-color);
+    font-size: 1.45rem;
+    line-height: 1.15;
+    font-weight: 900;
+}
+
+.recommended-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.recommended-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 340px;
+}
+
+.recommended-download {
+    min-height: 42px;
+}
+
+.history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 18px 12px;
+}
+
+.history-header h3 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 850;
+}
+
+.history-header span {
+    color: var(--text-muted);
+    font-size: .84rem;
+    font-weight: 750;
+}
+
 .version-table {
     min-width: 720px;
 }
@@ -98,6 +178,11 @@
     font-weight: 750;
 }
 
+.empty-branch span {
+    color: var(--text-muted);
+    font-size: .9rem;
+}
+
 @media (max-width: 40rem) {
     :host {
         display: block;
@@ -105,6 +190,17 @@
 
     .actions-cell {
         width: 310px;
+    }
+
+    .recommended-version {
+        grid-template-columns: 1fr;
+        margin: 14px;
+        padding: 14px;
+    }
+
+    .recommended-actions {
+        justify-content: stretch;
+        max-width: none;
     }
 
     .action-cluster {

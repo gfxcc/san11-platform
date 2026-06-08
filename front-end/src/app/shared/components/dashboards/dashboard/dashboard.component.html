@@ -4,9 +4,10 @@
             <div class="catalog-title-row">
                 <span class="catalog-kicker">资源库</span>
                 <span class="catalog-summary app-count-pill" *ngIf="packages != undefined">{{packages.length}} 项资源</span>
+                <span class="catalog-summary app-count-pill" *ngIf="currentTagId">标签筛选</span>
             </div>
-            <h1>San11 工具与 MOD</h1>
-            <p>按分类、标签和热度快速找到可用资源。</p>
+            <h1>{{catalogHeading}}</h1>
+            <p>{{catalogDescription}}</p>
         </div>
 
         <div class="dashboard-actions" *ngIf="listRequest">
@@ -27,7 +28,7 @@
 
     <div *ngIf="packages?.length === 0" class="dashboard-placeholder app-empty-state">
         <mat-icon>inventory_2</mat-icon>
-        <p>{{listRequest?.filter ? '当前筛选条件下没有资源' : '这里还没有资源'}}</p>
+        <p>{{emptyStateText}}</p>
         <button *ngIf="listRequest?.filter" mat-stroked-button color="primary" type="button" (click)="clearFilter()">
             清除筛选
         </button>

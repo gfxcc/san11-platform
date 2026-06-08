@@ -58,6 +58,23 @@ export class AdminMessageBoardComponent implements OnInit {
     this.router.navigate(san11Package.name.split('/'));
   }
 
+  get adminTotalActivityCount(): number {
+    return this.resourceChanges.length + this.socialActivaties.length + this.notifications.length + this.downloads.length;
+  }
+
+  get pendingReviewSummary(): string {
+    if (this.pendingReviews.length === 0) {
+      return '审核队列为空';
+    }
+
+    return `${this.pendingReviews.length} 个资源等待审核`;
+  }
+
+  packageCategoryName(san11Package: Package): string {
+    const categoryId = san11Package.name?.split('/')?.[1];
+    return GlobalConstants.categories.find(category => category.value === categoryId)?.text || '资源';
+  }
+
   load_activities() {
     this.progressService.loading();
 

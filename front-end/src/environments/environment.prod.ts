@@ -3,4 +3,5 @@ export const environment = {
   domain: 'san11pk.org',
   schema: 'https',
   serverPort: 8090,
+  devAccounts: [],
 };

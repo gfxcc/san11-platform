@@ -34,6 +34,22 @@ cd san11-platform
 make deploy-dev
 ```
 
+## Development test accounts
+
+The DEV backend seeds deterministic accounts at startup so local manual checks
+and browser automation can cover common permission paths without private
+credentials. These credentials are only configured for the DEV environment.
+
+| Role | Username | Email | Password | Main coverage |
+| --- | --- | --- | --- | --- |
+| Admin | `dev_admin` | `dev-admin@san11.local` | `devpass` | Review queue, moderation, admin-only actions |
+| Package author | `dev_author` | `dev-author@san11.local` | `devpass` | Author tools, resource editing, screenshot/version workflows |
+| Regular user | `dev_user` | `dev-user@san11.local` | `devpass` | Browse, collect, subscribe, comment as a normal user |
+
+The author account owns the seeded package `categories/1/packages/910001`. The
+local login page also shows quick-fill buttons for these accounts when using the
+default development frontend environment.
+
 ## Tests
 ```sh
 make test

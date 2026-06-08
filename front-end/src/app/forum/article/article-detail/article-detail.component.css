@@ -165,6 +165,13 @@
     transform: translateY(0);
 }
 
+.title-edit-shell-author:hover .inline-edit-cue-suppressed,
+.title-edit-shell-author:focus-within .inline-edit-cue-suppressed,
+.inline-edit-cue-suppressed {
+    opacity: 0;
+    transform: translateY(2px);
+}
+
 .author-editable-title:focus-visible {
     outline: none;
     box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);

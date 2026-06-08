@@ -1,4 +1,11 @@
 <div class="published-packages-panel app-list-panel">
+<div class="published-header app-list-header">
+    <div>
+        <h2>作品维护</h2>
+        <p>检查资源状态、资料完整度和最近更新。</p>
+    </div>
+    <span class="app-count-pill">{{publishedPackages.length}} 项资源</span>
+</div>
 <table mat-table [dataSource]="dataSource" class="table app-data-table">
 
     <!--- Note that these columns can be defined in any order.
@@ -6,16 +13,32 @@
 
     <!-- name Column -->
     <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> 工具 </th>
-        <td mat-cell *matCellDef="let package" class="package-name clickable muted-cell" (click)="onPackageClick(package)">
-            {{package.name}}
+        <th mat-header-cell *matHeaderCellDef> 资源 </th>
+        <td mat-cell *matCellDef="let package" class="package-name-cell" (click)="onPackageClick(package)">
+            <strong>{{package.packageName}}</strong>
+            <small>{{package.name}}</small>
         </td>
     </ng-container>
 
-    <!-- createTime Column -->
-    <ng-container matColumnDef="createTime">
-        <th mat-header-cell *matHeaderCellDef> 创建于 </th>
-        <td mat-cell *matCellDef="let package" class="muted-cell"> {{package.createTime}} </td>
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> 状态 </th>
+        <td mat-cell *matCellDef="let package">
+            <span class="status-pill" [ngClass]="'status-pill-' + stateTone(package)">
+                {{stateLabel(package)}}
+            </span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maintenance">
+        <th mat-header-cell *matHeaderCellDef> 维护提示 </th>
+        <td mat-cell *matCellDef="let package" class="muted-cell">
+            {{maintenanceText(package)}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="updateTime">
+        <th mat-header-cell *matHeaderCellDef> 最近更新 </th>
+        <td mat-cell *matCellDef="let package" class="muted-cell"> {{package.updateTime || package.createTime}} </td>
     </ng-container>
 
     <!-- downloadCount Column -->
@@ -27,5 +50,9 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+<div *ngIf="publishedPackages.length === 0" class="app-empty-state published-empty">
+    <mat-icon>inventory_2</mat-icon>
+    <p>还没有发布资源</p>
+</div>
 <mat-paginator [pageSizeOptions]="[10]"></mat-paginator>
 </div>
