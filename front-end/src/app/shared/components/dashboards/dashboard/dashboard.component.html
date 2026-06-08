@@ -22,6 +22,18 @@
         </div>
     </section>
 
+    <section class="search-refinement surface-panel" *ngIf="currentQuery">
+        <div>
+            <span class="app-eyebrow">搜索结果</span>
+            <p>正在查找 <strong>{{currentQuery}}</strong>，可以继续切换资源范围。</p>
+        </div>
+        <div class="search-refinement-actions">
+            <button type="button" *ngFor="let category of searchCategoryShortcuts" (click)="openCategory(category.value)">
+                {{category.text}}
+            </button>
+        </div>
+    </section>
+
     <div class="resource-grid">
         <app-package-card *ngFor="let package of packages" [package]="package" class="module"></app-package-card>
     </div>

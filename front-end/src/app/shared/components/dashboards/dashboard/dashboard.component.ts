@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
   currentQuery = '';
   currentCategoryId = '';
   currentTagId = '';
+  searchCategoryShortcuts = GlobalConstants.categories.slice(0, 4);
 
   constructor(
     private notificationService: NotificationService,
@@ -146,6 +147,10 @@ export class DashboardComponent implements OnInit {
       queryParams: { tagId: null },
       queryParamsHandling: 'merge',
     });
+  }
+
+  openCategory(categoryId: string): void {
+    this.router.navigate(['/categories', categoryId]);
   }
 
   get catalogHeading(): string {

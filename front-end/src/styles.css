@@ -812,6 +812,12 @@ button.mat-mdc-chip-action {
         max-height: 160px;
     }
 
+    .app-empty-state {
+        min-height: 170px;
+        padding: 18px;
+        text-align: center;
+    }
+
     .page-wrapper {
         padding: 16px 12px;
     }

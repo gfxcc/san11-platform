@@ -510,5 +510,8 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
     def GetStatistic(self, request, context):
         return self.general_handler.get_statistic(request, context)
 
+    @GrpcAbortOnExcep
+    @iam_util.assert_login
+    @iam_util.assert_admin
     def GetAdminMessage(self, request, context):
         return self.admin_handler.get_admin_message(request, context)

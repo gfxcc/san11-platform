@@ -3,7 +3,7 @@ import { GrpcMetadata } from '@ngx-grpc/common';
 import { Observable, Subscription } from 'rxjs';
 import { Cacheable } from 'ts-cacheable';
 import * as pb from '../../proto/san11-platform.pb';
-import { AdminMessage, Article, Binary, Comment, CreateArticleRequest, CreateBinaryRequest, CreateCommentRequest, CreateImageRequest, CreatePackageRequest, CreateReplyRequest, CreateSubscriptionRequest, CreateTagRequest, CreateThreadRequest, CreateUserRequest, CreateUserResponse, DeleteArticleRequest, DeleteBinaryRequest, DeleteCommentRequest, DeletePackageRequest, DeleteReplyRequest, DeleteTagRequest, DeleteThreadRequest, DownloadBinaryRequest, Empty, GetArticleRequest, GetPackageRequest, GetStatisticRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListCommentsRequest, ListCommentsResponse, ListNotificationsRequest, ListNotificationsResponse, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, ListTagsResponse, ListThreadsRequest, ListThreadsResponse, ListUsersRequest, ListUsersResponse, Notification, Package, Reply, SearchPackagesRequest, SearchPackagesResponse, SendVerificationCodeRequest, SignInRequest, SignInResponse, SignOutRequest, Statistic, Status, Tag, Thread, UpdateArticleRequest, UpdateBinaryRequest, UpdateCommentRequest, UpdateNotificationRequest, UpdatePackageRequest, UpdatePasswordRequest, UpdateReplyRequest, UpdateThreadRequest, UpdateUserRequest, Url, User, ValidateNewUserRequest, VerifyEmailRequest, VerifyEmailResponse } from '../../proto/san11-platform.pb';
+import { AdminMessage, Article, Binary, Comment, CreateArticleRequest, CreateBinaryRequest, CreateCommentRequest, CreateImageRequest, CreatePackageRequest, CreateReplyRequest, CreateSubscriptionRequest, CreateTagRequest, CreateThreadRequest, CreateUserRequest, CreateUserResponse, DeleteArticleRequest, DeleteBinaryRequest, DeleteCommentRequest, DeletePackageRequest, DeleteReplyRequest, DeleteTagRequest, DeleteThreadRequest, DownloadBinaryRequest, Empty, GetAdminMessageRequest, GetArticleRequest, GetPackageRequest, GetStatisticRequest, GetThreadRequest, GetUserRequest, ListActivitiesRequest, ListActivitiesResponse, ListArticlesRequest, ListArticlesResponse, ListCommentsRequest, ListCommentsResponse, ListNotificationsRequest, ListNotificationsResponse, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, ListTagsResponse, ListThreadsRequest, ListThreadsResponse, ListUsersRequest, ListUsersResponse, Notification, Package, Reply, SearchPackagesRequest, SearchPackagesResponse, SendVerificationCodeRequest, SignInRequest, SignInResponse, SignOutRequest, Statistic, Status, Tag, Thread, UpdateArticleRequest, UpdateBinaryRequest, UpdateCommentRequest, UpdateNotificationRequest, UpdatePackageRequest, UpdatePasswordRequest, UpdateReplyRequest, UpdateThreadRequest, UpdateUserRequest, Url, User, ValidateNewUserRequest, VerifyEmailRequest, VerifyEmailResponse } from '../../proto/san11-platform.pb';
 import { San11PlatformClient } from '../../proto/san11-platform.pbsc';
 
 
@@ -175,7 +175,7 @@ export class San11PlatformServiceService {
   }
 
   getAdminMessage(): Observable<AdminMessage> {
-    const request = new GetStatisticRequest({ date: null });
+    const request = new GetAdminMessageRequest();
     return this.severClient.getAdminMessage(request, this.getMetadata());
   }
 

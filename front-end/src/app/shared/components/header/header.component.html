@@ -19,14 +19,35 @@
             <mat-icon matTooltip="支持 工具名" class="help-icon">help_outline</mat-icon>
         </div>
         <div *ngIf="searchQuery.trim().length >= 2" class="search-suggestions surface-panel">
-            <button *ngFor="let package of searchSuggestions" type="button" (click)="openSearchSuggestion(package)">
+            <div class="search-suggestion-header">
+                <span>快速匹配</span>
+                <button type="button" aria-label="清空搜索" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <button *ngFor="let package of searchSuggestions" type="button" class="search-suggestion-result"
+                (click)="openSearchSuggestion(package)">
                 <mat-icon>extension</mat-icon>
                 <span>{{package.packageName}}</span>
                 <small>{{package.name}}</small>
             </button>
+            <div *ngIf="searching" class="search-suggestion-empty">
+                正在查找资源…
+            </div>
             <div *ngIf="!searching && searchSuggestions.length === 0" class="search-suggestion-empty">
                 没有匹配资源，按 Enter 查看完整搜索结果
             </div>
+            <div class="search-suggestion-categories">
+                <span>常用范围</span>
+                <button *ngFor="let category of quickSearchCategories" type="button"
+                    (click)="openCategory(category.value)">
+                    {{category.text}}
+                </button>
+            </div>
+            <button type="button" class="search-all-results" (click)="submitSearch()">
+                <mat-icon>manage_search</mat-icon>
+                <span>查看 “{{searchQuery.trim()}}” 的完整搜索结果</span>
+            </button>
         </div>
     </div>
 
@@ -48,12 +69,17 @@
 
         <mat-menu #notificationMenu>
             <div class="message-panel-header">
-                <p>
-                    通知
-                </p>
+                <div>
+                    <p>通知</p>
+                    <span>{{notifications.length ? notifications.length + ' 条未读' : '全部已读'}}</span>
+                </div>
+                <button mat-button color="primary" type="button" (click)="openInbox()">
+                    查看全部
+                </button>
             </div>
             <div class="message-panel-placeholder" *ngIf="notifications.length
                 === 0">
+                <mat-icon>mark_email_read</mat-icon>
                 <p>
                     没有未读通知
                 </p>
@@ -72,7 +98,7 @@
 
             <button *ngIf="notifications.length> 0" mat-menu-item class="clear-notifications" (click)="onClearAll()">
                 <mat-icon>clear_all</mat-icon>
-                <span>全部清空</span>
+                <span>全部标为已读</span>
             </button>
         </mat-menu>
 

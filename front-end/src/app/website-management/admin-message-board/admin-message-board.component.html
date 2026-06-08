@@ -1,236 +1,214 @@
 <div class="admin-page">
-    <section class="admin-header">
+    <section class="admin-hero">
         <div>
             <span class="app-eyebrow">管理工作台</span>
-            <h1>审核与站点动态</h1>
-            <p>优先处理待审核资源，再按资源、社交、通知和下载类型查看最近平台活动。</p>
+            <h1>站点运营中心</h1>
         </div>
 
-        <div class="summary-grid">
-            <div class="summary-item">
-                <mat-icon>pending_actions</mat-icon>
-                <span>待审</span>
-                <strong>{{pendingReviews.length}}</strong>
-            </div>
-            <div class="summary-item">
-                <mat-icon>inventory_2</mat-icon>
-                <span>资源</span>
-                <strong>{{resourceChanges.length}}</strong>
-            </div>
-            <div class="summary-item">
-                <mat-icon>forum</mat-icon>
-                <span>社交</span>
-                <strong>{{socialActivaties.length}}</strong>
-            </div>
-            <div class="summary-item">
-                <mat-icon>notifications</mat-icon>
-                <span>通知</span>
-                <strong>{{notifications.length}}</strong>
-            </div>
+        <div class="hero-status surface-panel">
+            <span>近 {{adminSummary.windowDays || 30}} 天活跃率</span>
+            <strong>{{activeUserRate}}</strong>
+            <small>{{metrics.monthlyActiveUsers}} / {{metrics.totalUsers}} 注册用户活跃</small>
+            <em *ngIf="adminSummary.generatedAt">更新 {{formatTime(adminSummary.generatedAt)}}</em>
         </div>
     </section>
 
-    <section class="review-queue surface-panel">
-        <div class="panel-header">
+    <section class="admin-section">
+        <div class="section-heading">
             <div>
-                <h2>审核队列</h2>
-                <p>{{pendingReviewSummary}}</p>
+                <span>Data</span>
+                <h2>数据概览</h2>
             </div>
-            <span>{{pendingReviews.length}} 项</span>
         </div>
-        <div *ngIf="pendingReviews.length; else noPendingReviews" class="review-grid">
-            <button *ngFor="let package of pendingReviews" type="button" class="review-item"
-                (click)="openPackage(package)">
-                <span class="review-item-icon">
-                    <mat-icon>pending_actions</mat-icon>
+
+        <div class="metric-grid" [class.loading-state]="loadingAdminSummary">
+            <article *ngFor="let metric of metricCards" class="metric-card surface-panel"
+                [class.metric-urgent]="metric.urgent">
+                <span class="metric-icon metric-{{metric.tone}}">
+                    <mat-icon>{{metric.icon}}</mat-icon>
                 </span>
-                <span class="review-item-copy">
-                    <strong>{{package.packageName}}</strong>
-                    <small>{{packageCategoryName(package)}} · {{package.name}}</small>
-                </span>
-                <span class="review-item-status">待审核</span>
-                <mat-icon>chevron_right</mat-icon>
-            </button>
+                <div>
+                    <span>{{metric.label}}</span>
+                    <strong>{{metric.value}}</strong>
+                    <small>{{metric.detail}}</small>
+                </div>
+            </article>
         </div>
-        <ng-template #noPendingReviews>
-            <div class="empty-state compact-empty-state">
-                <mat-icon>task_alt</mat-icon>
-                <p>当前没有待审核资源</p>
-            </div>
-        </ng-template>
     </section>
 
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="admin-tabs">
-        <mat-tab label="资源">
-            <section class="timeline-panel">
+    <section class="admin-section">
+        <div class="section-heading">
+            <div>
+                <span>Action</span>
+                <h2>待办事项</h2>
+            </div>
+        </div>
+
+        <div class="todo-layout">
+            <aside class="todo-summary">
+                <article *ngFor="let todo of todoCards" class="todo-card surface-panel priority-{{todo.priority}}">
+                    <span class="todo-icon">
+                        <mat-icon>{{todo.icon}}</mat-icon>
+                    </span>
+                    <div>
+                        <span>{{todo.label}}</span>
+                        <strong>{{todo.value}}</strong>
+                        <small>{{todo.description}}</small>
+                    </div>
+                </article>
+            </aside>
+
+            <section class="review-queue surface-panel">
                 <div class="panel-header">
                     <div>
-                        <h2>资源动态</h2>
-                        <p>创建、更新和删除记录</p>
+                        <h3>审核队列</h3>
+                        <p>{{pendingReviewSummary}}</p>
                     </div>
-                    <span>{{resourceChanges.length}} 条</span>
+                    <span>{{pendingReviews.length || metrics.pendingReviews}} 项</span>
                 </div>
-
-                <p-timeline *ngIf="resourceChanges.length > 0" [value]="resourceChanges" align="left"
-                    styleClass="admin-timeline">
-                    <ng-template pTemplate="marker" let-event>
-                        <span class="custom-marker" [style.backgroundColor]="event.color">
-                            <mat-icon>{{event.icon}}</mat-icon>
+                <div *ngIf="pendingReviews.length; else noPendingReviews" class="review-grid">
+                    <button *ngFor="let package of pendingReviews" type="button" class="review-item"
+                        (click)="openPackage(package)">
+                        <span class="review-item-icon">
+                            <mat-icon>pending_actions</mat-icon>
                         </span>
-                    </ng-template>
-                    <ng-template pTemplate="content" let-event>
-                        <mat-card appearance="outlined" (click)="onDetailClick(event)" [class.clickable-card]="event.link"
-                            [class.disabled-event]="!event.link" class="event-card">
-                            <div class="event-topline">
-                                <app-user-card [userId]="event.actorId" (click)="$event.stopPropagation()"
-                                    class="event-user"></app-user-card>
-                                <span>{{eventTime(event)}}</span>
-                            </div>
-
-                            <mat-card-content>
-                                <h3>{{eventTitle(event, '资源动态')}}</h3>
-                                <img *ngIf="event.image" [src]="event.image" [alt]="eventTitle(event, '资源动态')"
-                                    class="event-image" />
-                                <p *ngIf="event.description">{{event.description}}</p>
-                            </mat-card-content>
-                        </mat-card>
-                    </ng-template>
-                </p-timeline>
-
-                <div *ngIf="resourceChanges.length === 0" class="empty-state">
-                    <mat-icon>inventory_2</mat-icon>
-                    <p>暂无资源动态</p>
+                        <span class="review-item-copy">
+                            <strong>{{package.packageName}}</strong>
+                            <small>{{packageCategoryName(package)}} · {{package.name}}</small>
+                        </span>
+                        <span class="review-item-status">待审核</span>
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
                 </div>
+                <ng-template #noPendingReviews>
+                    <div class="empty-state compact-empty-state">
+                        <mat-icon>task_alt</mat-icon>
+                        <p>当前没有待审核资源</p>
+                    </div>
+                </ng-template>
             </section>
-        </mat-tab>
+        </div>
+    </section>
 
-        <mat-tab label="社交">
-            <section class="timeline-panel">
+    <section class="admin-section">
+        <div class="section-heading">
+            <div>
+                <span>Insights</span>
+                <h2>运营洞察</h2>
+            </div>
+        </div>
+
+        <div class="insight-grid">
+            <article class="surface-panel insight-panel">
                 <div class="panel-header">
                     <div>
-                        <h2>社交动态</h2>
-                        <p>点赞、订阅和互动记录</p>
+                        <h3>用户增长</h3>
+                        <p>最近注册用户和高活跃成员</p>
                     </div>
-                    <span>{{socialActivaties.length}} 条</span>
+                    <span>{{metrics.newUsers30d}} 新增</span>
                 </div>
 
-                <p-timeline *ngIf="socialActivaties.length > 0" [value]="socialActivaties" align="left"
-                    styleClass="admin-timeline">
-                    <ng-template pTemplate="marker" let-event>
-                        <span class="custom-marker" [style.backgroundColor]="event.color">
-                            <mat-icon>{{event.icon}}</mat-icon>
-                        </span>
-                    </ng-template>
-                    <ng-template pTemplate="content" let-event>
-                        <mat-card appearance="outlined" (click)="onDetailClick(event)" [class.clickable-card]="event.link"
-                            [class.disabled-event]="!event.link" class="event-card">
-                            <div class="event-topline">
-                                <app-user-card [userId]="event.actorId" (click)="$event.stopPropagation()"
-                                    class="event-user"></app-user-card>
-                                <span>{{eventTime(event)}}</span>
-                            </div>
+                <div class="user-columns">
+                    <div>
+                        <h4>最近注册</h4>
+                        <button *ngFor="let user of adminSummary.recentUsers" type="button" class="user-row"
+                            (click)="openUser(user)">
+                            <app-user-card [userId]="user.userId" class="compact-user-card"></app-user-card>
+                            <span>{{formatTime(user.createTime)}}</span>
+                        </button>
+                        <div *ngIf="adminSummary.recentUsers.length === 0" class="empty-line">暂无新增用户</div>
+                    </div>
 
-                            <mat-card-content>
-                                <h3>{{eventTitle(event, '社交动态')}}</h3>
-                                <img *ngIf="event.image" [src]="event.image" [alt]="eventTitle(event, '社交动态')"
-                                    class="event-image" />
-                                <p *ngIf="event.description">{{event.description}}</p>
-                            </mat-card-content>
-                        </mat-card>
-                    </ng-template>
-                </p-timeline>
-
-                <div *ngIf="socialActivaties.length === 0" class="empty-state">
-                    <mat-icon>forum</mat-icon>
-                    <p>暂无社交动态</p>
+                    <div>
+                        <h4>月活用户</h4>
+                        <button *ngFor="let user of adminSummary.activeUsers" type="button" class="user-row"
+                            (click)="openUser(user)">
+                            <app-user-card [userId]="user.userId" class="compact-user-card"></app-user-card>
+                            <span>{{user.activityCount || 0}} 次</span>
+                        </button>
+                        <div *ngIf="adminSummary.activeUsers.length === 0" class="empty-line">暂无活跃记录</div>
+                    </div>
                 </div>
-            </section>
-        </mat-tab>
+            </article>
 
-        <mat-tab label="通知">
-            <section class="timeline-panel">
+            <article class="surface-panel insight-panel">
                 <div class="panel-header">
                     <div>
-                        <h2>通知</h2>
-                        <p>站内通知投递记录</p>
+                        <h3>资源健康</h3>
+                        <p>内容状态和近期消费表现</p>
                     </div>
-                    <span>{{notifications.length}} 条</span>
+                    <span>{{metrics.totalPackages}} 资源</span>
                 </div>
 
-                <p-timeline *ngIf="notifications.length > 0" [value]="notifications" align="left"
-                    styleClass="admin-timeline">
-                    <ng-template pTemplate="marker" let-event>
-                        <span class="custom-marker" [style.backgroundColor]="event.color">
-                            <mat-icon>{{event.icon}}</mat-icon>
-                        </span>
-                    </ng-template>
-                    <ng-template pTemplate="content" let-event>
-                        <mat-card appearance="outlined" (click)="onDetailClick(event)" [class.clickable-card]="event.link"
-                            [class.disabled-event]="!event.link" class="event-card">
-                            <div class="event-topline">
-                                <app-user-card [userId]="event.actorId" (click)="$event.stopPropagation()"
-                                    class="event-user"></app-user-card>
-                                <span>{{eventTime(event)}}</span>
-                            </div>
-
-                            <mat-card-content>
-                                <h3>{{eventTitle(event, '通知')}}</h3>
-                                <img *ngIf="event.image" [src]="event.image" [alt]="eventTitle(event, '通知')"
-                                    class="event-image" />
-                                <p *ngIf="event.description">{{event.description}}</p>
-                            </mat-card-content>
-                        </mat-card>
-                    </ng-template>
-                </p-timeline>
-
-                <div *ngIf="notifications.length === 0" class="empty-state">
-                    <mat-icon>notifications</mat-icon>
-                    <p>暂无通知</p>
-                </div>
-            </section>
-        </mat-tab>
-
-        <mat-tab label="下载">
-            <section class="timeline-panel">
-                <div class="panel-header">
-                    <div>
-                        <h2>下载</h2>
-                        <p>资源下载记录</p>
+                <div class="state-grid">
+                    <div *ngFor="let state of resourceStateCards" class="state-item">
+                        <mat-icon>{{state.icon}}</mat-icon>
+                        <span>{{state.label}}</span>
+                        <strong>{{state.value}}</strong>
                     </div>
-                    <span>{{downloads.length}} 条</span>
                 </div>
 
-                <p-timeline *ngIf="downloads.length > 0" [value]="downloads" align="left"
-                    styleClass="admin-timeline">
-                    <ng-template pTemplate="marker" let-event>
-                        <span class="custom-marker" [style.backgroundColor]="event.color">
-                            <mat-icon>{{event.icon}}</mat-icon>
+                <div class="top-package-list">
+                    <h4>下载领先资源</h4>
+                    <button *ngFor="let package of adminSummary.topPackages" type="button" class="package-row"
+                        (click)="openPackageByName(package.name)">
+                        <span>
+                            <strong>{{package.packageName}}</strong>
+                            <small>{{packageCategoryNameFromName(package.name)}} · {{resourceStateLabel(package.state)}}</small>
                         </span>
-                    </ng-template>
-                    <ng-template pTemplate="content" let-event>
-                        <mat-card appearance="outlined" (click)="onDetailClick(event)" [class.clickable-card]="event.link"
-                            [class.disabled-event]="!event.link" class="event-card">
-                            <div class="event-topline">
-                                <app-user-card [userId]="event.actorId" (click)="$event.stopPropagation()"
-                                    class="event-user"></app-user-card>
-                                <span>{{eventTime(event)}}</span>
-                            </div>
-
-                            <mat-card-content>
-                                <h3>{{eventTitle(event, '下载记录')}}</h3>
-                                <img *ngIf="event.image" [src]="event.image" [alt]="eventTitle(event, '下载记录')"
-                                    class="event-image" />
-                                <p *ngIf="event.description">{{event.description}}</p>
-                            </mat-card-content>
-                        </mat-card>
-                    </ng-template>
-                </p-timeline>
-
-                <div *ngIf="downloads.length === 0" class="empty-state">
-                    <mat-icon>download</mat-icon>
-                    <p>暂无下载记录</p>
+                        <em>{{package.downloadCount}} 下载</em>
+                    </button>
+                    <div *ngIf="adminSummary.topPackages.length === 0" class="empty-line">暂无资源数据</div>
                 </div>
-            </section>
-        </mat-tab>
-    </mat-tab-group>
+            </article>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="section-heading compact-heading">
+            <div>
+                <span>Audit</span>
+                <h2>最近站点事件</h2>
+            </div>
+        </div>
+
+        <section class="activity-board surface-panel">
+            <div class="panel-header">
+                <div>
+                    <h3>审计日志</h3>
+                </div>
+                <span>{{adminTotalActivityCount}} 条</span>
+            </div>
+
+            <p-timeline *ngIf="recentEvents.length > 0" [value]="recentEvents" align="left" styleClass="admin-timeline">
+                <ng-template pTemplate="marker" let-event>
+                    <span class="custom-marker" [style.backgroundColor]="event.color">
+                        <mat-icon>{{event.icon}}</mat-icon>
+                    </span>
+                </ng-template>
+                <ng-template pTemplate="content" let-event>
+                    <mat-card appearance="outlined" (click)="onDetailClick(event)" [class.clickable-card]="event.link"
+                        [class.disabled-event]="!event.link" class="event-card">
+                        <div class="event-topline">
+                            <app-user-card [userId]="event.actorId" (click)="$event.stopPropagation()"
+                                class="event-user"></app-user-card>
+                            <span>{{eventTime(event)}}</span>
+                        </div>
+
+                        <mat-card-content>
+                            <h3>{{eventTitle(event, '站点事件')}}</h3>
+                            <img *ngIf="event.image" [src]="event.image" [alt]="eventTitle(event, '站点事件')"
+                                class="event-image" />
+                            <p *ngIf="event.description">{{event.description}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </ng-template>
+            </p-timeline>
+
+            <div *ngIf="recentEvents.length === 0" class="empty-state">
+                <mat-icon>monitoring</mat-icon>
+                <p>暂无站点事件</p>
+            </div>
+        </section>
+    </section>
 </div>

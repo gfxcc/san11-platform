@@ -50,44 +50,6 @@
     background: var(--surface);
 }
 
-.discussion-mode-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 12px 18px;
-    border-bottom: 1px solid var(--border-color);
-    background: rgba(248, 250, 252, .72);
-}
-
-.discussion-mode-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-height: 34px;
-    flex: 0 0 auto;
-    padding: 0 11px;
-    border: 1px solid var(--border-color);
-    border-radius: 999px;
-    background: var(--surface);
-    color: var(--text-muted);
-    font: inherit;
-    font-size: .84rem;
-    font-weight: 800;
-}
-
-.discussion-mode-chip mat-icon {
-    width: 17px;
-    height: 17px;
-    font-size: 17px;
-}
-
-.discussion-mode-chip-active {
-    border-color: rgba(37, 99, 235, .24);
-    background: rgba(37, 99, 235, .08);
-    color: var(--primary-strong);
-}
-
 .thread-loading {
     display: grid;
     background: var(--surface);

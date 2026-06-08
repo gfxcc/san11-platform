@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
 import { ProgressService } from 'src/app/progress.service';
+import { GlobalConstants } from 'src/app/common/global-constants';
 import { openInNewTab } from 'src/app/utils/url_util';
 import { ListNotificationsRequest, ListNotificationsResponse, Notification, Package, SignOutRequest, UpdateNotificationRequest, User } from '../../../../proto/san11-platform.pb';
 import { NotificationService } from '../../../common/notification.service';
@@ -29,6 +30,7 @@ export class HeaderComponent implements OnInit {
   private searchTimer: ReturnType<typeof setTimeout> | undefined;
   searchSuggestions: Package[] = [];
   searching = false;
+  quickSearchCategories = GlobalConstants.categories.slice(0, 4);
 
   constructor(
     public router: Router,
@@ -100,6 +102,11 @@ export class HeaderComponent implements OnInit {
     this.notifications = [];
   }
 
+  openInbox(): void {
+    if (!this.user) return;
+    this.router.navigate(['users', this.user.userId, 'inbox']);
+  }
+
   searchChanged() {
     clearTimeout(this.searchTimer);
     this.searchTimer = setTimeout(() => {
@@ -113,6 +120,7 @@ export class HeaderComponent implements OnInit {
         });
       } else {
         this.searchSuggestions = [];
+        this.searching = false;
       }
     }, 350);
   }
@@ -124,10 +132,21 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/search'], { queryParams: { query } });
   }
 
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.searchSuggestions = [];
+    this.searching = false;
+  }
+
   openSearchSuggestion(san11Package: Package): void {
     this.searchSuggestions = [];
     this.searchQuery = '';
     this.router.navigate(san11Package.name.split('/'));
+  }
+
+  openCategory(categoryId: string): void {
+    this.clearSearch();
+    this.router.navigate(['/categories', categoryId]);
   }
 
   onUserDetail() {

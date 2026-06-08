@@ -1,7 +1,43 @@
 <div class="inbox-page app-page app-page-narrow">
-    <section class="inbox-feed app-activity-feed" *ngIf="events?.length; else emptyInbox">
-        <article *ngFor="let event of events" class="inbox-item app-activity-item" (click)="onDetailClick(event)"
-            [class.inbox-item-disabled]="!event.link" [class.is-disabled]="!event.link">
+    <header class="inbox-header app-page-header">
+        <div>
+            <span class="app-eyebrow">通知中心</span>
+            <h1>收件箱</h1>
+            <p>查看资源反馈、回复、审核和系统通知。</p>
+        </div>
+        <button mat-stroked-button color="primary" type="button" [disabled]="unreadCount === 0" (click)="markAllRead()">
+            <mat-icon>done_all</mat-icon>
+            全部标为已读
+        </button>
+    </header>
+
+    <section class="inbox-summary surface-panel">
+        <button type="button" class="inbox-filter" [class.inbox-filter-active]="selectedFilter === 'all'"
+            (click)="setFilter('all')">
+            <mat-icon>all_inbox</mat-icon>
+            <span>全部</span>
+            <strong>{{notifications.length}}</strong>
+        </button>
+        <button type="button" class="inbox-filter" [class.inbox-filter-active]="selectedFilter === 'unread'"
+            (click)="setFilter('unread')">
+            <mat-icon>mark_email_unread</mat-icon>
+            <span>未读</span>
+            <strong>{{unreadCount}}</strong>
+        </button>
+        <button type="button" class="inbox-filter" [class.inbox-filter-active]="selectedFilter === 'read'"
+            (click)="setFilter('read')">
+            <mat-icon>mark_email_read</mat-icon>
+            <span>已读</span>
+            <strong>{{readCount}}</strong>
+        </button>
+    </section>
+
+    <section class="inbox-feed app-activity-feed" *ngIf="filteredNotifications?.length; else emptyInbox">
+        <article *ngFor="let notification of filteredNotifications" class="inbox-item app-activity-item"
+            (click)="onDetailClick(notification)"
+            [class.inbox-item-unread]="notification.unread"
+            [class.inbox-item-disabled]="!notification.link" [class.is-disabled]="!notification.link">
+            <ng-container *ngIf="eventOf(notification) as event">
             <span class="inbox-marker app-activity-marker" [style.backgroundColor]="event.color">
                 <mat-icon>{{event.icon}}</mat-icon>
             </span>
@@ -9,21 +45,22 @@
             <div class="inbox-card app-activity-card">
                 <div class="inbox-card-copy app-activity-copy">
                     <div class="inbox-card-header app-activity-card-header">
-                        <h2>{{event.displayName}}</h2>
+                        <h2>{{event.displayName || (notification.unread ? '未读通知' : '通知')}}</h2>
                         <span>{{event.createTime}}</span>
                     </div>
                     <p *ngIf="event.description">{{event.description}}</p>
                 </div>
 
-                <img *ngIf="event.image" [src]="event.image" [alt]="event.displayName" />
+                <img *ngIf="event.image" [src]="event.image" [alt]="event.displayName || '通知'" />
             </div>
+            </ng-container>
         </article>
     </section>
 
     <ng-template #emptyInbox>
         <div class="inbox-empty app-empty-state">
             <mat-icon>inbox</mat-icon>
-            <p>暂无通知</p>
+            <p>{{selectedFilter === 'all' ? '暂无通知' : '当前筛选下没有通知'}}</p>
         </div>
     </ng-template>
 </div>

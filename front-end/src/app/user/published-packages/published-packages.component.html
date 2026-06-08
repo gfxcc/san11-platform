@@ -1,8 +1,7 @@
 <div class="published-packages-panel app-list-panel">
 <div class="published-header app-list-header">
     <div>
-        <h2>作品维护</h2>
-        <p>检查资源状态、资料完整度和最近更新。</p>
+        <h2>作品</h2>
     </div>
     <span class="app-count-pill">{{publishedPackages.length}} 项资源</span>
 </div>
@@ -53,6 +52,9 @@
 <div *ngIf="publishedPackages.length === 0" class="app-empty-state published-empty">
     <mat-icon>inventory_2</mat-icon>
     <p>还没有发布资源</p>
+    <button mat-stroked-button color="primary" type="button" routerLink="/createNew">
+        发布第一个资源
+    </button>
 </div>
 <mat-paginator [pageSizeOptions]="[10]"></mat-paginator>
 </div>

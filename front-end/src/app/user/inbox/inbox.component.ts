@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, DefaultUrlSerializer, Router, UrlTree } from '@angular/router';
+import { FieldMask } from '@ngx-grpc/well-known-types';
 import { finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { notificationToEvent } from 'src/app/utils/notification_util';
-import { ListNotificationsRequest, ListNotificationsResponse } from 'src/proto/san11-platform.pb';
+import { ListNotificationsRequest, ListNotificationsResponse, Notification, UpdateNotificationRequest } from 'src/proto/san11-platform.pb';
 
 @Component({
   selector: 'app-inbox',
@@ -15,7 +16,8 @@ import { ListNotificationsRequest, ListNotificationsResponse } from 'src/proto/s
 })
 export class InboxComponent implements OnInit {
   userId: string;
-  events: any[];
+  notifications: Notification[] = [];
+  selectedFilter: 'all' | 'unread' | 'read' = 'all';
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -44,9 +46,7 @@ export class InboxComponent implements OnInit {
       .pipe(finalize(() => this.progressService.complete()))
       .subscribe({
         next: (resp: ListNotificationsResponse) => {
-          this.events = resp.notifications.map((notification) => {
-            return notificationToEvent(notification);
-          });
+          this.notifications = resp.notifications;
         },
         error: error => {
           this.notificationService.warn(`获取通知失败: ${error.statusMessage}`)
@@ -54,8 +54,66 @@ export class InboxComponent implements OnInit {
       });
   }
 
-  onDetailClick(event) {
-    const urlTree: UrlTree = new DefaultUrlSerializer().parse(event.link);
+  onDetailClick(notification: Notification) {
+    if (!notification?.link) {
+      return;
+    }
+
+    if (notification.unread) {
+      this.markRead(notification);
+      notification.unread = false;
+    }
+
+    const urlTree: UrlTree = new DefaultUrlSerializer().parse(notification.link);
     this.router.navigateByUrl(urlTree);
+  }
+
+  get filteredNotifications(): Notification[] {
+    if (this.selectedFilter === 'unread') {
+      return this.notifications.filter(notification => notification.unread);
+    }
+
+    if (this.selectedFilter === 'read') {
+      return this.notifications.filter(notification => !notification.unread);
+    }
+
+    return this.notifications;
+  }
+
+  eventOf(notification: Notification): any {
+    return notificationToEvent(notification);
+  }
+
+  get unreadCount(): number {
+    return this.notifications.filter(notification => notification.unread).length;
+  }
+
+  get readCount(): number {
+    return this.notifications.length - this.unreadCount;
+  }
+
+  setFilter(filter: 'all' | 'unread' | 'read'): void {
+    this.selectedFilter = filter;
+  }
+
+  markAllRead(): void {
+    const unread = this.notifications.filter(notification => notification.unread);
+    unread.forEach(notification => this.markRead(notification));
+    this.notifications = this.notifications.map(notification => new Notification({
+      ...notification,
+      unread: false,
+    }));
+  }
+
+  private markRead(notification: Notification): void {
+    this.san11pkService.updateNotification(new UpdateNotificationRequest({
+      notification: new Notification({
+        name: notification.name,
+        unread: false,
+      }),
+      updateMask: new FieldMask({
+        paths: ['unread'],
+      }),
+    })).subscribe();
   }
 }

@@ -15,14 +15,6 @@
             </button>
         </div>
 
-        <div class="discussion-mode-row">
-            <span *ngFor="let mode of discussionModes; let first = first"
-                class="discussion-mode-chip" [class.discussion-mode-chip-active]="first">
-                <mat-icon>{{mode.icon}}</mat-icon>
-                <span>{{mode.label}}</span>
-            </span>
-        </div>
-
         <div *ngIf="isLoading" class="thread-loading">
             <div class="thread-loading-row" *ngFor="let item of [1, 2, 3]">
                 <p-skeleton shape="circle" width="42px" height="42px"></p-skeleton>
