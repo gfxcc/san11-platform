@@ -524,43 +524,29 @@
 }
 
 .summary-meta {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
 }
 
-.meta-item {
-    display: grid;
-    grid-template-columns: 18px minmax(0, 56px) minmax(0, 1fr);
+.meta-pill {
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    min-height: 34px;
+    gap: 6px;
+    min-height: 32px;
     padding: 0 10px;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 999px;
+    color: var(--text-muted);
     background: rgba(255, 255, 255, .72);
+    font-size: .82rem;
+    font-weight: 750;
 }
 
-.meta-item mat-icon {
+.meta-pill mat-icon {
     width: 16px;
     height: 16px;
-    color: var(--text-subtle);
     font-size: 16px;
-}
-
-.meta-item span {
-    color: var(--text-subtle);
-    font-size: .82rem;
-    font-weight: 800;
-}
-
-.meta-item strong {
-    min-width: 0;
-    color: var(--text-muted);
-    font-size: .78rem;
-    font-weight: 750;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 @media (max-width: 70rem) {
