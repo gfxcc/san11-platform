@@ -266,6 +266,24 @@
                 </section>
 
                 <section *ngIf="isAuthor()"
+                    class="maintenance-card permission-surface permission-author-surface surface-panel app-detail-section">
+                    <div class="detail-card-heading">
+                        <div class="detail-card-title-row">
+                            <h2 class="detail-card-title">资源健康度</h2>
+                            <span class="maintenance-score">{{maintenanceHealthText}}</span>
+                        </div>
+                        <p>优先补齐会影响用户判断和下载信心的内容。</p>
+                    </div>
+                    <div class="maintenance-list">
+                        <div *ngFor="let item of maintenanceItems" class="maintenance-item"
+                            [class.maintenance-item-done]="item.done">
+                            <mat-icon>{{item.done ? 'check_circle' : item.icon}}</mat-icon>
+                            <span>{{item.text}}</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section *ngIf="isAuthor()"
                     class="author-workspace role-workspace permission-surface permission-author-surface surface-panel app-detail-section">
                     <div class="detail-card-heading">
                         <div class="detail-card-title-row">

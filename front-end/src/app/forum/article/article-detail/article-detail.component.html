@@ -21,8 +21,8 @@
                             (click)="onTitleClick()" (keydown.enter)="onTitleEnter($event)" (input)="onTitleChange()">
                             {{article.subject}}
                         </h1>
-                        <span *ngIf="isAuthor() && editingTarget !== 'content'" class="inline-edit-cue"
-                            aria-hidden="true">
+                        <span *ngIf="isAuthor()" class="inline-edit-cue"
+                            [class.inline-edit-cue-suppressed]="editingTarget === 'content'" aria-hidden="true">
                             <mat-icon>edit</mat-icon>
                         </span>
                     </div>

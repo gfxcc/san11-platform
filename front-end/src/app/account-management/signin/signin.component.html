@@ -12,6 +12,24 @@
         <mat-tab-group #tagGroup [(selectedIndex)]="selectedTabIndex" class="header-less-tabs">
             <mat-tab label="login">
                 <form class="auth-form" #signInForm='ngForm' (ngSubmit)="onSignIn(signInForm.value)">
+                    <div *ngIf="devAccounts.length" class="dev-account-panel">
+                        <div class="dev-account-heading">
+                            <mat-icon>science</mat-icon>
+                            <div>
+                                <strong>开发测试账号</strong>
+                                <span>仅本地 dev 环境显示，点击后填入登录表单。</span>
+                            </div>
+                        </div>
+                        <div class="dev-account-grid">
+                            <button *ngFor="let account of devAccounts" type="button"
+                                class="dev-account-button" (click)="fillDevAccount(account, signInForm)">
+                                <strong>{{account.label}}</strong>
+                                <span>{{account.identity}} / {{account.password}}</span>
+                                <small>{{account.note}}</small>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="field-stack">
                         <mat-form-field appearance="outline">
                             <mat-label>用户名/邮箱</mat-label>

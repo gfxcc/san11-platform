@@ -55,7 +55,7 @@ export class BranchComponent {
     }
 
     ngOnInit(): void {
-        this.dataSource = new MatTableDataSource(this.branch.binaries);
+        this.dataSource = new MatTableDataSource(this.historicalBinaries);
     }
 
     ngAfterViewInit() {
@@ -64,6 +64,41 @@ export class BranchComponent {
 
     getVersionStr(binary: Binary): string {
         return version2str(binary.version);
+    }
+
+    get recommendedBinary(): Binary | undefined {
+        return this.branch?.binaries?.[0];
+    }
+
+    get historicalBinaries(): Binary[] {
+        return this.branch?.binaries?.slice(1) || [];
+    }
+
+    get hasHistory(): boolean {
+        return this.historicalBinaries.length > 0;
+    }
+
+    getDownloadLabel(binary: Binary): string {
+        if (binary?.file) {
+            return '下载推荐版本';
+        }
+        if (binary?.cloudDiskFile) {
+            return '打开网盘下载';
+        }
+        if (binary?.downloadMethod) {
+            return '查看下载方式';
+        }
+        return '查看版本';
+    }
+
+    getDownloadIcon(binary: Binary): string {
+        if (binary?.cloudDiskFile) {
+            return 'cloud_download';
+        }
+        if (binary?.downloadMethod) {
+            return 'info';
+        }
+        return 'download';
     }
 
 

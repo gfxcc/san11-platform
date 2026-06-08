@@ -46,6 +46,98 @@ app-signin .auth-form {
     width: 100%;
 }
 
+app-signin .dev-account-panel {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 14px;
+    border: 1px solid rgba(37, 99, 235, .18);
+    border-radius: var(--radius-md);
+    background:
+        linear-gradient(135deg, rgba(37, 99, 235, .07), rgba(255, 255, 255, .94) 62%),
+        var(--surface);
+}
+
+app-signin .dev-account-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+app-signin .dev-account-heading mat-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    border-radius: 10px;
+    background: var(--primary-soft);
+    color: var(--primary-color);
+    font-size: 19px;
+}
+
+app-signin .dev-account-heading div {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+app-signin .dev-account-heading strong {
+    color: var(--text-color);
+    font-size: .95rem;
+    font-weight: 850;
+}
+
+app-signin .dev-account-heading span {
+    color: var(--text-muted);
+    font-size: .82rem;
+    line-height: 1.45;
+}
+
+app-signin .dev-account-grid {
+    display: grid;
+    gap: 8px;
+}
+
+app-signin .dev-account-button {
+    display: grid;
+    gap: 3px;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, .82);
+    color: var(--text-color);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color var(--animation-duration), background-color var(--animation-duration), transform var(--animation-duration);
+}
+
+app-signin .dev-account-button:hover {
+    border-color: rgba(37, 99, 235, .3);
+    background: #fff;
+    transform: translateY(-1px);
+}
+
+app-signin .dev-account-button strong {
+    font-size: .9rem;
+    font-weight: 850;
+}
+
+app-signin .dev-account-button span {
+    color: var(--primary-strong);
+    font-size: .84rem;
+    font-weight: 800;
+}
+
+app-signin .dev-account-button small {
+    color: var(--text-muted);
+    font-size: .78rem;
+    line-height: 1.35;
+}
+
 app-signin .field-stack {
     display: grid;
     gap: 12px;

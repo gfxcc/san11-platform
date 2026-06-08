@@ -30,6 +30,9 @@ export class DashboardComponent implements OnInit {
     { value: 'download_count DESC', viewValue: '下载量' },
   ];
   selectedOrder = this.orderOptions[0].value;
+  currentQuery = '';
+  currentCategoryId = '';
+  currentTagId = '';
 
   constructor(
     private notificationService: NotificationService,
@@ -55,6 +58,9 @@ export class DashboardComponent implements OnInit {
         const tagId = ap.qparams['tagId'];
         const query = ap.qparams['query']
         const userId = ap.parentParams.userId;
+        this.currentQuery = query || '';
+        this.currentCategoryId = categoryId || '';
+        this.currentTagId = tagId || '';
 
         if (query != undefined) {
           this.searchPackages(query);
@@ -140,5 +146,38 @@ export class DashboardComponent implements OnInit {
       queryParams: { tagId: null },
       queryParamsHandling: 'merge',
     });
+  }
+
+  get catalogHeading(): string {
+    if (this.currentQuery) {
+      return `搜索：${this.currentQuery}`;
+    }
+
+    const category = GlobalConstants.categories.find(item => item.value === this.currentCategoryId);
+    return category ? category.text : 'San11 工具与 MOD';
+  }
+
+  get catalogDescription(): string {
+    if (this.currentQuery) {
+      return '按名称和资源标识匹配结果，继续使用左侧分类和排序缩小范围。';
+    }
+
+    if (this.currentTagId) {
+      return '当前正在查看标签筛选结果。';
+    }
+
+    return '按分类、标签和热度快速找到可用资源。';
+  }
+
+  get emptyStateText(): string {
+    if (this.currentQuery) {
+      return '没有找到匹配的资源';
+    }
+
+    if (this.listRequest?.filter) {
+      return '当前筛选条件下没有资源';
+    }
+
+    return '这里还没有资源';
   }
 }

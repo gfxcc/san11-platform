@@ -1,11 +1,17 @@
 <div class="admin-page">
     <section class="admin-header">
         <div>
-            <h1>站点动态</h1>
-            <p>按资源、社交、通知和下载类型查看最近平台活动。</p>
+            <span class="app-eyebrow">管理工作台</span>
+            <h1>审核与站点动态</h1>
+            <p>优先处理待审核资源，再按资源、社交、通知和下载类型查看最近平台活动。</p>
         </div>
 
         <div class="summary-grid">
+            <div class="summary-item">
+                <mat-icon>pending_actions</mat-icon>
+                <span>待审</span>
+                <strong>{{pendingReviews.length}}</strong>
+            </div>
             <div class="summary-item">
                 <mat-icon>inventory_2</mat-icon>
                 <span>资源</span>
@@ -21,28 +27,28 @@
                 <span>通知</span>
                 <strong>{{notifications.length}}</strong>
             </div>
-            <div class="summary-item">
-                <mat-icon>download</mat-icon>
-                <span>下载</span>
-                <strong>{{downloads.length}}</strong>
-            </div>
         </div>
     </section>
 
     <section class="review-queue surface-panel">
         <div class="panel-header">
             <div>
-                <h2>待处理</h2>
-                <p>需要管理员审核的新资源</p>
+                <h2>审核队列</h2>
+                <p>{{pendingReviewSummary}}</p>
             </div>
             <span>{{pendingReviews.length}} 项</span>
         </div>
         <div *ngIf="pendingReviews.length; else noPendingReviews" class="review-grid">
             <button *ngFor="let package of pendingReviews" type="button" class="review-item"
                 (click)="openPackage(package)">
-                <mat-icon>pending_actions</mat-icon>
-                <span>{{package.packageName}}</span>
-                <small>{{package.name}}</small>
+                <span class="review-item-icon">
+                    <mat-icon>pending_actions</mat-icon>
+                </span>
+                <span class="review-item-copy">
+                    <strong>{{package.packageName}}</strong>
+                    <small>{{packageCategoryName(package)}} · {{package.name}}</small>
+                </span>
+                <span class="review-item-status">待审核</span>
                 <mat-icon>chevron_right</mat-icon>
             </button>
         </div>
