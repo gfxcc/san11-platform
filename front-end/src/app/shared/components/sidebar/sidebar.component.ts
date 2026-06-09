@@ -3,10 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { catchError, filter, forkJoin, map, of } from 'rxjs';
 import { onMobile } from 'src/app/utils/layout_util';
-import { CreateTagRequest, CreateThreadRequest, DeleteTagRequest, ListPackagesRequest, ListTagsRequest, ResourceState, Tag, Thread } from '../../../../proto/san11-platform.pb';
+import { CreateThreadRequest, ListPackagesRequest, ResourceState, Thread } from '../../../../proto/san11-platform.pb';
 import { GlobalConstants } from '../../../common/global-constants';
 import { NotificationService } from '../../../common/notification.service';
-import { InteractionService } from '../../../common/interaction.service';
 import { ComponentMessage, EventEmiterService } from '../../../service/event-emiter.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { isAdmin, loadUser, signedIn } from '../../../utils/user_util';
@@ -42,13 +41,11 @@ export class SidebarComponent implements OnInit {
   ]
 
   selectedCategory = undefined;
-  tags: Tag[] = [];
   pendingReviewCount = 0;
   private categoryRouteActive = false;
 
   constructor(
     private notificationService: NotificationService,
-    private interactionService: InteractionService,
     private san11pkService: San11PlatformServiceService,
     private dialog: MatDialog,
     private router: Router,
@@ -61,9 +58,6 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.syncSelectionFromUrl();
 
-    if (this.categoryRouteActive) {
-      this.loadTags();
-    }
     if (this.isAdmin()) {
       this.loadPendingReviewCount();
     }
@@ -71,19 +65,13 @@ export class SidebarComponent implements OnInit {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        const previousCategory = this.selectedCategory;
         this.syncSelectionFromUrl();
 
         if (!this.categoryRouteActive) {
-          this.tags = [];
           if (this.isAdmin()) {
             this.loadPendingReviewCount();
           }
           return;
-        }
-
-        if (previousCategory !== this.selectedCategory) {
-          this.loadTags();
         }
 
         if (this.isAdmin()) {
@@ -105,61 +93,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  loadTags() {
-    this.san11pkService.listTags(new ListTagsRequest({ parent: `categories/${this.selectedCategory}` })).subscribe(
-      resp => {
-        if (resp.tags.length === 0) {
-          this.tags = [];
-        } else {
-          this.tags = resp.tags;
-        }
-      },
-      error => {
-        this.notificationService.warn('无法获取 标签:' + error.statusMessage);
-      }
-    );
-  }
-
-  createTag(event) {
-    const newTagName = event.target.value;
-    this.san11pkService.createTag(new CreateTagRequest({
-      parent: `categories/${this.selectedCategory}`,
-      tag: new Tag({
-        tagName: newTagName
-      })
-    })).subscribe(
-      tag => {
-        this.loadTags();
-      },
-      error => {
-        this.notificationService.warn(`创建标签 失败: ${error.statusMessage}`);
-      }
-    );
-  }
-
-  removeTag(tag: Tag) {
-    this.interactionService.confirm({
-      title: '删除标签',
-      message: `确定要删除“${tag.tagName}”吗？使用该标签的筛选入口也会消失。`,
-      confirmText: '删除标签',
-      danger: true,
-    }).subscribe(confirmed => confirmed && this.san11pkService.deleteTag(new DeleteTagRequest({ name: tag.name })).subscribe(
-      resp => {
-        this.notificationService.success('删除标签 成功');
-        this.loadTags();
-      },
-      error => {
-        this.notificationService.warn(`无法删除标签【${tag.name}】: ${error.statusMessage}`)
-      }
-    ));
-  }
-
-  onClickTag(tag: Tag) {
-    this.router.navigate(['/categories', this.selectedCategory], { queryParams: { tagId: tag.name } });
-  }
-
   onClickSidenav(item) {
-    this.tags = [];
     if (onMobile()) {
       this.sidenavService.close();
     }
@@ -175,11 +109,6 @@ export class SidebarComponent implements OnInit {
     }
     this.router.navigate(category.link);
 
-    if (this.categoryRouteActive) {
-      this.loadTags();
-    } else {
-      this.tags = [];
-    }
   }
 
   onClickCreateTool() {
@@ -251,7 +180,6 @@ export class SidebarComponent implements OnInit {
             return;
           }
           this.selectedCategory = data.categoryId;
-          this.loadTags();
         });
       }
     });

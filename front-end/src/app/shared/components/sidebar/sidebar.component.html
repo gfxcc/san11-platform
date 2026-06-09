@@ -52,28 +52,6 @@
         </mat-selection-list>
 
 
-        <div *ngIf="this.isAdmin() || this.tags.length > 0" class="tag-panel">
-            <div class="tag-panel-header" *ngIf="this.tags.length>0">
-                <span>标签筛选</span>
-                <small>{{this.tags.length}}</small>
-            </div>
-            <div *ngIf="this.tags.length>0" class="tag-list">
-                <mat-chip-listbox>
-                    <mat-chip-option color="primary" *ngFor="let tag of this.tags" (click)="onClickTag(tag)"
-                        (removed)="removeTag(tag)">{{tag.tagName}}
-                        <mat-icon matChipRemove *ngIf="this.isAdmin()">cancel</mat-icon>
-                    </mat-chip-option>
-                </mat-chip-listbox>
-            </div>
-
-            <mat-form-field *ngIf="this.isAdmin()" appearance="outline" class="tag-input">
-                <mat-label>新标签</mat-label>
-                <input #tagInput matInput autocomplete="off"
-                    (keyup.enter)="createTag($event); tagInput.value=&quot;&quot;">
-            </mat-form-field>
-
-        </div>
-
     </div>
 
     <footer class="footer-section">

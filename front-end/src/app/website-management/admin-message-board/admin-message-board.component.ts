@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
 import { activityToEvent } from 'src/app/utils/activity_util';
@@ -118,8 +118,12 @@ export class AdminMessageBoardComponent implements OnInit {
 
   loadAdminSummary(): void {
     this.loadingAdminSummary = true;
+    this.progressService.loading();
     this.san11pkService.getAdminMessage()
-      .pipe(finalize(() => this.loadingAdminSummary = false))
+      .pipe(finalize(() => {
+        this.loadingAdminSummary = false;
+        this.progressService.complete();
+      }))
       .subscribe({
         next: (resp) => {
           try {
@@ -149,13 +153,30 @@ export class AdminMessageBoardComponent implements OnInit {
 
   loadPendingReviews(): void {
     this.pendingReviews = [];
-    GlobalConstants.categories.forEach(category => {
+
+    const pendingReviewRequests = GlobalConstants.categories.map(category =>
       this.san11pkService.listPackages(new ListPackagesRequest({
         parent: `categories/${category.value}`,
-      })).subscribe(resp => {
-        this.pendingReviews.push(...resp.packages.filter(item => item.state === ResourceState.UNDER_REVIEW));
+      }))
+    );
+
+    if (!pendingReviewRequests.length) {
+      return;
+    }
+
+    this.progressService.loading();
+    forkJoin(pendingReviewRequests)
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: responses => {
+          this.pendingReviews = responses.flatMap(resp =>
+            resp.packages.filter(item => item.state === ResourceState.UNDER_REVIEW)
+          );
+        },
+        error: error => {
+          this.notificationService.warn(`获取审核队列失败: ${error.statusMessage}`);
+        }
       });
-    });
   }
 
   openPackage(san11Package: Package): void {

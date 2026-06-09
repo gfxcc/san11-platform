@@ -3,11 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, finalize } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
+import { InteractionService } from 'src/app/common/interaction.service';
 import { ProgressService } from 'src/app/progress.service';
-import { ListPackagesRequest, ListPackagesResponse, Package, SearchPackagesResponse } from '../../../../../proto/san11-platform.pb';
+import { CreateTagRequest, DeleteTagRequest, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, Package, SearchPackagesResponse, Tag } from '../../../../../proto/san11-platform.pb';
 import { NotificationService } from "../../../../common/notification.service";
 import { EventEmiterService } from "../../../../service/event-emiter.service";
 import { San11PlatformServiceService } from '../../../../service/san11-platform-service.service';
+import { isAdmin } from '../../../../utils/user_util';
 
 export interface OrderOption {
   value: string,
@@ -33,6 +35,7 @@ export class DashboardComponent implements OnInit {
   currentQuery = '';
   currentCategoryId = '';
   currentTagId = '';
+  tags: Tag[] = [];
   searchCategoryShortcuts = GlobalConstants.categories.slice(0, 4);
 
   constructor(
@@ -40,6 +43,7 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
+    private interactionService: InteractionService,
     private san11pkService: San11PlatformServiceService,
     private _eventEmiter: EventEmiterService,
     private progressService: ProgressService,
@@ -62,6 +66,7 @@ export class DashboardComponent implements OnInit {
         this.currentQuery = query || '';
         this.currentCategoryId = categoryId || '';
         this.currentTagId = tagId || '';
+        this.loadTagsForCurrentCategory();
 
         if (query != undefined) {
           this.searchPackages(query);
@@ -97,6 +102,24 @@ export class DashboardComponent implements OnInit {
         },
         error: error => {
           this.notificationService.warn(`载入工具列表失败: ${error.statusMessage}`);
+        },
+      });
+  }
+
+  loadTagsForCurrentCategory(): void {
+    if (!this.currentCategoryId || this.currentQuery) {
+      this.tags = [];
+      return;
+    }
+
+    this.san11pkService.listTags(new ListTagsRequest({ parent: `categories/${this.currentCategoryId}` }))
+      .subscribe({
+        next: resp => {
+          this.tags = resp.tags || [];
+        },
+        error: error => {
+          this.tags = [];
+          this.notificationService.warn(`无法获取标签: ${error.statusMessage}`);
         },
       });
   }
@@ -149,8 +172,82 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  onClickTag(tag: Tag): void {
+    if (this.currentTagId === tag.name) {
+      this.clearFilter();
+      return;
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tagId: tag.name },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  createTag(event): void {
+    const tagName = event.target.value?.trim();
+    if (!tagName || !this.currentCategoryId) {
+      return;
+    }
+
+    this.progressService.loading();
+    this.san11pkService.createTag(new CreateTagRequest({
+      parent: `categories/${this.currentCategoryId}`,
+      tag: new Tag({ tagName }),
+    }))
+      .pipe(finalize(() => this.progressService.complete()))
+      .subscribe({
+        next: () => {
+          event.target.value = '';
+          this.loadTagsForCurrentCategory();
+        },
+        error: error => {
+          this.notificationService.warn(`创建标签失败: ${error.statusMessage}`);
+        },
+      });
+  }
+
+  removeTag(tag: Tag, event?: MouseEvent): void {
+    event?.stopPropagation();
+    this.interactionService.confirm({
+      title: '删除标签',
+      message: `确定要删除“${tag.tagName}”吗？使用该标签的筛选入口也会消失。`,
+      confirmText: '删除标签',
+      danger: true,
+    }).subscribe(confirmed => {
+      if (!confirmed) {
+        return;
+      }
+
+      this.progressService.loading();
+      this.san11pkService.deleteTag(new DeleteTagRequest({ name: tag.name }))
+        .pipe(finalize(() => this.progressService.complete()))
+        .subscribe({
+          next: () => {
+            this.notificationService.success('删除标签成功');
+            if (this.currentTagId === tag.name) {
+              this.clearFilter();
+            }
+            this.loadTagsForCurrentCategory();
+          },
+          error: error => {
+            this.notificationService.warn(`无法删除标签【${tag.name}】: ${error.statusMessage}`);
+          },
+        });
+    });
+  }
+
   openCategory(categoryId: string): void {
     this.router.navigate(['/categories', categoryId]);
+  }
+
+  canManageTags(): boolean {
+    return isAdmin() && !!this.currentCategoryId && !this.currentQuery;
+  }
+
+  get showTagToolbar(): boolean {
+    return !!this.currentCategoryId && !this.currentQuery && (this.tags.length > 0 || this.canManageTags());
   }
 
   get catalogHeading(): string {

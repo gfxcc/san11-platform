@@ -22,6 +22,26 @@
         </div>
     </section>
 
+    <section class="catalog-tags surface-panel" *ngIf="showTagToolbar">
+        <div class="catalog-tags-list" *ngIf="tags.length">
+            <button type="button" class="tag-filter" *ngFor="let tag of tags"
+                [class.tag-filter-selected]="currentTagId === tag.name" (click)="onClickTag(tag)">
+                <span>{{tag.tagName}}</span>
+                <mat-icon *ngIf="currentTagId === tag.name">check</mat-icon>
+                <mat-icon *ngIf="canManageTags()" class="tag-remove" (click)="removeTag(tag, $event)">close</mat-icon>
+            </button>
+        </div>
+
+        <mat-form-field *ngIf="canManageTags()" appearance="outline" class="tag-create-field">
+            <mat-label>新标签</mat-label>
+            <input #tagInput matInput autocomplete="off" (keyup.enter)="createTag($event)">
+            <button mat-icon-button matSuffix type="button" aria-label="创建标签"
+                (click)="createTag({ target: tagInput })">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-form-field>
+    </section>
+
     <section class="search-refinement surface-panel" *ngIf="currentQuery">
         <div>
             <span class="app-eyebrow">搜索结果</span>
