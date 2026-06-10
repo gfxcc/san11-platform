@@ -2,6 +2,8 @@
     width: min(86vw, 680px);
     box-sizing: border-box;
     padding: 24px;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .thread-dialog-header {
@@ -46,6 +48,7 @@
 
 .thread-dialog-body mat-form-field {
     width: 100%;
+    min-width: 0;
 }
 
 .editor-frame {
@@ -64,6 +67,7 @@
     align-items: center;
     gap: 10px;
     width: 100%;
+    min-width: 0;
     margin-top: 18px;
     padding-top: 16px;
     border-top: 1px solid var(--border-color);
@@ -71,6 +75,7 @@
 
 .actions button {
     border-radius: 999px;
+    max-width: 100%;
 }
 
 .actions mat-icon {
@@ -89,7 +94,44 @@
 
 @media (max-width: 40rem) {
     .thread-dialog {
-        width: calc(100vw - 32px);
-        padding: 18px;
+        width: min(100%, calc(100vw - 16px));
+        padding: 16px;
+    }
+
+    .thread-dialog-header {
+        align-items: flex-start;
+        gap: 12px;
+        padding-bottom: 14px;
+    }
+
+    .dialog-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .thread-dialog-header h1 {
+        font-size: 1.35rem;
+    }
+
+    .thread-dialog-body {
+        gap: 12px;
+    }
+
+    :host ::ng-deep .thread-dialog .ck-editor__editable_inline {
+        min-height: 170px;
+    }
+
+    .actions {
+        justify-content: stretch;
+        margin-top: 14px;
+        padding-top: 14px;
+    }
+
+    .actions .example-spacer {
+        display: none;
+    }
+
+    .actions button {
+        width: 100%;
     }
 }

@@ -71,6 +71,7 @@ mat-progress-bar {
     min-width: 220px;
     max-width: 680px;
     margin: 0 auto;
+    position: relative;
 }
 
 .search-bar-input-wrapper {
@@ -287,15 +288,58 @@ h5 {
     .auth-actions {
         gap: 2px;
     }
+
+    .account-trigger {
+        padding: 0 6px;
+    }
 }
 
 @media only screen and (max-width: 500px) {
-    #search-bar {
-        display: none;
+    .app-toolbar {
+        height: var(--header-height);
+        align-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px 8px;
+        padding: 8px 10px;
     }
-}
-.search-bar-container {
-    position: relative;
+
+    .brand-button {
+        padding: 4px;
+    }
+
+    .search-bar-container {
+        order: 10;
+        flex: 1 0 100%;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    .search-input {
+        height: 36px;
+        padding-left: 42px;
+        padding-right: 42px;
+    }
+
+    .search-suggestions {
+        position: fixed;
+        top: calc(var(--header-height) - 2px);
+        right: 8px;
+        left: 8px;
+        max-height: calc(100vh - var(--header-height) - 12px);
+        overflow-y: auto;
+    }
+
+    .signin-button {
+        min-width: 0;
+        padding: 0 8px;
+    }
+
+    .signup-button {
+        min-width: 0;
+        padding: 0 12px;
+    }
 }
 
 .search-suggestions {

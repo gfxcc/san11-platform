@@ -1,8 +1,4 @@
 <article class="thread-row">
-    <div class="status-cell" *ngIf="isAdmin() && thread.state!=1">
-        <span class="status-badge">{{getStatusName()}}</span>
-    </div>
-
     <a class="avatar-cell" href="users/{{user?.userId}}" target="_blink" aria-label="作者">
         <img [src]="getUserAvatar()" class="avatar-img" [hidden]="loadingAuthorImage" (load)="loadAvatar()"
             (error)="loadAvatar()">
@@ -12,32 +8,41 @@
     <div class="thread-main">
         <div class="thread-title-line">
             <a class="thread-title" [routerLink]="'/' + thread.name">{{thread.subject}}</a>
-            <mat-icon *ngIf="thread.pinned" class="pin-icon" matTooltip="置顶">push_pin</mat-icon>
+            <span *ngIf="thread.pinned" class="pin-badge" matTooltip="置顶">
+                <mat-icon>push_pin</mat-icon>
+                置顶
+            </span>
+            <span class="status-badge" *ngIf="isAdmin() && thread.state!=1">{{getStatusName()}}</span>
         </div>
 
         <div class="thread-meta">
-            <a href="users/{{user?.userId}}" target="_blink">{{user?.username}}</a>
-            <span>{{getThreadAge()}}</span>
-        </div>
-
-        <div class="thread-tags" *ngIf="this.thread.tags?.length">
-            <span *ngFor="let tag of this.thread.tags">{{tag}}</span>
+            <a href="users/{{user?.userId}}" target="_blink" class="author-name">{{user?.username}}</a>
+            <span class="meta-item">
+                <mat-icon>schedule</mat-icon>
+                {{getThreadAge()}}
+            </span>
+            <span class="thread-tags" *ngIf="this.thread.tags?.length">
+                <span *ngFor="let tag of this.thread.tags">{{tag}}</span>
+            </span>
         </div>
     </div>
 
-    <div class="thread-stats" aria-label="帖子统计">
-        <span class="stat-pill" matTooltip="浏览">
-            <mat-icon>drafts</mat-icon>
-            {{thread.viewCount}}
-        </span>
-        <span class="stat-pill" matTooltip="回复">
-            <mat-icon>forum</mat-icon>
-            {{+thread.commentCount + +thread.replyCount}}
-        </span>
-    </div>
+    <div class="thread-side">
+        <div class="thread-stats" aria-label="帖子统计">
+            <span class="stat-pill" matTooltip="浏览">
+                <mat-icon>visibility</mat-icon>
+                {{thread.viewCount}}
+            </span>
+            <span class="stat-pill stat-replies" matTooltip="回复">
+                <mat-icon>forum</mat-icon>
+                {{+thread.commentCount + +thread.replyCount}}
+            </span>
+        </div>
 
-    <div class="latest-cell" *ngIf="notMobile">
-        <span>{{getLatestCommentedAge()}}</span>
-        <a href="users/{{latestCommenter?.userId}}" target="_blink">{{latestCommenter?.username}}</a>
+        <div class="latest-cell">
+            <span class="latest-label">最后回复</span>
+            <span class="latest-time">{{getLatestCommentedAge()}}</span>
+            <a href="users/{{latestCommenter?.userId}}" target="_blink">{{latestCommenter?.username || user?.username}}</a>
+        </div>
     </div>
 </article>

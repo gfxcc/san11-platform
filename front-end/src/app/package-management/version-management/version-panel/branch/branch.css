@@ -188,8 +188,22 @@
         display: block;
     }
 
+    .branch-panel {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .version-table {
+        min-width: 520px;
+    }
+
+    .version-column-cell {
+        min-width: 128px;
+    }
+
     .actions-cell {
-        width: 310px;
+        width: 190px;
     }
 
     .recommended-version {
@@ -203,7 +217,18 @@
         max-width: none;
     }
 
+    .recommended-actions .action-button {
+        flex: 1 1 150px;
+    }
+
     .action-cluster {
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .download-action,
+    .row-menu-button {
+        min-width: 0;
+        padding: 0 10px;
     }
 }

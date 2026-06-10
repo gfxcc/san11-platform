@@ -98,8 +98,29 @@ mat-paginator {
     }
 
     .caption {
-        min-height: 68px;
-        padding: 0 14px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        min-height: 58px;
+        padding: 12px 14px;
+    }
+
+    .caption-compact {
+        grid-template-columns: 1fr;
+        justify-items: stretch;
+    }
+
+    .caption .example-spacer {
+        display: none;
+    }
+
+    .caption-title {
+        display: grid;
+        gap: 2px;
+    }
+
+    .caption h3 {
+        font-size: 1rem;
     }
 
     .caption p {
@@ -114,7 +135,12 @@ mat-paginator {
         grid-column: 2;
     }
 
-    .create-thread-button span {
-        display: none;
+    .create-thread-button {
+        min-width: 92px;
+        padding: 0 14px;
+    }
+
+    .caption-compact .create-thread-button {
+        width: 100%;
     }
 }

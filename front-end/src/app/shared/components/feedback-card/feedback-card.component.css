@@ -1,78 +1,93 @@
-/* Top level buttons section */
-
 .feedback-card-container {
-    transform-origin: top left;
-    display: flex;
-    gap: 8px;
-}
-
-.clickable-background {
-    background-color: var(--clickable-background-color);
-}
-
-.icon-button {
-    flex-shrink: 0;
-    margin-left: 0;
-    padding: 0 10px;
-    border-radius: 999px;
-    color: var(--text-color);
-    box-shadow: none;
-    transform: none;
-    transition: background-color var(--animation-duration) var(--animation-timing-curve);
-}
-
-.icon-button:hover {
-    background-color: var(--clickable-background-color-hover);
-}
-
-.disabled-text {
-    font-weight: 10 !important;
-}
-
-.toggle-button-render {
-    display: flex;
-    min-height: 36px;
-    font-size: .95rem;
-    font-weight: 750;
-    letter-spacing: 0;
+    display: inline-flex;
     align-items: center;
-    cursor: pointer;
+    gap: 4px;
+    min-height: 40px;
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: rgba(248, 250, 252, .9);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7);
 }
 
-.toggle-button-text {
-    height: fit-content;
-}
-
-.button-svg {
-    --mdc-icon-button-state-layer-size: 36px;
-    --mat-icon-button-state-layer-color: transparent;
-    --mat-icon-button-hover-state-layer-opacity: 0;
-    --mat-icon-button-focus-state-layer-opacity: 0;
-    --mat-icon-button-pressed-state-layer-opacity: 0;
-    width: 36px;
-    height: 36px;
+.feedback-card-container-plain {
+    min-height: 32px;
     padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.feedback-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    line-height: 36px;
-    box-shadow: none;
-    transform: none;
+    gap: 6px;
+    min-width: 42px;
+    min-height: 32px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: .88rem;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve);
 }
 
-.button-svg mat-icon {
+.feedback-button:hover {
+    background: var(--surface);
+    color: var(--text-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.feedback-button-active.feedback-like {
+    background: rgba(37, 99, 235, .11);
+    color: var(--primary-strong);
+}
+
+.feedback-button-active.feedback-dislike {
+    background: rgba(100, 116, 139, .13);
+    color: #475569;
+}
+
+.feedback-button mat-icon {
     width: 20px;
     height: 20px;
     font-size: 20px;
     line-height: 20px;
 }
 
-:host ::ng-deep .button-svg .mat-mdc-button-persistent-ripple,
-:host ::ng-deep .button-svg .mat-mdc-button-ripple,
-:host ::ng-deep .button-svg .mat-ripple {
-    display: none !important;
+.feedback-count {
+    min-width: .75rem;
+    text-align: left;
 }
 
-:host ::ng-deep .button-svg .mat-mdc-button-persistent-ripple::before {
-    opacity: 0 !important;
+.feedback-card-container-plain .feedback-button {
+    min-width: 34px;
+    min-height: 30px;
+    padding: 0 7px;
+}
+
+.feedback-card-container-plain .feedback-button:hover {
+    background: var(--surface-muted);
+    box-shadow: none;
+}
+
+@media (max-width: 40rem) {
+    .feedback-card-container {
+        min-height: 38px;
+        padding: 3px;
+    }
+
+    .feedback-button {
+        min-height: 32px;
+        padding: 0 10px;
+    }
 }

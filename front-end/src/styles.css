@@ -10,6 +10,7 @@
 .main-container {
 	font-family: 'Lato';
 	width: fit-content;
+	max-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -18,10 +19,30 @@
 	font-family: 'Lato';
 	line-height: 1.6;
 	word-break: break-word;
+	overflow-wrap: anywhere;
+	max-width: 100%;
+}
+
+.ck-content img,
+.ck-content figure,
+.ck-content table {
+	max-width: 100%;
+}
+
+.ck-content figure {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.ck-content table {
+	display: block;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 .editor-container_inline-editor .editor-container__editor {
-	min-width: 795px;
+	width: min(795px, calc(100vw - 24px));
+	min-width: 0;
 	max-width: 795px;
 }
 
@@ -76,10 +97,30 @@ body {
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
 }
 
 * {
     box-sizing: border-box;
+}
+
+img,
+video,
+canvas,
+iframe,
+svg {
+    max-width: 100%;
+}
+
+img,
+video {
+    height: auto;
+}
+
+pre {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .ck-editor__editable {
@@ -289,6 +330,7 @@ body {
 .page-content {
     max-width: min(var(--content-max-width), 100%);
     /* min-width: 700px; */
+    min-width: 0;
     flex-grow: 1;
     /* margin-left: 24px; */
     /* margin-right: 24px; */
@@ -327,6 +369,8 @@ body {
     border-radius: var(--radius-lg);
     background: var(--surface);
     box-shadow: var(--shadow-sm);
+    max-width: 100%;
+    min-width: 0;
 }
 
 .app-detail-section {
@@ -335,6 +379,8 @@ body {
     background: var(--surface);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
+    max-width: 100%;
+    min-width: 0;
 }
 
 .app-section-header {
@@ -386,12 +432,24 @@ body {
     box-shadow: none;
 }
 
+.app-responsive-dialog {
+    max-width: min(720px, calc(100vw - 24px)) !important;
+    width: auto;
+}
+
+.app-responsive-dialog .mat-mdc-dialog-container,
+.app-responsive-dialog .mat-mdc-dialog-surface {
+    max-width: min(720px, calc(100vw - 24px));
+    overflow-x: hidden;
+}
+
 .app-list-panel {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     background: var(--surface);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
+    max-width: 100%;
 }
 
 .app-list-header {
@@ -407,6 +465,14 @@ body {
 
 .app-data-table {
     width: 100%;
+}
+
+.mat-mdc-card,
+.mat-mdc-tab-group,
+.mat-mdc-tab-body-wrapper,
+.mat-mdc-tab-body-content {
+    max-width: 100%;
+    min-width: 0;
 }
 
 .app-data-table th,
@@ -779,6 +845,10 @@ button.mat-mdc-chip-action {
 }
 
 @media (max-width: 40rem) {
+    :root {
+        --header-height: 56px;
+    }
+
     .app-page {
         padding: 20px 12px 32px;
     }
@@ -820,6 +890,51 @@ button.mat-mdc-chip-action {
 
     .page-wrapper {
         padding: 16px 12px;
+    }
+
+    .app-section-header,
+    .app-list-header {
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        min-height: 0;
+        padding: 14px;
+    }
+
+    .app-list-panel {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .app-data-table {
+        min-width: 640px;
+    }
+
+    .mat-mdc-tab-body-content {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .app-action-row,
+    .app-row-actions,
+    .actions-section {
+        flex-wrap: wrap;
+    }
+
+    .app-responsive-dialog {
+        max-width: calc(100vw - 16px) !important;
+    }
+
+    .app-responsive-dialog .mat-mdc-dialog-container,
+    .app-responsive-dialog .mat-mdc-dialog-surface {
+        max-width: calc(100vw - 16px);
+        max-height: calc(100dvh - 16px);
+    }
+
+    .mat-mdc-paginator-container {
+        justify-content: center !important;
+        padding: 8px !important;
     }
 
     .title {

@@ -104,6 +104,7 @@ export class BranchComponent {
 
     onDescription(binary: Binary) {
         this.dialog.open(TextDialogComponent, {
+            panelClass: 'app-responsive-dialog',
             data: {
                 title: "更新日志",
                 content: binary.description,
@@ -145,6 +146,7 @@ export class BranchComponent {
                     saveAs(binary.file.url, binary.file.filename);
                 } else if (binary.downloadMethod) {
                     this.dialog.open(TextDialogComponent, {
+                        panelClass: 'app-responsive-dialog',
                         data: {
                             title: '下载方式',
                             content: binary.downloadMethod

@@ -1,20 +1,14 @@
-<div class="feedback-card-container">
-    <div *ngIf="this.likeCount != undefined" class="icon-button"
-        [ngClass]="{'clickable-background': !disableClickableBackground}">
-        <a matTooltip="我要点赞" class="toggle-button-render" (click)="onToggleLike()">
-            <button mat-icon-button class="button-svg">
-                <mat-icon>{{liked ? 'thumb_up' : 'thumb_up_off_alt'}}</mat-icon>
-            </button>
-
-            <span *ngIf="likeCount != '0'" class="toggle-button-text">{{likeCount}}</span>
-        </a>
-    </div>
-    <div *ngIf="this.dislikeCount != undefined" class="icon-button"
-        [ngClass]="{'clickable-background': !disableClickableBackground}">
-        <a matTooltip="不喜欢" class="toggle-button-render" (click)="onToggleDislike()">
-            <button mat-icon-button class="button-svg">
-                <mat-icon>{{disliked ? 'thumb_down' : 'thumb_down_off_alt'}}</mat-icon>
-            </button>
-        </a>
-    </div>
+<div class="feedback-card-container" [class.feedback-card-container-plain]="disableClickableBackground">
+    <button *ngIf="this.likeCount != undefined" type="button" matTooltip="我要点赞"
+        class="feedback-button feedback-like" [class.feedback-button-active]="liked" (click)="onToggleLike()"
+        [attr.aria-pressed]="liked">
+        <mat-icon>{{liked ? 'thumb_up' : 'thumb_up_off_alt'}}</mat-icon>
+        <span *ngIf="likeCount != '0'" class="feedback-count">{{likeCount}}</span>
+    </button>
+    <button *ngIf="this.dislikeCount != undefined" type="button" matTooltip="不喜欢"
+        class="feedback-button feedback-dislike" [class.feedback-button-active]="disliked"
+        (click)="onToggleDislike()" [attr.aria-pressed]="disliked">
+        <mat-icon>{{disliked ? 'thumb_down' : 'thumb_down_off_alt'}}</mat-icon>
+        <span *ngIf="dislikeCount != '0'" class="feedback-count">{{dislikeCount}}</span>
+    </button>
 </div>

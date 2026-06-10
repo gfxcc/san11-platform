@@ -162,3 +162,25 @@ footer>a {
 footer>a:hover {
     color: var(--primary-color);
 }
+
+@media (max-width: 40rem) {
+    .sidebar-shell {
+        min-height: calc(100dvh - var(--header-height));
+        padding: 20px 12px 14px;
+    }
+
+    .create-button {
+        height: 46px;
+        margin-bottom: 4px;
+    }
+
+    .category-section {
+        padding-top: 14px;
+    }
+}
+
+@media (max-width: 31.25rem) {
+    .sidebar-shell {
+        padding-top: 24px;
+    }
+}

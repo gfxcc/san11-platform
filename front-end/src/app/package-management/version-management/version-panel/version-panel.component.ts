@@ -73,6 +73,7 @@ export class VersionPanelComponent implements OnInit {
     const categoryId = getCategoryId(this.package.name).toString();
     this.dialog.open(CreateNewVersionComponent, {
       disableClose: true,
+      panelClass: 'app-responsive-dialog',
       data: {
         latestVersions: latestVersions,
         acceptFileType: getAcceptFileType(categoryId, selectedTab.name),

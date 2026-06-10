@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
@@ -28,6 +28,19 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.sidenavService.setSidenav(this.sidenav);
+    this.syncLayoutWithViewport();
+  }
+
+  @HostListener('window:resize')
+  syncLayoutWithViewport(): void {
+    const mobile = onMobile();
+    const nextMode = mobile ? 'over' : 'side';
+    if (this.sideBarMode === nextMode) {
+      return;
+    }
+
+    this.sideBarMode = mobile ? 'over' : 'side';
+    this.sideBarOpen = mobile ? false : true;
   }
 
   sideBarToggler(event) {

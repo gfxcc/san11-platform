@@ -75,19 +75,25 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   get parentPackageName(): string {
-    return this.parentPackage?.packageName ?? '资源详情';
+    return this.isPackageThread ? this.parentPackage?.packageName ?? '资源详情' : '综合讨论区';
   }
 
   get parentPackageRoute(): string[] {
-    return ['/', ...this.parentPackageResourceName.split('/')];
+    return this.isPackageThread ? ['/', ...this.parentPackageResourceName.split('/')] : ['/discussion'];
   }
 
   get parentCategoryRoute(): string[] {
-    return ['/categories', this.parentCategoryId.toString()];
+    return this.isPackageThread ? ['/categories', this.parentCategoryId.toString()] : ['/discussion'];
   }
 
   get parentCategoryName(): string {
-    return GlobalConstants.categories.find(category => Number(category.value) === this.parentCategoryId)?.text ?? '资源分类';
+    return this.isPackageThread
+      ? GlobalConstants.categories.find(category => Number(category.value) === this.parentCategoryId)?.text ?? '资源分类'
+      : '社区';
+  }
+
+  get isPackageThread(): boolean {
+    return this.parentPackageResourceName.includes('/packages/');
   }
 
   private get parentPackageResourceName(): string {
@@ -99,7 +105,7 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   private loadParentPackage(): void {
-    if (!this.parentPackageResourceName) {
+    if (!this.parentPackageResourceName || !this.isPackageThread) {
       return;
     }
 

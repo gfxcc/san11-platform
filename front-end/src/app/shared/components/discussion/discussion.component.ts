@@ -96,6 +96,7 @@ export class DiscussionComponent implements OnInit {
 
   createThread() {
     this.dialog.open(CreateThreadComponent, {
+      panelClass: 'app-responsive-dialog',
       data: {
         parent: this.parent,
       }

@@ -263,22 +263,66 @@ h1 {
 }
 
 .thread-tags {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    flex-wrap: nowrap;
     gap: 10px;
     min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
 }
 
 .thread-tags-label {
     flex-shrink: 0;
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
     color: var(--text-subtle);
     font-size: .78rem;
     font-weight: 800;
 }
 
 .tag-list {
-    width: auto;
-    max-width: min(520px, 55vw);
+    flex: 0 1 min(460px, 44vw);
+    width: min(460px, 44vw);
+    max-width: min(460px, 44vw);
+}
+
+.readonly-tag-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    min-width: 0;
+    max-width: min(460px, 44vw);
+    overflow: hidden;
+}
+
+.readonly-tag,
+.readonly-tag-empty {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    flex: 0 1 auto;
+    min-width: 0;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 760;
+    white-space: nowrap;
+}
+
+.readonly-tag {
+    max-width: 12rem;
+    overflow: hidden;
+    background: rgba(226, 232, 240, .78);
+    color: var(--text-muted);
+    text-overflow: ellipsis;
+}
+
+.readonly-tag-empty {
+    color: var(--text-subtle);
+    background: rgba(241, 245, 249, .72);
 }
 
 .thread-footer app-feedback-card {
@@ -286,7 +330,8 @@ h1 {
 }
 
 :host ::ng-deep .thread-footer .mat-mdc-form-field {
-    display: inline-flex;
+    display: block;
+    min-width: 0;
 }
 
 :host ::ng-deep .thread-footer .mat-mdc-text-field-wrapper {
@@ -294,6 +339,7 @@ h1 {
     padding: 0 10px;
     border-radius: 999px;
     background: rgba(241, 245, 249, .82);
+    width: auto;
 }
 
 :host ::ng-deep .thread-footer .mdc-notched-outline {
@@ -318,13 +364,19 @@ h1 {
 
 :host ::ng-deep .thread-footer .mat-mdc-chip-set {
     display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 :host ::ng-deep .thread-footer .mat-mdc-chip-set .mdc-evolution-chip-set__chips {
     align-items: center;
+    flex-wrap: nowrap;
     gap: 6px;
     min-width: 0;
     min-height: 0;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 :host ::ng-deep .thread-footer .mat-mdc-standard-chip {
@@ -332,8 +384,9 @@ h1 {
 }
 
 :host ::ng-deep .thread-footer .mat-mdc-chip-input {
-    flex: 0 0 76px;
-    width: 76px;
+    flex: 0 0 9rem;
+    width: 9rem;
+    max-width: 9rem;
 }
 
 .comments-panel {
@@ -400,5 +453,51 @@ a:hover {
     .thread-footer {
         display: grid;
         gap: 12px;
+        align-items: stretch;
+        padding: 12px;
+    }
+
+    .thread-tags {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .tag-list {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .readonly-tag-list {
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .thread-footer app-feedback-card {
+        justify-self: start;
+    }
+
+    :host ::ng-deep .thread-footer .mat-mdc-form-field {
+        display: block;
+        min-width: 0;
+        width: 100%;
+    }
+
+    :host ::ng-deep .thread-footer .mat-mdc-chip-grid,
+    :host ::ng-deep .thread-footer .mat-mdc-chip-set {
+        min-width: 0;
+        width: 100%;
+    }
+
+    :host ::ng-deep .thread-footer .mat-mdc-chip-set .mdc-evolution-chip-set__chips {
+        flex-wrap: wrap;
+    }
+
+    :host ::ng-deep .thread-footer .mat-mdc-chip-input {
+        flex: 1 1 8rem;
+        width: auto;
     }
 }

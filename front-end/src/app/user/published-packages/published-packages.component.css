@@ -80,3 +80,17 @@
 .published-empty {
     margin: 16px;
 }
+
+@media (max-width: 40rem) {
+    .published-packages-panel {
+        margin-right: -12px;
+        margin-left: -12px;
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0;
+    }
+
+    .package-name-cell {
+        min-width: 180px;
+    }
+}

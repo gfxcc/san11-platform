@@ -40,3 +40,9 @@ mat-sidenav-content {
         width: min(86vw, 320px);
     }
 }
+
+@media (max-width: 31.25rem) {
+    :host {
+        --header-height: 104px;
+    }
+}
