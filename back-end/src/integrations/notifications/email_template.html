@@ -1,33 +1,95 @@
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <td align="center">
-            <table width="100%" style="max-width: 900px; min-width: 400px; border: 1px solid rgb(0, 0, 0, 0.1);" cellspacing="0" cellpadding="0">
-                <!-- Header Section -->
-                <tr>
-                    <td style="height: 64px; padding: 0 10px; background-color: #3f51b5; text-align: left;">
-                        <span style="font-size: 30px; color: white">San11 分享平台</span>
-                    </td>
-                    <td style="height: 64px; padding: 0 10px; background-color: #3f51b5; text-align: right;">
-                        <img src="{{receiver_avatar}}"
-                            style="border-radius: 50%; width: 40px; height: 40px; border: 2px solid white; display: inline-block; vertical-align: middle;">
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{subject}}</title>
+</head>
+<body style="margin: 0; padding: 0; background: #f5f7fa; color: #111827; font-family: Inter, Roboto, Helvetica, Arial, 'Noto Sans SC', sans-serif;">
+    <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">{{preheader}}</div>
+    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="width: 100%; background: #f5f7fa;">
+        <tr>
+            <td align="center" style="padding: 28px 12px;">
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="width: 100%; max-width: 600px; overflow: hidden; border: 1px solid rgba(17, 24, 39, .10); border-radius: 16px; background: #ffffff;">
+                    <tr>
+                        <td style="padding: 24px 28px 18px; border-bottom: 1px solid rgba(17, 24, 39, .10); background: #ffffff;">
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td align="left" style="vertical-align: middle;">
+                                        <table role="presentation" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td align="center" style="width: 36px; height: 36px; border-radius: 8px; background: #dbeafe; color: #2563eb; font-size: 15px; font-weight: 850;">11</td>
+                                                <td style="padding-left: 10px; color: #111827; font-size: 18px; font-weight: 850;">San11 分享平台</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td align="right" style="vertical-align: middle;">
+                                        <span style="display: inline-block; padding: 4px 9px; border: 1px solid rgba(37, 99, 235, .34); border-radius: 999px; background: rgba(37, 99, 235, .10); color: #1e40af; font-size: 12px; font-weight: 850; white-space: nowrap;">{{notification_type}}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="margin: 22px 0 7px; color: #1e40af; font-size: 13px; font-weight: 850;">{{kicker}}</p>
+                            <h1 style="margin: 0; color: #111827; font-size: 22px; line-height: 1.25; font-weight: 850; letter-spacing: 0;">{{headline}}</h1>
+                        </td>
+                    </tr>
 
-                    </td>
-                </tr>
+                    <tr>
+                        <td style="padding: 24px 28px 26px; background: #ffffff;">
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="{{avatar_section_style}}">
+                                <tr>
+                                    <td style="width: 48px; vertical-align: middle;">
+                                        <img src="{{receiver_avatar}}" width="42" height="42" alt="" style="display: block; width: 42px; height: 42px; border: 1px solid rgba(17, 24, 39, .10); border-radius: 50%; object-fit: cover; background: #f5f7fa;">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <strong style="display: block; color: #111827; font-size: 15px; font-weight: 850;">{{actor_name}}</strong>
+                                        <span style="display: block; color: #5b6472; font-size: 13px;">{{actor_context}}</span>
+                                    </td>
+                                </tr>
+                            </table>
 
-                <!-- Content Section -->
-                <tr style="height: 100px;">
-                    <td colspan="2" style="padding: 16px 24px; min-height: 100px;">
-                        {{content}}
-                    </td>
-                </tr>
+                            <p style="margin: {{summary_margin}}; color: #5b6472; font-size: 15px; line-height: 1.55;">{{content}}</p>
 
-                <!-- Footer Section -->
-                <tr>
-                    <td colspan="2" align="center" style="height: 64px; background-color: #EDF0F3;">
-                        <a href="https://san11pk.org/settings/notifications" style="margin: 20px 10px;">通知偏好</a>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="{{preview_section_style}}">
+                                <tr>
+                                    <td style="padding: 14px; border: 1px solid rgba(17, 24, 39, .10); border-radius: 12px; background: #ffffff;">
+                                        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="112" style="width: 112px; vertical-align: top;">
+                                                    <img src="{{image_preview}}" width="112" height="84" alt="" style="display: block; width: 112px; height: 84px; border-radius: 8px; object-fit: cover; background: #eef2f7;">
+                                                </td>
+                                                <td style="padding-left: 16px; vertical-align: top;">
+                                                    <h2 style="margin: 0 0 7px; color: #111827; font-size: 16px; line-height: 1.35; font-weight: 850;">{{preview_title}}</h2>
+                                                    <p style="margin: 0; color: #5b6472; font-size: 13px; line-height: 1.5;">{{preview_text}}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="{{cta_section_style}}">
+                                <tr>
+                                    <td style="padding-top: 22px;">
+                                        <a href="{{cta_url}}" style="display: inline-block; min-width: 132px; padding: 11px 18px; border-radius: 999px; background: #2563eb; color: #ffffff; font-size: 14px; font-weight: 850; text-align: center; text-decoration: none;">{{cta_label}}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding: 18px 28px 24px; border-top: 1px solid rgba(17, 24, 39, .10); background: #ffffff; color: #5b6472; font-size: 12px; line-height: 1.5;">
+                            {{footer_reason}}
+                            <div style="margin-top: 8px;">
+                                <a href="{{preferences_url}}" style="color: #1e40af; font-weight: 750; text-decoration: none;">通知偏好</a>
+                                <span style="color: #8892a0;"> · </span>
+                                <a href="{{preferences_url}}" style="color: #1e40af; font-weight: 750; text-decoration: none;">停止此类邮件</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -110,6 +110,8 @@ class UserHandler(HandlerBase):
             receiver_avatar=None,
             content=verification_code,
             link=None,
+            notification_type='账号验证',
+            footer_reason='你收到这封邮件，是因为你正在验证 San11 分享平台账号。',
         ))
 
     def verify_email(self, email: str, verification_code: str, context) -> Tuple[bool, Optional[ModelUser]]:

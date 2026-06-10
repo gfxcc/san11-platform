@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 from app.protos import san11_platform_pb2
 from core.errors.exceptions import InvalidArgument
-from core.models.base import ListOptions, MAX_PAGE_SIZE
+from core.models.base import ListOptions
 from core.resources.name_util import ResourceName
 from core.time_util import get_now, get_timezone
 from models.model_package import ModelPackage
@@ -15,6 +15,7 @@ from models.plugins.tracklifecycle import Action, ModelActivity
 from repositories.resource_repository import repository_for
 
 logger = logging.getLogger(os.path.basename(__file__))
+ACTIVITY_PAGE_SIZE = 1000
 
 
 class AdminHandler:
@@ -24,25 +25,40 @@ class AdminHandler:
         self.activity_repository = activity_repository or repository_for(ModelActivity)
 
     def get_admin_message(self, request, context):
-        users = self._list_all(self.user_repository, order_by='create_time desc')
-        packages = self._list_all(self.package_repository, order_by='create_time desc')
-        activities = self._list_all(self.activity_repository, order_by='create_time desc')
-
         now = get_now()
         window_7d = now - timedelta(days=7)
         window_30d = now - timedelta(days=30)
 
+        total_users = self._count(self.user_repository)
+        new_users_7d = self._count(
+            self.user_repository,
+            filter=self._datetime_filter('create_time', window_7d),
+        )
+        new_users_30d = self._count(
+            self.user_repository,
+            filter=self._datetime_filter('create_time', window_30d),
+        )
+        total_packages = self._count(self.package_repository)
+        package_state_counts = self._package_state_counts()
+        recent_users = self._list_page(
+            self.user_repository,
+            page_size=10,
+            order_by='create_time desc',
+        )
+        top_packages = self._list_page(
+            self.package_repository,
+            page_size=8,
+            order_by='download_count desc, like_count desc',
+        )
+        activities = self._list_matching(
+            self.activity_repository,
+            filter=self._datetime_filter('create_time', window_30d),
+            page_size=ACTIVITY_PAGE_SIZE,
+        )
+
         recent_activities = [
             activity for activity in activities
             if self._as_aware_datetime(activity.create_time) >= window_30d
-        ]
-        recent_users = [
-            user for user in users
-            if self._as_aware_datetime(user.create_time) >= window_7d
-        ]
-        monthly_new_users = [
-            user for user in users
-            if self._as_aware_datetime(user.create_time) >= window_30d
         ]
 
         activity_counts = Counter(activity.action for activity in recent_activities)
@@ -58,23 +74,26 @@ class AdminHandler:
             if current_last_active_at is None or activity_time > current_last_active_at:
                 last_active_at[actor_id] = activity_time
 
-        users_by_id = {user.user_id: user for user in users}
-        resource_state_counts = defaultdict(int)
-        for package in packages:
-            resource_state_counts[self._resource_state_name(package.state)] += 1
+        top_active_users = active_user_activity_counts.most_common(10)
+        users_by_id = self._users_by_id([user_id for user_id, _ in top_active_users])
+        top_packages = sorted(
+            top_packages,
+            key=lambda item: (item.download_count, item.like_count),
+            reverse=True,
+        )[:8]
 
         message = {
             'generatedAt': self._isoformat(now),
             'windowDays': 30,
             'metrics': {
-                'totalUsers': len(users),
-                'newUsers7d': len(recent_users),
-                'newUsers30d': len(monthly_new_users),
+                'totalUsers': total_users,
+                'newUsers7d': new_users_7d,
+                'newUsers30d': new_users_30d,
                 'monthlyActiveUsers': len(active_user_activity_counts),
-                'totalPackages': len(packages),
-                'publicPackages': sum(1 for item in packages if item.state == san11_platform_pb2.ResourceState.NORMAL),
-                'pendingReviews': sum(1 for item in packages if item.state == san11_platform_pb2.ResourceState.UNDER_REVIEW),
-                'hiddenPackages': sum(1 for item in packages if item.state == san11_platform_pb2.ResourceState.HIDDEN),
+                'totalPackages': total_packages,
+                'publicPackages': package_state_counts[san11_platform_pb2.ResourceState.NORMAL],
+                'pendingReviews': package_state_counts[san11_platform_pb2.ResourceState.UNDER_REVIEW],
+                'hiddenPackages': package_state_counts[san11_platform_pb2.ResourceState.HIDDEN],
                 'downloads30d': activity_counts[Action.DOWNLOAD.value],
                 'socialActions30d': sum(activity_counts[action.value] for action in [
                     Action.LIKE,
@@ -89,18 +108,22 @@ class AdminHandler:
                     Action.DELETE,
                 ]),
             },
-            'resourceStates': dict(resource_state_counts),
+            'resourceStates': {
+                self._resource_state_name(state): count
+                for state, count in package_state_counts.items()
+                if count
+            },
             'recentUsers': [
                 self._user_summary(user)
-                for user in users[:10]
+                for user in recent_users[:10]
             ],
             'activeUsers': [
                 self._active_user_summary(user_id, count, users_by_id, last_active_at)
-                for user_id, count in active_user_activity_counts.most_common(10)
+                for user_id, count in top_active_users
             ],
             'topPackages': [
                 self._package_summary(package)
-                for package in sorted(packages, key=lambda item: (item.download_count, item.like_count), reverse=True)[:8]
+                for package in top_packages
             ],
         }
 
@@ -108,12 +131,62 @@ class AdminHandler:
             message=json.dumps(message, indent=4, ensure_ascii=False)
         )
 
-    def _list_all(self, repository, order_by: str):
+    def _count(self, repository, filter: str = '') -> int:
+        list_options = ListOptions(parent=None, filter=filter)
+        if hasattr(repository, 'count'):
+            return repository.count(list_options)
+        return len(repository.list(list_options)[0])
+
+    def _list_page(self, repository, page_size: int, order_by: str = '', filter: str = '', watermark: int = 0):
         return repository.list(ListOptions(
             parent=None,
-            page_size=MAX_PAGE_SIZE,
+            page_size=page_size,
+            watermark=watermark,
             order_by=order_by,
+            filter=filter,
         ))[0]
+
+    def _list_matching(self, repository, filter: str, page_size: int):
+        items = []
+        watermark = 0
+        while True:
+            page = self._list_page(
+                repository,
+                page_size=page_size,
+                filter=filter,
+                watermark=watermark,
+            )
+            items.extend(page)
+            if len(page) < page_size:
+                return items
+            watermark += len(page)
+
+    def _package_state_counts(self):
+        return defaultdict(int, {
+            state: self._count(self.package_repository, filter=f'state={state}')
+            for state in [
+                san11_platform_pb2.ResourceState.NORMAL,
+                san11_platform_pb2.ResourceState.UNDER_REVIEW,
+                san11_platform_pb2.ResourceState.HIDDEN,
+                san11_platform_pb2.ResourceState.SCHEDULED_DELETE,
+                san11_platform_pb2.ResourceState.DELETED,
+            ]
+        })
+
+    def _users_by_id(self, user_ids):
+        users_by_id = {}
+        if not hasattr(self.user_repository, 'get'):
+            return {
+                user.user_id: user
+                for user in self.user_repository.list(ListOptions(parent=None))[0]
+                if user.user_id in user_ids
+            }
+        for user_id in user_ids:
+            try:
+                users_by_id[user_id] = self.user_repository.get(f'users/{user_id}')
+            except Exception as err:
+                logger.warning(f'Failed to load active user {user_id}: {err}')
+        return users_by_id
 
     def _user_summary(self, user: ModelUser) -> dict:
         return {
@@ -175,6 +248,9 @@ class AdminHandler:
         if value.tzinfo:
             return value.astimezone(get_timezone())
         return get_timezone().localize(value)
+
+    def _datetime_filter(self, field_name: str, value: datetime) -> str:
+        return f'{field_name}>="{self._isoformat(value)}"'
 
     def _isoformat(self, value: datetime) -> str:
         return self._as_aware_datetime(value).isoformat()

@@ -13,9 +13,49 @@ from models.plugins.tracklifecycle import Action, ModelActivity
 class FakeRepository:
     def __init__(self, resources):
         self.resources = resources
+        self.list_options = []
 
     def list(self, list_options):
-        return self.resources, ''
+        self.list_options.append(list_options)
+        resources = self._filter(self.resources, list_options.filter)
+        resources = self._sort(resources, list_options.order_by)
+        return resources[
+            list_options.watermark:list_options.watermark + list_options.page_size
+        ], ''
+
+    def count(self, list_options):
+        return len(self._filter(self.resources, list_options.filter))
+
+    def get(self, name):
+        for resource in self.resources:
+            if resource.name == name:
+                return resource
+        raise ValueError(name)
+
+    def _filter(self, resources, filter):
+        if not filter:
+            return resources
+        if filter.startswith('state='):
+            state = int(filter.split('=', 1)[1])
+            return [resource for resource in resources if resource.state == state]
+        if filter.startswith('create_time>='):
+            cutoff = filter.split('"', 2)[1]
+            return [
+                resource for resource in resources
+                if resource.create_time.isoformat() >= cutoff
+            ]
+        raise ValueError(filter)
+
+    def _sort(self, resources, order_by):
+        if order_by == 'create_time desc':
+            return sorted(resources, key=lambda item: item.create_time, reverse=True)
+        if order_by == 'download_count desc, like_count desc':
+            return sorted(
+                resources,
+                key=lambda item: (item.download_count, item.like_count),
+                reverse=True,
+            )
+        return resources
 
 
 class AdminHandlerTest(unittest.TestCase):
@@ -58,6 +98,15 @@ class AdminHandlerTest(unittest.TestCase):
         self.assertEqual(message['resourceStates']['UNDER_REVIEW'], 1)
         self.assertEqual(message['topPackages'][0]['packageName'], '公开资源')
         self.assertEqual(message['activeUsers'][0]['username'], 'author')
+        self.assertFalse(any(
+            options.page_size == 99999999999999
+            for repository in [
+                handler.user_repository,
+                handler.package_repository,
+                handler.activity_repository,
+            ]
+            for options in repository.list_options
+        ))
 
     def _user(self, user_id: int, username: str, user_type: int, create_time):
         return ModelUser(

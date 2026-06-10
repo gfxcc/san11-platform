@@ -47,6 +47,7 @@ class FakeStorage:
         self.list_result: List[Tuple[Dict[str, str]]] = []
         self.exists_result: bool = False
         self.insert_result: int = 7
+        self.count_result: int = 0
         self.calls: List[Tuple[Any, ...]] = []
 
     def get(self, table, parent, resource_id):
@@ -57,6 +58,10 @@ class FakeStorage:
         self.calls.append(('list', table, where_statement,
                            order_statement, limit_statement, params))
         return self.list_result
+
+    def count(self, table, where_statement, params):
+        self.calls.append(('count', table, where_statement, params))
+        return self.count_result
 
     def exists(self, table, parent, resource_id):
         self.calls.append(('exists', table, parent, resource_id))
@@ -104,6 +109,21 @@ class ResourceRepositoryTest(unittest.TestCase):
 
         self.assertEqual(['one', 'two'], [r.value for r in resources])
         self.assertTrue(next_page_token)
+
+    def test_count_delegates_to_storage_with_filter(self):
+        storage = FakeStorage()
+        storage.count_result = 3
+        repository = ResourceRepository(FakeModel, storage=storage)
+
+        self.assertEqual(3, repository.count(
+            ListOptions(parent='users/1', filter='value="one"')))
+
+        _, table, where_statement, params = storage.calls[-1]
+        self.assertEqual('packages', table)
+        self.assertIn('WHERE parent = %(parent)s', where_statement)
+        self.assertIn("data->>'value' =", where_statement)
+        self.assertEqual('users/1', params['parent'])
+        self.assertIn('one', params.values())
 
     def test_find_requires_exactly_one_match(self):
         repository = ResourceRepository(FakeModel)

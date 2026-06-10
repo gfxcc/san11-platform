@@ -1,15 +1,16 @@
 import base64
+import html
 import logging
 import os
-from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
-from typing import Dict, Union, Optional
+from typing import Union, Optional
 
-from apiclient import errors
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
+try:
+    from googleapiclient.errors import HttpError
+except ImportError:
+    HttpError = None
 
 from core.common.env import Env, get_env
 from core.common.visitor import visitor
@@ -76,10 +77,16 @@ class Notifier:
             message = self._service.users().messages().send(
                 userId='me', body={'raw': raw_message}).execute()
             logger.debug(f"Message Id: {message['id']}")
-        except errors.HttpError as error:
-            logger.debug(f"An error occurred: {error}")
+        except Exception as error:
+            if HttpError is not None and isinstance(error, HttpError):
+                logger.debug(f"An error occurred: {error}")
+            else:
+                raise
 
     def _gmail_login(self):
+        from google.oauth2 import service_account
+        from googleapiclient.discovery import build
+
         SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
         credentials = service_account.Credentials.from_service_account_file(
@@ -134,32 +141,127 @@ def notify(sender: ModelUser, receiver: ModelUser, content: str,
                             receiver_avatar=receiver.get_avatar_url(),
                             subject=f'{sender.username} 在 san11pk.org 的新动态',
                             content=content,
-                            link=link))
+                            link=link,
+                            image_preview=image_preview,
+                            actor_name=sender.username,
+                            notification_type='站内动态'))
 
 
 def create_message(receiver: str,
                    receiver_avatar: Optional[str],
                    subject: str, 
                    content: str, 
-                   link: Optional[str]) -> MIMEMultipart:
+                   link: Optional[str],
+                   image_preview: Optional[str] = None,
+                   actor_name: Optional[str] = None,
+                   notification_type: str = '站内通知',
+                   cta_label: str = '查看详情',
+                   footer_reason: str = (
+                       '你收到这封邮件，是因为你开启了 San11 分享平台的邮件通知。'
+                   )) -> MIMEMultipart:
     if receiver_avatar is None:
         receiver_avatar = get_image_url(DEFAULT_USER_AVATAR)
-    if link:
-        content = f'{content} <a href="{get_full_url(link)}">点击查看</a>'
+    preferences_url = get_full_url('settings/notifications')
+    cta_url = get_full_url(link) if link else ''
+    preview_url = get_full_url(image_preview) if image_preview else ''
 
-    message = MIMEMultipart()
+    message = MIMEMultipart('alternative')
     message['from'] = NOTIFIER_EMAIL_ADDRESS
     message['to'] = receiver
     message['subject'] = subject
+    message['List-Unsubscribe'] = f'<{preferences_url}>'
 
     with EMAIL_TEMPLATE_FILE.open('r', encoding='utf-8') as template_file:
         template = template_file.read()
-    template = template.replace('{{receiver_avatar}}', receiver_avatar)
-    template = template.replace('{{content}}', content)
 
-    message.attach(
-        MIMEText(template, 'html'))
+    plain_text = _create_plain_text(
+        content=content,
+        link=cta_url,
+        preferences_url=preferences_url,
+    )
+    html_text = _render_email_template(
+        template=template,
+        subject=subject,
+        content=content,
+        receiver_avatar=receiver_avatar,
+        link=cta_url,
+        image_preview=preview_url,
+        actor_name=actor_name,
+        notification_type=notification_type,
+        cta_label=cta_label,
+        footer_reason=footer_reason,
+        preferences_url=preferences_url,
+    )
+
+    message.attach(MIMEText(plain_text, 'plain', 'utf-8'))
+    message.attach(MIMEText(html_text, 'html', 'utf-8'))
     return message
+
+
+def _create_plain_text(content: str, link: str, preferences_url: str) -> str:
+    lines = [
+        content,
+        '',
+    ]
+    if link:
+        lines.extend(['查看详情:', link, ''])
+    lines.extend(['通知偏好:', preferences_url])
+    return '\n'.join(lines)
+
+
+def _render_email_template(
+        template: str,
+        subject: str,
+        content: str,
+        receiver_avatar: str,
+        link: str,
+        image_preview: str,
+        actor_name: Optional[str],
+        notification_type: str,
+        cta_label: str,
+        footer_reason: str,
+        preferences_url: str) -> str:
+    escaped_content = html.escape(content)
+    escaped_subject = html.escape(subject)
+    escaped_actor_name = html.escape(actor_name or 'San11 分享平台')
+    safe_link = html.escape(link, quote=True)
+    safe_preview_url = html.escape(image_preview, quote=True)
+
+    replacements = {
+        'subject': escaped_subject,
+        'preheader': escaped_content,
+        'notification_type': html.escape(notification_type),
+        'kicker': '你关注的内容有新进展' if link else '账号安全通知',
+        'headline': escaped_content,
+        'receiver_avatar': html.escape(receiver_avatar, quote=True),
+        'actor_name': escaped_actor_name,
+        'actor_context': '来自 San11 分享平台',
+        'content': escaped_content,
+        'image_preview': safe_preview_url,
+        'preview_title': escaped_subject,
+        'preview_text': escaped_content,
+        'cta_url': safe_link,
+        'cta_label': html.escape(cta_label),
+        'footer_reason': html.escape(footer_reason),
+        'preferences_url': html.escape(preferences_url, quote=True),
+        'avatar_section_style': 'margin-bottom: 18px;',
+        'summary_margin': '0 0 18px',
+        'preview_section_style': (
+            'display: table; width: 100%; margin: 0;'
+            if image_preview else
+            'display: none; max-height: 0; overflow: hidden; width: 100%; margin: 0;'
+        ),
+        'cta_section_style': (
+            'display: table;'
+            if link else
+            'display: none; max-height: 0; overflow: hidden;'
+        ),
+    }
+
+    rendered = template
+    for key, value in replacements.items():
+        rendered = rendered.replace(f'{{{{{key}}}}}', value)
+    return rendered
 
 
 class CreationNotifier:

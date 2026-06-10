@@ -63,6 +63,20 @@ class ResourceRepository(Generic[_RESOURCE_T]):
 
         return [self.model_class.from_db(data[0]) for data in resp], next_page_options.to_token()
 
+    def count(self, list_options: ListOptions) -> int:
+        try:
+            where_statement, params = self.model_class._LIST_OPTIONS_ADAPTOR.gen_where(
+                list_options)
+        except ValueError as err:
+            raise InvalidArgument(
+                message=f'Invalid list_options = {list_options}: {err}')
+
+        return self.storage.count(
+            self.model_class._DB_TABLE,
+            where_statement,
+            params,
+        )
+
     def find(self, parent: Optional[str], filter: str) -> _RESOURCE_T:
         items, _ = self.list(ListOptions(parent=parent, filter=filter))
         if not items:

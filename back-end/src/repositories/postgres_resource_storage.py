@@ -23,6 +23,11 @@ class PostgresResourceStorage:
         sql = f"SELECT data FROM {table} {where_statement} {order_statement} {limit_statement}"
         return run_sql_with_param_and_fetch_all(sql, params)
 
+    def count(self, table: str, where_statement: str, params: Dict) -> int:
+        sql = f"SELECT count(*) FROM {table} {where_statement}"
+        row = run_sql_with_param_and_fetch_one(sql, params)
+        return row[0] if row is not None else 0
+
     def exists(self, table: str, parent: Optional[str], resource_id: int) -> bool:
         sql = f'SELECT count(*) FROM {table} WHERE parent=%(parent)s AND resource_id=%(resource_id)s'
         row = run_sql_with_param_and_fetch_one(sql, {

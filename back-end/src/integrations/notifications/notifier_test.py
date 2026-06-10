@@ -7,6 +7,19 @@ from core.common.env import Env
 from integrations.notifications.notifier import Notifier, create_message
 
 
+def _message_text(message):
+    parts = []
+    for part in message.walk():
+        if part.get_content_maintype() == 'multipart':
+            continue
+        payload = part.get_payload(decode=True)
+        if payload is None:
+            continue
+        charset = part.get_content_charset() or 'utf-8'
+        parts.append(payload.decode(charset))
+    return '\n'.join(parts)
+
+
 class NotifierTest(unittest.TestCase):
     def setUp(self):
         self.message = MIMEMultipart()
@@ -60,7 +73,45 @@ class NotifierTest(unittest.TestCase):
             link=None,
         )
 
-        self.assertIn('Content', message.as_string())
+        self.assertIn('Content', _message_text(message))
+
+    def test_create_message_renders_preview_and_cta(self):
+        message = create_message(
+            receiver='receiver@example.com',
+            receiver_avatar='https://example.com/avatar.png',
+            subject='Subject',
+            content='Content',
+            link='packages/123',
+            image_preview='images/preview.png',
+            actor_name='Sender',
+            notification_type='站内动态',
+        )
+
+        rendered = _message_text(message)
+
+        self.assertIn('Sender', rendered)
+        self.assertIn('http://localhost:4200/packages/123', rendered)
+        self.assertIn('http://localhost:4200/images/preview.png', rendered)
+        self.assertEqual(
+            '<http://localhost:4200/settings/notifications>',
+            message['List-Unsubscribe'],
+        )
+
+    def test_create_message_escapes_dynamic_content(self):
+        message = create_message(
+            receiver='receiver@example.com',
+            receiver_avatar='https://example.com/avatar.png',
+            subject='<Subject>',
+            content='<script>alert("x")</script>',
+            link=None,
+            footer_reason='<footer>',
+        )
+
+        rendered = _message_text(message)
+
+        self.assertIn('&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;', rendered)
+        self.assertIn('&lt;footer&gt;', rendered)
+        self.assertNotIn('<script>alert("x")</script>', rendered)
 
 
 if __name__ == '__main__':
