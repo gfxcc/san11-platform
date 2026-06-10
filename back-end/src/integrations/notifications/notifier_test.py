@@ -7,10 +7,12 @@ from core.common.env import Env
 from integrations.notifications.notifier import Notifier, create_message
 
 
-def _message_text(message):
+def _message_text(message, subtype=None):
     parts = []
     for part in message.walk():
         if part.get_content_maintype() == 'multipart':
+            continue
+        if subtype is not None and part.get_content_subtype() != subtype:
             continue
         payload = part.get_payload(decode=True)
         if payload is None:
@@ -107,7 +109,7 @@ class NotifierTest(unittest.TestCase):
             footer_reason='<footer>',
         )
 
-        rendered = _message_text(message)
+        rendered = _message_text(message, subtype='html')
 
         self.assertIn('&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;', rendered)
         self.assertIn('&lt;footer&gt;', rendered)
