@@ -35,31 +35,94 @@
 
                     <tr>
                         <td style="padding: 24px 28px 26px; background: #ffffff;">
-                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="{{avatar_section_style}}">
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="{{context_section_style}}">
                                 <tr>
-                                    <td style="width: 48px; vertical-align: middle;">
-                                        <img src="{{receiver_avatar}}" width="42" height="42" alt="" style="display: block; width: 42px; height: 42px; border: 1px solid rgba(17, 24, 39, .10); border-radius: 50%; object-fit: cover; background: #f5f7fa;">
+                                    <td style="padding: 14px; border: 1px solid rgba(17, 24, 39, .10); border-radius: 12px; background: #f8fafc;">
+                                        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="76" style="width: 76px; vertical-align: top; {{parent_image_style}}">
+                                                    <img src="{{parent_image}}" width="76" height="56" alt="" style="display: block; width: 76px; height: 56px; border-radius: 8px; object-fit: cover; background: #eef2f7;">
+                                                </td>
+                                                <td style="{{parent_text_padding}} vertical-align: top;">
+                                                    <p style="margin: 0 0 4px; color: #1e40af; font-size: 12px; font-weight: 850;">发生在</p>
+                                                    <h2 style="margin: 0 0 4px; color: #111827; font-size: 16px; line-height: 1.35; font-weight: 850;">{{parent_title}}</h2>
+                                                    <p style="margin: 0; color: #5b6472; font-size: 13px; line-height: 1.45;">{{parent_meta}}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
-                                    <td style="vertical-align: middle;">
-                                        <strong style="display: block; color: #111827; font-size: 15px; font-weight: 850;">{{actor_name}}</strong>
-                                        <span style="display: block; color: #5b6472; font-size: 13px;">{{actor_context}}</span>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top: 18px;">
+                                        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="56" style="width: 56px; vertical-align: top; text-align: center;">
+                                                    <img src="{{actor_avatar}}" width="42" height="42" alt="" style="display: block; width: 42px; height: 42px; margin: 0 auto; border: 1px solid rgba(17, 24, 39, .10); border-radius: 50%; object-fit: cover; background: #f5f7fa;">
+                                                    <div style="margin-top: 8px; color: #8892a0; font-size: 12px; font-weight: 750;">{{comment_index}}</div>
+                                                </td>
+                                                <td style="padding-left: 14px; vertical-align: top;">
+                                                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid rgba(17, 24, 39, .10); border-radius: 12px; background: #ffffff;">
+                                                        <tr>
+                                                            <td style="padding: 15px 16px 14px;">
+                                                                <p style="margin: 0 0 4px; color: #111827; font-size: 15px; font-weight: 850;">{{comment_actor_name}}</p>
+                                                                <p style="margin: 0 0 14px; color: #8892a0; font-size: 13px;">{{comment_actor_context}}</p>
+                                                                <div style="color: #111827; font-size: 15px; line-height: 1.65;">{{comment_body}}</div>
+                                                                <div style="height: 1px; margin: 15px 0 10px; background: #eef2f7;"></div>
+                                                                <span style="color: #8892a0; font-size: 13px; font-weight: 750;">查看原文</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr style="{{previous_section_style}}">
+                                    <td style="padding-top: 14px;">
+                                        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #e8edf3; border-radius: 10px; background: #f8fafc;">
+                                            <tr>
+                                                <td style="width: 4px; background: #d9dee7; border-radius: 10px 0 0 10px;"></td>
+                                                <td style="padding: 10px 14px;">
+                                                    <p style="margin: 0 0 4px; color: #5b6472; font-size: 12px; font-weight: 850;">前文</p>
+                                                    <p style="margin: 0; color: #5b6472; font-size: 13px; line-height: 1.5;">{{previous_text}}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
                                 </tr>
                             </table>
 
-                            <p style="margin: {{summary_margin}}; color: #5b6472; font-size: 15px; line-height: 1.55;">{{content}}</p>
-
-                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="{{preview_section_style}}">
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="{{generic_section_style}}">
                                 <tr>
-                                    <td style="padding: 14px; border: 1px solid rgba(17, 24, 39, .10); border-radius: 12px; background: #ffffff;">
-                                        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <td>
+                                        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="{{avatar_section_style}}">
                                             <tr>
-                                                <td width="112" style="width: 112px; vertical-align: top;">
-                                                    <img src="{{image_preview}}" width="112" height="84" alt="" style="display: block; width: 112px; height: 84px; border-radius: 8px; object-fit: cover; background: #eef2f7;">
+                                                <td style="width: 48px; vertical-align: middle;">
+                                                    <img src="{{receiver_avatar}}" width="42" height="42" alt="" style="display: block; width: 42px; height: 42px; border: 1px solid rgba(17, 24, 39, .10); border-radius: 50%; object-fit: cover; background: #f5f7fa;">
                                                 </td>
-                                                <td style="padding-left: 16px; vertical-align: top;">
-                                                    <h2 style="margin: 0 0 7px; color: #111827; font-size: 16px; line-height: 1.35; font-weight: 850;">{{preview_title}}</h2>
-                                                    <p style="margin: 0; color: #5b6472; font-size: 13px; line-height: 1.5;">{{preview_text}}</p>
+                                                <td style="vertical-align: middle;">
+                                                    <strong style="display: block; color: #111827; font-size: 15px; font-weight: 850;">{{actor_name}}</strong>
+                                                    <span style="display: block; color: #5b6472; font-size: 13px;">{{actor_context}}</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <p style="margin: {{summary_margin}}; color: #5b6472; font-size: 15px; line-height: 1.55;">{{content}}</p>
+
+                                        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="{{preview_section_style}}">
+                                            <tr>
+                                                <td style="padding: 14px; border: 1px solid rgba(17, 24, 39, .10); border-radius: 12px; background: #ffffff;">
+                                                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td width="112" style="width: 112px; vertical-align: top;">
+                                                                <img src="{{image_preview}}" width="112" height="84" alt="" style="display: block; width: 112px; height: 84px; border-radius: 8px; object-fit: cover; background: #eef2f7;">
+                                                            </td>
+                                                            <td style="padding-left: 16px; vertical-align: top;">
+                                                                <h2 style="margin: 0 0 7px; color: #111827; font-size: 16px; line-height: 1.35; font-weight: 850;">{{preview_title}}</h2>
+                                                                <p style="margin: 0; color: #5b6472; font-size: 13px; line-height: 1.5;">{{preview_text}}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </td>
                                             </tr>
                                         </table>

@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from unittest.mock import MagicMock, patch
 
 from core.common.env import Env
-from integrations.notifications.notifier import Notifier, create_message
+from integrations.notifications.notifier import EmailContext, Notifier, create_message
 
 
 def _message_text(message, subtype=None):
@@ -114,6 +114,42 @@ class NotifierTest(unittest.TestCase):
         self.assertIn('&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;', rendered)
         self.assertIn('&lt;footer&gt;', rendered)
         self.assertNotIn('<script>alert("x")</script>', rendered)
+
+    def test_create_message_renders_web_like_comment_context(self):
+        message = create_message(
+            receiver='receiver@example.com',
+            receiver_avatar='https://example.com/fallback.png',
+            subject='只是朱颜改 在 san11pk.org 的新动态',
+            content='只是朱颜改 评论了【英雄集结重制版】',
+            link='packages/123/threads/456#comment-8',
+            email_context=EmailContext(
+                headline='只是朱颜改 评论了「英雄集结重制版」',
+                notification_type='评论通知',
+                kicker='网站里有新的讨论动态',
+                actor_name='只是朱颜改',
+                actor_avatar='https://example.com/avatar.png',
+                actor_context='评论了你的内容 · 刚刚',
+                body_text='这个版本我试了一下，SIRE 自动转换之后头像正常了。',
+                cta_label='查看评论',
+                parent_title='英雄集结重制版-1.4.2',
+                parent_type='剧本包',
+                parent_meta='版本更新讨论',
+                parent_image='images/package.png',
+                previous_text='楼主：头像导入后编辑武将页面会闪退。',
+                comment_index='#8',
+            ),
+        )
+
+        rendered = _message_text(message, subtype='html')
+
+        self.assertIn('评论通知', rendered)
+        self.assertIn('英雄集结重制版-1.4.2', rendered)
+        self.assertIn('这个版本我试了一下', rendered)
+        self.assertIn('楼主：头像导入后编辑武将页面会闪退。', rendered)
+        self.assertIn('#8', rendered)
+        self.assertIn('查看评论', rendered)
+        self.assertIn('http://localhost:4200/packages/123/threads/456#comment-8', rendered)
+        self.assertIn('http://localhost:4200/images/package.png', rendered)
 
 
 if __name__ == '__main__':
