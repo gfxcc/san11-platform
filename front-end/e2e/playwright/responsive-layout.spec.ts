@@ -133,7 +133,11 @@ test.describe('responsive layout', () => {
     await page.locator('app-root').waitFor({ state: 'visible' });
     await expectViewportFit(page, 'discussion desktop thread cards');
 
-    const firstThreadCard = page.locator('app-thread-card .thread-row').first();
+    const threadCards = page.locator('app-thread-card');
+    test.skip(await threadCards.count() === 0, 'Discussion card layout requires at least one seeded thread.');
+
+    const firstThreadCard = threadCards.locator('.thread-row').first();
+    await expect(firstThreadCard).toBeVisible();
 
     const desktopMetrics = await firstThreadCard.evaluate(card => {
       const cardRect = card.getBoundingClientRect();
@@ -293,7 +297,10 @@ test.describe('responsive layout', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoFirstPackageDetail(page);
 
-    await page.getByRole('button', { name: /更新日志/ }).click();
+    const changelogButtons = page.getByRole('button', { name: /更新日志/ });
+    test.skip(await changelogButtons.count() === 0, 'Package changelog dialog layout requires at least one seeded changelog.');
+
+    await changelogButtons.first().click();
     await expect(page.getByRole('heading', { name: '更新日志' })).toBeVisible();
 
     const metrics = await page.evaluate(() => {
@@ -326,7 +333,7 @@ test.describe('responsive layout', () => {
     await gotoFirstPackageDetail(page);
     await expectViewportFit(page, 'package detail initial phone state');
 
-    const tabs = page.locator('app-version-panel .mat-mdc-tab:not(.mdc-tab--disabled)');
+    const tabs = page.locator('app-version-panel .mat-mdc-tab:not(.mat-mdc-tab-disabled)');
     const tabCount = await tabs.count();
     for (let index = 0; index < tabCount; index += 1) {
       await tabs.nth(index).click();

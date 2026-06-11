@@ -74,10 +74,10 @@ test.describe('anonymous critical user journeys', () => {
     await page.goto('/');
     await expectCatalogLoaded(page, probe);
 
-    await page.getByRole('combobox', { name: '排序优先' }).click();
-    await page.getByRole('option', { name: '下载量' }).click();
+    const sortByDownloads = page.locator('.dashboard-sort-option', { hasText: '下载量' });
+    await sortByDownloads.click();
     await expectRpcOk(probe, 'ListPackages');
-    await expect(page.getByRole('combobox', { name: '排序优先' })).toContainText('下载量');
+    await expect(sortByDownloads).toHaveAttribute('aria-pressed', 'true');
 
     await page.locator('app-sidebar').getByText('修改工具').click();
     await expect(page).toHaveURL(/\/categories\/2/);
@@ -156,7 +156,7 @@ test.describe('anonymous critical user journeys', () => {
     await page.goto('/');
     await expectCatalogLoaded(page, probe);
 
-    await page.getByRole('button', { name: /创建/ }).click();
+    await page.locator('app-sidebar .create-button').click();
     await expect(page.getByText('上传工具需要登录')).toBeVisible();
 
     await page.getByText('登录', { exact: true }).click();
