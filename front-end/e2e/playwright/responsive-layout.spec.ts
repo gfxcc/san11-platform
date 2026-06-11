@@ -3,13 +3,11 @@ import { expect, Page, test } from '@playwright/test';
 const routes = [
   '/',
   '/categories/1',
-  '/categories/2/packages/120',
   '/discussion',
   '/articles',
   '/signin',
   '/register',
   '/createNew',
-  '/discussion/threads/107',
   '/admin-message-board',
 ];
 
@@ -82,6 +80,34 @@ async function closeOpenOverlay(page: Page): Promise<void> {
   await page.keyboard.press('Escape');
 }
 
+async function gotoFirstPackageDetail(page: Page): Promise<void> {
+  await page.goto('/');
+  await page.locator('app-root').waitFor({ state: 'visible' });
+
+  const packageCards = page.locator('app-package-card');
+  test.skip(await packageCards.count() === 0, 'Package detail layout requires at least one seeded package.');
+
+  const firstPackageCard = packageCards.first();
+  await expect(firstPackageCard).toBeVisible();
+  await firstPackageCard.click();
+  await expect(page).toHaveURL(/\/categories\/\d+\/packages\/\d+/);
+  await page.locator('app-root').waitFor({ state: 'visible' });
+}
+
+async function gotoFirstThreadDetail(page: Page): Promise<void> {
+  await page.goto('/discussion');
+  await page.locator('app-root').waitFor({ state: 'visible' });
+
+  const threadCards = page.locator('app-thread-card');
+  test.skip(await threadCards.count() === 0, 'Thread detail layout requires at least one seeded thread.');
+
+  const firstThreadLink = threadCards.locator('.thread-title').first();
+  await expect(firstThreadLink).toBeVisible();
+  await firstThreadLink.click();
+  await expect(page).toHaveURL(/\/threads\/\d+/);
+  await page.locator('app-root').waitFor({ state: 'visible' });
+}
+
 test.describe('responsive layout', () => {
   for (const viewport of viewports) {
     test(`public routes do not create document-level horizontal overflow on ${viewport.name}`, async ({ page }) => {
@@ -92,6 +118,12 @@ test.describe('responsive layout', () => {
         await page.locator('app-root').waitFor({ state: 'visible' });
         await expectViewportFit(page, `${route} on ${viewport.name}`);
       }
+
+      await gotoFirstPackageDetail(page);
+      await expectViewportFit(page, `first package detail on ${viewport.name}`);
+
+      await gotoFirstThreadDetail(page);
+      await expectViewportFit(page, `first thread detail on ${viewport.name}`);
     });
   }
 
@@ -197,8 +229,7 @@ test.describe('responsive layout', () => {
 
   test('package discussion dialog fits phone viewport', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/categories/2/packages/120');
-    await page.locator('app-root').waitFor({ state: 'visible' });
+    await gotoFirstPackageDetail(page);
 
     const versionHeaderMetrics = await page.locator('app-version-panel .head').evaluate(header => {
       const headerRect = header.getBoundingClientRect();
@@ -260,8 +291,7 @@ test.describe('responsive layout', () => {
 
   test('package changelog dialog fits phone viewport', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/categories/2/packages/120');
-    await page.locator('app-root').waitFor({ state: 'visible' });
+    await gotoFirstPackageDetail(page);
 
     await page.getByRole('button', { name: /更新日志/ }).click();
     await expect(page.getByRole('heading', { name: '更新日志' })).toBeVisible();
@@ -293,8 +323,7 @@ test.describe('responsive layout', () => {
 
   test('package detail safe interactions fit phone viewport', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/categories/2/packages/120');
-    await page.locator('app-root').waitFor({ state: 'visible' });
+    await gotoFirstPackageDetail(page);
     await expectViewportFit(page, 'package detail initial phone state');
 
     const tabs = page.locator('app-version-panel .mat-mdc-tab:not(.mdc-tab--disabled)');
@@ -330,10 +359,8 @@ test.describe('responsive layout', () => {
 
   test('thread detail footer controls do not overlap on phone', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/discussion/threads/107');
-    await page.locator('app-root').waitFor({ state: 'visible' });
+    await gotoFirstThreadDetail(page);
     await expectViewportFit(page, 'thread detail phone state');
-    await expect(page.getByText('综合讨论区')).toBeVisible();
     await expect(page.getByText('获取资源信息失败')).toHaveCount(0);
 
     const footerMetrics = await page.locator('.thread-footer').evaluate(footer => {
@@ -361,8 +388,7 @@ test.describe('responsive layout', () => {
 
   test('thread detail tag controls do not block text on desktop', async ({ page }) => {
     await page.setViewportSize({ width: 1006, height: 844 });
-    await page.goto('/discussion/threads/107');
-    await page.locator('app-root').waitFor({ state: 'visible' });
+    await gotoFirstThreadDetail(page);
     await expectViewportFit(page, 'thread detail desktop footer controls');
     await expect(page.getByPlaceholder('输入标签后按回车')).toHaveCount(0);
 
@@ -403,8 +429,7 @@ test.describe('responsive layout', () => {
 
   test('mobile drawer keeps clear spacing below the fixed header', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/discussion/threads/107');
-    await page.locator('app-root').waitFor({ state: 'visible' });
+    await gotoFirstThreadDetail(page);
 
     await page.getByRole('button', { name: '打开导航' }).click();
     await expect(page.locator('mat-sidenav.mat-drawer-opened')).toBeVisible();
