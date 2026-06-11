@@ -7,8 +7,8 @@
  :root {
     --ck-color-image-caption-background: hsl(0, 0%, 97%);
     --ck-color-image-caption-text: hsl(0, 0%, 20%);
-    --ck-color-mention-background: hsla(341, 100%, 30%, 0.1);
-    --ck-color-mention-text: hsl(341, 100%, 30%);
+    --ck-color-mention-background: rgba(37, 99, 235, .07);
+    --ck-color-mention-text: #1e40af;
     --ck-color-table-caption-background: hsl(0, 0%, 97%);
     --ck-color-table-caption-text: hsl(0, 0%, 20%);
     --ck-highlight-marker-blue: hsl(201, 97%, 72%);
@@ -572,8 +572,29 @@
 /* ckeditor5-mention/theme/mention.css */
 
 .ck-content .mention {
-    background: var(--ck-color-mention-background);
-    color: var(--ck-color-mention-text);
+    display: inline-flex !important;
+    align-items: center;
+    max-width: 100%;
+    min-height: 22px;
+    margin: 0 2px;
+    padding: 0 7px;
+    border: 1px solid rgba(37, 99, 235, .14) !important;
+    border-radius: 999px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .86), rgba(255, 255, 255, .34)),
+        var(--ck-color-mention-background) !important;
+    color: var(--ck-color-mention-text) !important;
+    font-size: .92em;
+    font-weight: 800;
+    line-height: 1.32;
+    text-decoration: none !important;
+    vertical-align: baseline;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78);
+    cursor: default;
+}
+
+.ck-content a.mention {
+    cursor: pointer;
 }
 
 @media print {

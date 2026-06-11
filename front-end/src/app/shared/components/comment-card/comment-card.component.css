@@ -52,12 +52,19 @@
     align-items: center;
     min-height: 22px;
     margin-left: 6px;
-    padding: 0 7px;
+    padding: 0 8px;
+    border: 1px solid var(--identity-chip-border);
     border-radius: 999px;
-    background: var(--primary-soft);
-    color: var(--primary-strong);
-    font-size: .78rem;
-    font-weight: 800;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .86), rgba(255, 255, 255, .34)),
+        var(--identity-chip-bg);
+    color: var(--identity-chip-text);
+    font-size: .76rem;
+    font-weight: 780;
+    line-height: 1.2;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78);
+    cursor: default;
+    user-select: none;
 }
 
 .comment-index {
@@ -220,13 +227,19 @@
     gap: 5px;
     min-width: 0;
     max-width: 100%;
-    min-height: 26px;
-    padding: 0 9px;
-    border: 1px solid rgba(37, 99, 235, .18);
+    min-height: 22px;
+    padding: 0 7px;
+    border: 1px solid var(--mention-chip-border);
     border-radius: 999px;
-    background: var(--primary-soft);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .86), rgba(255, 255, 255, .34)),
+        var(--mention-chip-bg);
     color: var(--primary-strong);
     font: inherit;
+    font-size: .92em;
+    font-weight: 800;
+    line-height: 1.32;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78);
     cursor: pointer;
 }
 
@@ -248,8 +261,10 @@
 }
 
 .mention-chip:hover {
-    border-color: rgba(37, 99, 235, .34);
-    background: rgba(37, 99, 235, .14);
+    border-color: var(--mention-chip-border-hover);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .4)),
+        var(--mention-chip-bg-hover);
 }
 
 .actions-section {

@@ -29,6 +29,26 @@ export class AppComponent {
   ngOnInit(): void {
     this.sidenavService.setSidenav(this.sidenav);
     this.syncLayoutWithViewport();
+    this.applyUiStyle();
+  }
+
+  private applyUiStyle(): void {
+    const queryStyle = new URLSearchParams(window.location.search).get('ui');
+    const storedStyle = localStorage.getItem('san11-ui-style');
+    const style = queryStyle === 'default' || queryStyle === 'glass3'
+      ? queryStyle
+      : storedStyle === 'default' || storedStyle === 'glass3'
+        ? storedStyle
+        : 'glass3';
+
+    localStorage.setItem('san11-ui-style', style);
+    document.body.classList.toggle('ui-style-default', style === 'default');
+    document.body.classList.toggle('ui-style-glass3', style === 'glass3');
+    (window as any).setSan11UiStyle = (nextStyle: 'default' | 'glass3') => {
+      localStorage.setItem('san11-ui-style', nextStyle);
+      document.body.classList.toggle('ui-style-default', nextStyle === 'default');
+      document.body.classList.toggle('ui-style-glass3', nextStyle === 'glass3');
+    };
   }
 
   @HostListener('window:resize')

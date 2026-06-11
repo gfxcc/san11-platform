@@ -79,10 +79,10 @@
     display: inline-flex;
     align-items: center;
     padding: 3px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-control-border);
     border-radius: 999px;
-    background: rgba(248, 250, 252, .9);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7);
+    background: var(--glass-control-bg);
+    box-shadow: var(--glass-control-inset);
 }
 
 .dashboard-sort-index-1 {
@@ -104,14 +104,12 @@
     left: 3px;
     width: var(--dashboard-sort-option-width);
     height: var(--dashboard-sort-option-height);
-    border: 1px solid rgba(37, 99, 235, .22);
+    border: 1px solid var(--glass-active-border);
     border-radius: 999px;
     background:
-        linear-gradient(135deg, rgba(255, 255, 255, .74), rgba(255, 255, 255, .22)),
-        rgba(37, 99, 235, .12);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .72),
-        0 8px 18px rgba(37, 99, 235, .12);
+        var(--glass-active-gradient),
+        var(--glass-active-bg);
+    box-shadow: var(--glass-active-shadow);
     pointer-events: none;
     transform: translateX(var(--dashboard-sort-glass-x));
     transition: transform 220ms cubic-bezier(.2, .8, .2, 1);

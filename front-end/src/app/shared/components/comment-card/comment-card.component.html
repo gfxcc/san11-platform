@@ -39,7 +39,7 @@
                 <!-- <style scoped>
                     @import "ckeditor/contents.css";
                 </style> -->
-                <div class="ck-content" [innerHtml]="this.comment.text">
+                <div class="ck-content mention-content" [innerHtml]="getCommentHtml()">
                 </div>
             </div>
             <div class="action-section">
@@ -48,7 +48,7 @@
                         [dislikeCount]="this.comment.dislikeCount" 
                         [disableClickableBackground]="true"></app-feedback-card>
                 </div>
-                <button class="button" type="submit" mat-button color="primary" (click)="onReply('')">回复</button>
+                <button class="button" type="submit" mat-button color="primary" (click)="onReply()">回复</button>
 
             </div>
         </div>
@@ -75,7 +75,7 @@
                             <button *ngIf="replyMention" type="button" class="mention-chip"
                                 (click)="clearReplyMention()" aria-label="移除回复对象">
                                 <mat-icon>alternate_email</mat-icon>
-                                <span>{{replyMention}}</span>
+                                <span>{{replyMention.username}}</span>
                                 <mat-icon class="mention-chip-close">close</mat-icon>
                             </button>
                         </div>

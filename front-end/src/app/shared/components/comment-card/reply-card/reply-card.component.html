@@ -18,8 +18,7 @@
                 </button>
             </div>
         </div>
-        <div class="reply-text">
-            {{this.reply.text}}
+        <div class="reply-text mention-content" [innerHtml]="getReplyHtml()">
         </div>
         <div class="action-section">
             <div class="feedback-card-wrapper">

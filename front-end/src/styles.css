@@ -40,6 +40,75 @@
 	-webkit-overflow-scrolling: touch;
 }
 
+.ck-content .mention,
+.mention-content .mention,
+a.mention,
+span.mention {
+    display: inline-flex !important;
+    align-items: center;
+    max-width: 100%;
+    min-height: 22px;
+    margin: 0 2px;
+    padding: 0 7px;
+    border: 1px solid var(--mention-chip-border) !important;
+    border-radius: 999px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .86), rgba(255, 255, 255, .34)),
+        var(--mention-chip-bg) !important;
+    color: var(--primary-strong) !important;
+    font-size: .92em;
+    font-weight: 800;
+    line-height: 1.32;
+    text-decoration: none !important;
+    vertical-align: baseline;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78);
+    cursor: default;
+}
+
+.ck-content a.mention,
+.mention-content a.mention,
+a.mention {
+    cursor: pointer;
+}
+
+.ck-content a.mention:hover,
+.mention-content a.mention:hover,
+a.mention:hover {
+    border-color: var(--mention-chip-border-hover) !important;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .4)),
+        var(--mention-chip-bg-hover) !important;
+    color: var(--primary-strong) !important;
+}
+
+.mention-feed-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 3px 0;
+    font-weight: 800;
+}
+
+.mention-feed-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary-strong);
+    font-size: .78rem;
+}
+
+.mention-feed-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .editor-container_inline-editor .editor-container__editor {
 	width: min(795px, calc(100vw - 24px));
 	min-width: 0;
@@ -52,6 +121,24 @@
     --primary-color: #2563eb;
     --primary-strong: #1e40af;
     --primary-soft: #dbeafe;
+    --mention-chip-bg: rgba(37, 99, 235, .07);
+    --mention-chip-bg-hover: rgba(37, 99, 235, .11);
+    --mention-chip-border: rgba(37, 99, 235, .14);
+    --mention-chip-border-hover: rgba(37, 99, 235, .28);
+    --glass-control-bg: rgba(248, 250, 252, .9);
+    --glass-control-border: rgba(17, 24, 39, .1);
+    --glass-control-inset: inset 0 0 0 1px rgba(255, 255, 255, .7);
+    --glass-active-bg: rgba(37, 99, 235, .12);
+    --glass-active-border: rgba(37, 99, 235, .22);
+    --glass-active-shadow: inset 0 1px 0 rgba(255, 255, 255, .72), 0 8px 18px rgba(37, 99, 235, .12);
+    --glass-active-gradient: linear-gradient(135deg, rgba(255, 255, 255, .74), rgba(255, 255, 255, .22));
+    --glass-muted-active-bg: rgba(100, 116, 139, .14);
+    --glass-muted-active-border: rgba(100, 116, 139, .22);
+    --glass-muted-active-gradient: linear-gradient(135deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, .18));
+    --identity-chip-bg: rgba(100, 116, 139, .07);
+    --identity-chip-bg-hover: rgba(100, 116, 139, .1);
+    --identity-chip-border: rgba(100, 116, 139, .14);
+    --identity-chip-text: #64748b;
     --accent-color: #dc2626;
     --success-color: #059669;
     --warning-color: #b45309;
@@ -82,6 +169,36 @@
     --content-max-width: 1240px;
     --clickable-background-color: #eef2f7;
     --clickable-background-color-hover: #e2e8f0;
+}
+
+body.ui-style-default {
+    --glass-control-bg: rgba(248, 250, 252, .9);
+    --glass-control-border: rgba(17, 24, 39, .1);
+    --glass-control-inset: inset 0 0 0 1px rgba(255, 255, 255, .7);
+    --glass-active-bg: rgba(37, 99, 235, .12);
+    --glass-active-border: rgba(37, 99, 235, .22);
+    --glass-active-shadow: inset 0 1px 0 rgba(255, 255, 255, .72), 0 8px 18px rgba(37, 99, 235, .12);
+    --glass-active-gradient: linear-gradient(135deg, rgba(255, 255, 255, .74), rgba(255, 255, 255, .22));
+    --glass-muted-active-bg: rgba(100, 116, 139, .14);
+    --glass-muted-active-border: rgba(100, 116, 139, .22);
+    --glass-muted-active-gradient: linear-gradient(135deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, .18));
+}
+
+body.ui-style-glass3 {
+    --glass-control-bg: rgba(255, 255, 255, .62);
+    --glass-control-border: rgba(17, 24, 39, .12);
+    --glass-control-inset: inset 0 1px 0 rgba(255, 255, 255, .86), inset 0 -1px 0 rgba(15, 23, 42, .03);
+    --glass-active-bg: rgba(37, 99, 235, .13);
+    --glass-active-border: rgba(37, 99, 235, .18);
+    --glass-active-shadow: inset 0 1px 0 rgba(255, 255, 255, .86), 0 6px 16px rgba(37, 99, 235, .08);
+    --glass-active-gradient: linear-gradient(135deg, rgba(255, 255, 255, .82), rgba(255, 255, 255, .28));
+    --glass-muted-active-bg: rgba(100, 116, 139, .1);
+    --glass-muted-active-border: rgba(100, 116, 139, .18);
+    --glass-muted-active-gradient: linear-gradient(135deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .22));
+    --mention-chip-bg: rgba(37, 99, 235, .075);
+    --mention-chip-bg-hover: rgba(37, 99, 235, .12);
+    --identity-chip-bg: rgba(100, 116, 139, .065);
+    --identity-chip-border: rgba(100, 116, 139, .13);
 }
 
 html,
@@ -715,9 +832,11 @@ pre {
     gap: 6px;
     min-height: 32px;
     padding: 0 10px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-control-border);
     border-radius: 999px;
-    background: var(--surface);
+    background:
+        var(--glass-active-gradient),
+        var(--glass-control-bg);
     color: var(--text-muted);
     font-size: .86rem;
     font-weight: 700;
@@ -842,6 +961,9 @@ button.mat-mdc-chip-action {
 
 .mat-mdc-chip-option {
     --mdc-chip-container-shape-radius: 999px;
+    --mdc-chip-elevated-container-color: var(--identity-chip-bg);
+    --mdc-chip-label-text-color: var(--text-muted);
+    --mdc-chip-outline-color: var(--identity-chip-border);
 }
 
 @media (max-width: 40rem) {

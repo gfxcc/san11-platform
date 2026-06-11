@@ -8,6 +8,7 @@ import { NotificationService } from "../../../common/notification.service";
 import { InteractionService } from "../../../common/interaction.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { isAdmin } from '../../../utils/user_util';
+import { buildReplyHtml, MentionTarget, renderMentionContent } from '../../../utils/mention_util';
 
 @Component({
   selector: 'app-comment-card',
@@ -34,7 +35,7 @@ export class CommentCardComponent implements OnInit {
   hideReplyEnter = true;
 
   createReplyLoading = false;
-  replyMention = '';
+  replyMention: MentionTarget | null = null;
 
   constructor(
     private router: Router,
@@ -114,9 +115,9 @@ export class CommentCardComponent implements OnInit {
 
   }
 
-  onReply(event) {
+  onReply(event?: MentionTarget) {
     this.hideReplyEnter = false;
-    this.replyMention = this.parseReplyMention(event);
+    this.replyMention = event ?? null;
     setTimeout(() => {
       this.replyInputElement.nativeElement.value = '';
       this.replyInputElement.nativeElement.focus();
@@ -125,11 +126,11 @@ export class CommentCardComponent implements OnInit {
 
   onCancelReply() {
     this.hideReplyEnter = true;
-    this.replyMention = '';
+    this.replyMention = null;
   }
 
   clearReplyMention() {
-    this.replyMention = '';
+    this.replyMention = null;
     setTimeout(() => this.replyInputElement?.nativeElement.focus());
   }
 
@@ -145,7 +146,7 @@ export class CommentCardComponent implements OnInit {
       this.createReplyLoading = false;
       return;
     }
-    const text = this.replyMention ? `@${this.replyMention}: ${body}` : body;
+    const text = buildReplyHtml(body, this.replyMention ?? undefined);
     const reply = new Reply({
       text: text,
     });
@@ -156,7 +157,7 @@ export class CommentCardComponent implements OnInit {
       next: reply => {
         this.createReplyLoading = false;
         this.hideReplyEnter = true;
-        this.replyMention = '';
+        this.replyMention = null;
         this.comment.replies.push(reply);
         this.replyCreateEvent.emit();
         this.notificationService.success('评论添加 成功!');
@@ -191,8 +192,7 @@ export class CommentCardComponent implements OnInit {
     return isAdmin() || this.authorId === this.comment.authorId;
   }
 
-  private parseReplyMention(value: string): string {
-    const match = /^@(.+?):\s*$/.exec(value || '');
-    return match ? match[1] : '';
+  getCommentHtml(): string {
+    return renderMentionContent(this.comment.text);
   }
 }

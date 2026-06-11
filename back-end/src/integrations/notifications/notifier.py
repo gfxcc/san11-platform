@@ -26,7 +26,7 @@ from models.model_tag import ModelTag
 from models.model_thread import ModelThread
 from models.model_user import DEFAULT_USER_AVATAR, ModelUser, get_user_by_username
 from repositories.resource_repository import repository_for
-from core.html_util import get_mentioned_users, get_text_from_html
+from core.html_util import get_mentions, get_text_from_html
 from core.resources.name_util import get_parent
 from core.resources.resource_parser import find_resource
 from core.resources.resource_view import ResourceViewVisitor, get_resource_url
@@ -693,11 +693,17 @@ class CreationNotifier:
                 )
                 notified_users.add(parent_resource_author.user_id)
 
-        for username in get_mentioned_users(post.content):
+        for mention in get_mentions(post.content):
+            if mention.user_id is None and not mention.username:
+                continue
             try:
-                user = get_user_by_username(username)
+                user = (
+                    ModelUser.from_user_id(mention.user_id)
+                    if mention.user_id is not None else
+                    get_user_by_username(mention.username)
+                )
             except Exception as e:
-                logger.error(f'Failed to get user {username}: {e}')
+                logger.error(f'Failed to get mentioned user {mention}: {e}')
                 continue
             if user.user_id in notified_users:
                 continue

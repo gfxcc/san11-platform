@@ -45,12 +45,19 @@
     align-items: center;
     min-height: 20px;
     margin: 0 6px;
-    padding: 0 7px;
+    padding: 0 8px;
+    border: 1px solid var(--identity-chip-border);
     border-radius: 999px;
-    background: var(--primary-soft);
-    color: var(--primary-strong);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .86), rgba(255, 255, 255, .34)),
+        var(--identity-chip-bg);
+    color: var(--identity-chip-text);
     font-size: .75rem;
-    font-weight: 800;
+    font-weight: 780;
+    line-height: 1.2;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78);
+    cursor: default;
+    user-select: none;
 }
 
 .reply-text {

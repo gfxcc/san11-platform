@@ -5,6 +5,7 @@ import { DeleteReplyRequest, GetUserRequest, Reply, User } from "../../../../../
 import { NotificationService } from "../../../../common/notification.service";
 import { InteractionService } from "../../../../common/interaction.service";
 import { San11PlatformServiceService } from "../../../../service/san11-platform-service.service";
+import { MentionTarget, renderMentionContent } from "../../../../utils/mention_util";
 import { isAdmin } from "../../../../utils/user_util";
 
 
@@ -73,7 +74,14 @@ export class ReplyCardComponent implements OnInit {
   }
 
   onReply() {
-    this.replyEvent.emit('@' + this.user.username + ': ');
+    if (!this.user?.userId || !this.user?.username) {
+      return;
+    }
+    const target: MentionTarget = {
+      userId: this.user.userId,
+      username: this.user.username,
+    };
+    this.replyEvent.emit(target);
   }
 
   getReplyAge() {
@@ -93,5 +101,9 @@ export class ReplyCardComponent implements OnInit {
 
   canDelete(): boolean {
     return isAdmin() || this.authorId === this.reply.authorId;
+  }
+
+  getReplyHtml(): string {
+    return renderMentionContent(this.reply.text);
   }
 }

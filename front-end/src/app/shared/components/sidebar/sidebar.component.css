@@ -86,19 +86,34 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 20px;
-    height: 20px;
+    flex: 0 0 auto;
+    min-width: 24px;
+    height: 22px;
     margin-left: auto;
-    margin-right: 2px;
-    padding: 0 6px;
-    border: 2px solid rgba(255, 255, 255, .92);
+    padding: 0 7px;
+    border: 1px solid rgba(245, 158, 11, .22);
     border-radius: 999px;
-    background: #dc2626;
-    color: #fff;
-    font-size: .7rem;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .24)),
+        rgba(245, 158, 11, .12);
+    color: #92400e;
+    font-size: .72rem;
     line-height: 1;
     font-weight: 850;
-    box-shadow: 0 3px 9px rgba(220, 38, 38, .25);
+    font-variant-numeric: tabular-nums;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .74),
+        0 8px 18px rgba(245, 158, 11, .12);
+}
+
+::ng-deep .nav-list .mat-mdc-list-option[aria-selected="true"] .admin-pending-badge,
+::ng-deep .nav-list .mat-mdc-list-option.mdc-list-item--selected .admin-pending-badge {
+    border-color: var(--glass-active-border);
+    background:
+        var(--glass-active-gradient),
+        var(--glass-active-bg);
+    color: var(--primary-strong);
+    box-shadow: var(--glass-active-shadow);
 }
 
 .nav-link mat-icon {

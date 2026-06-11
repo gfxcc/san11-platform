@@ -56,7 +56,8 @@ import {
   Code,
   HorizontalLine,
   Alignment,
-  CodeBlock
+  CodeBlock,
+  Mention
 } from 'ckeditor5';
 
 @Injectable({
@@ -86,19 +87,63 @@ export class EditorService {
   }
 
   private getUsernameFeedItems(queryText: string) {
-    return this.san11pkService.listUsers(new ListUsersRequest({
+    const query = (queryText || '').trim();
+    if (!query) {
+      return Promise.resolve([]);
+    }
+    const escapedQuery = this.escapeListFilterValue(query);
+
+    const exactRequest = this.san11pkService.listUsers(new ListUsersRequest({
+      pageSize: '1',
+      filter: `username = "${escapedQuery}"`
+    })).toPromise().catch(() => ({ users: [] }));
+
+    const fuzzyRequest = this.san11pkService.listUsers(new ListUsersRequest({
       pageSize: GlobalConstants.usernameFeedPageSize.toString(),
-      filter: `username = "*${queryText}*"`
-    })).toPromise().then(function (result) {
-      return result.users.map(
-        (user: User) => ({
+      filter: `username = "*${escapedQuery}*"`
+    })).toPromise().catch(() => ({ users: [] }));
+
+    return Promise.all([exactRequest, fuzzyRequest]).then(([exactResult, fuzzyResult]) => {
+      const usersById = new Map<string, User>();
+      [...(exactResult.users || []), ...(fuzzyResult.users || [])].forEach((user: User) => {
+        usersById.set(`${user.userId}`, user);
+      });
+
+      return [...usersById.values()]
+        .sort((left: User, right: User) => this.compareMentionUsers(left, right, query))
+        .map((user: User) => ({
           id: `@${user.username}`,
           userId: user.userId,
           username: user.username,
           link: getUserUri(user),
-        })
-      );
+        }));
     });
+  }
+
+  private compareMentionUsers(left: User, right: User, query: string): number {
+    const leftRank = this.getMentionUserRank(left.username, query);
+    const rightRank = this.getMentionUserRank(right.username, query);
+    if (leftRank !== rightRank) {
+      return leftRank - rightRank;
+    }
+    return left.username.localeCompare(right.username, 'zh-Hans-CN');
+  }
+
+  private getMentionUserRank(username: string, query: string): number {
+    const normalizedUsername = (username || '').toLocaleLowerCase();
+    const normalizedQuery = query.toLocaleLowerCase();
+    if (normalizedUsername === normalizedQuery) {
+      return 0;
+    }
+    if (normalizedUsername.startsWith(normalizedQuery)) {
+      return 1;
+    }
+    const index = normalizedUsername.indexOf(normalizedQuery);
+    return index >= 0 ? 2 + index : 1000;
+  }
+
+  private escapeListFilterValue(value: string): string {
+    return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
   }
 
   configEditor(disabled: boolean = true, imageUploadPath: string | undefined, placeholder: string = '请输入...') {
@@ -150,6 +195,7 @@ export class EditorService {
         Alignment,
         CodeBlock,
         Bold,
+        Mention,
         Essentials,
         Heading,
         ImageBlock,
@@ -203,10 +249,12 @@ export class EditorService {
           {
             marker: '@',
             feed: this.getUsernameFeedItems.bind(this),
+            itemRenderer: this.renderMentionFeedItem,
             minimumCharacters: 1,
           }
         ]
       },
+      extraPlugins: [MentionLinksPlugin],
       licenseKey: '',
 
     };
@@ -216,6 +264,23 @@ export class EditorService {
     }
 
     return config;
+  }
+
+  private renderMentionFeedItem(item: any): HTMLElement {
+    const itemElement = document.createElement('span');
+    itemElement.classList.add('mention-feed-item');
+
+    const avatar = document.createElement('span');
+    avatar.classList.add('mention-feed-avatar');
+    avatar.textContent = item.username?.charAt(0) ?? '@';
+
+    const text = document.createElement('span');
+    text.classList.add('mention-feed-name');
+    text.textContent = item.username;
+
+    itemElement.appendChild(avatar);
+    itemElement.appendChild(text);
+    return itemElement;
   }
 
   getData(): string {
@@ -255,4 +320,48 @@ export class EditorService {
     }
   }
 
+}
+
+function MentionLinksPlugin(editor: any) {
+  editor.conversion.for('upcast').elementToAttribute({
+    view: {
+      name: 'a',
+      key: 'data-mention',
+      classes: 'mention',
+      attributes: {
+        href: true,
+        'data-user-id': true,
+      },
+    },
+    model: {
+      key: 'mention',
+      value: (viewItem: any) => editor.plugins.get('Mention').toMentionAttribute(viewItem, {
+        link: viewItem.getAttribute('href'),
+        userId: viewItem.getAttribute('data-user-id'),
+      }),
+    },
+    converterPriority: 'high',
+  });
+
+  editor.conversion.for('downcast').attributeToElement({
+    model: 'mention',
+    view: (modelAttributeValue: any, { writer }: any) => {
+      if (!modelAttributeValue) {
+        return;
+      }
+
+      const userId = modelAttributeValue.userId;
+      const href = modelAttributeValue.link || (userId ? `users/${userId}` : '');
+      return writer.createAttributeElement('a', {
+        class: 'mention',
+        'data-mention': modelAttributeValue.id,
+        'data-user-id': userId,
+        href,
+      }, {
+        priority: 20,
+        id: modelAttributeValue.uid,
+      });
+    },
+    converterPriority: 'high',
+  });
 }
