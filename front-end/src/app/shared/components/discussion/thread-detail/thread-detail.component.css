@@ -197,7 +197,7 @@ h1 {
     overflow: hidden;
 }
 
-.thread-content-card:focus-within:not(:has(.thread-footer :focus)) {
+.thread-content-card-editor-focused {
     border-color: rgba(37, 99, 235, .58);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
 }
@@ -222,7 +222,7 @@ h1 {
     display: none;
 }
 
-:host ::ng-deep .thread-content-card:focus-within:not(:has(.thread-footer :focus)) .ck-editor__top {
+:host ::ng-deep .thread-content-card-editor-focused .ck-editor__top {
     display: block;
 }
 
@@ -236,7 +236,7 @@ h1 {
     border-top: 0;
 }
 
-:host ::ng-deep .thread-content-card:focus-within:not(:has(.thread-footer :focus)) .ck-editor__main {
+:host ::ng-deep .thread-content-card-editor-focused .ck-editor__main {
     border-top: 1px solid var(--border-color);
 }
 

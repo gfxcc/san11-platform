@@ -53,38 +53,50 @@
             </div>
         </div>
 
-        <div *ngIf="this.comment.replies.length!=0" class="replies-section">
+        <div *ngIf="this.comment.replies.length!=0 || !this.hideReplyEnter" class="replies-section">
             <ng-container *ngFor="let reply of this.comment.replies">
                 <app-reply-card [reply]="reply" [resourceOwnerId]="this.resourceOwnerId"
                     (replyDeleteEvent)="onReplyDelete($event)" (replyEvent)="onReply($event)"></app-reply-card>
             </ng-container>
-        </div>
 
-        <div *ngIf="!this.hideReplyEnter" class="reply-section">
+            <div *ngIf="!this.hideReplyEnter" class="reply-section">
 
-            <div *ngIf="!this.createReplyLoading" class="reply-editor-row">
+                <div *ngIf="!this.createReplyLoading" class="reply-editor-row">
 
-                <div mat-card-avatar class="author-image">
-                    <img [hidden]="this.hideAuthorImage" [src]="this.authorImage |
+                    <div mat-card-avatar class="reply-author-avatar">
+                        <img [hidden]="this.hideAuthorImage" [src]="this.authorImage |
                     fullUrl : '48_48'" (load)="this.hideAuthorImage= false;" class="author-image">
+                    </div>
+
+                    <form #replyForm="ngForm" class="reply-composer"
+                        (ngSubmit)="onCreateReply(replyForm.value);replyForm.resetForm();">
+                        <div class="reply-composer-header">
+                            <span>回复</span>
+                            <button *ngIf="replyMention" type="button" class="mention-chip"
+                                (click)="clearReplyMention()" aria-label="移除回复对象">
+                                <mat-icon>alternate_email</mat-icon>
+                                <span>{{replyMention}}</span>
+                                <mat-icon class="mention-chip-close">close</mat-icon>
+                            </button>
+                        </div>
+
+                        <textarea #replyInput type="text" placeholder="写下你的回复" ngModel name="input" required rows="3"
+                            class="reply-input" (keydown)="handleKeyDown($event, replyForm)"></textarea>
+
+                        <div class="actions-section">
+                            <button class="button secondary-action" type="button" mat-button
+                                (click)="onCancelReply()">取消</button>
+                            <button class="button" [disabled]="!replyForm.valid" type="submit" mat-raised-button
+                                color="primary">发送回复</button>
+                        </div>
+                    </form>
                 </div>
 
-                <form #replyForm="ngForm" (ngSubmit)="onCreateReply(replyForm.value);replyForm.resetForm();">
-                    <mat-form-field>
-                        <textarea #replyInput matInput type="text" matInput placeholder="输入回复" ngModel name="input"
-                            class="reply-input" (keydown)="handleKeyDown($event, replyForm)"></textarea>
-                    </mat-form-field>
-
-                    <div class="actions-section">
-                        <span class="example-spacer"></span>
-                        <button class="button" mat-button color="grey" (click)="onCancelReply()">取消</button>
-                        <button class="button" [disabled]="!replyForm.valid" type="submit" mat-raised-button
-                            color="primary">确定</button>
-                    </div>
-                </form>
+                <div *ngIf="this.createReplyLoading" class="reply-loading-state" role="status" aria-live="polite">
+                    <mat-spinner diameter="24"></mat-spinner>
+                    <span>正在发送回复…</span>
+                </div>
             </div>
-
-            <mat-spinner *ngIf="this.createReplyLoading"></mat-spinner>
         </div>
 
     </div>

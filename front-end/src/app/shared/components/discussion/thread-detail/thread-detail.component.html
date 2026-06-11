@@ -70,7 +70,7 @@
                     <div class="author-subtitle">发帖人</div>
                 </aside>
 
-                <div class="thread-content-card">
+                <div class="thread-content-card" [class.thread-content-card-editor-focused]="descEditor_onFocus">
                     <ckeditor class="editor" [data]="this.thread.content" [editor]="this.editorService.getEditorInstance()"
                         (ready)="this.editorService.onReady($event)" (focus)="descEditor_onFocus=true"
                         (blur)="descEditor_onFocus=false" (change)="onDescEditorChange($event)"

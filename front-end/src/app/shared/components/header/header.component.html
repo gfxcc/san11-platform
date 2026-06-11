@@ -67,39 +67,47 @@
                 this.notifications.length" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
         </button>
 
-        <mat-menu #notificationMenu>
+        <mat-menu #notificationMenu class="notification-menu-panel" xPosition="before">
+            <div class="notification-panel-shell">
             <div class="message-panel-header">
                 <div>
                     <p>通知</p>
                     <span>{{notifications.length ? notifications.length + ' 条未读' : '全部已读'}}</span>
                 </div>
-                <button mat-button color="primary" type="button" (click)="openInbox()">
-                    查看全部
+                <button mat-button color="primary" type="button" class="message-panel-link" (click)="openInbox()">
+                    <span>查看全部</span>
                 </button>
             </div>
             <div class="message-panel-placeholder" *ngIf="notifications.length
                 === 0">
-                <mat-icon>mark_email_read</mat-icon>
-                <p>
-                    没有未读通知
-                </p>
+                <div class="message-empty-icon">
+                    <mat-icon>mark_email_read</mat-icon>
+                </div>
+                <strong>没有未读通知</strong>
+                <p>新的评论、回复、审核和系统消息会显示在这里。</p>
+                <button mat-stroked-button color="primary" type="button" (click)="openInbox()">
+                    打开收件箱
+                </button>
             </div>
-            <ng-template [matMenuContent]="notifications">
+            <div class="notification-list" *ngIf="notifications.length > 0">
                 <ng-container *ngFor="let notification of notifications; let i=
                     index">
                     <button mat-menu-item (click)="openNotification(notification, i)" class="notification-button">
-                        <!-- <p class="notification-card">
-                            {{notification.content}}
-                        </p> -->
                         <app-notification-card [notification]="notification"></app-notification-card>
                     </button>
                 </ng-container>
-            </ng-template>
+            </div>
 
-            <button *ngIf="notifications.length> 0" mat-menu-item class="clear-notifications" (click)="onClearAll()">
-                <mat-icon>clear_all</mat-icon>
-                <span>全部标为已读</span>
-            </button>
+            <div *ngIf="notifications.length> 0" class="message-panel-footer">
+                <button mat-button type="button" class="clear-notifications" (click)="onClearAll()">
+                    <mat-icon>done_all</mat-icon>
+                    <span>全部标为已读</span>
+                </button>
+                <button mat-button color="primary" type="button" (click)="openInbox()">
+                    收件箱
+                </button>
+            </div>
+            </div>
         </mat-menu>
 
         <button mat-button class="account-trigger" [matMenuTriggerFor]="accountMenu">

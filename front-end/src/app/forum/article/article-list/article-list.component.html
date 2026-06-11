@@ -1,14 +1,20 @@
 <div class="article-page">
-    <section class="article-header">
+    <section class="article-header surface-panel">
         <div>
             <span class="article-kicker">社区文章</span>
             <h1>攻略、教程与更新</h1>
             <p>浏览玩家发布的长文内容、工具说明和平台动态。</p>
         </div>
 
-        <div class="article-summary" *ngIf="articles != undefined">
-            <mat-icon>auto_stories</mat-icon>
-            <span>{{articles.length}} 篇文章</span>
+        <div class="article-toolbar" *ngIf="articles != undefined">
+            <div class="article-summary">
+                <mat-icon>auto_stories</mat-icon>
+                <span>{{articles.length}} 篇文章</span>
+            </div>
+            <a mat-flat-button color="primary" routerLink="/createNew" [queryParams]="{selected: '11'}">
+                <mat-icon>add</mat-icon>
+                发布文章
+            </a>
         </div>
     </section>
 

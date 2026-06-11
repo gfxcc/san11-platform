@@ -123,11 +123,12 @@ export class CommentBoardComponent implements OnInit {
   }
 
   loadComments(order?: string) {
-    this.progressService.loading();
-
     if (order === this.commentsOrder) {
       return;
     }
+
+    this.progressService.loading();
+
     // Set order if it is specified.
     if (order) {
       this.commentsOrder = order;
@@ -151,6 +152,10 @@ export class CommentBoardComponent implements OnInit {
           this.notificationService.warn('获取评论列表失败: ' + error.statusMessage);
         }
       });
+  }
+
+  selectCommentOrder(order: string): void {
+    this.loadComments(order);
   }
 
   computeCommentCount(comments: Comment[]): string {

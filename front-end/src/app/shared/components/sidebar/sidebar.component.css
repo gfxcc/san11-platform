@@ -1,7 +1,8 @@
 .sidebar-shell {
-    min-height: calc(100vh - var(--header-height));
+    height: calc(100vh - var(--header-height));
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     padding: 14px 10px 12px;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 250, 252, .92)),
@@ -26,10 +27,17 @@
 
 .category-section {
     display: block;
-    flex: 1 1 auto;
+    flex: 1 1 0;
+    min-height: 0;
     overflow-y: auto;
     padding: 12px 0 10px;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+.category-section::-webkit-scrollbar {
+    display: none;
 }
 
 .nav-list {
@@ -165,8 +173,8 @@ footer>a:hover {
 
 @media (max-width: 40rem) {
     .sidebar-shell {
-        min-height: calc(100dvh - var(--header-height));
-        padding: 20px 12px 14px;
+        height: calc(100dvh - var(--header-height));
+        padding: 20px 12px max(14px, env(safe-area-inset-bottom));
     }
 
     .create-button {
@@ -176,6 +184,12 @@ footer>a:hover {
 
     .category-section {
         padding-top: 14px;
+        padding-bottom: max(96px, calc(env(safe-area-inset-bottom) + 72px));
+    }
+
+    .footer-section {
+        flex: 0 0 auto;
+        padding-bottom: max(4px, env(safe-area-inset-bottom));
     }
 }
 

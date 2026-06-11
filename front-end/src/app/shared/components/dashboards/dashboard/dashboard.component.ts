@@ -164,6 +164,19 @@ export class DashboardComponent implements OnInit {
     this.loadPackages()
   }
 
+  selectOrder(order: string): void {
+    if (this.selectedOrder === order) {
+      return;
+    }
+    this.selectedOrder = order;
+    this.onOrderChanged(null);
+  }
+
+  get orderClass(): string {
+    const index = Math.max(0, this.orderOptions.findIndex(option => option.value === this.selectedOrder));
+    return `dashboard-sort-index-${index}`;
+  }
+
   clearFilter(): void {
     this.router.navigate([], {
       relativeTo: this.route,

@@ -11,21 +11,23 @@
         </button>
     </header>
 
-    <section class="inbox-summary surface-panel">
+    <section class="inbox-summary surface-panel" [class.inbox-summary-unread]="selectedFilter === 'unread'"
+        [class.inbox-summary-read]="selectedFilter === 'read'" role="group" aria-label="通知筛选">
+        <span class="inbox-filter-glass" aria-hidden="true"></span>
         <button type="button" class="inbox-filter" [class.inbox-filter-active]="selectedFilter === 'all'"
-            (click)="setFilter('all')">
+            [attr.aria-pressed]="selectedFilter === 'all'" (click)="setFilter('all')">
             <mat-icon>all_inbox</mat-icon>
             <span>全部</span>
             <strong>{{notifications.length}}</strong>
         </button>
         <button type="button" class="inbox-filter" [class.inbox-filter-active]="selectedFilter === 'unread'"
-            (click)="setFilter('unread')">
+            [attr.aria-pressed]="selectedFilter === 'unread'" (click)="setFilter('unread')">
             <mat-icon>mark_email_unread</mat-icon>
             <span>未读</span>
             <strong>{{unreadCount}}</strong>
         </button>
         <button type="button" class="inbox-filter" [class.inbox-filter-active]="selectedFilter === 'read'"
-            (click)="setFilter('read')">
+            [attr.aria-pressed]="selectedFilter === 'read'" (click)="setFilter('read')">
             <mat-icon>mark_email_read</mat-icon>
             <span>已读</span>
             <strong>{{readCount}}</strong>

@@ -188,7 +188,7 @@ def create_message(receiver: str,
         email_context.actor_avatar = receiver_avatar
     preferences_url = get_full_url('settings/notifications')
     cta_url = get_full_url(link) if link else ''
-    preview_url = get_full_url(image_preview) if image_preview else ''
+    preview_url = _resolve_image_url(image_preview) if image_preview else ''
 
     message = MIMEMultipart('alternative')
     message['from'] = NOTIFIER_EMAIL_ADDRESS
@@ -295,6 +295,7 @@ def _render_email_template(
         'actor_context': '来自 San11 分享平台',
         'content': escaped_content,
         'image_preview': safe_preview_url,
+        'preview_image_style': '' if image_preview else 'display: none;',
         'preview_title': escaped_subject,
         'preview_text': escaped_content,
         'cta_url': safe_link,
@@ -314,6 +315,7 @@ def _render_email_template(
         'comment_body': '',
         'previous_section_style': 'display: none;',
         'previous_text': '',
+        'source_link_style': 'display: none;',
         'generic_section_style': 'display: table; width: 100%;',
         'avatar_section_style': 'margin-bottom: 18px;',
         'summary_margin': '0 0 18px',
@@ -341,7 +343,7 @@ def _render_context_email_template(
         link: str,
         preferences_url: str,
         context: EmailContext) -> str:
-    parent_image = get_full_url(context.parent_image) if context.parent_image else ''
+    parent_image = _resolve_image_url(context.parent_image) if context.parent_image else ''
     replacements = {
         'subject': html.escape(subject),
         'preheader': html.escape(context.body_text),
@@ -353,6 +355,7 @@ def _render_context_email_template(
         'actor_context': '',
         'content': '',
         'image_preview': '',
+        'preview_image_style': 'display: none;',
         'preview_title': '',
         'preview_text': '',
         'cta_url': html.escape(link, quote=True),
@@ -370,7 +373,7 @@ def _render_context_email_template(
                 if item
             )
         ),
-        'actor_avatar': html.escape(get_full_url(context.actor_avatar), quote=True),
+        'actor_avatar': html.escape(_resolve_image_url(context.actor_avatar), quote=True),
         'comment_index': html.escape(context.comment_index),
         'comment_actor_name': html.escape(context.actor_name),
         'comment_actor_context': html.escape(context.actor_context),
@@ -379,6 +382,12 @@ def _render_context_email_template(
             '' if context.previous_text else 'display: none;'
         ),
         'previous_text': html.escape(context.previous_text),
+        'source_link_style': (
+            'display: inline-block; color: #64748b; font-size: 13px; '
+            'font-weight: 750; text-decoration: none;'
+            if link else
+            'display: none;'
+        ),
         'generic_section_style': 'display: none; max-height: 0; overflow: hidden;',
         'avatar_section_style': '',
         'summary_margin': '0',
@@ -401,6 +410,12 @@ def _escape_multiline(text: str) -> str:
     if not lines:
         return ''
     return '<br>'.join(lines)
+
+
+def _resolve_image_url(uri: str) -> str:
+    if uri.startswith('http'):
+        return uri
+    return get_image_url(uri)
 
 
 def _text_excerpt(content: str, max_len: int = 220) -> str:

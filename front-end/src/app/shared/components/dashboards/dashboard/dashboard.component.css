@@ -71,8 +71,78 @@
     flex-shrink: 0;
 }
 
-.sort-field {
-    width: 150px;
+.dashboard-sort-control {
+    --dashboard-sort-option-width: 76px;
+    --dashboard-sort-option-height: 34px;
+    --dashboard-sort-glass-x: 0%;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: rgba(248, 250, 252, .9);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7);
+}
+
+.dashboard-sort-index-1 {
+    --dashboard-sort-glass-x: 100%;
+}
+
+.dashboard-sort-index-2 {
+    --dashboard-sort-glass-x: 200%;
+}
+
+.dashboard-sort-index-3 {
+    --dashboard-sort-glass-x: 300%;
+}
+
+.dashboard-sort-glass {
+    position: absolute;
+    z-index: 0;
+    top: 3px;
+    left: 3px;
+    width: var(--dashboard-sort-option-width);
+    height: var(--dashboard-sort-option-height);
+    border: 1px solid rgba(37, 99, 235, .22);
+    border-radius: 999px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .74), rgba(255, 255, 255, .22)),
+        rgba(37, 99, 235, .12);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .72),
+        0 8px 18px rgba(37, 99, 235, .12);
+    pointer-events: none;
+    transform: translateX(var(--dashboard-sort-glass-x));
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.dashboard-sort-option {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--dashboard-sort-option-width);
+    height: var(--dashboard-sort-option-height);
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: .82rem;
+    font-weight: 850;
+    cursor: pointer;
+    transition: color var(--animation-duration) var(--animation-timing-curve);
+}
+
+.dashboard-sort-option:hover {
+    color: var(--text-color);
+}
+
+.dashboard-sort-option-active {
+    color: var(--primary-strong);
 }
 
 :host ::ng-deep .tag-create-field .mat-mdc-form-field-subscript-wrapper,
@@ -258,6 +328,15 @@
 
     .search-refinement-actions {
         justify-content: flex-start;
+    }
+
+    .dashboard-sort-control {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    .dashboard-sort-option {
+        flex: 0 0 var(--dashboard-sort-option-width);
     }
 
     .sort-field {

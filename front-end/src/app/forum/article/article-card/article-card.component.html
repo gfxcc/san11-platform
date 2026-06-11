@@ -8,6 +8,10 @@
     <div class="article-content">
         <header class="article-card-header">
             <div class="title-row">
+                <span class="article-type-pill">
+                    <mat-icon>article</mat-icon>
+                    文章
+                </span>
                 <h2>{{article.subject}}</h2>
 
                 <span class="status-badge" [hidden]="!((isAdmin() || isAuthor()) && article.state!=1)">
@@ -31,10 +35,12 @@
         </p>
 
         <footer class="entry-footer">
-            <span class="meta-pill">
-                <mat-icon>auto_stories</mat-icon>
-                {{article.viewCount || 0}}
-            </span>
+            <div class="article-metrics">
+                <span class="meta-pill">
+                    <mat-icon>visibility</mat-icon>
+                    {{article.viewCount || 0}}
+                </span>
+            </div>
             <span class="read-link">
                 阅读全文
                 <mat-icon>arrow_forward</mat-icon>

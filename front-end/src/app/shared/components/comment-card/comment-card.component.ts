@@ -34,6 +34,7 @@ export class CommentCardComponent implements OnInit {
   hideReplyEnter = true;
 
   createReplyLoading = false;
+  replyMention = '';
 
   constructor(
     private router: Router,
@@ -115,14 +116,21 @@ export class CommentCardComponent implements OnInit {
 
   onReply(event) {
     this.hideReplyEnter = false;
+    this.replyMention = this.parseReplyMention(event);
     setTimeout(() => {
-      this.replyInputElement.nativeElement.value = event;
+      this.replyInputElement.nativeElement.value = '';
       this.replyInputElement.nativeElement.focus();
     });
   }
 
   onCancelReply() {
     this.hideReplyEnter = true;
+    this.replyMention = '';
+  }
+
+  clearReplyMention() {
+    this.replyMention = '';
+    setTimeout(() => this.replyInputElement?.nativeElement.focus());
   }
 
   onCreateReply(value) {
@@ -132,7 +140,12 @@ export class CommentCardComponent implements OnInit {
     }
 
     this.createReplyLoading = true;
-    const text = value.input;
+    const body = (value.input || '').trim();
+    if (!body) {
+      this.createReplyLoading = false;
+      return;
+    }
+    const text = this.replyMention ? `@${this.replyMention}: ${body}` : body;
     const reply = new Reply({
       text: text,
     });
@@ -143,6 +156,7 @@ export class CommentCardComponent implements OnInit {
       next: reply => {
         this.createReplyLoading = false;
         this.hideReplyEnter = true;
+        this.replyMention = '';
         this.comment.replies.push(reply);
         this.replyCreateEvent.emit();
         this.notificationService.success('评论添加 成功!');
@@ -175,5 +189,10 @@ export class CommentCardComponent implements OnInit {
 
   canDelete(): boolean {
     return isAdmin() || this.authorId === this.comment.authorId;
+  }
+
+  private parseReplyMention(value: string): string {
+    const match = /^@(.+?):\s*$/.exec(value || '');
+    return match ? match[1] : '';
   }
 }

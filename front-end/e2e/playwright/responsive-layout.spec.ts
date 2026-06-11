@@ -10,6 +10,7 @@ const routes = [
   '/register',
   '/createNew',
   '/discussion/threads/107',
+  '/admin-message-board',
 ];
 
 const viewports = [
@@ -136,6 +137,62 @@ test.describe('responsive layout', () => {
 
     expect(phoneMetrics.cardRight).toBeLessThanOrEqual(phoneMetrics.viewportWidth);
     expect(phoneMetrics.sideTop).toBeGreaterThan(phoneMetrics.titleBottom ?? 0);
+  });
+
+  test('admin workspace stays dense and usable on phone', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/admin-message-board');
+    await page.locator('app-root').waitFor({ state: 'visible' });
+    await expectViewportFit(page, 'admin workspace phone state');
+
+    const adminMetrics = await page.evaluate(() => {
+      const metricCards = Array.from(document.querySelectorAll('.metric-card'))
+        .slice(0, 6)
+        .map(card => {
+          const rect = card.getBoundingClientRect();
+          return {
+            height: Math.round(rect.height),
+            right: Math.round(rect.right),
+            width: Math.round(rect.width),
+          };
+        });
+      const panelHeaders = Array.from(document.querySelectorAll('.panel-header'))
+        .map(header => Math.round(header.getBoundingClientRect().height));
+      const reviewItem = document.querySelector('.review-item')?.getBoundingClientRect();
+      const eventCard = document.querySelector('.event-card')?.getBoundingClientRect();
+      const visibleUserTexts = Array.from(document.querySelectorAll('.user-row .user-text'))
+        .map(element => {
+          const rect = element.getBoundingClientRect();
+          return {
+            display: getComputedStyle(element).display,
+            text: (element.textContent ?? '').trim(),
+            width: Math.round(rect.width),
+          };
+        });
+
+      return {
+        eventRight: eventCard ? Math.round(eventCard.right) : null,
+        metricCards,
+        panelHeaderMaxHeight: Math.max(0, ...panelHeaders),
+        reviewItemRight: reviewItem ? Math.round(reviewItem.right) : null,
+        visibleUserTexts,
+        viewportWidth: document.documentElement.clientWidth,
+      };
+    });
+
+    expect(adminMetrics.metricCards.length).toBeGreaterThan(0);
+    expect(Math.max(...adminMetrics.metricCards.map(card => card.height))).toBeLessThanOrEqual(112);
+    expect(Math.max(...adminMetrics.metricCards.map(card => card.right))).toBeLessThanOrEqual(adminMetrics.viewportWidth);
+    expect(adminMetrics.panelHeaderMaxHeight).toBeLessThanOrEqual(76);
+    if (adminMetrics.reviewItemRight !== null) {
+      expect(adminMetrics.reviewItemRight).toBeLessThanOrEqual(adminMetrics.viewportWidth);
+    }
+    if (adminMetrics.eventRight !== null) {
+      expect(adminMetrics.eventRight).toBeLessThanOrEqual(adminMetrics.viewportWidth);
+    }
+    if (adminMetrics.visibleUserTexts.length > 0) {
+      expect(adminMetrics.visibleUserTexts.every(user => user.display !== 'none' && user.width > 0 && user.text.length > 0)).toBe(true);
+    }
   });
 
   test('package discussion dialog fits phone viewport', async ({ page }) => {
@@ -367,5 +424,48 @@ test.describe('responsive layout', () => {
 
     expect(drawerMetrics.drawerRight).toBeLessThanOrEqual(drawerMetrics.viewportWidth);
     expect((drawerMetrics.createTop ?? 0) - (drawerMetrics.drawerTop ?? 0)).toBeGreaterThanOrEqual(22);
+  });
+
+  test('mobile drawer keeps admin navigation reachable without visible scrollbar', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 640 });
+    await page.addInitScript(() => {
+      localStorage.setItem('userId', '1');
+      localStorage.setItem('username', 'admin');
+      localStorage.setItem('userType', 'ADMIN');
+    });
+    await page.goto('/admin-message-board');
+    await page.locator('app-root').waitFor({ state: 'visible' });
+
+    await page.getByRole('button', { name: '打开导航' }).click();
+    await expect(page.locator('mat-sidenav.mat-drawer-opened')).toBeVisible();
+    await expectViewportFit(page, 'compact mobile drawer open');
+
+    const drawerMetrics = await page.evaluate(() => {
+      const section = document.querySelector('app-sidebar .category-section') as HTMLElement | null;
+      if (section) {
+        section.scrollTop = section.scrollHeight;
+      }
+      const adminOption = document.querySelector('app-sidebar .admin-nav-option')?.getBoundingClientRect();
+      const sectionStyle = section ? getComputedStyle(section) : null;
+      const sectionRect = section?.getBoundingClientRect();
+
+      return {
+        adminBottom: adminOption ? Math.round(adminOption.bottom) : null,
+        adminTop: adminOption ? Math.round(adminOption.top) : null,
+        categoryBottom: sectionRect ? Math.round(sectionRect.bottom) : null,
+        categoryScrollTop: section ? Math.round(section.scrollTop) : null,
+        categoryScrollbarWidth: sectionStyle?.scrollbarWidth ?? null,
+        categoryPaddingBottom: sectionStyle ? Number.parseFloat(sectionStyle.paddingBottom) : null,
+        viewportHeight: window.innerHeight,
+      };
+    });
+
+    expect(drawerMetrics.categoryScrollbarWidth).toBe('none');
+    expect(drawerMetrics.categoryPaddingBottom).toBeGreaterThanOrEqual(72);
+    expect(drawerMetrics.categoryScrollTop).toBeGreaterThan(0);
+    expect(drawerMetrics.adminTop).not.toBeNull();
+    expect(drawerMetrics.adminBottom).not.toBeNull();
+    expect(drawerMetrics.adminTop).toBeGreaterThanOrEqual(0);
+    expect(drawerMetrics.adminBottom).toBeLessThanOrEqual(drawerMetrics.viewportHeight - 16);
   });
 });

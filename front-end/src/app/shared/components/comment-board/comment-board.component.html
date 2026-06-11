@@ -4,19 +4,20 @@
             <span>{{this.commentCount}}</span>
             <span>条评论</span>
         </div>
-        <button mat-button class="sort-button" [matMenuTriggerFor]="menu">
-            <mat-icon>sort</mat-icon>
-            {{commentsOrder === 'create_time desc' ? '最新评论' : '最早评论'}}
-        </button>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="this.loadComments(&quot;create_time&quot;)">
-                <span>创建先后</span>
+        <div class="comment-sort-control" [class.comment-sort-latest]="commentsOrder === 'create_time desc'"
+            role="group" aria-label="评论排序">
+            <span class="comment-sort-glass" aria-hidden="true"></span>
+            <button type="button" class="comment-sort-option" [class.comment-sort-option-active]="commentsOrder !==
+                'create_time desc'" [attr.aria-pressed]="commentsOrder !== 'create_time desc'"
+                (click)="selectCommentOrder('create_time')">
+                最早
             </button>
-            <button mat-menu-item (click)="this.loadComments(&quot;create_time
-                desc&quot;)">
-                <span>最新评论</span>
+            <button type="button" class="comment-sort-option" [class.comment-sort-option-active]="commentsOrder ===
+                'create_time desc'" [attr.aria-pressed]="commentsOrder === 'create_time desc'"
+                (click)="selectCommentOrder('create_time desc')">
+                最新
             </button>
-        </mat-menu>
+        </div>
     </div>
 
     <div class="header">
@@ -44,7 +45,10 @@
             </div>
         </div>
 
-        <mat-spinner *ngIf="this.sendCommentLoading"></mat-spinner>
+        <div *ngIf="this.sendCommentLoading" class="comment-loading-state" role="status" aria-live="polite">
+            <mat-spinner diameter="28"></mat-spinner>
+            <span>正在发布评论…</span>
+        </div>
     </div>
 
     <div class="contents">

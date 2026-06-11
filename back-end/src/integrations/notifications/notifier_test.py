@@ -93,7 +93,7 @@ class NotifierTest(unittest.TestCase):
 
         self.assertIn('Sender', rendered)
         self.assertIn('http://localhost:4200/packages/123', rendered)
-        self.assertIn('http://localhost:4200/images/preview.png', rendered)
+        self.assertIn('https://storage.googleapis.com/san11-resources/images/preview.png', rendered)
         self.assertEqual(
             '<http://localhost:4200/settings/notifications>',
             message['List-Unsubscribe'],
@@ -149,7 +149,8 @@ class NotifierTest(unittest.TestCase):
         self.assertIn('#8', rendered)
         self.assertIn('查看评论', rendered)
         self.assertIn('http://localhost:4200/packages/123/threads/456#comment-8', rendered)
-        self.assertIn('http://localhost:4200/images/package.png', rendered)
+        self.assertIn('href="http://localhost:4200/packages/123/threads/456#comment-8"', rendered)
+        self.assertIn('https://storage.googleapis.com/san11-resources/images/package.png', rendered)
 
 
 if __name__ == '__main__':

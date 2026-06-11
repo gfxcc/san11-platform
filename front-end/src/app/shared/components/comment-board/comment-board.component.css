@@ -19,8 +19,69 @@
     font-weight: 850;
 }
 
-.sort-button {
+.comment-sort-control {
+    --comment-sort-option-width: 56px;
+    --comment-sort-option-height: 32px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px;
+    border: 1px solid var(--border-color);
     border-radius: 999px;
+    background: rgba(248, 250, 252, .9);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7);
+}
+
+.comment-sort-glass {
+    position: absolute;
+    z-index: 0;
+    top: 3px;
+    left: 3px;
+    width: var(--comment-sort-option-width);
+    height: var(--comment-sort-option-height);
+    border: 1px solid rgba(37, 99, 235, .22);
+    border-radius: 999px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .74), rgba(255, 255, 255, .22)),
+        rgba(37, 99, 235, .12);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .72),
+        0 8px 18px rgba(37, 99, 235, .12);
+    pointer-events: none;
+    transform: translateX(0);
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.comment-sort-latest .comment-sort-glass {
+    transform: translateX(var(--comment-sort-option-width));
+}
+
+.comment-sort-option {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--comment-sort-option-width);
+    height: var(--comment-sort-option-height);
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: .86rem;
+    font-weight: 850;
+    cursor: pointer;
+    transition: color var(--animation-duration) var(--animation-timing-curve);
+}
+
+.comment-sort-option:hover {
+    color: var(--text-color);
+}
+
+.comment-sort-option-active {
+    color: var(--primary-strong);
 }
 
 .header-wrapper {
@@ -29,6 +90,7 @@
 
 .header {
     width: 100%;
+    min-height: 52px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,6 +100,27 @@
     width: 100%;
     display: flex;
     gap: 12px;
+}
+
+.comment-loading-state {
+    width: 100%;
+    min-height: 88px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
+    color: var(--text-muted);
+    font-size: .88rem;
+    font-weight: 800;
+}
+
+.comment-loading-state mat-spinner {
+    width: 28px !important;
+    height: 28px !important;
+    flex: 0 0 auto;
 }
 
 .author-image {
@@ -158,5 +241,9 @@ h5 {
 @media (max-width: 40rem) {
     .main {
         padding: 12px;
+    }
+
+    .comment-loading-state {
+        min-height: 72px;
     }
 }

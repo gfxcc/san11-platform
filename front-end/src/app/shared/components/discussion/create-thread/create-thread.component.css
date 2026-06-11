@@ -86,10 +86,20 @@
 }
 
 .loading-state {
-    min-width: 220px;
+    width: min(86vw, 360px);
     min-height: 180px;
     display: grid;
+    gap: 12px;
     place-items: center;
+    padding: 28px;
+    color: var(--text-muted);
+    font-size: .9rem;
+    font-weight: 800;
+}
+
+.loading-state mat-spinner {
+    width: 32px !important;
+    height: 32px !important;
 }
 
 @media (max-width: 40rem) {
@@ -133,5 +143,10 @@
 
     .actions button {
         width: 100%;
+    }
+
+    .loading-state {
+        width: min(100%, calc(100vw - 16px));
+        min-height: 150px;
     }
 }

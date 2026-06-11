@@ -2,18 +2,31 @@
     width: 100%;
     max-width: var(--content-max-width);
     margin: 0 auto;
-    padding: 28px clamp(14px, 3vw, 36px) 44px;
+    padding: 24px clamp(14px, 3vw, 36px) 44px;
 }
 
 .article-header {
+    position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: 24px;
-    padding: 8px 0 24px;
+    margin-bottom: 16px;
+    padding: 22px 24px;
+    overflow: hidden;
+}
+
+.article-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(135deg, rgba(37, 99, 235, .08), rgba(14, 165, 233, .03) 42%, transparent 72%);
 }
 
 .article-kicker {
+    position: relative;
     display: inline-flex;
     margin-bottom: 8px;
     color: var(--primary-strong);
@@ -22,17 +35,27 @@
 }
 
 .article-header h1 {
+    position: relative;
     margin: 0;
     color: var(--text-color);
-    font-size: clamp(1.75rem, 3vw, 2.55rem);
-    line-height: 1.08;
+    font-size: clamp(1.55rem, 2.6vw, 2.2rem);
+    line-height: 1.12;
     font-weight: 850;
 }
 
 .article-header p {
+    position: relative;
     margin: 10px 0 0;
     color: var(--text-muted);
     font-size: 1rem;
+}
+
+.article-toolbar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
 }
 
 .article-summary {
@@ -51,6 +74,19 @@
     white-space: nowrap;
 }
 
+.article-toolbar a {
+    min-height: 40px;
+    border-radius: 999px;
+    font-weight: 850;
+    box-shadow: var(--shadow-sm);
+}
+
+.article-toolbar a mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
 .article-summary mat-icon {
     width: 20px;
     height: 20px;
@@ -60,7 +96,7 @@
 
 .article-list {
     display: grid;
-    gap: 18px;
+    gap: 12px;
 }
 
 .article-placeholder {
@@ -88,12 +124,29 @@
     }
 
     .article-header {
-        display: block;
-        padding-top: 4px;
+        align-items: stretch;
+        flex-direction: column;
+        padding: 18px 16px;
+        gap: 16px;
     }
 
-    .article-summary {
-        margin-top: 16px;
-        width: fit-content;
+    .article-toolbar {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .article-summary,
+    .article-toolbar a {
+        flex: 1 1 0;
+        justify-content: center;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 22.5rem) {
+    .article-toolbar {
+        display: grid;
+        grid-template-columns: 1fr;
     }
 }
