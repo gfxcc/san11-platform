@@ -248,12 +248,12 @@ h5 {
 }
 
 .message-panel-placeholder {
-    min-height: 178px;
+    min-height: 120px;
     display: grid;
     place-items: center;
     align-content: center;
-    gap: 9px;
-    padding: 26px 28px 28px;
+    gap: 8px;
+    padding: 20px 24px 22px;
     text-align: center;
 }
 
@@ -261,22 +261,22 @@ h5 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 54px;
-    height: 54px;
-    border-radius: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
     background: rgba(37, 99, 235, .08);
     color: var(--primary-strong);
 }
 
 .message-panel-placeholder mat-icon {
-    width: 28px;
-    height: 28px;
-    font-size: 28px;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
 }
 
 .message-panel-placeholder strong {
     color: var(--text-color);
-    font-size: .98rem;
+    font-size: .94rem;
     font-weight: 850;
 }
 

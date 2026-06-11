@@ -22,6 +22,9 @@
 .comment-sort-control {
     --comment-sort-option-width: 56px;
     --comment-sort-option-height: 32px;
+    --segmented-option-width: var(--comment-sort-option-width);
+    --segmented-option-height: var(--comment-sort-option-height);
+    --segmented-font-size: .86rem;
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -142,6 +145,24 @@
     margin-top: 22px;
     display: grid;
     gap: 14px;
+}
+
+.load-more-row {
+    display: flex;
+    justify-content: center;
+    padding: 18px 0 4px;
+}
+
+.load-more-button {
+    min-width: 156px;
+    border-radius: 999px;
+    font-weight: 850;
+}
+
+.load-more-button ::ng-deep .mdc-button__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .actions-section {

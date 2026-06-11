@@ -43,6 +43,7 @@ mat-sidenav-content {
         height: calc(100dvh - var(--header-height));
         max-height: calc(100dvh - var(--header-height));
     }
+
 }
 
 @media (max-width: 31.25rem) {

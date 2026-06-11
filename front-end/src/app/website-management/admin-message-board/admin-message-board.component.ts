@@ -58,6 +58,8 @@ interface AdminOperationsSummary {
   topPackages: AdminPackageSummary[];
 }
 
+type UiStyle = 'clean' | 'flat' | 'crystal';
+
 const EMPTY_METRICS: AdminMetricSummary = {
   totalUsers: 0,
   newUsers7d: 0,
@@ -96,6 +98,7 @@ export class AdminMessageBoardComponent implements OnInit {
   pendingReviews: Package[] = [];
   adminSummary: AdminOperationsSummary = EMPTY_ADMIN_SUMMARY;
   loadingAdminSummary = false;
+  uiStyle: UiStyle = 'flat';
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -107,6 +110,7 @@ export class AdminMessageBoardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.uiStyle = this.currentUiStyle();
     this.route.parent.params.subscribe(params => {
       this.userId = params.userId;
       this.loadAdminSummary();
@@ -114,6 +118,46 @@ export class AdminMessageBoardComponent implements OnInit {
       this.loadNotifications();
       this.loadPendingReviews();
     });
+  }
+
+  setUiStyle(nextStyle: UiStyle): void {
+    const style = this.normalizeUiStyle(nextStyle) ?? 'flat';
+    this.uiStyle = style;
+    localStorage.setItem('san11-ui-style', style);
+    document.body.classList.toggle('ui-style-clean', style === 'clean');
+    document.body.classList.toggle('ui-style-classic', style === 'clean');
+    document.body.classList.toggle('ui-style-default', style === 'clean');
+    document.body.classList.toggle('ui-style-flat', style === 'flat');
+    document.body.classList.toggle('ui-style-flat2d', style === 'flat');
+    document.body.classList.toggle('ui-style-crystal', style === 'crystal');
+    document.body.classList.toggle('ui-style-glass3', style === 'crystal');
+  }
+
+  getUiStyleIndex(): number {
+    if (this.uiStyle === 'crystal') {
+      return 2;
+    }
+    if (this.uiStyle === 'flat') {
+      return 1;
+    }
+    return 0;
+  }
+
+  private currentUiStyle(): UiStyle {
+    return this.normalizeUiStyle(localStorage.getItem('san11-ui-style')) ?? 'flat';
+  }
+
+  private normalizeUiStyle(value: string | null): UiStyle | null {
+    if (value === 'clean' || value === 'classic' || value === 'default') {
+      return 'clean';
+    }
+    if (value === 'flat' || value === 'flat2d') {
+      return 'flat';
+    }
+    if (value === 'crystal' || value === 'glass3') {
+      return 'crystal';
+    }
+    return null;
   }
 
   loadAdminSummary(): void {

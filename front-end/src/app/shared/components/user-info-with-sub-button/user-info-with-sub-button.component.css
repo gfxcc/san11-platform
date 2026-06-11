@@ -39,10 +39,40 @@
     min-width: 0;
     margin-right: 16px;
     padding: 0;
-    border-radius: 999px;
+    border: 1px solid transparent;
+    border-radius: 999px !important;
+    background: transparent;
     overflow: hidden;
     line-height: 0;
     flex: 0 0 auto;
+    box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px var(--border-color);
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve),
+        transform var(--animation-duration) var(--animation-timing-curve);
+}
+
+.avatar-button:hover,
+.avatar-button:focus-visible {
+    border-color: rgba(37, 99, 235, .18);
+    background: transparent;
+    box-shadow: 0 0 0 4px var(--surface), 0 0 0 6px rgba(37, 99, 235, .14);
+    transform: translateY(-1px);
+}
+
+:host ::ng-deep .avatar-button.mat-mdc-button {
+    border-radius: 999px !important;
+}
+
+:host ::ng-deep .avatar-button .mat-mdc-button-persistent-ripple,
+:host ::ng-deep .avatar-button .mat-mdc-button-ripple,
+:host ::ng-deep .avatar-button .mat-mdc-focus-indicator,
+:host ::ng-deep .avatar-button .mat-ripple {
+    border-radius: 999px !important;
+}
+
+:host ::ng-deep .avatar-button .mat-mdc-button-persistent-ripple::before {
+    background-color: rgba(37, 99, 235, .08);
 }
 
 .avatar-edit-label {

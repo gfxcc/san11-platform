@@ -35,6 +35,9 @@ export class CommentBoardComponent implements OnInit {
 
   comments: Comment[] = [];
   commentCount: string;
+  commentsPageSize = 50;
+  hasMoreComments = false;
+  isLoadingComments = false;
 
   sendCommentLoading = false;
 
@@ -122,26 +125,40 @@ export class CommentBoardComponent implements OnInit {
     this.descEditor_updated = true;
   }
 
-  loadComments(order?: string) {
-    if (order === this.commentsOrder) {
+  loadComments(order?: string, append = false) {
+    if (this.isLoadingComments) {
       return;
     }
 
-    this.progressService.loading();
-
-    // Set order if it is specified.
-    if (order) {
+    const isOrderChange = !!order && order !== this.commentsOrder;
+    if (order && !isOrderChange && !append) {
+      return;
+    }
+    if (isOrderChange) {
       this.commentsOrder = order;
     }
+    const watermark = append && !isOrderChange ? this.comments.length : 0;
+    const requestedPageSize = this.commentsPageSize + 1;
 
+    this.isLoadingComments = true;
+    this.progressService.loading();
     this.san11pkService.listComments(new ListCommentsRequest({
       parent: this.parent,
+      pageSize: requestedPageSize.toString(),
+      pageToken: `{ "watermark": "${watermark}" }`,
       orderBy: this.commentsOrder,
     }))
-      .pipe(finalize(() => this.progressService.complete()))
+      .pipe(finalize(() => {
+        this.isLoadingComments = false;
+        this.progressService.complete();
+      }))
       .subscribe({
         next: (resp: ListCommentsResponse) => {
-          this.comments = resp.comments;
+          const loadedComments = resp.comments.slice(0, this.commentsPageSize);
+          this.comments = append && !isOrderChange
+            ? [...this.comments, ...loadedComments]
+            : loadedComments;
+          this.hasMoreComments = resp.comments.length > this.commentsPageSize;
           this.commentCount = this.computeCommentCount(this.comments);
 
           setTimeout(() => {
@@ -156,6 +173,10 @@ export class CommentBoardComponent implements OnInit {
 
   selectCommentOrder(order: string): void {
     this.loadComments(order);
+  }
+
+  loadMoreComments(): void {
+    this.loadComments(undefined, true);
   }
 
   computeCommentCount(comments: Comment[]): string {

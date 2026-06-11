@@ -14,6 +14,39 @@
     </section>
 
     <section class="admin-section">
+        <article class="ui-style-panel surface-panel">
+            <div>
+                <span>Preference</span>
+                <h2>界面风格</h2>
+                <p>当前站点默认使用扁平风格；管理员可以临时切换三种控件质感进行对比。</p>
+            </div>
+
+            <div class="ui-style-switcher app-segmented-control" [style.--ui-style-index]="getUiStyleIndex()" role="group"
+                aria-label="UI 风格切换">
+                <span class="ui-style-switcher-glass app-segmented-glass" aria-hidden="true"></span>
+                <button type="button" class="ui-style-option app-segmented-option"
+                    [class.ui-style-option-active]="uiStyle === 'clean'"
+                    [class.app-segmented-option-active]="uiStyle === 'clean'"
+                    [attr.aria-pressed]="uiStyle === 'clean'" (click)="setUiStyle('clean')">
+                    清爽
+                </button>
+                <button type="button" class="ui-style-option app-segmented-option"
+                    [class.ui-style-option-active]="uiStyle === 'flat'"
+                    [class.app-segmented-option-active]="uiStyle === 'flat'"
+                    [attr.aria-pressed]="uiStyle === 'flat'" (click)="setUiStyle('flat')">
+                    扁平
+                </button>
+                <button type="button" class="ui-style-option app-segmented-option"
+                    [class.ui-style-option-active]="uiStyle === 'crystal'"
+                    [class.app-segmented-option-active]="uiStyle === 'crystal'"
+                    [attr.aria-pressed]="uiStyle === 'crystal'" (click)="setUiStyle('crystal')">
+                    晶透
+                </button>
+            </div>
+        </article>
+    </section>
+
+    <section class="admin-section">
         <div class="section-heading">
             <div>
                 <span>Data</span>

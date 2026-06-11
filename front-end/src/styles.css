@@ -171,6 +171,8 @@ a.mention:hover {
     --clickable-background-color-hover: #e2e8f0;
 }
 
+body.ui-style-clean,
+body.ui-style-classic,
 body.ui-style-default {
     --glass-control-bg: rgba(248, 250, 252, .9);
     --glass-control-border: rgba(17, 24, 39, .1);
@@ -184,6 +186,27 @@ body.ui-style-default {
     --glass-muted-active-gradient: linear-gradient(135deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, .18));
 }
 
+body.ui-style-flat,
+body.ui-style-flat2d {
+    --glass-control-bg: #f8fafc;
+    --glass-control-border: rgba(15, 23, 42, .14);
+    --glass-control-inset: none;
+    --glass-active-bg: #dfe7ff;
+    --glass-active-border: transparent;
+    --glass-active-shadow: none;
+    --glass-active-gradient: linear-gradient(0deg, transparent, transparent);
+    --glass-muted-active-bg: #eef2f7;
+    --glass-muted-active-border: transparent;
+    --glass-muted-active-gradient: linear-gradient(0deg, transparent, transparent);
+    --mention-chip-bg: #dfe7ff;
+    --mention-chip-bg-hover: #d6e1ff;
+    --mention-chip-border: rgba(37, 99, 235, .08);
+    --mention-chip-border-hover: rgba(37, 99, 235, .16);
+    --identity-chip-bg: #eef2f7;
+    --identity-chip-border: rgba(100, 116, 139, .08);
+}
+
+body.ui-style-crystal,
 body.ui-style-glass3 {
     --glass-control-bg: rgba(255, 255, 255, .62);
     --glass-control-border: rgba(17, 24, 39, .12);
@@ -199,6 +222,72 @@ body.ui-style-glass3 {
     --mention-chip-bg-hover: rgba(37, 99, 235, .12);
     --identity-chip-bg: rgba(100, 116, 139, .065);
     --identity-chip-border: rgba(100, 116, 139, .13);
+}
+
+.app-segmented-control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: var(--segmented-padding, 3px);
+    border: 1px solid var(--glass-control-border);
+    border-radius: 999px;
+    background: var(--glass-control-bg);
+    box-shadow: var(--segmented-shadow, var(--glass-control-inset));
+}
+
+.app-segmented-glass {
+    position: absolute;
+    z-index: 0;
+    top: var(--segmented-padding, 3px);
+    left: var(--segmented-padding, 3px);
+    width: var(--segmented-option-width, 56px);
+    height: var(--segmented-option-height, 32px);
+    border: 1px solid var(--glass-active-border);
+    border-radius: 999px;
+    background:
+        var(--glass-active-gradient),
+        var(--glass-active-bg);
+    box-shadow: var(--glass-active-shadow);
+    pointer-events: none;
+    transform: translateX(calc(var(--segmented-index, 0) * var(--segmented-option-width, 56px)));
+    transition:
+        transform 220ms cubic-bezier(.2, .8, .2, 1),
+        width 180ms var(--animation-timing-curve),
+        background-color 180ms var(--animation-timing-curve),
+        border-color 180ms var(--animation-timing-curve),
+        box-shadow 180ms var(--animation-timing-curve);
+}
+
+.app-segmented-option {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--segmented-option-width, 56px);
+    height: var(--segmented-option-height, 32px);
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: var(--segmented-font-size, .86rem);
+    font-weight: 850;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        color var(--animation-duration) var(--animation-timing-curve),
+        transform var(--animation-duration) var(--animation-timing-curve);
+}
+
+.app-segmented-option:hover {
+    color: var(--text-color);
+}
+
+.app-segmented-option-active {
+    color: var(--primary-strong);
 }
 
 html,

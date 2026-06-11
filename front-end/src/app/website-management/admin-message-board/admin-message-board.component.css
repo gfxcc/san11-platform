@@ -93,6 +93,100 @@
     margin-top: 4px;
 }
 
+.ui-style-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px 20px;
+}
+
+.ui-style-panel>div:first-child {
+    display: grid;
+    gap: 4px;
+}
+
+.ui-style-panel span {
+    color: var(--primary-color);
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.ui-style-panel h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.16rem;
+    line-height: 1.2;
+    font-weight: 900;
+}
+
+.ui-style-panel p {
+    max-width: 560px;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: .88rem;
+    line-height: 1.45;
+}
+
+.ui-style-switcher {
+    --ui-style-option-width: 54px;
+    --ui-style-option-height: 30px;
+    --ui-style-index: 1;
+    --segmented-option-width: var(--ui-style-option-width);
+    --segmented-option-height: var(--ui-style-option-height);
+    --segmented-font-size: .78rem;
+    --segmented-shadow: var(--shadow-sm), var(--glass-control-inset);
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    padding: 3px;
+    border: 1px solid var(--glass-control-border);
+    border-radius: 999px;
+    background: var(--glass-control-bg);
+    box-shadow: var(--shadow-sm), var(--glass-control-inset);
+}
+
+.ui-style-switcher-glass {
+    position: absolute;
+    z-index: 0;
+    top: 3px;
+    left: 3px;
+    width: var(--ui-style-option-width);
+    height: var(--ui-style-option-height);
+    border: 1px solid var(--glass-active-border);
+    border-radius: 999px;
+    background:
+        var(--glass-active-gradient),
+        var(--glass-active-bg);
+    box-shadow: var(--glass-active-shadow);
+    pointer-events: none;
+    transform: translateX(calc(var(--ui-style-index) * var(--ui-style-option-width)));
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.ui-style-option {
+    position: relative;
+    z-index: 1;
+    width: var(--ui-style-option-width);
+    height: var(--ui-style-option-height);
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: .78rem;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.ui-style-option-active {
+    color: var(--primary-strong);
+}
+
 .metric-grid {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));

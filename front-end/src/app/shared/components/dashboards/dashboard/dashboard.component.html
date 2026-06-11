@@ -11,10 +11,12 @@
         </div>
 
         <div class="dashboard-actions" *ngIf="listRequest">
-            <div class="dashboard-sort-control" [ngClass]="orderClass" role="group" aria-label="资源排序">
-                <span class="dashboard-sort-glass" aria-hidden="true"></span>
-                <button type="button" class="dashboard-sort-option" *ngFor="let option of orderOptions"
+            <div class="dashboard-sort-control app-segmented-control" [ngClass]="orderClass" role="group"
+                aria-label="资源排序">
+                <span class="dashboard-sort-glass app-segmented-glass" aria-hidden="true"></span>
+                <button type="button" class="dashboard-sort-option app-segmented-option" *ngFor="let option of orderOptions"
                     [class.dashboard-sort-option-active]="selectedOrder === option.value"
+                    [class.app-segmented-option-active]="selectedOrder === option.value"
                     [attr.aria-pressed]="selectedOrder === option.value" (click)="selectOrder(option.value)">
                     {{ option.viewValue }}
                 </button>

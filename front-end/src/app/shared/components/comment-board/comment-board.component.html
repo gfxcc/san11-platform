@@ -4,16 +4,18 @@
             <span>{{this.commentCount}}</span>
             <span>条评论</span>
         </div>
-        <div class="comment-sort-control" [class.comment-sort-latest]="commentsOrder === 'create_time desc'"
-            role="group" aria-label="评论排序">
-            <span class="comment-sort-glass" aria-hidden="true"></span>
-            <button type="button" class="comment-sort-option" [class.comment-sort-option-active]="commentsOrder !==
-                'create_time desc'" [attr.aria-pressed]="commentsOrder !== 'create_time desc'"
+        <div class="comment-sort-control app-segmented-control"
+            [class.comment-sort-latest]="commentsOrder === 'create_time desc'" role="group" aria-label="评论排序">
+            <span class="comment-sort-glass app-segmented-glass" aria-hidden="true"></span>
+            <button type="button" class="comment-sort-option app-segmented-option" [class.comment-sort-option-active]="commentsOrder !==
+                'create_time desc'" [class.app-segmented-option-active]="commentsOrder !== 'create_time desc'"
+                [attr.aria-pressed]="commentsOrder !== 'create_time desc'"
                 (click)="selectCommentOrder('create_time')">
                 最早
             </button>
-            <button type="button" class="comment-sort-option" [class.comment-sort-option-active]="commentsOrder ===
-                'create_time desc'" [attr.aria-pressed]="commentsOrder === 'create_time desc'"
+            <button type="button" class="comment-sort-option app-segmented-option" [class.comment-sort-option-active]="commentsOrder ===
+                'create_time desc'" [class.app-segmented-option-active]="commentsOrder === 'create_time desc'"
+                [attr.aria-pressed]="commentsOrder === 'create_time desc'"
                 (click)="selectCommentOrder('create_time desc')">
                 最新
             </button>
@@ -61,6 +63,14 @@
                 (replyCreateEvent)="onReplyCreate($event)"></app-comment-card>
             <!-- <div id="comment-{{comment.index}}">hi</div> -->
         </ng-container>
+    </div>
+
+    <div *ngIf="hasMoreComments" class="load-more-row">
+        <button type="button" class="load-more-button" mat-stroked-button color="primary"
+            [disabled]="isLoadingComments" (click)="loadMoreComments()">
+            <mat-spinner *ngIf="isLoadingComments" diameter="18"></mat-spinner>
+            <span>{{isLoadingComments ? '加载中' : '加载更多评论'}}</span>
+        </button>
     </div>
 
     <div *ngIf="comments.length === 0" class="app-empty-state">

@@ -21,7 +21,7 @@ export class DiscussionComponent implements OnInit {
 
   threads: Thread[];
   pageSize = 20;
-  totalThreadsCount = 200;
+  totalThreadsCount = this.pageSize;
   reachedEnd = false;
   isLoading = false;
 
@@ -43,11 +43,12 @@ export class DiscussionComponent implements OnInit {
   }
 
   loadThreads(watermark: number, pageSize: number, shouldScrollToTop = true) {
+    const requestedPageSize = pageSize + 1;
     this.isLoading = true;
     this.progressService.loading();
     const request = new ListThreadsRequest({
       parent: this.parent,
-      pageSize: this.pageSize.toString(),
+      pageSize: requestedPageSize.toString(),
       pageToken: `{ "watermark": "${watermark}" }`,
     })
     this.san11pkService.listThreads(request)
@@ -57,11 +58,12 @@ export class DiscussionComponent implements OnInit {
       }))
       .subscribe({
         next: (resp: ListThreadsResponse) => {
-          this.threads = resp.threads;
+          const hasMore = resp.threads.length > pageSize;
+          this.threads = resp.threads.slice(0, pageSize);
           if (shouldScrollToTop) {
             this.scrollToTop();
           }
-          this.updateTotalCount(resp.threads.length < pageSize, watermark + resp.threads.length);
+          this.updateTotalCount(!hasMore, watermark + this.threads.length);
         },
         error: error => {
           this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`);
@@ -80,7 +82,7 @@ export class DiscussionComponent implements OnInit {
   }
 
   updateTotalCount(reachedEnd: boolean, loadedSize: number) {
-    if (this.reachedEnd) {
+    if (this.reachedEnd && loadedSize <= this.totalThreadsCount) {
       return;
     }
 
@@ -88,9 +90,8 @@ export class DiscussionComponent implements OnInit {
       this.totalThreadsCount = loadedSize;
       this.reachedEnd = true;
     } else {
-      if (loadedSize > this.totalThreadsCount * 0.8) {
-        this.totalThreadsCount *= 2;
-      }
+      this.totalThreadsCount = Math.max(this.totalThreadsCount, loadedSize + 1);
+      this.reachedEnd = false;
     }
   }
 

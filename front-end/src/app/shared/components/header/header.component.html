@@ -83,11 +83,7 @@
                 <div class="message-empty-icon">
                     <mat-icon>mark_email_read</mat-icon>
                 </div>
-                <strong>没有未读通知</strong>
-                <p>新的评论、回复、审核和系统消息会显示在这里。</p>
-                <button mat-stroked-button color="primary" type="button" (click)="openInbox()">
-                    打开收件箱
-                </button>
+                <strong>已全部读完</strong>
             </div>
             <div class="notification-list" *ngIf="notifications.length > 0">
                 <ng-container *ngFor="let notification of notifications; let i=

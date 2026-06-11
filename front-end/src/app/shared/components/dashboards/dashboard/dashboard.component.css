@@ -75,6 +75,9 @@
     --dashboard-sort-option-width: 76px;
     --dashboard-sort-option-height: 34px;
     --dashboard-sort-glass-x: 0%;
+    --segmented-option-width: var(--dashboard-sort-option-width);
+    --segmented-option-height: var(--dashboard-sort-option-height);
+    --segmented-font-size: .82rem;
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -196,9 +199,12 @@
 }
 
 .tag-filter-selected {
-    border-color: rgba(37, 99, 235, .34);
-    background: rgba(37, 99, 235, .1);
+    border-color: var(--glass-active-border);
+    background:
+        var(--glass-active-gradient),
+        var(--glass-active-bg);
     color: var(--primary-strong);
+    box-shadow: var(--glass-active-shadow);
 }
 
 .tag-filter span {

@@ -43,13 +43,13 @@ class ThreadHandler(HandlerBase):
         return thread
 
     def list_threads(self, list_options: ListOptions, handler_context: HandlerContext) -> Tuple[List[ModelThread], str]:
-        order_by = 'pinned desc, create_time desc' + \
-            (f', {list_options.order_by}' if list_options.order_by else '')
-        list_options.order_by = order_by
-        if handler_context.user and handler_context.user.is_admin():
-            list_options.filter = ''
-        else:
-            list_options.filter = 'state=1'
+        requested_order_by = list_options.order_by or 'create_time desc'
+        list_options.order_by = f'pinned desc, {requested_order_by}'
+
+        if not (handler_context.user and handler_context.user.is_admin()):
+            normal_state_filter = f'state={pb.ResourceState.NORMAL}'
+            list_options.filter = _merge_filters(
+                list_options.filter, normal_state_filter)
         threads, next_page_token = self.thread_repository.list(list_options)
         return threads, next_page_token
 
@@ -65,3 +65,9 @@ class ThreadHandler(HandlerBase):
             BucketClass.REGULAR, thread.name)
         return self.thread_repository.delete(
             thread, actor_info=handler_context.authenticated_user.user_id)
+
+
+def _merge_filters(existing_filter: str, required_filter: str) -> str:
+    if not existing_filter:
+        return required_filter
+    return f'({existing_filter}) AND ({required_filter})'

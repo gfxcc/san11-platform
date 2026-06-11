@@ -2,12 +2,15 @@
     --feedback-button-width: 56px;
     --feedback-dislike-button-width: 44px;
     --feedback-button-height: 32px;
+    --segmented-option-width: var(--feedback-button-width);
+    --segmented-option-height: var(--feedback-button-height);
+    --segmented-padding: 5px;
     position: relative;
     display: inline-flex;
     align-items: center;
     gap: 0;
-    min-height: 40px;
-    padding: 4px;
+    min-height: 42px;
+    padding: var(--segmented-padding);
     border: 1px solid var(--glass-control-border);
     border-radius: 999px;
     background: var(--glass-control-bg);
@@ -15,11 +18,12 @@
 }
 
 .feedback-card-container-plain {
-    --feedback-button-width: 52px;
-    --feedback-dislike-button-width: 40px;
+    --feedback-button-width: 60px;
+    --feedback-dislike-button-width: 44px;
     --feedback-button-height: 30px;
-    min-height: 32px;
-    padding: 0;
+    --segmented-padding: 3px;
+    min-height: 36px;
+    padding: var(--segmented-padding);
     border: 0;
     background: transparent;
     box-shadow: none;
@@ -28,8 +32,8 @@
 .feedback-active-glass {
     position: absolute;
     z-index: 0;
-    top: 4px;
-    left: 4px;
+    top: var(--segmented-padding);
+    left: var(--segmented-padding);
     width: var(--feedback-button-width);
     height: var(--feedback-button-height);
     border: 1px solid var(--glass-active-border);
@@ -49,8 +53,6 @@
 }
 
 .feedback-card-container-plain .feedback-active-glass {
-    top: 0;
-    left: 0;
     box-shadow: none;
 }
 
@@ -74,7 +76,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 6px;
     width: var(--feedback-button-width);
     min-width: var(--feedback-button-width);
     height: var(--feedback-button-height);
@@ -138,7 +140,8 @@
     min-width: var(--feedback-button-width);
     height: var(--feedback-button-height);
     min-height: var(--feedback-button-height);
-    gap: 6px;
+    gap: 7px;
+    padding: 0 9px;
 }
 
 .feedback-card-container-plain .feedback-button.feedback-dislike {
@@ -152,8 +155,8 @@
 
 @media (max-width: 40rem) {
     .feedback-card-container {
-        min-height: 38px;
-        padding: 3px;
+        min-height: 40px;
+        --segmented-padding: 4px;
     }
 
     .feedback-button {
