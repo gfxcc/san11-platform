@@ -1,2 +1,2 @@
-postgres-data/*
-backup/*
+postgres-data/
+backup/
