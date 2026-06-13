@@ -2,10 +2,6 @@ UUID := $(shell uuidgen)
 TMP_DIR := /tmp/san11pk-platform-test
 TAIL ?= 200
 SERVICE ?=
-DOCKER ?= docker
-PROD_DOCKER_CONFIG ?= /tmp/san11-docker-config
-PROD_DOCKER := $(DOCKER) --config $(PROD_DOCKER_CONFIG)
-PROD_COMPOSE := $(PROD_DOCKER) compose -f compose.yaml -f compose.prod.yaml
 .DEFAULT_GOAL := help
 test: export TMP_DB_DATA=/tmp/san11pk-platform-test/$(UUID)
 
@@ -110,33 +106,28 @@ gen-gateway:
     # 		./protos/*.proto
 
 # prod deployment
-.PHONY: prod-docker-config
-prod-docker-config:
-	mkdir -p $(PROD_DOCKER_CONFIG)/buildx
-	printf '{"auths":{}}\n' > $(PROD_DOCKER_CONFIG)/config.json
-
 .PHONY: build-prod
-build-prod: prod-docker-config
-	DOCKER_BUILDKIT=0 COMPOSE_DOCKER_CLI_BUILD=0 BUILDX_CONFIG=$(PROD_DOCKER_CONFIG)/buildx $(PROD_COMPOSE) build
+build-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml build
 
 .PHONY: up-prod
-up-prod: prod-docker-config
-	$(PROD_COMPOSE) up -d
+up-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml up -d
 
 .PHONY: down-prod
-down-prod: prod-docker-config
-	$(PROD_COMPOSE) down
+down-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml down
 
 .PHONY: deploy-prod
 deploy-prod: down-prod build-prod up-prod
 
 .PHONY: logs-prod
-logs-prod: prod-docker-config
-	$(PROD_COMPOSE) logs --tail=$(TAIL) $(SERVICE)
+logs-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml logs --tail=$(TAIL) $(SERVICE)
 
 .PHONY: tail-prod
-tail-prod: prod-docker-config
-	$(PROD_COMPOSE) logs --tail=$(TAIL) -f $(SERVICE)
+tail-prod:
+	docker compose -f compose.yaml -f compose.prod.yaml logs --tail=$(TAIL) -f $(SERVICE)
 
 # Staging deployment
 .PHONY: build-staging

@@ -1,0 +1,11 @@
+.devcontainer/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+.vscode/
+__pycache__/
+**/__pycache__/
+**/.pytest_cache/
+.coverage
+.DS_Store
