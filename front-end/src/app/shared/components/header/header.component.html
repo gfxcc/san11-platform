@@ -10,15 +10,15 @@
         <span class="website-title">San11 分享平台</span>
     </button>
 
-    <div id="search-bar" class="search-bar-container">
+    <div #searchBar id="search-bar" class="search-bar-container">
         <div class="search-bar-input-wrapper">
             <mat-icon class="search-icon">search</mat-icon>
             <input #searchInput [(ngModel)]="this.searchQuery" type="text" spellcheck="false" autocomplete="off"
                 placeholder="搜索工具、MOD 或插件" (ngModelChange)="this.searchChanged()"
-                (keydown.enter)="submitSearch()" class="search-input">
+                (focus)="openSearchPanel()" (keydown.enter)="submitSearch()" class="search-input">
             <mat-icon matTooltip="支持 工具名" class="help-icon">help_outline</mat-icon>
         </div>
-        <div *ngIf="searchQuery.trim().length >= 2" class="search-suggestions surface-panel">
+        <div *ngIf="searchPanelOpen && searchQuery.trim().length >= 2" class="search-suggestions surface-panel">
             <div class="search-suggestion-header">
                 <span>快速匹配</span>
                 <button type="button" aria-label="清空搜索" (click)="clearSearch()">

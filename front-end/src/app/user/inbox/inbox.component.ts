@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, DefaultUrlSerializer, Router, UrlTree } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
-import { finalize } from 'rxjs';
+import { delay, finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { notificationToEvent } from 'src/app/utils/notification_util';
+import { environment } from 'src/environments/environment';
 import { ListNotificationsRequest, ListNotificationsResponse, Notification, UpdateNotificationRequest } from 'src/proto/san11-platform.pb';
+
+const demoLoadingDelayMs = environment.production ? 0 : 450;
 
 @Component({
   selector: 'app-inbox',
@@ -18,6 +21,8 @@ export class InboxComponent implements OnInit {
   userId: string;
   notifications: Notification[] = [];
   selectedFilter: 'all' | 'unread' | 'read' = 'all';
+  isLoadingNotifications = false;
+  inboxSkeletonRows = Array.from({ length: 3 });
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -36,6 +41,7 @@ export class InboxComponent implements OnInit {
   }
 
   load_notifications() {
+    this.isLoadingNotifications = true;
     this.progressService.loading();
 
     this.san11pkService.listNotifications(new ListNotificationsRequest({
@@ -43,7 +49,10 @@ export class InboxComponent implements OnInit {
       orderBy: 'create_time desc',
       pageSize: '100',
     }))
-      .pipe(finalize(() => this.progressService.complete()))
+      .pipe(delay(demoLoadingDelayMs), finalize(() => {
+        this.isLoadingNotifications = false;
+        this.progressService.complete();
+      }))
       .subscribe({
         next: (resp: ListNotificationsResponse) => {
           this.notifications = resp.notifications;
@@ -94,6 +103,30 @@ export class InboxComponent implements OnInit {
 
   setFilter(filter: 'all' | 'unread' | 'read'): void {
     this.selectedFilter = filter;
+  }
+
+  get emptyStateTitle(): string {
+    if (this.selectedFilter === 'unread') {
+      return '没有未读通知';
+    }
+
+    if (this.selectedFilter === 'read') {
+      return '没有已读通知';
+    }
+
+    return '暂无通知';
+  }
+
+  get emptyStateIcon(): string {
+    if (this.selectedFilter === 'unread') {
+      return 'mark_email_read';
+    }
+
+    if (this.selectedFilter === 'read') {
+      return 'history';
+    }
+
+    return 'inbox';
   }
 
   markAllRead(): void {

@@ -45,9 +45,13 @@
     </section>
 
     <section class="search-refinement surface-panel" *ngIf="currentQuery">
-        <div>
+        <span class="search-refinement-icon" aria-hidden="true">
+            <mat-icon>manage_search</mat-icon>
+        </span>
+        <div class="search-refinement-copy">
             <span class="app-eyebrow">搜索结果</span>
             <p>正在查找 <strong>{{currentQuery}}</strong>，可以继续切换资源范围。</p>
+            <span class="search-result-count" *ngIf="!isLoadingPackages">{{packages?.length || 0}} 项结果</span>
         </div>
         <div class="search-refinement-actions">
             <button type="button" *ngFor="let category of searchCategoryShortcuts" (click)="openCategory(category.value)">
@@ -56,15 +60,50 @@
         </div>
     </section>
 
-    <div class="resource-grid">
+    <div class="resource-grid" *ngIf="!isLoadingPackages; else packageSkeleton">
         <app-package-card *ngFor="let package of packages" [package]="package" class="module"></app-package-card>
     </div>
 
-    <div *ngIf="packages?.length === 0" class="dashboard-placeholder app-empty-state">
-        <mat-icon>inventory_2</mat-icon>
+    <ng-template #packageSkeleton>
+        <div class="resource-grid resource-grid-skeleton" aria-hidden="true">
+            <article class="package-card-skeleton" *ngFor="let skeleton of skeletonCards">
+                <div class="skeleton-media skeleton-pulse"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton-header">
+                        <span class="skeleton-avatar skeleton-pulse"></span>
+                        <span class="skeleton-title-block">
+                            <span class="skeleton-line skeleton-line-title skeleton-pulse"></span>
+                            <span class="skeleton-line skeleton-line-subtitle skeleton-pulse"></span>
+                        </span>
+                    </div>
+                    <div class="skeleton-meta">
+                        <span class="skeleton-pill skeleton-pulse"></span>
+                        <span class="skeleton-pill skeleton-pulse"></span>
+                        <span class="skeleton-pill skeleton-pulse"></span>
+                    </div>
+                    <div class="skeleton-tags">
+                        <span class="skeleton-chip skeleton-pulse"></span>
+                        <span class="skeleton-chip skeleton-pulse"></span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </ng-template>
+
+    <div *ngIf="!isLoadingPackages && packages?.length === 0" class="dashboard-placeholder app-empty-state">
+        <span class="dashboard-placeholder-icon">
+            <mat-icon>{{emptyStateIcon}}</mat-icon>
+        </span>
+        <h2>{{emptyStateTitle}}</h2>
         <p>{{emptyStateText}}</p>
-        <button *ngIf="listRequest?.filter" mat-stroked-button color="primary" type="button" (click)="clearFilter()">
-            清除筛选
-        </button>
+        <div class="dashboard-placeholder-actions" *ngIf="currentQuery || listRequest?.filter">
+            <button *ngIf="listRequest?.filter" mat-stroked-button color="primary" type="button" (click)="clearFilter()">
+                清除筛选
+            </button>
+            <button *ngFor="let category of searchCategoryShortcuts" type="button" (click)="openCategory(category.value)"
+                [hidden]="!currentQuery">
+                {{category.text}}
+            </button>
+        </div>
     </div>
 </div>

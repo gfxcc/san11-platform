@@ -251,8 +251,9 @@ body.ui-style-glass3 {
     box-shadow: var(--glass-active-shadow);
     pointer-events: none;
     transform: translateX(calc(var(--segmented-index, 0) * var(--segmented-option-width, 56px)));
+    will-change: transform;
     transition:
-        transform 220ms cubic-bezier(.2, .8, .2, 1),
+        transform 240ms cubic-bezier(.18, .86, .25, 1.08),
         width 180ms var(--animation-timing-curve),
         background-color 180ms var(--animation-timing-curve),
         border-color 180ms var(--animation-timing-curve),
@@ -284,6 +285,36 @@ body.ui-style-glass3 {
 
 .app-segmented-option:hover {
     color: var(--text-color);
+}
+
+.app-segmented-option:focus-visible {
+    color: var(--primary-strong);
+    outline: none;
+}
+
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(1):hover) > .app-segmented-glass,
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(1):focus-visible) > .app-segmented-glass {
+    transform: translateX(0);
+}
+
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(2):hover) > .app-segmented-glass,
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(2):focus-visible) > .app-segmented-glass {
+    transform: translateX(var(--segmented-option-width, 56px));
+}
+
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(3):hover) > .app-segmented-glass,
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(3):focus-visible) > .app-segmented-glass {
+    transform: translateX(calc(var(--segmented-option-width, 56px) * 2));
+}
+
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(4):hover) > .app-segmented-glass,
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(4):focus-visible) > .app-segmented-glass {
+    transform: translateX(calc(var(--segmented-option-width, 56px) * 3));
+}
+
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(5):hover) > .app-segmented-glass,
+.app-segmented-control:not(.feedback-card-container):has(> .app-segmented-option:nth-of-type(5):focus-visible) > .app-segmented-glass {
+    transform: translateX(calc(var(--segmented-option-width, 56px) * 4));
 }
 
 .app-segmented-option-active {
@@ -863,13 +894,16 @@ pre {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     background: var(--surface);
-    transition: border-color var(--animation-duration) var(--animation-timing-curve), background-color var(--animation-duration) var(--animation-timing-curve), transform var(--animation-duration) var(--animation-timing-curve);
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve);
 }
 
 .app-activity-item:not(.is-disabled):hover .app-activity-card {
-    border-color: rgba(37, 99, 235, .24);
-    background: rgba(248, 250, 252, .72);
-    transform: translateY(-1px);
+    border-color: var(--glass-active-border);
+    background: var(--surface);
+    box-shadow: 0 8px 20px rgba(16, 24, 40, .08);
 }
 
 .app-activity-copy {

@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { getFullUrl } from "../../../utils/resrouce_util";
   templateUrl: './package-card.component.html',
   styleUrls: ['./package-card.component.css']
 })
-export class PackageCardComponent implements OnInit {
+export class PackageCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() package: Package;
 
   author: User;
@@ -27,6 +27,11 @@ export class PackageCardComponent implements OnInit {
 
   displayScreenshotLoading: boolean = true;
   displayAuthorImgLoading: boolean = true;
+  metricPulse = {
+    download: false,
+    like: false,
+  };
+  private metricPulseTimeouts: Partial<Record<'download' | 'like', ReturnType<typeof setTimeout>>> = {};
 
   constructor(
     private notificationService: NotificationService,
@@ -57,6 +62,29 @@ export class PackageCardComponent implements OnInit {
     this.loadImage();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const packageChange = changes['package'];
+
+    if (!packageChange || packageChange.firstChange) {
+      return;
+    }
+
+    const previousPackage = packageChange.previousValue as Package;
+    const currentPackage = packageChange.currentValue as Package;
+
+    if ((previousPackage?.downloadCount || 0) !== (currentPackage?.downloadCount || 0)) {
+      this.startMetricPulse('download');
+    }
+
+    if ((previousPackage?.likeCount || 0) !== (currentPackage?.likeCount || 0)) {
+      this.startMetricPulse('like');
+    }
+  }
+
+  ngOnDestroy(): void {
+    Object.values(this.metricPulseTimeouts).forEach(timeout => clearTimeout(timeout));
+  }
+
   ngAfterViewInit() {
     // this.renderer.setStyle(this.authorImageElement.nativeElement, 'background-image', "url('" + this.authorImage + "')");
   }
@@ -68,6 +96,20 @@ export class PackageCardComponent implements OnInit {
     } else {
       this.screenshot = getFullUrl(this.package.imageUrls[0]);
     }
+  }
+
+  private startMetricPulse(metric: 'download' | 'like') {
+    if (this.metricPulseTimeouts[metric]) {
+      clearTimeout(this.metricPulseTimeouts[metric]);
+    }
+
+    this.metricPulse[metric] = false;
+    requestAnimationFrame(() => {
+      this.metricPulse[metric] = true;
+      this.metricPulseTimeouts[metric] = setTimeout(() => {
+        this.metricPulse[metric] = false;
+      }, 360);
+    });
   }
 
   isAdmin() {

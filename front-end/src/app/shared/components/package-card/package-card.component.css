@@ -1,6 +1,10 @@
 .resource-card {
     display: block;
     height: 100%;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: transform 180ms var(--animation-timing-curve);
+    will-change: transform;
 }
 
 .package-card {
@@ -9,7 +13,10 @@
     border: 1px solid var(--border-color);
     background: var(--surface);
     box-shadow: var(--shadow-sm);
-    transition: border-color var(--animation-duration) var(--animation-timing-curve), box-shadow var(--animation-duration) var(--animation-timing-curve);
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve),
+        background-color var(--animation-duration) var(--animation-timing-curve);
 }
 
 .author-image {
@@ -42,21 +49,43 @@
     overflow: hidden;
 }
 
+.screenshot-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0) 58%, rgba(15, 23, 42, .13) 100%),
+        linear-gradient(135deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, 0) 42%);
+    opacity: .36;
+    transition: opacity var(--animation-duration) var(--animation-timing-curve);
+}
+
 .fit-image {
     height: 198px;
     width: 100%;
     object-fit: cover;
     display: block;
     margin: 0 auto;
-    transition: transform var(--animation-duration) var(--animation-timing-curve);
+    transition: transform 260ms cubic-bezier(.18, .86, .25, 1);
+}
+
+.clickable-card:hover {
+    transform: translateY(-2px);
 }
 
 .clickable-card:hover .fit-image {
-    transform: scale(1.03);
+    transform: scale(1.035);
 }
 
 .clickable-card:hover .package-card {
-    border-color: rgba(37, 99, 235, .26);
+    border-color: rgba(37, 99, 235, .24);
+    box-shadow: 0 10px 26px rgba(16, 24, 40, .1);
+    background: var(--surface);
+}
+
+.clickable-card:hover .screenshot-frame::after {
+    opacity: .52;
 }
 
 .status-badge {
@@ -239,6 +268,7 @@ mat-card-content p {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color var(--animation-duration) var(--animation-timing-curve);
 }
 
 .title-block p {
@@ -257,6 +287,22 @@ mat-card-content p {
     min-width: 0;
     margin-top: 14px;
     flex-wrap: wrap;
+}
+
+.card-meta .meta-pill {
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve);
+}
+
+.card-meta .meta-pill-pulse {
+    animation: packageMetricPulse 360ms cubic-bezier(.18, .86, .25, 1);
+}
+
+.card-meta .meta-pill-pulse mat-icon {
+    animation: packageMetricIconPulse 360ms cubic-bezier(.18, .86, .25, 1);
 }
 
 .card-meta .update-time {
@@ -285,4 +331,44 @@ mat-card-content p {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+@keyframes packageMetricPulse {
+    0% {
+        border-color: var(--border-color);
+        background: var(--surface);
+        box-shadow: none;
+    }
+
+    42% {
+        border-color: var(--glass-active-border);
+        background: var(--glass-active-bg);
+        box-shadow: var(--glass-active-shadow);
+    }
+
+    100% {
+        border-color: var(--border-color);
+        background: var(--surface);
+        box-shadow: none;
+    }
+}
+
+@keyframes packageMetricIconPulse {
+    0%,
+    100% {
+        transform: scale(1);
+        color: inherit;
+    }
+
+    45% {
+        transform: scale(1.12);
+        color: var(--primary-strong);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-meta .meta-pill-pulse,
+    .card-meta .meta-pill-pulse mat-icon {
+        animation: none;
+    }
 }

@@ -26,11 +26,11 @@
             </div>
 
             <div class="card-meta">
-                <span class="meta-pill">
+                <span class="meta-pill" [class.meta-pill-pulse]="metricPulse.download">
                     <mat-icon>download</mat-icon>
                     {{package.downloadCount || 0}}
                 </span>
-                <span class="meta-pill">
+                <span class="meta-pill" [class.meta-pill-pulse]="metricPulse.like">
                     <mat-icon>thumb_up</mat-icon>
                     {{package.likeCount || 0}}
                 </span>

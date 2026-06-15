@@ -54,6 +54,11 @@
 
     </div>
 
+    <div *ngIf="showDevEnvironmentBadge" class="sidebar-environment-badge" aria-label="开发环境">
+        <mat-icon>code</mat-icon>
+        <span>{{devEnvironmentLabel}}</span>
+    </div>
+
     <footer class="footer-section">
         <a href="https://github.com/gfxcc/san11-platform" target="_blink">Github</a>
         <span>•</span>

@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
@@ -18,7 +17,7 @@ import { v4 as uuid } from 'uuid';
   templateUrl: './user-info-with-sub-button.component.html',
   styleUrls: ['./user-info-with-sub-button.component.css']
 })
-export class UserInfoWithSubButtonComponent implements OnChanges {
+export class UserInfoWithSubButtonComponent implements OnChanges, OnDestroy {
   @Input() user: User;
   @Input() updateAvatar: false;
   @ViewChild('imageInput') imageInputElement: ElementRef
@@ -26,9 +25,14 @@ export class UserInfoWithSubButtonComponent implements OnChanges {
   displayUserImgLoading: boolean = true;
   subscription: Subscription;
   loadingSubscription: boolean = true;
+  subscriptionBusy = false;
+  subscriptionBurst = false;
+  subscriberCountPulse = false;
   pendingAvatar: File | undefined;
   avatarPreviewUrl = '';
   private subscriptionStatusTarget = '';
+  private subscriptionBurstTimeout: ReturnType<typeof setTimeout>;
+  private subscriberCountPulseTimeout: ReturnType<typeof setTimeout>;
 
   get currentUserId(): string {
     return loadUser().userId;
@@ -44,7 +48,6 @@ export class UserInfoWithSubButtonComponent implements OnChanges {
     public san11pkService: San11PlatformServiceService,
     private notificationService: NotificationService,
     private interactionService: InteractionService,
-    private dialog: MatDialog,
     private uploadService: UploadService,
     private progressService: ProgressService,
   ) { }
@@ -52,6 +55,15 @@ export class UserInfoWithSubButtonComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.user) {
       this.setSubscriptionStatus();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptionBurstTimeout) {
+      clearTimeout(this.subscriptionBurstTimeout);
+    }
+    if (this.subscriberCountPulseTimeout) {
+      clearTimeout(this.subscriberCountPulseTimeout);
     }
   }
 
@@ -106,34 +118,59 @@ export class UserInfoWithSubButtonComponent implements OnChanges {
       this.notificationService.warn('请登录');
       return;
     }
+    if (this.subscriptionBusy) {
+      return;
+    }
+
     if (this.subscription != undefined) {
-      this.san11pkService.deleteSubscription(new DeleteSubscriptionRequest({
-        name: this.subscription.name
-      })).subscribe(
-        (resp: Subscription) => {
-          this.user.subscriberCount = decrement(this.user.subscriberCount);
-          this.subscription = undefined;
-          this.interactionService.undo('已取消订阅').subscribe(() => this.onSubscribe());
-        }, error => {
-          this.notificationService.warn(`退订失败: ${error.statusMessage}`);
+      this.subscriptionBusy = true;
+      this.interactionService.confirm({
+        title: '取消订阅',
+        message: `确认要取消订阅“${this.user.username}”吗？之后将不再收到该作者的更新提醒。`,
+        confirmText: '取消订阅',
+        cancelText: '继续订阅',
+        icon: 'notifications_off',
+      }).subscribe(confirmed => {
+        if (!confirmed) {
+          this.subscriptionBusy = false;
+          return;
         }
-      );
+
+        this.deleteSubscription();
+      });
     } else {
+      this.subscriptionBusy = true;
       this.san11pkService.createSubscription(new CreateSubscriptionRequest({
         parent: getUserUri(loadUser()),
         subscription: new Subscription({
           target: getUserUri(this.user),
         }),
-      })).subscribe(
+      })).pipe(finalize(() => this.subscriptionBusy = false)).subscribe(
         (sub: Subscription) => {
           this.user.subscriberCount = increment(this.user.subscriberCount);
           this.subscription = sub;
+          this.playSubscriptionFeedback();
           this.notificationService.success(`订阅成功`);
         }, error => {
           this.notificationService.warn(`订阅失败: ${error.statusMessage}`);
         }
       );
     }
+  }
+
+  private deleteSubscription(): void {
+    this.san11pkService.deleteSubscription(new DeleteSubscriptionRequest({
+      name: this.subscription.name
+    })).pipe(finalize(() => this.subscriptionBusy = false)).subscribe(
+      (resp: Subscription) => {
+        this.user.subscriberCount = decrement(this.user.subscriberCount);
+        this.subscription = undefined;
+        this.playSubscriberCountFeedback();
+        this.interactionService.undo('已取消订阅').subscribe(() => this.onSubscribe());
+      }, error => {
+        this.notificationService.warn(`退订失败: ${error.statusMessage}`);
+      }
+    );
   }
 
   onAvatarClick() {
@@ -196,6 +233,31 @@ export class UserInfoWithSubButtonComponent implements OnChanges {
             },
           });
       }
+    });
+  }
+
+  private playSubscriberCountFeedback(): void {
+    if (this.subscriberCountPulseTimeout) {
+      clearTimeout(this.subscriberCountPulseTimeout);
+    }
+
+    this.subscriberCountPulse = false;
+    requestAnimationFrame(() => {
+      this.subscriberCountPulse = true;
+      this.subscriberCountPulseTimeout = setTimeout(() => this.subscriberCountPulse = false, 420);
+    });
+  }
+
+  private playSubscriptionFeedback(): void {
+    if (this.subscriptionBurstTimeout) {
+      clearTimeout(this.subscriptionBurstTimeout);
+    }
+
+    this.playSubscriberCountFeedback();
+    this.subscriptionBurst = false;
+    requestAnimationFrame(() => {
+      this.subscriptionBurst = true;
+      this.subscriptionBurstTimeout = setTimeout(() => this.subscriptionBurst = false, 1260);
     });
   }
 }

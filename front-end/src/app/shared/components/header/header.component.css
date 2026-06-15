@@ -300,14 +300,21 @@ h5 {
     height: auto !important;
     min-height: 0 !important;
     padding: 0 !important;
+    border: 1px solid transparent !important;
     border-radius: var(--radius-md) !important;
     overflow: hidden;
     white-space: normal !important;
     line-height: normal !important;
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve);
 }
 
 .notification-button:hover {
-    background: rgba(37, 99, 235, .06) !important;
+    border-color: var(--glass-active-border) !important;
+    background: var(--surface) !important;
+    box-shadow: 0 8px 20px rgba(16, 24, 40, .08);
 }
 
 .message-panel-footer {

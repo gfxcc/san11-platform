@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FieldMask } from '@ngx-grpc/well-known-types';
 import { ProgressService } from 'src/app/progress.service';
@@ -17,6 +17,7 @@ import { SidenavService } from '../sidebar/sidenav.service';
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('searchInput') searchInput;
+  @ViewChild('searchBar') searchBar: ElementRef<HTMLElement>;
 
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
 
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
   private searchTimer: ReturnType<typeof setTimeout> | undefined;
   searchSuggestions: Package[] = [];
   searching = false;
+  searchPanelOpen = false;
   quickSearchCategories = GlobalConstants.categories.slice(0, 4);
 
   constructor(
@@ -107,7 +109,31 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['users', this.user.userId, 'inbox']);
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.searchPanelOpen) {
+      return;
+    }
+
+    const target = event.target as Node | null;
+    if (target && this.searchBar?.nativeElement.contains(target)) {
+      return;
+    }
+
+    this.closeSearchPanel(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (!this.searchPanelOpen) {
+      return;
+    }
+
+    this.closeSearchPanel();
+  }
+
   searchChanged() {
+    this.searchPanelOpen = true;
     clearTimeout(this.searchTimer);
     this.searchTimer = setTimeout(() => {
       const query = this.searchQuery.trim();
@@ -125,10 +151,23 @@ export class HeaderComponent implements OnInit {
     }, 350);
   }
 
+  openSearchPanel(): void {
+    this.searchPanelOpen = true;
+  }
+
+  closeSearchPanel(blurInput = true): void {
+    this.searchPanelOpen = false;
+    if (blurInput) {
+      this.searchInput?.nativeElement?.blur();
+    }
+  }
+
   submitSearch(): void {
     const query = this.searchQuery.trim();
     if (!query) return;
     this.searchSuggestions = [];
+    this.searching = false;
+    this.closeSearchPanel();
     this.router.navigate(['/search'], { queryParams: { query } });
   }
 
@@ -136,11 +175,13 @@ export class HeaderComponent implements OnInit {
     this.searchQuery = '';
     this.searchSuggestions = [];
     this.searching = false;
+    this.closeSearchPanel();
   }
 
   openSearchSuggestion(san11Package: Package): void {
     this.searchSuggestions = [];
     this.searchQuery = '';
+    this.closeSearchPanel();
     this.router.navigate(san11Package.name.split('/'));
   }
 

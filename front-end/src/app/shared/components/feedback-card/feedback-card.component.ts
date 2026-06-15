@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/common/notification.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { loadUser, signedIn } from 'src/app/utils/user_util';
@@ -9,7 +9,7 @@ import { Action, ListActivitiesRequest, ListActivitiesResponse, ToggleActionRequ
   templateUrl: './feedback-card.component.html',
   styleUrls: ['./feedback-card.component.css']
 })
-export class FeedbackCardComponent implements OnInit {
+export class FeedbackCardComponent implements OnInit, OnDestroy {
   @Input() target: string;
   @Input() likeCount: string;
   @Input() dislikeCount: string;
@@ -19,6 +19,9 @@ export class FeedbackCardComponent implements OnInit {
 
   liked = false;
   disliked = false;
+  hoveredFeedback: 'like' | 'dislike' | undefined;
+  feedbackPulse: 'like' | 'dislike' | undefined;
+  private feedbackPulseTimeout: ReturnType<typeof setTimeout> | undefined;
 
   constructor(
     private san11pkService: San11PlatformServiceService,
@@ -27,6 +30,12 @@ export class FeedbackCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFeedback();
+  }
+
+  ngOnDestroy(): void {
+    if (this.feedbackPulseTimeout) {
+      clearTimeout(this.feedbackPulseTimeout);
+    }
   }
 
   loadFeedback() {
@@ -81,6 +90,28 @@ export class FeedbackCardComponent implements OnInit {
     this.toggle(Action.DISLIKE);
   }
 
+  onFeedbackHover(feedback: 'like' | 'dislike') {
+    this.hoveredFeedback = feedback;
+  }
+
+  onFeedbackHoverEnd() {
+    this.hoveredFeedback = undefined;
+  }
+
+  startFeedbackPulse(feedback: 'like' | 'dislike') {
+    if (this.feedbackPulseTimeout) {
+      clearTimeout(this.feedbackPulseTimeout);
+    }
+
+    this.feedbackPulse = undefined;
+    requestAnimationFrame(() => {
+      this.feedbackPulse = feedback;
+      this.feedbackPulseTimeout = setTimeout(() => {
+        this.feedbackPulse = undefined;
+      }, 320);
+    });
+  }
+
   // utils
 
   toggle(action: Action) {
@@ -93,9 +124,11 @@ export class FeedbackCardComponent implements OnInit {
         if (action === Action.LIKE) {
           this.likeCount = resp.likeCount;
           this.dislikeCount = resp.dislikeCount;
+          this.startFeedbackPulse('like');
         } else if (action === Action.DISLIKE) {
           this.likeCount = resp.likeCount;
           this.dislikeCount = resp.dislikeCount;
+          this.startFeedbackPulse('dislike');
         }
       },
       error: (error) => {
@@ -104,4 +137,3 @@ export class FeedbackCardComponent implements OnInit {
     });
   }
 }
-

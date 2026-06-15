@@ -5,7 +5,7 @@
     </div>
     <span class="app-count-pill">{{publishedPackages.length}} 项资源</span>
 </div>
-<table mat-table [dataSource]="dataSource" class="table app-data-table">
+<table *ngIf="publishedPackages.length > 0" mat-table [dataSource]="dataSource" class="table app-data-table">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -52,9 +52,6 @@
 <div *ngIf="publishedPackages.length === 0" class="app-empty-state published-empty">
     <mat-icon>inventory_2</mat-icon>
     <p>还没有发布资源</p>
-    <button mat-stroked-button color="primary" type="button" routerLink="/createNew">
-        发布第一个资源
-    </button>
 </div>
-<mat-paginator [pageSizeOptions]="[10]"></mat-paginator>
+<mat-paginator *ngIf="publishedPackages.length > 0" [pageSizeOptions]="[10]"></mat-paginator>
 </div>

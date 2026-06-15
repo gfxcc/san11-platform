@@ -29,6 +29,16 @@
     display: grid;
     gap: 5px;
     padding: 18px;
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve);
+}
+
+.hero-status:hover {
+    border-color: var(--glass-active-border);
+    background: var(--surface);
+    box-shadow: 0 8px 20px rgba(16, 24, 40, .08);
 }
 
 .hero-status span,
@@ -164,7 +174,8 @@
     box-shadow: var(--glass-active-shadow);
     pointer-events: none;
     transform: translateX(calc(var(--ui-style-index) * var(--ui-style-option-width)));
-    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+    will-change: transform;
+    transition: transform 240ms cubic-bezier(.18, .86, .25, 1.08);
 }
 
 .ui-style-option {
@@ -199,6 +210,21 @@
     gap: 12px;
     min-width: 0;
     padding: 14px;
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve);
+}
+
+.metric-card:hover {
+    border-color: var(--glass-active-border);
+    background: var(--surface);
+    box-shadow: 0 8px 20px rgba(16, 24, 40, .08);
+}
+
+.metric-card.metric-urgent:hover {
+    border-color: rgba(245, 158, 11, .48);
+    background: rgba(255, 251, 235, .82);
 }
 
 .metric-card>div {
@@ -562,6 +588,21 @@
     gap: 12px;
     align-items: start;
     padding: 14px;
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve);
+}
+
+.todo-card:hover {
+    border-color: var(--glass-active-border);
+    background: var(--surface);
+    box-shadow: 0 8px 20px rgba(16, 24, 40, .08);
+}
+
+.todo-card.priority-high:hover {
+    border-color: rgba(245, 158, 11, .48);
+    background: rgba(255, 251, 235, .82);
 }
 
 .todo-card.priority-high {

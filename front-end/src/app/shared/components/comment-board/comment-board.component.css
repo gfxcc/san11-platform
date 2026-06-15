@@ -50,7 +50,8 @@
     box-shadow: var(--glass-active-shadow);
     pointer-events: none;
     transform: translateX(0);
-    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+    will-change: transform;
+    transition: transform 240ms cubic-bezier(.18, .86, .25, 1.08);
 }
 
 .comment-sort-latest .comment-sort-glass {
@@ -145,6 +146,74 @@
     margin-top: 22px;
     display: grid;
     gap: 14px;
+}
+
+.comment-skeleton-list {
+    pointer-events: none;
+}
+
+.comment-skeleton-card {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+    min-height: 108px;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.comment-skeleton-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+}
+
+.comment-skeleton-body {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    min-width: 0;
+    padding-top: 3px;
+}
+
+.comment-skeleton-line {
+    display: block;
+    border-radius: 999px;
+}
+
+.comment-skeleton-title {
+    width: min(36%, 180px);
+    height: 15px;
+}
+
+.comment-skeleton-text {
+    width: min(82%, 560px);
+    height: 13px;
+}
+
+.comment-skeleton-text-short {
+    width: min(58%, 380px);
+    height: 13px;
+}
+
+.comment-skeleton-pulse {
+    background:
+        linear-gradient(90deg, rgba(226, 232, 240, .55) 0%, rgba(241, 245, 249, .96) 42%, rgba(226, 232, 240, .55) 82%),
+        var(--surface-muted);
+    background-size: 220% 100%;
+    animation: commentSkeletonShimmer 1.25s ease-in-out infinite;
+}
+
+@keyframes commentSkeletonShimmer {
+    0% {
+        background-position: 120% 0;
+    }
+
+    100% {
+        background-position: -120% 0;
+    }
 }
 
 .load-more-row {
@@ -275,6 +344,28 @@ h5 {
 
 .comment-bottom-space {
     height: 100px;
+}
+
+.comment-empty-state {
+    margin-top: 22px;
+    min-height: 180px;
+    border-style: dashed;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(248, 250, 252, .84)),
+        var(--surface);
+    text-align: center;
+}
+
+.comment-empty-state strong {
+    color: var(--text-color);
+    font-size: 1.02rem;
+    font-weight: 850;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .comment-skeleton-pulse {
+        animation: none;
+    }
 }
 
 @media (max-width: 40rem) {

@@ -34,7 +34,7 @@
         </button>
     </section>
 
-    <section class="inbox-feed app-activity-feed" *ngIf="filteredNotifications?.length; else emptyInbox">
+    <section class="inbox-feed app-activity-feed" *ngIf="!isLoadingNotifications && filteredNotifications?.length; else inboxFallback">
         <article *ngFor="let notification of filteredNotifications" class="inbox-item app-activity-item"
             (click)="onDetailClick(notification)"
             [class.inbox-item-unread]="notification.unread"
@@ -59,10 +59,26 @@
         </article>
     </section>
 
+    <ng-template #inboxFallback>
+        <section class="inbox-feed inbox-skeleton-feed app-activity-feed" *ngIf="isLoadingNotifications; else emptyInbox"
+            aria-hidden="true">
+            <article class="inbox-skeleton-item" *ngFor="let row of inboxSkeletonRows">
+                <span class="inbox-skeleton-marker inbox-skeleton-pulse"></span>
+                <span class="inbox-skeleton-card">
+                    <span class="inbox-skeleton-header">
+                        <span class="inbox-skeleton-line inbox-skeleton-title inbox-skeleton-pulse"></span>
+                        <span class="inbox-skeleton-line inbox-skeleton-time inbox-skeleton-pulse"></span>
+                    </span>
+                    <span class="inbox-skeleton-line inbox-skeleton-copy inbox-skeleton-pulse"></span>
+                </span>
+            </article>
+        </section>
+    </ng-template>
+
     <ng-template #emptyInbox>
         <div class="inbox-empty app-empty-state">
-            <mat-icon>inbox</mat-icon>
-            <p>{{selectedFilter === 'all' ? '暂无通知' : '当前筛选下没有通知'}}</p>
+            <mat-icon>{{emptyStateIcon}}</mat-icon>
+            <strong>{{emptyStateTitle}}</strong>
         </div>
     </ng-template>
 </div>

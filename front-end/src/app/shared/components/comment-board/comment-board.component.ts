@@ -1,15 +1,17 @@
 import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, finalize } from 'rxjs';
+import { Subject, delay, finalize } from 'rxjs';
 import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { signedIn } from 'src/app/utils/user_util';
+import { environment } from 'src/environments/environment';
 import { Comment, CreateCommentRequest, GetUserRequest, ListCommentsRequest, ListCommentsResponse, Package, User } from "../../../../proto/san11-platform.pb";
 import { NotificationService } from "../../../common/notification.service";
 import { San11PlatformServiceService } from "../../../service/san11-platform-service.service";
 import { increment } from "../../../utils/number_util";
 
+const demoLoadingDelayMs = environment.production ? 0 : 450;
 
 @Component({
   selector: 'app-comment-board',
@@ -38,6 +40,7 @@ export class CommentBoardComponent implements OnInit {
   commentsPageSize = 50;
   hasMoreComments = false;
   isLoadingComments = false;
+  commentSkeletonRows = Array.from({ length: 3 });
 
   sendCommentLoading = false;
 
@@ -148,7 +151,7 @@ export class CommentBoardComponent implements OnInit {
       pageToken: `{ "watermark": "${watermark}" }`,
       orderBy: this.commentsOrder,
     }))
-      .pipe(finalize(() => {
+      .pipe(delay(demoLoadingDelayMs), finalize(() => {
         this.isLoadingComments = false;
         this.progressService.complete();
       }))

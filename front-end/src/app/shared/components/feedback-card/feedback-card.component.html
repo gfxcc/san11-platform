@@ -1,18 +1,25 @@
 <div class="feedback-card-container app-segmented-control" [class.feedback-card-container-plain]="disableClickableBackground"
-    [class.feedback-has-like]="liked" [class.feedback-has-dislike]="disliked">
+    [class.feedback-has-like]="liked" [class.feedback-has-dislike]="disliked"
+    [class.feedback-hover-like]="hoveredFeedback === 'like'"
+    [class.feedback-hover-dislike]="hoveredFeedback === 'dislike'" (mouseleave)="onFeedbackHoverEnd()">
     <span class="feedback-active-glass app-segmented-glass" aria-hidden="true"></span>
     <button *ngIf="this.likeCount != undefined" type="button" matTooltip="我要点赞"
         class="feedback-button feedback-like app-segmented-option"
-        [class.feedback-button-active]="liked" [class.app-segmented-option-active]="liked" (click)="onToggleLike()"
+        [class.feedback-button-active]="liked" [class.feedback-button-pulse]="feedbackPulse === 'like'"
+        [class.app-segmented-option-active]="liked" (click)="onToggleLike()"
+        (mouseenter)="onFeedbackHover('like')" (focus)="onFeedbackHover('like')" (blur)="onFeedbackHoverEnd()"
         [attr.aria-pressed]="liked">
         <mat-icon>{{liked ? 'thumb_up' : 'thumb_up_off_alt'}}</mat-icon>
         <span class="feedback-count" [class.feedback-count-empty]="likeCount == '0'"
+            [class.feedback-count-pulse]="feedbackPulse === 'like'"
             [attr.aria-hidden]="likeCount == '0'">{{likeCount == '0' ? '' : likeCount}}</span>
     </button>
     <button *ngIf="this.dislikeCount != undefined" type="button" matTooltip="不喜欢"
         class="feedback-button feedback-dislike app-segmented-option"
-        [class.feedback-button-active]="disliked" [class.app-segmented-option-active]="disliked"
-        (click)="onToggleDislike()" [attr.aria-pressed]="disliked">
+        [class.feedback-button-active]="disliked" [class.feedback-button-pulse]="feedbackPulse === 'dislike'"
+        [class.app-segmented-option-active]="disliked"
+        (click)="onToggleDislike()" (mouseenter)="onFeedbackHover('dislike')" (focus)="onFeedbackHover('dislike')"
+        (blur)="onFeedbackHoverEnd()" [attr.aria-pressed]="disliked">
         <mat-icon>{{disliked ? 'thumb_down' : 'thumb_down_off_alt'}}</mat-icon>
     </button>
 </div>

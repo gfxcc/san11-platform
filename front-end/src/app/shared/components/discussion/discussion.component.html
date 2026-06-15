@@ -5,7 +5,6 @@
                 <h3>
                     {{this.displayName}}
                 </h3>
-                <p>反馈问题、记录建议和跟进资源更新。</p>
             </div>
             <span class="example-spacer"></span>
             <button mat-flat-button color="primary" class="create-thread-button" matTooltip="新帖子"
@@ -33,7 +32,6 @@
         <div *ngIf="!isLoading && threads?.length === 0" class="dashboard-placeholder app-empty-state">
             <mat-icon>forum</mat-icon>
             <p>暂无讨论</p>
-            <span>可以发起问题反馈、使用建议或版本更新讨论。</span>
         </div>
 
         <mat-paginator *ngIf="!isLoading && threads?.length > 0" [length]="totalThreadsCount" [pageSize]="pageSize" [hidePageSize]="true"

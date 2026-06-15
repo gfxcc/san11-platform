@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { catchError, filter, forkJoin, map, of } from 'rxjs';
 import { onMobile } from 'src/app/utils/layout_util';
+import { environment } from 'src/environments/environment';
 import { CreateThreadRequest, ListPackagesRequest, ResourceState, Thread } from '../../../../proto/san11-platform.pb';
 import { GlobalConstants } from '../../../common/global-constants';
 import { NotificationService } from '../../../common/notification.service';
@@ -42,6 +43,8 @@ export class SidebarComponent implements OnInit {
 
   selectedCategory = undefined;
   pendingReviewCount = 0;
+  showDevEnvironmentBadge = !environment.production;
+  devEnvironmentLabel = `DEV · ${environment.domain}`;
   private categoryRouteActive = false;
 
   constructor(

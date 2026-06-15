@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, finalize } from 'rxjs';
+import { combineLatest, delay, finalize } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { InteractionService } from 'src/app/common/interaction.service';
 import { ProgressService } from 'src/app/progress.service';
+import { environment } from 'src/environments/environment';
 import { CreateTagRequest, DeleteTagRequest, ListPackagesRequest, ListPackagesResponse, ListTagsRequest, Package, SearchPackagesResponse, Tag } from '../../../../../proto/san11-platform.pb';
 import { NotificationService } from "../../../../common/notification.service";
 import { EventEmiterService } from "../../../../service/event-emiter.service";
@@ -15,6 +16,9 @@ export interface OrderOption {
   value: string,
   viewValue: string,
 }
+
+const demoLoadingDelayMs = environment.production ? 0 : 450;
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -37,6 +41,9 @@ export class DashboardComponent implements OnInit {
   currentTagId = '';
   tags: Tag[] = [];
   searchCategoryShortcuts = GlobalConstants.categories.slice(0, 4);
+  isLoadingPackages = false;
+  skeletonCards = Array.from({ length: 6 });
+  private packageLoadRequests = 0;
 
   constructor(
     private notificationService: NotificationService,
@@ -93,9 +100,13 @@ export class DashboardComponent implements OnInit {
 
   loadPackages(): void {
     // this._eventEmiter.sendMessage({ categoryId: request.categoryId });
+    this.beginPackageLoad();
     this.progressService.loading();
     this.san11pkService.listPackages(this.listRequest)
-      .pipe(finalize(() => this.progressService.complete()))
+      .pipe(delay(demoLoadingDelayMs), finalize(() => {
+        this.endPackageLoad();
+        this.progressService.complete();
+      }))
       .subscribe({
         next: (resp: ListPackagesResponse) => {
           this.packages = resp.packages
@@ -125,13 +136,17 @@ export class DashboardComponent implements OnInit {
   }
 
   loadPackagesInCate(userId: string, category: number) {
+    this.beginPackageLoad();
     this.progressService.loading();
     this.san11pkService.listPackages(new ListPackagesRequest({
       parent: `categories/${category.toString()}`,
       filter: `author_id=${userId}`,
       orderBy: this.selectedOrder,
     }))
-      .pipe(finalize(() => this.progressService.complete()))
+      .pipe(delay(demoLoadingDelayMs), finalize(() => {
+        this.endPackageLoad();
+        this.progressService.complete();
+      }))
       .subscribe({
         next: (resp: ListPackagesResponse) => {
           resp.packages.forEach(p => {
@@ -146,9 +161,13 @@ export class DashboardComponent implements OnInit {
 
 
   searchPackages(query: string): void {
+    this.beginPackageLoad();
     this.progressService.loading();
     this.san11pkService.searchPackages(query, 0, '')
-      .pipe(finalize(() => this.progressService.complete()))
+      .pipe(delay(demoLoadingDelayMs), finalize(() => {
+        this.endPackageLoad();
+        this.progressService.complete();
+      }))
       .subscribe({
         next: (resp: SearchPackagesResponse) => {
           this.packages = resp.packages;
@@ -259,6 +278,16 @@ export class DashboardComponent implements OnInit {
     return isAdmin() && !!this.currentCategoryId && !this.currentQuery;
   }
 
+  private beginPackageLoad(): void {
+    this.packageLoadRequests += 1;
+    this.isLoadingPackages = true;
+  }
+
+  private endPackageLoad(): void {
+    this.packageLoadRequests = Math.max(0, this.packageLoadRequests - 1);
+    this.isLoadingPackages = this.packageLoadRequests > 0;
+  }
+
   get showTagToolbar(): boolean {
     return !!this.currentCategoryId && !this.currentQuery && (this.tags.length > 0 || this.canManageTags());
   }
@@ -286,13 +315,37 @@ export class DashboardComponent implements OnInit {
 
   get emptyStateText(): string {
     if (this.currentQuery) {
-      return '没有找到匹配的资源';
+      return '换个关键词，或先切到常用分类继续找。';
     }
 
     if (this.listRequest?.filter) {
-      return '当前筛选条件下没有资源';
+      return '这个标签下还没有资源，可以清除筛选查看完整列表。';
+    }
+
+    return '这个分类还没有公开资源。';
+  }
+
+  get emptyStateTitle(): string {
+    if (this.currentQuery) {
+      return '没有找到匹配资源';
+    }
+
+    if (this.listRequest?.filter) {
+      return '当前筛选没有结果';
     }
 
     return '这里还没有资源';
+  }
+
+  get emptyStateIcon(): string {
+    if (this.currentQuery) {
+      return 'search_off';
+    }
+
+    if (this.listRequest?.filter) {
+      return 'filter_alt_off';
+    }
+
+    return 'inventory_2';
   }
 }

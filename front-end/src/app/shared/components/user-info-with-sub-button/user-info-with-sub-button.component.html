@@ -21,8 +21,9 @@
             <div class="text-info">
                 <a class="user-name clickable" [matTooltip]="this.user.username"
                     [href]="this.user.name">{{this.user.username}}</a>
-                <div class="user-sub-count">{{this.user.subscriberCount}}
-                    位订阅者
+                <div class="user-sub-count" [class.user-sub-count-pulse]="subscriberCountPulse">
+                    <span>{{this.user.subscriberCount}}</span>
+                    <span>位订阅者</span>
                 </div>
             </div>
         </div>
@@ -31,9 +32,19 @@
     </div>
     <span class="author-spacer"></span>
     <div class="subscribe-section">
-        <button *ngIf="!this.loadingSubscription && canSubscribeToUser" mat-flat-button
+        <button *ngIf="!this.loadingSubscription && canSubscribeToUser" mat-flat-button class="subscribe-button"
             [class.unsubscribe-button]="subscription" color="primary"
-            (click)="onSubscribe()">{{this.subscription?'退订':'订阅'}}</button>
+            [class.subscribe-button-celebrate]="subscriptionBurst"
+            [disabled]="subscriptionBusy"
+            (click)="onSubscribe()">
+            <mat-icon aria-hidden="true" class="subscribe-bell"
+                [class.subscribe-bell-ring]="subscriptionBurst">{{this.subscription ? 'notifications_active' : 'notifications'}}</mat-icon>
+            <span>{{this.subscription ? '已订阅' : '订阅'}}</span>
+        </button>
+        <span *ngIf="canSubscribeToUser" class="subscribe-burst" [class.subscribe-burst-active]="subscriptionBurst"
+            aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
         <p-skeleton *ngIf="this.loadingSubscription && canSubscribeToUser" width="64px" height="36px"></p-skeleton>
     </div>
 </div>

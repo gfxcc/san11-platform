@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <div class="contents">
+    <div class="contents" *ngIf="!(isLoadingComments && comments.length === 0); else commentSkeleton">
         <!-- <app-comment-card *ngFor="let package of packages" class="col-1-4">
             <app-package-card [package]="package" class="module package"></app-package-card>
         </app-comment-card> -->
@@ -65,6 +65,19 @@
         </ng-container>
     </div>
 
+    <ng-template #commentSkeleton>
+        <div class="contents comment-skeleton-list" aria-hidden="true">
+            <article class="comment-skeleton-card" *ngFor="let row of commentSkeletonRows">
+                <span class="comment-skeleton-avatar comment-skeleton-pulse"></span>
+                <span class="comment-skeleton-body">
+                    <span class="comment-skeleton-line comment-skeleton-title comment-skeleton-pulse"></span>
+                    <span class="comment-skeleton-line comment-skeleton-text comment-skeleton-pulse"></span>
+                    <span class="comment-skeleton-line comment-skeleton-text-short comment-skeleton-pulse"></span>
+                </span>
+            </article>
+        </div>
+    </ng-template>
+
     <div *ngIf="hasMoreComments" class="load-more-row">
         <button type="button" class="load-more-button" mat-stroked-button color="primary"
             [disabled]="isLoadingComments" (click)="loadMoreComments()">
@@ -73,9 +86,9 @@
         </button>
     </div>
 
-    <div *ngIf="comments.length === 0" class="app-empty-state">
+    <div *ngIf="!isLoadingComments && comments.length === 0" class="app-empty-state comment-empty-state">
         <mat-icon>chat_bubble_outline</mat-icon>
-        <p>{{disableInput ? '暂无评论' : '还没有评论，来发表第一条吧'}}</p>
+        <strong>{{disableInput ? '暂无评论' : '还没有评论'}}</strong>
     </div>
 
     <div class="comment-bottom-space"></div>

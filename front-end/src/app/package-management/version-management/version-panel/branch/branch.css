@@ -178,11 +178,6 @@
     font-weight: 750;
 }
 
-.empty-branch span {
-    color: var(--text-muted);
-    font-size: .9rem;
-}
-
 @media (max-width: 40rem) {
     :host {
         display: block;

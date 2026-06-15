@@ -45,9 +45,11 @@
     opacity: 0;
     pointer-events: none;
     transform: translateX(0);
+    will-change: transform, opacity, width;
     transition:
-        opacity 180ms var(--animation-timing-curve),
-        transform 220ms cubic-bezier(.2, .8, .2, 1),
+        opacity 160ms var(--animation-timing-curve),
+        width 180ms var(--animation-timing-curve),
+        transform 240ms cubic-bezier(.18, .86, .25, 1.08),
         background-color 180ms var(--animation-timing-curve),
         border-color 180ms var(--animation-timing-curve);
 }
@@ -57,17 +59,29 @@
 }
 
 .feedback-has-like .feedback-active-glass,
-.feedback-has-dislike .feedback-active-glass {
+.feedback-has-dislike .feedback-active-glass,
+.feedback-hover-like .feedback-active-glass,
+.feedback-hover-dislike .feedback-active-glass {
     opacity: 1;
 }
 
-.feedback-has-dislike .feedback-active-glass {
+.feedback-has-dislike .feedback-active-glass,
+.feedback-hover-dislike .feedback-active-glass {
     width: var(--feedback-dislike-button-width);
     border-color: var(--glass-muted-active-border);
     background:
         var(--glass-muted-active-gradient),
         var(--glass-muted-active-bg);
     transform: translateX(var(--feedback-button-width));
+}
+
+.feedback-hover-like .feedback-active-glass {
+    width: var(--feedback-button-width);
+    border-color: var(--glass-active-border);
+    background:
+        var(--glass-active-gradient),
+        var(--glass-active-bg);
+    transform: translateX(0);
 }
 
 .feedback-button {
@@ -105,6 +119,14 @@
     color: var(--text-color);
 }
 
+.feedback-hover-like .feedback-like {
+    color: var(--primary-strong);
+}
+
+.feedback-hover-dislike .feedback-dislike {
+    color: #475569;
+}
+
 .feedback-button-active.feedback-like {
     color: var(--primary-strong);
 }
@@ -118,6 +140,11 @@
     height: 20px;
     font-size: 20px;
     line-height: 20px;
+    transform-origin: center;
+}
+
+.feedback-button-pulse mat-icon {
+    animation: feedbackIconPulse 300ms cubic-bezier(.18, .86, .25, 1);
 }
 
 .feedback-count {
@@ -133,6 +160,10 @@
 .feedback-count-empty {
     opacity: 0;
     transform: scale(.88);
+}
+
+.feedback-count-pulse:not(.feedback-count-empty) {
+    animation: feedbackCountPulse 300ms cubic-bezier(.18, .86, .25, 1);
 }
 
 .feedback-card-container-plain .feedback-button {
@@ -151,6 +182,34 @@
 
 .feedback-card-container-plain .feedback-button:hover {
     box-shadow: none;
+}
+
+@keyframes feedbackIconPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    42% {
+        transform: scale(1.18) rotate(-5deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+@keyframes feedbackCountPulse {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    42% {
+        transform: translateY(-1px) scale(1.16);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
 }
 
 @media (max-width: 40rem) {

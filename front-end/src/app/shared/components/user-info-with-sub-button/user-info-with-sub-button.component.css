@@ -9,6 +9,7 @@
 .user-info-section {
     display: flex;
     align-items: center;
+    gap: 16px;
     min-width: 0;
 }
 
@@ -18,6 +19,8 @@
 }
 
 .text-info {
+    display: grid;
+    gap: 4px;
     min-width: 0;
 }
 
@@ -37,7 +40,6 @@
     width: 74px;
     height: 74px;
     min-width: 0;
-    margin-right: 16px;
     padding: 0;
     border: 1px solid transparent;
     border-radius: 999px !important;
@@ -115,12 +117,20 @@
 }
 
 .user-sub-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     color: var(--text-muted);
     margin-right: 4px;
     text-transform: none;
     font-size: .92rem;
-    line-height: 1.7;
+    line-height: 1.3;
     font-weight: 650;
+    white-space: nowrap;
+}
+
+.user-sub-count-pulse {
+    animation: subscriberCountPulse 420ms cubic-bezier(.18, .86, .25, 1);
 }
 
 .author-spacer {
@@ -128,16 +138,242 @@
 }
 
 .subscribe-section {
+    position: relative;
     display: grid;
     align-content: center;
     flex: 0 0 auto;
 }
 
-.subscribe-section button {
+.subscribe-section .subscribe-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     min-height: 36px;
+    min-width: 76px;
     padding: 0 16px;
     border-radius: 999px;
     font-weight: 800;
+    transition:
+        border-color var(--animation-duration) var(--animation-timing-curve),
+        background-color var(--animation-duration) var(--animation-timing-curve),
+        box-shadow var(--animation-duration) var(--animation-timing-curve),
+        transform var(--animation-duration) var(--animation-timing-curve);
+}
+
+.subscribe-section .subscribe-button mat-icon {
+    width: 17px;
+    height: 17px;
+    font-size: 17px;
+}
+
+.subscribe-section .subscribe-bell {
+    transform-origin: 50% 10%;
+}
+
+.subscribe-section .subscribe-bell-ring {
+    animation: subscribeBellRing 620ms cubic-bezier(.2, .9, .25, 1) both;
+}
+
+.subscribe-section .subscribe-button:hover:not(:disabled),
+.subscribe-section .subscribe-button:focus-visible:not(:disabled) {
+    box-shadow: 0 8px 18px rgba(37, 99, 235, .16);
+    transform: translateY(-1px);
+}
+
+.subscribe-section .subscribe-button:active:not(:disabled) {
+    transform: translateY(0) scale(.98);
+}
+
+.subscribe-section .subscribe-button-celebrate {
+    animation: subscribeButtonCelebrate 920ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.subscribe-section .subscribe-button > mat-icon,
+.subscribe-section .subscribe-button > span {
+    position: relative;
+    z-index: 1;
+}
+
+.subscribe-burst {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 148px;
+    height: 76px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+.subscribe-burst i {
+    position: absolute;
+    top: var(--burst-y, 50%);
+    left: var(--burst-x, 50%);
+    width: var(--burst-size, 6px);
+    height: var(--burst-size, 6px);
+    border-radius: 999px;
+    background: #d6006f;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--burst-rotate, 0deg)) scale(.2);
+    transform-origin: center;
+}
+
+.subscribe-burst i::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 2px;
+    border-radius: 999px;
+    background: #d6006f;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+}
+
+.subscribe-burst i:nth-child(1),
+.subscribe-burst i:nth-child(3),
+.subscribe-burst i:nth-child(5),
+.subscribe-burst i:nth-child(7),
+.subscribe-burst i:nth-child(8) {
+    border-radius: 0;
+    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+}
+
+.subscribe-burst i:nth-child(1) {
+    --burst-x: 8px;
+    --burst-y: 13px;
+    --burst-size: 12px;
+    --burst-rotate: 16deg;
+    --spark-color: #ffffff;
+    --star-mid: .78;
+    --star-peak: 1.18;
+    --star-tail: .5;
+}
+
+.subscribe-burst i:nth-child(2) {
+    --burst-x: 35px;
+    --burst-y: 10px;
+    --burst-size: 7px;
+    --cluster-y: -2px;
+}
+
+.subscribe-burst i:nth-child(3) {
+    --burst-x: 89px;
+    --burst-y: 9px;
+    --burst-size: 9px;
+    --burst-rotate: 12deg;
+    --spark-color: #d6006f;
+    --star-mid: .62;
+    --star-peak: .92;
+    --star-tail: .36;
+}
+
+.subscribe-burst i:nth-child(4) {
+    --burst-x: 113px;
+    --burst-y: 10px;
+    --burst-size: 6px;
+    --cluster-y: 0px;
+}
+
+.subscribe-burst i:nth-child(5) {
+    --burst-x: 7px;
+    --burst-y: 34px;
+    --burst-size: 11px;
+    --burst-rotate: -22deg;
+    --spark-color: #ffffff;
+    --star-mid: .7;
+    --star-peak: 1.05;
+    --star-tail: .42;
+}
+
+.subscribe-burst i:nth-child(6) {
+    --burst-x: 24px;
+    --burst-y: 66px;
+    --burst-size: 7px;
+    --cluster-y: 6px;
+}
+
+.subscribe-burst i:nth-child(7) {
+    --burst-x: 67px;
+    --burst-y: 68px;
+    --burst-size: 7px;
+    --burst-rotate: -12deg;
+    --spark-color: #d6006f;
+    --star-mid: .58;
+    --star-peak: .86;
+    --star-tail: .32;
+}
+
+.subscribe-burst i:nth-child(8) {
+    --burst-x: 125px;
+    --burst-y: 59px;
+    --burst-size: 10px;
+    --burst-rotate: 24deg;
+    --spark-color: #e36399;
+    --star-mid: .68;
+    --star-peak: 1;
+    --star-tail: .38;
+}
+
+.subscribe-burst-active i:nth-child(1),
+.subscribe-burst-active i:nth-child(3),
+.subscribe-burst-active i:nth-child(5),
+.subscribe-burst-active i:nth-child(7),
+.subscribe-burst-active i:nth-child(8) {
+    animation: subscribeStarGrow var(--star-duration, 900ms) cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.subscribe-burst-active i:nth-child(2),
+.subscribe-burst-active i:nth-child(4),
+.subscribe-burst-active i:nth-child(6) {
+    animation: subscribeDotPop 700ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.subscribe-burst-active i:nth-child(2)::after,
+.subscribe-burst-active i:nth-child(4)::after,
+.subscribe-burst-active i:nth-child(6)::after {
+    animation: subscribeDotCluster 840ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.subscribe-burst-active i:nth-child(1) {
+    --star-duration: 880ms;
+}
+
+.subscribe-burst-active i:nth-child(3) {
+    --star-duration: 820ms;
+    animation-delay: 38ms;
+}
+
+.subscribe-burst-active i:nth-child(2),
+.subscribe-burst-active i:nth-child(2)::after {
+    animation-delay: 72ms;
+}
+
+.subscribe-burst-active i:nth-child(8) {
+    --star-duration: 860ms;
+    animation-delay: 142ms;
+}
+
+.subscribe-burst-active i:nth-child(4),
+.subscribe-burst-active i:nth-child(4)::after {
+    animation-delay: 170ms;
+}
+
+.subscribe-burst-active i:nth-child(5) {
+    --star-duration: 920ms;
+    animation-delay: 220ms;
+}
+
+.subscribe-burst-active i:nth-child(6),
+.subscribe-burst-active i:nth-child(6)::after {
+    animation-delay: 270ms;
+}
+
+.subscribe-burst-active i:nth-child(7) {
+    --star-duration: 780ms;
+    animation-delay: 330ms;
 }
 
 .subscribe-section .unsubscribe-button {
@@ -150,6 +386,7 @@
 .subscribe-section .unsubscribe-button:hover {
     background: var(--surface-muted);
     color: var(--text-color);
+    box-shadow: 0 8px 18px rgba(16, 24, 40, .08);
 }
 
 .avatar-preview-panel {
@@ -186,6 +423,209 @@
     border-radius: 999px;
 }
 
+@keyframes subscriberCountPulse {
+    0%,
+    100% {
+        color: var(--text-muted);
+        transform: scale(1);
+    }
+
+    45% {
+        color: var(--primary-strong);
+        transform: scale(1.04);
+    }
+}
+
+@keyframes subscribeButtonCelebrate {
+    0% {
+        background: #111827;
+        color: #ffffff;
+        transform: translateY(0) scale(1);
+        box-shadow: none;
+    }
+
+    10% {
+        transform: translateY(0) scale(.985);
+    }
+
+    18%,
+    52% {
+        background: #e10073;
+        color: #111827;
+        transform: translateY(0) scale(1);
+        box-shadow: 0 0 0 1px rgba(225, 0, 115, .08), 0 8px 18px rgba(225, 0, 115, .12);
+    }
+
+    72% {
+        background: #e8b0c8;
+        color: #111827;
+        transform: translateY(0) scale(1);
+        box-shadow: none;
+    }
+
+    100% {
+        background: var(--surface-muted);
+        color: var(--text-color);
+        transform: translateY(0) scale(1);
+        box-shadow: none;
+    }
+}
+
+@keyframes subscribeBellRing {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    14% {
+        transform: rotate(-14deg);
+    }
+
+    28% {
+        transform: rotate(12deg);
+    }
+
+    42% {
+        transform: rotate(-9deg);
+    }
+
+    56% {
+        transform: rotate(6deg);
+    }
+
+    72% {
+        transform: rotate(-3deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes subscribeStarGrow {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(var(--burst-rotate, 0deg)) scale(.12);
+        background: var(--spark-color, #d6006f);
+    }
+
+    18% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(var(--burst-rotate, 0deg)) scale(var(--star-mid, .72));
+        background: var(--spark-color, #d6006f);
+    }
+
+    52% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(calc(var(--burst-rotate, 0deg) + 10deg)) scale(var(--star-peak, 1.12));
+        background: var(--spark-color, #d6006f);
+    }
+
+    72% {
+        opacity: .45;
+        transform: translate(-50%, -50%) rotate(calc(var(--burst-rotate, 0deg) + 18deg)) scale(.9);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(calc(var(--burst-rotate, 0deg) + 26deg)) scale(var(--star-tail, .35));
+    }
+}
+
+@keyframes subscribeDotPop {
+    0% {
+        opacity: 0;
+        background: #d6006f;
+        transform: translate(-50%, -50%) scale(.25);
+    }
+
+    18% {
+        opacity: 1;
+        background: #d6006f;
+        transform: translate(-50%, -50%) scale(.9);
+    }
+
+    42% {
+        opacity: 1;
+        background: #d6006f;
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    58% {
+        opacity: 1;
+        background: rgba(214, 0, 111, 0);
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        background: rgba(214, 0, 111, 0);
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+@keyframes subscribeDotCluster {
+    0%,
+    42% {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% + var(--cluster-y, 0px))) scale(.35);
+        box-shadow:
+            0 0 0 rgba(214, 0, 111, 0),
+            0 0 0 rgba(214, 0, 111, 0),
+            0 0 0 rgba(214, 0, 111, 0),
+            0 0 0 rgba(214, 0, 111, 0),
+            0 0 0 rgba(214, 0, 111, 0),
+            0 0 0 rgba(214, 0, 111, 0);
+    }
+
+    54% {
+        opacity: 1;
+        transform: translate(-50%, calc(-50% + var(--cluster-y, 0px))) scale(.9);
+        box-shadow:
+            0 -3px 0 rgba(214, 0, 111, .92),
+            3px -2px 0 rgba(214, 0, 111, .88),
+            3px 2px 0 rgba(214, 0, 111, .88),
+            0 4px 0 rgba(214, 0, 111, .84),
+            -3px 2px 0 rgba(214, 0, 111, .86),
+            -3px -2px 0 rgba(214, 0, 111, .86);
+    }
+
+    72% {
+        opacity: .82;
+        transform: translate(-50%, calc(-50% + var(--cluster-y, 0px))) scale(1);
+        box-shadow:
+            0 -12px 0 rgba(214, 0, 111, .7),
+            10px -6px 0 rgba(214, 0, 111, .64),
+            10px 6px 0 rgba(214, 0, 111, .64),
+            0 12px 0 rgba(214, 0, 111, .58),
+            -10px 6px 0 rgba(214, 0, 111, .62),
+            -10px -6px 0 rgba(214, 0, 111, .62);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% + var(--cluster-y, 0px))) scale(1);
+        box-shadow:
+            0 -12px 0 rgba(214, 0, 111, 0),
+            10px -6px 0 rgba(214, 0, 111, 0),
+            10px 6px 0 rgba(214, 0, 111, 0),
+            0 12px 0 rgba(214, 0, 111, 0),
+            -10px 6px 0 rgba(214, 0, 111, 0),
+            -10px -6px 0 rgba(214, 0, 111, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .subscribe-section .subscribe-button,
+    .subscribe-section .subscribe-button-celebrate,
+    .subscribe-section .subscribe-bell-ring,
+    .subscribe-burst-active i,
+    .subscribe-burst-active i::after,
+    .user-sub-count-pulse {
+        animation: none;
+        transition: none;
+    }
+}
+
 @media (max-width: 40rem) {
     .author-card {
         align-items: flex-start;
@@ -194,7 +634,6 @@
     .avatar-button {
         width: 58px;
         height: 58px;
-        margin-right: 12px;
     }
 
     .avatar-image {
