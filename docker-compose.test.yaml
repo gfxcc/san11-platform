@@ -5,13 +5,15 @@ services:
     build:
       context: ./back-end
       dockerfile: Dockerfile.test
-    working_dir: /app
+    working_dir: /workspace
     volumes:
-      - ./back-end:/app
+      - ./back-end:/workspace
       - ./back-end/utils:/utils
+      - ./database:/database:ro
     command: ["/utils/wait-for-postgres.sh", "test_db", "make", "test"]
     environment:
       DB_HOST: test_db
+      PY: python3.8
     depends_on:
       - test_db
   
