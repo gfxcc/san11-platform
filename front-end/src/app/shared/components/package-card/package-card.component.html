@@ -1,10 +1,10 @@
 <article class="resource-card clickable-card" (click)="onClick()">
     <mat-card appearance="outlined" class="package-card">
         <div class="screenshot-frame">
-            <div [hidden]="!this.displayScreenshotLoading" class="animated-background screenshot"></div>
+            <div class="animated-background screenshot" [class.screenshot-settled]="screenshotLoaded"></div>
 
-            <img [hidden]="this.displayScreenshotLoading" [src]="screenshot" (load)="this.displayScreenshotLoading=false;"
-                class="fit-image">
+            <img *ngIf="screenshot" [src]="screenshot" (load)="onScreenshotLoaded()" (error)="onScreenshotError()"
+                [class.fit-image-loaded]="screenshotLoaded" class="fit-image" [alt]="package.packageName">
 
             <div *ngIf="shouldShowStatusBadge" class="status-badge" [ngClass]="'status-badge-' + resourceStatus.tone">
                 <mat-icon>{{resourceStatus.icon}}</mat-icon>

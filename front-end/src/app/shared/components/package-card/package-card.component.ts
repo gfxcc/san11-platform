@@ -26,6 +26,7 @@ export class PackageCardComponent implements OnInit, OnChanges, OnDestroy {
   selectedBinary;
 
   displayScreenshotLoading: boolean = true;
+  screenshotLoaded = false;
   displayAuthorImgLoading: boolean = true;
   metricPulse = {
     download: false,
@@ -90,12 +91,25 @@ export class PackageCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadImage() {
+    this.displayScreenshotLoading = true;
+    this.screenshotLoaded = false;
+
     if (this.package.imageUrls.length === 0) {
       const defaultScreenshot = getDefaultPackageScreenshot(this.package);
       this.screenshot = defaultScreenshot ? getFullUrl(defaultScreenshot) : undefined;
     } else {
       this.screenshot = getFullUrl(this.package.imageUrls[0]);
     }
+  }
+
+  onScreenshotLoaded(): void {
+    this.screenshotLoaded = true;
+    this.displayScreenshotLoading = false;
+  }
+
+  onScreenshotError(): void {
+    this.screenshotLoaded = false;
+    this.displayScreenshotLoading = false;
   }
 
   private startMetricPulse(metric: 'download' | 'like') {

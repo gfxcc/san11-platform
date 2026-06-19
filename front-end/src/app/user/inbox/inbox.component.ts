@@ -5,6 +5,7 @@ import { FieldMask } from '@ngx-grpc/well-known-types';
 import { delay, finalize } from 'rxjs';
 import { NotificationService } from 'src/app/common/notification.service';
 import { ProgressService } from 'src/app/progress.service';
+import { EventEmiterService } from 'src/app/service/event-emiter.service';
 import { San11PlatformServiceService } from 'src/app/service/san11-platform-service.service';
 import { notificationToEvent } from 'src/app/utils/notification_util';
 import { environment } from 'src/environments/environment';
@@ -31,6 +32,7 @@ export class InboxComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private progressService: ProgressService,
+    private eventEmiter: EventEmiterService,
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +58,7 @@ export class InboxComponent implements OnInit {
       .subscribe({
         next: (resp: ListNotificationsResponse) => {
           this.notifications = resp.notifications;
+          this.emitUnreadCount();
         },
         error: error => {
           this.notificationService.warn(`获取通知失败: ${error.statusMessage}`)
@@ -69,8 +72,9 @@ export class InboxComponent implements OnInit {
     }
 
     if (notification.unread) {
-      this.markRead(notification);
       notification.unread = false;
+      this.emitUnreadCount();
+      this.markRead(notification);
     }
 
     const urlTree: UrlTree = new DefaultUrlSerializer().parse(notification.link);
@@ -136,6 +140,14 @@ export class InboxComponent implements OnInit {
       ...notification,
       unread: false,
     }));
+    this.emitUnreadCount();
+  }
+
+  private emitUnreadCount(): void {
+    this.eventEmiter.sendMessage({
+      userId: this.userId,
+      inboxUnreadCount: this.unreadCount,
+    });
   }
 
   private markRead(notification: Notification): void {

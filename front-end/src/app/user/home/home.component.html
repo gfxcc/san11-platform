@@ -6,7 +6,19 @@
 
     <mat-tab-group class="profile-tabs" mat-align-tabs="start" mat-stretch-tabs="false"
         (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedIndex">
-        <mat-tab *ngFor="let tab of tabs" [label]="tab.label" [disabled]="tab.disabled"></mat-tab>
+        <mat-tab *ngFor="let tab of tabs" [disabled]="tab.disabled">
+            <ng-template mat-tab-label>
+                <span class="profile-tab-label" [class.profile-tab-inbox]="tab.isInbox">
+                    <mat-icon *ngIf="tab.icon">{{tab.icon}}</mat-icon>
+                    <span>{{tab.label}}</span>
+                    <span *ngIf="tab.isInbox && inboxUnreadCount > 0" class="profile-tab-badge"
+                        [attr.aria-label]="inboxUnreadCount + ' 条未读通知'"
+                        [matTooltip]="inboxUnreadCount + ' 条未读通知'">
+                        {{inboxUnreadCount > 99 ? '99+' : inboxUnreadCount}}
+                    </span>
+                </span>
+            </ng-template>
+        </mat-tab>
     </mat-tab-group>
 
     <div class="profile-content">

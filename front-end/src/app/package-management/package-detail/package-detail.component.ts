@@ -15,6 +15,7 @@ import { concatMap, filter, finalize, from, Observable, switchMap, take } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
+import { EventEmiterService } from 'src/app/service/event-emiter.service';
 import {
   CreateImageRequest,
   CreateSubscriptionRequest,
@@ -90,6 +91,7 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
     private uploadService: UploadService,
     public editorService: EditorService,
     private progressService: ProgressService,
+    private eventEmiter: EventEmiterService,
   ) { }
 
   // Lifecycle
@@ -364,6 +366,7 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
       ['state'],
       () => {
         this.notificationService.success('审核通过');
+        this.emitPendingReviewRefresh();
         this.reloadCurrentPackage();
       },
       '操作失败',
@@ -386,6 +389,7 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
       ['state'],
       () => {
         this.notificationService.success('操作成功');
+        this.emitPendingReviewRefresh();
         this.reloadCurrentPackage();
       },
       '操作失败',
@@ -425,6 +429,7 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
       ['state'],
       () => {
         this.notificationService.success('成功删除');
+        this.emitPendingReviewRefresh();
         this.navigateHomeAndReload();
       },
       '删除失败',
@@ -746,6 +751,7 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
     })).subscribe({
       next: () => {
         this.notificationService.success('成功删除');
+        this.emitPendingReviewRefresh();
         this.navigateHomeAndReload();
       },
       error: error => this.notificationService.warn(`删除失败:${error.statusMessage}`),
@@ -879,5 +885,9 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
 
   private navigateHomeAndReload(): void {
     this.router.navigate(['/']).then(() => window.location.reload());
+  }
+
+  private emitPendingReviewRefresh(): void {
+    this.eventEmiter.sendMessage({ refreshPendingReviewCount: true });
   }
 }

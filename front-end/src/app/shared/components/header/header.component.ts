@@ -6,6 +6,7 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 import { openInNewTab } from 'src/app/utils/url_util';
 import { ListNotificationsRequest, ListNotificationsResponse, Notification, Package, SignOutRequest, UpdateNotificationRequest, User } from '../../../../proto/san11-platform.pb';
 import { NotificationService } from '../../../common/notification.service';
+import { ComponentMessage, EventEmiterService } from '../../../service/event-emiter.service';
 import { San11PlatformServiceService } from '../../../service/san11-platform-service.service';
 import { clearUser, isAdmin, loadUser, signedIn } from '../../../utils/user_util';
 import { SidenavService } from '../sidebar/sidenav.service';
@@ -23,6 +24,7 @@ export class HeaderComponent implements OnInit {
 
   user: User;
   notifications: Notification[] = [];
+  unreadCount = 0;
   today_visit_count: number = 1;
   today_download_count: number = 2;
   menuItems = ['a', 'b', 'c'];
@@ -40,6 +42,7 @@ export class HeaderComponent implements OnInit {
     private notificationService: NotificationService,
     private sidenav: SidenavService,
     public progressService: ProgressService,
+    private eventEmiter: EventEmiterService,
   ) {
   }
 
@@ -47,6 +50,7 @@ export class HeaderComponent implements OnInit {
     if (signedIn()) {
       this.user = loadUser();
       console.log(this.user);
+      this.subscribeToGlobalMessages();
       this.loadNotifications();
     }
   }
@@ -67,6 +71,8 @@ export class HeaderComponent implements OnInit {
     })).subscribe(
       (resp: ListNotificationsResponse) => {
         this.notifications = resp.notifications;
+        this.unreadCount = this.notifications.length;
+        this.emitUnreadCount();
       },
       error => {
 
@@ -95,6 +101,8 @@ export class HeaderComponent implements OnInit {
     this.markReaded(notification)
     openInNewTab(this.router, notification.link)
     this.notifications.splice(index, 1);
+    this.unreadCount = this.notifications.length;
+    this.emitUnreadCount();
   }
 
   onClearAll() {
@@ -102,11 +110,36 @@ export class HeaderComponent implements OnInit {
       this.markReaded(notification);
     });
     this.notifications = [];
+    this.unreadCount = 0;
+    this.emitUnreadCount();
   }
 
   openInbox(): void {
     if (!this.user) return;
     this.router.navigate(['users', this.user.userId, 'inbox']);
+  }
+
+  private emitUnreadCount(): void {
+    if (!this.user) return;
+
+    this.eventEmiter.sendMessage({
+      userId: this.user.userId,
+      inboxUnreadCount: this.unreadCount,
+    });
+  }
+
+  private subscribeToGlobalMessages(): void {
+    this.eventEmiter.dataStr.subscribe((data: ComponentMessage) => {
+      if (data.userId !== this.user?.userId || data.inboxUnreadCount === undefined) {
+        return;
+      }
+
+      this.unreadCount = data.inboxUnreadCount;
+
+      if (data.inboxUnreadCount !== this.notifications.length) {
+        setTimeout(() => this.loadNotifications(), 300);
+      }
+    });
   }
 
   @HostListener('document:click', ['$event'])

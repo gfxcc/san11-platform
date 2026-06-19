@@ -60,6 +60,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.syncSelectionFromUrl();
+    this.subscribeToGlobalMessages();
 
     if (this.isAdmin()) {
       this.loadPendingReviewCount();
@@ -174,7 +175,7 @@ export class SidebarComponent implements OnInit {
   }
 
   // To receive global messages
-  onActivate(elementRef) {
+  private subscribeToGlobalMessages(): void {
     this._eventEmiter.dataStr.subscribe((data: ComponentMessage) => {
 
       if (data.categoryId != undefined) {
@@ -184,6 +185,10 @@ export class SidebarComponent implements OnInit {
           }
           this.selectedCategory = data.categoryId;
         });
+      }
+
+      if (data.refreshPendingReviewCount && this.isAdmin()) {
+        this.loadPendingReviewCount();
       }
     });
   }

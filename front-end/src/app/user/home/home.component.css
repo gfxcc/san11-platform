@@ -26,6 +26,35 @@
     margin-top: 18px;
 }
 
+.profile-tab-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.profile-tab-label mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+.profile-tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, .12);
+    color: var(--primary-strong);
+    font-size: .68rem;
+    font-weight: 850;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
 .author-sub-count {
     color: var(--text-muted);
     margin-right: 4px;

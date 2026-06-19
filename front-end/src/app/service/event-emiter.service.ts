@@ -1,7 +1,10 @@
 import { Injectable, EventEmitter } from '@angular/core';
 
 export interface ComponentMessage {
-  categoryId: string,
+  categoryId?: string,
+  inboxUnreadCount?: number,
+  refreshPendingReviewCount?: boolean,
+  userId?: string,
 }
 
 @Injectable({
