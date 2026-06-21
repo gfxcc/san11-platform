@@ -72,6 +72,12 @@ class ListOptions:
                 return prev_option.watermark
             except Exception:
                 j = json.loads(page_token)
+                has_context = any(key in j for key in ['parent', 'filter', 'order_by'])
+                if has_context and (
+                        (j.get('parent') or '') != (parent or '') or
+                        j.get('filter', '') != filter or
+                        j.get('order_by', '') != order_by):
+                    raise InvalidArgument(f'Invalid page_token')
                 return int(j['watermark'])
 
         watermark = get_watermark(request.page_token)
@@ -82,13 +88,9 @@ class ListOptions:
                    filter=filter)
 
     def to_token(self) -> str:
-        return str(PaginationOption(
-            parent=self.parent or '',
-            page_size=self.page_size,
-            watermark=self.watermark,
-            order_by=self.order_by,
-            filter=self.filter,
-        ).SerializeToString())
+        return json.dumps({
+            'watermark': self.watermark,
+        })
 
     def parse_order_by(self) -> List[OrderByItem]:
         ...

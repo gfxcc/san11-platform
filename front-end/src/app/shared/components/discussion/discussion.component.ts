@@ -22,8 +22,9 @@ export class DiscussionComponent implements OnInit {
   threads: Thread[];
   pageSize = 20;
   totalThreadsCount = this.pageSize;
-  reachedEnd = false;
+  pageIndex = 0;
   isLoading = false;
+  private pageTokens: Array<string | undefined> = [''];
 
   constructor(
     private elementRef: ElementRef,
@@ -35,21 +36,25 @@ export class DiscussionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadThreads(0, this.pageSize, false);
+    this.loadThreads(0, false);
   }
 
   changePage(event: PageEvent) {
-    this.loadThreads(event.pageIndex * event.pageSize, event.pageSize, true);
+    this.loadThreads(event.pageIndex, true);
   }
 
-  loadThreads(watermark: number, pageSize: number, shouldScrollToTop = true) {
-    const requestedPageSize = pageSize + 1;
+  loadThreads(pageIndex: number, shouldScrollToTop = true) {
+    const pageToken = this.pageTokens[pageIndex];
+    if (pageToken === undefined) {
+      return;
+    }
+
     this.isLoading = true;
     this.progressService.loading();
     const request = new ListThreadsRequest({
       parent: this.parent,
-      pageSize: requestedPageSize.toString(),
-      pageToken: `{ "watermark": "${watermark}" }`,
+      pageSize: this.pageSize.toString(),
+      pageToken,
     })
     this.san11pkService.listThreads(request)
       .pipe(finalize(() => {
@@ -58,12 +63,13 @@ export class DiscussionComponent implements OnInit {
       }))
       .subscribe({
         next: (resp: ListThreadsResponse) => {
-          const hasMore = resp.threads.length > pageSize;
-          this.threads = resp.threads.slice(0, pageSize);
+          this.pageIndex = pageIndex;
+          this.threads = resp.threads;
+          this.pageTokens[pageIndex + 1] = resp.nextPageToken || undefined;
           if (shouldScrollToTop) {
             this.scrollToTop();
           }
-          this.updateTotalCount(!hasMore, watermark + this.threads.length);
+          this.updateTotalCount(pageIndex, this.threads.length, !!resp.nextPageToken);
         },
         error: error => {
           this.notificationService.warn(`获取讨论列表失败: ${error.statusMessage}.`);
@@ -81,18 +87,11 @@ export class DiscussionComponent implements OnInit {
     }
   }
 
-  updateTotalCount(reachedEnd: boolean, loadedSize: number) {
-    if (this.reachedEnd && loadedSize <= this.totalThreadsCount) {
-      return;
-    }
-
-    if (reachedEnd) {
-      this.totalThreadsCount = loadedSize;
-      this.reachedEnd = true;
-    } else {
-      this.totalThreadsCount = Math.max(this.totalThreadsCount, loadedSize + 1);
-      this.reachedEnd = false;
-    }
+  updateTotalCount(pageIndex: number, loadedSize: number, hasMore: boolean) {
+    const loadedThrough = pageIndex * this.pageSize + loadedSize;
+    this.totalThreadsCount = hasMore
+      ? Math.max(this.totalThreadsCount, loadedThrough + 1)
+      : loadedThrough;
   }
 
   createThread() {

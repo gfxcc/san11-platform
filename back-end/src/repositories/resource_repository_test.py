@@ -101,6 +101,7 @@ class ResourceRepositoryTest(unittest.TestCase):
         storage.list_result = [
             ({'name': 'users/1/packages/1', 'value': 'one'},),
             ({'name': 'users/1/packages/2', 'value': 'two'},),
+            ({'name': 'users/1/packages/3', 'value': 'three'},),
         ]
         repository = ResourceRepository(FakeModel, storage=storage)
         list_options = ListOptions(parent='users/1', page_size=2)
@@ -109,6 +110,21 @@ class ResourceRepositoryTest(unittest.TestCase):
 
         self.assertEqual(['one', 'two'], [r.value for r in resources])
         self.assertTrue(next_page_token)
+        self.assertIn('LIMIT 3 OFFSET 0', storage.calls[-1][4])
+
+    def test_list_omits_next_page_token_on_last_page(self):
+        storage = FakeStorage()
+        storage.list_result = [
+            ({'name': 'users/1/packages/1', 'value': 'one'},),
+            ({'name': 'users/1/packages/2', 'value': 'two'},),
+        ]
+        repository = ResourceRepository(FakeModel, storage=storage)
+        list_options = ListOptions(parent='users/1', page_size=2)
+
+        resources, next_page_token = repository.list(list_options)
+
+        self.assertEqual(['one', 'two'], [r.value for r in resources])
+        self.assertEqual('', next_page_token)
 
     def test_count_delegates_to_storage_with_filter(self):
         storage = FakeStorage()

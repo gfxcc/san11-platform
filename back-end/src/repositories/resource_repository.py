@@ -41,11 +41,13 @@ class ResourceRepository(Generic[_RESOURCE_T]):
 
     def list(self, list_options: ListOptions) -> Tuple[List[_RESOURCE_T], str]:
         try:
+            fetch_options = copy.copy(list_options)
+            fetch_options.page_size = list_options.page_size + 1
             order_statement = self.model_class._LIST_OPTIONS_ADAPTOR.gen_order_by(
                 list_options)
             where_statement, params = self.model_class._LIST_OPTIONS_ADAPTOR.gen_where(
                 list_options)
-            limit_statement = self.model_class._LIST_OPTIONS_ADAPTOR.gen_limit(list_options)
+            limit_statement = self.model_class._LIST_OPTIONS_ADAPTOR.gen_limit(fetch_options)
         except ValueError as err:
             raise InvalidArgument(
                 message=f'Invalid list_options = {list_options}: {err}')
@@ -58,10 +60,14 @@ class ResourceRepository(Generic[_RESOURCE_T]):
             params,
         )
 
-        next_page_options = copy.copy(list_options)
-        next_page_options.watermark = list_options.watermark + len(resp)
+        page = resp[:list_options.page_size]
+        next_page_token = ''
+        if len(resp) > list_options.page_size:
+            next_page_options = copy.copy(list_options)
+            next_page_options.watermark = list_options.watermark + len(page)
+            next_page_token = next_page_options.to_token()
 
-        return [self.model_class.from_db(data[0]) for data in resp], next_page_options.to_token()
+        return [self.model_class.from_db(data[0]) for data in page], next_page_token
 
     def count(self, list_options: ListOptions) -> int:
         try:

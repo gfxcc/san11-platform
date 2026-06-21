@@ -1,7 +1,7 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { SidenavService } from './shared/components/sidebar/sidenav.service';
 import { onMobile } from './utils/layout_util';
 
@@ -20,6 +20,8 @@ export class AppComponent {
   sideBarOpen = !onMobile();
   sideBarMode = onMobile() ? 'over' : 'side'
   uiStyle: UiStyle = 'flat';
+  private resetScrollAfterNavigation = false;
+  private scrollResetTimer: ReturnType<typeof setTimeout> | undefined;
 
   constructor(
     private sidenavService: SidenavService,
@@ -32,6 +34,7 @@ export class AppComponent {
     this.sidenavService.setSidenav(this.sidenav);
     this.syncLayoutWithViewport();
     this.applyUiStyle();
+    this.watchRouterScroll();
   }
 
   private applyUiStyle(): void {
@@ -79,6 +82,37 @@ export class AppComponent {
       return 'crystal';
     }
     return null;
+  }
+
+  private watchRouterScroll(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.resetScrollAfterNavigation = event.navigationTrigger !== 'popstate';
+      }
+
+      if (event instanceof NavigationEnd && this.resetScrollAfterNavigation && !this.urlHasFragment(event.urlAfterRedirects)) {
+        this.scheduleScrollReset();
+      }
+    });
+  }
+
+  private urlHasFragment(url: string): boolean {
+    return this.router.parseUrl(url).fragment !== null;
+  }
+
+  private scheduleScrollReset(): void {
+    clearTimeout(this.scrollResetTimer);
+    this.scrollResetTimer = setTimeout(() => {
+      requestAnimationFrame(() => this.scrollPageToTop());
+      setTimeout(() => this.scrollPageToTop(), 250);
+    }, 0);
+  }
+
+  private scrollPageToTop(): void {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    document.querySelector<HTMLElement>('mat-sidenav-content')?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }
 
   @HostListener('window:resize')

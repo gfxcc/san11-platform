@@ -34,8 +34,8 @@
             <p>暂无讨论</p>
         </div>
 
-        <mat-paginator *ngIf="!isLoading && threads?.length > 0" [length]="totalThreadsCount" [pageSize]="pageSize" [hidePageSize]="true"
-            (page)="changePage($event)">
+        <mat-paginator *ngIf="threads?.length > 0" [length]="totalThreadsCount" [pageIndex]="pageIndex"
+            [pageSize]="pageSize" [hidePageSize]="true" [disabled]="isLoading" (page)="changePage($event)">
         </mat-paginator>
     </div>
 </div>
