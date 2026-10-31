@@ -4,7 +4,7 @@ export class GlobalConstants {
     public static san11ServerUrl: string = `${environment.schema}://api.${environment.domain}:${environment.serverPort}`;
     public static imgServerUrl: string = 'https://storage.googleapis.com/san11-resources';
 
-    public static maxBinarySize: number = 10 * 1024 * 1024; // 10MB
+    public static maxBinarySize: number = 20 * 1024 * 1024; // 20MB
     public static maxImageSize: number = 10 * 1024 * 1024; // 10MB
 
     public static tmpBucket = 'san11-tmp';
