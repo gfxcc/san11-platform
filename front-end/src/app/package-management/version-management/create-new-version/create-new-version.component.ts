@@ -270,7 +270,7 @@ export class CreateNewVersionComponent implements OnInit {
       this.newBinaryForm.get('fileUploaded').setValue(false);
       return;
     } else if (file.size > GlobalConstants.maxBinarySize) {
-      this.notificationService.warn(`上传文件必须小于 ${GlobalConstants.maxBinarySize / 1024 / 1024}MB`);
+      this.notificationService.warn(`上传文件不能超过 ${GlobalConstants.maxBinarySize / 1024 / 1024}MB`);
       this.fileInputElement.nativeElement.value = '';
       this.newBinaryForm.get('fileUploaded').setValue(false);
       return;

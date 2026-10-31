@@ -11,7 +11,7 @@ from models.model_user import ModelUser
 from models.plugins.tracklifecycle import ModelActivity
 from app.protos import san11_platform_pb2 as pb
 from repositories.resource_repository import repository_for
-from integrations.files.file_server import (PACKAGE_SIZE_LIMIT, BucketClass,
+from integrations.files.file_server import (BINARY_SIZE_LIMIT, PACKAGE_SIZE_LIMIT, BucketClass,
                                       FileServerType, get_file_server)
 from core.resources.name_util import ResourceName, get_parent
 from integrations.notifications.notifier import notify_on_creation
@@ -42,13 +42,19 @@ class BinaryHandler(HandlerBase):
             file_server = get_file_server(FileServerType(binary.file.server))
             file: File = binary.file
 
-            if file_server.get_file_size(BucketClass.TEMP, file.uri) + file_server.get_folder_size(BucketClass.REGULAR, parent) > PACKAGE_SIZE_LIMIT:
+            file_size = file_server.get_file_size(BucketClass.TEMP, file.uri)
+            if file_size > BINARY_SIZE_LIMIT:
+                file_server.delete_file(BucketClass.TEMP, file.uri)
+                raise ResourceExhausted(
+                    message=f'单个文件不能超过 {BINARY_SIZE_LIMIT // 1024 // 1024}MB。')
+
+            if file_size + file_server.get_folder_size(BucketClass.REGULAR, parent) > PACKAGE_SIZE_LIMIT:
                 file_server.delete_file(BucketClass.TEMP, file.uri)
                 raise ResourceExhausted(
                     message=f'工具存储空间 {PACKAGE_SIZE_LIMIT/1024/1024/1024}GB 已用完，请考虑删除历史版本.')
 
             binary.size = human_readable(
-                precision=2, byte=file_server.get_file_size(BucketClass.TEMP, file.uri))
+                precision=2, byte=file_size)
             canonical_uri = generate_binary_canonical_uri(parent, binary)
             # move resource from tmp location to canonical bucket
             file_server.move_file(BucketClass.TEMP, file.uri,

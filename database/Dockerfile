@@ -9,8 +9,10 @@ COPY scripts/* /scripts/
 RUN cat /tmp/init.sql > /docker-entrypoint-initdb.d/init.sql && \
         cat /tmp/san11-platform-database.sql >> /docker-entrypoint-initdb.d/init.sql
 
-# Setup cronjob
-RUN apt-get update && apt-get install -y cron
+# cron comes from Debian; the PostgreSQL image also lists the retired Bullseye PGDG repository.
+RUN apt-get -o Dir::Etc::sourceparts=- update && \
+    apt-get -o Dir::Etc::sourceparts=- install -y --no-install-recommends cron && \
+    rm -rf /var/lib/apt/lists/*
 COPY config/cronjob /etc/cron.d/db-jobs
 RUN chmod 0644 /etc/cron.d/db-jobs
 RUN crontab /etc/cron.d/db-jobs

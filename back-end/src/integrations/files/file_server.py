@@ -25,6 +25,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 STATIC_RESOURCES_PATH = 'static'
 # Limits
+BINARY_SIZE_LIMIT = 20 * 1024 * 1024  # 20 MB per file
 PACKAGE_SIZE_LIMIT = 20 * 1024 * 1024 * 1024  # 20 GB
 
 
