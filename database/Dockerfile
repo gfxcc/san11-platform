@@ -11,7 +11,7 @@ RUN cat /tmp/init.sql > /docker-entrypoint-initdb.d/init.sql && \
 
 # cron comes from Debian; the PostgreSQL image also lists the retired Bullseye PGDG repository.
 RUN apt-get -o Dir::Etc::sourceparts=- update && \
-    apt-get -o Dir::Etc::sourceparts=- install -y cron && \
+    apt-get -o Dir::Etc::sourceparts=- install -y --no-install-recommends cron && \
     rm -rf /var/lib/apt/lists/*
 COPY config/cronjob /etc/cron.d/db-jobs
 RUN chmod 0644 /etc/cron.d/db-jobs
