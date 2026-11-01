@@ -1,3 +1,4 @@
+import { SiteSettings } from 'src/proto/san11-platform.pb';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -99,6 +100,51 @@ export class AdminMessageBoardComponent implements OnInit {
   adminSummary: AdminOperationsSummary = EMPTY_ADMIN_SUMMARY;
   loadingAdminSummary = false;
   uiStyle: UiStyle = 'flat';
+  activePanel: 'overview' | 'settings' = 'overview';
+  siteSettings: SiteSettings | null = null;
+  loadingSettings = false;
+  savingSettings = false;
+  settingsError = '';
+
+  showPanel(panel: 'overview' | 'settings'): void {
+    if (this.savingSettings || this.loadingSettings) { return; }
+    this.activePanel = panel;
+    if (panel === 'settings') {
+      this.loadSiteSettings();
+    }
+  }
+
+  loadSiteSettings(): void {
+    this.loadingSettings = true;
+    this.settingsError = '';
+    this.san11pkService.getSiteSettings()
+      .pipe(finalize(() => this.loadingSettings = false))
+      .subscribe({
+        next: settings => this.siteSettings = settings,
+        error: () => {
+          this.siteSettings = null;
+          this.settingsError = '设置加载失败，请重试。';
+        }
+      });
+  }
+
+  toggleAutoApproval(): void {
+    if (!this.siteSettings || this.loadingSettings || this.savingSettings) { return; }
+    const next = new SiteSettings({
+      packageAutoApprovalEnabled: !this.siteSettings.packageAutoApprovalEnabled
+    });
+    this.savingSettings = true;
+    this.settingsError = '';
+    this.san11pkService.updateSiteSettings(next)
+      .pipe(finalize(() => this.savingSettings = false))
+      .subscribe({
+        next: settings => {
+          this.siteSettings = settings;
+          this.notificationService.success('站点设置已保存');
+        },
+        error: () => this.settingsError = '保存失败，开关未更改，请重试。'
+      });
+  }
 
   constructor(
     private san11pkService: San11PlatformServiceService,

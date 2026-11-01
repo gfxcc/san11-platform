@@ -152,3 +152,10 @@ class AdminHandlerTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class SiteSettingsHandlerTest(unittest.TestCase):
+    def test_missing_settings_cannot_silently_disable_feature(self):
+        from core.errors.exceptions import InvalidArgument
+        with self.assertRaises(InvalidArgument):
+            AdminHandler().update_site_settings(pb.UpdateSiteSettingsRequest(), None)

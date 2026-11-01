@@ -285,6 +285,16 @@ class San11PlatformStub(object):
                 request_serializer=san11__platform__pb2.GetAdminMessageRequest.SerializeToString,
                 response_deserializer=san11__platform__pb2.AdminMessage.FromString,
                 _registered_method=True)
+        self.GetSiteSettings = channel.unary_unary(
+                '/san11_platform.San11Platform/GetSiteSettings',
+                request_serializer=san11__platform__pb2.GetSiteSettingsRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.SiteSettings.FromString,
+                _registered_method=True)
+        self.UpdateSiteSettings = channel.unary_unary(
+                '/san11_platform.San11Platform/UpdateSiteSettings',
+                request_serializer=san11__platform__pb2.UpdateSiteSettingsRequest.SerializeToString,
+                response_deserializer=san11__platform__pb2.SiteSettings.FromString,
+                _registered_method=True)
         self.CreateSubscription = channel.unary_unary(
                 '/san11_platform.San11Platform/CreateSubscription',
                 request_serializer=san11__platform__pb2.CreateSubscriptionRequest.SerializeToString,
@@ -623,6 +633,18 @@ class San11PlatformServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetSiteSettings(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateSiteSettings(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def CreateSubscription(self, request, context):
         """Subscription
         """
@@ -900,6 +922,16 @@ def add_San11PlatformServicer_to_server(servicer, server):
                     servicer.GetAdminMessage,
                     request_deserializer=san11__platform__pb2.GetAdminMessageRequest.FromString,
                     response_serializer=san11__platform__pb2.AdminMessage.SerializeToString,
+            ),
+            'GetSiteSettings': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSiteSettings,
+                    request_deserializer=san11__platform__pb2.GetSiteSettingsRequest.FromString,
+                    response_serializer=san11__platform__pb2.SiteSettings.SerializeToString,
+            ),
+            'UpdateSiteSettings': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateSiteSettings,
+                    request_deserializer=san11__platform__pb2.UpdateSiteSettingsRequest.FromString,
+                    response_serializer=san11__platform__pb2.SiteSettings.SerializeToString,
             ),
             'CreateSubscription': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateSubscription,
@@ -2273,6 +2305,60 @@ class San11Platform(object):
             '/san11_platform.San11Platform/GetAdminMessage',
             san11__platform__pb2.GetAdminMessageRequest.SerializeToString,
             san11__platform__pb2.AdminMessage.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetSiteSettings(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/san11_platform.San11Platform/GetSiteSettings',
+            san11__platform__pb2.GetSiteSettingsRequest.SerializeToString,
+            san11__platform__pb2.SiteSettings.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateSiteSettings(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/san11_platform.San11Platform/UpdateSiteSettings',
+            san11__platform__pb2.UpdateSiteSettingsRequest.SerializeToString,
+            san11__platform__pb2.SiteSettings.FromString,
             options,
             channel_credentials,
             insecure,

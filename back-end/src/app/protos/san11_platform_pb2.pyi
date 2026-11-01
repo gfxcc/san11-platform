@@ -2565,3 +2565,47 @@ class FieldMask(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["paths", b"paths"]) -> None: ...
 
 global___FieldMask = FieldMask
+
+@typing.final
+class SiteSettings(google.protobuf.message.Message):
+    """Administrator-only feature settings shared by all server instances."""
+
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    PACKAGE_AUTO_APPROVAL_ENABLED_FIELD_NUMBER: builtins.int
+    package_auto_approval_enabled: builtins.bool
+    def __init__(
+        self,
+        *,
+        package_auto_approval_enabled: builtins.bool = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["package_auto_approval_enabled", b"package_auto_approval_enabled"]) -> None: ...
+
+global___SiteSettings = SiteSettings
+
+@typing.final
+class GetSiteSettingsRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+global___GetSiteSettingsRequest = GetSiteSettingsRequest
+
+@typing.final
+class UpdateSiteSettingsRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    SETTINGS_FIELD_NUMBER: builtins.int
+    @property
+    def settings(self) -> global___SiteSettings: ...
+    def __init__(
+        self,
+        *,
+        settings: global___SiteSettings | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["settings", b"settings"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["settings", b"settings"]) -> None: ...
+
+global___UpdateSiteSettingsRequest = UpdateSiteSettingsRequest

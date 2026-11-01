@@ -1216,3 +1216,16 @@
         grid-template-columns: 1fr;
     }
 }
+
+.admin-navigation { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+.admin-navigation button, .feature-settings button { padding: 10px 18px; border: 1px solid #cbd5e1; border-radius: 10px; background: var(--surface-card, #fff); color: inherit; cursor: pointer; font: inherit; }
+.admin-navigation button[aria-pressed="true"], .feature-settings button.is-enabled { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+.feature-settings { padding: 24px; }
+.setting-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.setting-header h3 { margin: 0 0 12px; }
+.setting-header h4 { margin: 0; }
+.feature-settings p { color: #475569; line-height: 1.7; overflow-wrap: anywhere; }
+.feature-settings button:disabled { opacity: .6; cursor: wait; }
+.feature-settings [role="alert"] { color: #b91c1c; }
+.admin-navigation button:focus-visible, .feature-settings button:focus-visible { outline: 3px solid #60a5fa; outline-offset: 3px; }
+@media (max-width: 600px) { .feature-settings { padding: 16px; } .setting-header { align-items: flex-start; } .setting-header button { flex-shrink: 0; } }

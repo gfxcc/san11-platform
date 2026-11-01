@@ -2,10 +2,10 @@
     <section class="admin-hero">
         <div>
             <span class="app-eyebrow">管理工作台</span>
-            <h1>站点运营中心</h1>
+            <h1>{{activePanel === 'settings' ? '站点设置' : '站点运营中心'}}</h1>
         </div>
 
-        <div class="hero-status surface-panel">
+        <div class="hero-status surface-panel" *ngIf="activePanel === 'overview'">
             <span>近 {{adminSummary.windowDays || 30}} 天活跃率</span>
             <strong>{{activeUserRate}}</strong>
             <small>{{metrics.monthlyActiveUsers}} / {{metrics.totalUsers}} 注册用户活跃</small>
@@ -13,235 +13,269 @@
         </div>
     </section>
 
-    <section class="admin-section">
-        <article class="ui-style-panel surface-panel">
-            <div>
-                <span>Preference</span>
-                <h2>界面风格</h2>
-                <p>当前站点默认使用扁平风格；管理员可以临时切换三种控件质感进行对比。</p>
-            </div>
+    <nav class="admin-navigation" aria-label="管理面板">
+        <button type="button" [disabled]="savingSettings || loadingSettings" [attr.aria-pressed]="activePanel === 'overview'"
+            (click)="showPanel('overview')">运营概览</button>
+        <button type="button" [disabled]="savingSettings || loadingSettings" [attr.aria-pressed]="activePanel === 'settings'"
+            (click)="showPanel('settings')">站点设置</button>
+    </nav>
 
-            <div class="ui-style-switcher app-segmented-control" [style.--ui-style-index]="getUiStyleIndex()" role="group"
-                aria-label="UI 风格切换">
-                <span class="ui-style-switcher-glass app-segmented-glass" aria-hidden="true"></span>
-                <button type="button" class="ui-style-option app-segmented-option"
-                    [class.ui-style-option-active]="uiStyle === 'clean'"
-                    [class.app-segmented-option-active]="uiStyle === 'clean'"
-                    [attr.aria-pressed]="uiStyle === 'clean'" (click)="setUiStyle('clean')">
-                    清爽
-                </button>
-                <button type="button" class="ui-style-option app-segmented-option"
-                    [class.ui-style-option-active]="uiStyle === 'flat'"
-                    [class.app-segmented-option-active]="uiStyle === 'flat'"
-                    [attr.aria-pressed]="uiStyle === 'flat'" (click)="setUiStyle('flat')">
-                    扁平
-                </button>
-                <button type="button" class="ui-style-option app-segmented-option"
-                    [class.ui-style-option-active]="uiStyle === 'crystal'"
-                    [class.app-segmented-option-active]="uiStyle === 'crystal'"
-                    [attr.aria-pressed]="uiStyle === 'crystal'" (click)="setUiStyle('crystal')">
-                    晶透
-                </button>
-            </div>
-        </article>
-    </section>
-
-    <section class="admin-section">
-        <div class="section-heading">
-            <div>
-                <span>Data</span>
-                <h2>数据概览</h2>
-            </div>
-        </div>
-
-        <div class="metric-grid" [class.loading-state]="loadingAdminSummary">
-            <article *ngFor="let metric of metricCards" class="metric-card surface-panel"
-                [class.metric-urgent]="metric.urgent">
-                <span class="metric-icon metric-{{metric.tone}}">
-                    <mat-icon>{{metric.icon}}</mat-icon>
-                </span>
+    <div *ngIf="activePanel === 'settings'" class="settings-panel">
+        <section class="admin-section">
+            <article class="ui-style-panel surface-panel">
                 <div>
-                    <span>{{metric.label}}</span>
-                    <strong>{{metric.value}}</strong>
-                    <small>{{metric.detail}}</small>
+                    <span>Preference</span>
+                    <h2>界面风格</h2>
+                    <p>仅调整当前浏览器的界面风格。</p>
+                </div>
+
+                <div class="ui-style-switcher app-segmented-control" [style.--ui-style-index]="getUiStyleIndex()" role="group"
+                    aria-label="UI 风格切换">
+                    <span class="ui-style-switcher-glass app-segmented-glass" aria-hidden="true"></span>
+                    <button type="button" class="ui-style-option app-segmented-option"
+                        [class.ui-style-option-active]="uiStyle === 'clean'"
+                        [class.app-segmented-option-active]="uiStyle === 'clean'"
+                        [attr.aria-pressed]="uiStyle === 'clean'" (click)="setUiStyle('clean')">
+                        清爽
+                    </button>
+                    <button type="button" class="ui-style-option app-segmented-option"
+                        [class.ui-style-option-active]="uiStyle === 'flat'"
+                        [class.app-segmented-option-active]="uiStyle === 'flat'"
+                        [attr.aria-pressed]="uiStyle === 'flat'" (click)="setUiStyle('flat')">
+                        扁平
+                    </button>
+                    <button type="button" class="ui-style-option app-segmented-option"
+                        [class.ui-style-option-active]="uiStyle === 'crystal'"
+                        [class.app-segmented-option-active]="uiStyle === 'crystal'"
+                        [attr.aria-pressed]="uiStyle === 'crystal'" (click)="setUiStyle('crystal')">
+                        晶透
+                    </button>
                 </div>
             </article>
-        </div>
-    </section>
+        </section>
 
-    <section class="admin-section">
-        <div class="section-heading">
-            <div>
-                <span>Action</span>
-                <h2>待办事项</h2>
+        <section class="admin-section surface-panel feature-settings">
+            <div class="setting-header">
+                <div>
+                    <h3>审核设置</h3>
+                    <h4 id="auto-approval-label">Package 自动审核</h4>
+                </div>
+                <button type="button" role="switch" aria-labelledby="auto-approval-label"
+                    aria-describedby="auto-approval-help"
+                    [attr.aria-checked]="!!siteSettings?.packageAutoApprovalEnabled"
+                    [disabled]="!siteSettings || loadingSettings || savingSettings"
+                    [class.is-enabled]="siteSettings?.packageAutoApprovalEnabled"
+                    (click)="toggleAutoApproval()">
+                    {{savingSettings ? '保存中…' : loadingSettings ? '加载中…' : !siteSettings ? '未加载' : siteSettings.packageAutoApprovalEnabled ? '已开启' : '已关闭'}}
+                </button>
             </div>
-        </div>
+            <p id="auto-approval-help">开启后，待审核的 Package 成功添加首个版本满 24 小时后自动批准。管理员仍可提前处理。</p>
+            <p>后续版本不重置计时；删除全部版本会取消计时。关闭后停止自动批准，重新开启后按原定时间继续检查，已到期的资源可能立即通过。</p>
+            <p>此开关对全站生效。历史待审核资源需在本功能上线后成功添加版本才会开始计时。</p>
+            <p *ngIf="settingsError" role="alert">{{settingsError}}</p>
+            <button *ngIf="settingsError && !siteSettings" type="button" (click)="loadSiteSettings()"
+                [disabled]="loadingSettings">重新加载</button>
+        </section>
+    </div>
 
-        <div class="todo-layout">
-            <aside class="todo-summary">
-                <article *ngFor="let todo of todoCards" class="todo-card surface-panel priority-{{todo.priority}}">
-                    <span class="todo-icon">
-                        <mat-icon>{{todo.icon}}</mat-icon>
+    <div *ngIf="activePanel === 'overview'">
+        <section class="admin-section">
+            <div class="section-heading">
+                <div>
+                    <span>Data</span>
+                    <h2>数据概览</h2>
+                </div>
+            </div>
+
+            <div class="metric-grid" [class.loading-state]="loadingAdminSummary">
+                <article *ngFor="let metric of metricCards" class="metric-card surface-panel"
+                    [class.metric-urgent]="metric.urgent">
+                    <span class="metric-icon metric-{{metric.tone}}">
+                        <mat-icon>{{metric.icon}}</mat-icon>
                     </span>
                     <div>
-                        <span>{{todo.label}}</span>
-                        <strong>{{todo.value}}</strong>
-                        <small>{{todo.description}}</small>
+                        <span>{{metric.label}}</span>
+                        <strong>{{metric.value}}</strong>
+                        <small>{{metric.detail}}</small>
                     </div>
                 </article>
-            </aside>
-
-            <section class="review-queue surface-panel">
-                <div class="panel-header">
-                    <div>
-                        <h3>审核队列</h3>
-                        <p>{{pendingReviewSummary}}</p>
-                    </div>
-                    <span>{{pendingReviews.length || metrics.pendingReviews}} 项</span>
-                </div>
-                <div *ngIf="pendingReviews.length; else noPendingReviews" class="review-grid">
-                    <button *ngFor="let package of pendingReviews" type="button" class="review-item"
-                        (click)="openPackage(package)">
-                        <span class="review-item-icon">
-                            <mat-icon>pending_actions</mat-icon>
-                        </span>
-                        <span class="review-item-copy">
-                            <strong>{{package.packageName}}</strong>
-                            <small>{{packageCategoryName(package)}} · {{package.name}}</small>
-                        </span>
-                        <span class="review-item-status">待审核</span>
-                        <mat-icon>chevron_right</mat-icon>
-                    </button>
-                </div>
-                <ng-template #noPendingReviews>
-                    <div class="empty-state compact-empty-state">
-                        <mat-icon>task_alt</mat-icon>
-                        <p>当前没有待审核资源</p>
-                    </div>
-                </ng-template>
-            </section>
-        </div>
-    </section>
-
-    <section class="admin-section">
-        <div class="section-heading">
-            <div>
-                <span>Insights</span>
-                <h2>运营洞察</h2>
-            </div>
-        </div>
-
-        <div class="insight-grid">
-            <article class="surface-panel insight-panel">
-                <div class="panel-header">
-                    <div>
-                        <h3>用户增长</h3>
-                        <p>最近注册用户和高活跃成员</p>
-                    </div>
-                    <span>{{metrics.newUsers30d}} 新增</span>
-                </div>
-
-                <div class="user-columns">
-                    <div>
-                        <h4>最近注册</h4>
-                        <button *ngFor="let user of adminSummary.recentUsers" type="button" class="user-row"
-                            (click)="openUser(user)">
-                            <app-user-card [userId]="user.userId" class="compact-user-card"></app-user-card>
-                            <span>{{formatTime(user.createTime)}}</span>
-                        </button>
-                        <div *ngIf="adminSummary.recentUsers.length === 0" class="empty-line">暂无新增用户</div>
-                    </div>
-
-                    <div>
-                        <h4>月活用户</h4>
-                        <button *ngFor="let user of adminSummary.activeUsers" type="button" class="user-row"
-                            (click)="openUser(user)">
-                            <app-user-card [userId]="user.userId" class="compact-user-card"></app-user-card>
-                            <span>{{user.activityCount || 0}} 次</span>
-                        </button>
-                        <div *ngIf="adminSummary.activeUsers.length === 0" class="empty-line">暂无活跃记录</div>
-                    </div>
-                </div>
-            </article>
-
-            <article class="surface-panel insight-panel">
-                <div class="panel-header">
-                    <div>
-                        <h3>资源健康</h3>
-                        <p>内容状态和近期消费表现</p>
-                    </div>
-                    <span>{{metrics.totalPackages}} 资源</span>
-                </div>
-
-                <div class="state-grid">
-                    <div *ngFor="let state of resourceStateCards" class="state-item">
-                        <mat-icon>{{state.icon}}</mat-icon>
-                        <span>{{state.label}}</span>
-                        <strong>{{state.value}}</strong>
-                    </div>
-                </div>
-
-                <div class="top-package-list">
-                    <h4>下载领先资源</h4>
-                    <button *ngFor="let package of adminSummary.topPackages" type="button" class="package-row"
-                        (click)="openPackageByName(package.name)">
-                        <span>
-                            <strong>{{package.packageName}}</strong>
-                            <small>{{packageCategoryNameFromName(package.name)}} · {{resourceStateLabel(package.state)}}</small>
-                        </span>
-                        <em>{{package.downloadCount}} 下载</em>
-                    </button>
-                    <div *ngIf="adminSummary.topPackages.length === 0" class="empty-line">暂无资源数据</div>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <section class="admin-section">
-        <div class="section-heading compact-heading">
-            <div>
-                <span>Audit</span>
-                <h2>最近站点事件</h2>
-            </div>
-        </div>
-
-        <section class="activity-board surface-panel">
-            <div class="panel-header">
-                <div>
-                    <h3>审计日志</h3>
-                </div>
-                <span>{{adminTotalActivityCount}} 条</span>
-            </div>
-
-            <p-timeline *ngIf="recentEvents.length > 0" [value]="recentEvents" align="left" styleClass="admin-timeline">
-                <ng-template pTemplate="marker" let-event>
-                    <span class="custom-marker" [style.backgroundColor]="event.color">
-                        <mat-icon>{{event.icon}}</mat-icon>
-                    </span>
-                </ng-template>
-                <ng-template pTemplate="content" let-event>
-                    <mat-card appearance="outlined" (click)="onDetailClick(event)" [class.clickable-card]="event.link"
-                        [class.disabled-event]="!event.link" class="event-card">
-                        <div class="event-topline">
-                            <app-user-card [userId]="event.actorId" (click)="$event.stopPropagation()"
-                                class="event-user"></app-user-card>
-                            <span>{{eventTime(event)}}</span>
-                        </div>
-
-                        <mat-card-content>
-                            <h3>{{eventTitle(event, '站点事件')}}</h3>
-                            <img *ngIf="event.image" [src]="event.image" [alt]="eventTitle(event, '站点事件')"
-                                class="event-image" />
-                            <p *ngIf="event.description">{{event.description}}</p>
-                        </mat-card-content>
-                    </mat-card>
-                </ng-template>
-            </p-timeline>
-
-            <div *ngIf="recentEvents.length === 0" class="empty-state">
-                <mat-icon>monitoring</mat-icon>
-                <p>暂无站点事件</p>
             </div>
         </section>
-    </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <div>
+                    <span>Action</span>
+                    <h2>待办事项</h2>
+                </div>
+            </div>
+
+            <div class="todo-layout">
+                <aside class="todo-summary">
+                    <article *ngFor="let todo of todoCards" class="todo-card surface-panel priority-{{todo.priority}}">
+                        <span class="todo-icon">
+                            <mat-icon>{{todo.icon}}</mat-icon>
+                        </span>
+                        <div>
+                            <span>{{todo.label}}</span>
+                            <strong>{{todo.value}}</strong>
+                            <small>{{todo.description}}</small>
+                        </div>
+                    </article>
+                </aside>
+
+                <section class="review-queue surface-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3>审核队列</h3>
+                            <p>{{pendingReviewSummary}}</p>
+                        </div>
+                        <span>{{pendingReviews.length || metrics.pendingReviews}} 项</span>
+                    </div>
+                    <div *ngIf="pendingReviews.length; else noPendingReviews" class="review-grid">
+                        <button *ngFor="let package of pendingReviews" type="button" class="review-item"
+                            (click)="openPackage(package)">
+                            <span class="review-item-icon">
+                                <mat-icon>pending_actions</mat-icon>
+                            </span>
+                            <span class="review-item-copy">
+                                <strong>{{package.packageName}}</strong>
+                                <small>{{packageCategoryName(package)}} · {{package.name}}</small>
+                            </span>
+                            <span class="review-item-status">待审核</span>
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    </div>
+                    <ng-template #noPendingReviews>
+                        <div class="empty-state compact-empty-state">
+                            <mat-icon>task_alt</mat-icon>
+                            <p>当前没有待审核资源</p>
+                        </div>
+                    </ng-template>
+                </section>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <div>
+                    <span>Insights</span>
+                    <h2>运营洞察</h2>
+                </div>
+            </div>
+
+            <div class="insight-grid">
+                <article class="surface-panel insight-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3>用户增长</h3>
+                            <p>最近注册用户和高活跃成员</p>
+                        </div>
+                        <span>{{metrics.newUsers30d}} 新增</span>
+                    </div>
+
+                    <div class="user-columns">
+                        <div>
+                            <h4>最近注册</h4>
+                            <button *ngFor="let user of adminSummary.recentUsers" type="button" class="user-row"
+                                (click)="openUser(user)">
+                                <app-user-card [userId]="user.userId" class="compact-user-card"></app-user-card>
+                                <span>{{formatTime(user.createTime)}}</span>
+                            </button>
+                            <div *ngIf="adminSummary.recentUsers.length === 0" class="empty-line">暂无新增用户</div>
+                        </div>
+
+                        <div>
+                            <h4>月活用户</h4>
+                            <button *ngFor="let user of adminSummary.activeUsers" type="button" class="user-row"
+                                (click)="openUser(user)">
+                                <app-user-card [userId]="user.userId" class="compact-user-card"></app-user-card>
+                                <span>{{user.activityCount || 0}} 次</span>
+                            </button>
+                            <div *ngIf="adminSummary.activeUsers.length === 0" class="empty-line">暂无活跃记录</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="surface-panel insight-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3>资源健康</h3>
+                            <p>内容状态和近期消费表现</p>
+                        </div>
+                        <span>{{metrics.totalPackages}} 资源</span>
+                    </div>
+
+                    <div class="state-grid">
+                        <div *ngFor="let state of resourceStateCards" class="state-item">
+                            <mat-icon>{{state.icon}}</mat-icon>
+                            <span>{{state.label}}</span>
+                            <strong>{{state.value}}</strong>
+                        </div>
+                    </div>
+
+                    <div class="top-package-list">
+                        <h4>下载领先资源</h4>
+                        <button *ngFor="let package of adminSummary.topPackages" type="button" class="package-row"
+                            (click)="openPackageByName(package.name)">
+                            <span>
+                                <strong>{{package.packageName}}</strong>
+                                <small>{{packageCategoryNameFromName(package.name)}} · {{resourceStateLabel(package.state)}}</small>
+                            </span>
+                            <em>{{package.downloadCount}} 下载</em>
+                        </button>
+                        <div *ngIf="adminSummary.topPackages.length === 0" class="empty-line">暂无资源数据</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading compact-heading">
+                <div>
+                    <span>Audit</span>
+                    <h2>最近站点事件</h2>
+                </div>
+            </div>
+
+            <section class="activity-board surface-panel">
+                <div class="panel-header">
+                    <div>
+                        <h3>审计日志</h3>
+                    </div>
+                    <span>{{adminTotalActivityCount}} 条</span>
+                </div>
+
+                <p-timeline *ngIf="recentEvents.length > 0" [value]="recentEvents" align="left" styleClass="admin-timeline">
+                    <ng-template pTemplate="marker" let-event>
+                        <span class="custom-marker" [style.backgroundColor]="event.color">
+                            <mat-icon>{{event.icon}}</mat-icon>
+                        </span>
+                    </ng-template>
+                    <ng-template pTemplate="content" let-event>
+                        <mat-card appearance="outlined" (click)="onDetailClick(event)" [class.clickable-card]="event.link"
+                            [class.disabled-event]="!event.link" class="event-card">
+                            <div class="event-topline">
+                                <app-user-card [userId]="event.actorId" (click)="$event.stopPropagation()"
+                                    class="event-user"></app-user-card>
+                                <span>{{eventTime(event)}}</span>
+                            </div>
+
+                            <mat-card-content>
+                                <h3>{{eventTitle(event, '站点事件')}}</h3>
+                                <img *ngIf="event.image" [src]="event.image" [alt]="eventTitle(event, '站点事件')"
+                                    class="event-image" />
+                                <p *ngIf="event.description">{{event.description}}</p>
+                            </mat-card-content>
+                        </mat-card>
+                    </ng-template>
+                </p-timeline>
+
+                <div *ngIf="recentEvents.length === 0" class="empty-state">
+                    <mat-icon>monitoring</mat-icon>
+                    <p>暂无站点事件</p>
+                </div>
+            </section>
+        </section>
+    </div>
 </div>

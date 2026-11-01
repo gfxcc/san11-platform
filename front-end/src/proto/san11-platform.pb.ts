@@ -18012,3 +18012,402 @@ export module FieldMask {
     paths: string[];
   }
 }
+
+/**
+ * Message implementation for san11_platform.SiteSettings
+ */
+export class SiteSettings implements GrpcMessage {
+  static id = 'san11_platform.SiteSettings';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new SiteSettings();
+    SiteSettings.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: SiteSettings) {
+    _instance.packageAutoApprovalEnabled =
+      _instance.packageAutoApprovalEnabled || false;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: SiteSettings,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.packageAutoApprovalEnabled = _reader.readBool();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    SiteSettings.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: SiteSettings,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.packageAutoApprovalEnabled) {
+      _writer.writeBool(1, _instance.packageAutoApprovalEnabled);
+    }
+  }
+
+  private _packageAutoApprovalEnabled: boolean;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of SiteSettings to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<SiteSettings.AsObject>) {
+    _value = _value || {};
+    this.packageAutoApprovalEnabled = _value.packageAutoApprovalEnabled;
+    SiteSettings.refineValues(this);
+  }
+  get packageAutoApprovalEnabled(): boolean {
+    return this._packageAutoApprovalEnabled;
+  }
+  set packageAutoApprovalEnabled(value: boolean) {
+    this._packageAutoApprovalEnabled = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    SiteSettings.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): SiteSettings.AsObject {
+    return {
+      packageAutoApprovalEnabled: this.packageAutoApprovalEnabled
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): SiteSettings.AsProtobufJSON {
+    return {
+      packageAutoApprovalEnabled: this.packageAutoApprovalEnabled
+    };
+  }
+}
+export module SiteSettings {
+  /**
+   * Standard JavaScript object representation for SiteSettings
+   */
+  export interface AsObject {
+    packageAutoApprovalEnabled: boolean;
+  }
+
+  /**
+   * Protobuf JSON representation for SiteSettings
+   */
+  export interface AsProtobufJSON {
+    packageAutoApprovalEnabled: boolean;
+  }
+}
+
+/**
+ * Message implementation for san11_platform.GetSiteSettingsRequest
+ */
+export class GetSiteSettingsRequest implements GrpcMessage {
+  static id = 'san11_platform.GetSiteSettingsRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new GetSiteSettingsRequest();
+    GetSiteSettingsRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: GetSiteSettingsRequest) {}
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: GetSiteSettingsRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        default:
+          _reader.skipField();
+      }
+    }
+
+    GetSiteSettingsRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: GetSiteSettingsRequest,
+    _writer: BinaryWriter
+  ) {}
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of GetSiteSettingsRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<GetSiteSettingsRequest.AsObject>) {
+    _value = _value || {};
+    GetSiteSettingsRequest.refineValues(this);
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    GetSiteSettingsRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): GetSiteSettingsRequest.AsObject {
+    return {};
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): GetSiteSettingsRequest.AsProtobufJSON {
+    return {};
+  }
+}
+export module GetSiteSettingsRequest {
+  /**
+   * Standard JavaScript object representation for GetSiteSettingsRequest
+   */
+  export interface AsObject {}
+
+  /**
+   * Protobuf JSON representation for GetSiteSettingsRequest
+   */
+  export interface AsProtobufJSON {}
+}
+
+/**
+ * Message implementation for san11_platform.UpdateSiteSettingsRequest
+ */
+export class UpdateSiteSettingsRequest implements GrpcMessage {
+  static id = 'san11_platform.UpdateSiteSettingsRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new UpdateSiteSettingsRequest();
+    UpdateSiteSettingsRequest.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: UpdateSiteSettingsRequest) {
+    _instance.settings = _instance.settings || undefined;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: UpdateSiteSettingsRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.settings = new SiteSettings();
+          _reader.readMessage(
+            _instance.settings,
+            SiteSettings.deserializeBinaryFromReader
+          );
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    UpdateSiteSettingsRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: UpdateSiteSettingsRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.settings) {
+      _writer.writeMessage(
+        1,
+        _instance.settings as any,
+        SiteSettings.serializeBinaryToWriter
+      );
+    }
+  }
+
+  private _settings?: SiteSettings;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of UpdateSiteSettingsRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<UpdateSiteSettingsRequest.AsObject>) {
+    _value = _value || {};
+    this.settings = _value.settings
+      ? new SiteSettings(_value.settings)
+      : undefined;
+    UpdateSiteSettingsRequest.refineValues(this);
+  }
+  get settings(): SiteSettings | undefined {
+    return this._settings;
+  }
+  set settings(value: SiteSettings | undefined) {
+    this._settings = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    UpdateSiteSettingsRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): UpdateSiteSettingsRequest.AsObject {
+    return {
+      settings: this.settings ? this.settings.toObject() : undefined
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): UpdateSiteSettingsRequest.AsProtobufJSON {
+    return {
+      settings: this.settings ? this.settings.toProtobufJSON(options) : null
+    };
+  }
+}
+export module UpdateSiteSettingsRequest {
+  /**
+   * Standard JavaScript object representation for UpdateSiteSettingsRequest
+   */
+  export interface AsObject {
+    settings?: SiteSettings.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for UpdateSiteSettingsRequest
+   */
+  export interface AsProtobufJSON {
+    settings: SiteSettings.AsProtobufJSON | null;
+  }
+}

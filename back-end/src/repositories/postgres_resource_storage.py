@@ -67,6 +67,17 @@ class PostgresResourceStorage:
             'data': json.dumps(data, default=str),
         })
 
+    def update_fields(self, table, parent, resource_id, data, expected_state=None):
+        # Merge only the requested fields so a concurrent content update cannot
+        # restore a stale moderation state after automatic approval.
+        condition = " AND (data->>'state')::integer=%(expected_state)s" if expected_state is not None else ''
+        row = run_sql_with_param_and_fetch_one(
+            f'UPDATE {table} SET data=(data::jsonb || %(data)s::jsonb)::json '
+            'WHERE parent=%(parent)s AND resource_id=%(resource_id)s' + condition + ' RETURNING data',
+            {'parent': parent, 'resource_id': resource_id,
+             'data': json.dumps(data, default=str), 'expected_state': expected_state})
+        return row[0] if row else None
+
     def delete(self, table: str, parent: Optional[str], resource_id: int) -> None:
         sql = f'DELETE FROM {table} WHERE parent=%(parent)s AND resource_id=%(resource_id)s'
         run_sql_with_param(sql, {

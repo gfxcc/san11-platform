@@ -73,7 +73,7 @@ class BinaryHandler(HandlerBase):
         notify_on_creation(binary)
         # Update the `update_time` in package.
         parent_resource = find_resource(parent)
-        repository_for(type(parent_resource)).update(parent_resource)
+        repository_for(type(parent_resource)).update_fields(parent_resource, ['update_time'])
         return binary
 
     def update(self, update_binary: ModelBinary, update_mask: FieldMask, handler_context: HandlerContext) -> ModelBinary:
@@ -101,7 +101,7 @@ class BinaryHandler(HandlerBase):
         Statistic.load_today().increment_download()  # Package statistic
         package = self.package_repository.get(get_parent(binary.name))
         package.download_count += 1
-        self.package_repository.update(package, update_update_time=False)
+        self.package_repository.update_fields(package, ['download_count'], update_update_time=False)
         try:
             self.activity_repository.create(
                 parent=f'users/{handler_context.authenticated_user.user_id}',

@@ -155,3 +155,19 @@ class NotifierTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class PendingVersionNotificationTest(unittest.TestCase):
+    def test_pending_package_version_does_not_notify_subscribers(self):
+        from app.protos import san11_platform_pb2 as pb
+        from integrations.notifications.notifier import CreationNotifier
+        from models.model_binary import ModelBinary
+        from types import SimpleNamespace
+        from unittest.mock import Mock, patch
+        repository = Mock()
+        repository.get.return_value = SimpleNamespace(state=pb.UNDER_REVIEW)
+        binary = ModelBinary.from_pb(pb.Binary(name='categories/1/packages/1/binaries/1'))
+        with patch('integrations.notifications.notifier.repository_for', return_value=repository), \
+                patch('integrations.notifications.notifier.notify') as notify:
+            CreationNotifier().visit(binary)
+        notify.assert_not_called()

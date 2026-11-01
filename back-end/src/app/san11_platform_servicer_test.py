@@ -89,6 +89,30 @@ class San11PlatformServicerTest(unittest.TestCase):
             handler_context,
         )
 
+    def test_site_settings_require_admin_for_read_and_write(self):
+        for rpc, request, handler_name in [
+            ('GetSiteSettings', pb.GetSiteSettingsRequest(), 'get_site_settings'),
+            ('UpdateSiteSettings', pb.UpdateSiteSettingsRequest(settings=pb.SiteSettings()), 'update_site_settings'),
+        ]:
+            for user_type, expected_code in [(None, grpc.StatusCode.UNAUTHENTICATED),
+                                              (pb.User.REGULAR, grpc.StatusCode.PERMISSION_DENIED),
+                                              (pb.User.ADMIN, None)]:
+                with self.subTest(rpc=rpc, user_type=user_type):
+                    deps = self.create_dependencies()
+                    servicer = San11PlatformServicer(deps)
+                    context = self._service_context()
+                    user = SimpleNamespace(type=user_type) if user_type is not None else None
+                    with mock.patch.object(HandlerContext, 'from_service_context',
+                                           return_value=SimpleNamespace(user=user)):
+                        getattr(servicer, rpc)(request, context)
+                    handler = getattr(deps.admin_handler, handler_name)
+                    if expected_code:
+                        self.assertEqual(context.abort.call_args.kwargs['code'], expected_code)
+                        handler.assert_not_called()
+                    else:
+                        context.abort.assert_not_called()
+                        handler.assert_called_once()
+
     def _service_context(self):
         context = mock.Mock()
         context.invocation_metadata.return_value = []

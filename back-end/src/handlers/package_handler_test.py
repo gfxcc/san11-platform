@@ -76,3 +76,22 @@ class PackageUpdatePermissionTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class PackageApprovalNotificationTest(unittest.TestCase):
+    def test_manual_approval_uses_guarded_update_and_notifies(self):
+        from unittest.mock import Mock, patch
+        from handlers.package_handler import PackageHandler
+        from models.model_package import ModelPackage
+        current = ModelPackage.from_pb(pb.Package(name='categories/1/packages/1', author_id=7, state=pb.UNDER_REVIEW))
+        destination = ModelPackage.from_pb(pb.Package(name=current.name, state=pb.NORMAL))
+        repository = Mock()
+        repository.get.return_value = current
+        repository.update_fields.return_value = destination
+        admin = SimpleNamespace(user_id=1, is_admin=lambda: True)
+        context = SimpleNamespace(user=admin, authenticated_user=admin)
+        with patch('handlers.package_handler.notify_on_creation') as notify:
+            result = PackageHandler(repository, Mock(), Mock()).update(destination, FieldMask(['state']), context)
+        self.assertEqual(result.state, pb.NORMAL)
+        self.assertEqual(repository.update_fields.call_args.kwargs['expected_state'], pb.UNDER_REVIEW)
+        notify.assert_called_once_with(destination)
