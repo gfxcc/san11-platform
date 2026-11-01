@@ -103,6 +103,8 @@ service San11Platform {
   // Generic
   rpc GetStatistic(GetStatisticRequest) returns (Statistic) {}
   rpc GetAdminMessage(GetAdminMessageRequest) returns (AdminMessage) {}
+  rpc GetSiteSettings(GetSiteSettingsRequest) returns (SiteSettings) {}
+  rpc UpdateSiteSettings(UpdateSiteSettingsRequest) returns (SiteSettings) {}
 
   // Subscription
   rpc CreateSubscription(CreateSubscriptionRequest) returns (Subscription) {}
@@ -951,3 +953,8 @@ enum ImageType {
   // For image in description
   DESCRIPTION = 3; 
 }
+
+// Administrator-only feature settings shared by all server instances.
+message SiteSettings { bool package_auto_approval_enabled = 1; }
+message GetSiteSettingsRequest {}
+message UpdateSiteSettingsRequest { SiteSettings settings = 1; }

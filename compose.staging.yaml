@@ -16,3 +16,7 @@ services:
   back-end:
     environment:
       STAGE: STAGING
+
+  auto-approval:
+    environment:
+      STAGE: STAGING

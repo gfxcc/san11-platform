@@ -24,6 +24,16 @@ class AdminHandler:
         self.package_repository = package_repository or repository_for(ModelPackage)
         self.activity_repository = activity_repository or repository_for(ModelActivity)
 
+    def get_site_settings(self, request, context):
+        from repositories.site_settings_repository import SiteSettingsRepository
+        return SiteSettingsRepository().get()
+
+    def update_site_settings(self, request, context):
+        from repositories.site_settings_repository import SiteSettingsRepository
+        if not request.HasField('settings'):
+            raise InvalidArgument('缺少站点设置')
+        return SiteSettingsRepository().update(request.settings, context.authenticated_user.user_id)
+
     def get_admin_message(self, request, context):
         now = get_now()
         window_7d = now - timedelta(days=7)

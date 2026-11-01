@@ -1,3 +1,4 @@
+import { SiteSettings, GetSiteSettingsRequest, UpdateSiteSettingsRequest } from '../../proto/san11-platform.pb';
 import { Injectable } from '@angular/core';
 import { GrpcMetadata } from '@ngx-grpc/common';
 import { Observable, Subscription } from 'rxjs';
@@ -172,6 +173,14 @@ export class San11PlatformServiceService {
   getStatistic(): Observable<Statistic> {
     const request = new GetStatisticRequest({ date: null });
     return this.severClient.getStatistic(request, this.getMetadata());
+  }
+
+  getSiteSettings(): Observable<SiteSettings> {
+    return this.severClient.getSiteSettings(new GetSiteSettingsRequest(), this.getMetadata());
+  }
+
+  updateSiteSettings(settings: SiteSettings): Observable<SiteSettings> {
+    return this.severClient.updateSiteSettings(new UpdateSiteSettingsRequest({ settings }), this.getMetadata());
   }
 
   getAdminMessage(): Observable<AdminMessage> {

@@ -125,6 +125,18 @@ class ResourceRepository(Generic[_RESOURCE_T]):
         self._update(resource)
         return resource
 
+    def update_fields(self, resource, fields, update_update_time=True, actor_info=None, expected_state=None):
+        _invoke_update_hook(resource, update_update_time, actor_info)
+        fields = set(fields)
+        if update_update_time:
+            fields.add('update_time')
+        parent, resource_id = base_storage.parse_name(self.model_class._DB_TABLE, resource.name)
+        data = {key: value for key, value in resource.to_db().items() if key in fields}
+        updated = self.storage.update_fields(self.model_class._DB_TABLE, parent, resource_id, data, expected_state=expected_state)
+        if updated is None:
+            raise FailedPrecondition('资源已被其他操作更新，请刷新后重试')
+        return self.model_class.from_db(updated)
+
     def _update(self, resource: _RESOURCE_T) -> None:
         parent, resource_id = base_storage.parse_name(
             self.model_class._DB_TABLE, resource.name)

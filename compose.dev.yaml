@@ -19,3 +19,7 @@ services:
 
   # envoy:
   #   command: /usr/local/bin/envoy -c /etc/envoy/envoy_dev.yaml
+
+  auto-approval:
+    environment:
+      STAGE: DEV

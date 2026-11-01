@@ -31,6 +31,8 @@ def create_server(
 
 
 def serve(address: str = DEFAULT_ADDRESS) -> None:
+    from integrations.db.migrate import migrate
+    migrate()
     seed_dev_data()
     server = create_server()
     server.add_insecure_port(address)

@@ -1089,6 +1089,48 @@ export class San11PlatformClient {
       });
     },
     /**
+     * Unary call: /san11_platform.San11Platform/GetSiteSettings
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.SiteSettings>>
+     */
+    getSiteSettings: (
+      requestData: thisProto.GetSiteSettingsRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.SiteSettings>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/san11_platform.San11Platform/GetSiteSettings',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.GetSiteSettingsRequest,
+        responseClass: thisProto.SiteSettings
+      });
+    },
+    /**
+     * Unary call: /san11_platform.San11Platform/UpdateSiteSettings
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.SiteSettings>>
+     */
+    updateSiteSettings: (
+      requestData: thisProto.UpdateSiteSettingsRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.SiteSettings>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/san11_platform.San11Platform/UpdateSiteSettings',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.UpdateSiteSettingsRequest,
+        responseClass: thisProto.SiteSettings
+      });
+    },
+    /**
      * Unary call: /san11_platform.San11Platform/CreateSubscription
      *
      * @param requestMessage Request message
@@ -1982,6 +2024,38 @@ export class San11PlatformClient {
   ): Observable<thisProto.AdminMessage> {
     return this.$raw
       .getAdminMessage(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary call @/san11_platform.San11Platform/GetSiteSettings
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.SiteSettings>
+   */
+  getSiteSettings(
+    requestData: thisProto.GetSiteSettingsRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.SiteSettings> {
+    return this.$raw
+      .getSiteSettings(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary call @/san11_platform.San11Platform/UpdateSiteSettings
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.SiteSettings>
+   */
+  updateSiteSettings(
+    requestData: thisProto.UpdateSiteSettingsRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.SiteSettings> {
+    return this.$raw
+      .updateSiteSettings(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 

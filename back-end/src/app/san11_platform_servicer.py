@@ -515,3 +515,16 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
     @iam_util.assert_admin
     def GetAdminMessage(self, request, context):
         return self.admin_handler.get_admin_message(request, context)
+
+
+    @GrpcAbortOnExcep
+    @iam_util.assert_login
+    @iam_util.assert_admin
+    def GetSiteSettings(self, request, context):
+        return self.admin_handler.get_site_settings(request, context)
+
+    @GrpcAbortOnExcep
+    @iam_util.assert_login
+    @iam_util.assert_admin
+    def UpdateSiteSettings(self, request, context):
+        return self.admin_handler.update_site_settings(request, context)

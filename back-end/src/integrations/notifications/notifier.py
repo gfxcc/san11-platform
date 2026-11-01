@@ -13,6 +13,7 @@ try:
 except ImportError:
     HttpError = None
 
+from app.protos import san11_platform_pb2 as pb
 from core.common.env import Env, get_env
 from core.common.visitor import visitor
 from core.errors.exceptions import InvalidArgument
@@ -534,6 +535,8 @@ class CreationNotifier:
             * subscribers of the package
         '''
         package = repository_for(ModelPackage).get(get_parent(binary.name))
+        if package.state != pb.ResourceState.NORMAL:
+            return
         author = ModelUser.from_user_id(package.author_id)
         view = ResourceViewVisitor().visit(binary)  # type: ignore
         link = get_resource_url(binary)

@@ -149,13 +149,13 @@ class PackageHandler(HandlerBase):
         is_visitor = True if set(update_mask.paths) <= {
             'like_count', 'dislike_count'} else False
         if is_visitor:
-            self.package_repository.update(package, update_update_time=False)
+            package = self.package_repository.update_fields(package, update_mask.paths, update_update_time=False)
         else:
-            self.package_repository.update(package, actor_info=user_id)
+            package = self.package_repository.update_fields(
+                package, update_mask.paths, actor_info=user_id,
+                expected_state=base_package.state if update_mask.has('state') else None)
 
-        if on_approve(
-                pb.ResourceState.DESCRIPTOR.values_by_number[base_package.state],
-                pb.ResourceState.DESCRIPTOR.values_by_number[update_package.state]):
+        if update_mask.has('state') and on_approve(base_package.state, package.state):
             notify_on_creation(package)
         return package
 

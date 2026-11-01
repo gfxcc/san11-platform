@@ -13,3 +13,7 @@ services:
   back-end:
     environment:
       STAGE: AUTOPUSH
+
+  auto-approval:
+    environment:
+      STAGE: AUTOPUSH
