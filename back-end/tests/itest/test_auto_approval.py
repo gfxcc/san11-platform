@@ -203,3 +203,16 @@ def test_committed_disable_wins_over_waiting_worker(db):
             future = executor.submit(approve)
         assert future.result(timeout=5) is None
     assert sql("SELECT data->>'state' FROM packages WHERE resource_id=1") == [('2',)]
+
+
+def test_invalid_legacy_data_rolls_back_approval(db):
+    package()
+    version()
+    enable()
+    due()
+    sql("UPDATE packages SET data=jsonb_set(data::jsonb, '{create_time}', '\"invalid\"'::jsonb)::json WHERE resource_id=1")
+    with pytest.raises(ValueError):
+        approve()
+    assert sql("SELECT data->>'state' FROM packages WHERE resource_id=1") == [('2',)]
+    assert len(sql('SELECT * FROM package_review_schedule')) == 1
+    assert sql("SELECT * FROM site_settings_audit WHERE action='package_auto_approved'") == []

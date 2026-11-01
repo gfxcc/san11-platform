@@ -42,8 +42,10 @@ class PackageReviewRepository:
                                         'YYYY-MM-DD"T"HH24:MI:SS.US') || '+00:00'))::json
                               WHERE parent = %s AND resource_id = %s RETURNING data''',
                            (pb.NORMAL, parent, resource_id))
-            data = cursor.fetchone()[0]
+            # Validate the model before committing, so malformed legacy data
+            # cannot leave an approved package without running publication hooks.
+            package = ModelPackage.from_db(cursor.fetchone()[0])
             cursor.execute('''INSERT INTO site_settings_audit(actor, action, details)
                               VALUES ('system', 'package_auto_approved', %s)''',
                            (json.dumps({'package_name': name}),))
-        return ModelPackage.from_db(data)
+        return package
