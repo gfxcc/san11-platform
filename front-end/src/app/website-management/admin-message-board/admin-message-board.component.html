@@ -1,17 +1,8 @@
 <div class="admin-page">
-    <section class="admin-hero">
-        <div>
-            <span class="app-eyebrow">管理工作台</span>
-            <h1>{{activePanel === 'settings' ? '站点设置' : '站点运营中心'}}</h1>
-        </div>
-
-        <div class="hero-status surface-panel" *ngIf="activePanel === 'overview'">
-            <span>近 {{adminSummary.windowDays || 30}} 天活跃率</span>
-            <strong>{{activeUserRate}}</strong>
-            <small>{{metrics.monthlyActiveUsers}} / {{metrics.totalUsers}} 注册用户活跃</small>
-            <em *ngIf="adminSummary.generatedAt">更新 {{formatTime(adminSummary.generatedAt)}}</em>
-        </div>
-    </section>
+    <header class="admin-hero">
+        <span class="app-eyebrow">管理工作台</span>
+        <h1>站点运营中心</h1>
+    </header>
 
     <nav class="admin-navigation" aria-label="管理面板">
         <button type="button" [disabled]="savingSettings || loadingSettings" [attr.aria-pressed]="activePanel === 'overview'"
@@ -85,6 +76,7 @@
                     <span>Data</span>
                     <h2>数据概览</h2>
                 </div>
+                <p *ngIf="adminSummary.generatedAt">更新于 {{formatTime(adminSummary.generatedAt)}}</p>
             </div>
 
             <div class="metric-grid" [class.loading-state]="loadingAdminSummary">
