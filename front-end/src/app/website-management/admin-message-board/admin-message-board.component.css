@@ -713,15 +713,8 @@
     color: var(--text-muted);
 }
 
-.review-item-status {
-    padding: 5px 9px;
-    border-radius: 999px;
-    background: rgba(245, 158, 11, .12);
-    color: #b45309;
-    font-size: .76rem;
-    font-weight: 850;
-    white-space: nowrap;
-}
+.queue-review-status { display: grid; justify-items: end; gap: 4px; }
+.queue-review-status time { color: var(--text-muted); font-size: .75rem; }
 
 .activity-board {
     overflow: hidden;
@@ -1100,9 +1093,11 @@
         height: 34px;
     }
 
-    .review-item-status {
-        display: none;
+    .queue-review-status {
+        grid-column: 2 / -1;
+        justify-items: start;
     }
+    .review-item > mat-icon:last-child { grid-column: 3; grid-row: 1; }
 
     .state-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));

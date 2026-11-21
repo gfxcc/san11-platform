@@ -119,6 +119,22 @@
     line-height: 1.45;
 }
 
+.auto-review-widget {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+}
+.auto-review-header, .auto-review-deadline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+}
+.auto-review-header h3 { margin: 0; font-size: .8rem; color: var(--text-muted); }
+.auto-review-widget p { margin: 8px 0 0; font-size: .84rem; }
+.auto-review-widget .review-countdown { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.auto-review-deadline { margin-top: 4px; color: var(--text-muted); font-size: .76rem; }
+
 .resource-status-normal {
     border-color: rgba(5, 150, 105, .25);
     background: linear-gradient(145deg, rgba(5, 150, 105, .075), var(--surface));

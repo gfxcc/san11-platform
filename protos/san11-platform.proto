@@ -623,6 +623,7 @@ message Package {
   int64 download_count = 20;
   int64 like_count = 21;
   int64 dislike_count = 22;
+  PackageAutoReview auto_review = 23;
 }
 
 message Binary {
@@ -958,3 +959,11 @@ enum ImageType {
 message SiteSettings { bool package_auto_approval_enabled = 1; }
 message GetSiteSettingsRequest {}
 message UpdateSiteSettingsRequest { SiteSettings settings = 1; }
+
+// Read-only snapshot supplied to administrators for pending packages.
+message PackageAutoReview {
+  bool enabled = 1;
+  bool has_version = 2;
+  string eligible_at = 3; // ISO 8601 with offset; empty until a deadline exists.
+  uint32 remaining_minutes = 4; // Rounded up, based on database time.
+}

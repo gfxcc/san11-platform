@@ -113,6 +113,21 @@ class San11PlatformServicerTest(unittest.TestCase):
                         context.abort.assert_not_called()
                         handler.assert_called_once()
 
+    def test_only_admins_receive_pending_review_metadata(self):
+        servicer = San11PlatformServicer(self.create_dependencies())
+        pending = pb.Package(name='categories/1/packages/1', state=pb.UNDER_REVIEW)
+        published = pb.Package(name='categories/1/packages/2', state=pb.NORMAL)
+        with mock.patch('app.san11_platform_servicer.PackageReviewRepository') as repository:
+            for user in (None, SimpleNamespace(is_admin=lambda: False)):
+                servicer._attach_auto_review([pending, published], SimpleNamespace(user=user))
+                self.assertFalse(pending.HasField('auto_review'))
+            repository.assert_not_called()
+            repository.return_value.statuses.return_value = {pending.name: pb.PackageAutoReview(enabled=True)}
+            servicer._attach_auto_review([pending, published], SimpleNamespace(user=SimpleNamespace(is_admin=lambda: True)))
+            repository.return_value.statuses.assert_called_once_with([pending.name])
+            self.assertTrue(pending.auto_review.enabled)
+            self.assertFalse(published.HasField('auto_review'))
+
     def _service_context(self):
         context = mock.Mock()
         context.invocation_metadata.return_value = []

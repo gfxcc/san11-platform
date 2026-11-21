@@ -23,6 +23,7 @@ from models.model_user import (ModelUser, get_user_by_email,
                                       validate_password, validate_username)
 from models.plugins.subscribable import ModelSubscription
 from models.plugins.tracklifecycle import Action
+from repositories.package_review_repository import PackageReviewRepository
 from repositories.resource_repository import repository_for
 from app.grpc_service_registration import GeneratedSan11PlatformServicer
 from app.protos import san11_platform_pb2 as pb
@@ -291,7 +292,18 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
 
     @GrpcAbortOnExcep
     def GetPackage(self, request, context):
-        return self.package_handler.get(request.name, context).to_pb()
+        package = self.package_handler.get(request.name, context).to_pb()
+        self._attach_auto_review([package], context)
+        return package
+
+    def _attach_auto_review(self, packages, context):
+        if not context.user or not context.user.is_admin():
+            return
+        pending = [package for package in packages if package.state == pb.UNDER_REVIEW]
+        if pending:
+            statuses = PackageReviewRepository().statuses([package.name for package in pending])
+            for package in pending:
+                package.auto_review.CopyFrom(statuses[package.name])
 
     @GrpcAbortOnExcep
     def ListPackages(self, request, context):
@@ -299,8 +311,10 @@ class San11PlatformServicer(GeneratedSan11PlatformServicer):
             list_options=ListOptions.from_request(request),
             handler_context=context,
         )
+        messages = [package.to_pb() for package in packages]
+        self._attach_auto_review(messages, context)
         return pb.ListPackagesResponse(
-            packages=[package.to_pb() for package in packages],
+            packages=messages,
             next_page_token=next_page_token,
         )
 

@@ -141,6 +141,7 @@ export class AdminMessageBoardComponent implements OnInit {
         next: settings => {
           this.siteSettings = settings;
           this.notificationService.success('站点设置已保存');
+          this.loadPendingReviews();
         },
         error: () => this.settingsError = '保存失败，开关未更改，请重试。'
       });

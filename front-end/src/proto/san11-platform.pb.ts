@@ -12616,6 +12616,7 @@ export class Package implements GrpcMessage {
     _instance.downloadCount = _instance.downloadCount || '0';
     _instance.likeCount = _instance.likeCount || '0';
     _instance.dislikeCount = _instance.dislikeCount || '0';
+    _instance.autoReview = _instance.autoReview || undefined;
   }
 
   /**
@@ -12674,6 +12675,13 @@ export class Package implements GrpcMessage {
         case 22:
           _instance.dislikeCount = _reader.readInt64String();
           break;
+        case 23:
+          _instance.autoReview = new PackageAutoReview();
+          _reader.readMessage(
+            _instance.autoReview,
+            PackageAutoReview.deserializeBinaryFromReader
+          );
+          break;
         default:
           _reader.skipField();
       }
@@ -12728,6 +12736,13 @@ export class Package implements GrpcMessage {
     if (_instance.dislikeCount) {
       _writer.writeInt64String(22, _instance.dislikeCount);
     }
+    if (_instance.autoReview) {
+      _writer.writeMessage(
+        23,
+        _instance.autoReview as any,
+        PackageAutoReview.serializeBinaryToWriter
+      );
+    }
   }
 
   private _name: string;
@@ -12742,6 +12757,7 @@ export class Package implements GrpcMessage {
   private _downloadCount: string;
   private _likeCount: string;
   private _dislikeCount: string;
+  private _autoReview?: PackageAutoReview;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -12761,6 +12777,9 @@ export class Package implements GrpcMessage {
     this.downloadCount = _value.downloadCount;
     this.likeCount = _value.likeCount;
     this.dislikeCount = _value.dislikeCount;
+    this.autoReview = _value.autoReview
+      ? new PackageAutoReview(_value.autoReview)
+      : undefined;
     Package.refineValues(this);
   }
   get name(): string {
@@ -12835,6 +12854,12 @@ export class Package implements GrpcMessage {
   set dislikeCount(value: string) {
     this._dislikeCount = value;
   }
+  get autoReview(): PackageAutoReview | undefined {
+    return this._autoReview;
+  }
+  set autoReview(value: PackageAutoReview | undefined) {
+    this._autoReview = value;
+  }
 
   /**
    * Serialize message to binary data
@@ -12862,7 +12887,8 @@ export class Package implements GrpcMessage {
       tags: (this.tags || []).map(m => m.toObject()),
       downloadCount: this.downloadCount,
       likeCount: this.likeCount,
-      dislikeCount: this.dislikeCount
+      dislikeCount: this.dislikeCount,
+      autoReview: this.autoReview ? this.autoReview.toObject() : undefined
     };
   }
 
@@ -12897,7 +12923,10 @@ export class Package implements GrpcMessage {
       tags: (this.tags || []).map(m => m.toProtobufJSON(options)),
       downloadCount: this.downloadCount,
       likeCount: this.likeCount,
-      dislikeCount: this.dislikeCount
+      dislikeCount: this.dislikeCount,
+      autoReview: this.autoReview
+        ? this.autoReview.toProtobufJSON(options)
+        : null
     };
   }
 }
@@ -12918,6 +12947,7 @@ export module Package {
     downloadCount: string;
     likeCount: string;
     dislikeCount: string;
+    autoReview?: PackageAutoReview.AsObject;
   }
 
   /**
@@ -12936,6 +12966,7 @@ export module Package {
     downloadCount: string;
     likeCount: string;
     dislikeCount: string;
+    autoReview: PackageAutoReview.AsProtobufJSON | null;
   }
 }
 
@@ -18409,5 +18440,201 @@ export module UpdateSiteSettingsRequest {
    */
   export interface AsProtobufJSON {
     settings: SiteSettings.AsProtobufJSON | null;
+  }
+}
+
+/**
+ * Message implementation for san11_platform.PackageAutoReview
+ */
+export class PackageAutoReview implements GrpcMessage {
+  static id = 'san11_platform.PackageAutoReview';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new PackageAutoReview();
+    PackageAutoReview.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: PackageAutoReview) {
+    _instance.enabled = _instance.enabled || false;
+    _instance.hasVersion = _instance.hasVersion || false;
+    _instance.eligibleAt = _instance.eligibleAt || '';
+    _instance.remainingMinutes = _instance.remainingMinutes || 0;
+  }
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: PackageAutoReview,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        case 1:
+          _instance.enabled = _reader.readBool();
+          break;
+        case 2:
+          _instance.hasVersion = _reader.readBool();
+          break;
+        case 3:
+          _instance.eligibleAt = _reader.readString();
+          break;
+        case 4:
+          _instance.remainingMinutes = _reader.readUint32();
+          break;
+        default:
+          _reader.skipField();
+      }
+    }
+
+    PackageAutoReview.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: PackageAutoReview,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.enabled) {
+      _writer.writeBool(1, _instance.enabled);
+    }
+    if (_instance.hasVersion) {
+      _writer.writeBool(2, _instance.hasVersion);
+    }
+    if (_instance.eligibleAt) {
+      _writer.writeString(3, _instance.eligibleAt);
+    }
+    if (_instance.remainingMinutes) {
+      _writer.writeUint32(4, _instance.remainingMinutes);
+    }
+  }
+
+  private _enabled: boolean;
+  private _hasVersion: boolean;
+  private _eligibleAt: string;
+  private _remainingMinutes: number;
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of PackageAutoReview to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<PackageAutoReview.AsObject>) {
+    _value = _value || {};
+    this.enabled = _value.enabled;
+    this.hasVersion = _value.hasVersion;
+    this.eligibleAt = _value.eligibleAt;
+    this.remainingMinutes = _value.remainingMinutes;
+    PackageAutoReview.refineValues(this);
+  }
+  get enabled(): boolean {
+    return this._enabled;
+  }
+  set enabled(value: boolean) {
+    this._enabled = value;
+  }
+  get hasVersion(): boolean {
+    return this._hasVersion;
+  }
+  set hasVersion(value: boolean) {
+    this._hasVersion = value;
+  }
+  get eligibleAt(): string {
+    return this._eligibleAt;
+  }
+  set eligibleAt(value: string) {
+    this._eligibleAt = value;
+  }
+  get remainingMinutes(): number {
+    return this._remainingMinutes;
+  }
+  set remainingMinutes(value: number) {
+    this._remainingMinutes = value;
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    PackageAutoReview.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): PackageAutoReview.AsObject {
+    return {
+      enabled: this.enabled,
+      hasVersion: this.hasVersion,
+      eligibleAt: this.eligibleAt,
+      remainingMinutes: this.remainingMinutes
+    };
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): PackageAutoReview.AsProtobufJSON {
+    return {
+      enabled: this.enabled,
+      hasVersion: this.hasVersion,
+      eligibleAt: this.eligibleAt,
+      remainingMinutes: this.remainingMinutes
+    };
+  }
+}
+export module PackageAutoReview {
+  /**
+   * Standard JavaScript object representation for PackageAutoReview
+   */
+  export interface AsObject {
+    enabled: boolean;
+    hasVersion: boolean;
+    eligibleAt: string;
+    remainingMinutes: number;
+  }
+
+  /**
+   * Protobuf JSON representation for PackageAutoReview
+   */
+  export interface AsProtobufJSON {
+    enabled: boolean;
+    hasVersion: boolean;
+    eligibleAt: string;
+    remainingMinutes: number;
   }
 }

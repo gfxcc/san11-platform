@@ -1,3 +1,4 @@
+import { AutoReviewBadgeComponent } from './common/components/auto-review-badge/auto-review-badge.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 /* FormsModule */
@@ -33,6 +34,7 @@ import { AdminMessageBoardComponent } from './website-management/admin-message-b
 
 @NgModule({ declarations: [
         AppComponent,
+        AutoReviewBadgeComponent,
         SigninComponent,
         RegisterComponent,
         LoadingComponent,

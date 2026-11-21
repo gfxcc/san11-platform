@@ -179,8 +179,25 @@
                     <div class="resource-status-copy">
                         <span>内部状态</span>
                         <strong>{{resourceStatus.label}}</strong>
-                        <p>{{resourceStatus.description}}</p>
+                        <p *ngIf="!isAdmin() || resourceStatus.tone !== 'review'">{{resourceStatus.description}}</p>
                     </div>
+                    <section *ngIf="isAdmin() && resourceStatus.tone === 'review'"
+                        class="auto-review-widget" aria-label="自动审批状态">
+                        <div class="auto-review-header">
+                            <h3>自动审批</h3>
+                            <app-auto-review-badge [review]="package.autoReview"
+                                [unavailable]="reviewRefreshFailed"></app-auto-review-badge>
+                        </div>
+                        <p [class.review-countdown]="!reviewRefreshFailed && package.autoReview?.enabled && package.autoReview?.hasVersion && package.autoReview?.eligibleAt && package.autoReview?.remainingMinutes">
+                            {{reviewRefreshFailed ? '正在重试，请稍后查看。' : reviewDescription(package.autoReview)}}
+                        </p>
+                        <div *ngIf="!reviewRefreshFailed && package.autoReview?.eligibleAt" class="auto-review-deadline">
+                            {{package.autoReview.enabled ? '预计批准' : '原定时间'}}
+                            <time [attr.datetime]="package.autoReview.eligibleAt">
+                                {{package.autoReview.eligibleAt | date:'yyyy-MM-dd HH:mm (ZZZZ)'}}
+                            </time>
+                        </div>
+                    </section>
                 </section>
 
                 <section class="resource-summary surface-panel app-detail-section">

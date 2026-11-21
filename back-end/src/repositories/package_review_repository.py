@@ -6,6 +6,26 @@ from models.model_package import ModelPackage
 
 
 class PackageReviewRepository:
+    def statuses(self, names):
+        with connection() as conn, conn.cursor() as cursor:
+            cursor.execute("""
+                SELECT name, package_auto_approval_enabled,
+                       EXISTS (SELECT 1 FROM binaries WHERE parent = name),
+                       approve_at,
+                       greatest(0, ceil(extract(epoch FROM approve_at - statement_timestamp()) / 60))::int
+                FROM unnest(%s::text[]) AS requested(name)
+                CROSS JOIN site_settings
+                LEFT JOIN package_review_schedule
+                  ON parent = split_part(name, '/packages/', 1)
+                 AND resource_id = split_part(name, '/packages/', 2)::int
+                WHERE singleton
+            """, (names,))
+            return {name: pb.PackageAutoReview(
+                enabled=enabled, has_version=has_version,
+                eligible_at=deadline.isoformat() if deadline else '',
+                remaining_minutes=minutes,
+            ) for name, enabled, has_version, deadline, minutes in cursor}
+
     def due(self):
         with connection() as conn, conn.cursor() as cursor:
             cursor.execute('''SELECT parent, resource_id FROM package_review_schedule
