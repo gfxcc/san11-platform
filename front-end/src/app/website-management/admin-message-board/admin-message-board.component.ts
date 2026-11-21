@@ -1,3 +1,4 @@
+import { reviewLabel } from '../../utils/auto_review_util';
 import { SiteSettings } from 'src/proto/san11-platform.pb';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -90,6 +91,7 @@ const EMPTY_ADMIN_SUMMARY: AdminOperationsSummary = {
   styleUrls: ['./admin-message-board.component.css']
 })
 export class AdminMessageBoardComponent implements OnInit {
+  readonly reviewLabel = reviewLabel;
   userId: string;
 
   resourceChanges: any[] = [];
@@ -141,6 +143,7 @@ export class AdminMessageBoardComponent implements OnInit {
         next: settings => {
           this.siteSettings = settings;
           this.notificationService.success('站点设置已保存');
+          this.loadPendingReviews();
         },
         error: () => this.settingsError = '保存失败，开关未更改，请重试。'
       });

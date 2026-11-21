@@ -216,3 +216,25 @@ def test_invalid_legacy_data_rolls_back_approval(db):
     assert sql("SELECT data->>'state' FROM packages WHERE resource_id=1") == [('2',)]
     assert len(sql('SELECT * FROM package_review_schedule')) == 1
     assert sql("SELECT * FROM site_settings_audit WHERE action='package_auto_approved'") == []
+
+
+def test_admin_status_tracks_actual_schedule_and_server_time(db):
+    repo = PackageReviewRepository()
+    name = 'categories/1/packages/1'
+    legacy = 'categories/1/packages/99'
+    package()
+    statuses = repo.statuses([name, legacy])
+    assert not statuses[name].has_version
+    assert statuses[legacy].has_version and not statuses[legacy].eligible_at
+    version()
+    paused = repo.statuses([name])[name]
+    assert not paused.enabled and paused.eligible_at and paused.remaining_minutes == 1440
+    enable()
+    active = repo.statuses([name])[name]
+    assert active.enabled and active.has_version and active.eligible_at == paused.eligible_at
+    due()
+    expired = repo.statuses([name])[name]
+    assert expired.eligible_at and expired.remaining_minutes == 0
+    sql('DELETE FROM binaries WHERE parent=%s', (name,))
+    empty = repo.statuses([name])[name]
+    assert not empty.has_version and not empty.eligible_at

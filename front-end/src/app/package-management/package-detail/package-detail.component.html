@@ -179,7 +179,15 @@
                     <div class="resource-status-copy">
                         <span>内部状态</span>
                         <strong>{{resourceStatus.label}}</strong>
-                        <p>{{resourceStatus.description}}</p>
+                        <ng-container *ngIf="isAdmin() && resourceStatus.tone === 'review'; else standardStatus">
+                            <strong>{{reviewRefreshFailed ? '自动审核状态暂时无法更新' : reviewLabel(package.autoReview)}}</strong>
+                            <p>{{reviewRefreshFailed ? '正在重试，请稍后查看。' : reviewDescription(package.autoReview)}}</p>
+                            <p *ngIf="!reviewRefreshFailed && package.autoReview?.eligibleAt">
+                                {{package.autoReview.enabled ? '预计批准时间' : '原定时间'}} ·
+                                {{package.autoReview.eligibleAt | date:'yyyy-MM-dd HH:mm (ZZZZ)'}}
+                            </p>
+                        </ng-container>
+                        <ng-template #standardStatus><p>{{resourceStatus.description}}</p></ng-template>
                     </div>
                 </section>
 

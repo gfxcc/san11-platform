@@ -1727,6 +1727,7 @@ class Package(google.protobuf.message.Message):
     DOWNLOAD_COUNT_FIELD_NUMBER: builtins.int
     LIKE_COUNT_FIELD_NUMBER: builtins.int
     DISLIKE_COUNT_FIELD_NUMBER: builtins.int
+    AUTO_REVIEW_FIELD_NUMBER: builtins.int
     name: builtins.str
     """E.g. `categories/123/package/456`"""
     package_name: builtins.str
@@ -1743,6 +1744,8 @@ class Package(google.protobuf.message.Message):
     def image_urls(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     @property
     def tags(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Tag]: ...
+    @property
+    def auto_review(self) -> global___PackageAutoReview: ...
     def __init__(
         self,
         *,
@@ -1758,8 +1761,10 @@ class Package(google.protobuf.message.Message):
         download_count: builtins.int = ...,
         like_count: builtins.int = ...,
         dislike_count: builtins.int = ...,
+        auto_review: global___PackageAutoReview | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["author_id", b"author_id", "create_time", b"create_time", "description", b"description", "dislike_count", b"dislike_count", "download_count", b"download_count", "image_urls", b"image_urls", "like_count", b"like_count", "name", b"name", "package_name", b"package_name", "state", b"state", "tags", b"tags", "update_time", b"update_time"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["auto_review", b"auto_review"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["author_id", b"author_id", "auto_review", b"auto_review", "create_time", b"create_time", "description", b"description", "dislike_count", b"dislike_count", "download_count", b"download_count", "image_urls", b"image_urls", "like_count", b"like_count", "name", b"name", "package_name", b"package_name", "state", b"state", "tags", b"tags", "update_time", b"update_time"]) -> None: ...
 
 global___Package = Package
 
@@ -2609,3 +2614,31 @@ class UpdateSiteSettingsRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["settings", b"settings"]) -> None: ...
 
 global___UpdateSiteSettingsRequest = UpdateSiteSettingsRequest
+
+@typing.final
+class PackageAutoReview(google.protobuf.message.Message):
+    """Read-only snapshot supplied to administrators for pending packages."""
+
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    ENABLED_FIELD_NUMBER: builtins.int
+    HAS_VERSION_FIELD_NUMBER: builtins.int
+    ELIGIBLE_AT_FIELD_NUMBER: builtins.int
+    REMAINING_MINUTES_FIELD_NUMBER: builtins.int
+    enabled: builtins.bool
+    has_version: builtins.bool
+    eligible_at: builtins.str
+    """ISO 8601 with offset; empty until a deadline exists."""
+    remaining_minutes: builtins.int
+    """Rounded up, based on database time."""
+    def __init__(
+        self,
+        *,
+        enabled: builtins.bool = ...,
+        has_version: builtins.bool = ...,
+        eligible_at: builtins.str = ...,
+        remaining_minutes: builtins.int = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["eligible_at", b"eligible_at", "enabled", b"enabled", "has_version", b"has_version", "remaining_minutes", b"remaining_minutes"]) -> None: ...
+
+global___PackageAutoReview = PackageAutoReview

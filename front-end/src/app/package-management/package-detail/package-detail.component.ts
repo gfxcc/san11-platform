@@ -1,3 +1,4 @@
+import { reviewLabel, reviewDescription } from '../../utils/auto_review_util';
 import {
   ChangeDetectorRef,
   Component,
@@ -11,7 +12,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageItem } from 'ng-gallery';
-import { concatMap, filter, finalize, from, Observable, switchMap, take } from 'rxjs';
+import { EMPTY, catchError, exhaustMap, takeWhile, timer, concatMap, filter, finalize, from, Observable, switchMap, take } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProgressService } from 'src/app/progress.service';
 import { EditorService } from 'src/app/service/editor.service';
@@ -22,6 +23,7 @@ import {
   DeletePackageRequest,
   DeleteSubscriptionRequest,
   FieldMask,
+  GetPackageRequest,
   GetUserRequest,
   ImageType,
   ListSubscriptionsRequest,
@@ -61,6 +63,10 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
 
   images: ImageItem[] = [];
   package: Package;
+  readonly reviewLabel = reviewLabel;
+  readonly reviewDescription = reviewDescription;
+  reviewRefreshFailed = false;
+
   author: User = new User({});
 
   packageNameDraft = '';
@@ -98,10 +104,30 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.data
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => {
-        this.package = data.package;
-        this.initializePage();
+      .pipe(
+        switchMap(data => {
+          this.package = data.package;
+          this.reviewRefreshFailed = false;
+          this.initializePage();
+          if (!this.isAdmin() || this.package.state !== ResourceState.UNDER_REVIEW) { return EMPTY; }
+
+          const request = new GetPackageRequest({ name: this.package.name });
+          return timer(30_000, 30_000).pipe(
+            takeWhile(() => this.isAdmin() && this.package.state === ResourceState.UNDER_REVIEW),
+            exhaustMap(() => this.san11pkService.getPackage(request).pipe(
+              catchError(() => {
+                this.reviewRefreshFailed = true;
+                return EMPTY;
+              })
+            ))
+          );
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(updated => {
+        this.package.state = updated.state;
+        this.package.autoReview = updated.autoReview;
+        this.reviewRefreshFailed = false;
       });
 
     this.route.fragment
