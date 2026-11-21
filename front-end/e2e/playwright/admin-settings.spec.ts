@@ -20,6 +20,27 @@ async function settings(page: Page) {
   return toggle;
 }
 
+for (const width of [1280, 390]) {
+  test(`panel navigation stays in place when switching both ways at ${width}px`, async ({ page }) => {
+    await signIn(page);
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/admin-message-board');
+    const navigation = page.getByRole('navigation', { name: '管理面板' });
+    const top = () => navigation.evaluate(element => element.getBoundingClientRect().top);
+    await expect(page.getByRole('heading', { name: '数据概览' })).toBeVisible();
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    const initialTop = await top();
+
+    await navigation.getByRole('button', { name: '站点设置' }).click();
+    await expect(page.getByRole('switch', { name: 'Package 自动审核' })).toBeEnabled();
+    expect(await top()).toBeCloseTo(initialTop, 0);
+
+    await navigation.getByRole('button', { name: '运营概览' }).click();
+    await expect(page.getByRole('heading', { name: '数据概览' })).toBeVisible();
+    expect(await top()).toBeCloseTo(initialTop, 0);
+  });
+}
+
 test('admin can persist the auto approval setting and keep settings separate from telemetry', async ({ page }) => {
   await signIn(page);
   const toggle = await settings(page);
