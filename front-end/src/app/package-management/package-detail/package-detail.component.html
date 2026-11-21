@@ -179,16 +179,26 @@
                     <div class="resource-status-copy">
                         <span>内部状态</span>
                         <strong>{{resourceStatus.label}}</strong>
-                        <ng-container *ngIf="isAdmin() && resourceStatus.tone === 'review'; else standardStatus">
-                            <strong>{{reviewRefreshFailed ? '自动审核状态暂时无法更新' : reviewLabel(package.autoReview)}}</strong>
-                            <p>{{reviewRefreshFailed ? '正在重试，请稍后查看。' : reviewDescription(package.autoReview)}}</p>
-                            <p *ngIf="!reviewRefreshFailed && package.autoReview?.eligibleAt">
-                                {{package.autoReview.enabled ? '预计批准时间' : '原定时间'}} ·
-                                {{package.autoReview.eligibleAt | date:'yyyy-MM-dd HH:mm (ZZZZ)'}}
-                            </p>
-                        </ng-container>
-                        <ng-template #standardStatus><p>{{resourceStatus.description}}</p></ng-template>
+                        <p *ngIf="!isAdmin() || resourceStatus.tone !== 'review'">{{resourceStatus.description}}</p>
                     </div>
+                    <section *ngIf="isAdmin() && resourceStatus.tone === 'review'"
+                        class="auto-review-widget" aria-label="自动审批状态"
+                        [attr.data-status]="autoReviewTone">
+                        <div class="auto-review-header">
+                            <h3>自动审批</h3>
+                            <span class="auto-review-tag">
+                                <mat-icon aria-hidden="true">{{autoReviewIcon}}</mat-icon>
+                                {{reviewRefreshFailed ? '状态更新失败' : reviewLabel(package.autoReview)}}
+                            </span>
+                        </div>
+                        <p>{{reviewRefreshFailed ? '正在重试，请稍后查看。' : reviewDescription(package.autoReview)}}</p>
+                        <div *ngIf="!reviewRefreshFailed && package.autoReview?.eligibleAt" class="auto-review-deadline">
+                            {{package.autoReview.enabled ? '预计批准' : '原定时间'}}
+                            <time [attr.datetime]="package.autoReview.eligibleAt">
+                                {{package.autoReview.eligibleAt | date:'yyyy-MM-dd HH:mm (ZZZZ)'}}
+                            </time>
+                        </div>
+                    </section>
                 </section>
 
                 <section class="resource-summary surface-panel app-detail-section">
