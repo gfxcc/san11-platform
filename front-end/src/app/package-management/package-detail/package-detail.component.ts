@@ -1,4 +1,4 @@
-import { reviewLabel, reviewDescription } from '../../utils/auto_review_util';
+import { reviewDescription } from '../../utils/auto_review_util';
 import {
   ChangeDetectorRef,
   Component,
@@ -63,7 +63,6 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
 
   images: ImageItem[] = [];
   package: Package;
-  readonly reviewLabel = reviewLabel;
   readonly reviewDescription = reviewDescription;
   reviewRefreshFailed = false;
 
@@ -190,20 +189,6 @@ export class PackageDetailComponent implements OnInit, OnDestroy {
 
   get categoryName(): string {
     return GlobalConstants.categories.find(category => Number(category.value) === this.categoryId)?.text ?? '资源分类';
-  }
-
-  get autoReviewTone(): 'neutral' | 'scheduled' | 'due' {
-    const review = this.package.autoReview;
-    if (this.reviewRefreshFailed || !review?.enabled || !review.hasVersion || !review.eligibleAt) {
-      return 'neutral';
-    }
-    return review.remainingMinutes ? 'scheduled' : 'due';
-  }
-
-  get autoReviewIcon(): string {
-    if (this.reviewRefreshFailed || !this.package.autoReview) { return 'info_outline'; }
-    if (!this.package.autoReview.enabled) { return 'pause_circle_outline'; }
-    return this.autoReviewTone === 'due' ? 'hourglass_full' : 'schedule';
   }
 
   get resourceStatus(): { label: string; description: string; icon: string; tone: string } {

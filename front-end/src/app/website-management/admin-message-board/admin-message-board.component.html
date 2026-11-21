@@ -141,12 +141,14 @@
                             <span class="review-item-copy">
                                 <strong>{{package.packageName}}</strong>
                                 <small>{{packageCategoryName(package)}} · {{package.name}}</small>
-                                <small>{{reviewLabel(package.autoReview)}}<ng-container
-                                    *ngIf="package.autoReview?.enabled && package.autoReview?.eligibleAt">
-                                    · {{package.autoReview.eligibleAt | date:'MM-dd HH:mm'}}
-                                </ng-container></small>
                             </span>
-                            <span class="review-item-status">待审核</span>
+                            <span class="queue-review-status">
+                                <app-auto-review-badge [review]="package.autoReview"></app-auto-review-badge>
+                                <time *ngIf="package.autoReview?.enabled && package.autoReview?.eligibleAt"
+                                    [attr.datetime]="package.autoReview.eligibleAt">
+                                    预计 {{package.autoReview.eligibleAt | date:'MM-dd HH:mm'}}
+                                </time>
+                            </span>
                             <mat-icon>chevron_right</mat-icon>
                         </button>
                     </div>

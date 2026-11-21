@@ -1,4 +1,3 @@
-import { reviewLabel } from '../../utils/auto_review_util';
 import { SiteSettings } from 'src/proto/san11-platform.pb';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -91,7 +90,6 @@ const EMPTY_ADMIN_SUMMARY: AdminOperationsSummary = {
   styleUrls: ['./admin-message-board.component.css']
 })
 export class AdminMessageBoardComponent implements OnInit {
-  readonly reviewLabel = reviewLabel;
   userId: string;
 
   resourceChanges: any[] = [];

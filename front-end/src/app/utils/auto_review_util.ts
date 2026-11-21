@@ -21,5 +21,5 @@ export function reviewDescription(review?: PackageAutoReview): string {
   const hours = Math.floor(review.remainingMinutes / 60);
   const minutes = review.remainingMinutes % 60;
   const duration = [hours && hours + ' 小时', minutes && minutes + ' 分钟'].filter(Boolean).join(' ');
-  return '约剩 ' + duration + '，无需手动批准。';
+  return '约剩 ' + duration;
 }

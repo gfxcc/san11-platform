@@ -121,51 +121,19 @@
 
 .auto-review-widget {
     grid-column: 1 / -1;
-    min-width: 0;
-    padding: 10px 12px;
-    border: 1px solid var(--review-border, #cbd5e1);
-    border-radius: 10px;
-    background: var(--surface);
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
 }
-
-.auto-review-widget[data-status="scheduled"] {
-    --review-border: #96cbbc;
-    --tag-fill: #d9f3e9;
-    --tag-ink: #125941;
-}
-
-.auto-review-widget[data-status="due"] {
-    --review-border: #a4b9ec;
-    --tag-fill: #e5ecff;
-    --tag-ink: #26477d;
-}
-
 .auto-review-header, .auto-review-deadline {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 6px 10px;
+    gap: 4px 8px;
 }
-
-.auto-review-header { justify-content: space-between; }
-.auto-review-header h3 { margin: 0; font-size: .85rem; }
-
-.auto-review-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    border-radius: 999px;
-    padding: 3px 9px;
-    background: var(--tag-fill, #edf0f4);
-    color: var(--tag-ink, #405066);
-    font-size: .78rem;
-    font-weight: 700;
-}
-
-.auto-review-tag mat-icon { width: 16px; height: 16px; font-size: 16px; }
-.auto-review-widget p { margin: 8px 0 0; font-size: .85rem; line-height: 1.5; }
-.auto-review-deadline { margin-top: 4px; color: var(--text-muted); font-size: .75rem; }
-.auto-review-deadline time { font-variant-numeric: tabular-nums; }
+.auto-review-header h3 { margin: 0; font-size: .8rem; color: var(--text-muted); }
+.auto-review-widget p { margin: 8px 0 0; font-size: .84rem; }
+.auto-review-widget .review-countdown { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.auto-review-deadline { margin-top: 4px; color: var(--text-muted); font-size: .76rem; }
 
 .resource-status-normal {
     border-color: rgba(5, 150, 105, .25);
